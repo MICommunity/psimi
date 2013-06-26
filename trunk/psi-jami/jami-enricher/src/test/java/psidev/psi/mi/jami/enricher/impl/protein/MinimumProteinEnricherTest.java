@@ -5,24 +5,18 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherCounter;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 /**
  * Unit tester for MinimumProteinEnricher
@@ -77,10 +71,8 @@ public class MinimumProteinEnricherTest {
     /**
      * Checks that when a null protein is provided, an exception is thrown
      */
-    @Test(expected = BadToEnrichFormException.class)
-    public void test_exception_when_fetching_on_null_protein()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    @Test(expected = IllegalArgumentException.class)
+    public void test_exception_when_fetching_on_null_protein() throws EnricherException {
 
         Protein null_protein = null;
         this.minimumProteinEnricher.enrichProtein(null_protein);
@@ -92,8 +84,7 @@ public class MinimumProteinEnricherTest {
      */
     @Test
     public void test_no_fetching_on_protein__with_null_identifier_when_remapping_is_unavailable()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+            throws EnricherException {
 
         Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
         assertNull(null_identifier_protein.getUniprotkb());
@@ -106,9 +97,7 @@ public class MinimumProteinEnricherTest {
 
 
     @Test
-    public void test_ignore_if_interactorType_is_already_protein()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_ignore_if_interactorType_is_already_protein() throws EnricherException {
 
         Protein protein_with_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
@@ -126,9 +115,7 @@ public class MinimumProteinEnricherTest {
 
 
     @Test
-    public void test_interactorType_updated_if_unknown()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_interactorType_updated_if_unknown() throws EnricherException {
 
         Protein protein_with_no_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_no_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
@@ -152,9 +139,7 @@ public class MinimumProteinEnricherTest {
 
 
     @Test
-    public void test_interactorType_conflict_stops_enrichment()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_interactorType_conflict_stops_enrichment() throws EnricherException {
 
         Protein protein_with_bad_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_bad_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
@@ -173,9 +158,7 @@ public class MinimumProteinEnricherTest {
      * Check the full name has been added
      */
     @Test
-    public void test_set_fullName_if_null()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_set_fullName_if_null() throws EnricherException {
 
         Protein protein_without_fullName = new DefaultProtein("test2 shortName");
         protein_without_fullName.setUniprotkb(TEST_AC_FULL_PROT);
@@ -204,9 +187,7 @@ public class MinimumProteinEnricherTest {
      * Check that the sequence has been added
      */
     @Test
-    public void test_set_sequence_if_null()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_set_sequence_if_null() throws EnricherException {
 
         Protein protein_without_sequence = new DefaultProtein("test2 shortName");
         protein_without_sequence.setUniprotkb(TEST_AC_FULL_PROT);
@@ -218,9 +199,7 @@ public class MinimumProteinEnricherTest {
     }
 
     @Test
-    public void test_set_organism_if_null()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_set_organism_if_null() throws EnricherException {
 
         Protein protein_without_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_without_organism.setUniprotkb(TEST_AC_FULL_PROT);
@@ -244,9 +223,7 @@ public class MinimumProteinEnricherTest {
     }
 
     @Test
-    public void test_organism_conflict()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_organism_conflict() throws EnricherException {
 
         Protein protein_with_wrong_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_wrong_organism.setUniprotkb(TEST_AC_FULL_PROT);
@@ -267,9 +244,7 @@ public class MinimumProteinEnricherTest {
      * This should not change any fields of the original protein.
      */
     @Test
-    public void test_no_overwrite_on_not_null_fields()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_no_overwrite_on_not_null_fields() throws EnricherException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_FULL_PROT);
@@ -292,9 +267,7 @@ public class MinimumProteinEnricherTest {
      * This should not have any additions, nor throw any exceptions.
      */
     @Test
-    public void test_mismatch_does_not_happen_on_a_null_enrichedProtein()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_mismatch_does_not_happen_on_a_null_enrichedProtein() throws EnricherException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
@@ -314,10 +287,8 @@ public class MinimumProteinEnricherTest {
      * If there is no Rogid, add it.
      * @throws SeguidException
      */
-    @Test
-    public void test_set_rogid_if_null()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    /*@Test
+    public void test_set_rogid_if_null() throws EnricherException {
 
         Protein protein_with_no_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_no_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -337,16 +308,14 @@ public class MinimumProteinEnricherTest {
         String rogid = rogidGenerator.calculateRogid(TEST_SEQUENCE,"55555");
 
         assertEquals(rogid, protein_with_no_rogid.getRogid());
-    }
+    }   */
 
     /**
      * If the supplied rogid matches, ignore it.
      * @throws SeguidException
      */
-    @Test
-    public void test_ignore_rogid_if_the_same()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+   /* @Test
+    public void test_ignore_rogid_if_the_same() throws EnricherException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -366,7 +335,7 @@ public class MinimumProteinEnricherTest {
         minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
 
         assertEquals(rogid, protein_with_a_rogid.getRogid());
-    }
+    }  */
 
 
     //TODO
@@ -374,10 +343,8 @@ public class MinimumProteinEnricherTest {
      * If the supplied rogid mismatches, throw a conflict.
      * @throws SeguidException
      */
-    @Test
-    public void test_conflict_if_rogid_is_different()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    /*@Test
+    public void test_conflict_if_rogid_is_different() throws EnricherException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -391,18 +358,15 @@ public class MinimumProteinEnricherTest {
 
 
         minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
-    }
+    }  */
 
 
     //TODO
     /**
      * If there is no taxId but a rogid is present, it can not be confirmed so throw a conflict.
-     * @throws SeguidException
      */
     @Test
-    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_organism()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_organism() throws EnricherException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -415,12 +379,9 @@ public class MinimumProteinEnricherTest {
     //TODO
     /**
      * If there is no taxId but a rogid is present, it can not be confirmed so throw a conflict.
-     * @throws SeguidException
      */
-    @Test
-    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_taxid()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    /*@Test
+    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_taxid() throws EnricherException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -443,8 +404,7 @@ public class MinimumProteinEnricherTest {
      */
     @Test
     public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_sequence()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+            throws EnricherException, BridgeFailedException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -467,9 +427,7 @@ public class MinimumProteinEnricherTest {
 
      */
     @Test
-    public void test_set_CRC64_if_none_in_proteinToEnrich()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_set_CRC64_if_none_in_proteinToEnrich() throws EnricherException, BridgeFailedException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
@@ -489,9 +447,7 @@ public class MinimumProteinEnricherTest {
      * it is not added.
      */
     @Test
-    public void test_identical_CRC64_is_not_added()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_identical_CRC64_is_not_added() throws EnricherException, BridgeFailedException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_HALF_PROT)){
             protein.getChecksums().add(
@@ -530,9 +486,7 @@ public class MinimumProteinEnricherTest {
      * The checksum comparison should also be case sensitive.
      */
     @Test
-    public void test_case_sensitive_conflict_on_CRC64()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_case_sensitive_conflict_on_CRC64() throws EnricherException, BridgeFailedException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
@@ -554,9 +508,7 @@ public class MinimumProteinEnricherTest {
      * This shows that the fetched protein contains errors.
      */
     @Test
-    public void test_no_multiple_CRC64_checksums_in_fetched_proteins()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_no_multiple_CRC64_checksums_in_fetched_proteins() throws EnricherException, BridgeFailedException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
@@ -630,9 +582,7 @@ public class MinimumProteinEnricherTest {
      * check this event has not recorded some overwrites
      */
     @Test
-    public void test_enricher_event_is_fired_and_has_correct_content()
-            throws MissingServiceException, BadResultException, SeguidException, BadToEnrichFormException,
-            BadSearchTermException, BridgeFailedException, BadEnrichedFormException {
+    public void test_enricher_event_is_fired_and_has_correct_content() throws EnricherException {
 
 
         Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");

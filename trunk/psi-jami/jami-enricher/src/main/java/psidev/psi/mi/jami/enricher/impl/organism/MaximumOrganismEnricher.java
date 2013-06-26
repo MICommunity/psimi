@@ -25,7 +25,7 @@ public class MaximumOrganismEnricher
 
 
     @Override
-    protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
+    protected void processOrganism(Organism organismToEnrich) {
         super.processOrganism(organismToEnrich);
 
         if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){

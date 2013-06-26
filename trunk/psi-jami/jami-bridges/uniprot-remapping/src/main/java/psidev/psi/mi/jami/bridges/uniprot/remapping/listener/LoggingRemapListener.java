@@ -4,6 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
 import psidev.psi.mi.jami.model.Protein;
+import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
+
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,29 +19,34 @@ public class LoggingRemapListener implements ProteinRemapperListener {
 
     public static final Log log = LogFactory.getLog(LoggingRemapListener.class);
 
+    public void onIdentifierConflict(IdentificationResults remappedIdentifierOne, IdentificationResults remappedIdentifierTwo) {
+        log.info("Conflict found between identifier remappings: " +
+                remappedIdentifierOne.getFinalUniprotId()+", "+
+                remappedIdentifierTwo.getFinalUniprotId());
 
-
-    public void onGettingRemappingFromIdentifiers(Protein p) {
-        log.info("Remapping is supported by identifier(s).");
     }
 
-    public void onGettingRemappingFromSequence(Protein p) {
+    public void onSequenceToIdentifierConflict(IdentificationResults remappedSequenceResult, IdentificationResults remappedIdentifierResult) {
+        log.info("Conflict found between sequence remapping " +
+                "("+remappedSequenceResult.getFinalUniprotId()+") " +
+                "and identifier remapping " +
+                "("+remappedSequenceResult.getFinalUniprotId()+").");
+    }
+
+    public void onGettingRemappingFromIdentifiers(Protein p, Collection<IdentificationResults> remappedIdentifiersResults) {
+        log.info("Remapping is supported by " +
+                remappedIdentifiersResults.size()+" identifier(s).");
+    }
+
+    public void onGettingRemappingFromSequence(Protein p, IdentificationResults remappedSequenceResult) {
         log.info("Remapping is supported by sequence.");
     }
 
-    public void onRemappingSuccessful(Protein p, String s) {
-        log.info("Remapping succeeded: "+s);
+    public void onRemappingSuccessful(Protein p, String message) {
+        log.info("Remapping succeeded: "+message);
     }
 
-    public void onRemappingFailed(Protein p, String s) {
-        log.info("Remapping failed: "+s);
-    }
-
-    public void onIdentifierConflict(String remappedIdentifierOne, String remappedIdentifierTwo) {
-        log.info("Conflict found between identifier remappings: "+remappedIdentifierOne+", "+remappedIdentifierTwo);
-    }
-
-    public void onSequenceToIdentifierConflict(String remappedSequence, String remappedIdentifier) {
-        log.info("Conflict found between sequence remapping ("+remappedSequence+") and identifier remapping ("+remappedSequence+").");
+    public void onRemappingFailed(Protein p, String message) {
+        log.info("Remapping failed: "+message);
     }
 }

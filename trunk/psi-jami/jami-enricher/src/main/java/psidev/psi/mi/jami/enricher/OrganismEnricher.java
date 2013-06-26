@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.model.Organism;
@@ -20,13 +21,8 @@ public interface OrganismEnricher{
      * Enriches the organism
      * @param organismToEnrich  the Organism to be enriched
      * @return                  the final status of the enrichment where true is successful and false failed.
-     * @throws BadEnrichedFormException
-     * @throws MissingServiceException
-     * @throws BadToEnrichFormException
-     * @throws BridgeFailedException
      */
-    public boolean enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException;
-
+    public boolean enrichOrganism(Organism organismToEnrich) throws EnricherException;
     /**
      * Sets the fetcher service to retrieve the organism by.
      * @param fetcher   the service to use when fetching an enrichedOrganism

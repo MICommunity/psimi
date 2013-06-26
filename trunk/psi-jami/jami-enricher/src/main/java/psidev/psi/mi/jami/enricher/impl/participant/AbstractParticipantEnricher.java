@@ -1,20 +1,14 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.ParticipantFetcher;
+
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Protein;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,19 +20,15 @@ public class AbstractParticipantEnricher
         implements ParticipantEnricher {
 
 
-    private ParticipantFetcher fetcher;
     protected ParticipantEnricherListener listener;
 
     protected ProteinEnricher proteinEnricher;
 
 
-    public void enrichParticipant(Participant participantToEnrich)
-            throws BadToEnrichFormException, MissingServiceException, BridgeFailedException,
-            SeguidException, BadSearchTermException, BadResultException,
-            BadEnrichedFormException {
+    public void enrichParticipant(Participant participantToEnrich) throws EnricherException {
 
 
-        if(participantToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null participant.");
+        if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 
         CvTerm interactorType = participantToEnrich.getInteractor().getInteractorType();
         if(interactorType.getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)
@@ -47,9 +37,10 @@ public class AbstractParticipantEnricher
                 || interactorType.getShortName().equalsIgnoreCase(Protein.PROTEIN)){
 
             if(getProteinEnricher() == null){
-                throw new MissingServiceException("ProteinEnricher has not been provided.");
+                throw new IllegalStateException("ProteinEnricher has not been provided.");
             }
             else {
+                //Todo is there a more elegant solution to this?
                 if(participantToEnrich.getInteractor() instanceof Protein){
                     getProteinEnricher().enrichProtein( (Protein) participantToEnrich.getInteractor() );
                 } else {
@@ -67,14 +58,6 @@ public class AbstractParticipantEnricher
 
     }
 
-    public void setParticipantFetcher(ParticipantFetcher fetcher) {
-        this.fetcher = fetcher;
-    }
-
-    public ParticipantFetcher getParticipantFetcher() {
-        //TODO lazy load
-        return fetcher;
-    }
 
     public void setParticipantListener(ParticipantEnricherListener participantEnricherListener) {
         this.listener = participantEnricherListener;

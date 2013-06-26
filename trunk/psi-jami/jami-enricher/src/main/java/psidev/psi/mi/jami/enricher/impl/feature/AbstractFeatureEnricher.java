@@ -1,11 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
-import psidev.psi.mi.jami.bridges.fetcher.FeatureFetcher;
+
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
-import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.Feature;
 
 /**
@@ -18,14 +15,13 @@ import psidev.psi.mi.jami.model.Feature;
 public abstract class AbstractFeatureEnricher
         implements FeatureEnricher{
 
-    private FeatureFetcher featureFetcher;
+
     protected FeatureEnricherListener listener;
 
     protected Feature featureFetched;
 
 
-    public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew)
-            throws MissingServiceException, BadToEnrichFormException {
+    public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew){
 
         featureFetched = fetchFeature(featureToEnrich);
         if(featureFetched == null){
@@ -50,22 +46,13 @@ public abstract class AbstractFeatureEnricher
 
     public abstract boolean processFeature(Feature featureToEnrich);
 
-    public Feature fetchFeature(Feature featureToEnrich) throws MissingServiceException, BadToEnrichFormException {
-        if(getFetcher() == null) throw new MissingServiceException("FeatureFetcher has not been provided.");
-        if(featureToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null feature.");
+    public Feature fetchFeature(Feature featureToEnrich) {
+        //if(getFetcher() == null) throw new IllegalStateException("FeatureFetcher has not been provided.");
+        if(featureToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null feature.");
 
         if(listener != null) listener.onFeatureEnriched(featureToEnrich,
                 "Failed. No feature fetcher has been implemented.");
         return null;
-    }
-
-    public void setFetcher(FeatureFetcher featureFetcher) {
-        this.featureFetcher = featureFetcher;
-    }
-
-    public FeatureFetcher getFetcher() {
-        //TODO lazy load
-        return featureFetcher;
     }
 
     public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener) {

@@ -2,6 +2,9 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping.listener;
 
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
 import psidev.psi.mi.jami.model.Protein;
+import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
+
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,10 +18,15 @@ public class CountingRemapListener implements ProteinRemapperListener {
     private int conflictCount = 0;
     private boolean fromIdentifiers = false;
     private boolean fromSequence = false;
-    private String status = null;
+    private boolean success = false;
+    private boolean failed = false;
 
-    public String getStatus() {
-        return status;
+    public boolean getSuccess() {
+        return success;
+    }
+
+    public boolean getFailed(){
+        return failed;
     }
 
     public boolean isFromIdentifiers() {
@@ -35,31 +43,28 @@ public class CountingRemapListener implements ProteinRemapperListener {
 
 
 
-    public void onIdentifierConflict(String remappedIdentifierOne, String remappedIdentifierTwo) {
+    public void onIdentifierConflict(IdentificationResults remappedIdentifierOne, IdentificationResults remappedIdentifierTwo) {
         conflictCount ++;
     }
 
-    public void onSequenceToIdentifierConflict(String remappedSequence, String remappedIdentifier) {
-        conflictCount++;
+    public void onSequenceToIdentifierConflict(IdentificationResults remappedSequenceResult, IdentificationResults remappedIdentifierResult) {
+        conflictCount ++;
     }
 
-    public void onGettingRemappingFromIdentifiers(Protein p) {
+    public void onGettingRemappingFromIdentifiers(Protein p, Collection<IdentificationResults> remappedIdentifiersResults) {
         fromIdentifiers = true;
     }
 
-    public void onGettingRemappingFromSequence(Protein p) {
+    public void onGettingRemappingFromSequence(Protein p, IdentificationResults remappedSequenceResult) {
         fromSequence = true;
     }
 
     public void onRemappingSuccessful(Protein p, String s) {
-        status = s;
+        success = true;
     }
 
     public void onRemappingFailed(Protein p, String s) {
-        status = s;
+        failed = true;
     }
 
-    public void onRemappingComplete(Protein p, String s) {
-        status = s;
-    }
 }

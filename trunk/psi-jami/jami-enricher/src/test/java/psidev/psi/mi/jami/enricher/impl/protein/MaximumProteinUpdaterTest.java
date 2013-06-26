@@ -5,16 +5,10 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,10 +46,7 @@ public class MaximumProteinUpdaterTest {
     }
 
     @Test
-    public void test_full_overwrite()
-            throws MissingServiceException, BadResultException,
-            SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException, BadEnrichedFormException {
+    public void test_full_overwrite() throws EnricherException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_FULL_PROT);
@@ -79,10 +70,7 @@ public class MaximumProteinUpdaterTest {
      * This should not have any additions, nor throw any exceptions.
      */
     @Test
-    public void test_overwrite_does_not_change_fields_to_null_from_proteinEnriched()
-            throws MissingServiceException, BadResultException,
-            SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException, BadEnrichedFormException {
+    public void test_overwrite_does_not_change_fields_to_null_from_proteinEnriched() throws EnricherException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
@@ -106,10 +94,7 @@ public class MaximumProteinUpdaterTest {
      * Check the id, should be the same as new protein
      */
     @Test
-    public void test_enricher_event_is_cleared()
-            throws MissingServiceException, BadResultException,
-            SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException, BadEnrichedFormException {
+    public void test_enricher_event_is_cleared() throws EnricherException {
 
         Protein protein_test_one = new DefaultProtein("testpart1 shortName", "testpart1 fullName");
         protein_test_one.setUniprotkb(TEST_AC_HALF_PROT);
@@ -137,10 +122,7 @@ public class MaximumProteinUpdaterTest {
 
 
     @Test
-    public void test_enricher_event_is_fired_and_has_correct_content()
-            throws MissingServiceException, BadResultException,
-            SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException, BadEnrichedFormException {
+    public void test_enricher_event_is_fired_and_has_correct_content() throws EnricherException {
 
         Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_to_enrich.setUniprotkb(TEST_AC_FULL_PROT);

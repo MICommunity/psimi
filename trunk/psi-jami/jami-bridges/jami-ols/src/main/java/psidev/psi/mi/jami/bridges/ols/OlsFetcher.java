@@ -43,6 +43,9 @@ public class OlsFetcher
         initialiseDbMap();
     }
 
+    /**
+     * The database short name as the key and the OLS identifier as the value
+     */
     private Map<String,String> dbMap = new HashMap<String, String>();
     private void initialiseDbMap(){
         dbMap.put("psi-mi", "MI");
@@ -52,93 +55,112 @@ public class OlsFetcher
     }
 
 
-    public CvTerm getCvTermByIdentifier(String identifier, String ontologyName) throws BridgeFailedException {
+    public CvTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
+            throws BridgeFailedException {
 
-        if(identifier == null){
+        if(termIdentifier == null){
             throw new IllegalArgumentException("The identifier provided for CvTermFetcher was null.");
-        } else if (ontologyName == null) {
+        } else if (ontologyDatabaseName == null) {
             throw new IllegalArgumentException("The database name provided for CvTermFetcher was null. "+
-                    "The identifier was ["+identifier+"].");
+                    "The identifier was ["+termIdentifier+"].");
         }
 
-        CvTerm database = new DefaultCvTerm(ontologyName);
-        return getCvTermByIdentifier(identifier, database);
+        CvTerm ontologyDatabase;
+        if(ontologyDatabaseName.equalsIgnoreCase("psi-mi")) ontologyDatabase = CvTermUtils.createPsiMiDatabase();
+        else if (ontologyDatabaseName.equalsIgnoreCase("psi-mod")) ontologyDatabase = CvTermUtils.createPsiModDatabase();
+        else ontologyDatabase = new DefaultCvTerm(ontologyDatabaseName);
+
+        return getCvTermByIdentifier(termIdentifier, ontologyDatabase);
     }
 
-    public CvTerm getCvTermByIdentifier(String identifier, CvTerm database) throws BridgeFailedException {
+    public CvTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+            throws BridgeFailedException {
 
-        if(identifier == null){
+        if(termIdentifier == null){
             throw new IllegalArgumentException("The identifier provided for CvTermFetcher was null.");
-        } else if (database == null) {
+        } else if (ontologyDatabase == null) {
             throw new IllegalArgumentException("The database provided for CvTermFetcher was null. "+
-                    "The identifier was ["+identifier+"].");
+                    "The identifier was ["+termIdentifier+"].");
         }
 
-        String databaseIdentifier = dbMap.get(database.getShortName());
+        // The database marker or null
+        String databaseIdentifier = dbMap.get(ontologyDatabase.getShortName());
 
-        String termName = fetchFullNameByIdentifier(identifier, databaseIdentifier);
-
+        String termName = fetchFullNameByIdentifier(termIdentifier, databaseIdentifier);
         if(termName == null) return null;
 
-        //Todo Check these fields are used correctly
-        Xref dbxref = new DefaultXref(database,identifier, CvTermUtils.getIdentity());
-        CvTerm cvTermEnriched = new DefaultCvTerm(termName,termName,dbxref);
+        Xref identifierXref = new DefaultXref(ontologyDatabase , termIdentifier);
+        CvTerm cvTermEnriched = new DefaultCvTerm(termName , termName , identifierXref);
 
-        return completeIdentifiedCvTerm(cvTermEnriched, identifier, database.getShortName());
+        return completeIdentifiedCvTerm(cvTermEnriched, termIdentifier, ontologyDatabase.getShortName());
     }
 
 
-    public CvTerm getCvTermByExactName(String searchName, String ontologyName)
+    /**
+     *
+     * @param searchName
+     * @param ontologyDatabaseName
+     * @return
+     * @throws BridgeFailedException
+     */
+    public CvTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException {
 
         if(searchName == null){
             throw new IllegalArgumentException("The search term provided for CvTermFetcher was null.");
-        } else if (ontologyName == null) {
+        }else if (ontologyDatabaseName == null) {
             throw new IllegalArgumentException("The database provided for CvTermFetcher was null. "+
                     "The search term was ["+searchName+"].");
         }
 
-        return null;
-       /*
-        String databaseIdentifier = dbMap.get(ontologyName);
+        CvTerm ontologyDatabase;
+        if(ontologyDatabaseName.equalsIgnoreCase("psi-mi")) ontologyDatabase = CvTermUtils.createPsiMiDatabase();
+        else if (ontologyDatabaseName.equalsIgnoreCase("psi-mod")) ontologyDatabase = CvTermUtils.createPsiModDatabase();
+        else ontologyDatabase = new DefaultCvTerm(ontologyDatabaseName);
+
+        String databaseIdentifier = dbMap.get(ontologyDatabaseName);
 
 
         HashMap<String,String> termNamesMap;
 
         try{
-            termNamesMap = queryService.getTermsByExactName(searchName, ontologyName);
+            termNamesMap = queryService.getTermsByExactName(searchName, databaseIdentifier);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
         }
 
         if(termNamesMap.isEmpty()) return null;
         else if(termNamesMap.size() == 1){
-
-
             Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
             if(entry.getValue() == null || entry.getKey() == null){
-                throw new IllegalArgumentException("OLS service returned null values in an exact name search.")
+                throw new IllegalArgumentException("OLS service returned null values in an exact name search.");
             }
             // Key is the Identifier, value is the full name
 
 
-            Xref dbxref = new DefaultXref(ontologyName, entry.getKey(), CvTermUtils.getIdentity());
+            Xref dbxref = new DefaultXref(ontologyDatabase, entry.getKey());
             CvTerm cvTermEnriched = new DefaultCvTerm(entry.getValue(), entry.getValue(),dbxref);
 
-            return completeIdentifiedCvTerm(cvTermEnriched, entry.getKey(), database.getShortName());
-        } */
+            return completeIdentifiedCvTerm(cvTermEnriched, entry.getKey(), ontologyDatabaseName);
+        }
+        return null;
     }
 
 
-    public CvTerm getCvTermByExactName(String searchName) throws BridgeFailedException {
+    public CvTerm getCvTermByExactName(String searchName)
+            throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName) throws BridgeFailedException {
+
+
+    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
+            throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database) throws BridgeFailedException {
+    public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database)
+            throws BridgeFailedException {
         /*
         if(searchName == null){
             throw new BadSearchTermException("The provided search term was null.");
@@ -194,33 +216,6 @@ public class OlsFetcher
 
 
 
-
-
-
-
-    /**
-     * Adds additional information after the identifier and full name has been resolved.
-     * This adds the short name (if it can be found) and the synonyms (if there are any).
-     * The short name and synonyms can only be found for MI and MOD identifiers.
-     * @param cvTermFetched
-     * @param identifier
-     * @param databaseName
-     * @return
-     * @throws BridgeFailedException
-     */
-    private CvTerm completeIdentifiedCvTerm(CvTerm cvTermFetched, String identifier, String databaseName)
-            throws BridgeFailedException {
-
-        HashMap metaDataMap = fetchMetaDataByIdentifier(identifier);
-        String shortName = extractShortNameFromMetaData(metaDataMap, databaseName);
-        if(shortName != null) cvTermFetched.setShortName(shortName);
-        Collection<Alias> synonyms = extractSynonymsFromMetaData(metaDataMap, databaseName);
-        if(synonyms != null) cvTermFetched.getSynonyms().addAll(synonyms);
-
-        return cvTermFetched;
-    }
-
-
     /**
      * Uses the identifier to fetch the full name.
      *
@@ -246,9 +241,34 @@ public class OlsFetcher
 
 
     /**
+     * Adds additional information after the identifier and full name has been resolved.
+     * This adds the short name (if it can be found) and the synonyms (if there are any).
+     * The short name and synonyms can only be found for MI and MOD identifiers.
+     * @param cvTermFetched
+     * @param identifier
+     * @param databaseName
+     * @return
+     * @throws BridgeFailedException
+     */
+    private CvTerm completeIdentifiedCvTerm(CvTerm cvTermFetched, String identifier, String databaseName)
+            throws BridgeFailedException {
+
+        HashMap metaDataMap = fetchMetaDataByIdentifier(identifier);
+        String shortName = extractShortNameFromMetaData(metaDataMap, databaseName);
+        if(shortName != null) cvTermFetched.setShortName(shortName);
+        Collection<Alias> synonyms = extractSynonymsFromMetaData(metaDataMap, databaseName);
+        if(synonyms != null) cvTermFetched.getSynonyms().addAll(synonyms);
+
+        return cvTermFetched;
+    }
+
+
+
+
+    /**
      * Retrieve the metadata for an entry.
      * <p>
-     * The identifier is used to find the correct ontology,
+     * The identifier is used to find the metadata
      * which can be used to find the identifier phrases for short labels and synonyms.
      *
      * @param identifier
@@ -266,7 +286,7 @@ public class OlsFetcher
     }
 
     /**
-     *
+     * Scans the meta data to find the short name if one is present.
      * @param metaDataMap
      * @param database
      * @return
@@ -292,6 +312,11 @@ public class OlsFetcher
         return null;
     }
 
+    /**
+     * Scans the meta data to find the description idf one is present.
+     * @param metaDataMap
+     * @return
+     */
     private String extractDescriptionFromMetaData(
             HashMap metaDataMap){
         String DEFINITION_KEY = "definition";
@@ -306,6 +331,12 @@ public class OlsFetcher
         return null;
     }
 
+    /**
+     * Scans the meta data to find the synonyms if any are present.
+     * @param metaDataMap
+     * @param database
+     * @return
+     */
     private Collection<Alias> extractSynonymsFromMetaData(
             HashMap metaDataMap, String database){
 

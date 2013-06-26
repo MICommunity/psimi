@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 
@@ -24,8 +25,7 @@ public interface CvTermEnricher{
      * If enrichment takes place, the ToEnrich will be edited.
      * @param cvTermToEnrich  a CvTerm to enrich
      */
-    public void enrichCvTerm(CvTerm cvTermToEnrich)
-            throws BridgeFailedException;
+    public void enrichCvTerm(CvTerm cvTermToEnrich) throws EnricherException;
 
     //public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);
 

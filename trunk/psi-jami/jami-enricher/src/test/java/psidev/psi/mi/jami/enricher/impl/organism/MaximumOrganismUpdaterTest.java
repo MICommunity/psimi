@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.Organism;
@@ -53,9 +54,7 @@ public class MaximumOrganismUpdaterTest {
      * Check the full name has been added
      */
     @Test
-    public void test_full_overwrite()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_full_overwrite() throws EnricherException {
 
         Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_FULL_ORG,"common","scientific");
 
@@ -75,9 +74,7 @@ public class MaximumOrganismUpdaterTest {
      * This should not have any additions, nor throw any exceptions.
      */
     @Test
-    public void test_overwrite_does_not_change_fields_to_null_from_enrichedOrganism()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_overwrite_does_not_change_fields_to_null_from_enrichedOrganism() throws EnricherException {
 
         Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_HALF_ORG,"common","scientific");
 

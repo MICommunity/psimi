@@ -2,6 +2,9 @@ package psidev.psi.mi.jami.bridges.remapper;
 
 
 import psidev.psi.mi.jami.model.Protein;
+import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
+
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,14 +14,18 @@ import psidev.psi.mi.jami.model.Protein;
  */
 public interface ProteinRemapperListener {
 
-    void onIdentifierConflict(String remappedIdentifierOne, String remappedIdentifierTwo);
-    public void onSequenceToIdentifierConflict(String remappedSequence , String remappedIdentifier);
+    void onIdentifierConflict(
+            IdentificationResults remappedIdentifierOne, IdentificationResults remappedIdentifierTwo);
 
-    void onGettingRemappingFromIdentifiers(Protein p);
-    void onGettingRemappingFromSequence(Protein p);
-    
-    void onRemappingSuccessful(Protein p, String s);
-    void onRemappingFailed(Protein p, String s);
+    public void onSequenceToIdentifierConflict(
+            IdentificationResults remappedSequenceResult , IdentificationResults remappedIdentifierResult);
+
+    public void onGettingRemappingFromIdentifiers(Protein p , Collection<IdentificationResults> remappedIdentifiersResults);
+
+    public void onGettingRemappingFromSequence(Protein p , IdentificationResults remappedSequenceResult);
+
+    public void onRemappingSuccessful(Protein p, String message);
+    public void onRemappingFailed(Protein p, String message);
 
 
 }

@@ -41,7 +41,7 @@ public class MinimumCvTermUpdater
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
         }
 
-        //TOdo - why is this commented
+        //TOdo - allow comparison of idneitifers
         //Identifiers
         /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
                 cvTermFetched.getIdentifiers(),

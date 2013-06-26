@@ -7,20 +7,20 @@ package psidev.psi.mi.jami.enricher.exception;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 11/06/13
  */
-public class BadEnrichedFormException extends Exception {
-    public BadEnrichedFormException() {
+public class EnricherException extends Exception {
+    public EnricherException() {
         super();
     }
 
-    public BadEnrichedFormException(String s) {
+    public EnricherException(String s) {
         super(s);
     }
 
-    public BadEnrichedFormException(String s, Throwable throwable) {
+    public EnricherException(String s, Throwable throwable) {
         super(s, throwable);
     }
 
-    public BadEnrichedFormException(Throwable throwable) {
+    public EnricherException(Throwable throwable) {
         super(throwable);
     }
 }

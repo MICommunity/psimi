@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.mockfetcher.protein;
 
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
@@ -35,8 +34,8 @@ public class MockProteinFetcher
      * @param identifier
      * @return
      */
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException, BadResultException, BadSearchTermException {
-        if(identifier == null) throw new BadSearchTermException("Mock fetcher will not search on null.");
+    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException{
+        if(identifier == null) throw new IllegalArgumentException("Mock fetcher will not search on null.");
 
         if(! localProteins.containsKey(identifier)) {
             return null;
@@ -45,6 +44,10 @@ public class MockProteinFetcher
         else {
             return localProteins.get(identifier);
         }
+    }
+
+    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        return null;
     }
 
     /**
