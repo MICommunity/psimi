@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
@@ -93,6 +94,26 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
 
     @Override
     public void write(Interaction interaction) throws DataSourceWriterException {
+        if (this.interactionEvidenceWriter == null || this.modelledInteractionWriter == null){
+            throw new IllegalStateException("The Mitab25Writer has not been initialised with a map of options." +
+                    "The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
+                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+        }
+        // did not start yet so need to write the header if required
+        else if (!hasWrittenHeader()){
+            try{
+                getBinaryWriter().writeHeaderIfNotDone();
+                this.interactionEvidenceWriter.setHasWrittenHeader(false);
+                this.modelledInteractionWriter.setHasWrittenHeader(false);
+            }
+            catch (IOException e) {
+                throw new DataSourceWriterException("Impossible to write MITAB header ", e);
+            }
+        }
+        else{
+            this.interactionEvidenceWriter.setHasWrittenHeader(true);
+            this.modelledInteractionWriter.setHasWrittenHeader(true);
+        }
         if (interaction instanceof InteractionEvidence){
             this.interactionEvidenceWriter.write((InteractionEvidence) interaction);
         }
@@ -107,15 +128,19 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
     protected void initialiseSubWriters() {
 
         this.modelledInteractionWriter = new Mitab25ModelledInteractionWriter(writer);
+        this.modelledInteractionWriter.setWriteHeader(false);
         this.interactionEvidenceWriter = new Mitab25InteractionEvidenceWriter(writer);
+        this.interactionEvidenceWriter.setWriteHeader(false);
     }
 
     protected void setModelledInteractionWriter(Mitab25ModelledInteractionWriter modelledInteractionWriter) {
         this.modelledInteractionWriter = modelledInteractionWriter;
+        this.modelledInteractionWriter.setWriteHeader(false);
     }
 
     protected void setInteractionEvidenceWriter(Mitab25InteractionEvidenceWriter interactionEvidenceWriter) {
         this.interactionEvidenceWriter = interactionEvidenceWriter;
+        this.interactionEvidenceWriter.setWriteHeader(false);
     }
 
     protected Writer getWriter() {
