@@ -38,32 +38,26 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
 
     public Mitab25Writer(File file) throws IOException {
         super(file);
-        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(OutputStream output) {
         super(output);
-        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(Writer writer) {
         super(writer);
-        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
-        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(output, expansionMethod);
-        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
-        initialiseSubWritersWith(writer);
     }
 
     @Override
@@ -80,18 +74,21 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
     protected void initialiseWriter(Writer writer) {
         this.writer = writer;
         setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(this.writer));
+        initialiseSubWriters();
     }
 
     @Override
     protected void initialiseOutputStream(OutputStream output) {
         this.writer = new OutputStreamWriter(output);
         setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(this.writer));
+        initialiseSubWriters();
     }
 
     @Override
     protected void initialiseFile(File file) throws IOException {
         this.writer = new BufferedWriter(new FileWriter(file));
         setBinaryWriter(new Mitab25BinaryWriter(this.writer));
+        initialiseSubWriters();
     }
 
     @Override
@@ -107,7 +104,7 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
         }
     }
 
-    protected void initialiseSubWritersWith(Writer writer) {
+    protected void initialiseSubWriters() {
 
         this.modelledInteractionWriter = new Mitab25ModelledInteractionWriter(writer);
         this.interactionEvidenceWriter = new Mitab25InteractionEvidenceWriter(writer);
@@ -119,5 +116,9 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
 
     protected void setInteractionEvidenceWriter(Mitab25InteractionEvidenceWriter interactionEvidenceWriter) {
         this.interactionEvidenceWriter = interactionEvidenceWriter;
+    }
+
+    protected Writer getWriter() {
+        return writer;
     }
 }

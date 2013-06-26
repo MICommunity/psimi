@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.mitab.io.writer;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
@@ -39,7 +40,7 @@ public class Mitab25ModelledInteractionWriterTest {
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() throws DataSourceWriterException {
         Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
-        binaryWriter.write(new MitabModelledBinaryInteraction());
+        binaryWriter.write(new MitabModelledInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -83,6 +84,7 @@ public class Mitab25ModelledInteractionWriterTest {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
         options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY, new SpokeExpansion());
         binaryWriter.initialiseContext(options);
 
         ModelledInteraction binary = createModelledInteraction();

@@ -279,7 +279,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         writer.write(MitabUtils.LINE_BREAK);
     }
 
-    protected void writeHeaderIfNotDone() throws IOException {
+    public void writeHeaderIfNotDone() throws IOException {
         if (!hasWrittenHeader){
             if (writeHeader){
                 writeHeader();

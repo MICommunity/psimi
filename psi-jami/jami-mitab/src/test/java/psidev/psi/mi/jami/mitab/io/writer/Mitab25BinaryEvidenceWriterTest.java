@@ -59,21 +59,7 @@ public class Mitab25BinaryEvidenceWriterTest {
 
         binaryWriter.write(binary);
 
-        String expected_line = "uniprotkb:P12345" +
-                "\tuniprotkb:P12347" +
-                "\tuniprotkb:P12346|intact:EBI-12345" +
-                "\tuniprotkb:P12348|intact:EBI-12346" +
-                "\tpsi-mi:protein1(display_short)|psi-mi:full name protein1(display_long)|uniprotkb:brca2(gene name)|uniprotkb:brca2 synonym(gene name synonym)|intact:\\\"bla\\\" author assigned name(author assigned name)" +
-                "\tpsi-mi:protein2(display_short)|psi-mi:full name protein2(display_long)" +
-                "\tpsi-mi:\"MI:xxx2\"(pull down)" +
-                "\tauthor1 et al.(2006)" +
-                "\tpubmed:12345|imex:IM-1" +
-                "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
-                "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
-                "\tpsi-mi:\"MI:xxxx\"(association)" +
-                "\tpsi-mi:\"MI:xxx1\"(intact)" +
-                "\tintact:EBI-xxxx|imex:IM-1-1" +
-                "\tauthor-score:high";
+        String expected_line = getExpectedMitabLine();
         Assert.assertEquals(expected_line, writer.toString());
     }
 
@@ -87,21 +73,7 @@ public class Mitab25BinaryEvidenceWriterTest {
 
         binaryWriter.write(Arrays.asList(binary, binary));
 
-        String expected_line = "uniprotkb:P12345" +
-                "\tuniprotkb:P12347" +
-                "\tuniprotkb:P12346|intact:EBI-12345" +
-                "\tuniprotkb:P12348|intact:EBI-12346" +
-                "\tpsi-mi:protein1(display_short)|psi-mi:full name protein1(display_long)|uniprotkb:brca2(gene name)|uniprotkb:brca2 synonym(gene name synonym)|intact:\\\"bla\\\" author assigned name(author assigned name)" +
-                "\tpsi-mi:protein2(display_short)|psi-mi:full name protein2(display_long)" +
-                "\tpsi-mi:\"MI:xxx2\"(pull down)" +
-                "\tauthor1 et al.(2006)" +
-                "\tpubmed:12345|imex:IM-1" +
-                "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
-                "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
-                "\tpsi-mi:\"MI:xxxx\"(association)" +
-                "\tpsi-mi:\"MI:xxx1\"(intact)" +
-                "\tintact:EBI-xxxx|imex:IM-1-1" +
-                "\tauthor-score:high";
+        String expected_line = getExpectedMitabLine();
         Assert.assertEquals(expected_line+ MitabUtils.LINE_BREAK+expected_line, writer.toString());
     }
 
@@ -118,22 +90,26 @@ public class Mitab25BinaryEvidenceWriterTest {
 
         binaryWriter.write(binary);
 
-        String expected_line = "uniprotkb:P12345" +
-                "\tuniprotkb:P12347" +
-                "\tuniprotkb:P12346|intact:EBI-12345" +
-                "\tuniprotkb:P12348|intact:EBI-12346" +
-                "\tpsi-mi:protein1(display_short)|psi-mi:full name protein1(display_long)|uniprotkb:brca2(gene name)|uniprotkb:brca2 synonym(gene name synonym)|intact:\\\"bla\\\" author assigned name(author assigned name)" +
-                "\tpsi-mi:protein2(display_short)|psi-mi:full name protein2(display_long)" +
-                "\tpsi-mi:\"MI:xxx2\"(pull down)" +
-                "\tauthor1 et al.(2006)" +
-                "\tpubmed:12345|imex:IM-1" +
-                "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
-                "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
-                "\tpsi-mi:\"MI:xxxx\"(association)" +
-                "\tpsi-mi:\"MI:xxx1\"(intact)" +
-                "\tintact:EBI-xxxx|imex:IM-1-1" +
-                "\tauthor-score:high";
+        String expected_line = getExpectedMitabLine();
         Assert.assertEquals(expected_line, writer.toString());
+    }
+
+    private String getExpectedMitabLine() {
+        return "uniprotkb:P12345" +
+                    "\tuniprotkb:P12347" +
+                    "\tuniprotkb:P12346|intact:EBI-12345" +
+                    "\tuniprotkb:P12348|intact:EBI-12346" +
+                    "\tpsi-mi:protein1(display_short)|psi-mi:full name protein1(display_long)|uniprotkb:brca2(gene name)|uniprotkb:brca2 synonym(gene name synonym)|intact:\\\"bla\\\" author assigned name(author assigned name)" +
+                    "\tpsi-mi:protein2(display_short)|psi-mi:full name protein2(display_long)" +
+                    "\tpsi-mi:\"MI:xxx2\"(pull down)" +
+                    "\tauthor1 et al.(2006)" +
+                    "\tpubmed:12345|imex:IM-1" +
+                    "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
+                    "\ttaxid:9606(human)|taxid:9606(Homo Sapiens)" +
+                    "\tpsi-mi:\"MI:xxxx\"(association)" +
+                    "\tpsi-mi:\"MI:xxx1\"(intact)" +
+                    "\tintact:EBI-xxxx|imex:IM-1-1" +
+                    "\tauthor-score:high";
     }
 
     private BinaryInteractionEvidence createBinaryInteractionEvidence() throws ParseException {
