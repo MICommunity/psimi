@@ -24,7 +24,7 @@ import java.util.Map;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab27BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInteraction, Participant>{
+public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInteraction, Participant>{
 
     private AbstractMitab27BinaryWriter<ModelledBinaryInteraction, ModelledParticipant> modelledBinaryWriter;
     private AbstractMitab27BinaryWriter<BinaryInteractionEvidence, ParticipantEvidence> binaryEvidenceWriter;
