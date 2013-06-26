@@ -17,9 +17,9 @@ public class MinimumOrganismUpdater
 
 
     @Override
-    protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
+    protected void processOrganism(Organism organismToEnrich) {
         if(organismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
-            throw new BadEnrichedFormException( "The organism had an invalid TaxID of "+organismFetched.getTaxId());
+            throw new IllegalArgumentException( "The organism had an invalid TaxID of "+organismFetched.getTaxId());
         }
 
         // Override TaxID but obviously not possible if organism is unknown

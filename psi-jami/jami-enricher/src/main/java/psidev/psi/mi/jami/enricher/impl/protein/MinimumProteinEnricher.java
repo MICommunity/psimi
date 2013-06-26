@@ -4,6 +4,7 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.*;
@@ -27,7 +28,7 @@ public class MinimumProteinEnricher
 
 
     @Override
-    protected boolean remapDeadProtein(Protein proteinToEnrich) throws BridgeFailedException {
+    protected boolean remapDeadProtein(Protein proteinToEnrich) throws EnricherException {
         proteinToEnrich.getXrefs().add(
                 new DefaultXref(
                         CvTermUtils.createUniprotkbDatabase(),
@@ -42,6 +43,10 @@ public class MinimumProteinEnricher
         return remapProtein(proteinToEnrich , "proteinToEnrich has a dead UniprotKB ID.");
     }
 
+    /**
+     *
+     * @param proteinToEnrich
+     */
     @Override
     protected void processProtein(Protein proteinToEnrich) {
         //InteractorType
@@ -86,9 +91,16 @@ public class MinimumProteinEnricher
 
             boolean hasCrc64Checksum = false;
             boolean hasRogidChecksum = false;
-            Checksum crc64Checksum = null;
-            Checksum rogidChecksum = null;
+            Checksum fetchedCrc64Checksum = null;
+            Checksum fetchedRogidChecksum = null;
 
+            // If the organisms do no match - all rogid searching can be curtailed.
+            if(proteinFetched.getOrganism().getTaxId() != proteinToEnrich.getOrganism().getTaxId()
+                    || proteinToEnrich.getOrganism().getTaxId() == -3 ){
+                hasRogidChecksum = true;
+            }
+
+            // Find checksums already in protein
             for(Checksum checksum : proteinToEnrich.getChecksums()){
                 if(checksum.getMethod() != null){
                     if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
@@ -102,34 +114,33 @@ public class MinimumProteinEnricher
                 }
                 if(hasCrc64Checksum && hasRogidChecksum) break;
             }
-
+            // Find the fetched checksums
             for(Checksum checksum : proteinFetched.getChecksums()){
                 if(checksum.getMethod() != null){
                     if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
                             || (checksum.getMethod().getMIIdentifier() != null
                             && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
-                        rogidChecksum = checksum;
+                        fetchedRogidChecksum = checksum;
                     }
                     else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                        crc64Checksum = checksum;
+                        fetchedCrc64Checksum = checksum;
                     }
                 }
-                if(crc64Checksum != null && rogidChecksum != null) break;
+                if( (fetchedCrc64Checksum != null || hasCrc64Checksum)
+                        && (fetchedRogidChecksum != null || hasRogidChecksum) ) break;
             }
 
             if(!hasCrc64Checksum) {
-                if(crc64Checksum != null) {
-                    proteinToEnrich.getChecksums().add(crc64Checksum);
-                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, crc64Checksum);
+                if(fetchedCrc64Checksum != null) {
+                    proteinToEnrich.getChecksums().add(fetchedCrc64Checksum);
+                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedCrc64Checksum);
                 }
             }
 
-            if(!hasRogidChecksum
-                    && proteinFetched.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()
-                    && proteinToEnrich.getOrganism().getTaxId() != -3){
-                if(rogidChecksum != null){
-                    proteinToEnrich.getChecksums().add(rogidChecksum);
-                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, rogidChecksum);
+            if(!hasRogidChecksum){
+                if(fetchedRogidChecksum != null){
+                    proteinToEnrich.getChecksums().add(fetchedRogidChecksum);
+                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedRogidChecksum);
                 }
             }
         }

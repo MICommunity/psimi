@@ -1,12 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
@@ -27,7 +22,7 @@ public class MaximumOrganismUpdater
 
 
     @Override
-    protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
+    protected void processOrganism(Organism organismToEnrich)  {
         super.processOrganism(organismToEnrich);
 
         // Override TaxID but obviously not possible if organism is unknown

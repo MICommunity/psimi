@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.Organism;
@@ -50,9 +51,7 @@ public class MinimumOrganismEnricherTest {
      * Check the full name has been added
      */
     @Test
-    public void test_set_scientificName_if_null()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_set_scientificName_if_null() throws EnricherException {
 
         Organism organism_without_scientificName = new DefaultOrganism(TEST_AC_FULL_ORG);
         organism_without_scientificName.setCommonName(TEST_COMMONNAME);
@@ -83,7 +82,7 @@ public class MinimumOrganismEnricherTest {
      * Check that the commonName has been added
      */
     @Test
-    public void test_set_commonName_if_null() throws BridgeFailedException, MissingServiceException, BadEnrichedFormException, BadToEnrichFormException {
+    public void test_set_commonName_if_null() throws EnricherException {
         Organism organism_without_commonName = new DefaultOrganism(TEST_AC_FULL_ORG);
         organism_without_commonName.setScientificName(TEST_SCIENTIFICNAME);
 
@@ -100,9 +99,7 @@ public class MinimumOrganismEnricherTest {
      * This should not change any fields of the original protein.
      */
     @Test
-    public void test_no_overwrite_on_not_null_fields()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_no_overwrite_on_not_null_fields() throws EnricherException {
 
         Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_FULL_ORG, "commonName", "scientificName");
 
@@ -122,9 +119,7 @@ public class MinimumOrganismEnricherTest {
      * This should not have any additions, nor throw any exceptions.
      */
     @Test
-    public void test_mismatch_does_not_happen_on_enrichedOrganism_with_null_fields()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_mismatch_does_not_happen_on_enrichedOrganism_with_null_fields() throws EnricherException {
 
         Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_HALF_ORG, "commonName", "scientificName");
 
@@ -141,9 +136,7 @@ public class MinimumOrganismEnricherTest {
      * Check the mismatches
      */
     @Test
-    public void test_enricher_event_is_cleared()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_enricher_event_is_cleared() throws EnricherException {
 
         Organism organism_test_one = new DefaultOrganism(TEST_AC_FULL_ORG);
 
@@ -187,9 +180,7 @@ public class MinimumOrganismEnricherTest {
      * check this event has not recorded some overwrites
      */
     @Test
-    public void test_enricher_event_is_fired_and_has_correct_content()
-            throws BridgeFailedException, MissingServiceException,
-            BadEnrichedFormException, BadToEnrichFormException {
+    public void test_enricher_event_is_fired_and_has_correct_content() throws EnricherException {
 
         Organism organism_to_enrich = new DefaultOrganism(TEST_AC_FULL_ORG, "testpart2 commonName", "testpart2 scientificName");
 

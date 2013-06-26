@@ -18,7 +18,7 @@ import uk.ac.ebi.intact.protein.mapping.strategies.exceptions.StrategyException;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * Takes a protein and uses its Xrefs and sequence to find a remapping to uniprot.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  07/06/13
@@ -46,88 +46,115 @@ public class UniprotProteinRemapper
             context.setOrganism(new BioSource("Short", ""+proteinToRemap.getOrganism().getTaxId()));
 
         if(priorityIdentifiers && prioritySequence) priorityRemapping(proteinToRemap, context);
-        else if(priorityIdentifiers && !prioritySequence) identifierPriorityRemapping(proteinToRemap, context);
-        else if(!priorityIdentifiers && prioritySequence) sequencePriorityRemapping(proteinToRemap, context);
-        else if(!priorityIdentifiers && !prioritySequence) noPriorityRemapping(proteinToRemap, context);
+        else if(priorityIdentifiers) identifierPriorityRemapping(proteinToRemap, context);
+        else if(prioritySequence) sequencePriorityRemapping(proteinToRemap, context);
+        else noPriorityRemapping(proteinToRemap, context);
     }
 
-    private void priorityRemapping(Protein proteinToRemap, IdentificationContext context)
+    /**
+     * Remaps the protein, requiring a consistent, non null, mapping between the sequence and identifier.
+     * If either does not return a remapping, this will fail.
+     * @param proteinToRemap
+     * @param context
+     * @throws BridgeFailedException
+     */
+    private static void priorityRemapping(Protein proteinToRemap, IdentificationContext context)
             throws BridgeFailedException {
 
-        IdentificationResults identifierMapping;
-
-        if(checkingEnabled){
-            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
-            if(checkIdentifiersMappingConsistency(proteinToRemap , identifierMappingResults , context)){
-                identifierMapping = getFirstRemappedIdentifierResultChecked(identifierMappingResults);
-            }
-            else{
-                if(listener != null)
-                    listener.onRemappingFailed(proteinToRemap, "Failed. Identifier mappings have conflicts.");
-                return;
-            }
-        } else{
-            identifierMapping = getFirstRemappedIdentifierResultUnchecked(proteinToRemap , context);
-        }
-
-        if( identifierMapping == null || ! identifierMapping.hasUniqueUniprotId()) {
-            if(listener != null)
-                listener.onRemappingFailed(proteinToRemap, "No remapping found for identifiers");
+        IdentificationResults sequenceMapping = getMappingForSequence(proteinToRemap , context);
+        if (sequenceMapping == null || ! sequenceMapping.hasUniqueUniprotId()){
+            if(listener != null) listener.onRemappingFailed(proteinToRemap, "No remapping found for sequence");
         } else {
-            IdentificationResults sequenceMapping = getMappingForSequence(proteinToRemap , context);
-            if (sequenceMapping == null || ! sequenceMapping.hasUniqueUniprotId()){
-                if(listener != null) listener.onRemappingFailed(proteinToRemap, "No remapping for sequence");
-                return;
-            } else {
-                if(identifierMapping.getFinalUniprotId().equalsIgnoreCase(sequenceMapping.getFinalUniprotId())){
-                    proteinToRemap.setUniprotkb(identifierMapping.getFinalUniprotId());
-                } else {
+            IdentificationResults identifierMapping;
+            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
+
+            if(checkingEnabled){
+                if(! areAllIdentifierMappingsConsistent(proteinToRemap, identifierMappingResults, context)){
                     if(listener != null)
-                        listener.onRemappingFailed(proteinToRemap , "Conflict between identifiers and sequence");
+                        listener.onRemappingFailed(proteinToRemap, "Identifier remappings have conflicts.");
+                    return;
+                }
+            } else{
+                isThereAnIdentifierMapping(proteinToRemap, identifierMappingResults, context);
+            }
+
+            identifierMapping = getFirstRemappedIdentifierResult(identifierMappingResults);
+
+
+            if( identifierMapping == null || ! identifierMapping.hasUniqueUniprotId()) {
+                if(listener != null)
+                    listener.onRemappingFailed(proteinToRemap, "No remapping found for identifiers");
+            } else {
+                if(! identifierMapping.getFinalUniprotId().equalsIgnoreCase(sequenceMapping.getFinalUniprotId())){
+                    if(listener != null)
+                        listener.onRemappingFailed(proteinToRemap , "Conflict between identifiers and sequence remappings.");
+                } else {
+                    proteinToRemap.setUniprotkb(identifierMapping.getFinalUniprotId());
+                    if(listener != null){
+                        listener.onGettingRemappingFromIdentifiers(proteinToRemap , identifierMappingResults.values());
+                        listener.onGettingRemappingFromSequence(proteinToRemap , sequenceMapping);
+                        listener.onRemappingSuccessful(proteinToRemap ,
+                                "Remapping found for sequence and identifiers.");
+                    }
                 }
             }
         }
     }
 
+    /**
+     * Remaps the protein using the identifiers. If an identifier mapping cannot be found, the sequence will be used.
+     * @param proteinToRemap
+     * @param context
+     * @throws BridgeFailedException
+     */
     private static void identifierPriorityRemapping(Protein proteinToRemap , IdentificationContext context)
             throws BridgeFailedException {
 
+        HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
         IdentificationResults identifierMapping;
 
         if(checkingEnabled){
-            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
-            if(checkIdentifiersMappingConsistency(proteinToRemap , identifierMappingResults , context)){
-                identifierMapping = getFirstRemappedIdentifierResultChecked(identifierMappingResults);
-            }
-            else{
+            if(! areAllIdentifierMappingsConsistent(proteinToRemap, identifierMappingResults, context)){
                 if(listener != null)
-                    listener.onRemappingFailed(proteinToRemap, "Failed. Identifier mappings have conflicts.");
+                    listener.onRemappingFailed(proteinToRemap, "Identifier remappings have conflicts.");
                 return;
             }
         } else{
-            identifierMapping = getFirstRemappedIdentifierResultUnchecked(proteinToRemap , context);
-            return;
+            isThereAnIdentifierMapping(proteinToRemap, identifierMappingResults, context);
         }
+
+        identifierMapping = getFirstRemappedIdentifierResult(identifierMappingResults);
 
         if (identifierMapping != null){
             proteinToRemap.setUniprotkb(identifierMapping.getFinalUniprotId());
-            if(listener != null) listener.onGettingRemappingFromIdentifiers(proteinToRemap);
-            if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"Success. Identifiers have mapping.");
+            if(listener != null){
+                listener.onGettingRemappingFromIdentifiers(proteinToRemap, identifierMappingResults.values());
+                listener.onRemappingSuccessful(proteinToRemap,"Remapping found for identifiers.");
+            }
             return;
         }else {
             IdentificationResults sequenceMapping = getMappingForSequence(proteinToRemap , context);
             if (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()){
                 proteinToRemap.setUniprotkb(sequenceMapping.getFinalUniprotId());
-                if(listener != null) listener.onGettingRemappingFromSequence(proteinToRemap);
-                if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"Success. Sequence has mapping.");
+                if(listener != null){
+                    listener.onGettingRemappingFromSequence(proteinToRemap , sequenceMapping);
+                    listener.onRemappingSuccessful(proteinToRemap,"Remapping found for sequence.");
+                }
                 return;
             }else { // sequenceMapping == null
-                if(listener != null) listener.onRemappingFailed(proteinToRemap ,"Failed. Neither identifier nor sequence have mappings.");
+                if(listener != null) listener.onRemappingFailed(proteinToRemap ,
+                        "No remapping found for sequence and identifiers.");
                 return;
             }
         }
     }
 
+    /**
+     * Remaps the protein using the sequence remapping. If no mapping is found, the identifiers will be used.
+     * @param proteinToRemap
+     * @param context
+     * @throws BridgeFailedException
+     */
     private static void sequencePriorityRemapping(Protein proteinToRemap , IdentificationContext context)
             throws BridgeFailedException {
 
@@ -135,36 +162,38 @@ public class UniprotProteinRemapper
 
         if( sequenceMapping != null && sequenceMapping.hasUniqueUniprotId() ) {
             proteinToRemap.setUniprotkb(sequenceMapping.getFinalUniprotId());
-            if(listener != null) listener.onGettingRemappingFromSequence(proteinToRemap);
-            if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"Success. Sequence has mapping.");
-            proteinToRemap.setUniprotkb(sequenceMapping.getFinalUniprotId());
+            if(listener != null){
+                listener.onGettingRemappingFromSequence(proteinToRemap , sequenceMapping);
+                listener.onRemappingSuccessful(proteinToRemap,"Remapping found for sequence.");
+            }
             return ;
         } else {
 
             IdentificationResults identifierMapping;
+            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
 
             if(checkingEnabled){
-                HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
-                if(checkIdentifiersMappingConsistency(proteinToRemap , identifierMappingResults , context)){
-                    identifierMapping = getFirstRemappedIdentifierResultChecked(identifierMappingResults);
-                }
-                else{
+                if(! areAllIdentifierMappingsConsistent(proteinToRemap, identifierMappingResults, context)){
                     if(listener != null)
                         listener.onRemappingFailed(proteinToRemap, "Failed. Identifier mappings have conflicts.");
                     return;
                 }
             } else{
-                identifierMapping = getFirstRemappedIdentifierResultUnchecked(proteinToRemap , context);
+                isThereAnIdentifierMapping(proteinToRemap, identifierMappingResults, context);
             }
+
+            identifierMapping = getFirstRemappedIdentifierResult(identifierMappingResults);
 
             if (identifierMapping != null && identifierMapping.hasUniqueUniprotId()){
                 proteinToRemap.setUniprotkb(identifierMapping.getFinalUniprotId());
-                if(listener != null)
-                    listener.onRemappingSuccessful(proteinToRemap , "");
+                if(listener != null){
+                    listener.onGettingRemappingFromIdentifiers(proteinToRemap, identifierMappingResults.values());
+                    listener.onRemappingSuccessful(proteinToRemap,"Identifiers have mapping.");
+                }
                 return;
             } else {
                 if(listener != null)
-                    listener.onRemappingFailed(proteinToRemap, "");
+                    listener.onRemappingFailed(proteinToRemap, "Neither sequence no identifiers have mapping.");
                 return;
             }
         }
@@ -172,30 +201,27 @@ public class UniprotProteinRemapper
 
 
     /**
-     *
+     * Remaps the protein using the identifiers and sequence.
+     * If the sequence or identifiers are null, but the other has a mapping, that mapping will be used.
      * @param proteinToRemap
      * @param context
      * @throws BridgeFailedException
      */
     private static void noPriorityRemapping(Protein proteinToRemap, IdentificationContext context) throws BridgeFailedException {
 
-        IdentificationResults identifierMapping;
 
+        HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
         if(checkingEnabled){
-            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
-            if(checkIdentifiersMappingConsistency(proteinToRemap , identifierMappingResults , context)){
-                identifierMapping = getFirstRemappedIdentifierResultChecked(identifierMappingResults);
-            }
-            else{
+            if( ! areAllIdentifierMappingsConsistent(proteinToRemap, identifierMappingResults, context)){
                 if(listener != null)
                     listener.onRemappingFailed(proteinToRemap,"Failed. Identifier mappings have conflicts.");
                 return;
             }
         } else{
-            identifierMapping = getFirstRemappedIdentifierResultUnchecked(proteinToRemap , context);
-            return;
+            isThereAnIdentifierMapping(proteinToRemap, identifierMappingResults, context);
         }
 
+        IdentificationResults identifierMapping = getFirstRemappedIdentifierResult(identifierMappingResults);
         IdentificationResults sequenceMapping = getMappingForSequence(proteinToRemap , context);
 
         if( (identifierMapping != null && identifierMapping.hasUniqueUniprotId())
@@ -206,20 +232,20 @@ public class UniprotProteinRemapper
                         "Sequence and identifier mappings match.");
                 return;
             } else {
-                if(listener != null) listener.onRemappingFailed(proteinToRemap,"Neither a remapping for ");
+                if(listener != null) {
+                    listener.onSequenceToIdentifierConflict(sequenceMapping , identifierMapping);
+                    listener.onRemappingFailed(proteinToRemap,"Conflict between sequence or identifiers.");
+                }
                 return;
             }
-
-
         }else if ( (identifierMapping != null && identifierMapping.hasUniqueUniprotId()) ){
-            if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"identifier mapping only");
             proteinToRemap.setUniprotkb(identifierMapping.getFinalUniprotId());
-
+            if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"Remapping found for identifiers.");
         }else if ( (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()) ){
-            if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"Sequence mapping only");
             proteinToRemap.setUniprotkb(sequenceMapping.getFinalUniprotId());
+            if(listener != null) listener.onRemappingSuccessful(proteinToRemap,"Remapping found for sequence.");
         } else {
-            if(listener != null) listener.onRemappingFailed(proteinToRemap,"No mapping for sequence or identifier.");
+            if(listener != null) listener.onRemappingFailed(proteinToRemap,"No remapping for sequence or identifiers.");
             return;
         }
     }
@@ -228,16 +254,17 @@ public class UniprotProteinRemapper
 
 
     /**
-     * Checks the identifier mappings for consistency and flags the results in the identifier mappings results boolean.
-     * If any conflicts are found, this method sets identifierMappingResultsHasNoConflict to false.
+     * Queries and adds the results to the map, checks the identifier mappings for consistency
+     * and returns false as soon as a conflict is found.
      * @param proteinToRemap     the protein to remap
      */
-    private static boolean checkIdentifiersMappingConsistency(
-            Protein proteinToRemap , HashMap<Xref, IdentificationResults> identifierMappingResults ,
+    private static boolean areAllIdentifierMappingsConsistent(
+            Protein proteinToRemap,
+            HashMap<Xref, IdentificationResults> identifierMappingResults,
             IdentificationContext context)
             throws BridgeFailedException {
 
-        String remappedUniprot = null;
+        IdentificationResults remappedUniprot = null;
         //Populate the list
         for(Xref xref : proteinToRemap.getXrefs()){
             IdentificationResults result = getMappingForXref( xref, context);
@@ -245,43 +272,48 @@ public class UniprotProteinRemapper
 
             if(result != null && result.hasUniqueUniprotId()){
                 if (remappedUniprot != null){
-                    if(! remappedUniprot.equalsIgnoreCase(result.getFinalUniprotId())){
-                        //if(listener != null) listener.onIdentifierConflict(remappedUniprot, getEntry(p,x).getFinalUniprotId());
+                    if(! remappedUniprot.getFinalUniprotId().equalsIgnoreCase(result.getFinalUniprotId())){
+                        if(listener != null) listener.onIdentifierConflict(remappedUniprot, result);
                         return false;
                     }
                 }
                 else{
-                    remappedUniprot = result.getFinalUniprotId();
+                    remappedUniprot = result;
                 }
             }
         }
         return true;
     }
 
-
-    private static IdentificationResults getFirstRemappedIdentifierResultUnchecked(
-            Protein proteinToRemap , IdentificationContext context)
+    /**
+     * Finds the first identifier remapping which has a uniprot id and adds it to the identifier mapping results.
+     * @param proteinToRemap
+     * @param identifierMappingResults
+     * @param context
+     * @return
+     * @throws BridgeFailedException
+     */
+    private static boolean isThereAnIdentifierMapping(
+            Protein proteinToRemap, HashMap<Xref, IdentificationResults> identifierMappingResults, IdentificationContext context)
             throws BridgeFailedException {
 
-        String remappedUniprot = null;
-        //Populate the list
         for(Xref xref : proteinToRemap.getXrefs()){
             IdentificationResults result = getMappingForXref(xref, context);
             if(result != null && result.hasUniqueUniprotId()){
-                return result;
+                identifierMappingResults.put(xref , result);
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     /**
      * Will return the IdentificationResults of the first identifier which has a uniprotID.
-     * If the identifierMappingResults has not been populated, it will populate as it goes.
      * If there is no entry with a uniprotID, null will be returned.
      *
      * @return      the first remapping which has a uniprot entry
      */
-    private static IdentificationResults getFirstRemappedIdentifierResultChecked(
+    private static IdentificationResults getFirstRemappedIdentifierResult(
             HashMap<Xref, IdentificationResults> identifierMappingResults){
 
         for(Map.Entry<Xref, IdentificationResults> entry : identifierMappingResults.entrySet()){

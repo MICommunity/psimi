@@ -1,16 +1,14 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,13 +51,8 @@ public abstract class AbstractCvTermEnricher
      * Uses the CvTermToEnrich to fetch a more complete term
      * and then processes the CvTerm to modify it to a more enriched or updated form.
      * @param cvTermToEnrich  a CvTerm to enrich
-     * @throws BridgeFailedException
-     * @throws MissingServiceException
-     * @throws BadToEnrichFormException
-     * @throws BadSearchTermException
      */
-    public void enrichCvTerm(CvTerm cvTermToEnrich)
-            throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException {
+    public void enrichCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
 
         cvTermFetched = fetchCvTerm(cvTermToEnrich);
         if(cvTermFetched == null){
@@ -83,17 +76,11 @@ public abstract class AbstractCvTermEnricher
      * Uses the CvTermToEnrich to fetch a more complete CvTerm
      * @param cvTermToEnrich the CvTerm that is being enriched and will be used to fetch.
      * @return  a CvTerm fetched from the fetching service.
-     * @throws BadToEnrichFormException
-     * @throws MissingServiceException
-     * @throws BridgeFailedException
-     * @throws BadSearchTermException
      */
-    private CvTerm fetchCvTerm(CvTerm cvTermToEnrich)
-            throws BadToEnrichFormException, MissingServiceException,
-            BridgeFailedException, BadSearchTermException {
+    private CvTerm fetchCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
 
-        if(getCvTermFetcher() == null) throw new MissingServiceException("The CvTermFetcher was null.");
-        if(cvTermToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null CvTerm.");
+        if(getCvTermFetcher() == null) throw new IllegalStateException("The CvTermFetcher was null.");
+        if(cvTermToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null CvTerm.");
 
         CvTerm cvTermFetched = null;
 
@@ -104,8 +91,12 @@ public abstract class AbstractCvTermEnricher
             for(Xref identifierXref : identifiersList){
                 if( cvTermFetched != null ) break;
                 else if( identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MI_MI)){
-                    cvTermFetched = getCvTermFetcher().getCvTermByID(
-                            identifierXref.getId(), identifierXref.getDatabase());
+                    try {
+                        cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                                identifierXref.getId(), identifierXref.getDatabase());
+                    } catch (BridgeFailedException e) {
+                        throw new EnricherException("Problem encountered while enriching CvTerm", e);
+                    }
                 }
             }
             //Try with MOD
@@ -113,8 +104,12 @@ public abstract class AbstractCvTermEnricher
                 for(Xref identifierXref : identifiersList){
                     if( cvTermFetched != null ) break;
                     else if( identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MOD_MI)){
-                        cvTermFetched = getCvTermFetcher().getCvTermByID(
-                                identifierXref.getId(), identifierXref.getDatabase());
+                        try {
+                            cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                                    identifierXref.getId(), identifierXref.getDatabase());
+                        } catch (BridgeFailedException e) {
+                            throw new EnricherException("Problem encountered while enriching CvTerm", e);
+                        }
                     }
                 }
             }
@@ -124,8 +119,12 @@ public abstract class AbstractCvTermEnricher
                     if( cvTermFetched != null ) break;
                     else if(! identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MOD_MI)
                             && ! identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MI_MI)){
-                        cvTermFetched = getCvTermFetcher().getCvTermByID(
-                                identifierXref.getId(), identifierXref.getDatabase());
+                        try {
+                            cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                                    identifierXref.getId(), identifierXref.getDatabase());
+                        } catch (BridgeFailedException e) {
+                            throw new EnricherException("Problem encountered while enriching CvTerm", e);
+                        }
                     }
                 }
             }

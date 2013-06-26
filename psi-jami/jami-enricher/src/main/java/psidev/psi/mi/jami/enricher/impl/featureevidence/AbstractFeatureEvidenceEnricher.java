@@ -35,8 +35,7 @@ public abstract  class AbstractFeatureEvidenceEnricher
 
     protected CvTermEnricher cvTermEnricher;
 
-    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew)
-            throws BridgeFailedException, MissingServiceException, BadToEnrichFormException{
+    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew){
 
         if(featureEvidenceToEnrich ==  null) {
             if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,

@@ -6,21 +6,13 @@ import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 import java.util.Collection;
 
@@ -47,15 +39,9 @@ implements ProteinEnricher {
      *
      * @param proteinToEnrich   the Protein which is being enriched
      * @return  a boolean denoting whether the enrichment was successful
-     * @throws BridgeFailedException
-     * @throws MissingServiceException
-     * @throws BadToEnrichFormException
-     * @throws BadEnrichedFormException
-     * @throws SeguidException
+
      */
-    public boolean enrichProtein(Protein proteinToEnrich)
-            throws BridgeFailedException,
-            MissingServiceException, BadToEnrichFormException, BadEnrichedFormException {
+    public boolean enrichProtein(Protein proteinToEnrich) throws EnricherException {
 
 
         // In your enricher, if you have several entries,
@@ -100,10 +86,9 @@ implements ProteinEnricher {
      *
      * @param proteinToEnrich   The protein which is being enriched.
      * @return  Whether there were any fatal conflicts which
-     * @throws  BadEnrichedFormException
+
      */
-    protected boolean areNoConflicts(Protein proteinToEnrich)
-            throws BadEnrichedFormException {
+    protected boolean areNoConflicts(Protein proteinToEnrich){
 
         //InteractorType
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
@@ -118,7 +103,7 @@ implements ProteinEnricher {
         }
 
         //Organism
-        if(proteinFetched.getOrganism() == null) throw new BadEnrichedFormException(
+        if(proteinFetched.getOrganism() == null) throw new IllegalArgumentException(
                 "The enriched protein has a null organism.");
         if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
 
@@ -141,16 +126,11 @@ implements ProteinEnricher {
      *
      * @param proteinToEnrich
      * @return
-     * @throws MissingServiceException
-     * @throws BadToEnrichFormException
-     * @throws BridgeFailedException
      */
-    protected Protein fetchProtein(Protein proteinToEnrich)
-            throws MissingServiceException, BadToEnrichFormException,
-            BridgeFailedException {
+    protected Protein fetchProtein(Protein proteinToEnrich) throws EnricherException {
 
-        if(getFetcher() == null) throw new MissingServiceException("ProteinFetcher has not been provided.");
-        if(proteinToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null protein.");
+        if(getFetcher() == null) throw new IllegalStateException("ProteinFetcher has not been provided.");
+        if(proteinToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null protein.");
 
         if(proteinToEnrich.getUniprotkb() == null) {
             if(getProteinRemapper() == null){
@@ -161,7 +141,12 @@ implements ProteinEnricher {
         }
 
         Collection<Protein> proteinsEnriched;
-        proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+        try {
+            proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+        } catch (BridgeFailedException e) {
+            throw new EnricherException(
+                    "Could not enrich protein with identifier "+proteinToEnrich.getUniprotkb() , e);
+        }
 
         // If the Protein is dead
         if(proteinsEnriched == null
@@ -170,7 +155,12 @@ implements ProteinEnricher {
             if( ! remapDeadProtein(proteinToEnrich)){
                 return null;
             }else{
-                proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+                try {
+                    proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+                } catch (BridgeFailedException e) {
+                    throw new EnricherException(
+                            "Could not enrich protein with identifier "+proteinToEnrich.getUniprotkb() , e);
+                }
                 // If the remapping can not be fetched
                 if(proteinsEnriched == null
                         || proteinsEnriched.isEmpty()){
@@ -239,8 +229,7 @@ implements ProteinEnricher {
      * @param remapCause
      * @return
      */
-    protected boolean remapProtein(Protein proteinToEnrich, String remapCause)
-            throws BridgeFailedException {
+    protected boolean remapProtein(Protein proteinToEnrich, String remapCause) throws EnricherException {
 
         if( getProteinRemapper() == null ){
             if(listener != null) listener.onProteinEnriched(proteinToEnrich , "Failed. " +
@@ -249,7 +238,11 @@ implements ProteinEnricher {
             return false;
         }
 
-        getProteinRemapper().remapProtein(proteinToEnrich);
+        try {
+            getProteinRemapper().remapProtein(proteinToEnrich);
+        } catch (BridgeFailedException e) {
+            throw new EnricherException(e);
+        }
 
         if(proteinToEnrich.getUniprotkb() == null){
             if(listener != null) listener.onProteinEnriched(proteinToEnrich , "Failed. " +
@@ -273,7 +266,7 @@ implements ProteinEnricher {
      * @param proteinToEnrich
      * @return  True if a remapping was found, and false if it could not be found.
      */
-    protected abstract boolean remapDeadProtein(Protein proteinToEnrich) throws BridgeFailedException;
+    protected abstract boolean remapDeadProtein(Protein proteinToEnrich) throws EnricherException;
 
     /**
      * How to process the protein if an enriched form can be found.

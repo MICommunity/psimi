@@ -1,11 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -21,9 +17,9 @@ public class MinimumOrganismEnricher
 
 
     @Override
-    protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
+    protected void processOrganism(Organism organismToEnrich)  {
         if(organismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
-            throw new BadEnrichedFormException( "The organism had an invalid taxID of "+organismFetched.getTaxId());
+            throw new IllegalArgumentException( "The organism had an invalid taxID of "+organismFetched.getTaxId());
         }
 
         //TaxID

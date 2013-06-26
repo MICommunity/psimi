@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +30,7 @@ public class MaximumProteinUpdater
 
 
     @Override
-    protected void processProtein(Protein proteinToEnrich) throws SeguidException {
+    protected void processProtein(Protein proteinToEnrich){
         super.processProtein(proteinToEnrich);
 
         Set<Xref> fetchedXrefsToAdd = new TreeSet<Xref>(new DefaultXrefComparator());
