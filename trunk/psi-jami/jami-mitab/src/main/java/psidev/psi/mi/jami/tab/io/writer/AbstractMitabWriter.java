@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabVersion;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.Map;
  *  - output_writer_key : Writer. Specifies the writer.
  *  If these three options are given, output_file_key will take priority, then output_stream_key an finally output_writer_key. At leats
  *  one of these options should be provided when initialising the context of the writer
- *  - complex_expansion_key : Class<? extends ComplexExpansionMethod>. Specifies the ComplexExpansion class to use. By default, it is SpokeExpansion if nothing is specified
+ *  - complex_expansion_key : ComplexExpansionMethod. Specifies the ComplexExpansion object to use. By default, it is SpokeExpansion if nothing is specified
  *  - mitab_header_key : Boolean. Specifies if the writer should write the MITAB header when starting to write or not
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -103,14 +104,12 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
                     + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
         }
 
+        if (options.containsKey(MitabUtils.MITAB_HEADER_OPTION)){
+            setWriteHeader((Boolean)options.get(MitabUtils.MITAB_HEADER_OPTION));
+        }
+
         if (options.containsKey(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY)){
-            try {
-                initialiseExpansionMethod(((Class<? extends ComplexExpansionMethod>)options.get(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY)).newInstance());
-            } catch (InstantiationException e) {
-                throw new DataSourceWriterException("Impossible to initialise the complex expansion method ", e);
-            } catch (IllegalAccessException e) {
-                throw new DataSourceWriterException("Impossible to initialise the complex expansion method ", e);
-            }
+            initialiseExpansionMethod((ComplexExpansionMethod<T,B>)options.get(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY));
         }
     }
 
@@ -123,7 +122,7 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
 
         if (interaction != null){
 
-            this.binaryWriter.write(expansionMethod.expand(interaction));
+            this.binaryWriter.write(getExpansionMethod().expand(interaction));
         }
     }
 
@@ -183,5 +182,12 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
 
     protected AbstractMitab25BinaryWriter<B, P> getBinaryWriter() {
         return binaryWriter;
+    }
+
+    protected ComplexExpansionMethod<T, B> getExpansionMethod() {
+        if (expansionMethod == null){
+            initialiseExpansionMethod(null);
+        }
+        return expansionMethod;
     }
 }
