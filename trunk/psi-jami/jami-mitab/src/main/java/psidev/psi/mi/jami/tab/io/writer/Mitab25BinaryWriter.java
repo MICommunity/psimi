@@ -55,13 +55,6 @@ public class Mitab25BinaryWriter extends AbstractMitab25BinaryWriter<BinaryInter
     }
 
     @Override
-    public void flush() throws DataSourceWriterException {
-        super.flush();
-        this.binaryEvidenceWriter.flush();
-        this.modelledBinaryWriter.flush();
-    }
-
-    @Override
     public void write(BinaryInteraction interaction) throws DataSourceWriterException {
         if (this.binaryEvidenceWriter == null || this.modelledBinaryWriter == null){
             throw new IllegalStateException("The Mitab25Writer has not been initialised with a map of options." +

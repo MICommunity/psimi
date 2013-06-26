@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,53 +34,49 @@ import java.util.Map;
  * @since <pre>11/06/13</pre>
  */
 
-public abstract class AbstractMitab25Writer<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
+public abstract class AbstractMitabWriter<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
 
     private ComplexExpansionMethod<T, B> expansionMethod;
     private AbstractMitab25BinaryWriter<B, P> binaryWriter;
 
-    public AbstractMitab25Writer(){
+    public AbstractMitabWriter(){
 
     }
 
-    public AbstractMitab25Writer(File file) throws IOException {
+    public AbstractMitabWriter(File file) throws IOException {
 
         initialiseFile(file);
         initialiseExpansionMethod(null);
     }
 
-    public AbstractMitab25Writer(OutputStream output) {
+    public AbstractMitabWriter(OutputStream output) {
 
         initialiseOutputStream(output);
         initialiseExpansionMethod(null);
     }
 
-    public AbstractMitab25Writer(Writer writer) {
+    public AbstractMitabWriter(Writer writer) {
 
         initialiseWriter(writer);
         initialiseExpansionMethod(null);
     }
 
-    public AbstractMitab25Writer(File file, ComplexExpansionMethod<T, B> expansionMethod) throws IOException {
+    public AbstractMitabWriter(File file, ComplexExpansionMethod<T, B> expansionMethod) throws IOException {
 
         initialiseFile(file);
         initialiseExpansionMethod(expansionMethod);
     }
 
-    public AbstractMitab25Writer(OutputStream output, ComplexExpansionMethod<T, B> expansionMethod) {
+    public AbstractMitabWriter(OutputStream output, ComplexExpansionMethod<T, B> expansionMethod) {
 
         initialiseOutputStream(output);
         initialiseExpansionMethod(expansionMethod);
     }
 
-    public AbstractMitab25Writer(Writer writer, ComplexExpansionMethod<T, B> expansionMethod) {
+    public AbstractMitabWriter(Writer writer, ComplexExpansionMethod<T, B> expansionMethod) {
 
         initialiseWriter(writer);
         initialiseExpansionMethod(expansionMethod);
-    }
-
-    public ComplexExpansionMethod<T, B> getExpansionMethod() {
-        return expansionMethod;
     }
 
     public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException {
@@ -154,6 +151,18 @@ public abstract class AbstractMitab25Writer<T extends Interaction, B extends Bin
         }
         this.binaryWriter = null;
         this.expansionMethod = null;
+    }
+
+    public abstract MitabVersion getVersion();
+
+    public boolean isWriteHeader() {
+        return binaryWriter != null ? binaryWriter.isWriteHeader():false;
+    }
+
+    public void setWriteHeader(boolean writeHeader) {
+        if (this.binaryWriter != null){
+            this.binaryWriter.setWriteHeader(writeHeader);
+        }
     }
 
     protected abstract void initialiseExpansionMethod(ComplexExpansionMethod<T, B> expansionMethod);

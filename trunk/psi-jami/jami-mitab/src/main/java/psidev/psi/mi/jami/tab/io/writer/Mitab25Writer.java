@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +28,7 @@ import java.io.Writer;
  * @since <pre>10/06/13</pre>
  */
 
-public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInteraction, Participant> {
+public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryInteraction, Participant> {
 
     private Mitab25ModelledInteractionWriter modelledInteractionWriter;
     private Mitab25InteractionEvidenceWriter interactionEvidenceWriter;
@@ -67,6 +68,24 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
     }
 
     @Override
+    public void write(Interaction interaction) throws DataSourceWriterException {
+        if (interaction instanceof InteractionEvidence){
+            this.interactionEvidenceWriter.write((InteractionEvidence) interaction);
+        }
+        else if (interaction instanceof ModelledInteraction){
+            this.modelledInteractionWriter.write((ModelledInteraction) interaction);
+        }
+        else{
+            super.write(interaction);
+        }
+    }
+
+    @Override
+    public MitabVersion getVersion() {
+        return MitabVersion.v2_5;
+    }
+
+    @Override
     protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         setExpansionMethod(expansionMethod != null ? expansionMethod : new SpokeExpansion());
     }
@@ -84,19 +103,6 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
     @Override
     protected void initialiseFile(File file) throws IOException {
         setBinaryWriter(new Mitab25BinaryWriter(file));
-    }
-
-    @Override
-    public void write(Interaction interaction) throws DataSourceWriterException {
-        if (interaction instanceof InteractionEvidence){
-            this.interactionEvidenceWriter.write((InteractionEvidence) interaction);
-        }
-        else if (interaction instanceof ModelledInteraction){
-            this.modelledInteractionWriter.write((ModelledInteraction) interaction);
-        }
-        else{
-            super.write(interaction);
-        }
     }
 
     protected void initialiseSubWritersWith(Writer writer) {
