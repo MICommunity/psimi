@@ -164,6 +164,16 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
         }
     }
 
+    public boolean hasWrittenHeader() {
+        return binaryWriter != null ? binaryWriter.hasWrittenHeader():false;
+    }
+
+    public void setHasWrittenHeader(boolean hasWrittenHeader) {
+        if (this.binaryWriter != null){
+            this.binaryWriter.setHasWrittenHeader(hasWrittenHeader);
+        }
+    }
+
     protected abstract void initialiseExpansionMethod(ComplexExpansionMethod<T, B> expansionMethod);
 
     protected abstract void initialiseWriter(Writer writer);

@@ -58,8 +58,8 @@ public class Mitab27Writer extends Mitab26Writer {
     }
 
     @Override
-    protected void initialiseSubWritersWith(Writer writer) {
-        setModelledInteractionWriter(new Mitab27ModelledInteractionWriter(writer));
-        setInteractionEvidenceWriter(new Mitab27InteractionEvidenceWriter(writer));
+    protected void initialiseSubWriters() {
+        setModelledInteractionWriter(new Mitab27ModelledInteractionWriter(getWriter()));
+        setInteractionEvidenceWriter(new Mitab27InteractionEvidenceWriter(getWriter()));
     }
 }
