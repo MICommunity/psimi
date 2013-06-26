@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +50,11 @@ public class Mitab27Writer extends Mitab26Writer {
 
     public Mitab27Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
+    }
+
+    @Override
+    public MitabVersion getVersion() {
+        return MitabVersion.v2_7;
     }
 
     @Override

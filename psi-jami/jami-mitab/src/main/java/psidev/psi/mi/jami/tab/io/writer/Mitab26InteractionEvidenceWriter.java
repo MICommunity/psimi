@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,11 @@ public class Mitab26InteractionEvidenceWriter extends Mitab25InteractionEvidence
 
     public Mitab26InteractionEvidenceWriter(Writer writer, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
         super(writer, expansionMethod);
+    }
+
+    @Override
+    public MitabVersion getVersion() {
+        return MitabVersion.v2_6;
     }
 
     @Override

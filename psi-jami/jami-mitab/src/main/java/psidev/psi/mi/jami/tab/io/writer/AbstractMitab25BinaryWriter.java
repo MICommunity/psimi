@@ -184,6 +184,14 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         }
     }
 
+    public boolean hasWrittenHeader() {
+        return hasWrittenHeader;
+    }
+
+    public void setHasWrittenHeader(boolean hasWrittenHeader) {
+        this.hasWrittenHeader = hasWrittenHeader;
+    }
+
     protected MitabColumnFeeder<T, P> getColumnFeeder() {
         return columnFeeder;
     }
@@ -281,14 +289,6 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         else {
             writer.write(MitabUtils.LINE_BREAK);
         }
-    }
-
-    public boolean hasWrittenHeader() {
-        return hasWrittenHeader;
-    }
-
-    public void setHasWrittenHeader(boolean hasWrittenHeader) {
-        this.hasWrittenHeader = hasWrittenHeader;
     }
 
     private void initialiseWriter(Writer writer) {

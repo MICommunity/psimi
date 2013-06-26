@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.ModelledInteractionSpokeExpansion;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.*;
 
@@ -16,7 +17,7 @@ import java.io.*;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab25ModelledInteractionWriter extends AbstractMitab25Writer<ModelledInteraction, ModelledBinaryInteraction, ModelledParticipant> {
+public class Mitab25ModelledInteractionWriter extends AbstractMitabWriter<ModelledInteraction, ModelledBinaryInteraction, ModelledParticipant> {
 
     public Mitab25ModelledInteractionWriter() {
         super();
@@ -44,6 +45,11 @@ public class Mitab25ModelledInteractionWriter extends AbstractMitab25Writer<Mode
 
     public Mitab25ModelledInteractionWriter(Writer writer, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
         super(writer, expansionMethod);
+    }
+
+    @Override
+    public MitabVersion getVersion() {
+        return MitabVersion.v2_5;
     }
 
     @Override

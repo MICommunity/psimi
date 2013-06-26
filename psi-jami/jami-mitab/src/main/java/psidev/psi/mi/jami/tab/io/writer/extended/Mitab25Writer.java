@@ -8,7 +8,8 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.tab.io.writer.AbstractMitab25Writer;
+import psidev.psi.mi.jami.tab.MitabVersion;
+import psidev.psi.mi.jami.tab.io.writer.AbstractMitabWriter;
 
 import java.io.*;
 
@@ -25,7 +26,7 @@ import java.io.*;
  * @since <pre>10/06/13</pre>
  */
 
-public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInteraction, Participant> {
+public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryInteraction, Participant> {
 
     private Mitab25ModelledInteractionWriter modelledInteractionWriter;
     private Mitab25InteractionEvidenceWriter interactionEvidenceWriter;
@@ -63,6 +64,11 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
     public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
         initialiseSubWritersWith(writer);
+    }
+
+    @Override
+    public MitabVersion getVersion() {
+        return MitabVersion.v2_5;
     }
 
     @Override
