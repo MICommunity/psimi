@@ -68,7 +68,7 @@ public abstract class AbstractMitab26BinaryWriter<T extends BinaryInteraction, P
         columnFeeder.writeExperimentalRole(a);
         getWriter().write(MitabUtils.COLUMN_SEPARATOR);
         // skip exprole B
-        columnFeeder.writeExperimentalRole(a);
+        columnFeeder.writeExperimentalRole(b);
         getWriter().write(MitabUtils.COLUMN_SEPARATOR);
         // interactor type A
         columnFeeder.writeInteractorType(a);
