@@ -10,7 +10,7 @@ import java.util.Collection;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 14/05/13
+ * @since 14/05/13
  */
 public interface ProteinFetcher {
 
