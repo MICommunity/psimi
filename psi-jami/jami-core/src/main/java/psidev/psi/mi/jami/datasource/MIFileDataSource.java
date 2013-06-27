@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
-import java.util.Collection;
+import psidev.psi.mi.jami.listener.MIFileParserListener;
 
 /**
  * Interface for molecular interaction datasources coming from a file
@@ -13,16 +13,29 @@ import java.util.Collection;
 public interface MIFileDataSource extends MIDataSource{
 
     /**
-     * In a MIFileDataSource, the dataSourceErrors are FileSourceErrors.
-     * The collection cannot be null. If the MIFileDataSource does not have any fileSourceErrors, the method should return an empty collection
-     * @return the collection of FileSourceErrors
+     * The MIFileParserListener can be null if not initialised
+     * @return the file parser listener that listen to the different parsing events
      */
-    public Collection<FileSourceError> getDataSourceErrors();
+    public MIFileParserListener getFileParserListener();
+
+    /**
+     * Sets the MIFileParserListener
+     * @param listener
+     */
+    public void setMIFileParserListener(MIFileParserListener listener);
 
     /**
      * Validate the syntax of this MIFileDataSource.
      * It returns true if the file syntax is valid, false otherwise.
-     * When the file syntax is invalid, the syntax errors are stored in the dataSourceErrors of this MIDataSource
+     * When the file syntax is invalid, the syntax errors are fired and should be retrieved using a proper MIFileParserListener
      */
     public boolean validateSyntax();
+
+    /**
+     * Validate the syntax of this MIFileDataSource and uses the provided MIFileParserListener to listen to the events.
+     * The provided listener will be set as the MIFileParserListener of this datasource
+     * @param listener
+     * @return
+     */
+    public boolean validateSyntax(MIFileParserListener listener);
 }

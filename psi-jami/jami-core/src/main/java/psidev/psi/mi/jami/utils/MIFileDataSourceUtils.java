@@ -1,11 +1,6 @@
 package psidev.psi.mi.jami.utils;
 
-import psidev.psi.mi.jami.datasource.FileSourceError;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Utility class for Molecular interaction datasources
@@ -16,55 +11,6 @@ import java.util.Collections;
  */
 
 public class MIFileDataSourceUtils {
-
-    /**
-     * Collect all data source errors having same error type
-     * @param errors
-     * @param errorType
-     * @return
-     */
-    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<? extends FileSourceError> errors, String errorType){
-
-        if (errors == null || errors.isEmpty() || errorType == null){
-            return Collections.EMPTY_LIST;
-        }
-        Collection<FileSourceError> filteredErrors = new ArrayList<FileSourceError>(errors.size());
-
-        for (FileSourceError err : errors){
-            if (err.getLabel() != null && err.getLabel().equalsIgnoreCase(errorType)){
-                filteredErrors.add(err);
-            }
-        }
-
-        return filteredErrors;
-    }
-
-    /**
-     * Collect all data source errors having same error type
-     * @param errors
-     * @param errorTypes
-     * @return
-     */
-    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorTypes(Collection<? extends FileSourceError> errors, String[] errorTypes){
-
-        if (errors == null || errors.isEmpty() || errorTypes == null || errorTypes.length == 0){
-            return Collections.EMPTY_LIST;
-        }
-        Collection<FileSourceError> filteredErrors = new ArrayList<FileSourceError>(errors.size());
-
-        for (FileSourceError err : errors){
-            if (err.getLabel() != null){
-                for (String errorType : errorTypes){
-                    if (err.getLabel().equalsIgnoreCase(errorType)){
-                        filteredErrors.add(err);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return filteredErrors;
-    }
 
     /**
      * Store the content of the given input stream into a temporary file and return its descriptor.
