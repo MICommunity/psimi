@@ -33,7 +33,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
     private InputStream originalStream;
     private Reader originalReader;
 
-    private boolean isConsumed = false;
     private Boolean isValid = null;
 
     private MitabParserListener parserListener;
@@ -114,7 +113,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
             this.originalFile = null;
             this.lineParser = null;
             this.parserListener = null;
-            isConsumed = false;
             isInitialised = false;
             isValid = null;
         }
@@ -129,11 +127,16 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
     }
 
     public boolean validateSyntax() {
+        if (!isInitialised){
+            throw new IllegalArgumentException("The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
+                    + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
+        }
+
         if (isValid != null){
             return isValid;
         }
 
-        if (isConsumed){
+        if (lineParser.hasFinished()){
             reInit();
         }
 
@@ -142,7 +145,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
         while(interactionIterator.hasNext()){
             interactionIterator.next();
         }
-        isConsumed = true;
         // if isValid is not null, it means that the file syntax is invalid, otherwise, we say that the file syntax is valid
         if (isValid == null){
             isValid = true;
@@ -235,13 +237,13 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
         isValid = false;
     }
 
-    public void onEndOfFile() {
-        isConsumed = true;
-    }
-
     public Iterator<T> getInteractionsIterator() {
+        if (!isInitialised){
+            throw new IllegalArgumentException("The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
+                    + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
+        }
         // reset parser if possible
-        if (isConsumed){
+        if (lineParser.hasFinished()){
            reInit();
         }
         return createMitabIterator();
@@ -279,7 +281,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                 try {
                     this.originalStream = new BufferedInputStream(new FileInputStream(this.originalFile));
                     this.lineParser.ReInit(this.originalStream);
-                    this.lineParser.setParserListener(this.parserListener);
 
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException("We cannot open the file " + this.originalFile.getName(), e);
@@ -291,7 +292,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                     try {
                         this.originalStream.reset();
                         this.lineParser.ReInit(this.originalStream);
-                        this.lineParser.setParserListener(this.parserListener);
 
                     } catch (IOException e) {
                         throw new RuntimeException("The inputStream has been consumed and cannot be reset", e);
@@ -307,7 +307,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                     try {
                         this.originalReader.reset();
                         this.lineParser.ReInit(this.originalReader);
-                        this.lineParser.setParserListener(this.parserListener);
                     } catch (IOException e) {
                         throw new RuntimeException("The reader has been consumed and cannot be reset", e);
                     }
@@ -316,7 +315,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                     throw new RuntimeException("The reader has been consumed and cannot be reset");
                 }
             }
-            isConsumed = false;
         }
     }
 
@@ -370,8 +368,5 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
 
     protected void setMIFileParserListener(MitabParserListener listener) {
         this.parserListener = listener;
-        if (this.lineParser != null){
-            this.lineParser.setParserListener(this.parserListener);
-        }
     }
 }

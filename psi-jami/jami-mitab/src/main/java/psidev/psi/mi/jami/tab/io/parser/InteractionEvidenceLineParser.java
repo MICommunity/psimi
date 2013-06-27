@@ -158,7 +158,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             }
             interaction.setComplexExpansion(expansion.iterator().next());
         }
-        else if (expansion.isEmpty()){
+        else if (!expansion.isEmpty()){
             interaction.setComplexExpansion(expansion.iterator().next());
         }
         // add xrefs

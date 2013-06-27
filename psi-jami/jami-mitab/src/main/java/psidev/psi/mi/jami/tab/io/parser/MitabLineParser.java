@@ -90,11 +90,18 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
   P participantA;
   P participantB;
+  T interaction=null;
   int line;
   int columnA;
   int columnB;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case RANGE_SEPARATOR:
+      case PUB_DATE:
+      case STOICHIOMETRY:
+      case POSITION:
+      case TAXID:
+      case NEGATIVE:
       case UNRESERVED_STRING:
       case QUOTED_STRING:
       case EMPTY_COLUMN:
@@ -103,6 +110,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
         case COMMENT:
           jj_consume_token(COMMENT);
           break;
+        case RANGE_SEPARATOR:
+        case PUB_DATE:
+        case STOICHIOMETRY:
+        case POSITION:
+        case TAXID:
+        case NEGATIVE:
         case UNRESERVED_STRING:
         case QUOTED_STRING:
         case EMPTY_COLUMN:
@@ -111,6 +124,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1);
@@ -127,6 +146,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2);
@@ -143,6 +168,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          altIdA = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3);
@@ -158,6 +189,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          altIdB = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4);
@@ -173,6 +210,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          aliasA = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             aliasA = aliases(5);
@@ -188,6 +231,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          aliasB = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             aliasB = aliases(6);
@@ -203,6 +252,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          detMethod = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             detMethod = cvTerms(7);
@@ -218,9 +273,14 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          firstAuthor = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
-          case PUB_DATE:
             firstAuthor = firstAuthors();
             break;
           default:
@@ -234,6 +294,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          pubId = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9);
@@ -277,6 +343,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          interactionType = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             interactionType = cvTerms(12);
@@ -292,6 +364,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          source = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             source = sourceDbs();
@@ -307,6 +385,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          interactionId = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14);
@@ -322,6 +406,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
             jj_consume_token(EMPTY_COLUMN);
                          conf = Collections.EMPTY_LIST;
             break;
+          case RANGE_SEPARATOR:
+          case PUB_DATE:
+          case STOICHIOMETRY:
+          case POSITION:
+          case TAXID:
+          case NEGATIVE:
           case UNRESERVED_STRING:
           case QUOTED_STRING:
             conf = confidences();
@@ -339,6 +429,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          expansion = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               expansion = complexExpansion();
@@ -354,6 +450,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          bioRoleA = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               bioRoleA = cvTerms(17);
@@ -369,6 +471,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          bioRoleB = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               bioRoleB = cvTerms(18);
@@ -384,6 +492,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          expRoleA = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               expRoleA = cvTerms(19);
@@ -399,6 +513,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          expRoleB = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               expRoleB = cvTerms(20);
@@ -414,6 +534,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          typeA = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               typeA = cvTerms(21);
@@ -429,6 +555,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          typeB = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               typeB = cvTerms(22);
@@ -444,6 +576,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          xrefA = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               xrefA = ids(null, false, 23);
@@ -459,6 +597,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          xrefB = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               xrefB = ids(null, false, 24);
@@ -474,6 +618,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          xrefI = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               xrefI = ids(null, false, 25);
@@ -489,6 +639,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          annotA = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               annotA = annotations(26);
@@ -504,6 +660,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          annotB = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               annotB = annotations(27);
@@ -519,6 +681,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          annotI = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               annotI = annotations(28);
@@ -548,6 +716,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          params = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               params = parameters();
@@ -563,6 +737,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          created = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               created = dates(31);
@@ -578,6 +758,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          update = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               update = dates(32);
@@ -593,6 +779,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          checksumA = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               checksumA = checksums(33);
@@ -608,6 +800,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          checksumB = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               checksumB = checksums(34);
@@ -623,6 +821,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
               jj_consume_token(EMPTY_COLUMN);
                          checksumI = Collections.EMPTY_LIST;
               break;
+            case RANGE_SEPARATOR:
+            case PUB_DATE:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
               checksumI = checksums(35);
@@ -653,6 +857,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                 jj_consume_token(EMPTY_COLUMN);
                          featureA = Collections.EMPTY_LIST;
                 break;
+              case RANGE_SEPARATOR:
+              case PUB_DATE:
+              case STOICHIOMETRY:
+              case POSITION:
+              case TAXID:
+              case NEGATIVE:
               case UNRESERVED_STRING:
               case QUOTED_STRING:
                 featureA = features(37);
@@ -668,6 +878,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                 jj_consume_token(EMPTY_COLUMN);
                          featureB = Collections.EMPTY_LIST;
                 break;
+              case RANGE_SEPARATOR:
+              case PUB_DATE:
+              case STOICHIOMETRY:
+              case POSITION:
+              case TAXID:
+              case NEGATIVE:
               case UNRESERVED_STRING:
               case QUOTED_STRING:
                 featureB = features(38);
@@ -711,6 +927,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                 jj_consume_token(EMPTY_COLUMN);
                          pmethodA = Collections.EMPTY_LIST;
                 break;
+              case RANGE_SEPARATOR:
+              case PUB_DATE:
+              case STOICHIOMETRY:
+              case POSITION:
+              case TAXID:
+              case NEGATIVE:
               case UNRESERVED_STRING:
               case QUOTED_STRING:
                 pmethodA = cvTerms(41);
@@ -726,6 +948,12 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                 jj_consume_token(EMPTY_COLUMN);
                          pmethodB = Collections.EMPTY_LIST;
                 break;
+              case RANGE_SEPARATOR:
+              case PUB_DATE:
+              case STOICHIOMETRY:
+              case POSITION:
+              case TAXID:
+              case NEGATIVE:
               case UNRESERVED_STRING:
               case QUOTED_STRING:
                 pmethodB = cvTerms(42);
@@ -735,7 +963,6 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                 jj_consume_token(-1);
                 throw new ParseException();
               }
-              jj_consume_token(COLUMN_SEPARATOR);
               break;
             default:
               jj_la1[42] = jj_gen;
@@ -748,8 +975,8 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
           }
         participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
         participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
-        {if (true) return finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
-                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);}
+        interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
+                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
           break;
         default:
           jj_la1[44] = jj_gen;
@@ -769,17 +996,18 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LINE_SEPARATOR:
       jj_consume_token(LINE_SEPARATOR);
+                          {if (true) return interaction;}
       break;
     case 0:
       jj_consume_token(0);
-                reachEndOfFile(); getParserListener().onEndOfFile();
+                reachEndOfFile(); {if (true) return interaction;}
       break;
     default:
       jj_la1[46] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
-    {if (true) return null;}
+    {if (true) return interaction;}
     throw new Error("Missing return statement in function");
   }
 
@@ -1276,9 +1504,10 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                                                   if (var != null) {ranges.add(var);}
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case UNRESERVED_STRING:
-      case QUOTED_STRING:
+      case 17:
+        jj_consume_token(17);
         text = safeString();
+        jj_consume_token(18);
         break;
       default:
         jj_la1[63] = jj_gen;
@@ -1652,18 +1881,28 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
         jj_consume_token(PUB_DATE);
                     date = token.image.trim(); beginLine = token.beginLine; beginColumn = token.beginColumn;
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case RANGE_SEPARATOR:
+        case STOICHIOMETRY:
+        case POSITION:
+        case TAXID:
+        case NEGATIVE:
         case UNRESERVED_STRING:
         case QUOTED_STRING:
-          first = safeString();
+          first = safeAuthor();
           break;
         default:
           jj_la1[71] = jj_gen;
           ;
         }
         break;
+      case RANGE_SEPARATOR:
+      case STOICHIOMETRY:
+      case POSITION:
+      case TAXID:
+      case NEGATIVE:
       case UNRESERVED_STRING:
       case QUOTED_STRING:
-        first = safeString();
+        first = safeAuthor();
                                beginLine = token.beginLine; beginColumn = token.beginColumn;
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case PUB_DATE:
@@ -1679,9 +1918,14 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
                                                                                                                                                                date = token.image.trim();
             jj_consume_token(18);
             switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case RANGE_SEPARATOR:
+            case STOICHIOMETRY:
+            case POSITION:
+            case TAXID:
+            case NEGATIVE:
             case UNRESERVED_STRING:
             case QUOTED_STRING:
-              second = safeString();
+              second = safeAuthor();
                                                                                                                                                                                                                          first = first + " " +second;
               break;
             default:
@@ -1843,16 +2087,80 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
   final public java.lang.String safeString() throws ParseException {
  java.lang.String text;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case RANGE_SEPARATOR:
+      jj_consume_token(RANGE_SEPARATOR);
+                      text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case NEGATIVE:
+      jj_consume_token(NEGATIVE);
+                 text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case POSITION:
+      jj_consume_token(POSITION);
+                 text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case PUB_DATE:
+      jj_consume_token(PUB_DATE);
+                 text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case TAXID:
+      jj_consume_token(TAXID);
+              text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case STOICHIOMETRY:
+      jj_consume_token(STOICHIOMETRY);
+                      text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                    text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+                     text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
       break;
     case UNRESERVED_STRING:
       jj_consume_token(UNRESERVED_STRING);
-                                                                                                                                          text = token.image.trim();
+                                                                                                                                           text = token.image.trim();
       break;
     default:
       jj_la1[79] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+   {if (true) return text;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public java.lang.String safeAuthor() throws ParseException {
+ java.lang.String text;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case RANGE_SEPARATOR:
+      jj_consume_token(RANGE_SEPARATOR);
+                      text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case NEGATIVE:
+      jj_consume_token(NEGATIVE);
+                 text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case POSITION:
+      jj_consume_token(POSITION);
+                 text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case TAXID:
+      jj_consume_token(TAXID);
+              text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case STOICHIOMETRY:
+      jj_consume_token(STOICHIOMETRY);
+                      text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case QUOTED_STRING:
+      jj_consume_token(QUOTED_STRING);
+                     text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+      break;
+    case UNRESERVED_STRING:
+      jj_consume_token(UNRESERVED_STRING);
+                                                                                                                                           text = token.image.trim();
+      break;
+    default:
+      jj_la1[80] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1884,13 +2192,13 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[80];
+  final private int[] jj_la1 = new int[81];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x70,0x70,0x70,0x70,0x70,0x70,0x70,0xf0,0x70,0x140,0x140,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x140,0x70,0x70,0x70,0x70,0x70,0x70,0x240,0x70,0x70,0x840,0x840,0x70,0x70,0x4000,0x4000,0x1070,0x1070,0x8001,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x40,0x8,0x30,0x20000,0x10000,0x20000,0x20000,0x20000,0x20000,0x20000,0x30,0x30,0x20080,0x20080,0xb0,0x20000,0x20000,0x20000,0x30,};
+      jj_la1_0 = new int[] {0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0x880,0x880,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0x880,0xff8,0xff8,0xff8,0xff8,0xff8,0xff8,0x900,0xff8,0xff8,0x820,0x820,0xff8,0xff8,0x4000,0x4000,0x1ff8,0x1ff8,0x8001,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x2000,0x800,0x8,0x20000,0x20000,0x10000,0x20000,0x20000,0x20000,0x20000,0x20000,0x7e8,0x7e8,0x20010,0x20010,0x7f8,0x20000,0x20000,0x20000,0x7f8,0x7e8,};
    }
 
   /** Constructor with InputStream. */
@@ -1904,7 +2212,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 80; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 81; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1918,7 +2226,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 80; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 81; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -1928,7 +2236,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 80; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 81; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1938,7 +2246,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 80; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 81; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -1947,7 +2255,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 80; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 81; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1956,7 +2264,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 80; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 81; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -2012,7 +2320,7 @@ public abstract class MitabLineParser<T extends BinaryInteraction, P extends Par
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 81; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

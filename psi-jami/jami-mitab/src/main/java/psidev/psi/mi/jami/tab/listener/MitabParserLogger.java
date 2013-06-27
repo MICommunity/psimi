@@ -99,7 +99,4 @@ public class MitabParserLogger implements MitabParserListener{
         cvChangeLogger.log(Level.WARNING, dates.size() + " update dates have been found in ("+dates.iterator().next().getSourceLocator().toString()+"). Only one created date is expected per interaction so only the first update date will be loaded.");
     }
 
-    public void onEndOfFile() {
-        cvChangeLogger.log(Level.INFO, "Finished to read the file.");
-    }
 }

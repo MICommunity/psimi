@@ -69,25 +69,17 @@ TOKEN :
 
 TOKEN :
 {
-  < UNRESERVED_STRING:
-    //don't match single dash, that's an empty column
-      "-" (~["\"", "|", "(", ")", ":", "\t", "\n", "-"])+
-    |
-      ~["\"", "|", "(", ")", ":", "\t", "\n", "-"] (~["\"", "|", "(", ")", ":", "\t", "\n"])*
-    >
- |
-  < QUOTED_STRING:
-    "\"" 
-      ( ~["\""] | ("\\" "\"") )* 
-    "\""
-    >
- |
-  < EMPTY_COLUMN: "-" >
+  < PUB_DATE: (" ")* (["0"-"9"]){4} (" ")* >
 }
 
 TOKEN :
 {
-  < PUB_DATE: (" ")* (["0"-"9"]){4} (" ")* >
+  < STOICHIOMETRY: ("-")? (["0"-"9"])+ | (["0"-"9"])+ "." (["0"-"9"])+ >
+}
+
+TOKEN [IGNORE_CASE]:
+{
+ <POSITION : (" ")* "n" | "c" | ("<" ("-")? (["0"-"9"])+) | (">" ("-")? (["0"-"9"])+) | "?" | (("-")? (["0"-"9"])+ ".." ("-")? (["0"-"9"])+) | (("-")? (["0"-"9"])+) (" ")* >
 }
 
 TOKEN [IGNORE_CASE]:
@@ -100,14 +92,22 @@ TOKEN [IGNORE_CASE]:
  <NEGATIVE : (" ")* ("true" | "false" | ("\"" "true" | "false" "\"")) (" ")* >
 }
 
-TOKEN [IGNORE_CASE]:
-{
- <POSITION : (" ")* ("n" | "c" | "<" | ">" | "?" |  ["-"] (["0"-"9"])+ (" ")*) >
-}
-
 TOKEN :
 {
-  < STOICHIOMETRY: (["0"-"9"])+ | (["0"-"9"])+ "." (["0"-"9"])+ >
+  < UNRESERVED_STRING:
+    //don't match single dash, that's an empty column
+      "-" (~["\"", "|", "(", ")", ":", "\t", "\n", "-", ","])+
+    |
+      ~["\"", "|", "(", ")", ":", "\t", "\n", "-"] (~["\"", "|", "(", ")", ":", "\t", "\n"])*
+    >
+ |
+  < QUOTED_STRING:
+    "\"" 
+      ( ~["\""] | ("\\" "\"") )* 
+    "\""
+    >
+ |
+  < EMPTY_COLUMN: "-" >
 }
 
 TOKEN :
@@ -177,6 +177,7 @@ T MitabLine():
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
   P participantA;
   P participantB;
+  T interaction=null;
   int line;
   int columnA;
   int columnB;
@@ -236,7 +237,7 @@ T MitabLine():
         (<EMPTY_COLUMN> {stcA = Collections.EMPTY_LIST;} | stcA = stoichiometryList(39)) <COLUMN_SEPARATOR>
         (<EMPTY_COLUMN> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) <COLUMN_SEPARATOR>
         (<EMPTY_COLUMN> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) <COLUMN_SEPARATOR>
-        (<EMPTY_COLUMN> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42))
         ] // end MITAB 2.7
 
         ] //end MITAB 2.6
@@ -244,7 +245,7 @@ T MitabLine():
       {
         participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
         participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
-        return finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
+        interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
                                  conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
       }
     ]
@@ -258,12 +259,12 @@ T MitabLine():
 
     //line/file termination
     (
-        <LINE_SEPARATOR>
+        <LINE_SEPARATOR> {return interaction;}
       |
-        (<EOF> {reachEndOfFile(); getParserListener().onEndOfFile();})
+        (<EOF> {reachEndOfFile(); return interaction;})
     )
 )
-  { return null; }
+  { return interaction; }
 }
 
 Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
@@ -622,7 +623,7 @@ MitabFeature feature(int columnNumber):
     //type:range1,range2(text)
     type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" var = range(columnNumber)
     {ranges = new ArrayList<Range>(); if (var != null) {ranges.add(var);}}
-    (<RANGE_SEPARATOR> var = range(columnNumber) {if (var != null) {ranges.add(var);}})* [ text = safeString() ]
+    (<RANGE_SEPARATOR> var = range(columnNumber) {if (var != null) {ranges.add(var);}})* [ "(" text = safeString() ")" ]
     {
         feature = new MitabFeature(type);
         feature.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
@@ -951,8 +952,8 @@ MitabAuthor author():
 }
 {
   try{
-     (( <PUB_DATE> {date = token.image.trim(); beginLine = token.beginLine; beginColumn = token.beginColumn;} [ first = safeString() ])
-     | ( first = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ ( (<PUB_DATE> {date = token.image.trim();}) | ("(" <PUB_DATE> {date = token.image.trim();} ")") [ second = safeString() {first = first + " " +second; } ]) ]))
+     (( <PUB_DATE> {date = token.image.trim(); beginLine = token.beginLine; beginColumn = token.beginColumn;} [ first = safeAuthor() ])
+     | ( first = safeAuthor() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ ( (<PUB_DATE> {date = token.image.trim();}) | ("(" <PUB_DATE> {date = token.image.trim();} ")") [ second = safeAuthor() {first = first + " " +second; } ]) ]))
      { beginLine = token.beginLine; beginColumn = token.beginColumn;
        if (date == null){auth = new MitabAuthor(first);}
        else{ auth = new MitabAuthor(first, date);}
@@ -1064,7 +1065,25 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
 java.lang.String safeString():
 {java.lang.String text;}
 {
-  (<QUOTED_STRING> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());} | <UNRESERVED_STRING> {text = token.image.trim();})
+  (<RANGE_SEPARATOR> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <NEGATIVE> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <POSITION> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <PUB_DATE> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <TAXID> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <STOICHIOMETRY> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+  | <QUOTED_STRING> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());} | <UNRESERVED_STRING> {text = token.image.trim();})
+  {return text;}
+}
+
+java.lang.String safeAuthor():
+{java.lang.String text;}
+{
+  (<RANGE_SEPARATOR> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <NEGATIVE> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <POSITION> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <TAXID> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+   | <STOICHIOMETRY> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());}
+  | <QUOTED_STRING> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());} | <UNRESERVED_STRING> {text = token.image.trim();})
   {return text;}
 }
 
