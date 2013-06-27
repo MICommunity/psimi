@@ -1,9 +1,12 @@
-package psidev.psi.mi.jami.enricher.mockfetcher.organism;
+package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism;
 
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.model.Organism;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,10 @@ public class MockOrganismFetcher
         else return localOrganisms.get(""+identifier);
     }
 
+    public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+        return Collections.EMPTY_LIST;
+    }
+
 
     public void addNewOrganism(String taxID, Organism organism){
         if(organism == null) return;
@@ -42,9 +49,5 @@ public class MockOrganismFetcher
 
     public void clearOrganisms(){
         localOrganisms.clear();
-    }
-
-    public String getService() {
-        return "Mock Organism Fetcher";
     }
 }
