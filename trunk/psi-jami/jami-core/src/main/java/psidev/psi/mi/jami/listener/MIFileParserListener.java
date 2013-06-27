@@ -35,8 +35,9 @@ public interface MIFileParserListener {
      * At least a shortname is expected for each CvTerm so such a term may be loaded with an automatically generated shortname.
      * @param term
      * @param context
+     * @param message
      */
-    public void onMissingCvTermName(CvTerm term, FileSourceContext context);
+    public void onMissingCvTermName(CvTerm term, FileSourceContext context, String message);
 
     /**
      * Listen to an event fired when an interactor is read and does not have any names.
