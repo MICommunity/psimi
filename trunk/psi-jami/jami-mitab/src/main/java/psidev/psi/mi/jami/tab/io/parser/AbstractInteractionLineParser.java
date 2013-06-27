@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
@@ -66,9 +67,9 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
     }
 
     @Override
-    void fireOnInvalidSyntax(int numberLine, int numberColumn, int mitabColumn, boolean isRange, Exception e) {
+    void fireOnInvalidSyntax(int numberLine, int numberColumn, int mitabColumn, Exception e) {
         if (this.listener != null){
-            this.listener.onInvalidSyntax(numberLine, numberColumn, mitabColumn, e);
+            this.listener.onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(numberLine, numberColumn, mitabColumn)), e);
         }
     }
 
@@ -137,7 +138,7 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
             if (this.listener != null){
                 listener.onMissingInteractorIdentifierColumns(line, column, mitabColumn);
             }
-            shortName = "unknown name";
+            shortName = MitabUtils.UNKNOWN_NAME;
         }
         else{
             // first retrieve what will be the name of the interactor
@@ -184,11 +185,15 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         initialiseOrganism(taxid, interactor);
         // if several types fire event
         if (type.size() > 1 && listener != null){
-            listener.onSeveralCvTermFound(type);
+            listener.onSeveralCvTermsFound(type, type.iterator().next(), type.size() + " interactor types were found and only the first one will be loaded.");
         }
 
         // set source locator
         ((FileSourceContext)interactor).setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
+
+        if (!hasAlias){
+            listener.onMissingInteractorName(interactor, (FileSourceContext)interactor);
+        }
 
         return interactor;
     }
@@ -198,9 +203,6 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         MitabAlias shortName = MitabUtils.findBestShortNameFromAliases(aliases);
         if (shortName != null){
             return shortName.getName();
-        }
-        else if (listener != null){
-            listener.onEmptyAliases(line, column, mitabColumn);
         }
 
         MitabXref shortNameFromAltid = MitabUtils.findBestShortNameFromAlternativeIdentifiers(altid);
@@ -321,7 +323,7 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         MitabChecksum checksum = new MitabChecksum(ref.getDatabase(), ref.getId(), ref.getSourceLocator());
         interactor.getChecksums().add(checksum);
         if (listener != null){
-            listener.onChecksumFoundInAlternativeIds(ref, ref.getSourceLocator().getLineNumber(), ref.getSourceLocator().getCharNumber(), ((MitabSourceLocator)ref.getSourceLocator()).getColumnNumber());
+            listener.onSyntaxWarning(ref, "Found a Checksum in the alternative identifiers column. Will load it as a checksum.");
         }
     }
 
@@ -330,7 +332,7 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         MitabAlias alias = new MitabAlias(ref.getDatabase().getShortName(), ref.getQualifier(), ref.getId(), ref.getSourceLocator());
         interactor.getAliases().add(alias);
         if (listener != null){
-            listener.onAliasFoundInAlternativeIds(ref, ref.getSourceLocator().getLineNumber(), ref.getSourceLocator().getCharNumber(), ((MitabSourceLocator)ref.getSourceLocator()).getColumnNumber());
+            listener.onSyntaxWarning(ref, "Found an Alias in the alternative identifiers column. Will load it as a checksum.");
         }
     }
 
@@ -339,7 +341,7 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         MitabChecksum checksum = new MitabChecksum(alias.getType(), alias.getName(), alias.getSourceLocator());
         interactor.getChecksums().add(checksum);
         if (listener != null){
-            listener.onChecksumFoundInAliases(alias, alias.getSourceLocator().getLineNumber(), alias.getSourceLocator().getCharNumber(), ((MitabSourceLocator)alias.getSourceLocator()).getColumnNumber());
+            listener.onSyntaxWarning(alias, "Found a Checksum in the aliases column. Will load it as a checksum.");
         }
     }
 }

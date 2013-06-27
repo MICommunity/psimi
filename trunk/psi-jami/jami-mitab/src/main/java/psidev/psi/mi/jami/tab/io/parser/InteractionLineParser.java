@@ -44,15 +44,14 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         // first identify interactor
         Interactor interactor = createInteractorFrom(uniqueId, altid, aliases, taxid, type, xref, checksum, line, column, mitabColumn);
         MitabParticipant participant = null;
+        boolean hasInteractorDetails = true;
 
         if (interactor == null && !hasParticipantFields){
             return participant;
         }
         else if (interactor == null){
             interactor = InteractorUtils.createUnknownBasicInteractor();
-            if (getParserListener() != null){
-                getParserListener().onParticipantWithoutInteractorDetails(line, column, mitabColumn);
-            }
+            hasInteractorDetails = false;
         }
 
         if (hasParticipantFields){
@@ -60,7 +59,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             // set biorole
             if (bioRole.size() > 1){
                 if (getParserListener() != null){
-                    getParserListener().onSeveralCvTermFound(bioRole);
+                    getParserListener().onSeveralCvTermsFound(bioRole, bioRole.iterator().next(), bioRole.size() + " biological roles found in one participant. Only the first one will be loaded");
                 }
                 bioRoleTerm = bioRole.iterator().next();
             }
@@ -93,6 +92,10 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             participant.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
         }
 
+        if (!hasInteractorDetails && getParserListener() != null){
+            getParserListener().onParticipantWithoutInteractor(participant, participant);
+        }
+
         return participant;
     }
 
@@ -102,13 +105,8 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
-        if (A == null && B == null){
-            if (getParserListener() != null){
-                getParserListener().onInteractionWithoutParticipants(line);
-            }
-            if (!hasInteractionFields){
-                return interaction;
-            }
+        if (A == null && B == null && !hasInteractionFields){
+            return interaction;
         }
 
         // create interaction with participants
@@ -117,7 +115,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         // set interaction type
         if (interactionType.size() > 1){
             if (getParserListener() != null){
-                getParserListener().onSeveralCvTermFound(interactionType);
+                getParserListener().onSeveralCvTermsFound(interactionType, interactionType.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
             }
             interaction.setInteractionType(interactionType.iterator().next());
         }
@@ -129,7 +127,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         // set expansion method
         if (expansion.size() > 1){
             if (getParserListener() != null){
-                getParserListener().onSeveralCvTermFound(expansion);
+                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
             }
             interaction.setComplexExpansion(expansion.iterator().next());
         }
@@ -162,6 +160,10 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         }
         // checksum
         interaction.getChecksums().addAll(checksumI);
+
+        if (A == null && B == null && getParserListener() != null){
+            getParserListener().onInteractionWithoutParticipants(interaction, interaction);
+        }
 
         return interaction;
     }
