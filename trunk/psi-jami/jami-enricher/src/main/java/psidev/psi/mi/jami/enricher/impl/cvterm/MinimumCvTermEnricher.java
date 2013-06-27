@@ -1,19 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.model.CvTerm;
 
 /**
  * Provides maximum enrichment of the CvTerm.
@@ -40,7 +29,7 @@ public class MinimumCvTermEnricher
         }
 
         //Identifiers
-        Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
+        /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
                 cvTermFetched.getIdentifiers(),
                 cvTermToEnrich.getIdentifiers(),
                 new DefaultXrefComparator());
@@ -48,7 +37,7 @@ public class MinimumCvTermEnricher
         for(Xref xrefIdentifier: subtractedIdentifiers){
             cvTermToEnrich.getIdentifiers().add(xrefIdentifier);
             if (listener != null) listener.onAddedIdentifier(cvTermToEnrich, xrefIdentifier);
-        }
+        }  */
     }
 
 }

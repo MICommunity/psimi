@@ -21,4 +21,10 @@ public interface ParticipantEnricher {
     public void setProteinEnricher(ProteinEnricher proteinEnricher);
     public ProteinEnricher getProteinEnricher();
 
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+    public CvTermEnricher getCvTermEnricher();
+
+    public void setFeatureEnricher(FeatureEnricher featureEnricher);
+    public FeatureEnricher getFeatureEnricher();
+
 }

@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermUpdater;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,4 +14,9 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 public class MaximumFeatureUpdater
         extends MinimumFeatureUpdater
         implements FeatureEnricher {
+
+    public CvTermEnricher getCvTermEnricher(){
+        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermUpdater();
+        return cvTermEnricher;
+    }
 }
