@@ -37,5 +37,5 @@ public interface MIFileDataSource extends MIDataSource{
      * @param listener
      * @return
      */
-    public boolean validateSyntax(MIFileParserListener listener);
+    public <T extends MIFileParserListener> boolean validateSyntax(T listener);
 }
