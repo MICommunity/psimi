@@ -16,13 +16,7 @@ public interface MIFileDataSource extends MIDataSource{
      * The MIFileParserListener can be null if not initialised
      * @return the file parser listener that listen to the different parsing events
      */
-    public <T extends MIFileParserListener> T getFileParserListener();
-
-    /**
-     * Sets the MIFileParserListener
-     * @param listener
-     */
-    public <T extends MIFileParserListener> void setMIFileParserListener(T listener);
+    public MIFileParserListener getFileParserListener();
 
     /**
      * Validate the syntax of this MIFileDataSource.
@@ -37,5 +31,5 @@ public interface MIFileDataSource extends MIDataSource{
      * @param listener
      * @return
      */
-    public <T extends MIFileParserListener> boolean validateSyntax(T listener);
+    public boolean validateSyntax(MIFileParserListener listener);
 }
