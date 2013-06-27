@@ -1,19 +1,15 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
-import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-
-
-import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.

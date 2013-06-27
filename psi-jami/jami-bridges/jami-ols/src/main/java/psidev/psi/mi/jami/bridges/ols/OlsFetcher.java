@@ -54,7 +54,13 @@ public class OlsFetcher
         dbMap.put("go","GO");
     }
 
-
+    /**
+     * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
+     * @param termIdentifier    The identifier for the CvTerm to fetch.
+     * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
     public CvTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
             throws BridgeFailedException {
 
@@ -73,6 +79,13 @@ public class OlsFetcher
         return getCvTermByIdentifier(termIdentifier, ontologyDatabase);
     }
 
+    /**
+     * Uses the identifier and a cvTerm denoting the database to search to fetch a complete from of the term.
+     * @param termIdentifier     The identifier for the CvTerm to fetch
+     * @param ontologyDatabase  The cvTerm of the ontology to search for.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
     public CvTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException {
 
@@ -97,10 +110,10 @@ public class OlsFetcher
 
 
     /**
-     *
-     * @param searchName
-     * @param ontologyDatabaseName
-     * @return
+     * Uses the name of the term and the name of the database to search for a complete form of the term.
+     * @param searchName    A full or short name for the term to be searched for.
+     * @param ontologyDatabaseName  The ontology to search for the term in.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
     public CvTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
@@ -214,8 +227,6 @@ public class OlsFetcher
         return null;
     }
 
-
-
     /**
      * Uses the identifier to fetch the full name.
      *
@@ -261,9 +272,6 @@ public class OlsFetcher
 
         return cvTermFetched;
     }
-
-
-
 
     /**
      * Retrieve the metadata for an entry.
@@ -364,5 +372,30 @@ public class OlsFetcher
         }else{
             return null;
         }
+    }
+
+
+
+
+
+
+    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers)
+            throws BridgeFailedException {
+        return null;
+    }
+
+    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String, CvTerm> identifiers)
+            throws BridgeFailedException {
+        return null;
+    }
+
+    public Collection<CvTerm> getCvTermsByExactNames(HashMap<String, String> termNames)
+            throws BridgeFailedException {
+        return null;
+    }
+
+    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames)
+            throws BridgeFailedException {
+        return null;
     }
 }

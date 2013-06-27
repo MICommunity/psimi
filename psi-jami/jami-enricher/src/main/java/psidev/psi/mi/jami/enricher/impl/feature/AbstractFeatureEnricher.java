@@ -18,18 +18,15 @@ public abstract class AbstractFeatureEnricher
 
     protected FeatureEnricherListener listener;
 
-    protected Feature featureFetched;
+
 
 
     public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew){
 
-        featureFetched = fetchFeature(featureToEnrich);
-        if(featureFetched == null){
-            return false;
-        }
+        if(featureToEnrich == null) throw new IllegalArgumentException("Feature enricher was passed a null feature.");
 
-        /*if (! areNoConflicts(proteinToEnrich) ) return false;
 
+        /*
         if (getOrganismEnricher().getFetcher() instanceof MockOrganismFetcher){
             MockOrganismFetcher organismFetcher = (MockOrganismFetcher)getOrganismEnricher().getFetcher();
             organismFetcher.clearOrganisms();

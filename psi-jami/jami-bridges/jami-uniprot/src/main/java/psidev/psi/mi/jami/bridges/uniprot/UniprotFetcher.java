@@ -174,7 +174,7 @@ public class UniprotFetcher
             EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
 
             while(entries.hasNext()){
-                UniProtEntry entry= entries.next();
+                UniProtEntry entry = entries.next();
                 Feature feature = UniprotTranslationUtil.findFeatureInEntry(entry, identifier);
                 proteins.add(UniprotTranslationUtil.getProteinFeatureFromEntry(entry, feature, identifier));
             }

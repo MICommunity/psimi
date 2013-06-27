@@ -72,7 +72,7 @@ public class UniprotFetcherTest {
 
         for(String identifier : identifiers){
             //assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
-            assertTrue(fetcher.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
+            assertTrue(UniprotFetcher.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
 
             Collection<Protein> proteins = fetcher.getProteinsByIdentifier(identifier);
             for(Protein protein : proteins){
@@ -80,7 +80,7 @@ public class UniprotFetcherTest {
                 assertNotNull(protein.getOrganism());
                 assertNotNull(protein.getSequence());
                 assertTrue(protein.getXrefs().size() == 1);
-                assertNull(protein.getRogid());
+                assertEquals(2 , protein.getChecksums().size());
             }
         }
     }
@@ -92,7 +92,6 @@ public class UniprotFetcherTest {
      * Check that the regular expression catches them,
      * check that they return a single protein.
      *
-
      * @throws BridgeFailedException
      */
     @Test
@@ -103,12 +102,16 @@ public class UniprotFetcherTest {
                 "PRO_0000030311",
                 "P19838-PRO_0000030311",
                 "PRO_0000021413",
+                "PRO-0000021413",
                 "PRO_0000021416",
                 "PRO_0000021449"};
 
         for(String identifier : identifiers){
-            assertTrue(fetcher.UNIPROT_PRO_REGEX.matcher(identifier).find());
-            assertEquals(1, fetcher.getProteinsByIdentifier(identifier).size());
+            log.warn("testing entry: "+identifier);
+            assertTrue(UniprotFetcher.UNIPROT_PRO_REGEX.matcher(identifier).find());
+            Collection<Protein> proteins = fetcher.getProteinsByIdentifier(identifier);
+            assertNotNull(proteins);
+            assertEquals(1, proteins.size());
         }
     }
 

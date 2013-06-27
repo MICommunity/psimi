@@ -56,8 +56,6 @@ public class UniprotTranslationUtil {
     static final String ISOFORM_PARENT_MI = "MI:0243";
     static final String ISOFORM_PARENT = "isoform-parent";
 
-
-
     private final static Logger log = LoggerFactory.getLogger(UniprotTranslationUtil.class.getName());
 
     /**
@@ -141,7 +139,7 @@ public class UniprotTranslationUtil {
             }
         }
 
-        //TODO review the aliases
+
         //Aliases
         if(e.getGenes() != null && e.getGenes().size() > 0){
             for(Gene g : e.getGenes()){
@@ -164,7 +162,6 @@ public class UniprotTranslationUtil {
                     }
                 }
                 //Locus Names
-                //TODO check these are equivalent
                 if(g.getOrderedLocusNames() != null
                         && g.getOrderedLocusNames().size() > 0){
                     for(OrderedLocusName oln : g.getOrderedLocusNames()){
@@ -519,17 +516,17 @@ public class UniprotTranslationUtil {
     public static Feature findFeatureInEntry(UniProtEntry entry, String identifier){
         Collection<ChainFeature> chainFeatures = entry.getFeatures( FeatureType.CHAIN );
         for(ChainFeature f : chainFeatures){
-            if(f.getFeatureId().getValue().equals(identifier)) return f;
+            if(f.getFeatureId().getValue().contains(identifier)) return f;
         }
 
         Collection<PeptideFeature> peptideFeatures = entry.getFeatures( FeatureType.PEPTIDE );
         for(PeptideFeature f : peptideFeatures){
-            if(f.getFeatureId().getValue().equals(identifier))return f;
+            if(f.getFeatureId().getValue().contains(identifier))return f;
         }
 
         Collection<ProPepFeature> proPepFeatures = entry.getFeatures( FeatureType.PROPEP );
         for(ProPepFeature f : proPepFeatures){
-            if(f.getFeatureId().getValue().equals(identifier)) return f;
+            if(f.getFeatureId().getValue().contains(identifier)) return f;
         }
         return null;
     }
@@ -588,7 +585,6 @@ public class UniprotTranslationUtil {
                     if(reactomeDB.hasReactomeAccessionNumber()) id = reactomeDB.getReactomeAccessionNumber().getValue();
                     break;
                 case ENSEMBL :
-                    //Todo check that the order of these is correct
                     Ensembl ensemblDB = (Ensembl)dbxref;
                     if(ensemblDB.hasEnsemblProteinIdentifier()) id = ensemblDB.getEnsemblProteinIdentifier().getValue();
                     else if(ensemblDB.hasEnsemblTranscriptIdentifier()) id = ensemblDB.getEnsemblTranscriptIdentifier().getValue();
@@ -637,8 +633,8 @@ public class UniprotTranslationUtil {
                     o.setCommonName(e.getOrganism().getCommonName().getValue());
                 if(e.getOrganism().getScientificName() != null)
                     o.setScientificName(e.getOrganism().getScientificName().getValue());
-                if(e.getOrganism().hasSynonym())    //TODO check the type on an organism alias
-                    o.getAliases().add(AliasUtils.createAlias(null, e.getOrganism().getSynonym().getValue()));
+                if(e.getOrganism().hasSynonym())
+                    o.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, e.getOrganism().getSynonym().getValue()));
             }catch(NumberFormatException n){
                 throw new IllegalArgumentException("Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] " +
                         "has a TaxonomyID which could not be cast to an integer: ("+id+").",n);

@@ -2,11 +2,8 @@ package psidev.psi.mi.jami.enricher.impl.featureevidence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.FeatureEvidenceEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.featureevidence.listener.FeatureEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -25,8 +22,7 @@ import java.util.List;
  * Date: 13/06/13
  * Time: 16:55
  */
-public abstract  class AbstractFeatureEvidenceEnricher
-        implements FeatureEvidenceEnricher{
+public abstract  class AbstractFeatureEvidenceEnricher{
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractFeatureEvidenceEnricher.class.getName());
 
@@ -35,7 +31,7 @@ public abstract  class AbstractFeatureEvidenceEnricher
 
     protected CvTermEnricher cvTermEnricher;
 
-    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew){
+    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew) throws EnricherException {
 
         if(featureEvidenceToEnrich ==  null) {
             if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
@@ -123,14 +119,6 @@ public abstract  class AbstractFeatureEvidenceEnricher
     }
 
     protected abstract boolean processFeatureEvidence(FeatureEvidence featureEvidenceToEnrich);
-
-    public void setFeatureEvidenceEnricherListener(FeatureEvidenceEnricherListener featureEvidenceEnricherListener) {
-        this.listener = featureEvidenceEnricherListener;
-    }
-
-    public FeatureEvidenceEnricherListener getFeatureEvidenceEnricherListener() {
-        return listener;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
         this.cvTermEnricher = cvTermEnricher;
