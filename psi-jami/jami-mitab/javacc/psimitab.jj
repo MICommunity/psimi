@@ -1067,10 +1067,10 @@ java.lang.String safePosition():
   (<POSITION> {text.append(token.image);}
    | (<LESSTHAN> {text.append(token.image);} (<DASH>)? {text.append(token.image);} <NUMBER> {text.append(token.image);})
    | (<GREATERTHAN> {text.append(token.image);} (<DASH>)? {text.append(token.image);} <NUMBER> {text.append(token.image);})
-   | LOOKAHEAD(3) ( [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);} ".." {text.append(token.image);}
-        [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);})
-   | <PUB_DATE> {text.append(token.image);}
-   | [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);})
+   | ( [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);}
+        [".." {text.append(token.image);}
+            [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);}])
+   | <PUB_DATE> {text.append(token.image);})
   {return text.toString();}
 }
 
