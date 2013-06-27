@@ -13,21 +13,21 @@ public interface MitabLineParserConstants {
   /** RegularExpression Id. */
   int RANGE_SEPARATOR = 3;
   /** RegularExpression Id. */
-  int UNRESERVED_STRING = 4;
+  int PUB_DATE = 4;
   /** RegularExpression Id. */
-  int QUOTED_STRING = 5;
+  int STOICHIOMETRY = 5;
   /** RegularExpression Id. */
-  int EMPTY_COLUMN = 6;
+  int POSITION = 6;
   /** RegularExpression Id. */
-  int PUB_DATE = 7;
+  int TAXID = 7;
   /** RegularExpression Id. */
-  int TAXID = 8;
+  int NEGATIVE = 8;
   /** RegularExpression Id. */
-  int NEGATIVE = 9;
+  int UNRESERVED_STRING = 9;
   /** RegularExpression Id. */
-  int POSITION = 10;
+  int QUOTED_STRING = 10;
   /** RegularExpression Id. */
-  int STOICHIOMETRY = 11;
+  int EMPTY_COLUMN = 11;
   /** RegularExpression Id. */
   int COMMENT = 12;
   /** RegularExpression Id. */
@@ -46,14 +46,14 @@ public interface MitabLineParserConstants {
     "\"\\r\"",
     "\"\\f\"",
     "\",\"",
+    "<PUB_DATE>",
+    "<STOICHIOMETRY>",
+    "<POSITION>",
+    "<TAXID>",
+    "<NEGATIVE>",
     "<UNRESERVED_STRING>",
     "<QUOTED_STRING>",
     "\"-\"",
-    "<PUB_DATE>",
-    "<TAXID>",
-    "<NEGATIVE>",
-    "<POSITION>",
-    "<STOICHIOMETRY>",
     "<COMMENT>",
     "\"|\"",
     "\"\\t\"",

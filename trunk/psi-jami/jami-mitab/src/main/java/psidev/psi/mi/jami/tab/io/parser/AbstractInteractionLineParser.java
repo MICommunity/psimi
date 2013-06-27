@@ -151,19 +151,19 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         }
 
         // find interactor type
-        interactor = interactorFactory.createInteractorFromInteractorTypes(type, shortName);
+        interactor = getInteractorFactory().createInteractorFromInteractorTypes(type, shortName);
         // we don't have an interactor type, use identifiers
         if (interactor == null && hasId){
-            interactor = interactorFactory.createInteractorFromIdentityXrefs(!uniqueId.isEmpty() ? uniqueId : altid, shortName);
+            interactor = getInteractorFactory().createInteractorFromIdentityXrefs(!uniqueId.isEmpty() ? uniqueId : altid, shortName);
 
             // we still don't know which interactor it is
             if (interactor == null){
-                interactor = interactorFactory.createInteractor(shortName, null);
+                interactor = getInteractorFactory().createInteractor(shortName, null);
             }
         }
         // we don't have an interactor type, and we don't have identifiers, create an unknown participant
         else if (interactor == null){
-            interactor = interactorFactory.createInteractor(shortName, null);
+            interactor = getInteractorFactory().createInteractor(shortName, null);
         }
 
         if (hasId){

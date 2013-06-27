@@ -38,6 +38,4 @@ public interface MitabParserListener extends MIFileParserListener{
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates);
 
     public void onSeveralUpdatedDateFound(Collection<MitabDate> dates);
-
-    public void onEndOfFile();
 }

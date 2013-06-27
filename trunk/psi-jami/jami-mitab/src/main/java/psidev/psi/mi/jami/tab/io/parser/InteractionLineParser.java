@@ -131,7 +131,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             }
             interaction.setComplexExpansion(expansion.iterator().next());
         }
-        else if (expansion.isEmpty()){
+        else if (!expansion.isEmpty()){
             interaction.setComplexExpansion(expansion.iterator().next());
         }
         // add xrefs
