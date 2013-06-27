@@ -1,7 +1,10 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermEnricher;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
 import uk.ac.ebi.intact.commons.util.diff.DiffCalculator;
 
@@ -18,7 +21,7 @@ public class MaximumFeatureEnricher
 
 
     @Override
-    public boolean processFeature(Feature featureToEnrich) {
+    public void processFeature(Feature featureToEnrich) {
         super.processFeature(featureToEnrich);
 
         featureToEnrich.getRanges();
@@ -29,6 +32,13 @@ public class MaximumFeatureEnricher
 
         //
 
-        return true;
+        return;
     }
+
+
+    public CvTermEnricher getCvTermEnricher(){
+        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermEnricher();
+        return cvTermEnricher;
+    }
+
 }

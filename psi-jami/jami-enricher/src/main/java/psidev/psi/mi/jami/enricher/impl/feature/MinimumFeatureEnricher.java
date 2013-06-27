@@ -1,7 +1,10 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,9 +19,14 @@ public class MinimumFeatureEnricher
 
 
     @Override
-    public boolean processFeature(Feature featureToEnrich) {
+    public void processFeature(Feature featureToEnrich) {
 
         //add feature type
-        return false;
+        return;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermEnricher();
+        return cvTermEnricher;
     }
 }

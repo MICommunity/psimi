@@ -1,9 +1,13 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
 
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,40 +21,32 @@ public abstract class AbstractFeatureEnricher
 
 
     protected FeatureEnricherListener listener;
+    protected CvTermEnricher cvTermEnricher;
 
-
-
-
-    public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew){
-
+    public void enrichFeature(Feature featureToEnrich) throws EnricherException {
         if(featureToEnrich == null) throw new IllegalArgumentException("Feature enricher was passed a null feature.");
 
-
-        /*
-        if (getOrganismEnricher().getFetcher() instanceof MockOrganismFetcher){
-            MockOrganismFetcher organismFetcher = (MockOrganismFetcher)getOrganismEnricher().getFetcher();
-            organismFetcher.clearOrganisms();
-            organismFetcher.addNewOrganism(""+proteinToEnrich.getOrganism().getTaxId(), proteinFetched.getOrganism());
+        processFeature(featureToEnrich);
+        if(featureToEnrich instanceof FeatureEvidence){
+            processFeatureEvidence((FeatureEvidence)featureToEnrich);
         }
 
-        getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
-         */
-        processFeature(featureToEnrich);
-
         if(listener != null) listener.onFeatureEnriched(featureToEnrich, "Success. Feature enriched.");
-        return true;
     }
 
-    public abstract boolean processFeature(Feature featureToEnrich);
-
-    public Feature fetchFeature(Feature featureToEnrich) {
-        //if(getFetcher() == null) throw new IllegalStateException("FeatureFetcher has not been provided.");
-        if(featureToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null feature.");
-
-        if(listener != null) listener.onFeatureEnriched(featureToEnrich,
-                "Failed. No feature fetcher has been implemented.");
-        return null;
+    public void enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew){
     }
+
+
+    public abstract void processFeature(Feature featureToEnrich);
+
+
+    public void processFeatureEvidence(FeatureEvidence featureEvidenceToEnrich) throws EnricherException {
+        for(CvTerm cvTerm : featureEvidenceToEnrich.getDetectionMethods()){
+            if(getCvTermEnricher() != null) getCvTermEnricher().enrichCvTerm(cvTerm);
+        }
+    }
+
 
     public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener) {
         this.listener = featureEnricherListener;
@@ -58,5 +54,13 @@ public abstract class AbstractFeatureEnricher
 
     public FeatureEnricherListener getFeatureEnricherListener() {
         return listener;
+    }
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+        this.cvTermEnricher = cvTermEnricher;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
     }
 }

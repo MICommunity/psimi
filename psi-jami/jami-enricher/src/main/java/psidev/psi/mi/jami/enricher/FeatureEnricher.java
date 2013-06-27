@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
 
@@ -12,12 +13,13 @@ import psidev.psi.mi.jami.model.Feature;
  */
 public interface FeatureEnricher {
 
-    public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew);
+    public void enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew);
 
+    public void enrichFeature(Feature featureToEnrich) throws EnricherException;
 
     public void setFeatureEnricherListener(FeatureEnricherListener listener);
     public FeatureEnricherListener getFeatureEnricherListener();
 
-    //public void setFeatureEvidenceEnricher(FeatureEvidenceEnricher featureEvidenceEnricher);
-    //public FeatureEvidenceEnricher getFeatureEvidenceEnricher();
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+    public CvTermEnricher getCvTermEnricher();
 }

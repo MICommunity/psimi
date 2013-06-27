@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherCounter;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.bridges.MockProteinFetcher;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;

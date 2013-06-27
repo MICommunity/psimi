@@ -6,7 +6,7 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.bridges.MockProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 
