@@ -26,15 +26,15 @@ import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 public abstract class MitabLineParser<T extends BinaryInteraction, P extends Participant> {
 	
-	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
-	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange, e);
+	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e) {
+	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, e);
 	}
 
 	public abstract MitabParserListener getParserListener();
 
 	public abstract void setParserListener(MitabParserListener listener);
 
-    abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, boolean isRange, Exception e);
+    abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, Exception e);
 
     abstract void reachEndOfFile();
 
@@ -64,6 +64,11 @@ SKIP :
 
 TOKEN :
 {
+  < RANGE_SEPARATOR: ",">
+}
+
+TOKEN :
+{
   < UNRESERVED_STRING:
     //don't match single dash, that's an empty column
       "-" (~["\"", "|", "(", ")", ":", "\t", "\n", "-"])+
@@ -82,12 +87,12 @@ TOKEN :
 
 TOKEN :
 {
-  < PUB_DATE: (["0"-"9"]){4} >
+  < PUB_DATE: (" ")* (["0"-"9"]){4} (" ")* >
 }
 
 TOKEN [IGNORE_CASE]:
 {
- <TAXID : "taxid">
+ <TAXID : (" ")* "taxid" (" ")*>
 }
 
 TOKEN [IGNORE_CASE]:
@@ -123,11 +128,6 @@ TOKEN :
 TOKEN :
 {
   < LINE_SEPARATOR: "\n">
-}
-
-TOKEN :
-{
-  < RANGE_SEPARATOR: ",">
 }
 
 T MitabLine():
@@ -189,54 +189,54 @@ T MitabLine():
       ( <COMMENT> )
     |
       (
-        (<EMPTY_COLUMN> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} "\t"
-        (<EMPTY_COLUMN> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} "\t"
-        (<EMPTY_COLUMN> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) "\t"
-        (<EMPTY_COLUMN> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) "\t"
-        (<EMPTY_COLUMN> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) "\t"
-        (<EMPTY_COLUMN> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) "\t"
-        (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) "\t"
-        (<EMPTY_COLUMN> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) "\t"
-        (<EMPTY_COLUMN> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9)) "\t"
-        (<EMPTY_COLUMN> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) "\t"
-        (<EMPTY_COLUMN> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) "\t"
-        (<EMPTY_COLUMN> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) "\t"
-        (<EMPTY_COLUMN> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) "\t"
-        (<EMPTY_COLUMN> {interactionId = Collections.EMPTY_LIST;} | interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14)) "\t"
+        (<EMPTY_COLUMN> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {interactionId = Collections.EMPTY_LIST;} | interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14)) <COLUMN_SEPARATOR>
         (<EMPTY_COLUMN> {conf = Collections.EMPTY_LIST;} | conf = confidences())
 
         [ //starting MITAB 2.6
-        "\t" //end of confidences delimiter
-        (<EMPTY_COLUMN> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) "\t"
-        (<EMPTY_COLUMN> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) "\t"
-        (<EMPTY_COLUMN> {bioRoleB = Collections.EMPTY_LIST;} | bioRoleB = cvTerms(18)) "\t"
-        (<EMPTY_COLUMN> {expRoleA = Collections.EMPTY_LIST;} | expRoleA = cvTerms(19)) "\t"
-        (<EMPTY_COLUMN> {expRoleB = Collections.EMPTY_LIST;} | expRoleB = cvTerms(20)) "\t"
-        (<EMPTY_COLUMN> {typeA = Collections.EMPTY_LIST;} | typeA = cvTerms(21)) "\t"
-        (<EMPTY_COLUMN> {typeB = Collections.EMPTY_LIST;} | typeB = cvTerms(22)) "\t"
-        (<EMPTY_COLUMN> {xrefA = Collections.EMPTY_LIST;} | xrefA = ids(null, false, 23)) "\t"
-        (<EMPTY_COLUMN> {xrefB = Collections.EMPTY_LIST;} | xrefB = ids(null, false, 24)) "\t"
-        (<EMPTY_COLUMN> {xrefI = Collections.EMPTY_LIST;} | xrefI = ids(null, false, 25)) "\t"
-        (<EMPTY_COLUMN> {annotA = Collections.EMPTY_LIST;} | annotA = annotations(26)) "\t"
-        (<EMPTY_COLUMN> {annotB = Collections.EMPTY_LIST;} | annotB = annotations(27)) "\t"
-        (<EMPTY_COLUMN> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) "\t"
-        (<EMPTY_COLUMN> {host = Collections.EMPTY_LIST;} | host = taxId(29)) "\t"
-        (<EMPTY_COLUMN> {params = Collections.EMPTY_LIST;} | params = parameters()) "\t"
-        (<EMPTY_COLUMN> {created = Collections.EMPTY_LIST;} | created = dates(31)) "\t"
-        (<EMPTY_COLUMN> {update = Collections.EMPTY_LIST;} | update = dates(32)) "\t"
-        (<EMPTY_COLUMN> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) "\t"
-        (<EMPTY_COLUMN> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) "\t"
-        (<EMPTY_COLUMN> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) "\t"
+        <COLUMN_SEPARATOR> //end of confidences delimiter
+        (<EMPTY_COLUMN> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {bioRoleB = Collections.EMPTY_LIST;} | bioRoleB = cvTerms(18)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {expRoleA = Collections.EMPTY_LIST;} | expRoleA = cvTerms(19)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {expRoleB = Collections.EMPTY_LIST;} | expRoleB = cvTerms(20)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {typeA = Collections.EMPTY_LIST;} | typeA = cvTerms(21)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {typeB = Collections.EMPTY_LIST;} | typeB = cvTerms(22)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {xrefA = Collections.EMPTY_LIST;} | xrefA = ids(null, false, 23)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {xrefB = Collections.EMPTY_LIST;} | xrefB = ids(null, false, 24)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {xrefI = Collections.EMPTY_LIST;} | xrefI = ids(null, false, 25)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {annotA = Collections.EMPTY_LIST;} | annotA = annotations(26)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {annotB = Collections.EMPTY_LIST;} | annotB = annotations(27)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {host = Collections.EMPTY_LIST;} | host = taxId(29)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {params = Collections.EMPTY_LIST;} | params = parameters()) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {created = Collections.EMPTY_LIST;} | created = dates(31)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {update = Collections.EMPTY_LIST;} | update = dates(32)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) <COLUMN_SEPARATOR>
         (<EMPTY_COLUMN> | isNegative = negative())
 
         [ //starting MITAB 2.7
-        "\t" //end of negative() delimiter
-        (<EMPTY_COLUMN> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) "\t"
-        (<EMPTY_COLUMN> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) "\t"
-        (<EMPTY_COLUMN> {stcA = Collections.EMPTY_LIST;} | stcA = stoichiometryList(39)) "\t"
-        (<EMPTY_COLUMN> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) "\t"
-        (<EMPTY_COLUMN> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) "\t"
-        (<EMPTY_COLUMN> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42)) "\t"
+        <COLUMN_SEPARATOR> //end of negative() delimiter
+        (<EMPTY_COLUMN> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {stcA = Collections.EMPTY_LIST;} | stcA = stoichiometryList(39)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) <COLUMN_SEPARATOR>
+        (<EMPTY_COLUMN> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42)) <COLUMN_SEPARATOR>
         ] // end MITAB 2.7
 
         ] //end MITAB 2.6
@@ -251,14 +251,14 @@ T MitabLine():
 
       }
       catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, 0, e, false);
+        processSyntaxError(token.beginLine, token.beginColumn, 0, e);
         error_skipToNext(enumSet);
         return null;
       }
 
     //line/file termination
     (
-        "\n"
+        <LINE_SEPARATOR>
       |
         (<EOF> {reachEndOfFile(); getParserListener().onEndOfFile();})
     )
@@ -277,11 +277,11 @@ Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
       var = id(qualifier, recognizeImex, column)
          {xrefs = new ArrayList<MitabXref>(); if (var != null) {xrefs.add(var);}}
 
-    ("|" var = id(qualifier, recognizeImex, column) {if (var != null) {xrefs.add(var);}})*
+    (<FIELD_SEPARATOR> var = id(qualifier, recognizeImex, column) {if (var != null) {xrefs.add(var);}})*
     {return xrefs;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, column, e);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -298,11 +298,11 @@ Collection<MitabAlias> aliases(int column):
     var = alias(column)
     {aliases = new ArrayList<MitabAlias>(); if (var != null) {if (var != null) {aliases.add(var);}}}
 
-    ("|" var = alias(column) {if (var != null) {if (var != null) {aliases.add(var);}}})*
+    (<FIELD_SEPARATOR> var = alias(column) {if (var != null) {if (var != null) {aliases.add(var);}}})*
     {return aliases;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, column, e);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -319,11 +319,11 @@ Collection<MitabCvTerm> cvTerms(int columnNumber):
   var = cvTerm(columnNumber)
     {methods = new ArrayList<MitabCvTerm>(); if (var != null) {methods.add(var);}}
 
-    ("|" var = cvTerm(columnNumber) {if (var != null) {methods.add(var);}})*
+    (<FIELD_SEPARATOR> var = cvTerm(columnNumber) {if (var != null) {methods.add(var);}})*
     {return methods;}
   }
   catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
     error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -340,11 +340,11 @@ Collection<MitabAuthor> firstAuthors():
     var = author()
     {authors = new ArrayList<MitabAuthor>(); if (var != null) {authors.add(var);}}
 
-    ("|" var = author() {if (var != null) {authors.add(var);}})*
+    (<FIELD_SEPARATOR> var = author() {if (var != null) {authors.add(var);}})*
     {return authors;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 8, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 8, e);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
      }
@@ -361,11 +361,11 @@ Collection<MitabOrganism> taxId(int column):
     var = organism(column)
     {organisms = new ArrayList<MitabOrganism>(); if (var != null) {organisms.add(var);}}
 
-    ("|" var = organism(column) {if (var != null) {organisms.add(var);}})*
+    (<FIELD_SEPARATOR> var = organism(column) {if (var != null) {organisms.add(var);}})*
     {return organisms;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+         processSyntaxError(token.beginLine, token.beginColumn, column, e);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -382,11 +382,11 @@ Collection<MitabSource> sourceDbs():
      var = source()
     {sources = new ArrayList<MitabSource>(); if (var != null) {sources.add(var);}}
 
-    ("|" var = source() {if (var != null) {sources.add(var);}})*
+    (<FIELD_SEPARATOR> var = source() {if (var != null) {sources.add(var);}})*
     {return sources;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 13, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 13, e);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -403,11 +403,11 @@ Collection<MitabConfidence> confidences():
     var = confidence()
     {confs = new ArrayList<MitabConfidence>(); if (var != null) {confs.add(var);}}
 
-    ("|" var = confidence() {if (var != null) {confs.add(var);}})*
+    (<FIELD_SEPARATOR> var = confidence() {if (var != null) {confs.add(var);}})*
     {return confs;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 15, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 15, e);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -424,11 +424,11 @@ Collection<MitabCvTerm> complexExpansion():
     var = expansion()
     {expansions = new ArrayList<MitabCvTerm>(); if (var != null) {expansions.add(var);}}
 
-    ("|" var = expansion() {if (var != null) {expansions.add(var);}})*
+    (<FIELD_SEPARATOR> var = expansion() {if (var != null) {expansions.add(var);}})*
     {return expansions;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -445,11 +445,11 @@ Collection<MitabAnnotation> annotations(int column):
     var = annotation(column)
       {annots = new ArrayList<MitabAnnotation>(); if (var != null) {annots.add(var);}}
 
-      ("|" var = annotation(column) {if (var != null) {annots.add(var);}})*
+      (<FIELD_SEPARATOR> var = annotation(column) {if (var != null) {annots.add(var);}})*
       {return annots;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, column, e);
       error_skipToNext(enumSet);
       return Collections.EMPTY_LIST;
   }
@@ -466,11 +466,11 @@ Collection<MitabParameter> parameters():
     var = parameter()
     {params = new ArrayList<MitabParameter>(); if (var != null) {params.add(var);}}
 
-    ("|" var = parameter() {if (var != null) {params.add(var);}})*
+    (<FIELD_SEPARATOR> var = parameter() {if (var != null) {params.add(var);}})*
     {return params;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
+         processSyntaxError(token.beginLine, token.beginColumn, 30, e);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -487,11 +487,11 @@ Collection<MitabDate> dates(int column):
     var = date(column)
       {dates = new ArrayList<MitabDate>(); if (var != null) {if (var != null) {dates.add(var);}}}
 
-      ("|" var = date(column) {if (var != null) {if (var != null) {if (var != null) {dates.add(var);}}}})*
+      (<FIELD_SEPARATOR> var = date(column) {if (var != null) {if (var != null) {if (var != null) {dates.add(var);}}}})*
       {return dates;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, column, e);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -508,11 +508,11 @@ Collection<MitabChecksum> checksums(int column):
       var = checksum(column)
       {checksums = new ArrayList<MitabChecksum>(); if (var != null) {checksums.add(var);}}
 
-      ("|" var = checksum(column) {if (var != null) {checksums.add(var);}})*
+      (<FIELD_SEPARATOR> var = checksum(column) {if (var != null) {checksums.add(var);}})*
       {return checksums;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, column, e);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -529,11 +529,11 @@ Collection<MitabFeature> features(int column):
        var = feature(column)
        {features = new ArrayList<MitabFeature>(); if (var != null) {features.add(var);}}
 
-       ("|" var = feature(column) {if (var != null) {features.add(var);}})*
+       (<FIELD_SEPARATOR> var = feature(column) {if (var != null) {features.add(var);}})*
        {return features;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, column, e);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -550,11 +550,11 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
     var = stoichiometry(column)
     {stc = new ArrayList<MitabStoichiometry>(); if (var != null) {stc.add(var);}}
 
-    ("|" var = stoichiometry(column) {if (var != null) {stc.add(var);}})*
+    (<FIELD_SEPARATOR> var = stoichiometry(column) {if (var != null) {stc.add(var);}})*
     {return stc;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, column, e);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -595,12 +595,12 @@ MitabStoichiometry stoichiometry(int columnNumber):
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
         error_skipToNext(enumSet);
         return null;
    }
    catch(NumberFormatException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet);
        return null;
    }
@@ -620,9 +620,9 @@ MitabFeature feature(int columnNumber):
 {
   try{
     //type:range1,range2(text)
-    type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <RANGE_SEPARATOR> var = range(columnNumber)
+    type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" var = range(columnNumber)
     {ranges = new ArrayList<Range>(); if (var != null) {ranges.add(var);}}
-    ("," var = range(columnNumber) {if (var != null) {ranges.add(var);}})* [ text = safeString() ]
+    (<RANGE_SEPARATOR> var = range(columnNumber) {if (var != null) {ranges.add(var);}})* [ text = safeString() ]
     {
         feature = new MitabFeature(type);
         feature.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
@@ -632,7 +632,7 @@ MitabFeature feature(int columnNumber):
       }
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet);
       return null;
   }
@@ -651,26 +651,25 @@ MitabRange range(int columnNumber):
   try{
 
     //x-x
-    <POSITION>
+    (<POSITION>
     { beginLine = token.beginLine; beginColumn = token.beginColumn;
       start = PositionUtils.createPositionFromString(token.image.trim());
     }
     "-" <POSITION>
     {
     end = PositionUtils.createPositionFromString(token.image.trim());
-
-     range = new MitabRange(start, end);
-     range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-     return range;
-     }
+     })
+     { range = new MitabRange(start, end);
+        range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+       return range;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, true);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet);
       return null;
     }
    catch(IllegalRangeException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, true);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet);
        start = null;
    }
@@ -689,7 +688,7 @@ boolean negative():
       }
   }
   catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
+    processSyntaxError(token.beginLine, token.beginColumn, 16, e);
      error_skipToNext(enumSet);
      return false;
   }
@@ -715,7 +714,7 @@ MitabChecksum checksum(int columnNumber):
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet);
         return null;
     }
@@ -737,12 +736,12 @@ MitabDate date(int columnNumber):
      }
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
      error_skipToNext(enumSet);
       return null;
   }
   catch (java.text.ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
      error_skipToNext(enumSet);
      return null;
   }
@@ -768,12 +767,12 @@ MitabParameter parameter() :
      }
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, 30, e);
        error_skipToNext(enumSet);
        return null;
    }
    catch (IllegalParameterException e){
-      processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, 30, e);
       error_skipToNext(enumSet);
       return null;
     }
@@ -797,7 +796,7 @@ MitabAnnotation annotation(int columnNumber):
       return annot;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
          error_skipToNext(enumSet);
          return null;
       }
@@ -822,7 +821,7 @@ MitabXref xref(int columnNumber):
       return ref;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet);
        return null;
     }
@@ -842,14 +841,17 @@ MitabCvTerm expansion():
   try{
   //db:id(name) or just name for backward compatibility
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" name = safeString() ")" ]
-    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(cv, beginLine, beginColumn, 16);}
-      else if (id == null) {cv = new MitabCvTerm(name); getParserListener().onMissingExpansionId(cv, beginLine, beginColumn, 16);}
-      else {cv = new MitabCvTerm(name, null, db, id);}
-      cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
+    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id);
+           cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
+           getParserListener().onMissingCvTermName(cv, cv, "The complex expansion method does not have a name.");}
+      else if (id == null) {cv = new MitabCvTerm(name);
+            cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
+            getParserListener().onMissingExpansionId(cv);}
+      else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));}
       return cv;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
      error_skipToNext(enumSet);
      return null;
   }
@@ -868,13 +870,13 @@ MitabConfidence confidence():
 {
   try{
     type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" value = safeString() [ "(" text = safeString() ")" ]
-    { if (text == null){conf = new MitabConfidence(type, value, null);}
-      else {conf = new MitabConfidence(type, value, text); getParserListener().onTextFoundInConfidence(conf, beginLine, beginColumn, 15);}
-      conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));
+    { if (text == null){conf = new MitabConfidence(type, value, null); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));}
+      else {conf = new MitabConfidence(type, value, text); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));
+             getParserListener().onTextFoundInConfidence(conf);}
       return conf;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 15, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, 15, e);
      error_skipToNext(enumSet);
      return null;
   }
@@ -894,13 +896,13 @@ MitabSource source():
   try {
      //db:id(name)
        db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" name = safeString() ")" ]
-       { if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(s, beginLine, beginColumn, 13);}
-         else {s = new MitabSource(name, null, db, id);}
-         s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
+       { if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
+            getParserListener().onMissingCvTermName(s, s, "The interaction source does not have a name.");}
+         else {s = new MitabSource(name, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));}
          return s;}
   }
   catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, 13, e, false);
+        processSyntaxError(token.beginLine, token.beginColumn, 13, e);
         error_skipToNext(enumSet);
         return null;
   }
@@ -918,7 +920,7 @@ MitabOrganism organism(int columnNumber):
 {
   try {
   //taxid:id(name)
-    [(" ")+] <TAXID> ":" id = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ "(" name = safeString() ")" ]
+    <TAXID> ":" id = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ "(" name = safeString() ")" ]
     {
        organism = new MitabOrganism(Integer.parseInt(id), name);
        organism.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
@@ -926,12 +928,12 @@ MitabOrganism organism(int columnNumber):
      }
   }
   catch (ParseException e){
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
            error_skipToNext(enumSet);
            return null;
   }
   catch (NumberFormatException e){
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
            error_skipToNext(enumSet);
            return null;
   }
@@ -940,7 +942,7 @@ MitabOrganism organism(int columnNumber):
 MitabAuthor author():
 {
  MitabAuthor auth;
- java.lang.String first;
+ java.lang.String first=null;
  java.lang.String date = null;
  java.lang.String second;
  int beginLine;
@@ -949,8 +951,8 @@ MitabAuthor author():
 }
 {
   try{
-     ( <PUB_DATE> {date = token.image.trim(); beginLine = token.beginLine; beginColumn = token.beginColumn;} [ first = safeString() ])
-     | ( first = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ ( (<PUB_DATE> {date = token.image.trim();}) | ("(" (" ")* <PUB_DATE> {date = token.image.trim();} (" ")* ")") [ second = safeString() {first = first + " " +second; } ]) ])
+     (( <PUB_DATE> {date = token.image.trim(); beginLine = token.beginLine; beginColumn = token.beginColumn;} [ first = safeString() ])
+     | ( first = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ ( (<PUB_DATE> {date = token.image.trim();}) | ("(" <PUB_DATE> {date = token.image.trim();} ")") [ second = safeString() {first = first + " " +second; } ]) ]))
      { beginLine = token.beginLine; beginColumn = token.beginColumn;
        if (date == null){auth = new MitabAuthor(first);}
        else{ auth = new MitabAuthor(first, date);}
@@ -959,7 +961,7 @@ MitabAuthor author():
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 8, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 8, e);
        error_skipToNext(enumSet);
        return null;
   }
@@ -979,13 +981,13 @@ MitabCvTerm cvTerm(int column):
   //db:id(name)
   try{
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" name = safeString() ")" ]
-    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(cv, token.beginLine, token.beginColumn, column);}
-      else {cv = new MitabCvTerm(name, null, db, id);}
-      cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
+    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
+          getParserListener().onMissingCvTermName(cv, cv, "The term at the column " + column + " does not have a name.");}
+      else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));}
       return cv;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, column, e);
      error_skipToNext(enumSet);
      return null;
   }
@@ -1007,11 +1009,10 @@ MitabAlias alias(int columnNumber):
       db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" name = safeString() [ "(" type = safeString() ")" ]
       { alias = new MitabAlias(db, name, type);
         alias.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-        error_skipToNext(enumSet);
         return alias;}
   }
   catch(ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet);
       return null;
   }
@@ -1032,24 +1033,29 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
   //db:id(qualifier)
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" text = safeString() ")" ]
     { if (recognizeImexPrimary && Xref.IMEX.equalsIgnoreCase(db.trim())){
-         if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier());}
-         else if (qualifier != null) {ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(ref, beginLine, beginColumn, columnNumber);}
-         else {ref = new MitabXref(db, id, text);}
+         if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier()); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
+         else if (qualifier != null) {ref = new MitabXref(db, id, text);
+         ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+         getParserListener().onTextFoundInIdentifier(ref);}
+         else {ref = new MitabXref(db, id, text); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
        }
        else if (text == null) {
          ref = new MitabXref(db, id, qualifier);
+         ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
        }
        else if (qualifier != null) {
-          ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(ref, beginLine, beginColumn, columnNumber);
+          ref = new MitabXref(db, id, text);
+          ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+          getParserListener().onTextFoundInIdentifier(ref);
        }
        else{
           ref = new MitabXref(db, id, text);
+          ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
        }
-       ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
        return ref;}
    }
    catch(ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet);
       return null;
    }
@@ -1058,7 +1064,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
 java.lang.String safeString():
 {java.lang.String text;}
 {
-  <QUOTED_STRING> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());} | <UNRESERVED_STRING> {text = token.image.trim();}
+  (<QUOTED_STRING> {text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());} | <UNRESERVED_STRING> {text = token.image.trim();})
   {return text;}
 }
 
@@ -1075,7 +1081,7 @@ void error_skipToNext(EnumSet<TokenKind> skipToTokens) {
     // check next token
     i++;
     t = getToken(i);
-  } while (t != null && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind)));
+  } while (t.kind != EOF && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind)));
     // The above loop consumes tokens all the way up to a token of
     // "kind".  We use a do-while loop rather than a while because the
     // current token is the one immediately before the erroneous token

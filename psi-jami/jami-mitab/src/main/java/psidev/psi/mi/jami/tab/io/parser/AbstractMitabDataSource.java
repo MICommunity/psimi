@@ -1,17 +1,17 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.datasource.*;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.MIFileDataSource;
+import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.listener.MIFileParserListener;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,40 +28,42 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
 
     private MitabLineParser<B,P> lineParser;
     private boolean isInitialised = false;
-    private Collection<FileSourceError> errors;
 
     private File originalFile;
     private InputStream originalStream;
     private Reader originalReader;
 
     private boolean isConsumed = false;
+    private Boolean isValid = null;
+
+    private MitabParserListener parserListener;
 
     /**
      * Empty constructor for the factory
      */
     public AbstractMitabDataSource(){
-        errors = new ArrayList<FileSourceError>();
     }
 
     public AbstractMitabDataSource(File file) throws IOException {
 
         initialiseFile(file);
         isInitialised = true;
-        errors = new ArrayList<FileSourceError>();
     }
 
     public AbstractMitabDataSource(InputStream input) {
 
         initialiseInputStream(input);
         isInitialised = true;
-        errors = new ArrayList<FileSourceError>();
     }
 
     public AbstractMitabDataSource(Reader reader) {
 
         initialiseReader(reader);
         isInitialised = true;
-        errors = new ArrayList<FileSourceError>();
+    }
+
+    public MitabParserListener getFileParserListener() {
+        return this.parserListener;
     }
 
     public void initialiseContext(Map<String, Object> options) {
@@ -86,11 +88,11 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                     + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        isInitialised = true;
-    }
+        if (options.containsKey(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY)){
+            setMIFileParserListener((MitabParserListener) options.get(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY));
+        }
 
-    public Collection<FileSourceError> getDataSourceErrors() {
-        return errors;
+        isInitialised = true;
     }
 
     public void close() {
@@ -111,157 +113,126 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
             }
             this.originalFile = null;
             this.lineParser = null;
-            this.errors.clear();
+            this.parserListener = null;
             isConsumed = false;
             isInitialised = false;
+            isValid = null;
         }
+    }
+
+    public boolean validateSyntax(MIFileParserListener listener) {
+        if (!(listener instanceof MitabParserListener)){
+            throw new IllegalArgumentException("A MITAB data source is expecting a MitabParserListener. It does not accept "+listener.getClass());
+        }
+        setMIFileParserListener((MitabParserListener)listener);
+        return validateSyntax();
     }
 
     public boolean validateSyntax() {
+        if (isValid != null){
+            return isValid;
+        }
+
         if (isConsumed){
-            return errors.isEmpty();
+            reInit();
         }
-        else{
-            // read the datasource
-            Iterator<T> interactionIterator = getInteractionsIterator();
-            while(interactionIterator.hasNext()){
-                interactionIterator.next();
-            }
-            isConsumed = true;
-            return errors.isEmpty();
+
+        // read the datasource
+        Iterator<T> interactionIterator = getInteractionsIterator();
+        while(interactionIterator.hasNext()){
+            interactionIterator.next();
         }
+        isConsumed = true;
+        // if isValid is not null, it means that the file syntax is invalid, otherwise, we say that the file syntax is valid
+        if (isValid == null){
+            isValid = true;
+        }
+        return isValid;
     }
 
-    public void onTextFoundInIdentifier(MitabXref xref, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for Unique identifiers and alternative identifiers should be db:id and not db:id(text).", xref));
-        }
+    public void onInvalidSyntax(FileSourceContext context, Exception e) {
+        isValid = false;
     }
 
-    public void onMissingCvTermName(CvTerm term, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for the cv term column "+mitabColumn+" should be db:id(name) and not db:id.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
-        }
+    public void onSyntaxWarning(FileSourceContext context, String message) {
+        // do nothing
     }
 
-    public void onTextFoundInConfidence(MitabConfidence conf, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for the interaction confidences column should be confidence_type:value and not confidence_type:value(text).", conf));
-        }
+    public void onMissingCvTermName(CvTerm term, FileSourceContext context, String message) {
+        // do nothing
     }
 
-    public void onMissingExpansionId(MitabCvTerm expansion, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for the complex expansion column should be db:id(name) and not just a name", expansion));
-        }
+    public void onMissingInteractorName(Interactor interactor, FileSourceContext context) {
+        // do nothing
     }
 
-    public void onInvalidSyntax(int line, int column, int mitabColumn, Exception e) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: We have an invalid syntax in mitab column "+mitabColumn+"("+e.getClass().toString()+"). The invalid element will be ignored.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
-        }
+    public void onSeveralCvTermsFound(Collection<? extends CvTerm> terms, FileSourceContext context, String message) {
+        // do nothing
     }
 
-    public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one unique identifiers and we found " +ids.size(), ids.iterator().next()));
-        }
+    public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms, FileSourceContext context) {
+        // do nothing
     }
 
-    public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: The unique identifier column should not be empty when describing an interactor.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
-        }
+    public void onParticipantWithoutInteractor(Participant participant, FileSourceContext context) {
+        isValid = false;
     }
 
-    public void onEmptyAliases(int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The alias column should not be empty when describing an interactor.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
-        }
+    public void onInteractionWithoutParticipants(Interaction interaction, FileSourceContext context) {
+        isValid = false;
     }
+
 
     public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: The unique identifier, alternative identifiers and aliases columns were empty. We expect at least one identifiers and recommend at least one alias.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
-        }
-    }
-
-    public void onAliasFoundInAlternativeIds(MitabXref ref, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: the alternative identifier ("+ref.toString()+") should be moved to the aliases column and will be loaded as an alias.", ref));
-        }
-    }
-
-    public void onChecksumFoundInAlternativeIds(MitabXref ref, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: the alternative identifier ("+ref.toString()+") should be moved to the checksum column and will be loaded as a checksum.", ref));
-        }
-    }
-
-    public void onChecksumFoundInAliases(MitabAlias alias, int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: the alias ("+alias.toString()+") should be moved to the checksum column and will be loaded as a checksum.", alias));
-        }
-    }
-
-    public void onSeveralCvTermFound(Collection<MitabCvTerm> terms) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one cv term and we found " +terms.size()+". Only the first term will be taken into account", terms.iterator().next()));
-        }
+        isValid = false;
     }
 
     public void onSeveralOrganismFound(Collection<MitabOrganism> organisms) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one organism for each interactor and we found " +organisms.size()+". Only the first organism will be taken into account", organisms.iterator().next()));
-        }
+        // do nothing
     }
 
     public void onParticipantWithoutInteractorDetails(int line, int column, int mitabColumn) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: the participant does not have any interactor details and is loaded with an unknown interactor", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
-        }
+        isValid = false;
     }
 
     public void onSeveralStoichiometryFound(Collection<MitabStoichiometry> stoichiometry) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one stoichiometry for each participant and we found " +stoichiometry.size()+". Only the first stoichiometry will be taken into account", stoichiometry.iterator().next()));
-        }
-    }
-
-    public void onInteractionWithoutParticipants(int line) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: the interaction does not have any participants. We expect at least one participant.", new DefaultFileSourceContext(new MitabSourceLocator(line, 0, 0))));
-        }
+        // do nothing
     }
 
     public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one author and we found " +authors.size()+". Only the first author will be taken into account", authors.iterator().next()));
-        }
+        // do nothing
     }
 
     public void onSeveralSourceFound(Collection<MitabSource> sources) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one source and we found " +sources.size()+". Only the first source will be taken into account", sources.iterator().next()));
-        }
-    }
-
-    public void onSeveralHostOrganismFound(Collection<MitabOrganism> organisms) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one host organism and we found " +organisms.size()+". Only the first host organism will be taken into account", organisms.iterator().next()));
-        }
+        // do nothing
     }
 
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one created date and we found " +dates.size()+". Only the first created date will be taken into account", dates.iterator().next()));
-        }
+        // do nothing
     }
 
     public void onSeveralUpdatedDateFound(Collection<MitabDate> dates) {
-        if (!isConsumed){
-            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one update date and we found " +dates.size()+". Only the first update date will be taken into account", dates.iterator().next()));
-        }
+        // do nothing
+    }
+
+    public void onTextFoundInIdentifier(MitabXref xref) {
+        // do nothing
+    }
+
+    public void onTextFoundInConfidence(MitabConfidence conf) {
+        // do nothing
+    }
+
+    public void onMissingExpansionId(MitabCvTerm expansion) {
+        // do nothing
+    }
+
+    public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids) {
+        // do nothing
+    }
+
+    public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn) {
+        isValid = false;
     }
 
     public void onEndOfFile() {
@@ -282,6 +253,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
 
     protected void setLineParser(MitabLineParser<B,P> lineParser) {
         this.lineParser = lineParser;
+        this.lineParser.setParserListener(this);
     }
 
     protected abstract void initialiseMitabLineParser(Reader reader);
@@ -307,6 +279,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                 try {
                     this.originalStream = new BufferedInputStream(new FileInputStream(this.originalFile));
                     this.lineParser.ReInit(this.originalStream);
+                    this.lineParser.setParserListener(this.parserListener);
 
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException("We cannot open the file " + this.originalFile.getName(), e);
@@ -318,6 +291,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                     try {
                         this.originalStream.reset();
                         this.lineParser.ReInit(this.originalStream);
+                        this.lineParser.setParserListener(this.parserListener);
+
                     } catch (IOException e) {
                         throw new RuntimeException("The inputStream has been consumed and cannot be reset", e);
                     }
@@ -332,6 +307,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
                     try {
                         this.originalReader.reset();
                         this.lineParser.ReInit(this.originalReader);
+                        this.lineParser.setParserListener(this.parserListener);
                     } catch (IOException e) {
                         throw new RuntimeException("The reader has been consumed and cannot be reset", e);
                     }
@@ -390,5 +366,12 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
 
     protected void setOriginalReader(Reader originalReader) {
         this.originalReader = originalReader;
+    }
+
+    protected void setMIFileParserListener(MitabParserListener listener) {
+        this.parserListener = listener;
+        if (this.lineParser != null){
+            this.lineParser.setParserListener(this.parserListener);
+        }
     }
 }
