@@ -1,5 +1,4 @@
-package psidev.psi.mi.jami.bridges.remapper;
-
+package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
