@@ -9,15 +9,15 @@ package psidev.psi.mi.jami.tab.io.parser;
  */
 
 public enum TokenKind {
-    EOF, UNRESERVED_STRING, QUOTED_STRING, EMPTY_COLUMN, PUB_DATE, TAXID, NEGATIVE,
-    POSITION, STOICHIOMETRY, COMMENT, FIELD_SEPARATOR, COLUMN_SEPARATOR, LINE_SEPARATOR, RANGE_SEPARATOR;
+    EOF, QUOTED_STRING, DASH, PUB_DATE, NUMBER, TAXID, NEGATIVE,
+    POSITION, STOICHIOMETRY, COMMENT, FIELD_SEPARATOR, COLUMN_SEPARATOR, LINE_SEPARATOR, RANGE_SEPARATOR,
+    OPEN_PAREN, CLOSE_PAREN, COLON;
 
     static TokenKind getFromTokenKind(int kind) {
         switch (kind) {
             case MitabLineParserConstants.EOF: return EOF;
-            case MitabLineParserConstants.UNRESERVED_STRING: return UNRESERVED_STRING;
             case MitabLineParserConstants.QUOTED_STRING: return QUOTED_STRING;
-            case MitabLineParserConstants.EMPTY_COLUMN: return EMPTY_COLUMN;
+            case MitabLineParserConstants.DASH: return DASH;
             case MitabLineParserConstants.PUB_DATE: return PUB_DATE;
             case MitabLineParserConstants.TAXID: return TAXID;
             case MitabLineParserConstants.NEGATIVE: return NEGATIVE;
@@ -28,6 +28,10 @@ public enum TokenKind {
             case MitabLineParserConstants.LINE_SEPARATOR: return LINE_SEPARATOR;
             case MitabLineParserConstants.RANGE_SEPARATOR: return RANGE_SEPARATOR;
             case MitabLineParserConstants.COMMENT: return COMMENT;
+            case MitabLineParserConstants.NUMBER: return NUMBER;
+            case MitabLineParserConstants.COLON: return COLON;
+            case MitabLineParserConstants.OPEN_PAREN: return OPEN_PAREN;
+            case MitabLineParserConstants.CLOSE_PAREN: return CLOSE_PAREN;
             default: return null;
         }
     }

@@ -115,6 +115,9 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
             if (XrefUtils.isXrefFromDatabase(ref, Xref.IMEX_MI, Xref.IMEX) && XrefUtils.doesXrefHaveQualifier(ref, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
                 interaction.getXrefs().add(ref);
             }
+            else if (XrefUtils.isXrefFromDatabase(ref, null, Checksum.RIGID) || XrefUtils.isXrefFromDatabase(ref, null, Checksum.IRIGID)){
+                createChecksumFromId(interaction, ref);
+            }
             else{
                 interaction.getIdentifiers().add(ref);
             }
@@ -315,6 +318,15 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         }
         else if (!organisms.isEmpty()){
             interactor.setOrganism(organisms.iterator().next());
+        }
+    }
+
+    protected void createChecksumFromId(Interaction interaction, MitabXref ref) {
+        // create checksum from xref
+        MitabChecksum checksum = new MitabChecksum(ref.getDatabase(), ref.getId(), ref.getSourceLocator());
+        interaction.getChecksums().add(checksum);
+        if (listener != null){
+            listener.onSyntaxWarning(ref, "Found a Checksum in the interaction identifiers column. Will load it as a checksum.");
         }
     }
 
