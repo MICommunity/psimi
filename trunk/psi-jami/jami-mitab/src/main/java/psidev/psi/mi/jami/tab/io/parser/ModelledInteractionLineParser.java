@@ -61,7 +61,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
                 }
                 bioRoleTerm = bioRole.iterator().next();
             }
-            else if (bioRole.isEmpty()){
+            else if (!bioRole.isEmpty()){
                 bioRoleTerm = bioRole.iterator().next();
             }
 
@@ -78,7 +78,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
                 }
                 participant.setStoichiometry(stc.iterator().next());
             }
-            else if (bioRole.isEmpty()){
+            else if (!stc.isEmpty()){
                 participant.setStoichiometry(stc.iterator().next());
             }
             // add source locator
@@ -119,11 +119,11 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         // set interaction type
         if (interactionType.size() > 1){
             if (getParserListener() != null){
-                getParserListener().onSeveralCvTermsFound(interactionType, interactionType.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
+                getParserListener().onSeveralCvTermsFound(interactionType, interactionType.iterator().next(), interactionType.size() + " interaction types found. Only the first one will be loaded.");
             }
             interaction.setInteractionType(interactionType.iterator().next());
         }
-        else if (interactionType.isEmpty()){
+        else if (!interactionType.isEmpty()){
             interaction.setInteractionType(interactionType.iterator().next());
         }
         // set identifiers
@@ -133,7 +133,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         // set expansion method
         if (expansion.size() > 1){
             if (getParserListener() != null){
-                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
+                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size() + " interaction types found. Only the first one will be loaded.");
             }
             interaction.setComplexExpansion(expansion.iterator().next());
         }
@@ -153,7 +153,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
             }
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
-        else if (created.isEmpty()){
+        else if (!created.isEmpty()){
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
         // update
@@ -163,7 +163,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
             }
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
-        else if (update.isEmpty()){
+        else if (!update.isEmpty()){
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
         // checksum
@@ -172,6 +172,8 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         if (A == null && B == null && getParserListener() != null){
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
         }
+
+        interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
     }

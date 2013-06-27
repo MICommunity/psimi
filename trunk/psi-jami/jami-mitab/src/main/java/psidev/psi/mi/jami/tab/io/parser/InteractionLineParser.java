@@ -63,7 +63,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
                 }
                 bioRoleTerm = bioRole.iterator().next();
             }
-            else if (bioRole.isEmpty()){
+            else if (!bioRole.isEmpty()){
                 bioRoleTerm = bioRole.iterator().next();
             }
 
@@ -80,7 +80,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
                 }
                 participant.setStoichiometry(stc.iterator().next());
             }
-            else if (bioRole.isEmpty()){
+            else if (!stc.isEmpty()){
                 participant.setStoichiometry(stc.iterator().next());
             }
             // add source locator
@@ -95,7 +95,6 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         if (!hasInteractorDetails && getParserListener() != null){
             getParserListener().onParticipantWithoutInteractor(participant, participant);
         }
-
         return participant;
     }
 
@@ -108,7 +107,6 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         if (A == null && B == null && !hasInteractionFields){
             return interaction;
         }
-
         // create interaction with participants
         interaction = new MitabBinaryInteraction(A, B);
 
@@ -119,7 +117,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             }
             interaction.setInteractionType(interactionType.iterator().next());
         }
-        else if (interactionType.isEmpty()){
+        else if (!interactionType.isEmpty()){
             interaction.setInteractionType(interactionType.iterator().next());
         }
         // set identifiers
@@ -145,7 +143,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             }
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
-        else if (created.isEmpty()){
+        else if (!created.isEmpty()){
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
         // update
@@ -155,7 +153,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             }
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
-        else if (update.isEmpty()){
+        else if (!update.isEmpty()){
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
         // checksum
@@ -164,6 +162,8 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
         if (A == null && B == null && getParserListener() != null){
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
         }
+
+        interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
     }

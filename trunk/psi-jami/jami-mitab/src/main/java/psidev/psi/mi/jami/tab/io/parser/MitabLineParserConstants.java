@@ -15,27 +15,39 @@ public interface MitabLineParserConstants {
   /** RegularExpression Id. */
   int PUB_DATE = 4;
   /** RegularExpression Id. */
-  int STOICHIOMETRY = 5;
+  int NUMBER = 5;
   /** RegularExpression Id. */
-  int POSITION = 6;
+  int STOICHIOMETRY = 6;
   /** RegularExpression Id. */
-  int TAXID = 7;
+  int COMMENT = 7;
   /** RegularExpression Id. */
-  int NEGATIVE = 8;
+  int FIELD_SEPARATOR = 8;
   /** RegularExpression Id. */
-  int UNRESERVED_STRING = 9;
+  int COLUMN_SEPARATOR = 9;
   /** RegularExpression Id. */
-  int QUOTED_STRING = 10;
+  int LINE_SEPARATOR = 10;
   /** RegularExpression Id. */
-  int EMPTY_COLUMN = 11;
+  int OPEN_PAREN = 11;
   /** RegularExpression Id. */
-  int COMMENT = 12;
+  int CLOSE_PAREN = 12;
   /** RegularExpression Id. */
-  int FIELD_SEPARATOR = 13;
+  int COLON = 13;
   /** RegularExpression Id. */
-  int COLUMN_SEPARATOR = 14;
+  int DASH = 14;
   /** RegularExpression Id. */
-  int LINE_SEPARATOR = 15;
+  int LESSTHAN = 15;
+  /** RegularExpression Id. */
+  int GREATERTHAN = 16;
+  /** RegularExpression Id. */
+  int POSITION = 17;
+  /** RegularExpression Id. */
+  int TAXID = 18;
+  /** RegularExpression Id. */
+  int NEGATIVE = 19;
+  /** RegularExpression Id. */
+  int QUOTED_STRING = 20;
+  /** RegularExpression Id. */
+  int ANY_CHAR = 21;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -47,20 +59,24 @@ public interface MitabLineParserConstants {
     "\"\\f\"",
     "\",\"",
     "<PUB_DATE>",
+    "<NUMBER>",
     "<STOICHIOMETRY>",
-    "<POSITION>",
-    "<TAXID>",
-    "<NEGATIVE>",
-    "<UNRESERVED_STRING>",
-    "<QUOTED_STRING>",
-    "\"-\"",
     "<COMMENT>",
     "\"|\"",
     "\"\\t\"",
     "\"\\n\"",
-    "\":\"",
     "\"(\"",
     "\")\"",
+    "\":\"",
+    "\"-\"",
+    "\"<\"",
+    "\">\"",
+    "<POSITION>",
+    "\"taxid\"",
+    "<NEGATIVE>",
+    "<QUOTED_STRING>",
+    "<ANY_CHAR>",
+    "\"..\"",
   };
 
 }

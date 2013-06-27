@@ -64,7 +64,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
                 }
                 bioRoleTerm = bioRole.iterator().next();
             }
-            else if (bioRole.isEmpty()){
+            else if (!bioRole.isEmpty()){
                 bioRoleTerm = bioRole.iterator().next();
             }
 
@@ -76,7 +76,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
                 }
                 expRoleTerm = expRole.iterator().next();
             }
-            else if (bioRole.isEmpty()){
+            else if (!expRole.isEmpty()){
                 expRoleTerm = expRole.iterator().next();
             }
 
@@ -93,7 +93,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
                 }
                 participant.setStoichiometry(stc.iterator().next());
             }
-            else if (bioRole.isEmpty()){
+            else if (!stc.isEmpty()){
                 participant.setStoichiometry(stc.iterator().next());
             }
             // add detection methods
@@ -144,7 +144,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             }
             interaction.setInteractionType(interactionType.iterator().next());
         }
-        else if (interactionType.isEmpty()){
+        else if (!interactionType.isEmpty()){
             interaction.setInteractionType(interactionType.iterator().next());
         }
         // set identifiers
@@ -174,7 +174,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             }
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
-        else if (created.isEmpty()){
+        else if (!created.isEmpty()){
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
         // update
@@ -184,7 +184,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             }
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
-        else if (update.isEmpty()){
+        else if (!update.isEmpty()){
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
         // checksum
@@ -195,6 +195,8 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         if (A == null && B == null && getParserListener() != null){
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
         }
+
+        interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
     }
@@ -231,7 +233,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             }
             detectionMethod = detMethod.iterator().next();
         }
-        else if (detMethod.isEmpty()){
+        else if (!detMethod.isEmpty()){
             detectionMethod = detMethod.iterator().next();
         }
 
@@ -245,7 +247,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             }
             experiment.setHostOrganism(host.iterator().next());
         }
-        else if (detMethod.isEmpty()){
+        else if (!host.isEmpty()){
             experiment.setHostOrganism(host.iterator().next());
         }
 
