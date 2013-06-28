@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.enricher.exception;
 
 /**
- * This exception is thrown when an object being used to enrich has a value which is unexpected.
- * Examples may include: empty fields which should contain data, data in an unexpected format.
+ * This exception is thrown when exceptions are induced in the enricher.
+ * This includes re-wrapping the BridgeFailedException.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 11/06/13
+ * @since 11/06/13
  */
 public class EnricherException extends Exception {
     public EnricherException() {

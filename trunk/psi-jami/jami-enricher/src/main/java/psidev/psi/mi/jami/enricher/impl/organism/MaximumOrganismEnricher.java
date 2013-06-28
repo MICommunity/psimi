@@ -1,16 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
