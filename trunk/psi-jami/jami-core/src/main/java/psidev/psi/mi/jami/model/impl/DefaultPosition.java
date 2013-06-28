@@ -118,7 +118,7 @@ public class DefaultPosition implements Position, Serializable {
 
     @Override
     public String toString() {
-        return status.toString() + ": " + start  + end;
+        return status.toString() + ": " + start  +".."+ end;
     }
 
     @Override
