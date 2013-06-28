@@ -11,9 +11,9 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  */
-public interface ParticipantEnricher {
+public interface ParticipantEnricher <P extends Participant> {
 
-    public void enrichParticipant(Participant participantToEnrich) throws EnricherException;
+    public void enrichParticipant(P participantToEnrich) throws EnricherException;
 
     public void setParticipantListener(ParticipantEnricherListener listener);
     public ParticipantEnricherListener getParticipantEnricherListener();
