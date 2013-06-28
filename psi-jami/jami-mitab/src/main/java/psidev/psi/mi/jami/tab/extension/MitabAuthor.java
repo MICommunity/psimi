@@ -32,7 +32,7 @@ public class MitabAuthor implements FileSourceContext{
                 count++;
                 // we don't recognize any publication date
                 if (count > 1){
-                    this.firstAuthor = firstAuthor;
+                    this.firstAuthor = firstAuthor.trim();
                     this.publicationDate = null;
                     break;
                 }
@@ -40,7 +40,7 @@ public class MitabAuthor implements FileSourceContext{
                     try {
                         String date = matcher.group();
                         this.publicationDate = MitabUtils.PUBLICATION_YEAR_FORMAT.parse(date);
-                        this.firstAuthor = firstAuthor.replaceAll("\\(|\\)|et al.|date","");
+                        this.firstAuthor = firstAuthor.replaceAll("\\(|\\)|et al.|date","").trim();
                     } catch (ParseException e) {
                         e.printStackTrace();
                         this.firstAuthor = firstAuthor;
@@ -57,7 +57,7 @@ public class MitabAuthor implements FileSourceContext{
     }
 
     public MitabAuthor(String firstAuthor, String publicationDate){
-        this.firstAuthor = firstAuthor != null ? firstAuthor.replaceAll("et al.","") : null;
+        this.firstAuthor = firstAuthor != null ? firstAuthor.replaceAll("et al.","").trim() : null;
         try {
             this.publicationDate = MitabUtils.PUBLICATION_YEAR_FORMAT.parse(publicationDate);
         } catch (ParseException e) {
@@ -66,7 +66,7 @@ public class MitabAuthor implements FileSourceContext{
                this.firstAuthor = publicationDate;
             }
             else{
-                this.firstAuthor = firstAuthor.replaceAll("et al.","") + " " + publicationDate;
+                this.firstAuthor = firstAuthor.replaceAll("et al.","").trim() + " " + publicationDate;
             }
         }
     }

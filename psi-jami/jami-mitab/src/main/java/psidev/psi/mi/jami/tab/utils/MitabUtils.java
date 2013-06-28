@@ -187,14 +187,14 @@ public class MitabUtils {
     }
 
     /**
-     * Find the best alias to use as a shortname.
+     * Find the best alias to use as a shortname and fullName.
      * It will first collect the alias with display_short if it exists, otherwise display_long if it exists, otherwise gene name if it exists
      * , otherwise shortlabel if it exists
      * otherwise the alias with the shortest alias name.
      * @param aliases
      * @return the best alias to use as a shortname
      */
-    public static MitabAlias findBestShortNameFromAliases(Collection<MitabAlias> aliases){
+    public static MitabAlias[] findBestShortNameAndFullNameFromAliases(Collection<MitabAlias> aliases){
 
         MitabAlias shortLabel = null;
         MitabAlias displayShort = null;
@@ -205,8 +205,9 @@ public class MitabUtils {
         for (MitabAlias alias : aliases){
             // display_short is a priority
             if (AliasUtils.doesAliasHaveType(alias, null, DISPLAY_SHORT)){
-                displayShort = alias;
-                break;
+                if (displayShort == null){
+                    displayShort = alias;
+                }
             }
             // then display_long
             else if (AliasUtils.doesAliasHaveType(alias, null, DISPLAY_LONG)){
@@ -240,19 +241,19 @@ public class MitabUtils {
         }
 
         if (displayShort != null){
-            return displayShort;
+            return displayLong != null ? new MitabAlias[]{displayShort, displayLong} : new MitabAlias[]{displayShort};
         }
         else if (displayLong != null){
-            return displayLong;
+            return new MitabAlias[]{displayLong, displayLong};
         }
         else if (geneName != null){
-            return geneName;
+            return new MitabAlias[]{geneName};
         }
         else if (shortLabel != null){
-            return shortLabel;
+            return new MitabAlias[]{shortLabel};
         }
         else {
-            return shortName;
+            return new MitabAlias[]{shortName};
         }
     }
 

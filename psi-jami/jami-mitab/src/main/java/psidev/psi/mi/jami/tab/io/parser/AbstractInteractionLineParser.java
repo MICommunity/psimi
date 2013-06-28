@@ -129,6 +129,7 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         boolean hasOtherFields = !taxid.isEmpty() || !checksum.isEmpty() || !type.isEmpty() || !xref.isEmpty();
         Interactor interactor = null;
         String shortName;
+        String fullName = null;
 
         // find shortName first
         // the interactor is empty
@@ -144,7 +145,17 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         }
         else{
             // first retrieve what will be the name of the interactor
-            shortName = findInteractorShortNameFrom(uniqueId, altid, aliases, line, column, mitabColumn);
+            String [] names = findInteractorShortNameAndFullNameFrom(uniqueId, altid, aliases, line, column, mitabColumn);
+            if (names.length == 1){
+                shortName = names[0];
+            }
+            else if (names.length == 2){
+                shortName = names[0];
+                fullName = names[1];
+            }
+            else{
+                shortName = MitabUtils.UNKNOWN_NAME;
+            }
         }
 
         // fire event if several uniqueIds
@@ -167,6 +178,9 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         else if (interactor == null){
             interactor = getInteractorFactory().createInteractor(shortName, null);
         }
+
+        // set fullName
+        interactor.setFullName(fullName);
 
         if (hasId){
             // add unique ids first
@@ -200,26 +214,46 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         return interactor;
     }
 
-    protected String findInteractorShortNameFrom(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, int line, int column, int mitabColumn){
+    protected String[] findInteractorShortNameAndFullNameFrom(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, int line, int column, int mitabColumn){
 
-        MitabAlias shortName = MitabUtils.findBestShortNameFromAliases(aliases);
-        if (shortName != null){
-            return shortName.getName();
+        MitabAlias[] names = MitabUtils.findBestShortNameAndFullNameFromAliases(aliases);
+        if (names != null){
+            MitabAlias shortName = null;
+            MitabAlias fullName = null;
+            if (names.length == 1){
+                shortName = names[0];
+                // do not need to keep the shortname as it is loaded as a shortname
+                if (shortName.getType() != null && MitabUtils.DISPLAY_SHORT.equals(shortName.getType().getShortName())){
+                    aliases.remove(shortName);
+                }
+                return new String[]{shortName.getName()};
+            }
+            else if (names.length == 2){
+                shortName = names[0];
+                fullName = names[1];
+                if (shortName.getType() != null && MitabUtils.DISPLAY_SHORT.equals(shortName.getType().getShortName())){
+                    aliases.remove(shortName);
+                }
+                if (fullName.getType() != null && MitabUtils.DISPLAY_LONG.equals(fullName.getType().getShortName())){
+                    aliases.remove(shortName);
+                }
+                return new String[]{shortName.getName(), fullName.getName()};
+            }
         }
 
         MitabXref shortNameFromAltid = MitabUtils.findBestShortNameFromAlternativeIdentifiers(altid);
         if (shortNameFromAltid != null){
-            return shortNameFromAltid.getId();
+            return new String[]{shortNameFromAltid.getId()};
         }
         else if (!uniqueId.isEmpty()){
-            return uniqueId.iterator().next().getId();
+            return new String[]{uniqueId.iterator().next().getId()};
         }
         else if (!altid.isEmpty()){
             if (this.listener != null){
                 listener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
             }
 
-            return altid.iterator().next().getId();
+            return new String[]{altid.iterator().next().getId()};
         }
         else if (this.listener != null){
             listener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
