@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermUpdater;
-import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureUpdater;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinUpdater;
 

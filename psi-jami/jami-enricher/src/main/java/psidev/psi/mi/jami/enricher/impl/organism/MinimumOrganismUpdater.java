@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**

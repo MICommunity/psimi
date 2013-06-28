@@ -17,8 +17,8 @@ import java.util.Collection;
  * The general architecture for a CvTerm enricher with methods to fetch a CvTerm and coordinate the enriching.
  * Has an abstract method 'processCvTerm' which can be overridden to determine which parts should be enriched and how.
  *
- * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 08/05/13
+ * @author  Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since   08/05/13
  */
 public abstract class AbstractCvTermEnricher
         implements CvTermEnricher {

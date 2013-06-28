@@ -1,19 +1,15 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
  * An organism enricher for adding varying levels of information to Organism objects.
  *
- * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 22/05/13
+ * @author  Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since   22/05/13
  */
 public interface OrganismEnricher{
 

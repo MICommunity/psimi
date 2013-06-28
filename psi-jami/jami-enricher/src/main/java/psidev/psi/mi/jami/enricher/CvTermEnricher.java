@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.enricher;
 
-
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
@@ -14,9 +12,8 @@ import java.util.Collection;
  * This interface can accept EnricherListeners
  * and will report an EnricherEvent after each enrichment.
  *
- * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/05/13
- * Time: 13:13
+ * @author  Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since   13/05/13
  */
 public interface CvTermEnricher{
 

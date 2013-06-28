@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermUpdater;
 import psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureUpdater;
-import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinUpdater;
 
 /**

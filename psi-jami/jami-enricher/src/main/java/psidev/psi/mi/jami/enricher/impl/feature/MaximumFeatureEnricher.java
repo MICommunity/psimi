@@ -11,9 +11,8 @@ import uk.ac.ebi.intact.commons.util.diff.DiffCalculator;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 19/06/13
- * Time: 11:41
+ * @author  Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since   19/06/13
  */
 public class MaximumFeatureEnricher
         extends MinimumFeatureEnricher
