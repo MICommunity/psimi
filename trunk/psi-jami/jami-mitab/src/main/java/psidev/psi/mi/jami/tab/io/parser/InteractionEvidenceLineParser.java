@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -21,7 +20,7 @@ import java.util.Iterator;
  * @since <pre>18/06/13</pre>
  */
 
-public class InteractionEvidenceLineParser extends AbstractInteractionLineParser<BinaryInteractionEvidence, ParticipantEvidence> {
+public class InteractionEvidenceLineParser extends AbstractInteractionLineParser<InteractionEvidence, ParticipantEvidence> {
 
     public InteractionEvidenceLineParser(InputStream stream) {
         super(stream);
@@ -115,8 +114,8 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
     }
 
     @Override
-    MitabBinaryInteractionEvidence finishInteraction(ParticipantEvidence A, ParticipantEvidence B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabBinaryInteractionEvidence interaction = null;
+    MitabInteractionEvidence finishInteraction(ParticipantEvidence A, ParticipantEvidence B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        MitabInteractionEvidence interaction = null;
         boolean hasInteractionFields = !detMethod.isEmpty() || !firstAuthor.isEmpty() || !pubId.isEmpty() || !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !host.isEmpty() || !created.isEmpty() || !update.isEmpty() || isNegative;
 
@@ -125,13 +124,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         }
 
         // create interaction with participants
-        interaction = new MitabBinaryInteractionEvidence(A, B);
-        if (A != null){
-            A.setInteractionEvidence(interaction);
-        }
-        if (B != null){
-            B.setInteractionEvidence(interaction);
-        }
+        interaction = new MitabInteractionEvidence();
 
         // create publication
         MitabPublication publication = createPublicationFrom(firstAuthor, pubId, source);
@@ -156,10 +149,10 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             if (getParserListener() != null){
                 getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
             }
-            interaction.setComplexExpansion(expansion.iterator().next());
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
         }
         else if (!expansion.isEmpty()){
-            interaction.setComplexExpansion(expansion.iterator().next());
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
         }
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
@@ -196,12 +189,19 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
         }
 
+        if (A != null){
+            interaction.addParticipantEvidence(A);
+        }
+        if (B != null){
+            interaction.addParticipantEvidence(B);
+        }
+
         interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
     }
 
-    protected void initialiseInteractionAnnotations(Collection<MitabAnnotation> annots, BinaryInteractionEvidence interaction){
+    protected void initialiseInteractionAnnotations(Collection<MitabAnnotation> annots, InteractionEvidence interaction){
 
         Iterator<MitabAnnotation> annotsIterator = annots.iterator();
         while (annotsIterator.hasNext()){

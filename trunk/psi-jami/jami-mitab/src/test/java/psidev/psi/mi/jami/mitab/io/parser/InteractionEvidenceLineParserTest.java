@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.mitab.io.parser;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.tab.io.parser.InteractionEvidenceLineParser;
 import psidev.psi.mi.jami.tab.io.parser.ParseException;
 
@@ -23,9 +23,11 @@ public class InteractionEvidenceLineParserTest {
         InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_line.txt");
         InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
 
-        BinaryInteractionEvidence binary = parser.MitabLine();
+        InteractionEvidence binary = parser.MitabLine();
+        InteractionEvidence binary2 = parser.MitabLine();
 
         Assert.assertNotNull(binary);
+        Assert.assertNotNull(binary2);
         Assert.assertTrue(parser.hasFinished());
     }
 }

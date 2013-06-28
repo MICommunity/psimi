@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
@@ -23,7 +22,7 @@ import java.util.Iterator;
  * @since <pre>20/06/13</pre>
  */
 
-public abstract class AbstractInteractionLineParser<T extends BinaryInteraction, P extends Participant> extends MitabLineParser<T,P> {
+public abstract class AbstractInteractionLineParser<T extends Interaction, P extends Participant> extends MitabLineParser<T,P> {
 
     private MitabParserListener listener;
     private MitabInteractorFactory interactorFactory;
@@ -106,7 +105,7 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         return hasFinished;
     }
 
-    protected void initialiseInteractionIdentifiers(Collection<MitabXref> interactionIds, BinaryInteraction interaction){
+    protected void initialiseInteractionIdentifiers(Collection<MitabXref> interactionIds, T interaction){
 
         Iterator<MitabXref> refsIterator = interactionIds.iterator();
         while (refsIterator.hasNext()){

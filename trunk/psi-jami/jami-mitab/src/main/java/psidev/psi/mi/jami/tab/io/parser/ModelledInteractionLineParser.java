@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.utils.InteractorUtils;
@@ -18,7 +18,7 @@ import java.util.Collection;
  * @since <pre>20/06/13</pre>
  */
 
-public class ModelledInteractionLineParser extends AbstractInteractionLineParser<ModelledBinaryInteraction, ModelledParticipant> {
+public class ModelledInteractionLineParser extends AbstractInteractionLineParser<ModelledInteraction, ModelledParticipant> {
 
     public ModelledInteractionLineParser(InputStream stream) {
         super(stream);
@@ -98,8 +98,8 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
     }
 
     @Override
-    MitabModelledBinaryInteraction finishInteraction(ModelledParticipant A, ModelledParticipant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabModelledBinaryInteraction interaction = null;
+    MitabModelledInteraction finishInteraction(ModelledParticipant A, ModelledParticipant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        MitabModelledInteraction interaction = null;
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
@@ -108,13 +108,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         }
 
         // create interaction with participants
-        interaction = new MitabModelledBinaryInteraction(A, B);
-        if (A != null){
-            A.setModelledInteraction(interaction);
-        }
-        if (B != null){
-            B.setModelledInteraction(interaction);
-        }
+        interaction = new MitabModelledInteraction();
 
         // set interaction type
         if (interactionType.size() > 1){
@@ -135,10 +129,10 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
             if (getParserListener() != null){
                 getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size() + " interaction types found. Only the first one will be loaded.");
             }
-            interaction.setComplexExpansion(expansion.iterator().next());
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
         }
         else if (!expansion.isEmpty()){
-            interaction.setComplexExpansion(expansion.iterator().next());
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
         }
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
@@ -171,6 +165,13 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
 
         if (A == null && B == null && getParserListener() != null){
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
+        }
+
+        if (A != null){
+            interaction.addModelledParticipant(A);
+        }
+        if (B != null){
+            interaction.addModelledParticipant(B);
         }
 
         interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));

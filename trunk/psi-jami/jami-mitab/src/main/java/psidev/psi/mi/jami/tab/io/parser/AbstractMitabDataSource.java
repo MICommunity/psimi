@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
 import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
@@ -24,9 +23,9 @@ import java.util.Map;
  * @since <pre>21/06/13</pre>
  */
 
-public abstract class AbstractMitabDataSource<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements MIFileDataSource, StreamingInteractionSource, MitabParserListener{
+public abstract class AbstractMitabDataSource<T extends Interaction, P extends Participant> implements MIFileDataSource, StreamingInteractionSource, MitabParserListener{
 
-    private MitabLineParser<B,P> lineParser;
+    private MitabLineParser<T,P> lineParser;
     private boolean isInitialised = false;
 
     private File originalFile;
@@ -249,11 +248,11 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
         return createMitabIterator();
     }
 
-    protected MitabLineParser<B,P> getLineParser() {
+    protected MitabLineParser<T,P> getLineParser() {
         return lineParser;
     }
 
-    protected void setLineParser(MitabLineParser<B,P> lineParser) {
+    protected void setLineParser(MitabLineParser<T,P> lineParser) {
         this.lineParser = lineParser;
         this.lineParser.setParserListener(this);
     }
