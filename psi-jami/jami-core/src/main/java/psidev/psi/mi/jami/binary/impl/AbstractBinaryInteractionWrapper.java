@@ -2,8 +2,12 @@ package psidev.psi.mi.jami.binary.impl;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.InteractionUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 
 /**
  * Abstract class for BinaryInteractionWrapper
@@ -31,6 +35,11 @@ public class AbstractBinaryInteractionWrapper<T extends Participant> implements 
             throw new IllegalArgumentException("The interaction of a AbstractBinaryInteractionWrapper cannot have more than two participants");
         }
         this.interaction = interaction;
+
+        this.complexExpansion = InteractionUtils.collectComplexExpansionMethodFromAnnotations(interaction.getAnnotations());
+        if (complexExpansion != null){
+            interaction.getAnnotations().remove(complexExpansion);
+        }
     }
 
     public AbstractBinaryInteractionWrapper(Interaction interaction, CvTerm complexExpansion){
