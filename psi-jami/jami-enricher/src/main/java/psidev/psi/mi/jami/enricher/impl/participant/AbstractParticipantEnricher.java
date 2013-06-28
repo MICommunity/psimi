@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
-
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
@@ -15,8 +14,8 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 19/06/13
  */
-public class AbstractParticipantEnricher
-        implements ParticipantEnricher {
+public abstract class AbstractParticipantEnricher <P extends Participant>
+        implements ParticipantEnricher<P>  {
 
 
     protected ParticipantEnricherListener listener;
@@ -26,7 +25,7 @@ public class AbstractParticipantEnricher
     protected FeatureEnricher featureEnricher;
 
 
-    public void enrichParticipant(Participant participantToEnrich) throws EnricherException {
+    public void enrichParticipant(P participantToEnrich) throws EnricherException {
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 
@@ -63,31 +62,15 @@ public class AbstractParticipantEnricher
             }
         }
 
-        //Enrich ParticipantEvidence
-        if(participantToEnrich instanceof ParticipantEvidence) {
-            ParticipantEvidence participantEvidenceToEnrich = (ParticipantEvidence)participantToEnrich;
-            if(getCvTermEnricher() != null){
 
-                getCvTermEnricher().enrichCvTerm(
-                        participantEvidenceToEnrich.getExperimentalRole());
+         /*
 
-                for(CvTerm cvTerm : participantEvidenceToEnrich.getIdentificationMethods()){
-                    getCvTermEnricher().enrichCvTerm(cvTerm);
-                }
-
-                for(CvTerm cvTerm : participantEvidenceToEnrich.getExperimentalPreparations()){
-                    getCvTermEnricher().enrichCvTerm(cvTerm);
-                }
-            }
-        }
-
-
-        for(Object obj : participantToEnrich.getFeatures()){
+        for(Feature feature : participantToEnrich.getFeatures()){
             if(obj instanceof Feature){
                 Feature feature = (Feature)obj;
                 if(getFeatureEnricher() != null) getFeatureEnricher().enrichFeature(feature);
             }
-        }
+        }        */
 
 
 
