@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.extension.*;
@@ -20,7 +20,7 @@ import java.util.Collection;
  * @since <pre>20/06/13</pre>
  */
 
-public class InteractionLineParser extends AbstractInteractionLineParser<BinaryInteraction, Participant> {
+public class InteractionLineParser extends AbstractInteractionLineParser<Interaction, Participant> {
 
     public InteractionLineParser(InputStream stream) {
         super(stream);
@@ -99,8 +99,8 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
     }
 
     @Override
-    MitabBinaryInteraction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabBinaryInteraction interaction = null;
+    MitabInteraction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        MitabInteraction interaction = null;
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
@@ -108,7 +108,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             return interaction;
         }
         // create interaction with participants
-        interaction = new MitabBinaryInteraction(A, B);
+        interaction = new MitabInteraction();
 
         // set interaction type
         if (interactionType.size() > 1){
@@ -127,10 +127,10 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
             if (getParserListener() != null){
                 getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
             }
-            interaction.setComplexExpansion(expansion.iterator().next());
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
         }
         else if (!expansion.isEmpty()){
-            interaction.setComplexExpansion(expansion.iterator().next());
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
         }
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
@@ -161,6 +161,13 @@ public class InteractionLineParser extends AbstractInteractionLineParser<BinaryI
 
         if (A == null && B == null && getParserListener() != null){
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
+        }
+
+        if (A != null){
+            ((Collection<Participant>)interaction.getParticipants()).add(A);
+        }
+        if (B != null){
+            ((Collection<Participant>)interaction.getParticipants()).add(B);
         }
 
         interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));

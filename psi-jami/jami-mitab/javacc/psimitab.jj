@@ -12,7 +12,6 @@ PARSER_BEGIN(MitabLineParser)
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import java.util.Collection;
@@ -26,7 +25,7 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
-public abstract class MitabLineParser<T extends BinaryInteraction, P extends Participant> {
+public abstract class MitabLineParser<T extends Interaction, P extends Participant> {
 	
 	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e) {
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, e);
@@ -235,7 +234,9 @@ T MitabLine():
     (
         <LINE_SEPARATOR> {return interaction;}
       |
-        (<EOF> {reachEndOfFile(); return interaction;})
+      (<EOF> {reachEndOfFile(); return interaction;})
+      |
+      error_skipToNext(enumSet) {return interaction;}
     )
 )
   { return interaction; }
@@ -650,7 +651,7 @@ MitabRange range(int columnNumber):
    catch(IllegalRangeException e){
        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet);
-       start = null;
+       return null;
    }
 }
 
@@ -822,10 +823,10 @@ MitabCvTerm expansion():
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
     { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id);
            cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
-           getParserListener().onMissingCvTermName(cv, cv, "The complex expansion method does not have a name.");}
+           if (getParserListener() != null) {getParserListener().onMissingCvTermName(cv, cv, "The complex expansion method does not have a name.");}}
       else if (id == null) {cv = new MitabCvTerm(name);
             cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
-            getParserListener().onMissingExpansionId(cv);}
+            if (getParserListener() != null) {getParserListener().onMissingExpansionId(cv);}}
       else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));}
       return cv;}
   }
@@ -851,7 +852,7 @@ MitabConfidence confidence():
     type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> value = safeString() [ <OPEN_PAREN> text = safeString() <CLOSE_PAREN> ]
     { if (text == null){conf = new MitabConfidence(type, value, null); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));}
       else {conf = new MitabConfidence(type, value, text); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));
-             getParserListener().onTextFoundInConfidence(conf);}
+             if (getParserListener() != null) {getParserListener().onTextFoundInConfidence(conf);}}
       return conf;}
   }
   catch (ParseException e){
@@ -876,7 +877,7 @@ MitabSource source():
      //db:id(name)
        db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
        { if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
-            getParserListener().onMissingCvTermName(s, s, "The interaction source does not have a name.");}
+            if (getParserListener() != null) {getParserListener().onMissingCvTermName(s, s, "The interaction source does not have a name.");}}
          else {s = new MitabSource(name, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));}
          return s;}
   }
@@ -960,7 +961,7 @@ MitabCvTerm cvTerm(int column):
   try{
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
     { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
-          getParserListener().onMissingCvTermName(cv, cv, "The term at the column " + column + " does not have a name.");}
+          if (getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv, "The term at the column " + column + " does not have a name.");}}
       else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));}
       return cv;}
   }
@@ -1014,7 +1015,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
          if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier()); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
          else if (qualifier != null) {ref = new MitabXref(db, id, text);
          ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-         getParserListener().onTextFoundInIdentifier(ref);}
+         if (getParserListener() != null) {getParserListener().onTextFoundInIdentifier(ref);}}
          else {ref = new MitabXref(db, id, text); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
        }
        else if (text == null) {
@@ -1024,7 +1025,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
        else if (qualifier != null) {
           ref = new MitabXref(db, id, text);
           ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-          getParserListener().onTextFoundInIdentifier(ref);
+          if (getParserListener() != null) {getParserListener().onTextFoundInIdentifier(ref);}
        }
        else{
           ref = new MitabXref(db, id, text);
@@ -1088,20 +1089,20 @@ JAVACODE
 java.lang.String anyStringBut(EnumSet<TokenKind> skipToTokens) {
   java.lang.StringBuilder result = new StringBuilder();
 
-  Token t;
+  Token t = getToken(1);
   // next token is 1
-  do {
-    t = getNextToken();
-    // check next token
-    result.append(t.image);
-    t = getToken(1);
-  } while (t.kind != EOF && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind)));
+  while(t.kind != EOF && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind))){
+      t = getNextToken();
+      // check next token
+      result.append(t.image);
+      t = getToken(1);
+  }
     // The above loop consumes tokens all the way up to a token of
     // "kind".  We use a do-while loop rather than a while because the
     // current token is the one immediately before the erroneous token
     // (in our case the token immediately before what should have been
     // "if"/"while".
-    return result.toString();
+    return result.length() > 0 ? result.toString() : null;
 }
 
 JAVACODE
@@ -1109,15 +1110,11 @@ void error_skipToNext(EnumSet<TokenKind> skipToTokens) {
   ParseException e = generateParseException();  // generate the exception object.
   System.out.println(e.toString());  // print the error message
 
-  Token t;
-  // next token is 1
-  int i = 1;
-  do {
-    t = getNextToken();
-    // check next token
-    i++;
-    t = getToken(i);
-  } while (t.kind != EOF && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind)));
+  Token t = getToken(0);
+  while(t.kind != EOF && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind))){
+     // check next token
+     t = getNextToken();
+  }
     // The above loop consumes tokens all the way up to a token of
     // "kind".  We use a do-while loop rather than a while because the
     // current token is the one immediately before the erroneous token

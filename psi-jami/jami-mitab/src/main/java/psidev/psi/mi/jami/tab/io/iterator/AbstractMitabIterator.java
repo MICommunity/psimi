@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.tab.io.iterator;
 
-import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
@@ -18,12 +17,12 @@ import java.util.Iterator;
  * @since <pre>21/06/13</pre>
  */
 
-public abstract class AbstractMitabIterator<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements Iterator<T>{
+public abstract class AbstractMitabIterator<T extends Interaction, P extends Participant> implements Iterator<T>{
 
-    private MitabLineParser<B,P> lineParser;
-    private B nextBinary;
+    private MitabLineParser<T,P> lineParser;
+    private T nextBinary;
 
-    public AbstractMitabIterator(MitabLineParser<B,P> lineParser){
+    public AbstractMitabIterator(MitabLineParser<T,P> lineParser){
         if (lineParser == null){
             throw new IllegalArgumentException("The Mitab iterator needs a non null lineParser.");
         }
@@ -48,9 +47,9 @@ public abstract class AbstractMitabIterator<T extends Interaction, B extends Bin
     }
 
     public T next() {
-        B currentBinary = this.nextBinary;
+        T currentBinary = this.nextBinary;
         processNextBinary();
-        return (T)currentBinary;
+        return currentBinary;
     }
 
     public void remove() {
