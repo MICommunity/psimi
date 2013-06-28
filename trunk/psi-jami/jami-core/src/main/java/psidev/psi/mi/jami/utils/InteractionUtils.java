@@ -3,11 +3,14 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
+import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.binary.impl.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
+
+import java.util.Collection;
 
 /**
  * Factory for experimental interactions
@@ -189,5 +192,24 @@ public class InteractionUtils {
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(interaction, binary, false, true);
 
         return binary;
+    }
+
+    public static CvTerm collectComplexExpansionMethodFromAnnotations(Collection<? extends Annotation> annotations){
+        if (annotations == null || annotations.isEmpty()){
+             return null;
+        }
+
+        for (Annotation annot : annotations){
+            if (AnnotationUtils.doesAnnotationHaveTopic(annot, ComplexExpansionMethod.SPOKE_EXPANSION_MI, ComplexExpansionMethod.SPOKE_EXPANSION)
+                    || AnnotationUtils.doesAnnotationHaveTopic(annot, null, ComplexExpansionMethod.SPOKE)
+                    || AnnotationUtils.doesAnnotationHaveTopic(annot, ComplexExpansionMethod.MATRIX_EXPANSION_MI, ComplexExpansionMethod.MATRIX_EXPANSION)
+                    || AnnotationUtils.doesAnnotationHaveTopic(annot, null, ComplexExpansionMethod.MATRIX)
+                    || AnnotationUtils.doesAnnotationHaveTopic(annot, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI, ComplexExpansionMethod.BIPARTITE_EXPANSION)
+                    || AnnotationUtils.doesAnnotationHaveTopic(annot, null, ComplexExpansionMethod.BIPARTITE)){
+                 return annot.getTopic();
+            }
+        }
+
+        return null;
     }
 }

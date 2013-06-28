@@ -18,10 +18,13 @@ public interface ComplexExpansionMethod<T extends Interaction, B extends BinaryI
 
     public static final String BIPARTITE_EXPANSION_MI = "MI:1062";
     public static final String BIPARTITE_EXPANSION = "bipartite expansion";
+    public static final String BIPARTITE = "bipartite";
     public static final String SPOKE_EXPANSION_MI = "MI:1060";
     public static final String SPOKE_EXPANSION = "spoke expansion";
+    public static final String SPOKE = "spoke";
     public static final String MATRIX_EXPANSION_MI = "MI:1061";
     public static final String MATRIX_EXPANSION = "matrix expansion";
+    public static final String MATRIX = "matrix expansion";
 
     /**
      * The method represented by the ComplexExpansionMethod object.
