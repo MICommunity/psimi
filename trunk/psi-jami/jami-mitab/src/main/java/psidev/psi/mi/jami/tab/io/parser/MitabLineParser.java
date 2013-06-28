@@ -1626,7 +1626,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                     result = token.image.trim();
+                     result = token.image.substring(1,token.image.length() - 1).trim();
       break;
     default:
       jj_la1[75] = jj_gen;
@@ -1642,7 +1642,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                     result = token.image.trim();
+                     result = token.image.substring(1,token.image.length() - 1).trim();
       break;
     default:
       jj_la1[76] = jj_gen;

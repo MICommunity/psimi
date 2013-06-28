@@ -162,19 +162,19 @@ public class MitabUtilsTest {
         MitabAlias name2 = new MitabAlias("uniprotkb", "alias5");
 
         List<MitabAlias> aliases1 = Arrays.asList(display_long, display_short, shortlabel, geneName, name1, name2);
-        Assert.assertEquals(display_short, MitabUtils.findBestShortNameFromAliases(aliases1));
+        Assert.assertEquals(display_short, MitabUtils.findBestShortNameAndFullNameFromAliases(aliases1));
 
         List<MitabAlias> aliases2 = Arrays.asList(display_long, shortlabel, geneName, name1, name2);
-        Assert.assertEquals(display_long, MitabUtils.findBestShortNameFromAliases(aliases2));
+        Assert.assertEquals(display_long, MitabUtils.findBestShortNameAndFullNameFromAliases(aliases2));
 
         List<MitabAlias> aliases3 = Arrays.asList(shortlabel, geneName, name1, name2);
-        Assert.assertEquals(geneName, MitabUtils.findBestShortNameFromAliases(aliases3));
+        Assert.assertEquals(geneName, MitabUtils.findBestShortNameAndFullNameFromAliases(aliases3));
 
         List<MitabAlias> aliases4 = Arrays.asList(name1, shortlabel, name2);
-        Assert.assertEquals(shortlabel, MitabUtils.findBestShortNameFromAliases(aliases4));
+        Assert.assertEquals(shortlabel, MitabUtils.findBestShortNameAndFullNameFromAliases(aliases4));
 
         List<MitabAlias> aliases5 = Arrays.asList(name1, name2);
-        Assert.assertEquals(name2, MitabUtils.findBestShortNameFromAliases(aliases5));
+        Assert.assertEquals(name2, MitabUtils.findBestShortNameAndFullNameFromAliases(aliases5));
     }
 
     @Test

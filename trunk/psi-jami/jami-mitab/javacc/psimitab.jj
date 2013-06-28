@@ -1046,7 +1046,7 @@ java.lang.String safeString():
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.COLON, TokenKind.OPEN_PAREN, TokenKind.CLOSE_PAREN, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  ( <QUOTED_STRING> {result = token.image.trim();}
+  ( <QUOTED_STRING> {result = token.image.substring(1,token.image.length() - 1).trim();}
    | result = anyStringBut(enumSet) )
   {return result;}
 }
@@ -1057,7 +1057,7 @@ java.lang.String safeAuthor():
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.OPEN_PAREN, TokenKind.CLOSE_PAREN,TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  ( <QUOTED_STRING> {result = token.image.trim();}
+  ( <QUOTED_STRING> {result = token.image.substring(1,token.image.length() - 1).trim();}
    | result = anyStringBut(enumSet)    )
   {return result;}
 }
