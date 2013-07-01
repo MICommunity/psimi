@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participantevidence;
 
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
+
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 
@@ -11,9 +10,10 @@ import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  */
+@Deprecated
 public class MinimumParticipantEvidenceEnricher
         extends AbstractParticipantEvidenceEnricher
-        implements ParticipantEvidenceEnricher {
+{
 
 
     @Override

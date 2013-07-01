@@ -1,16 +1,9 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
-import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
-import java.util.Collection;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.model.CvTerm;
+
 
 /**
  * Provides minimum updating of the CvTerm.

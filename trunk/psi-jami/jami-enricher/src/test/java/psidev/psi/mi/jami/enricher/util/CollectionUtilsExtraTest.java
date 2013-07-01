@@ -39,14 +39,14 @@ public class CollectionUtilsExtraTest {
         assertTrue(completeXrefList.size() == 2);
         assertTrue(toRemoveXrefList.size() == 3);
 
-        Collection < Xref > subtractedXrefs = CollectionManipulationUtils.comparatorSubtract(
+        /*Collection < Xref > subtractedXrefs = CollectionManipulationUtils.comparatorSubtract(
                 completeXrefList,
                 toRemoveXrefList,
                 new DefaultXrefComparator());
 
         assertTrue(completeXrefList.size() == 2);
         assertTrue(toRemoveXrefList.size() == 3);
-        assertTrue(subtractedXrefs.size() == 1);
+        assertTrue(subtractedXrefs.size() == 1); */
 
     }
 

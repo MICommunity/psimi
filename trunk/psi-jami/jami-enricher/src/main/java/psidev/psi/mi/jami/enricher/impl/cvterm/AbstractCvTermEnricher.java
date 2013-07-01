@@ -130,7 +130,13 @@ public abstract class AbstractCvTermEnricher
             }
         }
 
-        //Todo - Allow for searching by fullname / shortname
+        if(cvTermFetched == null){
+            try{
+                getCvTermFetcher().getCvTermByExactName(cvTermToEnrich.getShortName());
+            } catch (BridgeFailedException e) {
+                throw new EnricherException("Problem encountered while enriching CvTerm", e);
+            }
+        }
 
         return cvTermFetched;
     }

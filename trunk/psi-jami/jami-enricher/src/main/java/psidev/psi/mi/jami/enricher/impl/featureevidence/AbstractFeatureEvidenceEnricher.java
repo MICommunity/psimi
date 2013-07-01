@@ -22,6 +22,7 @@ import java.util.List;
  * Date: 13/06/13
  * Time: 16:55
  */
+@Deprecated
 public abstract  class AbstractFeatureEvidenceEnricher{
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractFeatureEvidenceEnricher.class.getName());

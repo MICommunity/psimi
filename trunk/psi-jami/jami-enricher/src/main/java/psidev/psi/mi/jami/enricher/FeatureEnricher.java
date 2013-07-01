@@ -11,11 +11,11 @@ import psidev.psi.mi.jami.model.Feature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  */
-public interface FeatureEnricher <F extends Feature>{
+public interface FeatureEnricher <T extends Feature>{
 
    // public void enrichFeature(F featureToEnrich, String sequenceOld, String sequenceNew);
 
-    public void enrichFeature(F featureToEnrich) throws EnricherException;
+    public void enrichFeature(T featureToEnrich) throws EnricherException;
 
     public void setFeatureEnricherListener(FeatureEnricherListener listener);
     public FeatureEnricherListener getFeatureEnricherListener();

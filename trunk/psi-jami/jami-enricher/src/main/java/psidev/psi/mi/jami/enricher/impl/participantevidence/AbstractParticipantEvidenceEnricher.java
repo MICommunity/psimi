@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participantevidence;
 
 
-import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.participantevidence.listener.ParticipantEvidenceEnricherListener;
@@ -13,8 +12,9 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 19/06/13
  */
+@Deprecated
 public class AbstractParticipantEvidenceEnricher
-        implements ParticipantEvidenceEnricher {
+       {
 
 
 

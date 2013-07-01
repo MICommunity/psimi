@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.remapper;
 
 
 import psidev.psi.mi.jami.model.Protein;
+import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
 
 import java.util.Collection;
 

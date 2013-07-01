@@ -2,12 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
-
-import java.util.Collection;
 
 /**
  * Provides maximum enrichment of the CvTerm.
@@ -27,7 +22,7 @@ public class MaximumCvTermEnricher
         super.processCvTerm(cvTermToEnrich);
 
         //Add synonyms
-        Collection<Alias> subtractedSynonyms = CollectionManipulationUtils.comparatorSubtract(
+        /*Collection<Alias> subtractedSynonyms = CollectionManipulationUtils.comparatorSubtract(
                 cvTermFetched.getSynonyms(),
                 cvTermToEnrich.getSynonyms(),
                 new DefaultAliasComparator());
@@ -35,8 +30,6 @@ public class MaximumCvTermEnricher
         for(Alias aliasSynonym: subtractedSynonyms){
             cvTermToEnrich.getSynonyms().add(aliasSynonym);
             if (listener != null) listener.onAddedSynonym(cvTermToEnrich , aliasSynonym);
-        }
+        } */
     }
-
-
 }
