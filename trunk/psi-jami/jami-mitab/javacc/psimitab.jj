@@ -227,14 +227,14 @@ T MitabLine():
       catch (ParseException e){
         processSyntaxError(token.beginLine, token.beginColumn, 0, e);
         error_skipToNext(enumSet);
-        return null;
+        return interaction;
       }
 
     //line/file termination
     (
         <LINE_SEPARATOR> {return interaction;}
       |
-      (<EOF> {reachEndOfFile(); return interaction;})
+      <EOF> {reachEndOfFile(); return interaction;}
       |
       error_skipToNext(enumSet) {return interaction;}
     )

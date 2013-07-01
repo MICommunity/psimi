@@ -574,7 +574,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     } catch (ParseException e) {
         processSyntaxError(token.beginLine, token.beginColumn, 0, e);
         error_skipToNext(enumSet);
-        {if (true) return null;}
+        {if (true) return interaction;}
     }
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LINE_SEPARATOR:
@@ -583,7 +583,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       break;
     case 0:
       jj_consume_token(0);
-              reachEndOfFile(); {if (true) return interaction;}
+             reachEndOfFile(); {if (true) return interaction;}
       break;
     default:
       jj_la1[45] = jj_gen;
