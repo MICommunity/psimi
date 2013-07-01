@@ -148,6 +148,8 @@ T MitabLine():
   Collection<MitabCvTerm> pmethodA = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> pmethodB = Collections.EMPTY_LIST;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
+  EnumSet<TokenKind> columnSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
+
   P participantA;
   P participantB;
   T interaction=null;
@@ -166,56 +168,235 @@ T MitabLine():
    ( <COMMENT> (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
     |
       (
-        (<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>
-        (<DASH> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>
-        (<DASH> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) <COLUMN_SEPARATOR>
-        (<DASH> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) <COLUMN_SEPARATOR>
-        (<DASH> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) <COLUMN_SEPARATOR>
-        (<DASH> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) <COLUMN_SEPARATOR>
-        (<DASH> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) <COLUMN_SEPARATOR>
-        (<DASH> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) <COLUMN_SEPARATOR>
-        (<DASH> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9)) <COLUMN_SEPARATOR>
-        (<DASH> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) <COLUMN_SEPARATOR>
-        (<DASH> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) <COLUMN_SEPARATOR>
-        (<DASH> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) <COLUMN_SEPARATOR>
-        (<DASH> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) <COLUMN_SEPARATOR>
-        (<DASH> {interactionId = Collections.EMPTY_LIST;} | interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14)) <COLUMN_SEPARATOR>
-        (<DASH> {conf = Collections.EMPTY_LIST;} | conf = confidences())
+        try{(<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+          uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
+          processSyntaxError(token.beginLine, token.beginColumn, 1, e);
+          error_skipToNext(columnSet);
+         }
+        try{(<DASH> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+            uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
+            processSyntaxError(token.beginLine, token.beginColumn, 2, e);
+             error_skipToNext(columnSet);
+            }
+        try{(<DASH> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+          altIdA = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 3, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        altIdB = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 4, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        aliasA = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 5, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        aliasB = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 6, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        detMethod = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 7, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        firstAuthor = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 8, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        pubId = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 9, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        taxidA = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 10, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        taxidB = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 11, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        interactionType = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 12, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        source = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 13, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {interactionId = Collections.EMPTY_LIST;} | interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+        interactionId = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 14, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {conf = Collections.EMPTY_LIST;} | conf = confidences())}
+        catch (ParseException e){
+        conf = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 15, e);
+                  error_skipToNext(columnSet);
+                 }
 
         [ //starting MITAB 2.6
         (
         <COLUMN_SEPARATOR> //end of confidences delimiter
-        (<DASH> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) <COLUMN_SEPARATOR>
-        (<DASH> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) <COLUMN_SEPARATOR>
-        (<DASH> {bioRoleB = Collections.EMPTY_LIST;} | bioRoleB = cvTerms(18)) <COLUMN_SEPARATOR>
-        (<DASH> {expRoleA = Collections.EMPTY_LIST;} | expRoleA = cvTerms(19)) <COLUMN_SEPARATOR>
-        (<DASH> {expRoleB = Collections.EMPTY_LIST;} | expRoleB = cvTerms(20)) <COLUMN_SEPARATOR>
-        (<DASH> {typeA = Collections.EMPTY_LIST;} | typeA = cvTerms(21)) <COLUMN_SEPARATOR>
-        (<DASH> {typeB = Collections.EMPTY_LIST;} | typeB = cvTerms(22)) <COLUMN_SEPARATOR>
-        (<DASH> {xrefA = Collections.EMPTY_LIST;} | xrefA = ids(null, false, 23)) <COLUMN_SEPARATOR>
-        (<DASH> {xrefB = Collections.EMPTY_LIST;} | xrefB = ids(null, false, 24)) <COLUMN_SEPARATOR>
-        (<DASH> {xrefI = Collections.EMPTY_LIST;} | xrefI = ids(null, false, 25)) <COLUMN_SEPARATOR>
-        (<DASH> {annotA = Collections.EMPTY_LIST;} | annotA = annotations(26)) <COLUMN_SEPARATOR>
-        (<DASH> {annotB = Collections.EMPTY_LIST;} | annotB = annotations(27)) <COLUMN_SEPARATOR>
-        (<DASH> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) <COLUMN_SEPARATOR>
-        (<DASH> {host = Collections.EMPTY_LIST;} | host = taxId(29)) <COLUMN_SEPARATOR>
-        (<DASH> {params = Collections.EMPTY_LIST;} | params = parameters()) <COLUMN_SEPARATOR>
-        (<DASH> {created = Collections.EMPTY_LIST;} | created = dates(31)) <COLUMN_SEPARATOR>
-        (<DASH> {update = Collections.EMPTY_LIST;} | update = dates(32)) <COLUMN_SEPARATOR>
-        (<DASH> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) <COLUMN_SEPARATOR>
-        (<DASH> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) <COLUMN_SEPARATOR>
-        (<DASH> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) <COLUMN_SEPARATOR>
+        try{(<DASH> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 17, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {bioRoleB = Collections.EMPTY_LIST;} | bioRoleB = cvTerms(18)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 18, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {expRoleA = Collections.EMPTY_LIST;} | expRoleA = cvTerms(19)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 19, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {expRoleB = Collections.EMPTY_LIST;} | expRoleB = cvTerms(20)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 20, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {typeA = Collections.EMPTY_LIST;} | typeA = cvTerms(21)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 21, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {typeB = Collections.EMPTY_LIST;} | typeB = cvTerms(22)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 22, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {xrefA = Collections.EMPTY_LIST;} | xrefA = ids(null, false, 23)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 23, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {xrefB = Collections.EMPTY_LIST;} | xrefB = ids(null, false, 24)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 24, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {xrefI = Collections.EMPTY_LIST;} | xrefI = ids(null, false, 25)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 25, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {annotA = Collections.EMPTY_LIST;} | annotA = annotations(26)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 26, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {annotB = Collections.EMPTY_LIST;} | annotB = annotations(27)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 27, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 28, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {host = Collections.EMPTY_LIST;} | host = taxId(29)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 29, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {params = Collections.EMPTY_LIST;} | params = parameters()) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {created = Collections.EMPTY_LIST;} | created = dates(31)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 31, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {update = Collections.EMPTY_LIST;} | update = dates(32)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 32, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 33, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 34, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 35, e);
+                  error_skipToNext(columnSet);
+                 }
         (<DASH> | isNegative = negative())
 
         [ //starting MITAB 2.7
         (
         <COLUMN_SEPARATOR> //end of negative() delimiter
-        (<DASH> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) <COLUMN_SEPARATOR>
-        (<DASH> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) <COLUMN_SEPARATOR>
-        (LOOKAHEAD(2) <DASH> {stcA = Collections.EMPTY_LIST;} | stcA = stoichiometryList(39)) <COLUMN_SEPARATOR>
-        (LOOKAHEAD(2) <DASH> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) <COLUMN_SEPARATOR>
-        (<DASH> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) <COLUMN_SEPARATOR>
-        (<DASH> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42))
+        try{(<DASH> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 37, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 38, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(LOOKAHEAD(2) <DASH> {stcA = Collections.EMPTY_LIST;} | stcA = stoichiometryList(39)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 39, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(LOOKAHEAD(2) <DASH> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 40, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) <COLUMN_SEPARATOR>}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 41, e);
+                  error_skipToNext(columnSet);
+                 }
+        try{(<DASH> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42))}
+        catch (ParseException e){
+                  processSyntaxError(token.beginLine, token.beginColumn, 42, e);
+                  error_skipToNext(columnSet);
+                 }
         )
         ] // end MITAB 2.7
          )
@@ -241,294 +422,182 @@ Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
 {
   Collection<MitabXref> xrefs;
   MitabXref var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
-      var = id(qualifier, recognizeImex, column)
-         {xrefs = new ArrayList<MitabXref>(); if (var != null) {xrefs.add(var);}}
+   var = id(qualifier, recognizeImex, column)
+   {xrefs = new ArrayList<MitabXref>(); if (var != null) {xrefs.add(var);}}
 
-    (<FIELD_SEPARATOR> var = id(qualifier, recognizeImex, column) {if (var != null) {xrefs.add(var);}})*
-    {return xrefs;}
-  }
-  catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, column, e);
-      error_skipToNext(enumSet);
-       return Collections.EMPTY_LIST;
-    }
+   (<FIELD_SEPARATOR> var = id(qualifier, recognizeImex, column) {if (var != null) {xrefs.add(var);}})*
+   {return xrefs;}
 }
 
 Collection<MitabAlias> aliases(int column):
 {
   Collection<MitabAlias> aliases;
   MitabAlias var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = alias(column)
     {aliases = new ArrayList<MitabAlias>(); if (var != null) {if (var != null) {aliases.add(var);}}}
 
     (<FIELD_SEPARATOR> var = alias(column) {if (var != null) {if (var != null) {aliases.add(var);}}})*
     {return aliases;}
-  }
-  catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, column, e);
-      error_skipToNext(enumSet);
-       return Collections.EMPTY_LIST;
-    }
 }
 
 Collection<MitabCvTerm> cvTerms(int columnNumber):
 {
   Collection<MitabCvTerm> methods;
   MitabCvTerm var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
   var = cvTerm(columnNumber)
     {methods = new ArrayList<MitabCvTerm>(); if (var != null) {methods.add(var);}}
 
     (<FIELD_SEPARATOR> var = cvTerm(columnNumber) {if (var != null) {methods.add(var);}})*
     {return methods;}
-  }
-  catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
-    error_skipToNext(enumSet);
-     return Collections.EMPTY_LIST;
-  }
 }
 
 Collection<MitabAuthor> firstAuthors():
 {
   Collection<MitabAuthor> authors;
   MitabAuthor var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = author()
     {authors = new ArrayList<MitabAuthor>(); if (var != null) {authors.add(var);}}
 
     (<FIELD_SEPARATOR> var = author() {if (var != null) {authors.add(var);}})*
     {return authors;}
-  }
-  catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 8, e);
-        error_skipToNext(enumSet);
-        return Collections.EMPTY_LIST;
-     }
 }
 
 Collection<MitabOrganism> taxId(int column):
 {
   Collection<MitabOrganism> organisms;
   MitabOrganism var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-}
+  }
 {
-  try{
     var = organism(column)
     {organisms = new ArrayList<MitabOrganism>(); if (var != null) {organisms.add(var);}}
 
     (<FIELD_SEPARATOR> var = organism(column) {if (var != null) {organisms.add(var);}})*
     {return organisms;}
-  }
-  catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, column, e);
-         error_skipToNext(enumSet);
-         return Collections.EMPTY_LIST;
-      }
 }
 
 Collection<MitabSource> sourceDbs():
 {
   Collection<MitabSource> sources;
   MitabSource var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
      var = source()
     {sources = new ArrayList<MitabSource>(); if (var != null) {sources.add(var);}}
 
     (<FIELD_SEPARATOR> var = source() {if (var != null) {sources.add(var);}})*
     {return sources;}
-  }
-  catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 13, e);
-       error_skipToNext(enumSet);
-       return Collections.EMPTY_LIST;
-    }
 }
 
 Collection<MitabConfidence> confidences():
 {
   Collection<MitabConfidence> confs;
   MitabConfidence var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = confidence()
     {confs = new ArrayList<MitabConfidence>(); if (var != null) {confs.add(var);}}
 
     (<FIELD_SEPARATOR> var = confidence() {if (var != null) {confs.add(var);}})*
     {return confs;}
-  }
-  catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 15, e);
-       error_skipToNext(enumSet);
-       return Collections.EMPTY_LIST;
-    }
 }
 
 Collection<MitabCvTerm> complexExpansion():
 {
   Collection<MitabCvTerm> expansions;
   MitabCvTerm var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = expansion()
     {expansions = new ArrayList<MitabCvTerm>(); if (var != null) {expansions.add(var);}}
 
     (<FIELD_SEPARATOR> var = expansion() {if (var != null) {expansions.add(var);}})*
     {return expansions;}
-  }
-  catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
-     error_skipToNext(enumSet);
-     return Collections.EMPTY_LIST;
-  }
 }
 
 Collection<MitabAnnotation> annotations(int column):
 {
   Collection<MitabAnnotation> annots;
   MitabAnnotation var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = annotation(column)
       {annots = new ArrayList<MitabAnnotation>(); if (var != null) {annots.add(var);}}
 
       (<FIELD_SEPARATOR> var = annotation(column) {if (var != null) {annots.add(var);}})*
       {return annots;}
-  }
-  catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, column, e);
-      error_skipToNext(enumSet);
-      return Collections.EMPTY_LIST;
-  }
 }
 
 Collection<MitabParameter> parameters():
 {
   Collection<MitabParameter> params;
   MitabParameter var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = parameter()
     {params = new ArrayList<MitabParameter>(); if (var != null) {params.add(var);}}
 
     (<FIELD_SEPARATOR> var = parameter() {if (var != null) {params.add(var);}})*
     {return params;}
-  }
-  catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, 30, e);
-         error_skipToNext(enumSet);
-         return Collections.EMPTY_LIST;
-      }
 }
 
 Collection<MitabDate> dates(int column):
 {
   Collection<MitabDate> dates;
   MitabDate var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = date(column)
       {dates = new ArrayList<MitabDate>(); if (var != null) {if (var != null) {dates.add(var);}}}
 
       (<FIELD_SEPARATOR> var = date(column) {if (var != null) {if (var != null) {if (var != null) {dates.add(var);}}}})*
       {return dates;}
-  }
-  catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, column, e);
-       error_skipToNext(enumSet);
-       return Collections.EMPTY_LIST;
-    }
 }
 
 Collection<MitabChecksum> checksums(int column):
 {
   Collection<MitabChecksum> checksums;
   MitabChecksum var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
       var = checksum(column)
       {checksums = new ArrayList<MitabChecksum>(); if (var != null) {checksums.add(var);}}
 
       (<FIELD_SEPARATOR> var = checksum(column) {if (var != null) {checksums.add(var);}})*
       {return checksums;}
-  }
-  catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, e);
-     error_skipToNext(enumSet);
-     return Collections.EMPTY_LIST;
-  }
 }
 
 Collection<MitabFeature> features(int column):
 {
   Collection<MitabFeature> features;
   MitabFeature var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
        var = feature(column)
        {features = new ArrayList<MitabFeature>(); if (var != null) {features.add(var);}}
 
        (<FIELD_SEPARATOR> var = feature(column) {if (var != null) {features.add(var);}})*
        {return features;}
-  }
-  catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, column, e);
-       error_skipToNext(enumSet);
-       return Collections.EMPTY_LIST;
-    }
 }
 
 Collection<MitabStoichiometry> stoichiometryList(int column):
 {
   Collection<MitabStoichiometry> stc;
   MitabStoichiometry var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
-  try{
     var = stoichiometry(column)
     {stc = new ArrayList<MitabStoichiometry>(); if (var != null) {stc.add(var);}}
 
     (<FIELD_SEPARATOR> var = stoichiometry(column) {if (var != null) {stc.add(var);}})*
     {return stc;}
-  }
-  catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, e);
-     error_skipToNext(enumSet);
-     return Collections.EMPTY_LIST;
-  }
 }
 
 MitabStoichiometry stoichiometry(int columnNumber):

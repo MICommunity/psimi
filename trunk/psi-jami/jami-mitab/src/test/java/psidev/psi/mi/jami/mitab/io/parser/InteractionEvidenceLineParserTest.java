@@ -394,4 +394,23 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertNotNull(line2);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_syntax_error_unique_identifier() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_unique_identifier_error.txt");
+        InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
+
+        // read title
+        InteractionEvidence line1 = parser.MitabLine();
+        Assert.assertNotNull(line1);
+        Assert.assertEquals(1, line1.getIdentifiers().size());
+        Iterator<Xref> identifierIterator = line1.getParticipants().iterator().next().getInteractor().getIdentifiers().iterator();
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000136869", CvTermUtils.createSecondaryXrefQualifier()), identifierIterator.next());
+        Assert.assertFalse(parser.hasFinished());
+
+        // read title
+        InteractionEvidence line2 = parser.MitabLine();
+        Assert.assertNotNull(line2);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }

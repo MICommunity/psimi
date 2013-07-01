@@ -87,6 +87,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   Collection<MitabCvTerm> pmethodA = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> pmethodB = Collections.EMPTY_LIST;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
+  EnumSet<TokenKind> columnSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
+
   P participantA;
   P participantB;
   T interaction=null;
@@ -120,372 +122,562 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         break;
       default:
         jj_la1[46] = jj_gen;
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
-          break;
-        default:
-          jj_la1[1] = jj_gen;
-          uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1);
-        }
-                                                                                                                                                                                    line = token.beginLine; columnA = token.beginColumn;
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
-          break;
-        default:
-          jj_la1[2] = jj_gen;
-          uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2);
-        }
-                                                                                                                                                            columnB = token.beginColumn;
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 altIdA = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[3] = jj_gen;
-          altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 altIdB = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[4] = jj_gen;
-          altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 aliasA = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[5] = jj_gen;
-          aliasA = aliases(5);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 aliasB = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[6] = jj_gen;
-          aliasB = aliases(6);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 detMethod = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[7] = jj_gen;
-          detMethod = cvTerms(7);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 firstAuthor = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[8] = jj_gen;
-          firstAuthor = firstAuthors();
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 pubId = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[9] = jj_gen;
-          pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 taxidA = Collections.EMPTY_LIST;
-          break;
-        case TAXID:
-          taxidA = taxId(10);
-          break;
-        default:
-          jj_la1[10] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 taxidB = Collections.EMPTY_LIST;
-          break;
-        case TAXID:
-          taxidB = taxId(11);
-          break;
-        default:
-          jj_la1[11] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 interactionType = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[12] = jj_gen;
-          interactionType = cvTerms(12);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 source = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[13] = jj_gen;
-          source = sourceDbs();
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 interactionId = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[14] = jj_gen;
-          interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14);
-        }
-        jj_consume_token(COLUMN_SEPARATOR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DASH:
-          jj_consume_token(DASH);
-                 conf = Collections.EMPTY_LIST;
-          break;
-        default:
-          jj_la1[15] = jj_gen;
-          conf = confidences();
-        }
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case COLUMN_SEPARATOR:
-          jj_consume_token(COLUMN_SEPARATOR);
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 expansion = Collections.EMPTY_LIST;
+                     uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
             break;
           default:
-            jj_la1[16] = jj_gen;
-            expansion = complexExpansion();
+            jj_la1[1] = jj_gen;
+            uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1);
           }
+                                                                                                                                                                                        line = token.beginLine; columnA = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+          uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
+          processSyntaxError(token.beginLine, token.beginColumn, 1, e);
+          error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 bioRoleA = Collections.EMPTY_LIST;
+                     uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
             break;
           default:
-            jj_la1[17] = jj_gen;
-            bioRoleA = cvTerms(17);
+            jj_la1[2] = jj_gen;
+            uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2);
           }
+                                                                                                                                                                columnB = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+            uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
+            processSyntaxError(token.beginLine, token.beginColumn, 2, e);
+             error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 bioRoleB = Collections.EMPTY_LIST;
+                     altIdA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[18] = jj_gen;
-            bioRoleB = cvTerms(18);
+            jj_la1[3] = jj_gen;
+            altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+          altIdA = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 3, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 expRoleA = Collections.EMPTY_LIST;
+                     altIdB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[19] = jj_gen;
-            expRoleA = cvTerms(19);
+            jj_la1[4] = jj_gen;
+            altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        altIdB = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 4, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 expRoleB = Collections.EMPTY_LIST;
+                     aliasA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[20] = jj_gen;
-            expRoleB = cvTerms(20);
+            jj_la1[5] = jj_gen;
+            aliasA = aliases(5);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        aliasA = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 5, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 typeA = Collections.EMPTY_LIST;
+                     aliasB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[21] = jj_gen;
-            typeA = cvTerms(21);
+            jj_la1[6] = jj_gen;
+            aliasB = aliases(6);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        aliasB = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 6, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 typeB = Collections.EMPTY_LIST;
+                     detMethod = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[22] = jj_gen;
-            typeB = cvTerms(22);
+            jj_la1[7] = jj_gen;
+            detMethod = cvTerms(7);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        detMethod = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 7, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 xrefA = Collections.EMPTY_LIST;
+                     firstAuthor = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[23] = jj_gen;
-            xrefA = ids(null, false, 23);
+            jj_la1[8] = jj_gen;
+            firstAuthor = firstAuthors();
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        firstAuthor = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 8, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 xrefB = Collections.EMPTY_LIST;
+                     pubId = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[24] = jj_gen;
-            xrefB = ids(null, false, 24);
+            jj_la1[9] = jj_gen;
+            pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        pubId = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 9, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 xrefI = Collections.EMPTY_LIST;
-            break;
-          default:
-            jj_la1[25] = jj_gen;
-            xrefI = ids(null, false, 25);
-          }
-          jj_consume_token(COLUMN_SEPARATOR);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DASH:
-            jj_consume_token(DASH);
-                 annotA = Collections.EMPTY_LIST;
-            break;
-          default:
-            jj_la1[26] = jj_gen;
-            annotA = annotations(26);
-          }
-          jj_consume_token(COLUMN_SEPARATOR);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DASH:
-            jj_consume_token(DASH);
-                 annotB = Collections.EMPTY_LIST;
-            break;
-          default:
-            jj_la1[27] = jj_gen;
-            annotB = annotations(27);
-          }
-          jj_consume_token(COLUMN_SEPARATOR);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DASH:
-            jj_consume_token(DASH);
-                 annotI = Collections.EMPTY_LIST;
-            break;
-          default:
-            jj_la1[28] = jj_gen;
-            annotI = annotations(28);
-          }
-          jj_consume_token(COLUMN_SEPARATOR);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DASH:
-            jj_consume_token(DASH);
-                 host = Collections.EMPTY_LIST;
+                     taxidA = Collections.EMPTY_LIST;
             break;
           case TAXID:
-            host = taxId(29);
+            taxidA = taxId(10);
             break;
           default:
-            jj_la1[29] = jj_gen;
+            jj_la1[10] = jj_gen;
             jj_consume_token(-1);
             throw new ParseException();
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        taxidA = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 10, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 params = Collections.EMPTY_LIST;
+                     taxidB = Collections.EMPTY_LIST;
+            break;
+          case TAXID:
+            taxidB = taxId(11);
             break;
           default:
-            jj_la1[30] = jj_gen;
-            params = parameters();
+            jj_la1[11] = jj_gen;
+            jj_consume_token(-1);
+            throw new ParseException();
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        taxidB = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 11, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 created = Collections.EMPTY_LIST;
+                     interactionType = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[31] = jj_gen;
-            created = dates(31);
+            jj_la1[12] = jj_gen;
+            interactionType = cvTerms(12);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        interactionType = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 12, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 update = Collections.EMPTY_LIST;
+                     source = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[32] = jj_gen;
-            update = dates(32);
+            jj_la1[13] = jj_gen;
+            source = sourceDbs();
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        source = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 13, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 checksumA = Collections.EMPTY_LIST;
+                     interactionId = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[33] = jj_gen;
-            checksumA = checksums(33);
+            jj_la1[14] = jj_gen;
+            interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14);
           }
           jj_consume_token(COLUMN_SEPARATOR);
+        } catch (ParseException e) {
+        interactionId = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 14, e);
+                  error_skipToNext(columnSet);
+        }
+        try {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
-                 checksumB = Collections.EMPTY_LIST;
+                     conf = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[34] = jj_gen;
-            checksumB = checksums(34);
+            jj_la1[15] = jj_gen;
+            conf = confidences();
           }
+        } catch (ParseException e) {
+        conf = Collections.EMPTY_LIST;
+                  processSyntaxError(token.beginLine, token.beginColumn, 15, e);
+                  error_skipToNext(columnSet);
+        }
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case COLUMN_SEPARATOR:
           jj_consume_token(COLUMN_SEPARATOR);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DASH:
-            jj_consume_token(DASH);
-                 checksumI = Collections.EMPTY_LIST;
-            break;
-          default:
-            jj_la1[35] = jj_gen;
-            checksumI = checksums(35);
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     expansion = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[16] = jj_gen;
+              expansion = complexExpansion();
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+                  error_skipToNext(columnSet);
           }
-          jj_consume_token(COLUMN_SEPARATOR);
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     bioRoleA = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[17] = jj_gen;
+              bioRoleA = cvTerms(17);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 17, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     bioRoleB = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[18] = jj_gen;
+              bioRoleB = cvTerms(18);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 18, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     expRoleA = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[19] = jj_gen;
+              expRoleA = cvTerms(19);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 19, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     expRoleB = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[20] = jj_gen;
+              expRoleB = cvTerms(20);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 20, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     typeA = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[21] = jj_gen;
+              typeA = cvTerms(21);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 21, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     typeB = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[22] = jj_gen;
+              typeB = cvTerms(22);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 22, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     xrefA = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[23] = jj_gen;
+              xrefA = ids(null, false, 23);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 23, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     xrefB = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[24] = jj_gen;
+              xrefB = ids(null, false, 24);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 24, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     xrefI = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[25] = jj_gen;
+              xrefI = ids(null, false, 25);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 25, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     annotA = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[26] = jj_gen;
+              annotA = annotations(26);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 26, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     annotB = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[27] = jj_gen;
+              annotB = annotations(27);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 27, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     annotI = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[28] = jj_gen;
+              annotI = annotations(28);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 28, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     host = Collections.EMPTY_LIST;
+              break;
+            case TAXID:
+              host = taxId(29);
+              break;
+            default:
+              jj_la1[29] = jj_gen;
+              jj_consume_token(-1);
+              throw new ParseException();
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 29, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     params = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[30] = jj_gen;
+              params = parameters();
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     created = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[31] = jj_gen;
+              created = dates(31);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 31, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     update = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[32] = jj_gen;
+              update = dates(32);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 32, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     checksumA = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[33] = jj_gen;
+              checksumA = checksums(33);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 33, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     checksumB = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[34] = jj_gen;
+              checksumB = checksums(34);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 34, e);
+                  error_skipToNext(columnSet);
+          }
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+                     checksumI = Collections.EMPTY_LIST;
+              break;
+            default:
+              jj_la1[35] = jj_gen;
+              checksumI = checksums(35);
+            }
+            jj_consume_token(COLUMN_SEPARATOR);
+          } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 35, e);
+                  error_skipToNext(columnSet);
+          }
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case DASH:
             jj_consume_token(DASH);
@@ -501,80 +693,110 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case COLUMN_SEPARATOR:
             jj_consume_token(COLUMN_SEPARATOR);
-            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-            case DASH:
-              jj_consume_token(DASH);
-                 featureA = Collections.EMPTY_LIST;
-              break;
-            default:
-              jj_la1[37] = jj_gen;
-              featureA = features(37);
-            }
-            jj_consume_token(COLUMN_SEPARATOR);
-            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-            case DASH:
-              jj_consume_token(DASH);
-                 featureB = Collections.EMPTY_LIST;
-              break;
-            default:
-              jj_la1[38] = jj_gen;
-              featureB = features(38);
-            }
-            jj_consume_token(COLUMN_SEPARATOR);
-            if (jj_2_1(2)) {
-              jj_consume_token(DASH);
-                              stcA = Collections.EMPTY_LIST;
-            } else {
+            try {
               switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-              case PUB_DATE:
-              case NUMBER:
-              case STOICHIOMETRY:
               case DASH:
-                stcA = stoichiometryList(39);
+                jj_consume_token(DASH);
+                     featureA = Collections.EMPTY_LIST;
                 break;
               default:
-                jj_la1[39] = jj_gen;
-                jj_consume_token(-1);
-                throw new ParseException();
+                jj_la1[37] = jj_gen;
+                featureA = features(37);
               }
+              jj_consume_token(COLUMN_SEPARATOR);
+            } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 37, e);
+                  error_skipToNext(columnSet);
             }
-            jj_consume_token(COLUMN_SEPARATOR);
-            if (jj_2_2(2)) {
-              jj_consume_token(DASH);
-                              stcB = Collections.EMPTY_LIST;
-            } else {
+            try {
               switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-              case PUB_DATE:
-              case NUMBER:
-              case STOICHIOMETRY:
               case DASH:
-                stcB = stoichiometryList(40);
+                jj_consume_token(DASH);
+                     featureB = Collections.EMPTY_LIST;
                 break;
               default:
-                jj_la1[40] = jj_gen;
-                jj_consume_token(-1);
-                throw new ParseException();
+                jj_la1[38] = jj_gen;
+                featureB = features(38);
               }
+              jj_consume_token(COLUMN_SEPARATOR);
+            } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 38, e);
+                  error_skipToNext(columnSet);
             }
-            jj_consume_token(COLUMN_SEPARATOR);
-            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-            case DASH:
-              jj_consume_token(DASH);
-                 pmethodA = Collections.EMPTY_LIST;
-              break;
-            default:
-              jj_la1[41] = jj_gen;
-              pmethodA = cvTerms(41);
+            try {
+              if (jj_2_1(2)) {
+                jj_consume_token(DASH);
+                                  stcA = Collections.EMPTY_LIST;
+              } else {
+                switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+                case PUB_DATE:
+                case NUMBER:
+                case STOICHIOMETRY:
+                case DASH:
+                  stcA = stoichiometryList(39);
+                  break;
+                default:
+                  jj_la1[39] = jj_gen;
+                  jj_consume_token(-1);
+                  throw new ParseException();
+                }
+              }
+              jj_consume_token(COLUMN_SEPARATOR);
+            } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 39, e);
+                  error_skipToNext(columnSet);
             }
-            jj_consume_token(COLUMN_SEPARATOR);
-            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-            case DASH:
-              jj_consume_token(DASH);
-                 pmethodB = Collections.EMPTY_LIST;
-              break;
-            default:
-              jj_la1[42] = jj_gen;
-              pmethodB = cvTerms(42);
+            try {
+              if (jj_2_2(2)) {
+                jj_consume_token(DASH);
+                                  stcB = Collections.EMPTY_LIST;
+              } else {
+                switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+                case PUB_DATE:
+                case NUMBER:
+                case STOICHIOMETRY:
+                case DASH:
+                  stcB = stoichiometryList(40);
+                  break;
+                default:
+                  jj_la1[40] = jj_gen;
+                  jj_consume_token(-1);
+                  throw new ParseException();
+                }
+              }
+              jj_consume_token(COLUMN_SEPARATOR);
+            } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 40, e);
+                  error_skipToNext(columnSet);
+            }
+            try {
+              switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+              case DASH:
+                jj_consume_token(DASH);
+                     pmethodA = Collections.EMPTY_LIST;
+                break;
+              default:
+                jj_la1[41] = jj_gen;
+                pmethodA = cvTerms(41);
+              }
+              jj_consume_token(COLUMN_SEPARATOR);
+            } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 41, e);
+                  error_skipToNext(columnSet);
+            }
+            try {
+              switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+              case DASH:
+                jj_consume_token(DASH);
+                     pmethodB = Collections.EMPTY_LIST;
+                break;
+              default:
+                jj_la1[42] = jj_gen;
+                pmethodB = cvTerms(42);
+              }
+            } catch (ParseException e) {
+                  processSyntaxError(token.beginLine, token.beginColumn, 42, e);
+                  error_skipToNext(columnSet);
             }
             break;
           default:
@@ -616,420 +838,322 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   final public Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column) throws ParseException {
   Collection<MitabXref> xrefs;
   MitabXref var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = id(qualifier, recognizeImex, column);
-          xrefs = new ArrayList<MitabXref>(); if (var != null) {xrefs.add(var);}
-      label_1:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[47] = jj_gen;
-          break label_1;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = id(qualifier, recognizeImex, column);
-                                                                   if (var != null) {xrefs.add(var);}
+    var = id(qualifier, recognizeImex, column);
+    xrefs = new ArrayList<MitabXref>(); if (var != null) {xrefs.add(var);}
+    label_1:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[47] = jj_gen;
+        break label_1;
       }
-     {if (true) return xrefs;}
-    } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, column, e);
-      error_skipToNext(enumSet);
-       {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = id(qualifier, recognizeImex, column);
+                                                                  if (var != null) {xrefs.add(var);}
     }
+    {if (true) return xrefs;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabAlias> aliases(int column) throws ParseException {
   Collection<MitabAlias> aliases;
   MitabAlias var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = alias(column);
+    var = alias(column);
      aliases = new ArrayList<MitabAlias>(); if (var != null) {if (var != null) {aliases.add(var);}}
-      label_2:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[48] = jj_gen;
-          break label_2;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = alias(column);
-                                            if (var != null) {if (var != null) {aliases.add(var);}}
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[48] = jj_gen;
+        break label_2;
       }
-     {if (true) return aliases;}
-    } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, column, e);
-      error_skipToNext(enumSet);
-       {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = alias(column);
+                                            if (var != null) {if (var != null) {aliases.add(var);}}
     }
+     {if (true) return aliases;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabCvTerm> cvTerms(int columnNumber) throws ParseException {
   Collection<MitabCvTerm> methods;
   MitabCvTerm var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = cvTerm(columnNumber);
+    var = cvTerm(columnNumber);
      methods = new ArrayList<MitabCvTerm>(); if (var != null) {methods.add(var);}
-      label_3:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[49] = jj_gen;
-          break label_3;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = cvTerm(columnNumber);
-                                                   if (var != null) {methods.add(var);}
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[49] = jj_gen;
+        break label_3;
       }
-     {if (true) return methods;}
-    } catch (ParseException e) {
-    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
-    error_skipToNext(enumSet);
-     {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = cvTerm(columnNumber);
+                                                   if (var != null) {methods.add(var);}
     }
+     {if (true) return methods;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabAuthor> firstAuthors() throws ParseException {
   Collection<MitabAuthor> authors;
   MitabAuthor var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = author();
+    var = author();
      authors = new ArrayList<MitabAuthor>(); if (var != null) {authors.add(var);}
-      label_4:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[50] = jj_gen;
-          break label_4;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = author();
-                                       if (var != null) {authors.add(var);}
+    label_4:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[50] = jj_gen;
+        break label_4;
       }
-     {if (true) return authors;}
-    } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, 8, e);
-        error_skipToNext(enumSet);
-        {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = author();
+                                       if (var != null) {authors.add(var);}
     }
+     {if (true) return authors;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabOrganism> taxId(int column) throws ParseException {
   Collection<MitabOrganism> organisms;
   MitabOrganism var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = organism(column);
+    var = organism(column);
      organisms = new ArrayList<MitabOrganism>(); if (var != null) {organisms.add(var);}
-      label_5:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[51] = jj_gen;
-          break label_5;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = organism(column);
-                                               if (var != null) {organisms.add(var);}
+    label_5:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[51] = jj_gen;
+        break label_5;
       }
-     {if (true) return organisms;}
-    } catch (ParseException e) {
-         processSyntaxError(token.beginLine, token.beginColumn, column, e);
-         error_skipToNext(enumSet);
-         {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = organism(column);
+                                               if (var != null) {organisms.add(var);}
     }
+     {if (true) return organisms;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabSource> sourceDbs() throws ParseException {
   Collection<MitabSource> sources;
   MitabSource var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = source();
+    var = source();
      sources = new ArrayList<MitabSource>(); if (var != null) {sources.add(var);}
-      label_6:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[52] = jj_gen;
-          break label_6;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = source();
-                                       if (var != null) {sources.add(var);}
+    label_6:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[52] = jj_gen;
+        break label_6;
       }
-     {if (true) return sources;}
-    } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, 13, e);
-       error_skipToNext(enumSet);
-       {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = source();
+                                       if (var != null) {sources.add(var);}
     }
+     {if (true) return sources;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabConfidence> confidences() throws ParseException {
   Collection<MitabConfidence> confs;
   MitabConfidence var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = confidence();
+    var = confidence();
      confs = new ArrayList<MitabConfidence>(); if (var != null) {confs.add(var);}
-      label_7:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[53] = jj_gen;
-          break label_7;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = confidence();
-                                           if (var != null) {confs.add(var);}
+    label_7:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[53] = jj_gen;
+        break label_7;
       }
-     {if (true) return confs;}
-    } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, 15, e);
-       error_skipToNext(enumSet);
-       {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = confidence();
+                                           if (var != null) {confs.add(var);}
     }
+     {if (true) return confs;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabCvTerm> complexExpansion() throws ParseException {
   Collection<MitabCvTerm> expansions;
   MitabCvTerm var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = expansion();
+    var = expansion();
      expansions = new ArrayList<MitabCvTerm>(); if (var != null) {expansions.add(var);}
-      label_8:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[54] = jj_gen;
-          break label_8;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = expansion();
-                                          if (var != null) {expansions.add(var);}
+    label_8:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[54] = jj_gen;
+        break label_8;
       }
-     {if (true) return expansions;}
-    } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
-     error_skipToNext(enumSet);
-     {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = expansion();
+                                          if (var != null) {expansions.add(var);}
     }
+     {if (true) return expansions;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabAnnotation> annotations(int column) throws ParseException {
   Collection<MitabAnnotation> annots;
   MitabAnnotation var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = annotation(column);
+    var = annotation(column);
        annots = new ArrayList<MitabAnnotation>(); if (var != null) {annots.add(var);}
-      label_9:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[55] = jj_gen;
-          break label_9;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = annotation(column);
-                                                   if (var != null) {annots.add(var);}
+    label_9:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[55] = jj_gen;
+        break label_9;
       }
-       {if (true) return annots;}
-    } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, column, e);
-      error_skipToNext(enumSet);
-      {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = annotation(column);
+                                                   if (var != null) {annots.add(var);}
     }
+       {if (true) return annots;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabParameter> parameters() throws ParseException {
   Collection<MitabParameter> params;
   MitabParameter var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = parameter();
+    var = parameter();
      params = new ArrayList<MitabParameter>(); if (var != null) {params.add(var);}
-      label_10:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[56] = jj_gen;
-          break label_10;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = parameter();
-                                          if (var != null) {params.add(var);}
+    label_10:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[56] = jj_gen;
+        break label_10;
       }
-     {if (true) return params;}
-    } catch (ParseException e) {
-         processSyntaxError(token.beginLine, token.beginColumn, 30, e);
-         error_skipToNext(enumSet);
-         {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = parameter();
+                                          if (var != null) {params.add(var);}
     }
+     {if (true) return params;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabDate> dates(int column) throws ParseException {
   Collection<MitabDate> dates;
   MitabDate var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = date(column);
+    var = date(column);
        dates = new ArrayList<MitabDate>(); if (var != null) {if (var != null) {dates.add(var);}}
-      label_11:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[57] = jj_gen;
-          break label_11;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = date(column);
-                                             if (var != null) {if (var != null) {if (var != null) {dates.add(var);}}}
+    label_11:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[57] = jj_gen;
+        break label_11;
       }
-       {if (true) return dates;}
-    } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, column, e);
-       error_skipToNext(enumSet);
-       {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = date(column);
+                                             if (var != null) {if (var != null) {if (var != null) {dates.add(var);}}}
     }
+       {if (true) return dates;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabChecksum> checksums(int column) throws ParseException {
   Collection<MitabChecksum> checksums;
   MitabChecksum var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = checksum(column);
+    var = checksum(column);
        checksums = new ArrayList<MitabChecksum>(); if (var != null) {checksums.add(var);}
-      label_12:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[58] = jj_gen;
-          break label_12;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = checksum(column);
-                                                 if (var != null) {checksums.add(var);}
+    label_12:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[58] = jj_gen;
+        break label_12;
       }
-       {if (true) return checksums;}
-    } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, column, e);
-     error_skipToNext(enumSet);
-     {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = checksum(column);
+                                                 if (var != null) {checksums.add(var);}
     }
+       {if (true) return checksums;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabFeature> features(int column) throws ParseException {
   Collection<MitabFeature> features;
   MitabFeature var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = feature(column);
+    var = feature(column);
         features = new ArrayList<MitabFeature>(); if (var != null) {features.add(var);}
-      label_13:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[59] = jj_gen;
-          break label_13;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = feature(column);
-                                                 if (var != null) {features.add(var);}
+    label_13:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[59] = jj_gen;
+        break label_13;
       }
-        {if (true) return features;}
-    } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, column, e);
-       error_skipToNext(enumSet);
-       {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = feature(column);
+                                                 if (var != null) {features.add(var);}
     }
+        {if (true) return features;}
     throw new Error("Missing return statement in function");
   }
 
   final public Collection<MitabStoichiometry> stoichiometryList(int column) throws ParseException {
   Collection<MitabStoichiometry> stc;
   MitabStoichiometry var;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      var = stoichiometry(column);
+    var = stoichiometry(column);
      stc = new ArrayList<MitabStoichiometry>(); if (var != null) {stc.add(var);}
-      label_14:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case FIELD_SEPARATOR:
-          ;
-          break;
-        default:
-          jj_la1[60] = jj_gen;
-          break label_14;
-        }
-        jj_consume_token(FIELD_SEPARATOR);
-        var = stoichiometry(column);
-                                                    if (var != null) {stc.add(var);}
+    label_14:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case FIELD_SEPARATOR:
+        ;
+        break;
+      default:
+        jj_la1[60] = jj_gen;
+        break label_14;
       }
-     {if (true) return stc;}
-    } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, column, e);
-     error_skipToNext(enumSet);
-     {if (true) return Collections.EMPTY_LIST;}
+      jj_consume_token(FIELD_SEPARATOR);
+      var = stoichiometry(column);
+                                                    if (var != null) {stc.add(var);}
     }
+     {if (true) return stc;}
     throw new Error("Missing return statement in function");
   }
 
@@ -1834,12 +1958,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     finally { jj_save(1, xla); }
   }
 
-  private boolean jj_3_2() {
+  private boolean jj_3_1() {
     if (jj_scan_token(DASH)) return true;
     return false;
   }
 
-  private boolean jj_3_1() {
+  private boolean jj_3_2() {
     if (jj_scan_token(DASH)) return true;
     return false;
   }

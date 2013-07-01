@@ -153,87 +153,128 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     public void onInvalidSyntax(FileSourceContext context, Exception e) {
         isValid = false;
+        if (parserListener != null){
+            parserListener.onInvalidSyntax(context, e);
+        }
     }
 
     public void onSyntaxWarning(FileSourceContext context, String message) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSyntaxWarning(context, message);
+        }
     }
 
     public void onMissingCvTermName(CvTerm term, FileSourceContext context, String message) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onMissingCvTermName(term, context, message);
+        }
     }
 
     public void onMissingInteractorName(Interactor interactor, FileSourceContext context) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onMissingInteractorName(interactor, context);
+        }
     }
 
     public void onSeveralCvTermsFound(Collection<? extends CvTerm> terms, FileSourceContext context, String message) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralCvTermsFound(terms, context, message);
+        }
     }
 
     public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms, FileSourceContext context) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralHostOrganismFound(organisms, context);
+        }
     }
 
     public void onParticipantWithoutInteractor(Participant participant, FileSourceContext context) {
         isValid = false;
+        if (parserListener != null){
+            parserListener.onParticipantWithoutInteractor(participant, context);
+        }
     }
 
     public void onInteractionWithoutParticipants(Interaction interaction, FileSourceContext context) {
         isValid = false;
+        if (parserListener != null){
+            parserListener.onInteractionWithoutParticipants(interaction, context);
+        }
     }
 
 
     public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn) {
         isValid = false;
+        if (parserListener != null){
+            parserListener.onMissingInteractorIdentifierColumns(line, column, mitabColumn);
+        }
     }
 
     public void onSeveralOrganismFound(Collection<MitabOrganism> organisms) {
-        // do nothing
-    }
-
-    public void onParticipantWithoutInteractorDetails(int line, int column, int mitabColumn) {
-        isValid = false;
+        if (parserListener != null){
+            parserListener.onSeveralOrganismFound(organisms);
+        }
     }
 
     public void onSeveralStoichiometryFound(Collection<MitabStoichiometry> stoichiometry) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralStoichiometryFound(stoichiometry);
+        }
     }
 
     public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralFirstAuthorFound(authors);
+        }
     }
 
     public void onSeveralSourceFound(Collection<MitabSource> sources) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralSourceFound(sources);
+        }
     }
 
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralCreatedDateFound(dates);
+        }
     }
 
     public void onSeveralUpdatedDateFound(Collection<MitabDate> dates) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralUpdatedDateFound(dates);
+        }
     }
 
     public void onTextFoundInIdentifier(MitabXref xref) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onTextFoundInIdentifier(xref);
+        }
     }
 
     public void onTextFoundInConfidence(MitabConfidence conf) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onTextFoundInConfidence(conf);
+        }
     }
 
     public void onMissingExpansionId(MitabCvTerm expansion) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onMissingExpansionId(expansion);
+        }
     }
 
     public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids) {
-        // do nothing
+        if (parserListener != null){
+            parserListener.onSeveralUniqueIdentifiers(ids);
+        }
     }
 
     public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn) {
         isValid = false;
+        if (parserListener != null){
+            parserListener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
+        }
     }
 
     public Iterator<T> getInteractionsIterator() {
