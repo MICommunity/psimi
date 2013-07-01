@@ -321,7 +321,7 @@ public class OlsFetcher
     }
 
     /**
-     * Scans the meta data to find the description idf one is present.
+     * Scans the meta data to find the description if one is present.
      * @param metaDataMap
      * @return
      */

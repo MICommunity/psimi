@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.CountingRemapListener;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.LoggingRemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
@@ -26,6 +27,7 @@ public class UniprotProteinRemapperTest {
     public static final Log log = LogFactory.getLog(UniprotProteinRemapperTest.class);
 
     public UniprotProteinRemapper remap;
+    public CountingRemapListener countingRemapListener;
 
     public Protein protein;
 
@@ -100,8 +102,9 @@ public class UniprotProteinRemapperTest {
     @Before
     public void build_bridge(){
         remap = new UniprotProteinRemapper();
+        countingRemapListener = new CountingRemapListener();
 
-        remap.setRemapListener(new LoggingRemapListener());
+        remap.setRemapListener(countingRemapListener);
 
         MAPPABLE_A = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSP00000351524"); //P42694
         MAPPABLE_B = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000198265"); //P42694
@@ -123,7 +126,9 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertEquals(0 , countingRemapListener.getConflictCount());
         assertNotNull(protein.getUniprotkb());
         assertFalse(protein.getUniprotkb().equalsIgnoreCase(TESTID));
         assertEquals("P08246",protein.getUniprotkb());
@@ -139,9 +144,13 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
 
         remap.remapProtein(protein);
-        //  assertTrue(remapReport.isRemapped());
+        
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertEquals(0 , countingRemapListener.getConflictCount());
+        
         assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID,protein.getUniprotkb());
+        assertEquals(TESTID , protein.getUniprotkb());
     }
 
 
@@ -169,6 +178,8 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
+        
+        
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
@@ -191,13 +202,17 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        
+        
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertEquals(0 , countingRemapListener.getConflictCount());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
+        // assertNull(countingRemapListener.g());
     }
 
 
@@ -217,9 +232,10 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -243,9 +259,10 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -291,9 +308,10 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -317,9 +335,10 @@ public class UniprotProteinRemapperTest {
         
 
         remap.remapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        //  assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.getSuccess());
+        assertFalse(countingRemapListener.getFailed());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -344,8 +363,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         //  assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        //  assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -392,8 +411,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        //  assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -418,8 +437,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -444,8 +463,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -501,8 +520,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -528,8 +547,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -555,8 +574,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         //  assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        //  assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -609,8 +628,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -636,8 +655,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         //  assertTrue(remapReport.isRemapped());
-        //  assertTrue(remapReport.isMappingFromIdentifiers());
-        //  assertFalse(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -663,9 +682,9 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
-        // assertTrue(remapReport.isMappingFromIdentifiers());
-        // assertFalse(remapReport.isMappingFromSequence());
-        //
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertFalse(countingRemapListener.isFromSequence());
+
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
         // assertNull(remapReport.getConflictMessage());
@@ -714,7 +733,7 @@ public class UniprotProteinRemapperTest {
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         //  assertFalse(remapReport.isMappingFromIdentifiers());
-        // assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -741,7 +760,7 @@ public class UniprotProteinRemapperTest {
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         //  assertFalse(remapReport.isMappingFromIdentifiers());
-        //  assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -768,7 +787,7 @@ public class UniprotProteinRemapperTest {
         remap.remapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         // assertFalse(remapReport.isMappingFromIdentifiers());
-        // assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -794,7 +813,7 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
        // assertTrue(remapReport.isRemapped());
-       // assertTrue(remapReport.isMappingFromSequence());
+       assertTrue(countingRemapListener.isFromSequence());
        // assertFalse(remapReport.isMappingFromIdentifiers());
        // assertNotNull(protein.getUniprotkb());
        // assertEquals(TESTID, protein.getUniprotkb());
@@ -820,8 +839,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
        // assertTrue(remapReport.isRemapped());
-       // assertTrue(remapReport.isMappingFromIdentifiers());
-       // assertTrue(remapReport.isMappingFromSequence());
+       assertTrue(countingRemapListener.isFromIdentifiers());
+       assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -847,8 +866,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         //assertTrue(remapReport.isRemapped());
-       // assertTrue(remapReport.isMappingFromIdentifiers());
-        //assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -874,8 +893,8 @@ public class UniprotProteinRemapperTest {
 
         remap.remapProtein(protein);
         //assertTrue(remapReport.isRemapped());
-        //assertTrue(remapReport.isMappingFromIdentifiers());
-        //assertTrue(remapReport.isMappingFromSequence());
+        assertTrue(countingRemapListener.isFromIdentifiers());
+        assertTrue(countingRemapListener.isFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -901,7 +920,7 @@ public class UniprotProteinRemapperTest {
         remap.remapProtein(protein);
        // assertFalse(remapReport.isRemapped());
         //assertFalse(remapReport.isMappingFromIdentifiers());
-        //assertFalse(remapReport.isMappingFromSequence());
+        assertFalse(countingRemapListener.isFromSequence());
 
         assertNull(protein.getUniprotkb());
         //assertNotNull(remapReport.getConflictMessage());

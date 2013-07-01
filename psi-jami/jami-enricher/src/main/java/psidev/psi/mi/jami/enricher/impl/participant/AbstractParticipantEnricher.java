@@ -12,10 +12,10 @@ import psidev.psi.mi.jami.model.*;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 19/06/13
+ * @since 19/06/13
  */
-public abstract class AbstractParticipantEnricher <P extends Participant>
-        implements ParticipantEnricher<P>  {
+public abstract class AbstractParticipantEnricher <T extends Participant>
+        implements ParticipantEnricher<T>  {
 
 
     protected ParticipantEnricherListener listener;
@@ -25,7 +25,7 @@ public abstract class AbstractParticipantEnricher <P extends Participant>
     protected FeatureEnricher featureEnricher;
 
 
-    public void enrichParticipant(P participantToEnrich) throws EnricherException {
+    public void enrichParticipant(T participantToEnrich) throws EnricherException {
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 

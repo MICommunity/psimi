@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.featureevidence;
 
-import psidev.psi.mi.jami.enricher.FeatureEvidenceEnricher;
+
 import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
@@ -10,9 +10,10 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * Date: 19/06/13
  * Time: 13:24
  */
+@Deprecated
 public class MaximumFeatureEvidenceEnricher
         extends MinimumFeatureEvidenceEnricher
-        implements FeatureEvidenceEnricher {
+{
 
 
     @Override

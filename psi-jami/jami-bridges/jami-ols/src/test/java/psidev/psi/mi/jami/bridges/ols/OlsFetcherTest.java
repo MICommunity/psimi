@@ -74,7 +74,7 @@ public class OlsFetcherTest {
     @Test
     public void test_CvTerm_by_GO_Identifier_and_databaseName() throws BridgeFailedException {
         String identifier = "GO:0009055";
-        String ontologyName = "GO";
+        String ontologyName = "go";
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
 
         assertNotNull(cvTermFetched);
@@ -104,6 +104,16 @@ public class OlsFetcherTest {
         assertEquals("MI:0580" , cvTermFetched.getMIIdentifier());
     }
 
+    @Test
+    public void test_CvTerm_by_MI_Term_and_no_databaseName() throws BridgeFailedException {
+        String term = "electron acceptor";
+        String databaseName = null;
+        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term, databaseName);
+
+        assertNotNull(cvTermFetched);
+        assertEquals(term, cvTermFetched.getShortName());
+        assertEquals("MI:0580" , cvTermFetched.getMIIdentifier());
+    }
 
 
 

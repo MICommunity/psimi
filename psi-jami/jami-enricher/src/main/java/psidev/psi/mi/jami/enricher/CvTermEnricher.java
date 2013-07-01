@@ -27,7 +27,6 @@ public interface CvTermEnricher{
     //public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);
 
 
-
     /**
      *
      * @param fetcher

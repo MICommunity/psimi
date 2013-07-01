@@ -14,8 +14,8 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public abstract class AbstractInteractionEnricher
-        implements InteractionEnricher {
+public abstract class AbstractInteractionEnricher <T extends Interaction>
+        implements InteractionEnricher<T> {
 
 
     protected InteractionEnricherListener listener;
@@ -24,15 +24,15 @@ public abstract class AbstractInteractionEnricher
     protected CvTermEnricher cvTermEnricher;
 
 
-    public void enrichInteraction(Interaction interactionToEnrich) throws EnricherException{
-
+    public void enrichInteraction(T interactionToEnrich) throws EnricherException{
         if ( interactionToEnrich == null) throw new IllegalArgumentException("Attempted to enrich null interactor.") ;
 
         if(getCvTermEnricher() != null) getCvTermEnricher().enrichCvTerm(interactionToEnrich.getInteractionType());
 
         if(getParticipantEnricher() != null){
-            for(Participant participant : interactionToEnrich.getParticipants())
-            getParticipantEnricher().enrichParticipant(participant);
+            for(Participant participant : interactionToEnrich.getParticipants()){
+                getParticipantEnricher().enrichParticipant(participant);
+            }
         }
     }
 
@@ -45,7 +45,7 @@ public abstract class AbstractInteractionEnricher
         return cvTermEnricher;
     }
 
-    public void setParticipantEnricher(ParticipantEnricher participantEnricher){
+    public void setParticipantEnricher(ParticipantEnricher<? extends Participant> participantEnricher){
         this.participantEnricher = participantEnricher;
     }
 
