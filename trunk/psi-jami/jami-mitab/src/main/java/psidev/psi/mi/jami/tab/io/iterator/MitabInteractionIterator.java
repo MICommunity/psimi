@@ -12,8 +12,8 @@ import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
  * @since <pre>21/06/13</pre>
  */
 
-public class MitabBinaryIterator extends AbstractMitabIterator<Interaction, Participant>{
-    public MitabBinaryIterator(MitabLineParser<Interaction, Participant> lineParser) {
+public class MitabInteractionIterator extends AbstractMitabIterator<Interaction, Participant>{
+    public MitabInteractionIterator(MitabLineParser<Interaction, Participant> lineParser) {
         super(lineParser);
     }
 }
