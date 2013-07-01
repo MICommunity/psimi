@@ -3,12 +3,12 @@ package psidev.psi.mi.jami.mitab.io.parser;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultAlias;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.tab.extension.MitabFeature;
 import psidev.psi.mi.jami.tab.io.parser.InteractionEvidenceLineParser;
 import psidev.psi.mi.jami.tab.io.parser.ParseException;
-import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.*;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -24,7 +24,7 @@ import java.util.Iterator;
 public class InteractionEvidenceLineParserTest {
 
     @Test
-    public void test_read_valid_mitab27() throws ParseException {
+    public void test_read_valid_mitab27() throws ParseException, java.text.ParseException {
         InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_line.txt");
         InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
 
@@ -47,6 +47,33 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertEquals(new DefaultAlias("TLR4_HUMAN"), aliasIterator.next());
         Assert.assertEquals(new DefaultAlias("NM_138554"), aliasIterator.next());
         Assert.assertEquals(new DefaultAlias("NP_612564"), aliasIterator.next());
+        Assert.assertEquals(9606, A.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", A.getInteractor().getOrganism().getCommonName());
+        Assert.assertEquals("Homo Sapiens", A.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("bait", "MI:0496"), A.getExperimentalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertEquals(1, A.getInteractor().getXrefs().size());
+        Assert.assertEquals(XrefUtils.createXref("go", "GO:xxxx"), A.getInteractor().getXrefs().iterator().next());
+        Assert.assertEquals(1, A.getAnnotations().size());
+        Assert.assertEquals(AnnotationUtils.createAnnotation("caution","test caution"), A.getAnnotations().iterator().next());
+        Assert.assertEquals(1, A.getInteractor().getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals(1, A.getFeatures().size());
+        MitabFeature f = (MitabFeature)A.getFeatures().iterator().next();
+        Assert.assertEquals(new DefaultCvTerm("binding site"), f.getType());
+        Assert.assertEquals(2, f.getRanges().size());
+        Iterator<Range> rangeIterator = f.getRanges().iterator();
+        Range r1 = rangeIterator.next();
+        Assert.assertEquals(PositionUtils.createCertainPosition(3), r1.getStart());
+        Assert.assertEquals(PositionUtils.createCertainPosition(3), r1.getEnd());
+        Range r2 = rangeIterator.next();
+        Assert.assertEquals(PositionUtils.createFuzzyPosition(4, 5), r2.getStart());
+        Assert.assertEquals(PositionUtils.createFuzzyPosition(6, 7), r2.getEnd());
+        Assert.assertEquals("interpro:xxxx", f.getText());
+        Assert.assertEquals(new DefaultStoichiometry(2), A.getStoichiometry());
+        Assert.assertEquals(1, A.getIdentificationMethods().size());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("inferred by author", "MI:0363"), A.getIdentificationMethods().iterator().next());
 
         ParticipantEvidence B = iterator.next();
         Assert.assertEquals("LY96", B.getInteractor().getShortName());
@@ -62,6 +89,21 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertEquals(new DefaultAlias("NP_056179"), aliasIterator.next());
         Assert.assertEquals(new DefaultAlias("NM_001195797"), aliasIterator.next());
         Assert.assertEquals(new DefaultAlias("NP_001182726"), aliasIterator.next());
+        Assert.assertEquals(9606, B.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", B.getInteractor().getOrganism().getCommonName());
+        Assert.assertNull(B.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), B.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("prey","MI:0498"), B.getExperimentalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), B.getInteractor().getInteractorType());
+        Assert.assertEquals(1, B.getInteractor().getXrefs().size());
+        Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
+        Assert.assertEquals(0, B.getAnnotations().size());
+        Assert.assertEquals(1, B.getInteractor().getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRogid("xxxx2"), B.getInteractor().getChecksums().iterator().next());
+        Assert.assertTrue(B.getFeatures().isEmpty());
+        Assert.assertEquals(new DefaultStoichiometry(5), B.getStoichiometry());
+        Assert.assertEquals(1, B.getIdentificationMethods().size());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("inferred by author", "MI:0363"), B.getIdentificationMethods().iterator().next());
 
         Experiment experiment = binary.getExperiment();
         Assert.assertNotNull(experiment);
@@ -70,6 +112,34 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertNotNull(publication);
         Assert.assertEquals(1, publication.getAuthors().size());
         Assert.assertEquals("Shimazu", publication.getAuthors().iterator().next());
+        Assert.assertEquals(MitabUtils.PUBLICATION_YEAR_FORMAT.parse("1999"), publication.getPublicationDate());
+        Assert.assertEquals("10359581", publication.getPubmedId());
+        Assert.assertEquals(new DefaultSource("innatedb", "MI:0974"), publication.getSource());
+        Assert.assertEquals(10090, experiment.getHostOrganism().getTaxId());
+        Assert.assertEquals("mouse", experiment.getHostOrganism().getCommonName());
+
+        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association","MI:0915"), binary.getInteractionType());
+        Assert.assertEquals(1, binary.getIdentifiers().size());
+        Assert.assertEquals(XrefUtils.createIdentityXref("innatedb", "IDB-113240"), binary.getIdentifiers().iterator().next());
+        Assert.assertEquals("IM-1-1", binary.getImexId());
+        Assert.assertEquals(3, binary.getConfidences().size());
+        Iterator<Confidence> confIterator = binary.getConfidences().iterator();
+        Assert.assertEquals(new DefaultConfidence(new DefaultCvTerm("lpr"), "2"), confIterator.next());
+        Assert.assertEquals(new DefaultConfidence(new DefaultCvTerm("hpr"), "2"), confIterator.next());
+        Assert.assertEquals(new DefaultConfidence(new DefaultCvTerm("np"), "1"), confIterator.next());
+        Assert.assertEquals(2, binary.getXrefs().size());
+        xrefIterator = binary.getXrefs().iterator();
+        xrefIterator.next();
+        Assert.assertEquals(XrefUtils.createXrefWithQualifier("go", "GO:xxx1", "process"), xrefIterator.next());
+        Assert.assertEquals(1, binary.getAnnotations().size());
+        Assert.assertEquals(AnnotationUtils.createAnnotation("figure-legend", "Fig1."), binary.getAnnotations().iterator().next());
+        Assert.assertEquals(1, binary.getParameters().size());
+        Assert.assertEquals("2x10^(-1)", binary.getParameters().iterator().next().getValue().toString());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
+        Assert.assertFalse(binary.isNegative());
+        Assert.assertEquals(1, binary.getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRigid("xxxx3"), binary.getChecksums().iterator().next());
 
         InteractionEvidence binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);

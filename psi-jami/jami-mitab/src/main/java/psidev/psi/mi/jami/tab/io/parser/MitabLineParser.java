@@ -1063,7 +1063,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String type;
   Collection<Range> ranges;
   Range var;
-  java.lang.String text;
+  java.lang.String text = null;
   MitabFeature feature;
   int beginLine;
   int beginColumn;
@@ -1102,6 +1102,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         feature = new MitabFeature(type);
         feature.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
         feature.getRanges().addAll(ranges);
+        feature.setText(text);
 
         {if (true) return feature;}
     } catch (ParseException e) {
