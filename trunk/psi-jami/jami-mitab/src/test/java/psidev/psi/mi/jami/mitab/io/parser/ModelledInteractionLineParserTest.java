@@ -24,6 +24,169 @@ import java.util.Iterator;
 public class ModelledInteractionLineParserTest {
 
     @Test
+    public void test_read_valid_mitab25() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab25_line.txt");
+        ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
+
+        // read first interaction
+        ModelledInteraction binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Iterator<ModelledParticipant> iterator = binary.getParticipants().iterator();
+        ModelledParticipant A = iterator.next();
+        Assert.assertEquals("LY96", A.getInteractor().getShortName());
+        Assert.assertEquals(2, A.getInteractor().getIdentifiers().size());
+        Iterator<Xref> xrefIterator = A.getInteractor().getIdentifiers().iterator();
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("innatedb"), "IDBG-82738", CvTermUtils.createIdentityQualifier()), xrefIterator.next());
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000136869", CvTermUtils.createSecondaryXrefQualifier()), xrefIterator.next());
+        Assert.assertEquals(5, A.getInteractor().getAliases().size());
+        Iterator<Alias> aliasIterator = A.getInteractor().getAliases().iterator();
+        Assert.assertEquals(new DefaultAlias(new DefaultCvTerm("gene name"), "bla"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("O00206"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("TLR4_HUMAN"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NM_138554"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NP_612564"), aliasIterator.next());
+        Assert.assertEquals(9606, A.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", A.getInteractor().getOrganism().getCommonName());
+        Assert.assertEquals("Homo Sapiens", A.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertEquals(0, A.getInteractor().getXrefs().size());
+        Assert.assertEquals(0, A.getAnnotations().size());
+        Assert.assertEquals(1, A.getInteractor().getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals(0, A.getFeatures().size());
+        Assert.assertNull(A.getStoichiometry());
+
+        ModelledParticipant B = iterator.next();
+        Assert.assertEquals("LY96", B.getInteractor().getShortName());
+        xrefIterator = B.getInteractor().getIdentifiers().iterator();
+        Assert.assertEquals(2, B.getInteractor().getIdentifiers().size());
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("innatedb"), "IDBG-25842", CvTermUtils.createIdentityQualifier()), xrefIterator.next());
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000154589", CvTermUtils.createSecondaryXrefQualifier()), xrefIterator.next());
+        Assert.assertEquals(6, B.getInteractor().getAliases().size());
+        aliasIterator = B.getInteractor().getAliases().iterator();
+        Assert.assertEquals(new DefaultAlias("Q9Y6Y9"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("LY96_HUMAN"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NM_015364"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NP_056179"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NM_001195797"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NP_001182726"), aliasIterator.next());
+        Assert.assertEquals(9606, B.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", B.getInteractor().getOrganism().getCommonName());
+        Assert.assertNull(B.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), B.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), B.getInteractor().getInteractorType());
+        Assert.assertEquals(0, B.getInteractor().getXrefs().size());
+        Assert.assertEquals(0, B.getAnnotations().size());
+        Assert.assertEquals(0, B.getInteractor().getChecksums().size());
+        Assert.assertTrue(B.getFeatures().isEmpty());
+        Assert.assertNull(B.getStoichiometry());
+
+        Assert.assertEquals(new DefaultSource("innatedb", "MI:0974"), binary.getSource());
+
+        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association","MI:0915"), binary.getInteractionType());
+        Assert.assertEquals(1, binary.getIdentifiers().size());
+        Assert.assertEquals(XrefUtils.createIdentityXref("innatedb", "IDB-113240"), binary.getIdentifiers().iterator().next());
+        Assert.assertEquals(1, binary.getXrefs().size());
+        Assert.assertEquals(0, binary.getAnnotations().size());
+        Assert.assertNull(binary.getCreatedDate());
+        Assert.assertNull(binary.getUpdatedDate());
+        Assert.assertEquals(0, binary.getChecksums().size());
+
+        ModelledInteraction binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_read_valid_mitab26() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab26_line.txt");
+        ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
+
+        // read first interaction
+        ModelledInteraction binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Iterator<ModelledParticipant> iterator = binary.getParticipants().iterator();
+        ModelledParticipant A = iterator.next();
+        Assert.assertEquals("LY96", A.getInteractor().getShortName());
+        Assert.assertEquals(2, A.getInteractor().getIdentifiers().size());
+        Iterator<Xref> xrefIterator = A.getInteractor().getIdentifiers().iterator();
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("innatedb"), "IDBG-82738", CvTermUtils.createIdentityQualifier()), xrefIterator.next());
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000136869", CvTermUtils.createSecondaryXrefQualifier()), xrefIterator.next());
+        Assert.assertEquals(5, A.getInteractor().getAliases().size());
+        Iterator<Alias> aliasIterator = A.getInteractor().getAliases().iterator();
+        Assert.assertEquals(new DefaultAlias(new DefaultCvTerm("gene name"), "bla"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("O00206"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("TLR4_HUMAN"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NM_138554"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NP_612564"), aliasIterator.next());
+        Assert.assertEquals(9606, A.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", A.getInteractor().getOrganism().getCommonName());
+        Assert.assertEquals("Homo Sapiens", A.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertEquals(1, A.getInteractor().getXrefs().size());
+        Assert.assertEquals(XrefUtils.createXref("go", "GO:xxxx"), A.getInteractor().getXrefs().iterator().next());
+        Assert.assertEquals(1, A.getAnnotations().size());
+        Assert.assertEquals(AnnotationUtils.createAnnotation("caution", "test caution"), A.getAnnotations().iterator().next());
+        Assert.assertEquals(1, A.getInteractor().getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals(0, A.getFeatures().size());
+        Assert.assertNull(A.getStoichiometry());
+
+        ModelledParticipant B = iterator.next();
+        Assert.assertEquals("LY96", B.getInteractor().getShortName());
+        xrefIterator = B.getInteractor().getIdentifiers().iterator();
+        Assert.assertEquals(2, B.getInteractor().getIdentifiers().size());
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("innatedb"), "IDBG-25842", CvTermUtils.createIdentityQualifier()), xrefIterator.next());
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000154589", CvTermUtils.createSecondaryXrefQualifier()), xrefIterator.next());
+        Assert.assertEquals(6, B.getInteractor().getAliases().size());
+        aliasIterator = B.getInteractor().getAliases().iterator();
+        Assert.assertEquals(new DefaultAlias("Q9Y6Y9"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("LY96_HUMAN"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NM_015364"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NP_056179"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NM_001195797"), aliasIterator.next());
+        Assert.assertEquals(new DefaultAlias("NP_001182726"), aliasIterator.next());
+        Assert.assertEquals(9606, B.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", B.getInteractor().getOrganism().getCommonName());
+        Assert.assertNull(B.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), B.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), B.getInteractor().getInteractorType());
+        Assert.assertEquals(1, B.getInteractor().getXrefs().size());
+        Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
+        Assert.assertEquals(0, B.getAnnotations().size());
+        Assert.assertEquals(1, B.getInteractor().getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRogid("xxxx2"), B.getInteractor().getChecksums().iterator().next());
+        Assert.assertTrue(B.getFeatures().isEmpty());
+        Assert.assertNull(B.getStoichiometry());
+
+        Assert.assertEquals(new DefaultSource("innatedb", "MI:0974"), binary.getSource());
+
+        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association","MI:0915"), binary.getInteractionType());
+        Assert.assertEquals(1, binary.getIdentifiers().size());
+        Assert.assertEquals(XrefUtils.createIdentityXref("innatedb", "IDB-113240"), binary.getIdentifiers().iterator().next());
+        Assert.assertEquals(2, binary.getXrefs().size());
+        xrefIterator = binary.getXrefs().iterator();
+        xrefIterator.next();
+        Assert.assertEquals(XrefUtils.createXrefWithQualifier("go", "GO:xxx1", "process"), xrefIterator.next());
+        Assert.assertEquals(1, binary.getAnnotations().size());
+        Assert.assertEquals(AnnotationUtils.createAnnotation("figure-legend", "Fig1."), binary.getAnnotations().iterator().next());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
+        Assert.assertEquals(1, binary.getChecksums().size());
+        Assert.assertEquals(ChecksumUtils.createRigid("xxxx3"), binary.getChecksums().iterator().next());
+
+        ModelledInteraction binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
     public void test_read_valid_mitab27() throws ParseException, java.text.ParseException {
         InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_line.txt");
         ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
