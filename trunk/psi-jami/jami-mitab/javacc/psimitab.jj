@@ -589,7 +589,7 @@ MitabFeature feature(int columnNumber):
   java.lang.String type;
   Collection<Range> ranges;
   Range var;
-  java.lang.String text;
+  java.lang.String text = null;
   MitabFeature feature;
   int beginLine;
   int beginColumn;
@@ -605,6 +605,7 @@ MitabFeature feature(int columnNumber):
         feature = new MitabFeature(type);
         feature.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
         feature.getRanges().addAll(ranges);
+        feature.setText(text);
 
         return feature;
       }

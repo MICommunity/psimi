@@ -344,10 +344,64 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
     protected void initialiseOrganism(Collection<MitabOrganism> organisms, Interactor interactor){
 
         if (organisms.size() > 1){
-            if (listener != null){
+            Iterator<MitabOrganism> organismsIterator = organisms.iterator();
+            Integer taxid=null;
+            String commonName=null;
+            int commonNameLength = 0;
+            int fullNameLength = 0;
+            MitabOrganism currentOrganism=null;
+            boolean hasSeveralOrganisms = false;
+            do {
+
+                MitabOrganism organism = organismsIterator.next();
+                if (currentOrganism == null){
+                    currentOrganism = organism;
+                    commonName = organism.getCommonName();
+                    commonNameLength = commonName.length();
+                    fullNameLength = commonName.length();
+                    taxid = organism.getTaxId();
+                }
+                // we have same organism
+                else if (organism.getTaxId() == taxid){
+                    // we have a new common name
+                    if (organism.getCommonName() != null && organism.getCommonName().length() < commonNameLength){
+                        if (currentOrganism.getScientificName() == null){
+                            currentOrganism.setScientificName(currentOrganism.getCommonName());
+                        }
+                        // we have a synonym for the organism
+                        else {
+                            currentOrganism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, currentOrganism.getCommonName()));
+                        }
+                        currentOrganism.setCommonName(organism.getCommonName());
+                        commonNameLength = organism.getCommonName().length();
+                    }
+                    // we have a full name
+                    else if (currentOrganism.getScientificName() == null){
+                        currentOrganism.setScientificName(organism.getCommonName());
+                        fullNameLength = organism.getCommonName().length();
+                    }
+                    // we have a new fullname
+                    else if (organism.getCommonName().length() < fullNameLength) {
+                        currentOrganism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, currentOrganism.getScientificName()));
+                        currentOrganism.setScientificName(organism.getCommonName());
+                        fullNameLength = organism.getCommonName().length();
+                    }
+                    // we have a synonym for the organism
+                    else {
+                        currentOrganism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, organism.getCommonName()));
+                    }
+                }
+                else{
+                    hasSeveralOrganisms = true;
+                }
+
+            } while(organismsIterator.hasNext());
+
+            if (listener != null && hasSeveralOrganisms){
                 listener.onSeveralOrganismFound(organisms);
             }
-            interactor.setOrganism(organisms.iterator().next());
+
+            interactor.setOrganism(currentOrganism);
         }
         else if (!organisms.isEmpty()){
             interactor.setOrganism(organisms.iterator().next());
