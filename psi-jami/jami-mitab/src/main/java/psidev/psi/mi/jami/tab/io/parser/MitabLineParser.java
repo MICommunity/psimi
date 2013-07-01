@@ -44,21 +44,21 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                                                Collection<MitabChecksum> checksumI, boolean isNegative, int line);
 
   final public T MitabLine() throws ParseException {
-  Collection<MitabXref> uniqueIdA;
-  Collection<MitabXref> uniqueIdB;
-  Collection<MitabXref> altIdA;
-  Collection<MitabXref> altIdB;
-  Collection<MitabAlias> aliasA;
-  Collection<MitabAlias> aliasB;
-  Collection<MitabCvTerm> detMethod;
-  Collection<MitabAuthor> firstAuthor;
-  Collection<MitabXref> pubId;
-  Collection<MitabOrganism> taxidA;
-  Collection<MitabOrganism> taxidB;
-  Collection<MitabCvTerm> interactionType;
-  Collection<MitabSource> source;
-  Collection<MitabXref> interactionId;
-  Collection<MitabConfidence> conf;
+  Collection<MitabXref> uniqueIdA = Collections.EMPTY_LIST;
+  Collection<MitabXref> uniqueIdB = Collections.EMPTY_LIST;
+  Collection<MitabXref> altIdA = Collections.EMPTY_LIST;
+  Collection<MitabXref> altIdB = Collections.EMPTY_LIST;
+  Collection<MitabAlias> aliasA = Collections.EMPTY_LIST;
+  Collection<MitabAlias> aliasB = Collections.EMPTY_LIST;
+  Collection<MitabCvTerm> detMethod = Collections.EMPTY_LIST;
+  Collection<MitabAuthor> firstAuthor = Collections.EMPTY_LIST;
+  Collection<MitabXref> pubId = Collections.EMPTY_LIST;
+  Collection<MitabOrganism> taxidA = Collections.EMPTY_LIST;
+  Collection<MitabOrganism> taxidB= Collections.EMPTY_LIST;
+  Collection<MitabCvTerm> interactionType = Collections.EMPTY_LIST;
+  Collection<MitabSource> source = Collections.EMPTY_LIST;
+  Collection<MitabXref> interactionId = Collections.EMPTY_LIST;
+  Collection<MitabConfidence> conf = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> expansion = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> bioRoleA = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> bioRoleB = Collections.EMPTY_LIST;
@@ -135,7 +135,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                                                                                                                                                                                         line = token.beginLine; columnA = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-          uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
+          line = token.beginLine; columnA = token.beginColumn;
           processSyntaxError(token.beginLine, token.beginColumn, 1, e);
           error_skipToNext(columnSet);
         }
@@ -152,7 +152,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                                                                                                                                                                 columnB = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-            uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
+            columnB = token.beginColumn;
             processSyntaxError(token.beginLine, token.beginColumn, 2, e);
              error_skipToNext(columnSet);
         }
@@ -168,7 +168,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-          altIdA = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 3, e);
                   error_skipToNext(columnSet);
         }
@@ -184,7 +183,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        altIdB = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 4, e);
                   error_skipToNext(columnSet);
         }
@@ -200,7 +198,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        aliasA = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 5, e);
                   error_skipToNext(columnSet);
         }
@@ -216,7 +213,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        aliasB = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 6, e);
                   error_skipToNext(columnSet);
         }
@@ -232,7 +228,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        detMethod = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 7, e);
                   error_skipToNext(columnSet);
         }
@@ -248,7 +243,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        firstAuthor = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 8, e);
                   error_skipToNext(columnSet);
         }
@@ -264,7 +258,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        pubId = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 9, e);
                   error_skipToNext(columnSet);
         }
@@ -284,7 +277,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        taxidA = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 10, e);
                   error_skipToNext(columnSet);
         }
@@ -304,7 +296,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        taxidB = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 11, e);
                   error_skipToNext(columnSet);
         }
@@ -320,7 +311,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        interactionType = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 12, e);
                   error_skipToNext(columnSet);
         }
@@ -336,7 +326,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        source = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 13, e);
                   error_skipToNext(columnSet);
         }
@@ -352,7 +341,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-        interactionId = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 14, e);
                   error_skipToNext(columnSet);
         }
@@ -367,7 +355,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             conf = confidences();
           }
         } catch (ParseException e) {
-        conf = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 15, e);
                   error_skipToNext(columnSet);
         }
