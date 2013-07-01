@@ -105,21 +105,21 @@ TOKEN :
 
 T MitabLine():
 {
-  Collection<MitabXref> uniqueIdA;
-  Collection<MitabXref> uniqueIdB;
-  Collection<MitabXref> altIdA;
-  Collection<MitabXref> altIdB;
-  Collection<MitabAlias> aliasA;
-  Collection<MitabAlias> aliasB;
-  Collection<MitabCvTerm> detMethod;
-  Collection<MitabAuthor> firstAuthor;
-  Collection<MitabXref> pubId;
-  Collection<MitabOrganism> taxidA;
-  Collection<MitabOrganism> taxidB;
-  Collection<MitabCvTerm> interactionType;
-  Collection<MitabSource> source;
-  Collection<MitabXref> interactionId;
-  Collection<MitabConfidence> conf;
+  Collection<MitabXref> uniqueIdA = Collections.EMPTY_LIST;
+  Collection<MitabXref> uniqueIdB = Collections.EMPTY_LIST;
+  Collection<MitabXref> altIdA = Collections.EMPTY_LIST;
+  Collection<MitabXref> altIdB = Collections.EMPTY_LIST;
+  Collection<MitabAlias> aliasA = Collections.EMPTY_LIST;
+  Collection<MitabAlias> aliasB = Collections.EMPTY_LIST;
+  Collection<MitabCvTerm> detMethod = Collections.EMPTY_LIST;
+  Collection<MitabAuthor> firstAuthor = Collections.EMPTY_LIST;
+  Collection<MitabXref> pubId = Collections.EMPTY_LIST;
+  Collection<MitabOrganism> taxidA = Collections.EMPTY_LIST;
+  Collection<MitabOrganism> taxidB= Collections.EMPTY_LIST;
+  Collection<MitabCvTerm> interactionType = Collections.EMPTY_LIST;
+  Collection<MitabSource> source = Collections.EMPTY_LIST;
+  Collection<MitabXref> interactionId = Collections.EMPTY_LIST;
+  Collection<MitabConfidence> conf = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> expansion = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> bioRoleA = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> bioRoleB = Collections.EMPTY_LIST;
@@ -170,91 +170,78 @@ T MitabLine():
       (
         try{(<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>}
         catch (ParseException e){
-          uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
+          line = token.beginLine; columnA = token.beginColumn;
           processSyntaxError(token.beginLine, token.beginColumn, 1, e);
           error_skipToNext(columnSet);
          }
         try{(<DASH> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>}
         catch (ParseException e){
-            uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
+            columnB = token.beginColumn;
             processSyntaxError(token.beginLine, token.beginColumn, 2, e);
              error_skipToNext(columnSet);
             }
         try{(<DASH> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-          altIdA = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 3, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        altIdB = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 4, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        aliasA = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 5, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        aliasB = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 6, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        detMethod = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 7, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        firstAuthor = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 8, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        pubId = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 9, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        taxidA = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 10, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        taxidB = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 11, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        interactionType = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 12, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        source = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 13, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {interactionId = Collections.EMPTY_LIST;} | interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-        interactionId = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 14, e);
                   error_skipToNext(columnSet);
                  }
         try{(<DASH> {conf = Collections.EMPTY_LIST;} | conf = confidences())}
         catch (ParseException e){
-        conf = Collections.EMPTY_LIST;
                   processSyntaxError(token.beginLine, token.beginColumn, 15, e);
                   error_skipToNext(columnSet);
                  }

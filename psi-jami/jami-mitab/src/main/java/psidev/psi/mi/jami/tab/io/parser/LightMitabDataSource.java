@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.tab.io.iterator.MitabBinaryIterator;
+import psidev.psi.mi.jami.tab.io.iterator.MitabInteractionIterator;
 
 import java.io.*;
 import java.util.Iterator;
@@ -67,6 +67,6 @@ public class LightMitabDataSource extends AbstractMitabDataSource<Interaction, P
 
     @Override
     protected Iterator<Interaction> createMitabIterator() {
-        return new MitabBinaryIterator(getLineParser());
+        return new MitabInteractionIterator(getLineParser());
     }
 }

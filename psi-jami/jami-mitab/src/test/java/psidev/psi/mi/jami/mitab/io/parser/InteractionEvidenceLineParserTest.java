@@ -403,8 +403,9 @@ public class InteractionEvidenceLineParserTest {
         // read title
         InteractionEvidence line1 = parser.MitabLine();
         Assert.assertNotNull(line1);
-        Assert.assertEquals(1, line1.getIdentifiers().size());
+        Assert.assertEquals(2, line1.getParticipants().iterator().next().getInteractor().getIdentifiers().size());
         Iterator<Xref> identifierIterator = line1.getParticipants().iterator().next().getInteractor().getIdentifiers().iterator();
+        Assert.assertEquals(new DefaultXref(new DefaultCvTerm("innatedb"), "IDBG-827", CvTermUtils.createIdentityQualifier()), identifierIterator.next());
         Assert.assertEquals(new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000136869", CvTermUtils.createSecondaryXrefQualifier()), identifierIterator.next());
         Assert.assertFalse(parser.hasFinished());
 
