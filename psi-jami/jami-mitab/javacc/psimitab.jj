@@ -220,13 +220,13 @@ T MitabLine():
         ] // end MITAB 2.7
          )
         ] //end MITAB 2.6
+              {
+                participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
+                participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
+                interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
+                                         conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
+              }
       (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
-      {
-        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
-        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
-        interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
-                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
-      }
       )
       {return interaction;}
       }
