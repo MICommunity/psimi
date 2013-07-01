@@ -163,6 +163,19 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         // checksum
         interaction.getChecksums().addAll(checksumI);
 
+        // then initialise source
+        if (source.size() > 1){
+            if (getParserListener() != null){
+                getParserListener().onSeveralSourceFound(source);
+            }
+            MitabSource firstSource = source.iterator().next();
+            interaction.setSource(firstSource);
+        }
+        else if (!source.isEmpty()){
+            MitabSource firstSource = source.iterator().next();
+            interaction.setSource(firstSource);
+        }
+
         if (A == null && B == null && getParserListener() != null){
             getParserListener().onInteractionWithoutParticipants(interaction, interaction);
         }
