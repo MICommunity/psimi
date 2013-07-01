@@ -21,7 +21,7 @@ public class InteractionEvidenceEnricher
         super.enrichInteraction(interactionToEnrich);
     }
 
-    public void setParticipantEnricher(ParticipantEnricher<ParticipantEvidence> participantEnricher){
+    /*public void setParticipantEnricher(ParticipantEnricher<ParticipantEvidence> participantEnricher){
         this.participantEnricher = participantEnricher;
-    }
+    } */
 }

@@ -29,7 +29,7 @@ public class MaximumOrganismUpdater
         if(organismFetched.getTaxId() != -3){
 
             // ALIASES
-           /* if( ! organismFetched.getAliases().isEmpty()){
+            /* if( ! organismFetched.getAliases().isEmpty()){
                 // Remove old aliases
                 Collection<Alias> aliasesToChange = new TreeSet<Alias>(new DefaultAliasComparator());
                 aliasesToChange.addAll(organismToEnrich.getAliases());

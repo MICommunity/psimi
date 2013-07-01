@@ -20,7 +20,8 @@ public class MaximumOrganismEnricher
     protected void processOrganism(Organism organismToEnrich) {
         super.processOrganism(organismToEnrich);
 
-        if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){
+        if(organismToEnrich.getTaxId() == organismFetched.getTaxId()
+                && organismFetched.getTaxId() != -3){
             //TODO confirm this is the correct set of conditions
             if( ! organismFetched.getAliases().isEmpty()
                     && organismToEnrich.getAliases().isEmpty()){

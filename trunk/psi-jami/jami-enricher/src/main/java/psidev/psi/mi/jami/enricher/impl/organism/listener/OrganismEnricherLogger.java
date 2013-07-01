@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.enricher.impl.organism.listener;
 
 import psidev.psi.mi.jami.listener.impl.OrganismChangeLogger;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Protein;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

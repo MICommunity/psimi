@@ -83,7 +83,7 @@ public class MinimumProteinEnricherTest {
      * the protein is not enriched and that a "failed" note is sent to the listener.
      */
     @Test
-    public void test_no_fetching_on_protein__with_null_identifier_when_remapping_is_unavailable()
+    public void test_no_fetching_on_protein_with_null_identifier_when_remapping_is_unavailable()
             throws EnricherException {
 
         Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
@@ -459,7 +459,7 @@ public class MinimumProteinEnricherTest {
         protein_with_matching_checksum.setSequence(TEST_SEQUENCE);
         protein_with_matching_checksum.getChecksums().add(
                 ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
-        protein_with_matching_checksum.setRogid("ROGID");  //Rogid will always be added if it is not set.
+        protein_with_matching_checksum.setRogid("ROGID");
 
         int crc64ChecksumCount = 0;
         for(Checksum checksum : protein_with_matching_checksum.getChecksums()){
@@ -482,23 +482,33 @@ public class MinimumProteinEnricherTest {
 
     //TODO
     /**
-     * Tests that when a checksum that does not match is found, a conflict error is thrown.
+     *
      * The checksum comparison should also be case sensitive.
      */
     @Test
-    public void test_case_sensitive_conflict_on_CRC64() throws EnricherException, BridgeFailedException {
+    public void test_case_sensitive_not_overwrite_CRC64() throws EnricherException, BridgeFailedException {
+        String METHOD = "CRC64";
+        String upperCRC =  "AbCdEfG";
+        String lowerCRC = "abcdefg";
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
-                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
+                ChecksumUtils.createChecksum(METHOD, null, upperCRC));
         }
 
         Protein protein_with_mismatched_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
         protein_with_mismatched_checksum.setUniprotkb(TEST_AC_FULL_PROT);
         protein_with_mismatched_checksum.getChecksums().add(
-                ChecksumUtils.createChecksum("CRC64", null, "abcdefg"));
+                ChecksumUtils.createChecksum(METHOD, null, lowerCRC));
+
+        assertEquals(1 , protein_with_mismatched_checksum.getChecksums().size());
 
         minimumProteinEnricher.enrichProtein(protein_with_mismatched_checksum);
+
+        assertEquals(1 , protein_with_mismatched_checksum.getChecksums().size());
+        Checksum checksum = protein_with_mismatched_checksum.getChecksums().iterator().next();
+        assertEquals(METHOD , checksum.getMethod().getShortName());
+        assertEquals(lowerCRC , checksum.getValue());
     }
 
 
