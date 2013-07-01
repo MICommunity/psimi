@@ -156,11 +156,14 @@ T MitabLine():
   int columnB;
 }
 {
-(
-  try{
      //allow empty lines
-    [
-      ( <COMMENT> )
+    try{
+
+   ((<LINE_SEPARATOR>)
+    |
+   (<EOF> {reachEndOfFile();})
+    |
+   ( <COMMENT> (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
     |
       (
         (<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>
@@ -180,6 +183,7 @@ T MitabLine():
         (<DASH> {conf = Collections.EMPTY_LIST;} | conf = confidences())
 
         [ //starting MITAB 2.6
+        (
         <COLUMN_SEPARATOR> //end of confidences delimiter
         (<DASH> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) <COLUMN_SEPARATOR>
         (<DASH> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) <COLUMN_SEPARATOR>
@@ -204,6 +208,7 @@ T MitabLine():
         (<DASH> | isNegative = negative())
 
         [ //starting MITAB 2.7
+        (
         <COLUMN_SEPARATOR> //end of negative() delimiter
         (<DASH> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) <COLUMN_SEPARATOR>
         (<DASH> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) <COLUMN_SEPARATOR>
@@ -211,35 +216,25 @@ T MitabLine():
         (LOOKAHEAD(2) <DASH> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) <COLUMN_SEPARATOR>
         (<DASH> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) <COLUMN_SEPARATOR>
         (<DASH> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42))
+        )
         ] // end MITAB 2.7
-
+         )
         ] //end MITAB 2.6
-      )
+      (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
       {
         participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
         participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
         interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
                                  conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
       }
-    ]
-
+      )
+      {return interaction;}
       }
-      catch (ParseException e){
+       catch (ParseException e){
         processSyntaxError(token.beginLine, token.beginColumn, 0, e);
         error_skipToNext(enumSet);
         return interaction;
       }
-
-    //line/file termination
-    (
-        <LINE_SEPARATOR> {return interaction;}
-      |
-      <EOF> {reachEndOfFile(); return interaction;}
-      |
-      error_skipToNext(enumSet) {return interaction;}
-    )
-)
-  { return interaction; }
 }
 
 Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):

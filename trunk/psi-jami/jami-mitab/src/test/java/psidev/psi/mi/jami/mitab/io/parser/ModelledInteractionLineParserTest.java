@@ -282,4 +282,15 @@ public class ModelledInteractionLineParserTest {
         Assert.assertNotNull(binary2);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_empty_file() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/empty_file.txt");
+        ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
+
+        // read first interaction
+        ModelledInteraction binary = parser.MitabLine();
+        Assert.assertNull(binary);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }
