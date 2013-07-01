@@ -275,11 +275,11 @@ public class CvTermUtils {
     }
 
     public static CvTerm createRogid(){
-        return createMICvTerm(Checksum.ROGID, Checksum.ROGID_MI);
+        return createMICvTerm(Checksum.ROGID, null);
     }
 
     public static CvTerm createRigid(){
-        return createMICvTerm(Checksum.RIGID, Checksum.RIGID_MI);
+        return createMICvTerm(Checksum.RIGID, null);
     }
 
     public static CvTerm createCertainStatus(){
