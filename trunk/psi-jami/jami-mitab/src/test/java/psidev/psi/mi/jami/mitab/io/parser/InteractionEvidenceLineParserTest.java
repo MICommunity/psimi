@@ -178,7 +178,7 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertEquals("Human", B.getInteractor().getOrganism().getCommonName());
         Assert.assertNull(B.getInteractor().getOrganism().getScientificName());
         Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), B.getBiologicalRole());
-        Assert.assertEquals(CvTermUtils.createMICvTerm("prey","MI:0498"), B.getExperimentalRole());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("prey", "MI:0498"), B.getExperimentalRole());
         Assert.assertEquals(CvTermUtils.createProteinInteractorType(), B.getInteractor().getInteractorType());
         Assert.assertEquals(1, B.getInteractor().getXrefs().size());
         Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
@@ -361,6 +361,37 @@ public class InteractionEvidenceLineParserTest {
         // read first interaction
         InteractionEvidence binary = parser.MitabLine();
         Assert.assertNull(binary);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_header_and_empty_lines() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_line_header.txt");
+        InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
+
+        // read title
+        InteractionEvidence title = parser.MitabLine();
+        Assert.assertNull(title);
+        Assert.assertFalse(parser.hasFinished());
+
+        // read title
+        InteractionEvidence empty_line1 = parser.MitabLine();
+        Assert.assertNull(empty_line1);
+        Assert.assertFalse(parser.hasFinished());
+
+        // read title
+        InteractionEvidence line1 = parser.MitabLine();
+        Assert.assertNotNull(line1);
+        Assert.assertFalse(parser.hasFinished());
+
+        // read title
+        InteractionEvidence empty_line2 = parser.MitabLine();
+        Assert.assertNull(empty_line2);
+        Assert.assertFalse(parser.hasFinished());
+
+        // read title
+        InteractionEvidence line2 = parser.MitabLine();
+        Assert.assertNotNull(line2);
         Assert.assertTrue(parser.hasFinished());
     }
 }
