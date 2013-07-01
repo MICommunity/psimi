@@ -586,6 +586,10 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           jj_la1[44] = jj_gen;
           ;
         }
+                participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
+                participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
+                interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
+                                         conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case LINE_SEPARATOR:
           jj_consume_token(LINE_SEPARATOR);
@@ -599,10 +603,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           jj_consume_token(-1);
           throw new ParseException();
         }
-        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
-        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
-        interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
-                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
       }
        {if (true) return interaction;}
     } catch (ParseException e) {
