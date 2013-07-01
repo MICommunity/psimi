@@ -95,18 +95,38 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   int columnB;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case LINE_SEPARATOR:
+        jj_consume_token(LINE_SEPARATOR);
+        break;
+      case 0:
+        jj_consume_token(0);
+           reachEndOfFile();
+        break;
       case COMMENT:
         jj_consume_token(COMMENT);
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case LINE_SEPARATOR:
+          jj_consume_token(LINE_SEPARATOR);
+          break;
+        case 0:
+          jj_consume_token(0);
+                                          reachEndOfFile();
+          break;
+        default:
+          jj_la1[0] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
         break;
       default:
-        jj_la1[44] = jj_gen;
+        jj_la1[46] = jj_gen;
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case DASH:
           jj_consume_token(DASH);
                  uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
           break;
         default:
-          jj_la1[0] = jj_gen;
+          jj_la1[1] = jj_gen;
           uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1);
         }
                                                                                                                                                                                     line = token.beginLine; columnA = token.beginColumn;
@@ -117,7 +137,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
           break;
         default:
-          jj_la1[1] = jj_gen;
+          jj_la1[2] = jj_gen;
           uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2);
         }
                                                                                                                                                             columnB = token.beginColumn;
@@ -128,7 +148,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  altIdA = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[2] = jj_gen;
+          jj_la1[3] = jj_gen;
           altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -138,7 +158,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  altIdB = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[3] = jj_gen;
+          jj_la1[4] = jj_gen;
           altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -148,7 +168,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  aliasA = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[4] = jj_gen;
+          jj_la1[5] = jj_gen;
           aliasA = aliases(5);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -158,7 +178,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  aliasB = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[5] = jj_gen;
+          jj_la1[6] = jj_gen;
           aliasB = aliases(6);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -168,7 +188,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  detMethod = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[6] = jj_gen;
+          jj_la1[7] = jj_gen;
           detMethod = cvTerms(7);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -178,7 +198,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  firstAuthor = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[7] = jj_gen;
+          jj_la1[8] = jj_gen;
           firstAuthor = firstAuthors();
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -188,7 +208,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  pubId = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[8] = jj_gen;
+          jj_la1[9] = jj_gen;
           pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -201,7 +221,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           taxidA = taxId(10);
           break;
         default:
-          jj_la1[9] = jj_gen;
+          jj_la1[10] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -215,7 +235,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           taxidB = taxId(11);
           break;
         default:
-          jj_la1[10] = jj_gen;
+          jj_la1[11] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -226,7 +246,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  interactionType = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[11] = jj_gen;
+          jj_la1[12] = jj_gen;
           interactionType = cvTerms(12);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -236,7 +256,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  source = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[12] = jj_gen;
+          jj_la1[13] = jj_gen;
           source = sourceDbs();
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -246,7 +266,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  interactionId = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[13] = jj_gen;
+          jj_la1[14] = jj_gen;
           interactionId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 14);
         }
         jj_consume_token(COLUMN_SEPARATOR);
@@ -256,7 +276,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  conf = Collections.EMPTY_LIST;
           break;
         default:
-          jj_la1[14] = jj_gen;
+          jj_la1[15] = jj_gen;
           conf = confidences();
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -268,7 +288,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  expansion = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[15] = jj_gen;
+            jj_la1[16] = jj_gen;
             expansion = complexExpansion();
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -278,7 +298,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  bioRoleA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[16] = jj_gen;
+            jj_la1[17] = jj_gen;
             bioRoleA = cvTerms(17);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -288,7 +308,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  bioRoleB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[17] = jj_gen;
+            jj_la1[18] = jj_gen;
             bioRoleB = cvTerms(18);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -298,7 +318,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  expRoleA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[18] = jj_gen;
+            jj_la1[19] = jj_gen;
             expRoleA = cvTerms(19);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -308,7 +328,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  expRoleB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[19] = jj_gen;
+            jj_la1[20] = jj_gen;
             expRoleB = cvTerms(20);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -318,7 +338,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  typeA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[20] = jj_gen;
+            jj_la1[21] = jj_gen;
             typeA = cvTerms(21);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -328,7 +348,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  typeB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[21] = jj_gen;
+            jj_la1[22] = jj_gen;
             typeB = cvTerms(22);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -338,7 +358,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  xrefA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[22] = jj_gen;
+            jj_la1[23] = jj_gen;
             xrefA = ids(null, false, 23);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -348,7 +368,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  xrefB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[23] = jj_gen;
+            jj_la1[24] = jj_gen;
             xrefB = ids(null, false, 24);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -358,7 +378,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  xrefI = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[24] = jj_gen;
+            jj_la1[25] = jj_gen;
             xrefI = ids(null, false, 25);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -368,7 +388,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  annotA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[25] = jj_gen;
+            jj_la1[26] = jj_gen;
             annotA = annotations(26);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -378,7 +398,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  annotB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[26] = jj_gen;
+            jj_la1[27] = jj_gen;
             annotB = annotations(27);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -388,7 +408,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  annotI = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[27] = jj_gen;
+            jj_la1[28] = jj_gen;
             annotI = annotations(28);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -401,7 +421,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             host = taxId(29);
             break;
           default:
-            jj_la1[28] = jj_gen;
+            jj_la1[29] = jj_gen;
             jj_consume_token(-1);
             throw new ParseException();
           }
@@ -412,7 +432,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  params = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[29] = jj_gen;
+            jj_la1[30] = jj_gen;
             params = parameters();
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -422,7 +442,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  created = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[30] = jj_gen;
+            jj_la1[31] = jj_gen;
             created = dates(31);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -432,7 +452,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  update = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[31] = jj_gen;
+            jj_la1[32] = jj_gen;
             update = dates(32);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -442,7 +462,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  checksumA = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[32] = jj_gen;
+            jj_la1[33] = jj_gen;
             checksumA = checksums(33);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -452,7 +472,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  checksumB = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[33] = jj_gen;
+            jj_la1[34] = jj_gen;
             checksumB = checksums(34);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -462,7 +482,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  checksumI = Collections.EMPTY_LIST;
             break;
           default:
-            jj_la1[34] = jj_gen;
+            jj_la1[35] = jj_gen;
             checksumI = checksums(35);
           }
           jj_consume_token(COLUMN_SEPARATOR);
@@ -474,7 +494,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             isNegative = negative();
             break;
           default:
-            jj_la1[35] = jj_gen;
+            jj_la1[36] = jj_gen;
             jj_consume_token(-1);
             throw new ParseException();
           }
@@ -487,7 +507,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  featureA = Collections.EMPTY_LIST;
               break;
             default:
-              jj_la1[36] = jj_gen;
+              jj_la1[37] = jj_gen;
               featureA = features(37);
             }
             jj_consume_token(COLUMN_SEPARATOR);
@@ -497,7 +517,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  featureB = Collections.EMPTY_LIST;
               break;
             default:
-              jj_la1[37] = jj_gen;
+              jj_la1[38] = jj_gen;
               featureB = features(38);
             }
             jj_consume_token(COLUMN_SEPARATOR);
@@ -513,7 +533,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 stcA = stoichiometryList(39);
                 break;
               default:
-                jj_la1[38] = jj_gen;
+                jj_la1[39] = jj_gen;
                 jj_consume_token(-1);
                 throw new ParseException();
               }
@@ -531,7 +551,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 stcB = stoichiometryList(40);
                 break;
               default:
-                jj_la1[39] = jj_gen;
+                jj_la1[40] = jj_gen;
                 jj_consume_token(-1);
                 throw new ParseException();
               }
@@ -543,7 +563,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  pmethodA = Collections.EMPTY_LIST;
               break;
             default:
-              jj_la1[40] = jj_gen;
+              jj_la1[41] = jj_gen;
               pmethodA = cvTerms(41);
             }
             jj_consume_token(COLUMN_SEPARATOR);
@@ -553,44 +573,43 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  pmethodB = Collections.EMPTY_LIST;
               break;
             default:
-              jj_la1[41] = jj_gen;
+              jj_la1[42] = jj_gen;
               pmethodB = cvTerms(42);
             }
             break;
           default:
-            jj_la1[42] = jj_gen;
+            jj_la1[43] = jj_gen;
             ;
           }
           break;
         default:
-          jj_la1[43] = jj_gen;
+          jj_la1[44] = jj_gen;
           ;
+        }
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case LINE_SEPARATOR:
+          jj_consume_token(LINE_SEPARATOR);
+          break;
+        case 0:
+          jj_consume_token(0);
+                                 reachEndOfFile();
+          break;
+        default:
+          jj_la1[45] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
         }
         participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
         participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
         interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
                                  conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
       }
+       {if (true) return interaction;}
     } catch (ParseException e) {
         processSyntaxError(token.beginLine, token.beginColumn, 0, e);
         error_skipToNext(enumSet);
         {if (true) return interaction;}
     }
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LINE_SEPARATOR:
-      jj_consume_token(LINE_SEPARATOR);
-                          {if (true) return interaction;}
-      break;
-    case 0:
-      jj_consume_token(0);
-             reachEndOfFile(); {if (true) return interaction;}
-      break;
-    default:
-      jj_la1[45] = jj_gen;
-      error_skipToNext(enumSet);
-                                 {if (true) return interaction;}
-    }
-    {if (true) return interaction;}
     throw new Error("Missing return statement in function");
   }
 
@@ -608,7 +627,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[46] = jj_gen;
+          jj_la1[47] = jj_gen;
           break label_1;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -638,7 +657,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[47] = jj_gen;
+          jj_la1[48] = jj_gen;
           break label_2;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -668,7 +687,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[48] = jj_gen;
+          jj_la1[49] = jj_gen;
           break label_3;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -698,7 +717,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[49] = jj_gen;
+          jj_la1[50] = jj_gen;
           break label_4;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -728,7 +747,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[50] = jj_gen;
+          jj_la1[51] = jj_gen;
           break label_5;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -758,7 +777,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[51] = jj_gen;
+          jj_la1[52] = jj_gen;
           break label_6;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -788,7 +807,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[52] = jj_gen;
+          jj_la1[53] = jj_gen;
           break label_7;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -818,7 +837,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[53] = jj_gen;
+          jj_la1[54] = jj_gen;
           break label_8;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -848,7 +867,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[54] = jj_gen;
+          jj_la1[55] = jj_gen;
           break label_9;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -878,7 +897,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[55] = jj_gen;
+          jj_la1[56] = jj_gen;
           break label_10;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -908,7 +927,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[56] = jj_gen;
+          jj_la1[57] = jj_gen;
           break label_11;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -938,7 +957,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[57] = jj_gen;
+          jj_la1[58] = jj_gen;
           break label_12;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -968,7 +987,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[58] = jj_gen;
+          jj_la1[59] = jj_gen;
           break label_13;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -998,7 +1017,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[59] = jj_gen;
+          jj_la1[60] = jj_gen;
           break label_14;
         }
         jj_consume_token(FIELD_SEPARATOR);
@@ -1036,7 +1055,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             max = Long.parseLong(maxString);
         break;
       default:
-        jj_la1[60] = jj_gen;
+        jj_la1[61] = jj_gen;
         ;
       }
          if (maxString != null){
@@ -1082,7 +1101,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ;
           break;
         default:
-          jj_la1[61] = jj_gen;
+          jj_la1[62] = jj_gen;
           break label_15;
         }
         jj_consume_token(RANGE_SEPARATOR);
@@ -1096,7 +1115,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[62] = jj_gen;
+        jj_la1[63] = jj_gen;
         ;
       }
         feature = new MitabFeature(type);
@@ -1224,7 +1243,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[63] = jj_gen;
+        jj_la1[64] = jj_gen;
         ;
       }
      param = new MitabParameter(type, value, unit);
@@ -1259,7 +1278,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         value = safeString();
         break;
       default:
-        jj_la1[64] = jj_gen;
+        jj_la1[65] = jj_gen;
         ;
       }
       annot = new MitabAnnotation(topic, value);
@@ -1294,7 +1313,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[65] = jj_gen;
+        jj_la1[66] = jj_gen;
         ;
       }
       ref = new MitabXref(db, id, text);
@@ -1329,7 +1348,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[66] = jj_gen;
+        jj_la1[67] = jj_gen;
         ;
       }
       if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id);
@@ -1368,7 +1387,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[67] = jj_gen;
+        jj_la1[68] = jj_gen;
         ;
       }
       if (text == null){conf = new MitabConfidence(type, value, null); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));}
@@ -1404,7 +1423,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[68] = jj_gen;
+        jj_la1[69] = jj_gen;
         ;
       }
          if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
@@ -1438,7 +1457,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[69] = jj_gen;
+        jj_la1[70] = jj_gen;
         ;
       }
        organism = new MitabOrganism(Integer.parseInt(id), name);
@@ -1471,7 +1490,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         first = safeAuthor();
         break;
       default:
-        jj_la1[71] = jj_gen;
+        jj_la1[72] = jj_gen;
         first = safeAuthor();
                                beginLine = token.beginLine; beginColumn = token.beginColumn;
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1482,7 +1501,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           jj_consume_token(CLOSE_PAREN);
           break;
         default:
-          jj_la1[70] = jj_gen;
+          jj_la1[71] = jj_gen;
           ;
         }
       }
@@ -1519,7 +1538,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[72] = jj_gen;
+        jj_la1[73] = jj_gen;
         ;
       }
       if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
@@ -1554,7 +1573,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[73] = jj_gen;
+        jj_la1[74] = jj_gen;
         ;
       }
         alias = new MitabAlias(db, name, type);
@@ -1589,7 +1608,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[74] = jj_gen;
+        jj_la1[75] = jj_gen;
         ;
       }
       if (recognizeImexPrimary && Xref.IMEX.equalsIgnoreCase(db.trim())){
@@ -1630,7 +1649,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                      result = token.image.substring(1,token.image.length() - 1).trim();
       break;
     default:
-      jj_la1[75] = jj_gen;
+      jj_la1[76] = jj_gen;
       result = anyStringBut(enumSet);
     }
    {if (true) return result;}
@@ -1646,7 +1665,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                      result = token.image.substring(1,token.image.length() - 1).trim();
       break;
     default:
-      jj_la1[76] = jj_gen;
+      jj_la1[77] = jj_gen;
       result = anyStringBut(enumSet);
     }
    {if (true) return result;}
@@ -1668,7 +1687,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(DASH);
         break;
       default:
-        jj_la1[77] = jj_gen;
+        jj_la1[78] = jj_gen;
         ;
       }
                                                         text.append(token.image);
@@ -1683,7 +1702,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(DASH);
         break;
       default:
-        jj_la1[78] = jj_gen;
+        jj_la1[79] = jj_gen;
         ;
       }
                                                            text.append(token.image);
@@ -1698,7 +1717,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 text.append(token.image);
         break;
       default:
-        jj_la1[79] = jj_gen;
+        jj_la1[80] = jj_gen;
         ;
       }
       jj_consume_token(NUMBER);
@@ -1713,14 +1732,14 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                      text.append(token.image);
           break;
         default:
-          jj_la1[80] = jj_gen;
+          jj_la1[81] = jj_gen;
           ;
         }
         jj_consume_token(NUMBER);
                                                            text.append(token.image);
         break;
       default:
-        jj_la1[81] = jj_gen;
+        jj_la1[82] = jj_gen;
         ;
       }
       break;
@@ -1729,7 +1748,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                  text.append(token.image);
       break;
     default:
-      jj_la1[82] = jj_gen;
+      jj_la1[83] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1746,7 +1765,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
          sign = token.image;
       break;
     default:
-      jj_la1[83] = jj_gen;
+      jj_la1[84] = jj_gen;
       ;
     }
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1763,7 +1782,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                text = token.image;
       break;
     default:
-      jj_la1[84] = jj_gen;
+      jj_la1[85] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1836,13 +1855,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[85];
+  final private int[] jj_la1 = new int[86];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x44000,0x44000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x44000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x84000,0x4000,0x4000,0x4070,0x4070,0x4000,0x4000,0x200,0x200,0x80,0x401,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x4000,0x8,0x800,0x800,0x2000,0x800,0x800,0x800,0x800,0x800,0x800,0x10,0x800,0x800,0x800,0x100000,0x100000,0x4000,0x4000,0x4000,0x4000,0x400000,0x3c030,0x4000,0x70,};
+      jj_la1_0 = new int[] {0x401,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x44000,0x44000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x44000,0x4000,0x4000,0x4000,0x4000,0x4000,0x4000,0x84000,0x4000,0x4000,0x4070,0x4070,0x4000,0x4000,0x200,0x200,0x401,0x481,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x4000,0x8,0x800,0x800,0x2000,0x800,0x800,0x800,0x800,0x800,0x800,0x10,0x800,0x800,0x800,0x100000,0x100000,0x4000,0x4000,0x4000,0x4000,0x400000,0x3c030,0x4000,0x70,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[2];
   private boolean jj_rescan = false;
@@ -1859,7 +1878,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 85; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 86; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1874,7 +1893,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 85; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 86; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1885,7 +1904,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 85; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 86; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1896,7 +1915,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 85; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 86; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1906,7 +1925,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 85; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 86; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1916,7 +1935,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 85; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 86; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2033,7 +2052,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 85; i++) {
+    for (int i = 0; i < 86; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
