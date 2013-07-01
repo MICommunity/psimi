@@ -4,9 +4,7 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,14 +12,14 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author  Gabriel Aldam (galdam@ebi.ac.uk)
  * @since   13/06/13
  */
-public abstract class AbstractFeatureEnricher <F extends Feature>
-        implements FeatureEnricher<F>{
+public abstract class AbstractFeatureEnricher <T extends Feature>
+        implements FeatureEnricher<T>{
 
 
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
 
-    public void enrichFeature(F featureToEnrich) throws EnricherException {
+    public void enrichFeature(T featureToEnrich) throws EnricherException {
         if(featureToEnrich == null) throw new IllegalArgumentException("Feature enricher was passed a null feature.");
 
         processFeature(featureToEnrich);
@@ -33,7 +31,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     }  */
 
 
-    public abstract void processFeature(F featureToEnrich) throws EnricherException;
+    public abstract void processFeature(T featureToEnrich) throws EnricherException;
 
 
     public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener) {

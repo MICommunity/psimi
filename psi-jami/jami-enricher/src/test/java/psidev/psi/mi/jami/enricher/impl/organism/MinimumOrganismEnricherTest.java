@@ -60,19 +60,6 @@ public class MinimumOrganismEnricherTest {
         assertEquals(TEST_SCIENTIFICNAME, organism_without_scientificName.getScientificName());
     }
 
-    //TEST CAN NOT BE IMPLEMENTED WITH CURRENT MOCK. Nor is it currently required
-    //@Test
-    //public void test_set_primaryAC_if_null() throws EnrichmentException {
-    //
-    //    Protein protein_without_AC = new DefaultProtein("test2 shortName");
-    //
-    //    this.minimumProteinEnricher.enrichProtein(protein_without_AC);
-    //
-    //    Assert.assertNotNull(protein_without_fullName.getFullName());
-    //    Assert.assertEquals("test1 fullName", protein_without_fullName.getFullName());
-    //    Assert.assertEquals("test2 shortName", protein_without_fullName.getShortName());
-    //}
-
     /**
      * Enrich a organism with commonName.
      * Check that the commonName has been added
@@ -124,71 +111,5 @@ public class MinimumOrganismEnricherTest {
         //assertTrue(event.getMismatches().size() == 0);
     }
 
-    /**
-     * Enrich an organism which will have additions
-     * Enrich an organism which will have mismatches
-     * Enrich an organism with a different id and no additions or mismatches.
-     * Check that after the final enrichment, the additions and mismatches were reset and the the ID was updated
-     * Check the mismatches
-     */
-    @Test
-    public void test_enricher_event_is_cleared() throws EnricherException {
 
-        Organism organism_test_one = new DefaultOrganism(TEST_AC_FULL_ORG);
-
-        Organism organism_test_two = new DefaultOrganism(TEST_AC_FULL_ORG, "testpart2 commonName", "testpart2 scientificName");
-
-        Organism organism_test_three = new DefaultOrganism(TEST_AC_HALF_ORG);
-
-
-        //If this is failing, you may wish to use a logging listener to read the log.
-        //this.minimumProteinEnricher.addEnricherListener(new LoggingEnricherListener());
-
-        minimumOrganismEnricher.enrichOrganism(organism_test_one);
-
-        //assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
-
-        //assertTrue(event.getAdditions().size() > 0);
-        //assertTrue(event.getMismatches().size() == 0);
-        //assertTrue(event.getOverwrites().size() == 0);
-
-        minimumOrganismEnricher.enrichOrganism(organism_test_two);
-
-        //assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
-        //assertTrue(event.getAdditions().size() == 0);
-        //assertTrue(event.getMismatches().size() > 0);
-        //assertTrue(event.getOverwrites().size() == 0);
-
-        minimumOrganismEnricher.enrichOrganism(organism_test_three);
-
-        //assertEquals(event.getQueryID(), ""+TEST_AC_HALF_ORG);
-        //assertTrue(event.getAdditions().size() == 0);
-        //assertTrue(event.getMismatches().size() == 0);
-        //assertTrue(event.getOverwrites().size() == 0);
-
-    }
-
-    /**
-     * Enrich a half completed protein.
-     * Check that this fires an enrichmentEvent.
-     * Check this event has recorded some additions
-     * check this event has recorded some mismatches
-     * check this event has not recorded some overwrites
-     */
-    @Test
-    public void test_enricher_event_is_fired_and_has_correct_content() throws EnricherException {
-
-        Organism organism_to_enrich = new DefaultOrganism(TEST_AC_FULL_ORG, "testpart2 commonName", "testpart2 scientificName");
-
-
-        minimumOrganismEnricher.enrichOrganism(organism_to_enrich);
-
-        //assertNotNull(event);
-        //assertEquals(event.getObjectType(), "Organism");
-        //assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
-        //assertEquals(event.getQueryIDType(), "TaxID");
-        //assertTrue(event.getAdditions().size() == 0);
-        //assertTrue(event.getMismatches().size() == 2);
-        //assertTrue(event.getOverwrites().size() == 0);
-    }
 }

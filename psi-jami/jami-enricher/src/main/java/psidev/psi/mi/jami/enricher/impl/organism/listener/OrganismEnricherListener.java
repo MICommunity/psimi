@@ -7,8 +7,7 @@ import psidev.psi.mi.jami.model.Organism;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
- * Time: 16:57
+ * @since 13/06/13
  */
 public interface OrganismEnricherListener extends OrganismChangeListener{
 
