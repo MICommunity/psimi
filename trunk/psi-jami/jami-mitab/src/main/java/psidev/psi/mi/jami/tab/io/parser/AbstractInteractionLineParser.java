@@ -27,6 +27,7 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
     private MitabParserListener listener;
     private MitabInteractorFactory interactorFactory;
     private boolean hasFinished = false;
+    private StringBuilder builder = new StringBuilder(82);
 
     public AbstractInteractionLineParser(InputStream stream) {
         super(stream);
@@ -103,6 +104,12 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
 
     public boolean hasFinished() {
         return hasFinished;
+    }
+
+    @Override
+    StringBuilder resetStringBuilder() {
+        builder.setLength(0);
+        return builder;
     }
 
     protected void initialiseInteractionIdentifiers(Collection<MitabXref> interactionIds, T interaction){

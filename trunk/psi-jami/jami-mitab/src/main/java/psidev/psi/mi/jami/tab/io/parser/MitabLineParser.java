@@ -31,6 +31,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
 
     public abstract boolean hasFinished();
 
+    abstract java.lang.StringBuilder resetStringBuilder();
+
         abstract P finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
                                                Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
                                                Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot,
@@ -89,8 +91,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
   EnumSet<TokenKind> columnSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 
-  P participantA;
-  P participantB;
+  P participantA=null;
+  P participantB=null;
   T interaction=null;
   int line;
   int columnA;
@@ -131,9 +133,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             break;
           default:
             jj_la1[1] = jj_gen;
-            uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1);
+            uniqueIdA = ids(CvTermUtils.getIdentity(), false, 1);
           }
-                                                                                                                                                                                        line = token.beginLine; columnA = token.beginColumn;
+                                                                                                                                                                        line = token.beginLine; columnA = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
           line = token.beginLine; columnA = token.beginColumn;
@@ -148,9 +150,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             break;
           default:
             jj_la1[2] = jj_gen;
-            uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2);
+            uniqueIdB = ids(CvTermUtils.getIdentity(), false, 2);
           }
-                                                                                                                                                                columnB = token.beginColumn;
+                                                                                                                                                columnB = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
             columnB = token.beginColumn;
@@ -165,7 +167,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             break;
           default:
             jj_la1[3] = jj_gen;
-            altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3);
+            altIdA = ids(CvTermUtils.getSecondary(), false, 3);
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
@@ -180,7 +182,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             break;
           default:
             jj_la1[4] = jj_gen;
-            altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4);
+            altIdB = ids(CvTermUtils.getSecondary(), false, 4);
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
@@ -253,7 +255,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             break;
           default:
             jj_la1[8] = jj_gen;
-            pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9);
+            pubId = ids(CvTermUtils.getIdentity(), true, 9);
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
@@ -671,10 +673,10 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           case DASH:
             jj_consume_token(DASH);
             break;
-          case FALSE:
-          case QUOTED_FALSE:
           case TRUE:
+          case FALSE:
           case QUOTED_TRUE:
+          case QUOTED_FALSE:
             isNegative = negative();
             break;
           default:
@@ -1761,7 +1763,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         ;
       }
       if (recognizeImexPrimary && Xref.IMEX.equalsIgnoreCase(db.trim())){
-         if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier()); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
+         if (text == null){ref = new MitabXref(db, id, CvTermUtils.getImexPrimary()); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
          else if (qualifier != null) {ref = new MitabXref(db, id, text);
          ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
          if (getParserListener() != null) {getParserListener().onTextFoundInIdentifier(ref);}}
@@ -1822,11 +1824,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   }
 
   final public java.lang.String safePosition() throws ParseException {
- java.lang.StringBuilder text = new StringBuilder(82);
+ java.lang.StringBuilder text = resetStringBuilder();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case POSITION:
-      jj_consume_token(POSITION);
-               text.append(token.image);
+    case POSITION1:
+    case POSITION2:
+    case POSITION3:
+      positionKind();
+                   text.append(token.image);
       break;
     case LESSTHAN:
       jj_consume_token(LESSTHAN);
@@ -1952,6 +1956,24 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     throw new Error("Missing return statement in function");
   }
 
+  final public void positionKind() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case POSITION1:
+      jj_consume_token(POSITION1);
+      break;
+    case POSITION2:
+      jj_consume_token(POSITION2);
+      break;
+    case POSITION3:
+      jj_consume_token(POSITION3);
+      break;
+    default:
+      jj_la1[89] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
   final public java.lang.String safeStoichiometry() throws ParseException {
  java.lang.String text;
  java.lang.String sign = "";
@@ -1961,7 +1983,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
          sign = token.image;
       break;
     default:
-      jj_la1[89] = jj_gen;
+      jj_la1[90] = jj_gen;
       ;
     }
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1978,7 +2000,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                text = token.image;
       break;
     default:
-      jj_la1[90] = jj_gen;
+      jj_la1[91] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1987,7 +2009,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   }
 
   java.lang.String anyStringBut(EnumSet<TokenKind> skipToTokens) throws ParseException {
-  java.lang.StringBuilder result = new StringBuilder(82);
+  java.lang.StringBuilder result = resetStringBuilder();
 
   Token t = getToken(1);
   // next token is 1
@@ -2066,13 +2088,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[91];
+  final private int[] jj_la1 = new int[92];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x81,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x30800,0x30800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x30800,0x800,0x800,0x800,0x800,0x800,0x800,0x3c0800,0x800,0x800,0x1c00800,0x1c00800,0x800,0x800,0x40,0x40,0x81,0x91,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x800,0x8,0x100,0x3c0000,0x100,0x400,0x100,0x100,0x100,0x100,0x30000,0x100,0x100,0x400000,0x100,0x100,0x100,0x2000000,0x2000000,0x800,0xc00000,0x800,0xc00000,0x800,0xc00000,0x800,0xc00000,0x4000,0xc0b800,0x800,0x1c00000,};
+      jj_la1_0 = new int[] {0x81,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x480800,0x480800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x480800,0x800,0x800,0x800,0x800,0x800,0x800,0xb40800,0x800,0x800,0x7000800,0x7000800,0x800,0x800,0x40,0x40,0x81,0x91,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x800,0x8,0x100,0xb40000,0x100,0x400,0x100,0x100,0x100,0x100,0x480000,0x100,0x100,0x1000000,0x100,0x100,0x100,0x8000000,0x8000000,0x800,0x3000000,0x800,0x3000000,0x800,0x3000000,0x800,0x3000000,0x4000,0x303b800,0x38000,0x800,0x7000000,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[3];
   private boolean jj_rescan = false;
@@ -2089,7 +2111,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 91; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 92; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2104,7 +2126,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 91; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 92; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2115,7 +2137,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 91; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 92; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2126,7 +2148,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 91; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 92; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2136,7 +2158,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 91; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 92; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2146,7 +2168,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 91; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 92; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2258,12 +2280,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[27];
+    boolean[] la1tokens = new boolean[29];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 91; i++) {
+    for (int i = 0; i < 92; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -2272,7 +2294,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         }
       }
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 29; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
