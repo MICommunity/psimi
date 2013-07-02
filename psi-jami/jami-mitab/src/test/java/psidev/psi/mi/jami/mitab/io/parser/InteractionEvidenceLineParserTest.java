@@ -52,7 +52,7 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertEquals("Homo Sapiens", A.getInteractor().getOrganism().getScientificName());
         Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getBiologicalRole());
         Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getExperimentalRole());
-        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), A.getInteractor().getInteractorType());
         Assert.assertEquals(0, A.getInteractor().getXrefs().size());
         Assert.assertEquals(0, A.getAnnotations().size());
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
