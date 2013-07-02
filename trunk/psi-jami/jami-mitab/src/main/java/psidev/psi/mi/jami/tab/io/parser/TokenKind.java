@@ -9,7 +9,7 @@ package psidev.psi.mi.jami.tab.io.parser;
  */
 
 public enum TokenKind {
-    EOF, QUOTED_STRING, DASH, PUB_DATE, NUMBER, TAXID, NEGATIVE,
+    EOF, QUOTED_STRING, DASH, PUB_DATE, NUMBER, TAXID, QUOTED_TAXID, FALSE, QUOTED_FALSE, TRUE, QUOTED_TRUE,
     POSITION, STOICHIOMETRY, COMMENT, FIELD_SEPARATOR, COLUMN_SEPARATOR, LINE_SEPARATOR, RANGE_SEPARATOR,
     OPEN_PAREN, CLOSE_PAREN, COLON;
 
@@ -20,7 +20,10 @@ public enum TokenKind {
             case MitabLineParserConstants.DASH: return DASH;
             case MitabLineParserConstants.PUB_DATE: return PUB_DATE;
             case MitabLineParserConstants.TAXID: return TAXID;
-            case MitabLineParserConstants.NEGATIVE: return NEGATIVE;
+            case MitabLineParserConstants.QUOTED_TAXID: return QUOTED_TAXID;
+            case MitabLineParserConstants.FALSE: return FALSE;
+            case MitabLineParserConstants.TRUE: return TRUE;
+            case MitabLineParserConstants.QUOTED_TRUE: return QUOTED_TRUE;
             case MitabLineParserConstants.POSITION: return POSITION;
             case MitabLineParserConstants.STOICHIOMETRY: return STOICHIOMETRY;
             case MitabLineParserConstants.FIELD_SEPARATOR: return FIELD_SEPARATOR;
