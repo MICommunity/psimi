@@ -61,7 +61,7 @@ public interface MitabLineParserConstants {
     "<PUB_DATE>",
     "<NUMBER>",
     "<STOICHIOMETRY>",
-    "<COMMENT>",
+    "\"#\"",
     "\"|\"",
     "\"\\t\"",
     "\"\\n\"",

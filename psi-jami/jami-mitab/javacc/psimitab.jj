@@ -73,7 +73,7 @@ TOKEN :
   < PUB_DATE: (["0"-"9"]){4} >
   | <NUMBER: (["0"-"9"])+>
   | < STOICHIOMETRY: (["0"-"9"])+ "." (["0"-"9"])+ >
-  | < COMMENT: "#" (~["\n"])*>
+  | < COMMENT: "#">
   | < FIELD_SEPARATOR: "|">
   | < COLUMN_SEPARATOR: "\t">
   | < LINE_SEPARATOR: "\n">
@@ -165,7 +165,7 @@ T MitabLine():
     |
    (<EOF> {reachEndOfFile();})
     |
-   ( <COMMENT> (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
+   ( <COMMENT> anyStringBut(enumSet) (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
     |
       (
         try{(<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>}
@@ -205,7 +205,7 @@ T MitabLine():
                   processSyntaxError(token.beginLine, token.beginColumn, 7, e);
                   error_skipToNext(columnSet);
                  }
-        try{(<DASH> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) <COLUMN_SEPARATOR>}
+        try{(LOOKAHEAD(2) <DASH> {firstAuthor = Collections.EMPTY_LIST;} <COLUMN_SEPARATOR> | firstAuthor = firstAuthors() <COLUMN_SEPARATOR>)}
         catch (ParseException e){
                   processSyntaxError(token.beginLine, token.beginColumn, 8, e);
                   error_skipToNext(columnSet);
@@ -364,12 +364,12 @@ T MitabLine():
                   processSyntaxError(token.beginLine, token.beginColumn, 38, e);
                   error_skipToNext(columnSet);
                  }
-        try{(LOOKAHEAD(2) <DASH> {stcA = Collections.EMPTY_LIST;} | stcA = stoichiometryList(39)) <COLUMN_SEPARATOR>}
+        try{(LOOKAHEAD(2) <DASH> {stcA = Collections.EMPTY_LIST;} <COLUMN_SEPARATOR> | stcA = stoichiometryList(39) <COLUMN_SEPARATOR>)}
         catch (ParseException e){
                   processSyntaxError(token.beginLine, token.beginColumn, 39, e);
                   error_skipToNext(columnSet);
                  }
-        try{(LOOKAHEAD(2) <DASH> {stcB = Collections.EMPTY_LIST;} | stcB = stoichiometryList(40)) <COLUMN_SEPARATOR>}
+        try{(LOOKAHEAD(2) <DASH> {stcB = Collections.EMPTY_LIST;} <COLUMN_SEPARATOR> | stcB = stoichiometryList(40) <COLUMN_SEPARATOR>)}
         catch (ParseException e){
                   processSyntaxError(token.beginLine, token.beginColumn, 40, e);
                   error_skipToNext(columnSet);
@@ -1118,12 +1118,11 @@ java.lang.String safePosition():
 {java.lang.StringBuilder text = new StringBuilder();}
 {
   (<POSITION> {text.append(token.image);}
-   | (<LESSTHAN> {text.append(token.image);} (<DASH>)? {text.append(token.image);} <NUMBER> {text.append(token.image);})
-   | (<GREATERTHAN> {text.append(token.image);} (<DASH>)? {text.append(token.image);} <NUMBER> {text.append(token.image);})
-   | ( [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);}
+   | (<LESSTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
+   | (<GREATERTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
+   | ( [<DASH> {text.append(token.image);}] (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);})
         [".." {text.append(token.image);}
-            [<DASH> {text.append(token.image);}] <NUMBER> {text.append(token.image);}])
-   | <PUB_DATE> {text.append(token.image);})
+            [<DASH> {text.append(token.image);}] (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);})]))
   {return text.toString();}
 }
 
