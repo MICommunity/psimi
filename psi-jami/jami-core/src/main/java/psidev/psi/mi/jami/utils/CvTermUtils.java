@@ -20,6 +20,8 @@ public class CvTermUtils {
     private static CvTerm psimod;
     private static CvTerm psipar;
     private static CvTerm identity;
+    private static CvTerm secondary;
+    private static CvTerm imexPrimary;
     private static CvTerm undetermined;
     private static CvTerm nTerminalRange;
     private static CvTerm cTerminalRange;
@@ -74,6 +76,20 @@ public class CvTermUtils {
             identity = createIdentityQualifierNameOnly();
         }
         return identity;
+    }
+
+    public static CvTerm getSecondary() {
+        if (secondary == null){
+            secondary = createSecondaryXrefQualifier();
+        }
+        return secondary;
+    }
+
+    public static CvTerm getImexPrimary() {
+        if (imexPrimary == null){
+            imexPrimary = createImexPrimaryQualifier();
+        }
+        return imexPrimary;
     }
 
     public static CvTerm getUndetermined() {
