@@ -36,7 +36,7 @@ public abstract class AbstractMitabIterator<T extends Interaction, P extends Par
         while (!this.lineParser.hasFinished() && this.nextBinary == null){
             try {
                 this.nextBinary = this.lineParser.MitabLine();
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 this.lineParser.getParserListener().onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0)), e);
             }
         }
