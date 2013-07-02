@@ -6,6 +6,7 @@ options {
   STATIC = false;
   CHOICE_AMBIGUITY_CHECK = 5;
   OTHER_AMBIGUITY_CHECK = 5;
+  IGNORE_CASE = true;
 }
 
 PARSER_BEGIN(MitabLineParser)
@@ -40,6 +41,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     abstract void reachEndOfFile();
 
     public abstract boolean hasFinished();
+
+    abstract java.lang.StringBuilder resetStringBuilder();
 
 	abstract P finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
 	                                       Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
@@ -77,18 +80,20 @@ TOKEN :
     | < LESSTHAN: "<" >
     | < GREATERTHAN: ">" >
     | < DOT: "." >
-    | <POSITION : "n" | "c" | "?" | "N" | "C" >
-    | <TAXID : ("t"|"T") ("a"|"A") ("x"|"X") ("i"|"I") ("d"|"D") | ("\"" ("t"|"T") ("a"|"A") ("x"|"X") ("i"|"I") ("d"|"D") "\"")>
-    | <QUOTED_TAXID : ("\"" ("t"|"T") ("a"|"A") ("x"|"X") ("i"|"I") ("d"|"D") "\"")>
-    | < FALSE : ("f"|"F") ("a"|"A") ("l"|"L") ("s"|"S") ("e"|"E")>
-    | < QUOTED_FALSE : ("\"" ("f"|"F") ("a"|"A") ("l"|"L") ("s"|"S") ("e"|"E") "\"") >
-    | < TRUE : ("t"|"T") ("r"|"R") ("u"|"U") ("e"|"E") >
-    | < QUOTED_TRUE : ("\"" ("t"|"T") ("r"|"R") ("u"|"U") ("e"|"E") "\"") >
+    | < POSITION1 : "n" >
+    | < POSITION2 : "c" >
+    | < POSITION3 : "?" >
+    | < TRUE : "true" >
+    | < TAXID : "taxid" >
+    | < FALSE : "false" >
+    | < QUOTED_TRUE : "\"true\"" >
+    | < QUOTED_TAXID : "\"taxid\"" >
+    | < QUOTED_FALSE : "\"false\"" >
 }
 TOKEN :
 {
     < PUB_DATE: (["0"-"9"]){4} >
-    | <NUMBER: (["0"-"9"])+>
+    | < NUMBER: (["0"-"9"])+ >
     | < STOICHIOMETRY: (["0"-"9"])+ "." (["0"-"9"])+ >
 }
 TOKEN :
@@ -104,7 +109,6 @@ TOKEN :
      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
      "#", "n", "c", "?", "<", ">", ".", ","])+
      >
-  //< ANY_CHAR: ~[] >
 }
 
 T MitabLine():
@@ -154,8 +158,8 @@ T MitabLine():
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
   EnumSet<TokenKind> columnSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 
-  P participantA;
-  P participantB;
+  P participantA=null;
+  P participantB=null;
   T interaction=null;
   int line;
   int columnA;
@@ -172,24 +176,24 @@ T MitabLine():
    ( <COMMENT> anyStringBut(enumSet) (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
     |
       (
-        try{(<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>}
+        try{(<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.getIdentity(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>}
         catch (ParseException e){
           line = token.beginLine; columnA = token.beginColumn;
           processSyntaxError(token.beginLine, token.beginColumn, 1, e);
           error_skipToNext(columnSet);
          }
-        try{(<DASH> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>}
+        try{(<DASH> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.getIdentity(), false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>}
         catch (ParseException e){
             columnB = token.beginColumn;
             processSyntaxError(token.beginLine, token.beginColumn, 2, e);
              error_skipToNext(columnSet);
             }
-        try{(<DASH> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) <COLUMN_SEPARATOR>}
+        try{(<DASH> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.getSecondary(), false, 3)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
                   processSyntaxError(token.beginLine, token.beginColumn, 3, e);
                   error_skipToNext(columnSet);
                  }
-        try{(<DASH> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) <COLUMN_SEPARATOR>}
+        try{(<DASH> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.getSecondary(), false, 4)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
                   processSyntaxError(token.beginLine, token.beginColumn, 4, e);
                   error_skipToNext(columnSet);
@@ -214,7 +218,7 @@ T MitabLine():
                   processSyntaxError(token.beginLine, token.beginColumn, 8, e);
                   error_skipToNext(columnSet);
                  }
-        try{(<DASH> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.createIdentityXrefQualifier(), true, 9)) <COLUMN_SEPARATOR>}
+        try{(<DASH> {pubId = Collections.EMPTY_LIST;} | pubId = ids(CvTermUtils.getIdentity(), true, 9)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
                   processSyntaxError(token.beginLine, token.beginColumn, 9, e);
                   error_skipToNext(columnSet);
@@ -1080,7 +1084,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
   //db:id(qualifier)
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> text = safeString() <CLOSE_PAREN> ]
     { if (recognizeImexPrimary && Xref.IMEX.equalsIgnoreCase(db.trim())){
-         if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier()); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
+         if (text == null){ref = new MitabXref(db, id, CvTermUtils.getImexPrimary()); ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));}
          else if (qualifier != null) {ref = new MitabXref(db, id, text);
          ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
          if (getParserListener() != null) {getParserListener().onTextFoundInIdentifier(ref);}}
@@ -1131,15 +1135,25 @@ java.lang.String safeAuthor():
 }
 
 java.lang.String safePosition():
-{java.lang.StringBuilder text = new StringBuilder(82);}
+{java.lang.StringBuilder text = resetStringBuilder();}
 {
-  (<POSITION> {text.append(token.image);}
+  (positionKind() {text.append(token.image);}
    | (<LESSTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
    | (<GREATERTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
    | ( [<DASH> {text.append(token.image);}] (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);})
         [<DOT> {text.append(token.image);} <DOT> {text.append(token.image);}
             [<DASH> {text.append(token.image);}] (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);})]))
   {return text.toString();}
+}
+
+void positionKind():
+{}
+{
+  <POSITION1>
+|
+  <POSITION2>
+|
+  <POSITION3>
 }
 
 java.lang.String safeStoichiometry():
@@ -1154,7 +1168,7 @@ java.lang.String safeStoichiometry():
 
 JAVACODE
 java.lang.String anyStringBut(EnumSet<TokenKind> skipToTokens) {
-  java.lang.StringBuilder result = new StringBuilder(82);
+  java.lang.StringBuilder result = resetStringBuilder();
 
   Token t = getToken(1);
   // next token is 1
