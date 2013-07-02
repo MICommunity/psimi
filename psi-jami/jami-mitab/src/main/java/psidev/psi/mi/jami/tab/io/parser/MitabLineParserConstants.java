@@ -29,39 +29,9 @@ public interface MitabLineParserConstants {
   /** RegularExpression Id. */
   int DASH = 11;
   /** RegularExpression Id. */
-  int LESSTHAN = 12;
+  int QUOTED_STRING = 12;
   /** RegularExpression Id. */
-  int GREATERTHAN = 13;
-  /** RegularExpression Id. */
-  int DOT = 14;
-  /** RegularExpression Id. */
-  int POSITION1 = 15;
-  /** RegularExpression Id. */
-  int POSITION2 = 16;
-  /** RegularExpression Id. */
-  int POSITION3 = 17;
-  /** RegularExpression Id. */
-  int TRUE = 18;
-  /** RegularExpression Id. */
-  int TAXID = 19;
-  /** RegularExpression Id. */
-  int FALSE = 20;
-  /** RegularExpression Id. */
-  int QUOTED_TRUE = 21;
-  /** RegularExpression Id. */
-  int QUOTED_TAXID = 22;
-  /** RegularExpression Id. */
-  int QUOTED_FALSE = 23;
-  /** RegularExpression Id. */
-  int PUB_DATE = 24;
-  /** RegularExpression Id. */
-  int NUMBER = 25;
-  /** RegularExpression Id. */
-  int STOICHIOMETRY = 26;
-  /** RegularExpression Id. */
-  int QUOTED_STRING = 27;
-  /** RegularExpression Id. */
-  int UNRESERVED_STRING = 28;
+  int UNRESERVED_STRING = 13;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -80,21 +50,6 @@ public interface MitabLineParserConstants {
     "\")\"",
     "\":\"",
     "\"-\"",
-    "\"<\"",
-    "\">\"",
-    "\".\"",
-    "\"n\"",
-    "\"c\"",
-    "\"?\"",
-    "\"true\"",
-    "\"taxid\"",
-    "\"false\"",
-    "\"\\\"true\\\"\"",
-    "\"\\\"taxid\\\"\"",
-    "\"\\\"false\\\"\"",
-    "<PUB_DATE>",
-    "<NUMBER>",
-    "<STOICHIOMETRY>",
     "<QUOTED_STRING>",
     "<UNRESERVED_STRING>",
   };
