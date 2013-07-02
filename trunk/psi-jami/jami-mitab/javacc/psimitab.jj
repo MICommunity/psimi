@@ -83,6 +83,7 @@ TOKEN :
   | < DASH: "-" >
   | < LESSTHAN: "<" >
   | < GREATERTHAN: ">" >
+  | < DOT: "." >
 }
 
 TOKEN [IGNORE_CASE]:
@@ -100,7 +101,12 @@ TOKEN :
     "\""
     >
  |
-  < ANY_CHAR: ~[] >
+ < UNRESERVED_STRING:
+     (~["\"", "|", "(", ")", ":", "\t", "\n", "-",
+     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+     "#", "n", "c", "?", "<", ">", ".", ","])+
+     >
+  //< ANY_CHAR: ~[] >
 }
 
 T MitabLine():
@@ -1121,7 +1127,7 @@ java.lang.String safePosition():
    | (<LESSTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
    | (<GREATERTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
    | ( [<DASH> {text.append(token.image);}] (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);})
-        [".." {text.append(token.image);}
+        [<DOT> {text.append(token.image);} <DOT> {text.append(token.image);}
             [<DASH> {text.append(token.image);}] (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);})]))
   {return text.toString();}
 }

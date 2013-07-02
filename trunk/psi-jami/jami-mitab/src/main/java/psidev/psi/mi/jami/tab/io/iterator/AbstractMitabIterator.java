@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.extension.MitabSourceLocator;
 import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
-import psidev.psi.mi.jami.tab.io.parser.ParseException;
 
 import java.util.Iterator;
 
@@ -37,7 +36,12 @@ public abstract class AbstractMitabIterator<T extends Interaction, P extends Par
             try {
                 this.nextBinary = this.lineParser.MitabLine();
             } catch (Exception e) {
-                this.lineParser.getParserListener().onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0)), e);
+                if (this.lineParser.getParserListener() != null){
+                    this.lineParser.getParserListener().onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0)), e);
+                }
+                else{
+                    e.printStackTrace();
+                }
             }
         }
     }
