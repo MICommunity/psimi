@@ -414,4 +414,97 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertNotNull(line2);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_read_clustered_mitab27() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_clustered_line.txt");
+        InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
+
+        // read first interaction
+        InteractionEvidence binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Iterator<ParticipantEvidence> iterator = binary.getParticipants().iterator();
+        ParticipantEvidence A = iterator.next();
+        Assert.assertEquals(9606, A.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", A.getInteractor().getOrganism().getCommonName());
+        Assert.assertEquals("Homo Sapiens", A.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("bait", "MI:0496"), A.getExperimentalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertEquals(new DefaultStoichiometry(2), A.getStoichiometry());
+        Assert.assertEquals(2, A.getIdentificationMethods().size());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("inferred by author", "MI:0363"), A.getIdentificationMethods().iterator().next());
+
+        ParticipantEvidence B = iterator.next();
+        Assert.assertEquals(9606, B.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", B.getInteractor().getOrganism().getCommonName());
+        Assert.assertNull(B.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), B.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("prey","MI:0498"), B.getExperimentalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), B.getInteractor().getInteractorType());
+        Assert.assertEquals(new DefaultStoichiometry(5), B.getStoichiometry());
+        Assert.assertEquals(2, B.getIdentificationMethods().size());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("inferred by author", "MI:0363"), B.getIdentificationMethods().iterator().next());
+
+        Experiment experiment = binary.getExperiment();
+        Assert.assertNotNull(experiment);
+        Assert.assertEquals(CvTermUtils.createMICvTerm("anti tag coimmunoprecipitation", "MI:0007"), experiment.getInteractionDetectionMethod());
+        Publication publication = experiment.getPublication();
+        Assert.assertNotNull(publication);
+        Assert.assertEquals(1, publication.getAuthors().size());
+        Assert.assertEquals("Shimazu", publication.getAuthors().iterator().next());
+        Assert.assertEquals(MitabUtils.PUBLICATION_YEAR_FORMAT.parse("1999"), publication.getPublicationDate());
+        Assert.assertEquals(new DefaultSource("innatedb", "MI:0974"), publication.getSource());
+        Assert.assertEquals(10090, experiment.getHostOrganism().getTaxId());
+        Assert.assertEquals("mouse", experiment.getHostOrganism().getCommonName());
+
+        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association","MI:0915"), binary.getInteractionType());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
+        Assert.assertFalse(binary.isNegative());
+
+        InteractionEvidence binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_read_no_interactor_details() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_no_interactor_details.txt");
+        InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
+
+        // read first interaction
+        InteractionEvidence binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Iterator<ParticipantEvidence> iterator = binary.getParticipants().iterator();
+        ParticipantEvidence A = iterator.next();
+        Assert.assertEquals(MitabUtils.UNKNOWN_NAME, A.getInteractor().getShortName());
+        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertNull(A.getInteractor().getOrganism());
+
+        InteractionEvidence binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_read_no_participants() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_no_participants.txt");
+        InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
+
+        // read first interaction
+        InteractionEvidence binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Assert.assertTrue(binary.getParticipants().isEmpty());
+
+        InteractionEvidence binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }
