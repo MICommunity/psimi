@@ -117,21 +117,23 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
             this.defaultParserListener = null;
             isInitialised = false;
             isValid = null;
+            isInitialised = false;
         }
     }
 
     public boolean validateSyntax(MIFileParserListener listener) {
-        if (!(listener instanceof MitabParserListener)){
-            throw new IllegalArgumentException("A MITAB data source is expecting a MitabParserListener. It does not accept "+listener.getClass());
-        }
-        setMitabFileParserListener((MitabParserListener) listener);
+        setMIFileParserListener(listener);
         return validateSyntax();
     }
 
     public boolean validateSyntax() {
         if (!isInitialised){
-            throw new IllegalArgumentException("The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
+            throw new IllegalStateException("The mitab datasource has not been initialised. The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
                     + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
+        }
+
+        if (lineParser.hasFinished() && isValid == null){
+            isValid = true;
         }
 
         if (isValid != null){
@@ -282,7 +284,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     public Iterator<T> getInteractionsIterator() {
         if (!isInitialised){
-            throw new IllegalArgumentException("The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
+            throw new IllegalStateException("The MITAB datasource has not been initialised. The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
                     + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
         }
         // reset parser if possible
