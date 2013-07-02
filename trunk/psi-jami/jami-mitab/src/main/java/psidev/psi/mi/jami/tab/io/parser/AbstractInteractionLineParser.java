@@ -166,8 +166,23 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         // find interactor type
         interactor = getInteractorFactory().createInteractorFromInteractorTypes(type, shortName);
         // we don't have an interactor type, use identifiers
-        if (interactor == null && hasId){
-            interactor = getInteractorFactory().createInteractorFromIdentityXrefs(!uniqueId.isEmpty() ? uniqueId : altid, shortName);
+        if (interactor == null && !uniqueId.isEmpty()){
+            interactor = getInteractorFactory().createInteractorFromIdentityXrefs(uniqueId, shortName);
+
+            if (interactor == null && !altid.isEmpty()){
+                interactor = getInteractorFactory().createInteractorFromIdentityXrefs(altid, shortName);
+                // we still don't know which interactor it is
+                if (interactor == null){
+                    interactor = getInteractorFactory().createInteractor(shortName, null);
+                }
+            }
+            // we still don't know which interactor it is
+            else if (interactor == null){
+                interactor = getInteractorFactory().createInteractor(shortName, null);
+            }
+        }
+        else if (interactor == null && !altid.isEmpty()){
+            interactor = getInteractorFactory().createInteractorFromIdentityXrefs(altid, shortName);
 
             // we still don't know which interactor it is
             if (interactor == null){
