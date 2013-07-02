@@ -371,7 +371,7 @@ public class InteractionLineParserTest {
         Assert.assertEquals(new DefaultStoichiometry(5), B.getStoichiometry());
 
 
-        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association","MI:0915"), binary.getInteractionType());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association", "MI:0915"), binary.getInteractionType());
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
 
@@ -412,6 +412,22 @@ public class InteractionLineParserTest {
         Assert.assertFalse(parser.hasFinished());
 
         Assert.assertTrue(binary.getParticipants().isEmpty());
+
+        Interaction binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_read_too_many_columns() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt");
+        InteractionLineParser parser = new InteractionLineParser(stream);
+
+        // read first interaction
+        Interaction binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+        Assert.assertEquals(2, binary.getParticipants().size());
 
         Interaction binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);

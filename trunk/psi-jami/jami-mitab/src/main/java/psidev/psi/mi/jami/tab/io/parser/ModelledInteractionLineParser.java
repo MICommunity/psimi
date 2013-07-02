@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -49,6 +50,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         }
         else if (interactor == null){
             interactor = getInteractorFactory().createInteractor(MitabUtils.UNKNOWN_NAME, null);
+            ((FileSourceContext)interactor).setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
             hasInteractorDetails = false;
         }
 

@@ -507,4 +507,20 @@ public class InteractionEvidenceLineParserTest {
         Assert.assertNotNull(binary2);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_read_too_many_columns() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt");
+        InteractionEvidenceLineParser parser = new InteractionEvidenceLineParser(stream);
+
+        // read first interaction
+        InteractionEvidence binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+        Assert.assertEquals(2, binary.getParticipants().size());
+
+        InteractionEvidence binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }
