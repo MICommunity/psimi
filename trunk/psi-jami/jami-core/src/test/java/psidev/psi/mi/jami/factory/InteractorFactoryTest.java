@@ -112,7 +112,7 @@ public class InteractorFactoryTest {
 
     @Test
     public void test_recognize_gene_from_xref(){
-        Assert.assertTrue(interactorFactory.createInteractorFromIdentityXrefs(Arrays.asList(XrefUtils.createEnsemblIdentity("ENSEMBL-xxxx")), "test interactor")
+        Assert.assertTrue(interactorFactory.createInteractorFromIdentityXrefs(Arrays.asList(XrefUtils.createEnsemblGenomesIdentity("ENSEMBL-xxxx")), "test interactor")
                 instanceof DefaultGene);
     }
 }
