@@ -13,43 +13,51 @@ public interface MitabLineParserConstants {
   /** RegularExpression Id. */
   int RANGE_SEPARATOR = 3;
   /** RegularExpression Id. */
-  int PUB_DATE = 4;
+  int COMMENT = 4;
   /** RegularExpression Id. */
-  int NUMBER = 5;
+  int FIELD_SEPARATOR = 5;
   /** RegularExpression Id. */
-  int STOICHIOMETRY = 6;
+  int COLUMN_SEPARATOR = 6;
   /** RegularExpression Id. */
-  int COMMENT = 7;
+  int LINE_SEPARATOR = 7;
   /** RegularExpression Id. */
-  int FIELD_SEPARATOR = 8;
+  int OPEN_PAREN = 8;
   /** RegularExpression Id. */
-  int COLUMN_SEPARATOR = 9;
+  int CLOSE_PAREN = 9;
   /** RegularExpression Id. */
-  int LINE_SEPARATOR = 10;
+  int COLON = 10;
   /** RegularExpression Id. */
-  int OPEN_PAREN = 11;
+  int DASH = 11;
   /** RegularExpression Id. */
-  int CLOSE_PAREN = 12;
+  int LESSTHAN = 12;
   /** RegularExpression Id. */
-  int COLON = 13;
+  int GREATERTHAN = 13;
   /** RegularExpression Id. */
-  int DASH = 14;
+  int DOT = 14;
   /** RegularExpression Id. */
-  int LESSTHAN = 15;
+  int POSITION = 15;
   /** RegularExpression Id. */
-  int GREATERTHAN = 16;
+  int TAXID = 16;
   /** RegularExpression Id. */
-  int DOT = 17;
+  int QUOTED_TAXID = 17;
   /** RegularExpression Id. */
-  int POSITION = 18;
+  int FALSE = 18;
   /** RegularExpression Id. */
-  int TAXID = 19;
+  int QUOTED_FALSE = 19;
   /** RegularExpression Id. */
-  int NEGATIVE = 20;
+  int TRUE = 20;
   /** RegularExpression Id. */
-  int QUOTED_STRING = 21;
+  int QUOTED_TRUE = 21;
   /** RegularExpression Id. */
-  int UNRESERVED_STRING = 22;
+  int PUB_DATE = 22;
+  /** RegularExpression Id. */
+  int NUMBER = 23;
+  /** RegularExpression Id. */
+  int STOICHIOMETRY = 24;
+  /** RegularExpression Id. */
+  int QUOTED_STRING = 25;
+  /** RegularExpression Id. */
+  int UNRESERVED_STRING = 26;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -60,9 +68,6 @@ public interface MitabLineParserConstants {
     "\"\\r\"",
     "\"\\f\"",
     "\",\"",
-    "<PUB_DATE>",
-    "<NUMBER>",
-    "<STOICHIOMETRY>",
     "\"#\"",
     "\"|\"",
     "\"\\t\"",
@@ -75,8 +80,15 @@ public interface MitabLineParserConstants {
     "\">\"",
     "\".\"",
     "<POSITION>",
-    "\"taxid\"",
-    "<NEGATIVE>",
+    "<TAXID>",
+    "<QUOTED_TAXID>",
+    "<FALSE>",
+    "<QUOTED_FALSE>",
+    "<TRUE>",
+    "<QUOTED_TRUE>",
+    "<PUB_DATE>",
+    "<NUMBER>",
+    "<STOICHIOMETRY>",
     "<QUOTED_STRING>",
     "<UNRESERVED_STRING>",
   };

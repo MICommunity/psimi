@@ -66,33 +66,31 @@ SKIP :
 TOKEN :
 {
   < RANGE_SEPARATOR: ",">
+    | < COMMENT: "#">
+    | < FIELD_SEPARATOR: "|">
+    | < COLUMN_SEPARATOR: "\t">
+    | < LINE_SEPARATOR: "\n">
+    | < OPEN_PAREN: "(">
+    | < CLOSE_PAREN: ")">
+    | < COLON: ":">
+    | < DASH: "-" >
+    | < LESSTHAN: "<" >
+    | < GREATERTHAN: ">" >
+    | < DOT: "." >
+    | <POSITION : "n" | "c" | "?" | "N" | "C" >
+    | <TAXID : ("t"|"T") ("a"|"A") ("x"|"X") ("i"|"I") ("d"|"D") | ("\"" ("t"|"T") ("a"|"A") ("x"|"X") ("i"|"I") ("d"|"D") "\"")>
+    | <QUOTED_TAXID : ("\"" ("t"|"T") ("a"|"A") ("x"|"X") ("i"|"I") ("d"|"D") "\"")>
+    | < FALSE : ("f"|"F") ("a"|"A") ("l"|"L") ("s"|"S") ("e"|"E")>
+    | < QUOTED_FALSE : ("\"" ("f"|"F") ("a"|"A") ("l"|"L") ("s"|"S") ("e"|"E") "\"") >
+    | < TRUE : ("t"|"T") ("r"|"R") ("u"|"U") ("e"|"E") >
+    | < QUOTED_TRUE : ("\"" ("t"|"T") ("r"|"R") ("u"|"U") ("e"|"E") "\"") >
 }
-
 TOKEN :
 {
-  < PUB_DATE: (["0"-"9"]){4} >
-  | <NUMBER: (["0"-"9"])+>
-  | < STOICHIOMETRY: (["0"-"9"])+ "." (["0"-"9"])+ >
-  | < COMMENT: "#">
-  | < FIELD_SEPARATOR: "|">
-  | < COLUMN_SEPARATOR: "\t">
-  | < LINE_SEPARATOR: "\n">
-  | < OPEN_PAREN: "(">
-  | < CLOSE_PAREN: ")">
-  | < COLON: ":">
-  | < DASH: "-" >
-  | < LESSTHAN: "<" >
-  | < GREATERTHAN: ">" >
-  | < DOT: "." >
+    < PUB_DATE: (["0"-"9"]){4} >
+    | <NUMBER: (["0"-"9"])+>
+    | < STOICHIOMETRY: (["0"-"9"])+ "." (["0"-"9"])+ >
 }
-
-TOKEN [IGNORE_CASE]:
-{
- <POSITION : "n" | "c" | "?" >
- | <TAXID : "taxid">
- | < NEGATIVE : ("true" | "false" | ("\"" "true" | "false" "\"")) >
-}
-
 TOKEN :
 {
   < QUOTED_STRING:
@@ -720,10 +718,22 @@ boolean negative():
 {
   try{
   //false or true
-    <NEGATIVE>
+    <FALSE>
     {
-        return Boolean.parseBoolean(token.image.trim());
+        return false;
       }
+    | <QUOTED_FALSE>
+          {
+              return false;
+            }
+    | <TRUE>
+          {
+              return false;
+          }
+    | <QUOTED_TRUE>
+         {
+             return false;
+         }
   }
   catch (ParseException e){
     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
@@ -958,7 +968,7 @@ MitabOrganism organism(int columnNumber):
 {
   try {
   //taxid:id(name)
-    <TAXID> <COLON> id = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
+    (<TAXID> | <QUOTED_TAXID>) <COLON> id = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
     {
        organism = new MitabOrganism(Integer.parseInt(id), name);
        organism.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
@@ -1121,7 +1131,7 @@ java.lang.String safeAuthor():
 }
 
 java.lang.String safePosition():
-{java.lang.StringBuilder text = new StringBuilder();}
+{java.lang.StringBuilder text = new StringBuilder(82);}
 {
   (<POSITION> {text.append(token.image);}
    | (<LESSTHAN> {text.append(token.image);} (<DASH> {text.append(token.image);})? (<NUMBER> {text.append(token.image);} | <PUB_DATE> {text.append(token.image);}))
@@ -1144,7 +1154,7 @@ java.lang.String safeStoichiometry():
 
 JAVACODE
 java.lang.String anyStringBut(EnumSet<TokenKind> skipToTokens) {
-  java.lang.StringBuilder result = new StringBuilder();
+  java.lang.StringBuilder result = new StringBuilder(82);
 
   Token t = getToken(1);
   // next token is 1
