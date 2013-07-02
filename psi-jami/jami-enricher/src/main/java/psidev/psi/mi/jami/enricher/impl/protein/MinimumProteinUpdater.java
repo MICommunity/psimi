@@ -71,7 +71,7 @@ public class MinimumProteinUpdater
         if(proteinFetched.getFullName() != null
                 && ! proteinFetched.getFullName().equalsIgnoreCase(proteinToEnrich.getFullName()) ) {
             String oldValue = proteinToEnrich.getFullName();
-                    proteinToEnrich.setFullName(proteinFetched.getFullName());
+            proteinToEnrich.setFullName(proteinFetched.getFullName());
             if(listener != null) listener.onFullNameUpdate(proteinToEnrich, oldValue);
         }
 
@@ -85,7 +85,7 @@ public class MinimumProteinUpdater
 
         //Sequence
         if(proteinFetched.getSequence() != null
-                && ! isRemapped
+                && ! isRemapped //Todo - check that if the protein was remapped, the sequence remains unchanged
                 && ! proteinFetched.getSequence().equalsIgnoreCase(proteinToEnrich.getSequence()) ) {
             String oldValue = proteinToEnrich.getSequence();
             proteinToEnrich.setSequence(proteinFetched.getSequence());
@@ -146,8 +146,7 @@ public class MinimumProteinUpdater
 
             if(fetchedRogidChecksum != null
                     && proteinFetched.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()
-                    && proteinToEnrich.getOrganism().getTaxId() != -3){  //tODO remove if the sequence or organism are not known?
-
+                    && proteinToEnrich.getOrganism().getTaxId() != -3){
 
                 if( rogidChecksumToEnrich != null
                         && ! fetchedRogidChecksum.getValue().equalsIgnoreCase(rogidChecksumToEnrich.getValue())) {

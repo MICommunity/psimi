@@ -24,6 +24,7 @@ public class MinimumCvTermEnricher
         //FullName
         if(cvTermToEnrich.getFullName() == null
                 && cvTermFetched.getFullName() != null){
+
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
             if (listener != null) listener.onFullNameUpdate(cvTermToEnrich, null);
         }

@@ -22,19 +22,24 @@ public class MinimumCvTermUpdater
 
         if(cvTermFetched.getShortName() != null
                 && ! cvTermFetched.getShortName().equalsIgnoreCase(cvTermToEnrich.getShortName())){
-            if (listener != null) listener.onShortNameUpdate(cvTermToEnrich, cvTermToEnrich.getShortName());
-            cvTermToEnrich.setShortName(cvTermFetched.getShortName());
 
+            String oldValue = cvTermToEnrich.getShortName();
+            cvTermToEnrich.setShortName(cvTermFetched.getShortName());
+            if (listener != null)
+                listener.onShortNameUpdate(cvTermToEnrich, oldValue);
         }
 
         //FullName
         if(cvTermFetched.getFullName() != null
                 && ! cvTermFetched.getFullName().equalsIgnoreCase(cvTermToEnrich.getFullName())){
-            if (listener != null) listener.onFullNameUpdate(cvTermToEnrich, cvTermToEnrich.getFullName());
+
+            String oldValue = cvTermToEnrich.getFullName();
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
+            if (listener != null)
+                listener.onFullNameUpdate(cvTermToEnrich, oldValue);
         }
 
-        //TOdo - allow comparison of idneitifers
+        //TOdo - allow comparison of identifiers
         //Identifiers
         /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
                 cvTermFetched.getIdentifiers(),

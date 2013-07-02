@@ -35,14 +35,16 @@ public class MinimumOrganismEnricher
                 if(organismToEnrich.getScientificName() == null
                         && organismFetched.getScientificName() != null){
                     organismToEnrich.setScientificName(organismFetched.getScientificName());
-                    if (listener != null) listener.onScientificNameUpdate(organismToEnrich , organismToEnrich.getScientificName());
+                    if (listener != null)
+                        listener.onScientificNameUpdate(organismToEnrich , null);
                 }
 
                 //Common name
                 if(organismToEnrich.getCommonName() == null
                         && organismFetched.getCommonName() != null){
                     organismToEnrich.setCommonName(organismFetched.getCommonName());
-                    if (listener != null) listener.onCommonNameUpdate(organismToEnrich , organismToEnrich.getCommonName());
+                    if (listener != null)
+                        listener.onCommonNameUpdate(organismToEnrich , null);
                 }
             }
         }

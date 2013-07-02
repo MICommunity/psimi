@@ -17,18 +17,20 @@ public class MinimumOrganismUpdater
 
     @Override
     protected void processOrganism(Organism organismToEnrich) {
-        if(organismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
+        if(organismFetched.getTaxId() < -4){
             throw new IllegalArgumentException( "The organism had an invalid TaxID of "+organismFetched.getTaxId());
         }
 
-        // Override TaxID but obviously not possible if organism is unknown
+        // Only enrich if an organism was fetched
         if(organismFetched.getTaxId() != -3){
 
             // TaxID
             if(organismToEnrich.getTaxId() != organismFetched.getTaxId() ){
-                if (listener != null) listener.onTaxidUpdate(
-                        organismToEnrich, ""+organismToEnrich.getTaxId() );
+
+                String oldValue = ""+organismToEnrich.getTaxId();
                 organismToEnrich.setTaxId(organismFetched.getTaxId());
+                if (listener != null)
+                    listener.onTaxidUpdate(organismToEnrich, oldValue );
             }
 
             // Scientific name
@@ -36,9 +38,10 @@ public class MinimumOrganismUpdater
                     && ! organismFetched.getScientificName().equalsIgnoreCase(
                     organismToEnrich.getScientificName())){
 
-                if (listener != null) listener.onScientificNameUpdate(
-                        organismToEnrich , organismToEnrich.getScientificName());
+                String oldValue = organismToEnrich.getScientificName();
                 organismToEnrich.setScientificName(organismFetched.getScientificName());
+                if (listener != null)
+                    listener.onScientificNameUpdate(organismToEnrich , oldValue);
             }
 
             // Common name
@@ -46,9 +49,10 @@ public class MinimumOrganismUpdater
                     && ! organismFetched.getCommonName().equalsIgnoreCase(
                     organismToEnrich.getCommonName())){
 
-                if (listener != null) listener.onCommonNameUpdate(
-                        organismToEnrich , organismToEnrich.getCommonName());
+                String oldValue = organismToEnrich.getCommonName();
                 organismToEnrich.setCommonName(organismFetched.getCommonName());
+                if (listener != null)
+                    listener.onCommonNameUpdate(organismToEnrich , oldValue);
             }
         }
 
