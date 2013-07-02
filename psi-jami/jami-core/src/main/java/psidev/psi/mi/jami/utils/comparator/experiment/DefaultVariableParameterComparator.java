@@ -39,7 +39,7 @@ public class DefaultVariableParameterComparator {
             String description1 = variableParameter1.getDescription();
             String description2 = variableParameter2.getDescription();
 
-            if (!description1.toLowerCase().trim().equals(description2.toLowerCase().trim())){
+            if (!description1.equalsIgnoreCase(description2)){
                 return false;
             }
 

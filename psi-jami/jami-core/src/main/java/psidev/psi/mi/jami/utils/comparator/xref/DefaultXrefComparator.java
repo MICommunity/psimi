@@ -48,7 +48,7 @@ public class DefaultXrefComparator{
                 comp = mi1.equals(mi2);
             }
             else {
-                comp = database1.getShortName().toLowerCase().trim().equals(database2.getShortName().toLowerCase().trim());
+                comp = database1.getShortName().equalsIgnoreCase(database2.getShortName());
             }
 
             if (!comp){

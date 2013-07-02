@@ -39,7 +39,7 @@ public class ConfidenceUtils {
         }
         // we need to compare topic names
         else if (typeName != null) {
-            return typeName.toLowerCase().equals(type.getShortName().toLowerCase());
+            return typeName.equalsIgnoreCase(type.getShortName());
         }
 
         return false;

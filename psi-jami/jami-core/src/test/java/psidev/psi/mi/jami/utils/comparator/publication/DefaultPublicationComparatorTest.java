@@ -176,7 +176,7 @@ public class DefaultPublicationComparatorTest {
     @Test
     public void test_same_titles_case_insensitive() throws Exception {
         Publication pub1 = new DefaultPublication();
-        pub1.setTitle("title TEst ");
+        pub1.setTitle("title TEst");
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("Title test");
 
@@ -236,11 +236,11 @@ public class DefaultPublicationComparatorTest {
     @Test
     public void test_same_titles_journal_insensitive() throws Exception {
         Publication pub1 = new DefaultPublication();
-        pub1.setTitle("title TEst ");
+        pub1.setTitle("title TEst");
         pub1.setJournal("PROTEOMICS");
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("Title test");
-        pub2.setJournal(" proteomics ");
+        pub2.setJournal("proteomics");
 
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -260,11 +260,11 @@ public class DefaultPublicationComparatorTest {
     @Test
     public void test_same_titles_journal_date() throws Exception {
         Publication pub1 = new DefaultPublication();
-        pub1.setTitle("title TEst ");
+        pub1.setTitle("title TEst");
         pub1.setJournal("PROTEOMICS");
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("Title test");
-        pub2.setJournal(" proteomics ");
+        pub2.setJournal("proteomics");
 
         Date date = new Date();
         pub1.setPublicationDate(date);
@@ -276,13 +276,13 @@ public class DefaultPublicationComparatorTest {
     @Test
     public void test_same_titles_journals_different_date() throws Exception {
         Publication pub1 = new DefaultPublication();
-        pub1.setTitle("title TEst ");
+        pub1.setTitle("title TEst");
         pub1.setJournal("PROTEOMICS");
         pub1.setPubmedId("12345");
         pub1.setPublicationDate(new Date(System.currentTimeMillis()));
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("Title test");
-        pub2.setJournal(" PROTEOMICS ");
+        pub2.setJournal("PROTEOMICS");
         pub2.setPublicationDate(new Date(System.currentTimeMillis()));
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));

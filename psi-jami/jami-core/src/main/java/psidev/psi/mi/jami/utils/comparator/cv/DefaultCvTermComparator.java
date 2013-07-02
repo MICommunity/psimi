@@ -81,7 +81,7 @@ public class DefaultCvTermComparator {
                 String label1 = cvTerm1.getShortName();
                 String label2 = cvTerm2.getShortName();
 
-                return label1.toLowerCase().trim().equals(label2.toLowerCase().trim());
+                return label1.equalsIgnoreCase(label2);
             }
         }
     }

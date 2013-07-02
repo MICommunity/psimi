@@ -40,7 +40,7 @@ public class ChecksumUtils {
         }
         // we need to compare methodNames
         else if (methodName != null) {
-            return methodName.toLowerCase().trim().equals(method.getShortName().toLowerCase().trim());
+            return methodName.equalsIgnoreCase(method.getShortName());
         }
 
         return false;
@@ -93,9 +93,9 @@ public class ChecksumUtils {
                 }
             }
             // we need to compare methodName
-            else if (methodName != null && methodName.toLowerCase().equals(method.getShortName().toLowerCase())) {
+            else if (methodName != null && methodName.equalsIgnoreCase(method.getShortName())) {
                 // we have the same method name
-                if (method.getShortName().toLowerCase().trim().equals(methodName)){
+                if (method.getShortName().equalsIgnoreCase(methodName)){
                     return checksum;
                 }
             }

@@ -44,7 +44,7 @@ public class DefaultExternalIdentifierComparatorTest {
     @Test
     public void test_database_name_case_insensitive() throws Exception {
         Xref id1 = new DefaultXref(CvTermUtils.createMICvTerm("chebi", null), "CHEBI:xxx");
-        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi ", null), "CHEBI:xxx");
+        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi", null), "CHEBI:xxx");
 
         Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
@@ -76,7 +76,7 @@ public class DefaultExternalIdentifierComparatorTest {
     @Test
     public void test_id_case_sensitive() throws Exception {
         Xref id1 = new DefaultXref(CvTermUtils.createMICvTerm("chebi", null), "CHEbi:xXx");
-        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi ", null), "CHEBI:xxx");
+        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi", null), "CHEBI:xxx");
 
         Assert.assertFalse(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
@@ -84,7 +84,7 @@ public class DefaultExternalIdentifierComparatorTest {
     @Test
     public void test_ignore_qualifier() throws Exception {
         Xref id1 = new DefaultXref(CvTermUtils.createMICvTerm("chebi", null), "CHEBI:xxx", CvTermUtils.createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI));
-        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi ", null), "CHEBI:xxx");
+        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi", null), "CHEBI:xxx");
 
         Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
 

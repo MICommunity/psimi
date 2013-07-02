@@ -36,9 +36,9 @@ public class XrefUtils {
             return (Xref.IDENTITY_MI.equals(qualifierMI) || Xref.SECONDARY_MI.equals(qualifierMI));
         }
         else {
-            String qualifier = ref.getQualifier().getShortName().toLowerCase().trim();
+            String qualifier = ref.getQualifier().getShortName();
 
-            return (Xref.IDENTITY.equals(qualifier) || Xref.SECONDARY.equals(qualifier));
+            return (Xref.IDENTITY.equalsIgnoreCase(qualifier) || Xref.SECONDARY.equalsIgnoreCase(qualifier));
         }
     }
 
@@ -63,7 +63,7 @@ public class XrefUtils {
         }
         // we need to compare dbNames
         else if (dbName != null) {
-            return dbName.toLowerCase().trim().equals(database.getShortName().trim().toLowerCase());
+            return dbName.equalsIgnoreCase(database.getShortName());
         }
 
         return false;
@@ -93,7 +93,7 @@ public class XrefUtils {
         }
         // we need to compare dbNames
         else if (qualifierName != null) {
-            return qualifierName.toLowerCase().trim().equals(qualifier.getShortName().toLowerCase().trim());
+            return qualifierName.equalsIgnoreCase(qualifier.getShortName());
         }
 
         return false;

@@ -45,7 +45,7 @@ public class DefaultFeatureBaseComparatorTest {
 
     @Test
     public void test_feature_identical_names_case_insensitive(){
-        Feature feature1 = new DefaultFeature("test ", null);
+        Feature feature1 = new DefaultFeature("test", null);
         Feature feature2 = new DefaultFeature("tEST", null);
 
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));

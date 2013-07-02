@@ -40,7 +40,7 @@ public class AnnotationUtils {
         }
         // we need to compare topic names
         else if (topicName != null) {
-            return topicName.toLowerCase().trim().equals(topic.getShortName().toLowerCase().trim());
+            return topicName.equalsIgnoreCase(topic.getShortName());
         }
 
         return false;
@@ -93,9 +93,9 @@ public class AnnotationUtils {
                 }
             }
             // we need to compare methodName
-            else if (topicName != null && topicName.toLowerCase().equals(method.getShortName().toLowerCase())) {
+            else if (topicName != null && topicName.equalsIgnoreCase(method.getShortName())) {
                 // we have the same method name
-                if (method.getShortName().toLowerCase().trim().equals(topicName)){
+                if (method.getShortName().equalsIgnoreCase(topicName)){
                     return annot;
                 }
             }

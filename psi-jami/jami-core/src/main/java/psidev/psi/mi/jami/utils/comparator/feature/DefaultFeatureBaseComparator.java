@@ -40,7 +40,7 @@ public class DefaultFeatureBaseComparator {
             String name1 = feature1.getShortName();
             String name2 = feature2.getShortName();
             if (name1 != null && name2 != null){
-                if (!name1.toLowerCase().trim().equals(name2.toLowerCase().trim())){
+                if (!name1.equalsIgnoreCase(name2)){
                     return false;
                 }
             }
