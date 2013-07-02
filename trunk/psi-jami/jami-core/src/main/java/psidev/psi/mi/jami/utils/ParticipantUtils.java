@@ -134,7 +134,7 @@ public class ParticipantUtils {
         }
         // we need to compare topic names
         else if (roleName != null) {
-            return roleName.toLowerCase().trim().equals(role.getShortName().toLowerCase().trim());
+            return roleName.equalsIgnoreCase(role.getShortName());
         }
 
         return false;
@@ -161,7 +161,7 @@ public class ParticipantUtils {
         }
         // we need to compare topic names
         else if (roleName != null) {
-            return roleName.toLowerCase().trim().equals(role.getShortName().toLowerCase().trim());
+            return roleName.equalsIgnoreCase(role.getShortName());
         }
 
         return false;

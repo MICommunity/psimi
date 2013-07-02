@@ -44,7 +44,7 @@ public class AliasUtils {
         }
         // we need to compare type names
         else if (typeName != null) {
-            return typeName.toLowerCase().trim().equals(type.getShortName().toLowerCase().trim());
+            return typeName.equalsIgnoreCase(type.getShortName());
         }
 
         return false;

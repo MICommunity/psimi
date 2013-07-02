@@ -44,7 +44,7 @@ public class DefaultXrefComparatorTest {
     @Test
     public void test_database_name_case_insensitive() throws Exception {
         Xref id1 = new DefaultXref(CvTermUtils.createMICvTerm("chebi", null), "CHEBI:xxx");
-        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi ", null), "CHEBI:xxx");
+        Xref id2 = new DefaultXref(CvTermUtils.createMICvTerm("CheBi", null), "CHEBI:xxx");
 
         Assert.assertTrue(DefaultXrefComparator.areEquals(id1, id2));
     }

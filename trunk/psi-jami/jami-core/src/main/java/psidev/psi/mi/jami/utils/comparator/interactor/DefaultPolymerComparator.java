@@ -38,7 +38,7 @@ public class DefaultPolymerComparator {
             String seq2 = polymer2.getSequence();
 
             if (seq1 != null && seq2 != null){
-                if (seq1.toLowerCase().trim().equals(seq2.toLowerCase().trim())){
+                if (seq1.equalsIgnoreCase(seq2)){
                     return OrganismTaxIdComparator.areEquals(polymer1.getOrganism(), polymer2.getOrganism());
                 }
                 else {

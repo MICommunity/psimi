@@ -89,7 +89,7 @@ public class DefaultPublicationComparator {
                             return false;
                         }
                         else if (title1 != null && title2 != null){
-                            comp = title1.toLowerCase().trim().equals(title2.toLowerCase().trim());
+                            comp = title1.equalsIgnoreCase(title2);
                         }
                         // if both titles are null, compares the authors
                         else {
@@ -112,7 +112,7 @@ public class DefaultPublicationComparator {
                             Iterator<String> iterator2 = authors2.iterator();
                             boolean comp2 = true;
                             while (comp2 && iterator1.hasNext() && iterator2.hasNext()){
-                                comp2 = iterator1.next().toLowerCase().trim().equals(iterator2.next().toLowerCase().trim());
+                                comp2 = iterator1.next().equalsIgnoreCase(iterator2.next());
                             }
 
                             if (!comp2){
@@ -134,7 +134,7 @@ public class DefaultPublicationComparator {
                                     return false;
                                 }
                                 else if (journal2 != null && journal1 != null){
-                                    comp3 = journal1.toLowerCase().trim().equals(journal2.toLowerCase().trim());
+                                    comp3 = journal1.equalsIgnoreCase(journal2);
                                 }
                                 // if both journals are null, compares the publication dates
                                 else {
