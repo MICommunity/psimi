@@ -39,15 +39,17 @@ public interface MitabLineParserConstants {
   /** RegularExpression Id. */
   int GREATERTHAN = 16;
   /** RegularExpression Id. */
-  int POSITION = 17;
+  int DOT = 17;
   /** RegularExpression Id. */
-  int TAXID = 18;
+  int POSITION = 18;
   /** RegularExpression Id. */
-  int NEGATIVE = 19;
+  int TAXID = 19;
   /** RegularExpression Id. */
-  int QUOTED_STRING = 20;
+  int NEGATIVE = 20;
   /** RegularExpression Id. */
-  int ANY_CHAR = 21;
+  int QUOTED_STRING = 21;
+  /** RegularExpression Id. */
+  int UNRESERVED_STRING = 22;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -71,12 +73,12 @@ public interface MitabLineParserConstants {
     "\"-\"",
     "\"<\"",
     "\">\"",
+    "\".\"",
     "<POSITION>",
     "\"taxid\"",
     "<NEGATIVE>",
     "<QUOTED_STRING>",
-    "<ANY_CHAR>",
-    "\"..\"",
+    "<UNRESERVED_STRING>",
   };
 
 }
