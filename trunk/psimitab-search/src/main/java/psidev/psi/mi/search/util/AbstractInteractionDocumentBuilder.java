@@ -255,7 +255,7 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
 
         StringBuilder sb = new StringBuilder( DEFAULT_DOCUMENT_BUFFER_SIZE );
 
-        for ( int i = 0; i < documentDefinition.getHighestColumnPosition(); i++ ) {
+        for ( int i = 0; i <= documentDefinition.getHighestColumnPosition(); i++ ) {
             ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( i );
 
             if ( i > 0 ) {
