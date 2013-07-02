@@ -22,13 +22,13 @@ public class MaximumOrganismEnricher
 
         if(organismToEnrich.getTaxId() == organismFetched.getTaxId()
                 && organismFetched.getTaxId() != -3){
-            //TODO confirm this is the correct set of conditions
+
             if( ! organismFetched.getAliases().isEmpty()
-                    && organismToEnrich.getAliases().isEmpty()){
+                    && organismToEnrich.getAliases().isEmpty()){  //TODO this is incorrect
 
                 for(Alias alias : organismFetched.getAliases()){
-                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
                     organismToEnrich.getAliases().add(alias);
+                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
                 }
             }
         }

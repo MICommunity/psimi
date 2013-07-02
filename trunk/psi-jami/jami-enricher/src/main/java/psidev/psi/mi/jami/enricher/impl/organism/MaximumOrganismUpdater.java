@@ -46,8 +46,8 @@ public class MaximumOrganismUpdater
                 aliasesToChange.removeAll(organismToEnrich.getAliases());
 
                 for(Alias alias : aliasesToChange){
-                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
                     organismToEnrich.getAliases().add(alias);
+                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
                 }
             } */
         }
