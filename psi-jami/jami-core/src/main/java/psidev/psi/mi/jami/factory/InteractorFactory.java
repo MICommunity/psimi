@@ -17,8 +17,8 @@ import java.util.*;
 
 public class InteractorFactory {
 
-    private Map<String, String> deterministicInteractorNameMap;
-    private Map<String, String> deterministicInteractorIdMap;
+    private Map<String, InteractorCategory> deterministicInteractorNameMap;
+    private Map<String, InteractorCategory> deterministicInteractorIdMap;
 
     public InteractorFactory(){
 
@@ -40,12 +40,12 @@ public class InteractorFactory {
         String typeMI = type.getMIIdentifier();
 
         if (typeMI != null && this.deterministicInteractorIdMap.containsKey(typeMI)){
-            String recognizedType = this.deterministicInteractorIdMap.get(typeMI);
+            InteractorCategory recognizedType = this.deterministicInteractorIdMap.get(typeMI);
 
             return createInteractorFromRecognizedCategory(recognizedType, name, type);
         }
         else if (typeMI == null && this.deterministicInteractorNameMap.containsKey(typeName)){
-            String recognizedType = this.deterministicInteractorNameMap.get(typeName);
+            InteractorCategory recognizedType = this.deterministicInteractorNameMap.get(typeName);
 
             return createInteractorFromRecognizedCategory(recognizedType, name, type);
         }
@@ -69,12 +69,12 @@ public class InteractorFactory {
         String databaseMI = database.getMIIdentifier();
 
         if (databaseMI != null && this.deterministicInteractorIdMap.containsKey(databaseMI)){
-            String recognizedType = this.deterministicInteractorIdMap.get(databaseMI);
+            InteractorCategory recognizedType = this.deterministicInteractorIdMap.get(databaseMI);
 
             return createInteractorFromRecognizedCategory(recognizedType, name, null);
         }
         else if (databaseMI == null && this.deterministicInteractorNameMap.containsKey(databaseName)){
-            String recognizedType = this.deterministicInteractorNameMap.get(databaseName);
+            InteractorCategory recognizedType = this.deterministicInteractorNameMap.get(databaseName);
 
             return createInteractorFromRecognizedCategory(recognizedType, name, null);
         }
@@ -183,8 +183,8 @@ public class InteractorFactory {
      * Loads some properties to recognize interactor type from different MI terms
      */
     protected void initialiseDeterministicInteractorMaps(){
-        deterministicInteractorNameMap = new HashMap<String, String>();
-        deterministicInteractorIdMap = new HashMap<String, String>();
+        deterministicInteractorNameMap = new HashMap<String, InteractorCategory>();
+        deterministicInteractorIdMap = new HashMap<String, InteractorCategory>();
         Properties prop = new Properties();
 
         try {
@@ -210,11 +210,11 @@ public class InteractorFactory {
         for (Map.Entry<Object, Object> entry : prop.entrySet()){
             String[] values = extractCvTermFromKey((String)entry.getKey());
             if (values.length != 2){
-                this.deterministicInteractorNameMap.put(values[0], (String)entry.getValue());
+                this.deterministicInteractorNameMap.put(values[0], InteractorCategory.valueOf((String)entry.getValue()));
             }
             else {
-                this.deterministicInteractorNameMap.put(values[1].replaceAll("\\)", ""), (String)entry.getValue());
-                this.deterministicInteractorIdMap.put(values[0], (String)entry.getValue());
+                this.deterministicInteractorNameMap.put(values[1].replaceAll("\\)", ""), InteractorCategory.valueOf((String)entry.getValue()));
+                this.deterministicInteractorIdMap.put(values[0], InteractorCategory.valueOf((String)entry.getValue()));
             }
         }
     }
@@ -241,35 +241,25 @@ public class InteractorFactory {
      * @param type
      * @return
      */
-    protected Interactor createInteractorFromRecognizedCategory(String category, String name, CvTerm type){
+    protected Interactor createInteractorFromRecognizedCategory(InteractorCategory category, String name, CvTerm type){
 
-        if (category != null){
-            if (Protein.class.getCanonicalName().equals(category)){
+        switch (category){
+            case protein:
                 return createProtein(name, type);
-            }
-            else if (Gene.class.getCanonicalName().equals(category)){
+            case gene:
                 return createGene(name);
-            }
-            else if (NucleicAcid.class.getCanonicalName().equals(category)){
+            case nucleic_acid:
                 return createNucleicAcid(name, type);
-            }
-            else if (BioactiveEntity.class.getCanonicalName().equals(category)){
+            case bioactive_entity:
                 return createBioactiveEntity(name, type);
-            }
-            else if (Complex.class.getCanonicalName().equals(category)){
-                return createComplex(name, type);
-            }
-            else if (Polymer.class.getCanonicalName().equals(category)){
+            case polymer:
                 return createPolymer(name, type);
-            }
-            else if (InteractorSet.class.getCanonicalName().equals(category)){
+            case complex:
+                return createComplex(name, type);
+            case interactor_set:
                 return createInteractorSet(name, type);
-            }
-            else{
+            default:
                 return createInteractor(name, type);
-            }
         }
-
-        return createInteractor(name, type);
     }
 }
