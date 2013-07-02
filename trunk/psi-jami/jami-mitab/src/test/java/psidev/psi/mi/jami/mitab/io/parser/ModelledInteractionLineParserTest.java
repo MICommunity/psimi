@@ -344,4 +344,80 @@ public class ModelledInteractionLineParserTest {
         Assert.assertNotNull(line2);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_read_clustered_mitab27() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_clustered_line.txt");
+        ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
+
+        // read first interaction
+        ModelledInteraction binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Iterator<ModelledParticipant> iterator = binary.getParticipants().iterator();
+        ModelledParticipant A = iterator.next();
+        Assert.assertEquals(9606, A.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", A.getInteractor().getOrganism().getCommonName());
+        Assert.assertEquals("Homo Sapiens", A.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), A.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertEquals(new DefaultStoichiometry(2), A.getStoichiometry());
+
+        ModelledParticipant B = iterator.next();
+        Assert.assertEquals(9606, B.getInteractor().getOrganism().getTaxId());
+        Assert.assertEquals("Human", B.getInteractor().getOrganism().getCommonName());
+        Assert.assertNull(B.getInteractor().getOrganism().getScientificName());
+        Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), B.getBiologicalRole());
+        Assert.assertEquals(CvTermUtils.createProteinInteractorType(), B.getInteractor().getInteractorType());
+        Assert.assertEquals(new DefaultStoichiometry(5), B.getStoichiometry());
+
+        Assert.assertEquals(new DefaultSource("innatedb", "MI:0974"), binary.getSource());
+
+        Assert.assertEquals(CvTermUtils.createMICvTerm("physical association","MI:0915"), binary.getInteractionType());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
+        Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
+
+        ModelledInteraction binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_no_interactor_details() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_no_interactor_details.txt");
+        ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
+
+        // read first interaction
+        ModelledInteraction binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Iterator<ModelledParticipant> iterator = binary.getParticipants().iterator();
+        ModelledParticipant A = iterator.next();
+        Assert.assertEquals(MitabUtils.UNKNOWN_NAME, A.getInteractor().getShortName());
+        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), A.getInteractor().getInteractorType());
+        Assert.assertNull(A.getInteractor().getOrganism());
+
+        ModelledInteraction binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
+
+    @Test
+    public void test_no_participants() throws ParseException, java.text.ParseException {
+        InputStream stream = InteractionEvidenceLineParserTest.class.getResourceAsStream("/samples/mitab27_no_participants.txt");
+        ModelledInteractionLineParser parser = new ModelledInteractionLineParser(stream);
+
+        // read first interaction
+        ModelledInteraction binary = parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+
+        Assert.assertTrue(binary.getParticipants().isEmpty());
+
+        ModelledInteraction binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }

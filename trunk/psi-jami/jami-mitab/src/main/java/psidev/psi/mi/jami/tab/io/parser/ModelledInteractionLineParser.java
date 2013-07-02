@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.tab.extension.*;
-import psidev.psi.mi.jami.utils.InteractorUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -48,7 +48,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
             return participant;
         }
         else if (interactor == null){
-            interactor = InteractorUtils.createUnknownBasicInteractor();
+            interactor = getInteractorFactory().createInteractor(MitabUtils.UNKNOWN_NAME, null);
             hasInteractorDetails = false;
         }
 
