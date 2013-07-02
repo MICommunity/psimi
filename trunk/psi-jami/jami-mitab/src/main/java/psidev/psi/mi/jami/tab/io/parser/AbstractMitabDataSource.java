@@ -35,6 +35,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
     private Boolean isValid = null;
 
     private MitabParserListener parserListener;
+    private MIFileParserListener defaultParserListener;
+
 
     /**
      * Empty constructor for the factory
@@ -60,8 +62,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         isInitialised = true;
     }
 
-    public MitabParserListener getFileParserListener() {
-        return this.parserListener;
+    public MIFileParserListener getFileParserListener() {
+        return this.defaultParserListener;
     }
 
     public void initialiseContext(Map<String, Object> options) {
@@ -87,7 +89,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         }
 
         if (options.containsKey(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY)){
-            setMIFileParserListener((MitabParserListener) options.get(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY));
+            setMIFileParserListener((MIFileParserListener) options.get(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY));
         }
 
         isInitialised = true;
@@ -112,6 +114,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
             this.originalFile = null;
             this.lineParser = null;
             this.parserListener = null;
+            this.defaultParserListener = null;
             isInitialised = false;
             isValid = null;
         }
@@ -121,7 +124,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (!(listener instanceof MitabParserListener)){
             throw new IllegalArgumentException("A MITAB data source is expecting a MitabParserListener. It does not accept "+listener.getClass());
         }
-        setMIFileParserListener((MitabParserListener)listener);
+        setMitabFileParserListener((MitabParserListener) listener);
         return validateSyntax();
     }
 
@@ -153,52 +156,52 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     public void onInvalidSyntax(FileSourceContext context, Exception e) {
         isValid = false;
-        if (parserListener != null){
-            parserListener.onInvalidSyntax(context, e);
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidSyntax(context, e);
         }
     }
 
     public void onSyntaxWarning(FileSourceContext context, String message) {
-        if (parserListener != null){
-            parserListener.onSyntaxWarning(context, message);
+        if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(context, message);
         }
     }
 
     public void onMissingCvTermName(CvTerm term, FileSourceContext context, String message) {
-        if (parserListener != null){
-            parserListener.onMissingCvTermName(term, context, message);
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingCvTermName(term, context, message);
         }
     }
 
     public void onMissingInteractorName(Interactor interactor, FileSourceContext context) {
-        if (parserListener != null){
-            parserListener.onMissingInteractorName(interactor, context);
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingInteractorName(interactor, context);
         }
     }
 
     public void onSeveralCvTermsFound(Collection<? extends CvTerm> terms, FileSourceContext context, String message) {
-        if (parserListener != null){
-            parserListener.onSeveralCvTermsFound(terms, context, message);
+        if (defaultParserListener != null){
+            defaultParserListener.onSeveralCvTermsFound(terms, context, message);
         }
     }
 
     public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms, FileSourceContext context) {
-        if (parserListener != null){
-            parserListener.onSeveralHostOrganismFound(organisms, context);
+        if (defaultParserListener != null){
+            defaultParserListener.onSeveralHostOrganismFound(organisms, context);
         }
     }
 
     public void onParticipantWithoutInteractor(Participant participant, FileSourceContext context) {
         isValid = false;
-        if (parserListener != null){
-            parserListener.onParticipantWithoutInteractor(participant, context);
+        if (defaultParserListener != null){
+            defaultParserListener.onParticipantWithoutInteractor(participant, context);
         }
     }
 
     public void onInteractionWithoutParticipants(Interaction interaction, FileSourceContext context) {
         isValid = false;
-        if (parserListener != null){
-            parserListener.onInteractionWithoutParticipants(interaction, context);
+        if (defaultParserListener != null){
+            defaultParserListener.onInteractionWithoutParticipants(interaction, context);
         }
     }
 
@@ -406,7 +409,18 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         this.originalReader = originalReader;
     }
 
-    protected void setMIFileParserListener(MitabParserListener listener) {
+    protected void setMitabFileParserListener(MitabParserListener listener) {
         this.parserListener = listener;
+        this.defaultParserListener = listener;
+    }
+
+    protected void setMIFileParserListener(MIFileParserListener listener) {
+        if (listener instanceof MitabParserListener){
+            setMitabFileParserListener((MitabParserListener) listener);
+        }
+        else{
+            this.parserListener = null;
+            this.defaultParserListener = listener;
+        }
     }
 }
