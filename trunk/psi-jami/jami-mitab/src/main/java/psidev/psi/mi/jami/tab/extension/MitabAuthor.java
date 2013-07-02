@@ -40,7 +40,7 @@ public class MitabAuthor implements FileSourceContext{
                     try {
                         String date = matcher.group();
                         this.publicationDate = MitabUtils.PUBLICATION_YEAR_FORMAT.parse(date);
-                        this.firstAuthor = firstAuthor.replaceAll("\\(|\\)|et al.|date","").trim();
+                        this.firstAuthor = firstAuthor.replaceAll("\\(|\\)|et al.|"+date,"").trim();
                     } catch (ParseException e) {
                         e.printStackTrace();
                         this.firstAuthor = firstAuthor;
