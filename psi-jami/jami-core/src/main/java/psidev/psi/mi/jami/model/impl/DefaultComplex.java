@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -395,7 +395,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         rigid = null;
     }
 
-    private class ComplexAnnotationList extends AbstractListHavingPoperties<Annotation> {
+    private class ComplexAnnotationList extends AbstractListHavingProperties<Annotation> {
         public ComplexAnnotationList(){
             super();
         }
@@ -416,7 +416,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         }
     }
 
-    private class ComplexChecksumList extends AbstractListHavingPoperties<Checksum> {
+    private class ComplexChecksumList extends AbstractListHavingProperties<Checksum> {
         public ComplexChecksumList(){
             super();
         }

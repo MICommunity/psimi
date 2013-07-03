@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Collection;
@@ -307,7 +307,7 @@ public class DefaultGene extends DefaultMolecule implements Gene {
         return ensembl != null ? ensembl.getId() : (ensemblGenome != null ? ensemblGenome.getId() : (entrezGeneId != null ? entrezGeneId.getId() : (refseq != null ? refseq.getId() : super.toString())));
     }
 
-    private class GeneIdentifierList extends AbstractListHavingPoperties<Xref> {
+    private class GeneIdentifierList extends AbstractListHavingProperties<Xref> {
         public GeneIdentifierList(){
             super();
         }

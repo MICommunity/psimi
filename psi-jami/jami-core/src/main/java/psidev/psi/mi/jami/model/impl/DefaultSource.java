@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.Collection;
 
@@ -139,7 +139,7 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         url = null;
     }
 
-    private class SourceAnnotationList extends AbstractListHavingPoperties<Annotation> {
+    private class SourceAnnotationList extends AbstractListHavingProperties<Annotation> {
         public SourceAnnotationList(){
             super();
         }

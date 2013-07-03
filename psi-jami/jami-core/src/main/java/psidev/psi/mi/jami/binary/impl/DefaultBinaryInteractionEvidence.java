@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -342,7 +342,7 @@ public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<P
     /**
      * Experimental interaction Xref list
      */
-    private class ExperimentalBinaryInteractionXrefList extends AbstractListHavingPoperties<Xref> {
+    private class ExperimentalBinaryInteractionXrefList extends AbstractListHavingProperties<Xref> {
         public ExperimentalBinaryInteractionXrefList(){
             super();
         }

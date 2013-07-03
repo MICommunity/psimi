@@ -12,9 +12,9 @@ import java.util.List;
  * @since <pre>11/02/13</pre>
  */
 
-public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
+public abstract class AbstractListHavingProperties<T> extends ArrayList<T> {
 
-    public AbstractListHavingPoperties(){
+    public AbstractListHavingProperties(){
         super();
     }
 

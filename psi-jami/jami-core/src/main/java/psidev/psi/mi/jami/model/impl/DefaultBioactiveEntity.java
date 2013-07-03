@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.Collection;
 
@@ -329,7 +329,7 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
         return chebi != null ? chebi.getId() : (standardInchiKey != null ? standardInchiKey.getValue() : (smile != null ? smile.getValue() : (standardInchi != null ? standardInchi.getValue() : super.toString())));
     }
 
-    private class BioctiveEntityIdentifierList extends AbstractListHavingPoperties<Xref> {
+    private class BioctiveEntityIdentifierList extends AbstractListHavingProperties<Xref> {
         public BioctiveEntityIdentifierList(){
             super();
         }
@@ -350,7 +350,7 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
         }
     }
 
-    private class BioctiveEntityChecksumList extends AbstractListHavingPoperties<Checksum>{
+    private class BioctiveEntityChecksumList extends AbstractListHavingProperties<Checksum> {
         public BioctiveEntityChecksumList(){
             super();
         }
