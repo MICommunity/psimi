@@ -22,6 +22,10 @@ public class MockInteractionDataSource implements MIFileDataSource {
         // do nothing
     }
 
+    public boolean supportsOption(String optionKey, Object optionValue) {
+        return false;
+    }
+
     public MIFileParserListener getFileParserListener() {
         return null;
     }
