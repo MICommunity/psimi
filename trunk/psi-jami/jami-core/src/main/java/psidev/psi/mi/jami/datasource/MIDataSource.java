@@ -23,11 +23,4 @@ public interface MIDataSource {
      */
     public void close();
 
-    /**
-     * To know if a MIDataSource supports a given option (name and value)
-     * @param optionKey : the name of the option
-     * @param optionValue : the value of this option
-     * @return true if the data source supports the options
-     */
-    public boolean supportsOption(String optionKey, Object optionValue);
 }

@@ -1,14 +1,12 @@
 package psidev.psi.mi.jami.factory;
 
+import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.datasource.MIDataSource;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * A factory to create data sources.
@@ -23,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MIDataSourceFactory {
 
     private static final MIDataSourceFactory instance = new MIDataSourceFactory();
+    private static final Logger logger = Logger.getLogger("MIDataSourceFactory");
 
     private Map<Class<? extends MIDataSource>, Map<String, Object>> registeredDataSources;
 
@@ -33,6 +32,7 @@ public class MIDataSourceFactory {
     public static final String INTERACTION_OBJECT_OPTION_KEY = "interaction_object_key";
     public static final String PARSER_LISTENER_OPTION_KEY = "parser_listener_key";
     public static final String INPUT_FORMAT_OPTION_KEY = "input_format_key";
+    private Class interactionSourceClass = InteractionSource.class;
 
     private MIDataSourceFactory(){
         registeredDataSources = new ConcurrentHashMap<Class<? extends MIDataSource>, Map<String, Object>>();
@@ -42,66 +42,36 @@ public class MIDataSourceFactory {
         return instance;
     }
 
-    public MIDataSource getMIDataSourceWith(Map<String,Object> requiredOptions) throws InstantiationException, IllegalAccessException {
+    public MIDataSource getMIDataSourceWith(Map<String,Object> requiredOptions) {
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
             // we check for a DataSource that can be used with the given options
             if (areSupportedOptions(entry.getValue(), requiredOptions)){
-                return instantiateNewDataSource(entry.getKey(), entry.getValue());
+                try {
+                    return instantiateNewDataSource(entry.getKey(), entry.getValue());
+                } catch (IllegalAccessException e) {
+                    logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
+                } catch (InstantiationException e) {
+                    logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
+                }
             }
         }
 
         return null;
     }
 
-    public MIFileDataSource getMIFileDataSourceFrom(File file, Map<String,Object> requiredOptions) throws InstantiationException, IllegalAccessException {
-
-        if (requiredOptions == null){
-            requiredOptions = new HashMap<String, Object>();
-            requiredOptions.put(INPUT_FILE_OPTION_KEY, file);
-        }
+    public InteractionSource getInteractionSourceWith(Map<String,Object> requiredOptions) {
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
             // we check for a DataSource that can be used with the given options
-            if (entry.getKey().isAssignableFrom(MIFileDataSource.class) &&
-                    areSupportedOptions(entry.getValue(), requiredOptions)){
-                return (MIFileDataSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return null;
-    }
-
-    public MIFileDataSource getMIFileDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions) throws InstantiationException, IllegalAccessException {
-
-        if (requiredOptions == null){
-            requiredOptions = new HashMap<String, Object>();
-            requiredOptions.put(INPUT_STREAM_OPTION_KEY, stream);
-        }
-
-        for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
-            // we check for a DataSource that can be used with the given options
-            if (entry.getKey().isAssignableFrom(MIFileDataSource.class) &&
-                    areSupportedOptions(entry.getValue(), requiredOptions)){
-                return (MIFileDataSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return null;
-    }
-
-    public MIFileDataSource getMIFileDataSourceFrom(Reader reader, Map<String,Object> requiredOptions) throws InstantiationException, IllegalAccessException {
-
-        if (requiredOptions == null){
-            requiredOptions = new HashMap<String, Object>();
-            requiredOptions.put(READER_OPTION_KEY, reader);
-        }
-
-        for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
-            // we check for a DataSource that can be used with the given options
-            if (entry.getKey().isAssignableFrom(MIFileDataSource.class) &&
-                    areSupportedOptions(entry.getValue(), requiredOptions)){
-                return (MIFileDataSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
+            if (entry.getKey().isAssignableFrom(interactionSourceClass) && areSupportedOptions(entry.getValue(), requiredOptions)){
+                try {
+                    return (InteractionSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
+                } catch (IllegalAccessException e) {
+                    logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
+                } catch (InstantiationException e) {
+                    logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
+                }
             }
         }
 
@@ -153,7 +123,8 @@ public class MIDataSourceFactory {
         // check if required options are supported
         for (Map.Entry<String, Object> entry : options.entrySet()){
             if (supportedOptions.containsKey(entry.getKey())){
-                if (!supportedOptions.get(entry.getKey()).equals(entry.getValue())){
+                Object result = supportedOptions.get(entry.getKey());
+                if ( result != null && !result.equals(entry.getValue())){
                     return false;
                 }
             }

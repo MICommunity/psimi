@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.exception.DataSourceWriterException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * A factory for InteractionWriter
@@ -17,8 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InteractionWriterFactory {
 
     private static final InteractionWriterFactory instance = new InteractionWriterFactory();
+    private static final Logger logger = Logger.getLogger("InteractionWriterFactory");
 
-    private Map<Class<? extends InteractionWriter>, Map<String, Object>> registeredDataSourceWriters;
+    private Map<Class<? extends InteractionWriter>, Map<String, Object>> registeredWriters;
 
     public static final String OUTPUT_FILE_OPTION_KEY = "output_file_key";
     public static final String OUTPUT_STREAM_OPTION_KEY = "output_stream_key";
@@ -27,7 +29,7 @@ public class InteractionWriterFactory {
     public static final String OUTPUT_FORMAT_OPTION_KEY = "output_format_key";
 
     private InteractionWriterFactory(){
-        registeredDataSourceWriters = new ConcurrentHashMap<Class<? extends InteractionWriter>, Map<String, Object>>();
+        registeredWriters = new ConcurrentHashMap<Class<? extends InteractionWriter>, Map<String, Object>>();
     }
 
     public static InteractionWriterFactory getInstance() {
@@ -45,7 +47,7 @@ public class InteractionWriterFactory {
             throw new IllegalArgumentException("Cannot register a InteractionWriter without a interactionDataSourceWriterClass");
         }
 
-        registeredDataSourceWriters.put(dataSourceClass, supportedOptions != null ? supportedOptions : new ConcurrentHashMap<String, Object>());
+        registeredWriters.put(dataSourceClass, supportedOptions != null ? supportedOptions : new ConcurrentHashMap<String, Object>());
     }
 
     /**
@@ -53,17 +55,37 @@ public class InteractionWriterFactory {
      * @param dataSourceClass
      */
     public void removeDataSourceWriter(Class<? extends InteractionWriter> dataSourceClass){
-        registeredDataSourceWriters.remove(dataSourceClass);
+        registeredWriters.remove(dataSourceClass);
     }
 
     /**
      * Clear all the registered writers from this factory
      */
     public void clearRegisteredDataSourceWriters(){
-        registeredDataSourceWriters.clear();
+        registeredWriters.clear();
     }
 
-    private InteractionWriter instantiateNewDataSource(Class<? extends InteractionWriter> dataSourceClass, Map<String, Object> options) throws IllegalAccessException, InstantiationException, DataSourceWriterException {
+    public InteractionWriter getInteractionWriterWith(Map<String,Object> requiredOptions) {
+
+        for (Map.Entry<Class<? extends InteractionWriter>, Map<String, Object>> entry : registeredWriters.entrySet()){
+            // we check for a DataSource that can be used with the given options
+            if (areSupportedOptions(entry.getValue(), requiredOptions)){
+                try {
+                    return instantiateNewWriter(entry.getKey(), entry.getValue());
+                } catch (IllegalAccessException e) {
+                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                } catch (InstantiationException e) {
+                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                } catch (DataSourceWriterException e) {
+                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private InteractionWriter instantiateNewWriter(Class<? extends InteractionWriter> dataSourceClass, Map<String, Object> options) throws IllegalAccessException, InstantiationException, DataSourceWriterException {
 
         InteractionWriter dataSource = dataSourceClass.newInstance();
         dataSource.initialiseContext(options);
@@ -87,7 +109,8 @@ public class InteractionWriterFactory {
         // check if required options are supported
         for (Map.Entry<String, Object> entry : options.entrySet()){
             if (supportedOptions.containsKey(entry.getKey())){
-                if (!supportedOptions.get(entry.getKey()).equals(entry.getValue())){
+                Object result = supportedOptions.get(entry.getKey());
+                if ( result != null && !result.equals(entry.getValue())){
                     return false;
                 }
             }
