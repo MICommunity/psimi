@@ -28,9 +28,9 @@ import java.util.Map;
  * Date: 08/05/13
  */
 public class OlsFetcher
-        implements CvTermFetcher {
+        implements CvTermFetcher<CvTerm> {
 
-    private final Logger log = LoggerFactory.getLogger(OlsFetcher.class.getName());
+    protected final Logger log = LoggerFactory.getLogger(OlsFetcher.class.getName());
     private Query queryService;
 
     public OlsFetcher() throws BridgeFailedException {
@@ -78,6 +78,7 @@ public class OlsFetcher
 
         return getCvTermByIdentifier(termIdentifier, ontologyDatabase);
     }
+
 
     /**
      * Uses the identifier and a cvTerm denoting the database to search to fetch a complete from of the term.

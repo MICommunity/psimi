@@ -2,7 +2,9 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
 
 /**
  * Provides maximum enrichment of the CvTerm.
@@ -30,15 +32,15 @@ public class MinimumCvTermEnricher
         }
 
         //Identifiers
-        /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
-                cvTermFetched.getIdentifiers(),
-                cvTermToEnrich.getIdentifiers(),
-                new DefaultXrefComparator());
+        if(! cvTermFetched.getIdentifiers().isEmpty()) {
+            XrefUpdateMerger merger = new XrefUpdateMerger();
+            merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers());
 
-        for(Xref xrefIdentifier: subtractedIdentifiers){
-            cvTermToEnrich.getIdentifiers().add(xrefIdentifier);
-            if (listener != null) listener.onAddedIdentifier(cvTermToEnrich, xrefIdentifier);
-        }  */
+            for(Xref xref: merger.getToAdd()){
+                cvTermToEnrich.getIdentifiers().add(xref);
+                if(listener != null) listener.onAddedIdentifier(cvTermToEnrich, xref);
+            }
+        }
     }
 
 }

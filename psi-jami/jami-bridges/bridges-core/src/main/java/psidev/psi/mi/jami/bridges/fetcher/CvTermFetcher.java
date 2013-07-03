@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 08/05/13
  */
-public interface CvTermFetcher{
+public interface CvTermFetcher<C extends CvTerm>{
 
     /**
      * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
@@ -21,7 +21,7 @@ public interface CvTermFetcher{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public CvTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
+    public C getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
             throws BridgeFailedException;
 
     /**
@@ -31,7 +31,7 @@ public interface CvTermFetcher{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public CvTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+    public C getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException;
 
     /**
@@ -41,13 +41,11 @@ public interface CvTermFetcher{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public CvTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
+    public C getCvTermByExactName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException;
 
 
-
-
-    public CvTerm getCvTermByExactName(String searchName)
+    public C getCvTermByExactName(String searchName)
             throws BridgeFailedException;
 
     /**
@@ -59,10 +57,10 @@ public interface CvTermFetcher{
      * @return
      * @throws BridgeFailedException
      */
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
+    public Collection<C> getCvTermByInexactName(String searchName, String databaseName)
             throws BridgeFailedException;
 
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database)
+    public Collection<C> getCvTermByInexactName(String searchName, CvTerm database)
             throws BridgeFailedException;
 
 
@@ -82,7 +80,7 @@ public interface CvTermFetcher{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String,String> identifiers)
+    public Collection<C> getCvTermsByIdentifiersWithOntologyNames(HashMap<String,String> identifiers)
             throws BridgeFailedException;
 
     /**
@@ -91,7 +89,7 @@ public interface CvTermFetcher{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String,CvTerm> identifiers)
+    public Collection<C> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String,CvTerm> identifiers)
             throws BridgeFailedException;
 
     /**
@@ -100,11 +98,11 @@ public interface CvTermFetcher{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<CvTerm> getCvTermsByExactNames(HashMap<String,String> termNames)
+    public Collection<C> getCvTermsByExactNames(HashMap<String,String> termNames)
             throws BridgeFailedException;
 
 
-    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames)
+    public Collection<C> getCvTermsByExactNames(Collection<String> searchNames)
             throws BridgeFailedException;
 
     /**

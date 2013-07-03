@@ -4,7 +4,9 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismEnricher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Xref;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,15 +25,15 @@ public class MaximumProteinEnricher
     protected void processProtein(Protein proteinToEnrich) {
         super.processProtein(proteinToEnrich);
 
-        //Xref
-       /* Collection<Xref> subtractedXrefs = CollectionManipulationUtils.comparatorSubtract(
-                proteinFetched.getXrefs(),
-                proteinToEnrich.getXrefs(),
-                new DefaultXrefComparator());
-        for(Xref xref: subtractedXrefs){
-            proteinToEnrich.getXrefs().add(xref);
-            if(listener != null) listener.onAddedXref(proteinFetched, xref);
-        }*/
+        if(! proteinFetched.getXrefs().isEmpty()) {
+            XrefUpdateMerger merger = new XrefUpdateMerger();
+            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs());
+
+            for(Xref xref: merger.getToAdd()){
+                proteinToEnrich.getXrefs().add(xref);
+                if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
+            }
+        }
     }
 
     @Override

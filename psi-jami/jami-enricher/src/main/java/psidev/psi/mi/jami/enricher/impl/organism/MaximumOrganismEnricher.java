@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
+import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -23,14 +24,17 @@ public class MaximumOrganismEnricher
         if(organismToEnrich.getTaxId() == organismFetched.getTaxId()
                 && organismFetched.getTaxId() != -3){
 
-            if( ! organismFetched.getAliases().isEmpty()
-                    && organismToEnrich.getAliases().isEmpty()){  //TODO this is incorrect
 
-                for(Alias alias : organismFetched.getAliases()){
+            if(! organismFetched.getAliases().isEmpty()) {
+                AliasUpdateMerger merger = new AliasUpdateMerger();
+                merger.merge(organismFetched.getAliases() , organismToEnrich.getAliases());
+
+                for(Alias alias: merger.getToAdd()){
                     organismToEnrich.getAliases().add(alias);
-                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
+                    if(listener != null) listener.onAddedAlias(organismToEnrich, alias);
                 }
             }
+
         }
 
     }

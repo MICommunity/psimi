@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismUpdater;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -171,52 +173,15 @@ public class MinimumProteinUpdater
 
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
-            Collection<Xref> fetchedIdentifiersToAdd = new ArrayList<Xref>();
-            fetchedIdentifiersToAdd.addAll(proteinFetched.getIdentifiers()); // All the identifiers which were fetched
+            XrefUpdateMerger merger = new XrefUpdateMerger();
+            merger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers());
 
-            Collection<CvTerm> identifierCvTerms = new ArrayList<CvTerm>(); // The list of all the represented databases
-
-            // For each entry, add its CvTerm to the representatives list, if it hasn't been so already.
-            for(Xref xref : fetchedIdentifiersToAdd){
-                if(! identifierCvTerms.contains(xref.getDatabase())) identifierCvTerms.add(xref.getDatabase());
-            }
-
-            Collection<Xref> toRemoveIdentifiers = new ArrayList<Xref>();
-
-            // Check all of the identifiers which are to be enriched
-            for(Xref xrefIdentifier : proteinToEnrich.getIdentifiers()){
-                // Ignore if there's a qualifier
-                if(xrefIdentifier.getQualifier() == null){
-                    boolean isInFetchedList = false;
-                     //If it's in the list to add, mark that it's to add already
-                    for(Xref xrefToAdd : fetchedIdentifiersToAdd){
-                        if(DefaultXrefComparator.areEquals(xrefToAdd , xrefIdentifier)){
-                            isInFetchedList = true;
-                            //No need to add it as it is already there
-                            fetchedIdentifiersToAdd.remove(xrefToAdd);
-                            break;
-                        }
-                    }
-                    // If it's not in the fetched ones to add,
-                    // check if it's CvTerm is managed and add to removals if it is
-                    if(! isInFetchedList){
-                        boolean managedCvTerm = false;
-                        for(CvTerm cvTerm : identifierCvTerms){
-                            if(DefaultCvTermComparator.areEquals(cvTerm , xrefIdentifier.getDatabase())){
-                                managedCvTerm = true;
-                                break;
-                            }
-                        }
-                        if(managedCvTerm) toRemoveIdentifiers.add(xrefIdentifier);
-                    }
-                }
-
-            }
-            for(Xref xref: toRemoveIdentifiers){
+            for(Xref xref: merger.getToRemove()){
                 proteinToEnrich.getIdentifiers().remove(xref);
                 if(listener != null) listener.onRemovedIdentifier(proteinToEnrich , xref);
             }
-            for(Xref xref: fetchedIdentifiersToAdd){
+
+            for(Xref xref: merger.getToAdd()){
                 proteinToEnrich.getIdentifiers().add(xref);
                 if(listener != null) listener.onAddedIdentifier(proteinToEnrich, xref);
             }
@@ -225,86 +190,20 @@ public class MinimumProteinUpdater
 
 
         // == Alias ==
-        /*if(!proteinFetched.getIdentifiers().isEmpty()){
-            Collection<Alias> fetchedAliasesToAdd = new ArrayList<Alias>();
-            fetchedAliasesToAdd.addAll(proteinFetched.getAliases()); // All the identifiers which were fetched
+        if(! proteinFetched.getAliases().isEmpty()) {
+            AliasUpdateMerger merger = new AliasUpdateMerger();
+            merger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
 
-            Collection<CvTerm> identifierCvTerms = new ArrayList<CvTerm>(); // The list of all the represented databases
-
-            // For each entry, add its CvTerm to the representatives list, if it hasn't been so already.
-            for(Alias alias : fetchedAliasesToAdd){
-                if(! identifierCvTerms.contains(alias.getType())) identifierCvTerms.add(alias.getType());
+            for(Alias alias: merger.getToRemove()){
+                proteinToEnrich.getAliases().remove(alias);
+                if(listener != null) listener.onRemovedAlias(proteinToEnrich , alias);
             }
 
-            Collection<Xref> toRemoveIdentifiers = new ArrayList<Xref>();
-
-            // Check all of the identifiers which are to be enriched
-            for(Xref xrefIdentifier : proteinToEnrich.getIdentifiers()){
-                // Ignore if there's a qualifier
-                if(xrefIdentifier.getQualifier() == null){
-                    boolean isInFetchedList = false;
-                    //If it's in the list to add, mark that it's to add already
-                    for(Xref xrefToAdd : fetchedAliasesToAdd){
-                        if(DefaultXrefComparator.areEquals(xrefToAdd , xrefIdentifier)){
-                            isInFetchedList = true;
-                            //No need to add it as it is already there
-                            fetchedAliasesToAdd.remove(xrefToAdd);
-                            break;
-                        }
-                    }
-                    // If it's not in the fetched ones to add,
-                    // check if it's CvTerm is managed and add to removals if it is
-                    if(! isInFetchedList){
-                        boolean managedCvTerm = false;
-                        for(CvTerm cvTerm : identifierCvTerms){
-                            if(DefaultCvTermComparator.areEquals(cvTerm , xrefIdentifier.getDatabase())){
-                                managedCvTerm = true;
-                                break;
-                            }
-                        }
-                        if(managedCvTerm) toRemoveIdentifiers.add(xrefIdentifier);
-                    }
-                }
-
-            }
-            for(Xref xref: toRemoveIdentifiers){
-                proteinToEnrich.getIdentifiers().remove(xref);
-                if(listener != null) listener.onRemovedIdentifier(proteinToEnrich , xref);
-            }
-            for(Xref xref: fetchedAliasesToAdd){
-                proteinToEnrich.getIdentifiers().add(xref);
-                if(listener != null) listener.onAddedIdentifier(proteinToEnrich, xref);
-            }
-        } */
-
-        //Aliases
-        /*Set<Alias> fetchedAliasesToAdd = new TreeSet<Alias>(new DefaultAliasComparator());
-        fetchedAliasesToAdd.addAll(proteinFetched.getAliases());
-
-        Set<CvTerm> aliasCvTerms = new TreeSet<CvTerm>(new DefaultCvTermComparator());
-        for(Alias alias : fetchedAliasesToAdd){
-            if(! aliasCvTerms.contains(alias.getType())) aliasCvTerms.add(alias.getType());
-        }
-
-        Collection<Alias> toRemoveAliases = new ArrayList<Alias>();
-        for(Alias alias : proteinToEnrich.getAliases()){
-            if(! fetchedAliasesToAdd.contains(alias)
-                    && aliasCvTerms.contains(alias.getType())){
-                toRemoveAliases.add(alias);
-            }
-            else if( fetchedAliasesToAdd.contains(alias)){
-                fetchedAliasesToAdd.remove(alias);
+            for(Alias alias: merger.getToAdd()){
+                proteinToEnrich.getAliases().add(alias);
+                if(listener != null) listener.onAddedAlias(proteinToEnrich, alias);
             }
         }
-        for(Alias alias: toRemoveAliases){
-            proteinToEnrich.getAliases().remove(alias);
-            if(listener != null) listener.onRemovedAlias(proteinToEnrich , alias);
-        }
-
-        for(Alias alias: fetchedAliasesToAdd){
-            proteinToEnrich.getAliases().add(alias);
-            if(listener != null) listener.onAddedAlias(proteinToEnrich , alias);
-        } */
     }
 
     @Override

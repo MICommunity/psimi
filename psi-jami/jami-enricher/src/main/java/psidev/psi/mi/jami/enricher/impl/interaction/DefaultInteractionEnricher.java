@@ -14,20 +14,20 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public abstract class AbstractInteractionEnricher <T extends Interaction>
-        implements InteractionEnricher<T> {
-
+public class DefaultInteractionEnricher<I extends Interaction, P extends Participant>
+        implements InteractionEnricher<I , P> {
 
     protected InteractionEnricherListener listener;
-
-    protected ParticipantEnricher participantEnricher;
+    protected ParticipantEnricher<P> participantEnricher;
     protected CvTermEnricher cvTermEnricher;
 
-
-    public void enrichInteraction(T interactionToEnrich) throws EnricherException{
+    public void enrichInteraction(I interactionToEnrich) throws EnricherException {
         if ( interactionToEnrich == null) throw new IllegalArgumentException("Attempted to enrich null interactor.") ;
 
         if(getCvTermEnricher() != null) getCvTermEnricher().enrichCvTerm(interactionToEnrich.getInteractionType());
+
+        if(getParticipantEnricher() != null)
+            getParticipantEnricher().enrichParticipants(interactionToEnrich.getParticipants());
 
         if(getParticipantEnricher() != null){
             for(Participant participant : interactionToEnrich.getParticipants()){
@@ -35,6 +35,7 @@ public abstract class AbstractInteractionEnricher <T extends Interaction>
             }
         }
     }
+
 
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
@@ -45,11 +46,11 @@ public abstract class AbstractInteractionEnricher <T extends Interaction>
         return cvTermEnricher;
     }
 
-    public void setParticipantEnricher(ParticipantEnricher<? extends Participant> participantEnricher){
+    public void setParticipantEnricher(ParticipantEnricher<P> participantEnricher){
         this.participantEnricher = participantEnricher;
     }
 
-    public ParticipantEnricher getParticipantEnricher(){
+    public ParticipantEnricher<P> getParticipantEnricher(){
         return participantEnricher;
     }
 
@@ -60,6 +61,4 @@ public abstract class AbstractInteractionEnricher <T extends Interaction>
     public void setInteractionEnricherListener(InteractionEnricherListener listener) {
         this.listener = listener;
     }
-
-
 }

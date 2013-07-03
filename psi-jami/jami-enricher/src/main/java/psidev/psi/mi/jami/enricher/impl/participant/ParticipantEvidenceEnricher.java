@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 28/06/13
  */
 public class ParticipantEvidenceEnricher
-        extends AbstractParticipantEnricher<ParticipantEvidence>{
+        extends DefaultParticipantEnricher<ParticipantEvidence> {
 
     @Override
     public void enrichParticipant(ParticipantEvidence participantEvidenceToEnrich) throws EnricherException {

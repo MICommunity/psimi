@@ -104,7 +104,7 @@ public class OlsFetcherTest {
         assertEquals("MI:0580" , cvTermFetched.getMIIdentifier());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void test_CvTerm_by_MI_Term_and_no_databaseName() throws BridgeFailedException {
         String term = "electron acceptor";
         String databaseName = null;

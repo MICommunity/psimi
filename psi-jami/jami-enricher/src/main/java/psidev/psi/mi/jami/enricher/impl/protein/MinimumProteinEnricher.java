@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -142,30 +144,29 @@ public class MinimumProteinEnricher
         }
 
 
+        // == Identifiers ==
+        if(! proteinFetched.getIdentifiers().isEmpty()) {
+            XrefUpdateMerger merger = new XrefUpdateMerger();
+            merger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers());
 
-        //TODO - remove comparator
-        // IDENTIFIERS
-        /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
-                proteinFetched.getIdentifiers(),
-                proteinToEnrich.getIdentifiers(),
-                new DefaultXrefComparator());
-        for(Xref xref: subtractedIdentifiers){
+            for(Xref xref: merger.getToAdd()){
+                proteinToEnrich.getIdentifiers().add(xref);
+                if(listener != null) listener.onAddedIdentifier(proteinToEnrich, xref);
+            }
+        }
 
-            proteinToEnrich.getIdentifiers().add(xref);
-            if(listener != null) listener.onAddedIdentifier(proteinFetched, xref);
-        } */
 
-        //TODO some introduced aliases may enter a form of conflict - need to do a further comparison.
-        // ALIASES
-        /*Collection<Alias> subtractedAliases = CollectionManipulationUtils.comparatorSubtract(
-                proteinFetched.getAliases(),
-                proteinToEnrich.getAliases(),
-                new DefaultAliasComparator());
-        for(Alias alias: subtractedAliases){
 
-            proteinToEnrich.getAliases().add(alias);
-            if(listener != null) listener.onAddedAlias(proteinFetched, alias);
-        } */
+        // == Alias ==
+        if(! proteinFetched.getAliases().isEmpty()) {
+            AliasUpdateMerger merger = new AliasUpdateMerger();
+            merger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
+
+            for(Alias alias: merger.getToAdd()){
+                proteinToEnrich.getAliases().add(alias);
+                if(listener != null) listener.onAddedAlias(proteinToEnrich, alias);
+            }
+        }
 
     }
 
