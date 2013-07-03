@@ -14,5 +14,5 @@ package psidev.psi.mi.jami.factory;
 
 public enum InteractionObjectCategory {
 
-    evidence, modelled, mixed, basic
+    evidence, modelled, mixed, basic, binary_evidence, modelled_binary, mixed_binary, basic_binary
 }
