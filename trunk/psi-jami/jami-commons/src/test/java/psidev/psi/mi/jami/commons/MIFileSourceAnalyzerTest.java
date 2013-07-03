@@ -208,6 +208,9 @@ public class MIFileSourceAnalyzerTest {
     @Test
     @Ignore
     public void playground() throws IOException {
+        // initialise factories
+        PsiJami.initialiseAllFactories();
+
         // reader
         MIDataSourceOptionFactory optionfactory = MIDataSourceOptionFactory.getInstance();
         MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
