@@ -1,7 +1,12 @@
 package psidev.psi.mi.jami.commons;
 
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionWriter;
+import psidev.psi.mi.jami.factory.InteractionWriterFactory;
+import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -198,5 +203,23 @@ public class MIFileSourceAnalyzerTest {
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
+    }
+
+    @Test
+    @Ignore
+    public void playground() throws IOException {
+        // reader
+        MIDataSourceOptionFactory optionfactory = MIDataSourceOptionFactory.getInstance();
+        MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
+
+        InteractionSource interactionSource = dataSourceFactory.
+                getInteractionSourceWith(optionfactory.getDefaultOptions(new File("path/to/file")));
+
+        // writer
+        MIWriterOptionFactory optionwriterFactory = MIWriterOptionFactory.getInstance();
+        InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
+
+        InteractionWriter writer = writerFactory.
+                getInteractionWriterWith(optionwriterFactory.getDefaultMitabOptions(new File("path/to/file")));
     }
 }
