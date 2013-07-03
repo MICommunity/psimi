@@ -44,60 +44,122 @@ public class MIWriterOptionFactory {
         return getMitabOptions(null, null, writeHeader, version);
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param outputFile : the file where to write the interactions
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getDefaultMitabOptions(File outputFile){
         Map<String, Object> options = getMitabOptions(InteractionObjectCategory.mixed, null, true, null);
         options.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, outputFile);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param objectCategory : the interaction object type to write
+     * @param outputFile : the file where to write the interactions
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, File outputFile){
         Map<String, Object> options = getMitabOptions(objectCategory, null, true, null);
         options.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, outputFile);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param writeHeader : true if we want to write the header
+     * @param version : the MITAB version
+     * @param outputFile : the file where to write the interactions
+     * @return the options for a MITAB interaction writer.
+     */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, File outputFile){
         Map<String, Object> options = getMitabOptions(null, null, writeHeader, version);
         options.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, outputFile);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param output : the output
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getDefaultMitabOptions(OutputStream output){
         Map<String, Object> options = getMitabOptions(InteractionObjectCategory.mixed, null, true, null);
         options.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, output);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param objectCategory : the interaction object type to write
+     * @param output : the output
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, OutputStream output){
         Map<String, Object> options = getMitabOptions(objectCategory, null, true, null);
         options.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, output);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param writeHeader : true if we want to write the header
+     * @param version : the MITAB version
+     * @param output : the outputstream
+     * @return the options for a MITAB interaction writer.
+     */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, OutputStream output){
         Map<String, Object> options = getMitabOptions(null, null, writeHeader, version);
         options.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, output);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param writer : the writer
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getDefaultMitabOptions(Writer writer){
         Map<String, Object> options = getMitabOptions(InteractionObjectCategory.mixed, null, true, null);
         options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param objectCategory : the interaction object type to write
+     * @param writer : the writer
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, Writer writer){
         Map<String, Object> options = getMitabOptions(objectCategory, null, true, null);
         options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
         return options;
     }
 
+    /**
+     * Create the options for a MITAB interaction writer.
+     * @param writeHeader : true if we want to write the header
+     * @param version : the MITAB version
+     * @param writer : the writer
+     * @return the options for a MITAB interaction writer.
+     */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, Writer writer){
         Map<String, Object> options = getMitabOptions(null, null, writeHeader, version);
         options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
         return options;
     }
 
+    /**
+     * Create the options for the MITAB InteractionWriter.
+     * @param objectCategory : the interaction object type to write
+     * @param expansion : the complex expansion method to use if we have n-ary interactions
+     * @param writeHeader : true if we want to write the header
+     * @param version : the MITAB version
+     * @return the options for the MITAB InteractionWriter
+     */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, ComplexExpansionMethod expansion, boolean writeHeader, MitabVersion version){
         Map<String, Object> options = new HashMap<String, Object>();
 
