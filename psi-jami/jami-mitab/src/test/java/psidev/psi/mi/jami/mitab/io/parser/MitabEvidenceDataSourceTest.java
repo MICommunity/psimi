@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.mitab.io.parser;
 
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
@@ -158,5 +159,24 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
+    }
+
+    @Test
+    @Ignore
+    public void test_playground(){
+        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put(MIDataSourceFactory.INPUT_FILE_OPTION_KEY, new File("/home/marine/Desktop/general/intact/intact.txt"));
+        dataSource.initialiseContext(options);
+        System.out.print("start "+System.currentTimeMillis());
+
+        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        int count = 0;
+        while (iterator.hasNext()){
+            iterator.next();
+            count++;
+        }
+        System.out.println(" "+ count + " interactions");
+        System.out.print("end " + System.currentTimeMillis());
     }
 }
