@@ -47,6 +47,7 @@ public class MitabUtils {
 
     public static final String MITAB_VERSION_OPTION = "mitab_version_key";
     public static final String MITAB_HEADER_OPTION = "mitab_header_key";
+    public static final String MITAB_BINARY_OPTION = "mitab_binary_key";
 
     /**
      * Build the header and return an array of String which is an array of column names
