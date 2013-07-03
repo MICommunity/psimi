@@ -33,20 +33,6 @@ public class MIDataSourceOptionFactory {
         return instance;
     }
 
-    public Map<String, Object> getDefaultMitabOptions(){
-        return getMitabOptions(InteractionObjectCategory.evidence, true, new MitabParserLogger());
-    }
-
-    public Map<String, Object> getDefaultXmlOptions(){
-        Map<String, Object> options = new HashMap<String, Object>();
-
-        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
-        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, InteractionObjectCategory.mixed.toString());
-        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, true);
-
-        return options;
-    }
-
     public Map<String, Object> getDefaultOptions(File file) throws IOException {
 
         Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(file));
@@ -83,6 +69,10 @@ public class MIDataSourceOptionFactory {
         }
     }
 
+    public Map<String, Object> getDefaultMitabOptions(){
+        return getMitabOptions(InteractionObjectCategory.evidence, true, new MitabParserLogger());
+    }
+
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory){
         return getMitabOptions(objectCategory, true, null);
     }
@@ -99,11 +89,21 @@ public class MIDataSourceOptionFactory {
         Map<String, Object> options = new HashMap<String, Object>();
 
         options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.mitab.toString());
-        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory.toString() : InteractionObjectCategory.evidence.toString());
+        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
         options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
         if (listener != null){
             options.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, listener);
         }
+
+        return options;
+    }
+
+    public Map<String, Object> getDefaultXmlOptions(){
+        Map<String, Object> options = new HashMap<String, Object>();
+
+        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
+        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, InteractionObjectCategory.mixed);
+        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, true);
 
         return options;
     }
