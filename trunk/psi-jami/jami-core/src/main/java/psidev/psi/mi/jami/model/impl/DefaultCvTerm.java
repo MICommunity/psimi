@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 import java.io.Serializable;
@@ -346,7 +346,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : (parIdentifier != null ? parIdentifier.getId() : "-"))) + " ("+shortName+")";
     }
 
-    private class CvTermIdentifierList extends AbstractListHavingPoperties<Xref> {
+    private class CvTermIdentifierList extends AbstractListHavingProperties<Xref> {
         public CvTermIdentifierList(){
             super();
         }

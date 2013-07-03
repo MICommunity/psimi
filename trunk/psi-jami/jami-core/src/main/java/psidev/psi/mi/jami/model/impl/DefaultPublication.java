@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.io.Serializable;
 import java.util.*;
@@ -484,7 +484,7 @@ public class DefaultPublication implements Publication, Serializable {
         return (imexId != null ? imexId.getId() : (pubmedId != null ? pubmedId.getId() : (doi != null ? doi.getId() : (title != null ? title : "-"))));
     }
 
-    private class PublicationIdentifierList extends AbstractListHavingPoperties<Xref> {
+    private class PublicationIdentifierList extends AbstractListHavingProperties<Xref> {
         public PublicationIdentifierList(){
             super();
         }
@@ -506,7 +506,7 @@ public class DefaultPublication implements Publication, Serializable {
         }
     }
 
-    private class PublicationXrefList extends AbstractListHavingPoperties<Xref> {
+    private class PublicationXrefList extends AbstractListHavingProperties<Xref> {
         public PublicationXrefList(){
             super();
         }

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.Collection;
 
@@ -314,7 +314,7 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
         return geneName != null ? geneName.getName() : (uniprotkb != null ? uniprotkb.getId() : (refseq != null ? refseq.getId() : super.toString()));
     }
 
-    private class ProteinIdentifierList extends AbstractListHavingPoperties<Xref> {
+    private class ProteinIdentifierList extends AbstractListHavingProperties<Xref> {
         public ProteinIdentifierList(){
             super();
         }
@@ -335,7 +335,7 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
         }
     }
 
-    private class ProteinChecksumList extends AbstractListHavingPoperties<Checksum>{
+    private class ProteinChecksumList extends AbstractListHavingProperties<Checksum> {
         public ProteinChecksumList(){
             super();
         }
@@ -356,7 +356,7 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
         }
     }
 
-    private class ProteinAliasList extends AbstractListHavingPoperties<Alias>{
+    private class ProteinAliasList extends AbstractListHavingProperties<Alias> {
         public ProteinAliasList(){
             super();
         }

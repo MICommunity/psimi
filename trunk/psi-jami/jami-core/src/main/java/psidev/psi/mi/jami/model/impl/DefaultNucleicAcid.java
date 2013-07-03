@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.Collection;
 
@@ -222,7 +222,7 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
         return ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : (refseq != null ? refseq.getId() : super.toString());
     }
 
-    private class NucleicAcidIdentifierList extends AbstractListHavingPoperties<Xref> {
+    private class NucleicAcidIdentifierList extends AbstractListHavingProperties<Xref> {
         public NucleicAcidIdentifierList(){
             super();
         }

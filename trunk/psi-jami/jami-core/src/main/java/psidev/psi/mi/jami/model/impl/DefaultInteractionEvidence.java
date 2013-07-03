@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -349,7 +349,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     /**
      * Experimental interaction Xref list
      */
-    private class ExperimentalInteractionXrefList extends AbstractListHavingPoperties<Xref> {
+    private class ExperimentalInteractionXrefList extends AbstractListHavingProperties<Xref> {
         public ExperimentalInteractionXrefList(){
             super();
         }

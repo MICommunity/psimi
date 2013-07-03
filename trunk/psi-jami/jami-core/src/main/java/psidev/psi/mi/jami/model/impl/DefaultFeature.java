@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -255,7 +255,7 @@ public class DefaultFeature implements Feature, Serializable{
         return type != null ? type.toString() : (!ranges.isEmpty() ? "("+ranges.iterator().next().toString()+"...)" : " (-)");
     }
 
-    protected class FeatureIdentifierList extends AbstractListHavingPoperties<Xref> {
+    protected class FeatureIdentifierList extends AbstractListHavingProperties<Xref> {
         public FeatureIdentifierList(){
             super();
         }

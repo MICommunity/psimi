@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -232,7 +232,7 @@ public class DefaultInteraction implements Interaction, Serializable {
         return (shortName != null ? shortName+", " : "") + (interactionType != null ? interactionType.toString() : "");
     }
 
-    private class InteractionChecksumList extends AbstractListHavingPoperties<Checksum> {
+    private class InteractionChecksumList extends AbstractListHavingProperties<Checksum> {
         public InteractionChecksumList(){
             super();
         }
