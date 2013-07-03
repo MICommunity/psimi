@@ -1115,8 +1115,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   long max = 0;
   java.lang.String minString;
   java.lang.String maxString = null;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   MitabStoichiometry stc;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
@@ -1148,8 +1148,11 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         error_skipToNext(enumSet, true);
         {if (true) return null;}
     } catch (NumberFormatException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+       processSyntaxError(beginLine, beginColumn, columnNumber, e);
        {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+          processSyntaxError(beginLine, beginColumn, columnNumber, e);
+          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1160,8 +1163,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   Range var;
   java.lang.String text = null;
   MitabFeature feature;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //type:range1,range2(text)
@@ -1204,6 +1207,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
       {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+         processSyntaxError(beginLine, beginColumn, columnNumber, e);
+         {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1214,8 +1220,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String startString;
   java.lang.String endString;
   MitabRange range;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.RANGE_SEPARATOR, TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       startString = safePosition();
@@ -1232,8 +1238,11 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       error_skipToNext(enumSet, true);
       {if (true) return null;}
     } catch (IllegalRangeException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+       processSyntaxError(beginLine, beginColumn, columnNumber, e);
        {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+          processSyntaxError(beginLine, beginColumn, columnNumber, e);
+          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1257,8 +1266,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String method;
   java.lang.String value;
   MitabChecksum checksum;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //method:value
@@ -1273,6 +1282,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet, true);
         {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+          processSyntaxError(beginLine, beginColumn, columnNumber, e);
+          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1280,11 +1292,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   final public MitabDate date(int columnNumber) throws ParseException {
   java.lang.String date;
   MitabDate mitabDate;
+  int beginLine = 0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //yyyy/mm/dd
           date = safeString();
-      mitabDate = new MitabDate(date);
+      beginLine = token.beginLine; beginColumn = token.beginColumn; mitabDate = new MitabDate(date);
         mitabDate.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
         {if (true) return mitabDate;}
     } catch (ParseException e) {
@@ -1292,7 +1306,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
      error_skipToNext(enumSet, true);
       {if (true) return null;}
     } catch (java.text.ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+     processSyntaxError(beginLine, beginColumn, columnNumber, e);
      {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
@@ -1303,8 +1317,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String value;
   java.lang.String unit = null;
   MitabParameter param;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //type:value(unit)
@@ -1330,8 +1344,11 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
        error_skipToNext(enumSet, true);
        {if (true) return null;}
     } catch (IllegalParameterException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+      processSyntaxError(beginLine, beginColumn, 30, e);
       {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+           processSyntaxError(beginLine, beginColumn, 30, e);
+           {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1340,8 +1357,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String topic;
   java.lang.String value = null;
   MitabAnnotation annot;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //topic:value
@@ -1363,41 +1380,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
          processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
          error_skipToNext(enumSet, true);
          {if (true) return null;}
-    }
-    throw new Error("Missing return statement in function");
-  }
-
-  final public MitabXref xref(int columnNumber) throws ParseException {
-  java.lang.String db;
-  java.lang.String id;
-  java.lang.String text = null;
-  MitabXref ref;
-  int beginLine;
-  int beginColumn;
-  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
-    try {
-      //db:id(qualifier)
-          db = safeString();
-                       beginLine = token.beginLine; beginColumn = token.beginColumn;
-      jj_consume_token(COLON);
-      id = safeString();
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case OPEN_PAREN:
-        jj_consume_token(OPEN_PAREN);
-        text = safeString();
-        jj_consume_token(CLOSE_PAREN);
-        break;
-      default:
-        jj_la1[63] = jj_gen;
-        ;
-      }
-      ref = new MitabXref(db, id, text);
-      ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-      {if (true) return ref;}
-    } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
-       error_skipToNext(enumSet, true);
-       {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+          processSyntaxError(beginLine, beginColumn, columnNumber, e);
+          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1407,8 +1392,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String id = null;
   java.lang.String name = null;
   MitabCvTerm cv;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //db:id(name) or just name for backward compatibility
@@ -1423,7 +1408,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[64] = jj_gen;
+        jj_la1[63] = jj_gen;
         ;
       }
       if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id);
@@ -1438,6 +1423,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
      processSyntaxError(token.beginLine, token.beginColumn, 16, e);
      error_skipToNext(enumSet, true);
      {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+        processSyntaxError(beginLine, beginColumn, 16, e);
+        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1447,8 +1435,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
  java.lang.String value;
  java.lang.String text = null;
   MitabConfidence conf;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       type = safeString();
@@ -1462,7 +1450,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[65] = jj_gen;
+        jj_la1[64] = jj_gen;
         ;
       }
       if (text == null){conf = new MitabConfidence(type, value, null); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));}
@@ -1473,6 +1461,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
      processSyntaxError(token.beginLine, token.beginColumn, 15, e);
      error_skipToNext(enumSet, true);
      {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+        processSyntaxError(beginLine, beginColumn, 15, e);
+        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1482,8 +1473,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String id;
   java.lang.String name = null;
   MitabSource s;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       //db:id(name)
@@ -1498,7 +1489,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[66] = jj_gen;
+        jj_la1[65] = jj_gen;
         ;
       }
          if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
@@ -1509,6 +1500,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         processSyntaxError(token.beginLine, token.beginColumn, 13, e);
         error_skipToNext(enumSet, true);
         {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+        processSyntaxError(beginLine, beginColumn, 13, e);
+        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1518,8 +1512,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String name = null;
   java.lang.String db;
   MitabOrganism organism;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
       db = safeString();
@@ -1537,7 +1531,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[67] = jj_gen;
+        jj_la1[66] = jj_gen;
         ;
       }
        organism = new MitabOrganism(Integer.parseInt(id), name);
@@ -1548,8 +1542,11 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
            error_skipToNext(enumSet, true);
            {if (true) return null;}
     } catch (NumberFormatException e) {
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+           processSyntaxError(beginLine, beginColumn, columnNumber, e);
            {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+        processSyntaxError(beginLine, beginColumn, columnNumber, e);
+        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1578,8 +1575,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String db;
   java.lang.String id = null;
   java.lang.String name = null;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   MitabCvTerm cv;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
@@ -1594,7 +1591,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[68] = jj_gen;
+        jj_la1[67] = jj_gen;
         ;
       }
       if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
@@ -1605,6 +1602,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
      processSyntaxError(token.beginLine, token.beginColumn, column, e);
      error_skipToNext(enumSet, true);
      {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+     processSyntaxError(beginLine, beginColumn, column, e);
+     {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1613,8 +1613,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String db;
   java.lang.String name;
   java.lang.String type = null;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   MitabAlias alias;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
@@ -1629,7 +1629,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[69] = jj_gen;
+        jj_la1[68] = jj_gen;
         ;
       }
         alias = new MitabAlias(db, name, type);
@@ -1639,6 +1639,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
       {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+      processSyntaxError(beginLine, beginColumn, columnNumber, e);
+      {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1647,8 +1650,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   java.lang.String db;
   java.lang.String id;
   java.lang.String text = null;
-  int beginLine;
-  int beginColumn;
+  int beginLine=0;
+  int beginColumn=0;
   MitabXref ref;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
     try {
@@ -1664,7 +1667,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_consume_token(CLOSE_PAREN);
         break;
       default:
-        jj_la1[70] = jj_gen;
+        jj_la1[69] = jj_gen;
         ;
       }
       if (recognizeImexPrimary && Xref.IMEX.equalsIgnoreCase(db.trim())){
@@ -1692,6 +1695,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
       {if (true) return null;}
+    } catch (IllegalArgumentException e) {
+      processSyntaxError(beginLine, beginColumn, columnNumber, e);
+      {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1702,10 +1708,10 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                     result = token.image.substring(1,token.image.length() - 1).trim();
+                     result = MitabUtils.unescapeDoubleQuote(token.image.substring(1,token.image.length() - 1).trim());
       break;
     default:
-      jj_la1[71] = jj_gen;
+      jj_la1[70] = jj_gen;
       result = anyStringBut(enumSet);
     }
    {if (true) return result;}
@@ -1718,10 +1724,10 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                     result = token.image.substring(1,token.image.length() - 1).trim();
+                     result = MitabUtils.unescapeDoubleQuote(token.image.substring(1,token.image.length() - 1).trim());
       break;
     default:
-      jj_la1[72] = jj_gen;
+      jj_la1[71] = jj_gen;
       result = anyStringBut(enumSet);
     }
    {if (true) return result;}
@@ -1734,10 +1740,10 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                     result = token.image.substring(1,token.image.length() - 1).trim();
+                     result = MitabUtils.unescapeDoubleQuote(token.image.substring(1,token.image.length() - 1).trim());
       break;
     default:
-      jj_la1[73] = jj_gen;
+      jj_la1[72] = jj_gen;
       result = anyStringBut(enumSet);
     }
    {if (true) return result;}
@@ -1750,10 +1756,10 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                     result = token.image.substring(1,token.image.length() - 1).trim();
+                     result = MitabUtils.unescapeDoubleQuote(token.image.substring(1,token.image.length() - 1).trim());
       break;
     default:
-      jj_la1[74] = jj_gen;
+      jj_la1[73] = jj_gen;
       result = anyStringBut(enumSet);
     }
    {if (true) return result;}
@@ -1771,12 +1777,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       result.append(t.image);
       t = getToken(1);
   }
-    // The above loop consumes tokens all the way up to a token of
-    // "kind".  We use a do-while loop rather than a while because the
-    // current token is the one immediately before the erroneous token
-    // (in our case the token immediately before what should have been
-    // "if"/"while".
-    return result.length() > 0 ? result.toString() : null;
+  java.lang.String resultStr = result.toString().trim();
+  return resultStr.length() > 0 ? resultStr : null;
   }
 
   void error_skipToNext(EnumSet<TokenKind> skipToTokens, boolean writeError) throws ParseException {
@@ -1842,13 +1844,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[75];
+  final private int[] jj_la1 = new int[74];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x81,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x40,0x40,0x81,0x91,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x800,0x8,0x100,0x100,0x400,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x1000,0x1000,0x1000,0x1000,};
+      jj_la1_0 = new int[] {0x81,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x800,0x40,0x40,0x81,0x91,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x800,0x8,0x100,0x100,0x400,0x100,0x100,0x100,0x100,0x100,0x100,0x100,0x1000,0x1000,0x1000,0x1000,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[3];
   private boolean jj_rescan = false;
@@ -1865,7 +1867,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 75; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 74; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1880,7 +1882,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 75; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 74; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1891,7 +1893,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 75; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 74; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1902,7 +1904,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 75; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 74; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1912,7 +1914,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 75; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 74; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1922,7 +1924,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 75; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 74; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2039,7 +2041,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 75; i++) {
+    for (int i = 0; i < 74; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
