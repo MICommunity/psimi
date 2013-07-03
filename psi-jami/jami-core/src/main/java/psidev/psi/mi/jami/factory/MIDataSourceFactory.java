@@ -30,8 +30,8 @@ public class MIDataSourceFactory {
     public static final String INPUT_STREAM_OPTION_KEY = "input_stream_key";
     public static final String READER_OPTION_KEY = "input_reader_key";
     public static final String STREAMING_OPTION_KEY = "streaming_key";
-    public static final String OBJECT_OPTION_KEY = "object_key";
-    public static final String PARSE_LISTENER_OPTION_KEY = "parser_listener_key";
+    public static final String INTERACTION_OBJECT_OPTION_KEY = "interaction_object_key";
+    public static final String PARSER_LISTENER_OPTION_KEY = "parser_listener_key";
 
     private MIDataSourceFactory(){
         registeredDataSources = new ConcurrentHashMap<Class<? extends MIDataSource>, Map<String, Object>>();
