@@ -88,8 +88,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                     + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (options.containsKey(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY)){
-            setMIFileParserListener((MIFileParserListener) options.get(MIDataSourceFactory.PARSE_LISTENER_OPTION_KEY));
+        if (options.containsKey(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY)){
+            setMIFileParserListener((MIFileParserListener) options.get(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY));
         }
 
         isInitialised = true;
