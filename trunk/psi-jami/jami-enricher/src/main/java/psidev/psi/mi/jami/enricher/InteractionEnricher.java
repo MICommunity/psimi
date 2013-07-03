@@ -10,11 +10,11 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public interface InteractionEnricher <T extends Interaction> {
+public interface InteractionEnricher <I extends Interaction ,  P extends Participant> {
 
-    public void enrichInteraction(T interactionToEnrich) throws EnricherException;
+    public void enrichInteraction(I interactionToEnrich) throws EnricherException;
 
-    public void setParticipantEnricher(ParticipantEnricher<? extends Participant> participantEnricher);
+    public void setParticipantEnricher(ParticipantEnricher<P> participantEnricher);
 
 
 }

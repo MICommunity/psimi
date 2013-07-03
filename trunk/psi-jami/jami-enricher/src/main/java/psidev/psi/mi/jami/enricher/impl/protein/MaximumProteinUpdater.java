@@ -5,7 +5,9 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismUpdater;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Xref;
 
 
 /**
@@ -25,36 +27,19 @@ public class MaximumProteinUpdater
     protected void processProtein(Protein proteinToEnrich){
         super.processProtein(proteinToEnrich);
 
-        /*Set<Xref> fetchedXrefsToAdd = new TreeSet<Xref>(new DefaultXrefComparator());
-        fetchedXrefsToAdd.addAll(proteinFetched.getXrefs());
 
-        Set<CvTerm> xrefCvTerms = new TreeSet<CvTerm>(new DefaultCvTermComparator());
-        xrefCvTerms.addAll(new UniprotTranslationUtil().getUniprotDatabases().values());
-        //for(Xref xref : fetchedXrefsToAdd){
-        //    if(! xrefCvTerms.contains(xref.getDatabase())) xrefCvTerms.add(xref.getDatabase());
-        //}
-
-        Collection<Xref> toRemoveXrefs = new ArrayList<Xref>();
-        for(Xref xref : proteinToEnrich.getXrefs()){
-            if(xref.getQualifier() == null
-                    && ! fetchedXrefsToAdd.contains(xref)
-                    && xrefCvTerms.contains(xref.getDatabase())){
-                toRemoveXrefs.add(xref);
+        if(! proteinFetched.getXrefs().isEmpty()) {
+            XrefUpdateMerger merger = new XrefUpdateMerger();
+            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs());
+            for(Xref xref: merger.getToRemove()){
+                proteinToEnrich.getXrefs().remove(xref);
+                if(listener != null) listener.onRemovedXref(proteinToEnrich , xref);
             }
-            else if( fetchedXrefsToAdd.contains(xref)){
-                fetchedXrefsToAdd.remove(xref);
+            for(Xref xref: merger.getToAdd()){
+                proteinToEnrich.getXrefs().add(xref);
+                if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
             }
         }
-        for(Xref xref: toRemoveXrefs){
-            if(listener != null) listener.onRemovedXref(proteinToEnrich , xref);
-            proteinToEnrich.getXrefs().remove(xref);
-        }
-
-        for(Xref xref: fetchedXrefsToAdd){
-            if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
-            proteinToEnrich.getXrefs().add(xref);
-        } */
-
     }
 
 

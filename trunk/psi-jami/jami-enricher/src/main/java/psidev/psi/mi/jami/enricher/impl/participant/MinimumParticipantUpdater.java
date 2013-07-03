@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinUpdater;
  * Date: 13/06/13
  */
 public class MinimumParticipantUpdater
-        extends AbstractParticipantEnricher
+        extends DefaultParticipantEnricher
         implements ParticipantEnricher {
 
 

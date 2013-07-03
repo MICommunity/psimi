@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 
 /**
@@ -21,15 +23,14 @@ public class MaximumCvTermEnricher
     protected void processCvTerm(CvTerm cvTermToEnrich){
         super.processCvTerm(cvTermToEnrich);
 
-        //Add synonyms
-        /*Collection<Alias> subtractedSynonyms = CollectionManipulationUtils.comparatorSubtract(
-                cvTermFetched.getSynonyms(),
-                cvTermToEnrich.getSynonyms(),
-                new DefaultAliasComparator());
+        if(! cvTermFetched.getSynonyms().isEmpty()) {
+            AliasUpdateMerger merger = new AliasUpdateMerger();
+            merger.merge(cvTermFetched.getSynonyms() , cvTermToEnrich.getSynonyms());
 
-        for(Alias aliasSynonym: subtractedSynonyms){
-            cvTermToEnrich.getSynonyms().add(aliasSynonym);
-            if (listener != null) listener.onAddedSynonym(cvTermToEnrich , aliasSynonym);
-        } */
+            for(Alias alias: merger.getToAdd()){
+                cvTermToEnrich.getSynonyms().add(alias);
+                if(listener != null) listener.onAddedSynonym(cvTermToEnrich, alias);
+            }
+        }
     }
 }

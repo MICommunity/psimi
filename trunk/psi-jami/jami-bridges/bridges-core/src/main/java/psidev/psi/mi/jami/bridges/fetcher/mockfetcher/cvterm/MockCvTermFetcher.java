@@ -13,7 +13,7 @@ import java.util.*;
  * @since 01/07/13
  */
 public class MockCvTermFetcher
-        implements CvTermFetcher{
+        implements CvTermFetcher<CvTerm>{
 
 
     private Map<String,CvTerm> localCvTerms;

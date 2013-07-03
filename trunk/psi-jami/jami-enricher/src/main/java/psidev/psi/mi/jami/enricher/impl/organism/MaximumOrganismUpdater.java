@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
+import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
@@ -28,28 +29,18 @@ public class MaximumOrganismUpdater
         // Override TaxID but obviously not possible if organism is unknown
         if(organismFetched.getTaxId() != -3){
 
-            // ALIASES
-            /* if( ! organismFetched.getAliases().isEmpty()){
-                // Remove old aliases
-                Collection<Alias> aliasesToChange = new TreeSet<Alias>(new DefaultAliasComparator());
-                aliasesToChange.addAll(organismToEnrich.getAliases());
-                aliasesToChange.removeAll(organismFetched.getAliases());
-
-                for(Alias alias : aliasesToChange){
-                    if(listener != null) listener.onRemovedAlias(organismToEnrich , alias);
+            if(! organismFetched.getAliases().isEmpty()) {
+                AliasUpdateMerger merger = new AliasUpdateMerger();
+                merger.merge(organismFetched.getAliases() , organismToEnrich.getAliases());
+                for(Alias alias: merger.getToRemove()){
                     organismToEnrich.getAliases().remove(alias);
+                    if(listener != null) listener.onRemovedAlias(organismToEnrich , alias);
                 }
-
-                // Add new aliases
-                aliasesToChange.clear();
-                aliasesToChange.addAll(organismFetched.getAliases());
-                aliasesToChange.removeAll(organismToEnrich.getAliases());
-
-                for(Alias alias : aliasesToChange){
+                for(Alias alias: merger.getToAdd()){
                     organismToEnrich.getAliases().add(alias);
-                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
+                    if(listener != null) listener.onAddedAlias(organismToEnrich, alias);
                 }
-            } */
+            }
         }
     }
 }
