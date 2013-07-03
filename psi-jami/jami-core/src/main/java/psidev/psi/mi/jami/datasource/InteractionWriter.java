@@ -24,14 +24,6 @@ public interface InteractionWriter<T extends Interaction> {
     public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException;
 
     /**
-     * To know if a InteractionWriter supports a given option (name and value)
-     * @param optionKey : the name of the option
-     * @param optionValue : the value of this option
-     * @return true if the InteractionWriter supports the options
-     */
-    public boolean supportsOption(String optionKey, Object optionValue);
-
-    /**
      * Writes an interaction
      * @param interaction
      */

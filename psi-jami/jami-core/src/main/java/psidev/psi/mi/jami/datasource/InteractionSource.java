@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingInteractionSource extends MIDataSource {
+public interface InteractionSource extends MIDataSource {
 
     public Iterator<? extends Interaction> getInteractionsIterator();
 }

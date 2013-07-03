@@ -4,9 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.datasource.MockExperimentDataSource;
 import psidev.psi.mi.jami.datasource.MockInteractionDataSource;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 
-import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +40,8 @@ public class MiDataSourceFactoryTest {
 
         Map<String, Object> requiredOptions = new HashMap<String, Object>();
 
-        Assert.assertNotNull(MIDataSourceFactory.getInstance().getMIFileDataSourceFrom(new ByteArrayInputStream("".getBytes()), requiredOptions));
-        Assert.assertTrue(MIDataSourceFactory.getInstance().getMIFileDataSourceFrom(new ByteArrayInputStream("".getBytes()), requiredOptions) instanceof MockExperimentDataSource);
+        Assert.assertNotNull(MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions));
+        Assert.assertTrue(MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions) instanceof MockExperimentDataSource);
     }
 
     @Test
