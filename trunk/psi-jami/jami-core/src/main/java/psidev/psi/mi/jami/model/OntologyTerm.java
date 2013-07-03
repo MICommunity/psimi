@@ -31,12 +31,12 @@ public interface OntologyTerm extends CvTerm {
      * The Collection cannot be null. If the term does not have any parents, the method should return an empty Collection.
      * @return the parents
      */
-    public Collection<CvTerm> getParents();
+    public Collection<OntologyTerm> getParents();
 
     /**
      * The children terms of this controlled vocabulary term.
      * The Collection cannot be null. If the term does not have any children, the method should return an empty Collection.
      * @return the children
      */
-    public Collection<CvTerm> getChildren();
+    public Collection<OntologyTerm> getChildren();
 }

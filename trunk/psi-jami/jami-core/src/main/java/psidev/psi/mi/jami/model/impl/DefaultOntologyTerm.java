@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -21,25 +20,19 @@ import java.util.Collections;
 public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
     private String definition;
 
-    private Collection<CvTerm> parents;
-    private Collection<CvTerm> children;
+    private Collection<OntologyTerm> parents;
+    private Collection<OntologyTerm> children;
 
     public DefaultOntologyTerm(String shortName) {
         super(shortName);
-        this.parents = new ArrayList<CvTerm>();
-        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String miIdentifier) {
         super(shortName, miIdentifier);
-        this.parents = new ArrayList<CvTerm>();
-        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, String miIdentifier) {
         super(shortName, fullName, miIdentifier);
-        this.parents = new ArrayList<CvTerm>();
-        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, String miIdentifier, String def){
@@ -49,14 +42,10 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
 
     public DefaultOntologyTerm(String shortName, Xref ontologyId) {
         super(shortName, ontologyId);
-        this.parents = new ArrayList<CvTerm>();
-        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, Xref ontologyId) {
         super(shortName, fullName, ontologyId);
-        this.parents = new ArrayList<CvTerm>();
-        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, Xref ontologyId, String def){
@@ -65,10 +54,10 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
     }
 
     protected void initialiseParents(){
-        this.parents = new ArrayList<CvTerm>();
+        this.parents = new ArrayList<OntologyTerm>();
     }
 
-    protected void initialiseParentsWith(Collection<CvTerm> parents){
+    protected void initialiseParentsWith(Collection<OntologyTerm> parents){
         if (parents == null){
             this.parents = Collections.EMPTY_LIST;
         }
@@ -78,10 +67,10 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
     }
 
     protected void initialiseChildren(){
-        this.children = new ArrayList<CvTerm>();
+        this.children = new ArrayList<OntologyTerm>();
     }
 
-    protected void initialiseChildrenWith(Collection<CvTerm> children){
+    protected void initialiseChildrenWith(Collection<OntologyTerm> children){
         if (children == null){
             this.children = Collections.EMPTY_LIST;
         }
@@ -98,14 +87,14 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
         this.definition = def;
     }
 
-    public Collection<CvTerm> getParents() {
+    public Collection<OntologyTerm> getParents() {
         if (parents == null){
             initialiseParents();
         }
         return this.parents;
     }
 
-    public Collection<CvTerm> getChildren() {
+    public Collection<OntologyTerm> getChildren() {
         if (children == null){
             initialiseChildren();
         }
