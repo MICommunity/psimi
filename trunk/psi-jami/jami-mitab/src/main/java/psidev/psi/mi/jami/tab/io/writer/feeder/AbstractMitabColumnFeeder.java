@@ -38,7 +38,7 @@ public abstract class AbstractMitabColumnFeeder<T extends BinaryInteraction, P e
             Interactor interactor = participant.getInteractor();
             // write first identifier
             if (!interactor.getIdentifiers().isEmpty()){
-                writeIdentifier(interactor.getIdentifiers().iterator().next());
+                writeIdentifier(interactor.getPreferredIdentifier());
             }
             else{
                 writer.write(MitabUtils.EMPTY_COLUMN);
@@ -55,17 +55,30 @@ public abstract class AbstractMitabColumnFeeder<T extends BinaryInteraction, P e
             // write other identifiers
             if (interactor.getIdentifiers().size() > 1){
                 Iterator<Xref> identifierIterator = interactor.getIdentifiers().iterator();
-                // skip first identifier
-                identifierIterator.next();
+                boolean isFirst = true;
+                Xref next = null;
+                Xref preferred = interactor.getPreferredIdentifier();
+                do {
+                    next = identifierIterator.next();
+                    while (identifierIterator.hasNext() &&
+                            next == preferred){
+                        next = identifierIterator.next();
+                    }
 
-                while (identifierIterator.hasNext()){
-                    // write alternative identifier
-                    writeIdentifier(identifierIterator.next());
-                    // write field separator
-                    if (identifierIterator.hasNext()){
-                        writer.write(MitabUtils.FIELD_SEPARATOR);
+                    if (next != null && next != preferred){
+
+                        if (!isFirst){
+                            getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                        }
+                        // write alternative identifier
+                        writeIdentifier(next);
+                        isFirst = false;
+                    }
+                    else {
+                        next = null;
                     }
                 }
+                while (next != null && identifierIterator.hasNext()) ;
             }
             else{
                 writer.write(MitabUtils.EMPTY_COLUMN);
