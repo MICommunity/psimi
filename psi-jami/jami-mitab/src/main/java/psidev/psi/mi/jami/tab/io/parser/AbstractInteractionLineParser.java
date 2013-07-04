@@ -465,4 +465,18 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
             listener.onSyntaxWarning(alias, "Found a Checksum in the aliases column. Will load it as a checksum.");
         }
     }
+
+    protected void initialiseExpansionMethod(Collection<MitabCvTerm> expansion, T interaction){
+        if (expansion.size() > 1){
+            if (getParserListener() != null){
+                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), expansion.size()+" complex expansions found. Only the first one will be loaded.");
+            }
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
+        }
+        else if (!expansion.isEmpty()){
+            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
+        }
+    }
+
+    protected abstract T createInteraction();
 }

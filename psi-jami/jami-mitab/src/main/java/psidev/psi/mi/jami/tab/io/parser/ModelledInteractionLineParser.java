@@ -12,7 +12,7 @@ import java.io.Reader;
 import java.util.Collection;
 
 /**
- * An extension of MitabLineParser which parses only ModelledBinaryInteraction
+ * An extension of MitabLineParser which parses only ModelledInteraction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -100,8 +100,8 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
     }
 
     @Override
-    MitabModelledInteraction finishInteraction(ModelledParticipant A, ModelledParticipant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabModelledInteraction interaction = null;
+    ModelledInteraction finishInteraction(ModelledParticipant A, ModelledParticipant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        ModelledInteraction interaction = null;
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
@@ -110,7 +110,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         }
 
         // create interaction with participants
-        interaction = new MitabModelledInteraction();
+        interaction = createInteraction();
 
         // set interaction type
         if (interactionType.size() > 1){
@@ -127,15 +127,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         // add confidences
         interaction.getModelledConfidences().addAll(conf);
         // set expansion method
-        if (expansion.size() > 1){
-            if (getParserListener() != null){
-                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size() + " interaction types found. Only the first one will be loaded.");
-            }
-            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
-        }
-        else if (!expansion.isEmpty()){
-            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
-        }
+        initialiseExpansionMethod(expansion, interaction);
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
         // initialise annotations
@@ -179,7 +171,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         }
 
         if (A == null && B == null && getParserListener() != null){
-            getParserListener().onInteractionWithoutParticipants(interaction, interaction);
+            getParserListener().onInteractionWithoutParticipants(interaction, (FileSourceContext)interaction);
         }
 
         if (A != null){
@@ -189,8 +181,13 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
             interaction.addModelledParticipant(B);
         }
 
-        interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
+        ((FileSourceContext)interaction).setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
+    }
+
+    @Override
+    protected ModelledInteraction createInteraction() {
+        return new MitabModelledInteraction();
     }
 }
