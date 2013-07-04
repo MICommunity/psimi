@@ -51,7 +51,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getDefaultMitabOptions(File outputFile){
         Map<String, Object> options = getMitabOptions(InteractionObjectCategory.mixed, null, true, null, false);
-        options.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, outputFile);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, outputFile);
         return options;
     }
 
@@ -63,7 +63,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, File outputFile){
         Map<String, Object> options = getMitabOptions(objectCategory, null, true, null, false);
-        options.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, outputFile);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, outputFile);
         return options;
     }
 
@@ -76,7 +76,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, File outputFile){
         Map<String, Object> options = getMitabOptions(null, null, writeHeader, version, false);
-        options.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, outputFile);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, outputFile);
         return options;
     }
 
@@ -87,7 +87,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getDefaultMitabOptions(OutputStream output){
         Map<String, Object> options = getMitabOptions(InteractionObjectCategory.mixed, null, true, null, false);
-        options.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, output);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, output);
         return options;
     }
 
@@ -99,7 +99,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, OutputStream output){
         Map<String, Object> options = getMitabOptions(objectCategory, null, true, null, false);
-        options.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, output);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, output);
         return options;
     }
 
@@ -112,7 +112,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, OutputStream output){
         Map<String, Object> options = getMitabOptions(null, null, writeHeader, version, false);
-        options.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, output);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, output);
         return options;
     }
 
@@ -123,7 +123,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getDefaultMitabOptions(Writer writer){
         Map<String, Object> options = getMitabOptions(InteractionObjectCategory.mixed, null, true, null, false);
-        options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
         return options;
     }
 
@@ -135,7 +135,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, Writer writer){
         Map<String, Object> options = getMitabOptions(objectCategory, null, true, null, false);
-        options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
         return options;
     }
 
@@ -148,7 +148,7 @@ public class MIWriterOptionFactory {
      */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, Writer writer){
         Map<String, Object> options = getMitabOptions(null, null, writeHeader, version, false);
-        options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
         return options;
     }
 

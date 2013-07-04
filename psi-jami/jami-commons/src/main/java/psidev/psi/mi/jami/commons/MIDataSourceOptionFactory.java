@@ -42,7 +42,7 @@ public class MIDataSourceOptionFactory {
     public Map<String, Object> getDefaultOptions(File file) throws IOException {
 
         Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(file));
-        options.put(MIDataSourceFactory.INPUT_FILE_OPTION_KEY, file);
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, file);
 
         return options;
     }
@@ -57,7 +57,7 @@ public class MIDataSourceOptionFactory {
     public Map<String, Object> getDefaultOptions(InputStream streamToAnalyse, InputStream source) throws IOException {
 
         Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(streamToAnalyse));
-        options.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, source);
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, source);
 
         return options;
     }
@@ -72,7 +72,7 @@ public class MIDataSourceOptionFactory {
     public Map<String, Object> getDefaultOptions(Reader readerToAnalyze, Reader sourceReader) throws IOException {
 
         Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(readerToAnalyze));
-        options.put(MIDataSourceFactory.READER_OPTION_KEY, sourceReader);
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, sourceReader);
 
         return options;
     }
