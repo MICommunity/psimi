@@ -55,11 +55,6 @@ public class Mitab26BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInter
     }
 
     @Override
-    public void close() throws DataSourceWriterException {
-        super.close();
-    }
-
-    @Override
     public void write(BinaryInteraction interaction) throws DataSourceWriterException {
         if (this.binaryEvidenceWriter == null || this.modelledBinaryWriter == null){
             throw new IllegalStateException("The Mitab writer has not been initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
@@ -90,6 +85,17 @@ public class Mitab26BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInter
         else {
             super.write(interaction);
         }
+    }
+
+    @Override
+    public void flush() throws DataSourceWriterException{
+        if (binaryEvidenceWriter != null){
+            binaryEvidenceWriter.flush();
+        }
+        if (modelledBinaryWriter != null){
+            modelledBinaryWriter.flush();
+        }
+        super.flush();
     }
 
     protected void initialiseSubWritersWith(Writer writer) {
