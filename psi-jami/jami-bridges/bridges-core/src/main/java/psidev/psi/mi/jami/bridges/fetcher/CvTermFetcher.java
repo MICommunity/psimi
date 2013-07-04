@@ -64,13 +64,6 @@ public interface CvTermFetcher<C extends CvTerm>{
             throws BridgeFailedException;
 
 
-
-
-
-
-
-
-
     //------
 
 
