@@ -55,8 +55,14 @@ public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInter
     }
 
     @Override
-    public void close() throws DataSourceWriterException {
-        super.close();
+    public void flush() throws DataSourceWriterException{
+        if (binaryEvidenceWriter != null){
+            binaryEvidenceWriter.flush();
+        }
+        if (modelledBinaryWriter != null){
+            modelledBinaryWriter.flush();
+        }
+        super.flush();
     }
 
     @Override
