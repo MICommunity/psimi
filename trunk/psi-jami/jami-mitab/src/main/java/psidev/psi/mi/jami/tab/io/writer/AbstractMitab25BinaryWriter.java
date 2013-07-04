@@ -182,9 +182,15 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         if (isInitialised){
             try {
                 writer.flush();
-                writer.close();
             } catch (IOException e) {
                 throw new DataSourceWriterException("Impossible to close the MITAB writer", e);
+            }
+            finally {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    throw new DataSourceWriterException("Impossible to close the MITAB writer", e);
+                }
             }
 
             isInitialised = false;
