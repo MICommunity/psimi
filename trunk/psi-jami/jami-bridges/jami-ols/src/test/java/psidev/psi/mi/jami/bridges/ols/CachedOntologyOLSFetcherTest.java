@@ -28,7 +28,7 @@ public class CachedOntologyOLSFetcherTest {
 
     @Test
     public void baseLineReadOut() throws BridgeFailedException {
-        String[] tests = {"MI:0100" };//, "MI:0077" , "MI:0113"};//nuclear magnetic resonance
+        String[] tests = {"MI:0100" , "MI:0077" , "MI:0113"};//nuclear magnetic resonance
 
         for(String test : tests){
             OntologyTerm ontologyTerm = ontologyOLSFetcher.getCvTermByIdentifier(test,"psi-mi",true,true);
@@ -51,6 +51,9 @@ public class CachedOntologyOLSFetcherTest {
             listChildren(ontologyTerm  , "");
             listParents(ontologyTerm , "");
         }
+
+
+
 
     }
 
