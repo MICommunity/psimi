@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.tab.extension.MitabBinaryInteractionEvidence;
 import psidev.psi.mi.jami.tab.extension.MitabCvTerm;
 
@@ -17,7 +16,7 @@ import java.util.Collection;
  * @since <pre>04/07/13</pre>
  */
 
-public class BinaryEvidenceLineParser extends InteractionEvidenceLineParser{
+public class BinaryEvidenceLineParser extends AbstractInteractionEvidenceLineParser<BinaryInteractionEvidence>{
     public BinaryEvidenceLineParser(InputStream stream) {
         super(stream);
     }
@@ -40,16 +39,15 @@ public class BinaryEvidenceLineParser extends InteractionEvidenceLineParser{
     }
 
     @Override
-    protected void initialiseExpansionMethod(Collection<MitabCvTerm> expansion, InteractionEvidence interaction) {
-        BinaryInteractionEvidence binary = (BinaryInteractionEvidence)interaction;
+    protected void initialiseExpansionMethod(Collection<MitabCvTerm> expansion, BinaryInteractionEvidence interaction) {
         if (expansion.size() > 1){
             if (getParserListener() != null){
                 getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), expansion.size()+" complex expansions found. Only the first one will be loaded.");
             }
-            binary.setComplexExpansion(expansion.iterator().next());
+            interaction.setComplexExpansion(expansion.iterator().next());
         }
         else if (!expansion.isEmpty()){
-            binary.setComplexExpansion(expansion.iterator().next());
+            interaction.setComplexExpansion(expansion.iterator().next());
         }
     }
 }
