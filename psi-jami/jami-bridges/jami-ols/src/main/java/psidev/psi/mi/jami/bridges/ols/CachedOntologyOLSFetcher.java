@@ -4,9 +4,13 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +54,37 @@ public class CachedOntologyOLSFetcher
         }
     }
 
+
+
+
+    public OntologyTerm findDirectChildren(String termIdentifier , CvTerm ontologyDatabase, OntologyTerm ontologyTermFetched)
+            throws BridgeFailedException {
+
+        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabase.getShortName()+
+                "#"+true+"#"+false;
+        Object data = getFromCache( key );
+        if( data == null ) {
+            data = super.findDirectChildren(termIdentifier , ontologyDatabase, ontologyTermFetched);
+            storeInCache( key, data );
+        }
+        return (OntologyTerm) data;
+    }
+
+    public OntologyTerm findDirectParents(String termIdentifier , CvTerm ontologyDatabase, OntologyTerm ontologyTermFetched)
+            throws BridgeFailedException {
+
+        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabase.getShortName()+
+                "#"+false+"#"+true;
+        Object data = getFromCache( key );
+        if( data == null ) {
+            data = super.findDirectParents(termIdentifier , ontologyDatabase, ontologyTermFetched);
+            storeInCache( key, data );
+        }
+        return (OntologyTerm) data;
+    }
+
+
+
     public OntologyTerm getCvTermByIdentifier(
             String termIdentifier, String ontologyDatabaseName,
             boolean fetchChildren, boolean fetchParents)
@@ -65,6 +100,34 @@ public class CachedOntologyOLSFetcher
         }
         return (OntologyTerm) data;
     }
+
+
+    /*
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase, boolean fetchChildren, boolean fetchParents)
+            throws BridgeFailedException{
+
+        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabaseName+
+                "#"+fetchChildren+"#"+fetchParents;
+        Object data = getFromCache( key );
+        if( data == null ) {
+            data = super.getCvTermByIdentifier(
+                    termIdentifier, ontologyDatabaseName, fetchChildren, fetchParents);
+            storeInCache( key, data );
+        }
+        return (OntologyTerm) data;
+
+    }
+
+    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,  boolean fetchChildren, boolean fetchParents)
+            throws BridgeFailedException{
+
+    }
+
+    public OntologyTerm getCvTermByExactName(String searchName , boolean fetchChildren, boolean fetchParents)
+            throws BridgeFailedException{
+
+    }  */
+
 
 
 

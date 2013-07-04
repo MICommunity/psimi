@@ -18,7 +18,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
      * @param termIdentifier    The identifier for the CvTerm to fetch.
      * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
-     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @return  A full cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
     public C getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
