@@ -21,7 +21,7 @@ public interface InteractionWriter<T extends Interaction> {
      * Initialise the context of the InteractionWriter given a map of options
      * @param options
      */
-    public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException;
+    public void initialiseContext(Map<String, Object> options);
 
     /**
      * Writes an interaction
