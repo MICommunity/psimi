@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.factory;
 
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,8 +73,6 @@ public class InteractionWriterFactory {
                     logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
                     logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
-                } catch (DataSourceWriterException e) {
-                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
                 }
             }
         }
@@ -83,7 +80,7 @@ public class InteractionWriterFactory {
         return null;
     }
 
-    private InteractionWriter instantiateNewWriter(Class<? extends InteractionWriter> dataSourceClass, Map<String, Object> options) throws IllegalAccessException, InstantiationException, DataSourceWriterException {
+    private InteractionWriter instantiateNewWriter(Class<? extends InteractionWriter> dataSourceClass, Map<String, Object> options) throws IllegalAccessException, InstantiationException {
 
         InteractionWriter dataSource = dataSourceClass.newInstance();
         dataSource.initialiseContext(options);
