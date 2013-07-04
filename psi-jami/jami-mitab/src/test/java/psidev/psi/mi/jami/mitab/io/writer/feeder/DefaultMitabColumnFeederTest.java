@@ -51,7 +51,7 @@ public class DefaultMitabColumnFeederTest {
         writer = new StringWriter();
         feeder = new DefaultMitabColumnFeeder(writer);
         feeder.writeUniqueIdentifier(participant_with_identifiers);
-        Assert.assertEquals("chebi:\"CHEBI:xxx\"", writer.toString());
+        Assert.assertEquals("uniprotkb:P12345", writer.toString());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class DefaultMitabColumnFeederTest {
         writer = new StringWriter();
         feeder = new DefaultMitabColumnFeeder(writer);
         feeder.writeAlternativeIdentifiers(participant_with_identifiers);
-        Assert.assertEquals("uniprotkb:P12345", writer.toString());
+        Assert.assertEquals("chebi:\"CHEBI:xxx\"", writer.toString());
     }
 
     @Test
