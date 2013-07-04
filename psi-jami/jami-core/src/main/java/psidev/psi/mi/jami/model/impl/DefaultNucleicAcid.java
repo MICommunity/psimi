@@ -95,6 +95,15 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
         super(name, fullName, CvTermUtils.createNucleicAcidInteractorType(), organism, uniqueId);
     }
 
+    /**
+     * The first ddbjEmblGenbank if provided, then the first refseq identifier if provided, otherwise the first identifier in the list
+     * @return
+     */
+    @Override
+    public Xref getPreferredIdentifier() {
+        return ddbjEmblGenbank != null ? ddbjEmblGenbank : (refseq != null ? refseq : super.getPreferredIdentifier());
+    }
+
     public String getDdbjEmblGenbank() {
         return this.ddbjEmblGenbank != null ? this.ddbjEmblGenbank.getId() : null;
     }

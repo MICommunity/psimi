@@ -149,6 +149,14 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
         super.initialiseChecksumsWith(new BioctiveEntityChecksumList());
     }
 
+    @Override
+    /**
+     * Return the first chebi identifier if provided, otherwise the first identifier in the list of identifiers
+     */
+    public Xref getPreferredIdentifier() {
+        return chebi != null ? chebi : super.getPreferredIdentifier();
+    }
+
     public String getChebi() {
         return chebi != null ? chebi.getId() : null;
     }

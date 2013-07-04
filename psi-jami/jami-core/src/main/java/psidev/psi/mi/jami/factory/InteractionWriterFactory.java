@@ -22,9 +22,7 @@ public class InteractionWriterFactory {
 
     private Map<Class<? extends InteractionWriter>, Map<String, Object>> registeredWriters;
 
-    public static final String OUTPUT_FILE_OPTION_KEY = "output_file_key";
-    public static final String OUTPUT_STREAM_OPTION_KEY = "output_stream_key";
-    public static final String WRITER_OPTION_KEY = "ouput_writer_key";
+    public static final String OUTPUT_OPTION_KEY = "output_key";
     public static final String COMPLEX_EXPANSION_OPTION_KEY = "complex_expansion_key";
     public static final String OUTPUT_FORMAT_OPTION_KEY = "output_format_key";
 
