@@ -110,11 +110,11 @@ public class ModelledBinaryInteractionWrapper extends AbstractBinaryInteractionW
             return false;
         }
         if (getParticipantB() != null && getParticipantA() != null){
-            throw new IllegalArgumentException("A ModelledBinaryInteraction cannot have more than two participants.");
+            throw new IllegalStateException("A ModelledBinaryInteraction cannot have more than two participants.");
         }
-        else if (getParticipantB() != null){
+        else if (getParticipantA() != null){
             part.setModelledInteraction(modelledInteraction);
-            setParticipantA(part);
+            setParticipantB(part);
             return true;
         }
         else{

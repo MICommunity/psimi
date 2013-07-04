@@ -142,11 +142,11 @@ public class BinaryInteractionEvidenceWrapper extends AbstractBinaryInteractionW
             return false;
         }
         if (getParticipantB() != null && getParticipantA() != null){
-            throw new IllegalArgumentException("A BinaryInteractionEvidence cannot have more than two participants.");
+            throw new IllegalStateException("A BinaryInteractionEvidence cannot have more than two participants.");
         }
-        else if (getParticipantB() != null){
+        else if (getParticipantA() != null){
             part.setInteractionEvidence(interactionEvidence);
-            setParticipantA(part);
+            setParticipantB(part);
             return true;
         }
         else{
