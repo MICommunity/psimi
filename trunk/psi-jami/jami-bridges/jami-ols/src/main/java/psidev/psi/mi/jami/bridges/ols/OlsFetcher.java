@@ -153,8 +153,8 @@ public class OlsFetcher
             // Key is the Identifier, value is the full name
 
 
-            Xref dbxref = new DefaultXref(ontologyDatabase, entry.getKey());
-            CvTerm cvTermEnriched = new DefaultCvTerm(entry.getValue(), entry.getValue(),dbxref);
+            Xref identifierXref = new DefaultXref(ontologyDatabase, entry.getKey());
+            CvTerm cvTermEnriched = new DefaultCvTerm(entry.getValue(), entry.getValue(), identifierXref);
 
             return completeIdentifiedCvTerm(cvTermEnriched, entry.getKey(), ontologyDatabaseName);
         }
@@ -201,8 +201,8 @@ public class OlsFetcher
 
             String ontologyDatabaseName = dbMap.get(ontologyDatabase.getShortName());
 
-            Xref dbxref = new DefaultXref(ontologyDatabase, entry.getKey());
-            CvTerm cvTermEnriched = new DefaultCvTerm(entry.getValue(), entry.getValue(),dbxref);
+            Xref identifierXref = new DefaultXref(ontologyDatabase, entry.getKey());
+            CvTerm cvTermEnriched = new DefaultCvTerm(entry.getValue(), entry.getValue(), identifierXref);
 
             return completeIdentifiedCvTerm(cvTermEnriched, entry.getKey(), ontologyDatabaseName);
         }
@@ -264,8 +264,8 @@ public class OlsFetcher
         }
 
         //Todo Check these fields are used correctly
-        Xref dbxref = new DefaultXref(database, resultIdentifier, CvTermUtils.getIdentity());
-        CvTerm cvTermEnriched = new DefaultCvTerm(resultTerm,resultTerm,dbxref);
+        Xref identifierXref = new DefaultXref(database, resultIdentifier);
+        CvTerm cvTermEnriched = new DefaultCvTerm(resultTerm,resultTerm,identifierXref);
 
         return completeIdentifiedCvTerm(cvTermEnriched, resultIdentifier, database.getShortName()); */
         return null;

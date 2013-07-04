@@ -42,7 +42,18 @@ public class OntologyOLSFetcher
     }
 
 
+    //=======================================
+    // Find Relations
 
+    /**
+     * Recursively find all children for the provided ontology term.
+     * Children found by this method have no parents.
+     * @param termIdentifier
+     * @param ontologyDatabase
+     * @param ontologyTermFetched
+     * @return
+     * @throws BridgeFailedException
+     */
     public OntologyTerm findDirectChildren(String termIdentifier , CvTerm ontologyDatabase, OntologyTerm ontologyTermFetched)
             throws BridgeFailedException {
 
@@ -62,6 +73,15 @@ public class OntologyOLSFetcher
         return ontologyTermFetched;
     }
 
+    /**
+     * Recursively finds all the direct parents for the provided ontology term.
+     * Parents found by this method have no children.
+     * @param termIdentifier
+     * @param ontologyDatabase
+     * @param ontologyTermFetched
+     * @return
+     * @throws BridgeFailedException
+     */
     public OntologyTerm findDirectParents(String termIdentifier , CvTerm ontologyDatabase, OntologyTerm ontologyTermFetched)
             throws BridgeFailedException {
         try{
@@ -81,14 +101,17 @@ public class OntologyOLSFetcher
         return ontologyTermFetched;
     }
 
+    //=======================================
+    // Find with Relations
 
     /**
-     *
-     * @param termIdentifier
-     * @param ontologyDatabaseName
-     * @param fetchChildren
-     * @param fetchParents
-     * @return
+     * Finds an ontologyTerm using a termIdentifier and an ontology database name.
+     * If children or parents are selected it will recursively find them until the
+     * @param termIdentifier        The identifier for the CvTerm to fetch.
+     * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
+     * @param fetchChildren         Flag to note that children should be found
+     * @param fetchParents          Flag to note that parents should be found
+     * @return          A completed term or null if no term could be found.
      * @throws BridgeFailedException
      */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName,
@@ -109,19 +132,6 @@ public class OntologyOLSFetcher
         return ontologyTermFetched;
     }
 
-    /**
-     * Finds a cvTerm
-     * @param termIdentifier    The identifier for the CvTerm to fetch.
-     * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
-     * @return
-     * @throws BridgeFailedException
-     */
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
-            throws BridgeFailedException {
-        return getCvTermByIdentifier(termIdentifier, ontologyDatabaseName, false, false);
-    }
-
-
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase,
                                               boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException {
@@ -135,11 +145,6 @@ public class OntologyOLSFetcher
         if(fetchParents)findDirectParents(termIdentifier , ontologyDatabase, ontologyTermFetched);
 
         return ontologyTermFetched;
-    }
-
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
-            throws BridgeFailedException {
-        return getCvTermByIdentifier(termIdentifier, ontologyDatabase , false, false);
     }
 
     public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,
@@ -160,11 +165,6 @@ public class OntologyOLSFetcher
         return ontologyTermFetched;
     }
 
-    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
-            throws BridgeFailedException {
-        return getCvTermByExactName(searchName, ontologyDatabaseName, false, false);
-    }
-
     public OntologyTerm getCvTermByExactName(String searchName, boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException {
 
@@ -182,30 +182,39 @@ public class OntologyOLSFetcher
         return ontologyTermFetched;
     }
 
+    //===============================
+    // Find without Relations
+
+    /**
+     * Finds an ontologyTerm using a termIdentifier and an ontology database name.
+     * @param termIdentifier    The identifier for the CvTerm to fetch.
+     * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
+     * @return
+     * @throws BridgeFailedException
+     */
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
+            throws BridgeFailedException {
+        return getCvTermByIdentifier(termIdentifier, ontologyDatabaseName, false, false);
+    }
+
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+            throws BridgeFailedException {
+        return getCvTermByIdentifier(termIdentifier, ontologyDatabase , false, false);
+    }
+
+    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
+            throws BridgeFailedException {
+        return getCvTermByExactName(searchName, ontologyDatabaseName, false, false);
+    }
+
     public OntologyTerm getCvTermByExactName(String searchName)
             throws BridgeFailedException {
 
         return getCvTermByExactName(searchName, false, false);
     }
 
-
-
-
-
-
-
-    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, String databaseName)
-            throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, CvTerm database)
-            throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-
-
+    //================================
+    // Multi' Methods with Relations
 
     public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers,
                                                                              boolean fetchChildren, boolean fetchParents)
@@ -232,9 +241,8 @@ public class OntologyOLSFetcher
     }
 
 
-
-
-
+    //================================
+    // Multi' Methods without Relations
 
 
     public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers)
@@ -257,14 +265,34 @@ public class OntologyOLSFetcher
         return null;
     }
 
-    public OntologyTerm getOntologyTermFromCvTerm(CvTerm cvterm){
+
+    ///////////////////////////////
+    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, String databaseName)
+            throws BridgeFailedException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, CvTerm database)
+            throws BridgeFailedException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+
+
+
+    /**
+     * Converts a CvTerm into an ontologyTerm
+     * @param cvterm    A cvTerm to convert
+     * @return          The ontologyterm of the cvTerm
+     */
+    public static OntologyTerm getOntologyTermFromCvTerm(CvTerm cvterm){
         if (cvterm == null) return null;
         OntologyTerm ontologyTerm = new DefaultOntologyTerm(cvterm.getShortName());
         ontologyTerm.setFullName( cvterm.getFullName());
         ontologyTerm.getIdentifiers().addAll(cvterm.getIdentifiers());
         ontologyTerm.getSynonyms().addAll(cvterm.getSynonyms());
         return ontologyTerm;
-
     }
 
 }
