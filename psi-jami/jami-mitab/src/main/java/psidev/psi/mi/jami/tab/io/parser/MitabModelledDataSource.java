@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.tab.io.iterator.MitabModelledInteractionIterator;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Iterator;
 
 /**
@@ -68,6 +69,20 @@ public class MitabModelledDataSource extends AbstractMitabDataSource<ModelledInt
     @Override
     protected Iterator<ModelledInteraction> createMitabIterator() {
         return new MitabModelledInteractionIterator(getLineParser());
+    }
+
+    @Override
+    protected void initialiseMitabLineParser(URL url) {
+        if (url == null){
+            throw new IllegalArgumentException("The url cannot be null.");
+        }
+        setOriginalURL(url);
+        try {
+            InputStream stream = new BufferedInputStream(url.openStream());
+            initialiseMitabLineParser(stream);
+        } catch (IOException e) {
+            throw new RuntimeException("Impossible to open the url " + url.toExternalForm());
+        }
     }
 }
 

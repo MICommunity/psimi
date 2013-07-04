@@ -83,7 +83,7 @@ public class Mitab25BinaryEvidenceWriterTest {
         Mitab25BinaryEvidenceWriter binaryWriter = new Mitab25BinaryEvidenceWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
-        options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
         binaryWriter.initialiseContext(options);
 
         BinaryInteractionEvidence binary = createBinaryInteractionEvidence();

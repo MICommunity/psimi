@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.io.iterator.MitabInteractionEvidenceIterator;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Iterator;
 
 /**
@@ -68,5 +69,19 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
     @Override
     protected Iterator<InteractionEvidence> createMitabIterator() {
         return new MitabInteractionEvidenceIterator(getLineParser());
+    }
+
+    @Override
+    protected void initialiseMitabLineParser(URL url) {
+        if (url == null){
+            throw new IllegalArgumentException("The url cannot be null.");
+        }
+        setOriginalURL(url);
+        try {
+            InputStream stream = new BufferedInputStream(url.openStream());
+            initialiseMitabLineParser(stream);
+        } catch (IOException e) {
+            throw new RuntimeException("Impossible to open the url " + url.toExternalForm());
+        }
     }
 }

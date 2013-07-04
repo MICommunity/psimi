@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.tab.io.parser;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
@@ -11,9 +10,15 @@ import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * abstract class for Mitab datasource
@@ -28,6 +33,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
     private MitabLineParser<T,P> lineParser;
     private boolean isInitialised = false;
 
+    private URL originalURL;
     private File originalFile;
     private InputStream originalStream;
     private Reader originalReader;
@@ -36,7 +42,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     private MitabParserListener parserListener;
     private MIFileParserListener defaultParserListener;
-
+    private static final String FILE_URI_PREFIX = "file://";
+    private static final Pattern URL_PREFIX_REGEXP = Pattern.compile("\\w+?://");
 
     /**
      * Empty constructor for the factory
@@ -62,30 +69,72 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         isInitialised = true;
     }
 
+    public AbstractMitabDataSource(URL url) {
+
+        initialiseURL(url);
+        isInitialised = true;
+    }
+
     public MIFileParserListener getFileParserListener() {
         return this.defaultParserListener;
     }
 
     public void initialiseContext(Map<String, Object> options) {
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
-                    + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
+            throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         else if (options == null){
             return;
         }
-        else if (options.containsKey(MIDataSourceFactory.INPUT_FILE_OPTION_KEY)){
-            initialiseFile((File) options.get(MIDataSourceFactory.INPUT_FILE_OPTION_KEY));
-        }
-        else if (options.containsKey(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY)){
-            initialiseInputStream((InputStream) options.get(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY));
-        }
-        else if (options.containsKey(MIDataSourceFactory.READER_OPTION_KEY)){
-            initialiseReader((Reader) options.get(MIDataSourceFactory.READER_OPTION_KEY));
+        else if (options.containsKey(MIDataSourceFactory.INPUT_OPTION_KEY)){
+            Object input = options.get(MIDataSourceFactory.INPUT_OPTION_KEY);
+            if (input instanceof URL){
+               initialiseURL((URL) input);
+            }
+            else if (input instanceof File){
+                initialiseFile((File) input);
+            }
+            else if (input instanceof InputStream){
+                initialiseInputStream((InputStream) input);
+            }
+            else if (input instanceof Reader){
+                initialiseReader((Reader) input);
+            }
+            // suspect a file/url path
+            else if (input instanceof String){
+                String inputString = (String)input;
+                // file uri
+                if (inputString.startsWith(FILE_URI_PREFIX)){
+                    try {
+                        initialiseFile(new File(new URI(inputString)));
+                    } catch (URISyntaxException e) {
+                        throw new IllegalArgumentException("Impossible to open and read the file " + inputString, e);
+                    }
+                }
+                // check if url
+                else {
+                    Matcher matcher = URL_PREFIX_REGEXP.matcher(inputString);
+
+                    // we have a url
+                    if (matcher.find()){
+                        try {
+                            initialiseURL(new URL(inputString));
+                        } catch (MalformedURLException e) {
+                            throw new IllegalArgumentException("Impossible to open and read the URL " + inputString, e);
+                        }
+                    }
+                    // we have a file
+                    else{
+                        initialiseFile(new File(inputString));
+                    }
+                }
+            }
+            else {
+                throw new IllegalArgumentException("Impossible to read the provided input "+input.getClass().getName() + ", a File, InputStream, Reader, URL or file/URL path was expected.");
+            }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the Mitab25Writer should contain at least "+InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
-                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
         if (options.containsKey(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY)){
@@ -112,6 +161,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                 }
             }
             this.originalFile = null;
+            this.originalURL = null;
             this.lineParser = null;
             this.parserListener = null;
             this.defaultParserListener = null;
@@ -128,8 +178,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     public boolean validateSyntax() {
         if (!isInitialised){
-            throw new IllegalStateException("The mitab datasource has not been initialised. The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
-                    + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
+            throw new IllegalStateException("The Mitab interaction datasource has not been initialised. The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
         if (lineParser.hasFinished() && isValid == null){
@@ -284,8 +333,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     public Iterator<T> getInteractionsIterator() {
         if (!isInitialised){
-            throw new IllegalStateException("The MITAB datasource has not been initialised. The options for the MitabDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
-                    + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY+ " to know where to load the interactions from.");
+            throw new IllegalStateException("The Mitab interaction datasource has not been initialised. The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
         if (lineParser.hasFinished()){
@@ -309,6 +357,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     protected abstract void initialiseMitabLineParser(InputStream input);
 
+    protected abstract void initialiseMitabLineParser(URL url);
+
     protected abstract Iterator<T> createMitabIterator();
 
     protected void reInit(){
@@ -329,6 +379,24 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException("We cannot open the file " + this.originalFile.getName(), e);
+                }
+            }
+            else if (this.originalURL != null){
+                // close the previous stream
+                if (this.originalStream != null){
+                    try {
+                        this.originalStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // reinitialise mitab parser
+                try {
+                    this.originalStream = originalURL.openStream();
+                    this.lineParser.ReInit(this.originalStream);
+
+                } catch (IOException e) {
+                    throw new RuntimeException("We cannot open the URL " + this.originalURL.toExternalForm(), e);
                 }
             }
             else if (this.originalStream != null){
@@ -370,6 +438,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         this.originalFile = null;
         this.originalReader = reader;
         this.originalStream = null;
+        this.originalURL = null;
 
         initialiseMitabLineParser(reader);
     }
@@ -381,6 +450,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         this.originalFile = null;
         this.originalReader = null;
         this.originalStream = input;
+        this.originalURL = null;
 
         initialiseMitabLineParser(input);
     }
@@ -395,8 +465,21 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         this.originalFile = file;
         this.originalReader = null;
         this.originalStream = null;
+        this.originalURL = null;
 
         initialiseMitabLineParser(file);
+    }
+
+    private void initialiseURL(URL url)  {
+        if (url == null){
+            throw new IllegalArgumentException("The url cannot be null.");
+        }
+        this.originalURL = url;
+        this.originalReader = null;
+        this.originalStream = null;
+        this.originalFile = null;
+
+        initialiseMitabLineParser(url);
     }
 
     protected void setOriginalFile(File originalFile) {
@@ -409,6 +492,10 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     protected void setOriginalReader(Reader originalReader) {
         this.originalReader = originalReader;
+    }
+
+    protected void setOriginalURL(URL originalURL) {
+        this.originalURL = originalURL;
     }
 
     protected void setMitabFileParserListener(MitabParserListener listener) {

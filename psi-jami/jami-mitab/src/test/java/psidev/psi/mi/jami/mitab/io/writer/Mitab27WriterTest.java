@@ -86,7 +86,7 @@ public class Mitab27WriterTest {
         Mitab27Writer binaryWriter = new Mitab27Writer();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
-        options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
         options.put(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY, new SpokeExpansion());
         binaryWriter.initialiseContext(options);
 
