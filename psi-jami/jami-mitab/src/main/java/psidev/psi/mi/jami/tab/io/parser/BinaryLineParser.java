@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.extension.MitabBinaryInteraction;
 import psidev.psi.mi.jami.tab.extension.MitabCvTerm;
@@ -21,7 +20,7 @@ import java.util.Collection;
  * @since <pre>04/07/13</pre>
  */
 
-public class BinaryLineParser extends InteractionLineParser{
+public class BinaryLineParser extends AbstractLightInteractionLineParser<BinaryInteraction>{
     public BinaryLineParser(InputStream stream) {
         super(stream);
     }
@@ -44,27 +43,25 @@ public class BinaryLineParser extends InteractionLineParser{
     }
 
     @Override
-    protected void initialiseExpansionMethod(Collection<MitabCvTerm> expansion, Interaction interaction) {
-        BinaryInteraction binary = (BinaryInteraction)interaction;
+    protected void initialiseExpansionMethod(Collection<MitabCvTerm> expansion, BinaryInteraction interaction) {
         if (expansion.size() > 1){
             if (getParserListener() != null){
                 getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), expansion.size()+" complex expansions found. Only the first one will be loaded.");
             }
-            binary.setComplexExpansion(expansion.iterator().next());
+            interaction.setComplexExpansion(expansion.iterator().next());
         }
         else if (!expansion.isEmpty()){
-            binary.setComplexExpansion(expansion.iterator().next());
+            interaction.setComplexExpansion(expansion.iterator().next());
         }
     }
 
     @Override
-    protected void addParticipant(Participant participant, Interaction interaction) {
-        BinaryInteraction binary = (BinaryInteraction) interaction;
-        if (binary.getParticipantA() != null){
-            binary.setParticipantB(participant);
+    protected void addParticipant(Participant participant, BinaryInteraction interaction) {
+        if (interaction.getParticipantA() != null){
+            interaction.setParticipantB(participant);
         }
         else {
-            binary.setParticipantA(participant);
+            interaction.setParticipantA(participant);
         }
     }
 }
