@@ -4,9 +4,7 @@ import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.tab.MitabVersion;
-import psidev.psi.mi.jami.tab.io.parser.LightMitabDataSource;
-import psidev.psi.mi.jami.tab.io.parser.MitabEvidenceDataSource;
-import psidev.psi.mi.jami.tab.io.parser.MitabModelledDataSource;
+import psidev.psi.mi.jami.tab.io.parser.*;
 import psidev.psi.mi.jami.tab.io.writer.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
@@ -179,6 +177,9 @@ public class PsiJami {
 
         Map<String, Object> supportedOptions3 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.basic);
         datasourceFactory.registerDataSource(LightMitabDataSource.class, supportedOptions3);
+
+        Map<String, Object> supportedOptions33 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.basic_binary);
+        datasourceFactory.registerDataSource(LightMitabBinaryDataSource.class, supportedOptions33);
     }
 
     public static void initialiseModelledInteractionSources() {
@@ -186,6 +187,9 @@ public class PsiJami {
 
         Map<String, Object> supportedOptions2 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.modelled);
         datasourceFactory.registerDataSource(MitabModelledDataSource.class, supportedOptions2);
+
+        Map<String, Object> supportedOptions22 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.modelled_binary);
+        datasourceFactory.registerDataSource(MitabModelledBinaryDataSource.class, supportedOptions22);
     }
 
     public static void initialiseInteractionEvidenceSources() {
@@ -193,6 +197,9 @@ public class PsiJami {
 
         Map<String, Object> supportedOptions1 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.evidence);
         datasourceFactory.registerDataSource(MitabEvidenceDataSource.class, supportedOptions1);
+
+        Map<String, Object> supportedOptions11 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.binary_evidence);
+        datasourceFactory.registerDataSource(MitabBinaryEvidenceDataSource.class, supportedOptions11);
     }
 
     private static Map<String, Object> createInteractionWriterOptions(String outputFormat, InteractionObjectCategory interactionCategory, MitabVersion version, boolean extended, boolean needCompleExpansion) {
@@ -204,9 +211,7 @@ public class PsiJami {
         }
         supportedOptions4.put(MitabUtils.MITAB_HEADER_OPTION, null);
         supportedOptions4.put(MitabUtils.MITAB_VERSION_OPTION, version);
-        supportedOptions4.put(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY, null);
-        supportedOptions4.put(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY, null);
-        supportedOptions4.put(InteractionWriterFactory.WRITER_OPTION_KEY, null);
+        supportedOptions4.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, null);
         supportedOptions4.put(MitabUtils.MITAB_EXTENDED_OPTION, extended);
         return supportedOptions4;
     }
@@ -217,9 +222,7 @@ public class PsiJami {
         supportedOptions1.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
         supportedOptions1.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory);
         supportedOptions1.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, null);
-        supportedOptions1.put(MIDataSourceFactory.INPUT_FILE_OPTION_KEY, null);
-        supportedOptions1.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, null);
-        supportedOptions1.put(MIDataSourceFactory.READER_OPTION_KEY, null);
+        supportedOptions1.put(MIDataSourceFactory.INPUT_OPTION_KEY, null);
         return supportedOptions1;
     }
 }
