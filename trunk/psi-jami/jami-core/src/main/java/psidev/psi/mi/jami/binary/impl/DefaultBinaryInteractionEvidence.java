@@ -246,7 +246,7 @@ public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<P
         }
         else{
             part.setInteractionEvidence(this);
-            setParticipantB(part);
+            setParticipantA(part);
             return true;
         }
     }
