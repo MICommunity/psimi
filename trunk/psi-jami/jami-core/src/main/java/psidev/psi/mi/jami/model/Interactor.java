@@ -53,6 +53,14 @@ public interface Interactor {
     public Collection<Xref> getIdentifiers();
 
     /**
+     * The identifier in the list of identifiers which is the preferred identifier.
+     * If no identifiers is preferred, it should return the first identifier of the list of identifiers, null if the list of identifiers
+     * is empty.
+     * @return the preferred identifier in the list of identifiers, null if the list of identifiers is empty
+     */
+    public Xref getPreferredIdentifier();
+
+    /**
      * Set of checksums computed for this interactor.
      * The Collection cannot be null so when an interactor does not have a checksum, the method should return an empty Collection
      * Ex: rogid:u1FCes02jPb3CGRj1aDkzpbSiuI9606, standard Inchi key, ...

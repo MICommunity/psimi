@@ -111,6 +111,15 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
         initialiseAliasesWith(new ProteinAliasList());
     }
 
+    /**
+     * The first uniprokb if provided, then the first refseq identifier if provided, otherwise the first identifier in the list
+     * @return
+     */
+    @Override
+    public Xref getPreferredIdentifier() {
+        return uniprotkb != null ? uniprotkb : (refseq != null ? refseq : super.getPreferredIdentifier());
+    }
+
     public String getUniprotkb() {
         return this.uniprotkb != null ? this.uniprotkb.getId() : null;
     }

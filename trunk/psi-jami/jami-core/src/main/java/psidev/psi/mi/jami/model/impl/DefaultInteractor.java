@@ -227,6 +227,14 @@ public class DefaultInteractor implements Interactor, Serializable {
         return this.identifiers;
     }
 
+    /**
+     *
+     * @return the first identifier in the list of identifiers or null if the list is empty
+     */
+    public Xref getPreferredIdentifier() {
+        return !identifiers.isEmpty() ? identifiers.iterator().next() : null;
+    }
+
     public Collection<Checksum> getChecksums() {
         if (checksums == null){
             initialiseChecksums();

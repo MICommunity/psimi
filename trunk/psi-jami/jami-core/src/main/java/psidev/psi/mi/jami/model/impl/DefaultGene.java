@@ -93,6 +93,16 @@ public class DefaultGene extends DefaultMolecule implements Gene {
         initialiseIdentifiersWith(new GeneIdentifierList());
     }
 
+    @Override
+    /**
+     * Return the first ensembl identifier if provided, otherwise the first ensemblGenomes if provided, otherwise
+     * the first entrez/gene id if provided, otherwise the first refseq id if provided
+     * otherwise the first identifier in the list of identifiers
+     */
+    public Xref getPreferredIdentifier() {
+        return ensembl != null ? ensembl : (ensemblGenome != null ? ensemblGenome : (entrezGeneId != null ? entrezGeneId : (refseq != null ? refseq : super.getPreferredIdentifier())));
+    }
+
     public String getEnsembl() {
         return this.ensembl != null ? this.ensembl.getId() : null;
     }

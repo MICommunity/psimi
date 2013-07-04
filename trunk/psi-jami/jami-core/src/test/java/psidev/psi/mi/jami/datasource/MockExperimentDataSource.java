@@ -16,10 +16,10 @@ import java.util.Map;
 public class MockExperimentDataSource implements MIFileDataSource {
 
     public void initialiseContext(Map<String, Object> options) {
-        if (!options.containsKey(MIDataSourceFactory.INPUT_FILE_OPTION_KEY)){
+        if (!options.containsKey(MIDataSourceFactory.INPUT_OPTION_KEY)){
             throw new IllegalArgumentException("no source option");
         }
-        else if (options.get(MIDataSourceFactory.INPUT_FILE_OPTION_KEY) == null){
+        else if (options.get(MIDataSourceFactory.INPUT_OPTION_KEY) == null){
             throw new IllegalArgumentException("no source option");
         }
     }
