@@ -12,7 +12,7 @@ import java.io.Reader;
 import java.util.Collection;
 
 /**
- * An extension of MitabLineParser that returns simple binary interactions only.
+ * An extension of MitabLineParser that returns simple interactions only.
  *
  * It ignore properties of InteractionEvidence and ModelledInteraction
  *
@@ -101,8 +101,8 @@ public class InteractionLineParser extends AbstractInteractionLineParser<Interac
     }
 
     @Override
-    MitabInteraction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabInteraction interaction = null;
+    Interaction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        Interaction interaction = null;
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
@@ -110,7 +110,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<Interac
             return interaction;
         }
         // create interaction with participants
-        interaction = new MitabInteraction();
+        interaction = createInteraction();
 
         // set interaction type
         if (interactionType.size() > 1){
@@ -125,15 +125,7 @@ public class InteractionLineParser extends AbstractInteractionLineParser<Interac
         // set identifiers
         initialiseInteractionIdentifiers(interactionId, interaction);
         // set expansion method
-        if (expansion.size() > 1){
-            if (getParserListener() != null){
-                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
-            }
-            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
-        }
-        else if (!expansion.isEmpty()){
-            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
-        }
+        initialiseExpansionMethod(expansion, interaction);
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
         // initialise annotations
@@ -162,18 +154,27 @@ public class InteractionLineParser extends AbstractInteractionLineParser<Interac
         interaction.getChecksums().addAll(checksumI);
 
         if (A == null && B == null && getParserListener() != null){
-            getParserListener().onInteractionWithoutParticipants(interaction, interaction);
+            getParserListener().onInteractionWithoutParticipants(interaction, (FileSourceContext)interaction);
         }
 
         if (A != null){
-            ((Collection<Participant>)interaction.getParticipants()).add(A);
+            addParticipant(A, interaction);
         }
         if (B != null){
-            ((Collection<Participant>)interaction.getParticipants()).add(B);
+            addParticipant(B, interaction);
         }
 
-        interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
+        ((FileSourceContext)interaction).setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
+    }
+
+    protected void addParticipant(Participant participant, Interaction interaction) {
+        ((Collection<Participant>)interaction.getParticipants()).add(participant);
+    }
+
+    @Override
+    protected Interaction createInteraction() {
+        return new MitabInteraction();
     }
 }

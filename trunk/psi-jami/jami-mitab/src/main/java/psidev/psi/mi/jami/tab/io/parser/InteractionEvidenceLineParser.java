@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * An extension of MitabLineParser that returns binary interactions evidences only.
+ * An extension of MitabLineParser that returns interactions evidences only.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -116,8 +116,8 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
     }
 
     @Override
-    MitabInteractionEvidence finishInteraction(ParticipantEvidence A, ParticipantEvidence B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabInteractionEvidence interaction = null;
+    InteractionEvidence finishInteraction(ParticipantEvidence A, ParticipantEvidence B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        InteractionEvidence interaction = null;
         boolean hasInteractionFields = !detMethod.isEmpty() || !firstAuthor.isEmpty() || !pubId.isEmpty() || !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !host.isEmpty() || !created.isEmpty() || !update.isEmpty() || isNegative;
 
@@ -126,7 +126,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         }
 
         // create interaction with participants
-        interaction = new MitabInteractionEvidence();
+        interaction = createInteraction();
 
         // create publication
         MitabPublication publication = createPublicationFrom(firstAuthor, pubId, source);
@@ -147,15 +147,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         // add confidences
         interaction.getConfidences().addAll(conf);
         // set expansion method
-        if (expansion.size() > 1){
-            if (getParserListener() != null){
-                getParserListener().onSeveralCvTermsFound(expansion, expansion.iterator().next(), interactionType.size()+" interaction types found. Only the first one will be loaded.");
-            }
-            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
-        }
-        else if (!expansion.isEmpty()){
-            interaction.getAnnotations().add(new MitabAnnotation(expansion.iterator().next()));
-        }
+        initialiseExpansionMethod(expansion, interaction);
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
         // initialise annotations
@@ -188,7 +180,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         interaction.setNegative(isNegative);
 
         if (A == null && B == null && getParserListener() != null){
-            getParserListener().onInteractionWithoutParticipants(interaction, interaction);
+            getParserListener().onInteractionWithoutParticipants(interaction, (FileSourceContext)interaction);
         }
 
         if (A != null){
@@ -198,7 +190,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             interaction.addParticipantEvidence(B);
         }
 
-        interaction.setSourceLocator(new MitabSourceLocator(line, 0, 0));
+        ((FileSourceContext)interaction).setSourceLocator(new MitabSourceLocator(line, 0, 0));
 
         return interaction;
     }
@@ -331,5 +323,10 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         if (author.getPublicationDate() != null){
             publication.setPublicationDate(author.getPublicationDate());
         }
+    }
+
+    @Override
+    protected InteractionEvidence createInteraction() {
+        return new MitabInteractionEvidence();
     }
 }
