@@ -74,31 +74,44 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         return writer;
     }
 
-    public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException {
+    public void initialiseContext(Map<String, Object> options) {
 
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
-                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         else if (options == null){
             return;
         }
-        else if (options.containsKey(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY)){
-            try {
-                initialiseFile((File) options.get(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY));
-            } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to open output file", e);
+        else if (options.containsKey(InteractionWriterFactory.OUTPUT_OPTION_KEY)){
+            Object output = options.get(InteractionWriterFactory.OUTPUT_OPTION_KEY);
+
+            if (output instanceof File){
+                try {
+                    initialiseFile((File) output);
+                } catch (IOException e) {
+                    throw new IllegalArgumentException("Impossible to open and write in output file " + ((File)output).getName(), e);
+                }
+            }
+            else if (output instanceof OutputStream){
+                initialiseOutputStream((OutputStream) output);
+            }
+            else if (output instanceof Writer){
+                initialiseWriter((Writer) output);
+            }
+            // suspect a file path
+            else if (output instanceof String){
+                try {
+                    initialiseFile(new File((String)output));
+                } catch (IOException e) {
+                    throw new IllegalArgumentException("Impossible to open and write in output file " + output, e);
+                }
+            }
+            else {
+                throw new IllegalArgumentException("Impossible to write in the provided output "+output.getClass().getName() + ", a File, OuputStream, Writer or file path was expected.");
             }
         }
-        else if (options.containsKey(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY)){
-            initialiseOutputStream((OutputStream) options.get(InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY));
-        }
-        else if (options.containsKey(InteractionWriterFactory.WRITER_OPTION_KEY)){
-            initialiseWriter((Writer) options.get(InteractionWriterFactory.WRITER_OPTION_KEY));
-        }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the Mitab25Writer should contain at least "+InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
-                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
         if (options.containsKey(MitabUtils.MITAB_HEADER_OPTION)){
@@ -119,9 +132,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
      */
     public void write(T interaction) throws DataSourceWriterException {
         if (!isInitialised){
-            throw new IllegalStateException("The Mitab25Writer has not been initialised with a map of options." +
-                    "The options for the Mitab25Writer should contain at least "+InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
-                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         try{
             writeHeaderIfNotDone();

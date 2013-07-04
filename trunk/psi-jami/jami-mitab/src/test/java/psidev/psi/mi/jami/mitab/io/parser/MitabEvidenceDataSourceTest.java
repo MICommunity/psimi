@@ -42,9 +42,10 @@ public class MitabEvidenceDataSourceTest {
 
         dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
+        dataSource.close();
     }
 
     @Test
@@ -54,9 +55,10 @@ public class MitabEvidenceDataSourceTest {
 
         dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
+        dataSource.close();
     }
 
     @Test
@@ -70,10 +72,11 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertTrue(dataSource.validateSyntax());
+        dataSource.close();
 
         dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -83,6 +86,7 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertTrue(dataSource.validateSyntax());
+        dataSource.close();
     }
 
     @Test
@@ -96,10 +100,11 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
+        dataSource.close();
 
         dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -109,6 +114,7 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
+        dataSource.close();
     }
 
     @Test(expected = RuntimeException.class)
@@ -116,6 +122,7 @@ public class MitabEvidenceDataSourceTest {
         MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         Assert.assertFalse(dataSource.validateSyntax());
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        dataSource.close();
     }
 
     @Test(expected = RuntimeException.class)
@@ -123,10 +130,11 @@ public class MitabEvidenceDataSourceTest {
 
         MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_STREAM_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        dataSource.close();
     }
 
     @Test
@@ -141,6 +149,7 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
+        dataSource.close();
     }
 
     @Test
@@ -148,7 +157,7 @@ public class MitabEvidenceDataSourceTest {
 
         MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_FILE_OPTION_KEY, new File(MitabEvidenceDataSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(MitabEvidenceDataSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
@@ -159,6 +168,7 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
+        dataSource.close();
     }
 
     @Test
@@ -166,7 +176,7 @@ public class MitabEvidenceDataSourceTest {
     public void test_playground(){
         MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_FILE_OPTION_KEY, new File("/home/marine/Desktop/general/intact/intact.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File("/home/marine/Desktop/general/intact/intact.txt"));
         dataSource.initialiseContext(options);
         System.out.print("start "+System.currentTimeMillis());
 
@@ -178,5 +188,6 @@ public class MitabEvidenceDataSourceTest {
         }
         System.out.println(" "+ count + " interactions");
         System.out.print("end " + System.currentTimeMillis());
+        dataSource.close();
     }
 }

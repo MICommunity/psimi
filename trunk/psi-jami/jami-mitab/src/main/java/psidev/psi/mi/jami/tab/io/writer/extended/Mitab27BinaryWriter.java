@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.tab.io.writer.extended;
 
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.tab.io.writer.feeder.extended.DefaultExtendedMitabColumnFeeder;
 
 import java.io.File;
@@ -39,7 +38,7 @@ public class Mitab27BinaryWriter extends psidev.psi.mi.jami.tab.io.writer.Mitab2
     }
 
     @Override
-    public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException {
+    public void initialiseContext(Map<String, Object> options) {
         super.initialiseContext(options);
         initialiseSubWritersWith(getWriter());
     }

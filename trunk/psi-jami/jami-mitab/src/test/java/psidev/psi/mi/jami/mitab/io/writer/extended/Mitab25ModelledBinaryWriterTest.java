@@ -81,7 +81,7 @@ public class Mitab25ModelledBinaryWriterTest {
         Mitab25ModelledBinaryWriter binaryWriter = new Mitab25ModelledBinaryWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
-        options.put(InteractionWriterFactory.WRITER_OPTION_KEY, writer);
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
         binaryWriter.initialiseContext(options);
 
         ModelledBinaryInteraction binary = createModelledBinaryInteraction();

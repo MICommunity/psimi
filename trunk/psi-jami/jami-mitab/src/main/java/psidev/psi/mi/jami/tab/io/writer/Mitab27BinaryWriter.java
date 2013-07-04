@@ -49,7 +49,7 @@ public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInter
     }
 
     @Override
-    public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException {
+    public void initialiseContext(Map<String, Object> options) {
         super.initialiseContext(options);
         initialiseSubWritersWith(getWriter());
     }
@@ -62,9 +62,7 @@ public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInter
     @Override
     public void write(BinaryInteraction interaction) throws DataSourceWriterException {
         if (this.binaryEvidenceWriter == null || this.modelledBinaryWriter == null){
-            throw new IllegalStateException("The Mitab25Writer has not been initialised with a map of options." +
-                    "The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
-                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The Mitab writer has not been initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         // did not start yet so need to write the header if required
         else if (!hasWrittenHeader()){
