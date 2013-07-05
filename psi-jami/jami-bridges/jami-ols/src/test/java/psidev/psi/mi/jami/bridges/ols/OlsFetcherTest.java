@@ -114,8 +114,4 @@ public class OlsFetcherTest {
         assertEquals(term, cvTermFetched.getShortName());
         assertEquals("MI:0580" , cvTermFetched.getMIIdentifier());
     }
-
-
-
-
 }
