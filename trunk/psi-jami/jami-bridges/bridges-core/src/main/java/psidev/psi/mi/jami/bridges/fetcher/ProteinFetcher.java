@@ -22,7 +22,6 @@ public interface ProteinFetcher {
      * @return  The proteins which match the search term. Never null
      * @throws BridgeFailedException    A problem has been encountered when contacting the service
      */
-    @NotNull
     public Collection<Protein> getProteinsByIdentifier(String identifier)
             throws BridgeFailedException;
 
@@ -32,7 +31,6 @@ public interface ProteinFetcher {
      * @return
      * @throws BridgeFailedException
      */
-    @NotNull
     public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers)
             throws BridgeFailedException;
 }

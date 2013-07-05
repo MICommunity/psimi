@@ -21,7 +21,7 @@ public class CachedOntologyOLSFetcherTest {
 
     protected final Logger log = LoggerFactory.getLogger(CachedOntologyOLSFetcherTest.class.getName());
 
-    CachedOntologyOLSFetcher ontologyOLSFetcher;// = new CachedOntologyOLSFetcher();
+    CachedOntologyOLSFetcher ontologyOLSFetcher;
 
     @Before
     public void setup() throws BridgeFailedException {
