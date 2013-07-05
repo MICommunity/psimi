@@ -26,6 +26,8 @@ public interface Feature {
     public static String SUFFICIENT_BINDING_MI ="MI:0442";
     public static String DIRECT_BINDING = "direct binding region";
     public static String DIRECT_BINDING_MI ="MI:1125";
+    public static String BINDING_SITE = "binding-associated region";
+    public static String BINDING_SITE_MI ="MI:0117";
 
     /**
      * The short name of a feature.
