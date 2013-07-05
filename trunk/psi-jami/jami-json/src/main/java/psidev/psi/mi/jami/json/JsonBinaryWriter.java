@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.json;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
@@ -11,6 +12,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -29,41 +31,53 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
     private Set<String> processedInteractors;
     private static final Logger logger = Logger.getLogger("MitabParserLogger");
     private Integer expansionId;
-    private int currentExpansion=1;
     private Collection<FeatureEvidence> experimentalFeatures;
     private Collection<FeatureEvidence> bindingSites;
     private Collection<FeatureEvidence> mutations;
     private Collection<FeatureEvidence> ptms;
+    private OntologyTermFetcher fetcher;
 
     public JsonBinaryWriter(){
         processedInteractors = new HashSet<String>();
         initialiseFeatureCollections();
     }
 
-    public JsonBinaryWriter(File file) throws IOException {
+    public JsonBinaryWriter(File file, OntologyTermFetcher fetcher) throws IOException {
 
         initialiseFile(file);
         processedInteractors = new HashSet<String>();
         initialiseFeatureCollections();
+        if (fetcher == null){
+            throw new IllegalArgumentException("The json writer needs an OntologyTermFetcher to write feature categories.");
+        }
+        this.fetcher = fetcher;
     }
 
-    public JsonBinaryWriter(OutputStream output) {
+    public JsonBinaryWriter(OutputStream output, OntologyTermFetcher fetcher) {
 
         initialiseOutputStream(output);
         processedInteractors = new HashSet<String>();
         initialiseFeatureCollections();
+        if (fetcher == null){
+            throw new IllegalArgumentException("The json writer needs an OntologyTermFetcher to write feature categories.");
+        }
+        this.fetcher = fetcher;
     }
 
-    public JsonBinaryWriter(Writer writer) {
+    public JsonBinaryWriter(Writer writer, OntologyTermFetcher fetcher) {
 
         initialiseWriter(writer);
         processedInteractors = new HashSet<String>();
         initialiseFeatureCollections();
+        if (fetcher == null){
+            throw new IllegalArgumentException("The json writer needs an OntologyTermFetcher to write feature categories.");
+        }
+        this.fetcher = fetcher;
     }
 
     public void initialiseContext(Map<String, Object> options) {
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+JsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
         else if (options == null){
             return;
@@ -95,9 +109,16 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             else {
                 throw new IllegalArgumentException("Impossible to write in the provided output "+output.getClass().getName() + ", a File, OuputStream, Writer or file path was expected.");
             }
+
+            if (options.containsKey(InteractionWriterFactory.OUTPUT_OPTION_KEY)){
+                this.fetcher = (OntologyTermFetcher) options.get(InteractionWriterFactory.OUTPUT_OPTION_KEY);
+            }
+            else {
+                throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+JsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+JsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         isInitialised = true;
@@ -105,7 +126,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
 
     public void write(BinaryInteractionEvidence interaction) throws DataSourceWriterException {
         if (!isInitialised){
-            throw new IllegalArgumentException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+JsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         try{
@@ -141,6 +162,9 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                 }
 
                 writeInteraction(interaction, A, B);
+            }
+            else {
+                logger.log(Level.WARNING, "Ignore interaction as it does not contain any participants : "+interaction.toString());
             }
         }
         catch (IOException e) {
@@ -193,9 +217,16 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                 hasOpened = false;
                 processedInteractors.clear();
                 expansionId = null;
-                currentExpansion=1;
             }
         }
+    }
+
+    public Integer getExpansionId() {
+        return expansionId;
+    }
+
+    public void setExpansionId(Integer expansionId) {
+        this.expansionId = expansionId;
     }
 
     protected void writeFeatures(String name, Collection<FeatureEvidence> features, boolean writeLinkedFeatures, boolean writeInterpro) throws IOException {
@@ -241,6 +272,44 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
 
     protected void recognizeFeatureTypeAndSplitInFeatureCollections(FeatureEvidence feature){
 
+        // feature type is not null, we can recognize the feature
+        if (feature.getType() != null){
+            CvTerm type = feature.getType();
+            // all mod terms are ptms
+            if (type.getMODIdentifier() != null){
+                ptms.add(feature);
+            }
+            else if (type.getMIIdentifier() != null){
+
+                // we have linked features, it could be a binding site
+                if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                    bindingSites.add(feature);
+                }
+                else {
+                    experimentalFeatures.add(feature);
+                }
+            }
+            else {
+
+                // we have linked features, it could be a binding site
+                if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                    bindingSites.add(feature);
+                }
+                else {
+                    experimentalFeatures.add(feature);
+                }
+            }
+        }
+        // we need to recognize the feature
+        else {
+            // we have linked features, it could be a binding site
+            if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                bindingSites.add(feature);
+            }
+            else {
+                experimentalFeatures.add(feature);
+            }
+        }
     }
 
     protected void writeFeature(FeatureEvidence feature, boolean writeLinkedFeatures, boolean writeInterpro) throws IOException {
