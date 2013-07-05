@@ -18,4 +18,5 @@ public class JsonUtils {
     public final static String ELEMENT_SEPARATOR = ",";
     public final static String LINE_SEPARATOR = System.getProperty("line.separator");
     public final static String INDENT = "\t";
+    public static final String ONTOLOGY_FETCHER_OPTION_KEY = "ontology_fetcher_key";
 }
