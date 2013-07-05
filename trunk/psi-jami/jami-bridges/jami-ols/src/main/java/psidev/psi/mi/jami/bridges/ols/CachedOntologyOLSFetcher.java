@@ -9,12 +9,15 @@ import psidev.psi.mi.jami.model.OntologyTerm;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.model.Xref;
+
 
 /**
  *
@@ -37,52 +40,89 @@ public class CachedOntologyOLSFetcher
 
     public CachedOntologyOLSFetcher() throws BridgeFailedException {
         super();
-
         URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
-
-        if( log.isDebugEnabled() ){
-            log.debug( "Loading EHCACHE configuration: " + url );
-        }
-
-        if( cacheManager == null ) {
-            // we should only have a single instance of CacheManager for that configuration file.
-            cacheManager = new CacheManager( url );
-        }
-
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        if( cacheManager == null ) cacheManager = new CacheManager( url );
         this.cache = cacheManager.getCache( CACHE_NAME );
-
-        if( cache == null ){
-            throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
-        }
+        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
     }
 
     //=======================================
     // Find Relations
 
-    public OntologyTerm findDirectChildren(String termIdentifier , CvTerm ontologyDatabase, OntologyTerm ontologyTermFetched)
-            throws BridgeFailedException {
+    /**
+     * Finds all the leaf children and then their parents redundantly.
+     * <p>
+     *
+     *
+     * @param ontologyTerm
+     * @return
+     * @throws BridgeFailedException
+     */
+    public Collection<OntologyTerm> findAllParentsOfLeafChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
+        if(ontologyTerm == null) throw new IllegalArgumentException("Can not find children for a bull OntologyTerm.");
 
-        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabase.getShortName()+
-                "#"+true+"#"+false;
+        Xref identity = ontologyTerm.getIdentifiers().iterator().next();
+
+        final String key = "findAllParentsOfLeafChildren#"+ontologyTerm+"#"+identity.getDatabase();
+
         Object data = getFromCache( key );
-        if( data == null ) {
-            data = super.findDirectChildren(termIdentifier, ontologyDatabase, ontologyTermFetched);
-            storeInCache( key, data );
+        if( data == null) {
+            data = super.findAllParentsOfLeafChildren(ontologyTerm);
+            storeInCache(key, data);
         }
-        return (OntologyTerm) data;
+        return (Collection<OntologyTerm>)data;
     }
 
-    public OntologyTerm findDirectParents(String termIdentifier , CvTerm ontologyDatabase, OntologyTerm ontologyTermFetched)
+
+    public Map<String , String> getChildrenIDs(String termIdentifier) throws BridgeFailedException {
+        final String key = "getChildrenIDs#"+termIdentifier;
+        Object data = getFromCache( key );
+        if( data == null) {
+            data = super.getChildrenIDs(termIdentifier);
+            storeInCache(key , data);
+        }
+        return (Map<String , String>)data;
+
+    }
+
+    /**
+     * Checks the
+     * @param termIdentifier
+     * @param ontologyDatabase
+     * @param ontologyTermNeedingParents
+     * @throws BridgeFailedException
+     */
+    public void findParents(String termIdentifier , CvTerm ontologyDatabase,
+                            OntologyTerm ontologyTermNeedingParents )
             throws BridgeFailedException {
 
-        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabase.getShortName()+
-                "#"+false+"#"+true;
+        final String key = "findParents#"+termIdentifier+"#CVTERM:"+ontologyDatabase;
+
         Object data = getFromCache( key );
-        if( data == null ) {
-            data = super.findDirectParents(termIdentifier, ontologyDatabase, ontologyTermFetched);
-            storeInCache( key, data );
+        if( data == null) {
+            super.findParents(termIdentifier , ontologyDatabase, ontologyTermNeedingParents);
+            storeInCache( key, ontologyTermNeedingParents );
         }
-        return (OntologyTerm) data;
+    }
+
+
+    /**
+     * Adds all the children to an ontologyTerm.
+     * If the term already has children, they will be cleared and reloaded.
+     * Children are searched for in the cache first, then the service.
+     */
+    public void findChildren(String termIdentifier , CvTerm ontologyDatabase,
+                            OntologyTerm ontologyTermNeedingChildren )
+            throws BridgeFailedException {
+
+        final String key = "findChildren#"+termIdentifier+"#CVTERM:"+ontologyDatabase;
+
+        Object data = getFromCache( key );
+        if( data == null) {
+            super.findChildren(termIdentifier , ontologyDatabase, ontologyTermNeedingChildren );
+            storeInCache( key, ontologyTermNeedingChildren );
+        }
     }
 
 
@@ -93,12 +133,11 @@ public class CachedOntologyOLSFetcher
                                               boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException {
 
-        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabaseName+
+        final String key = "getCvTermByIdentifier#"+termIdentifier+"#DBNAME:"+ontologyDatabaseName+
                 "#"+fetchChildren+"#"+fetchParents;
         Object data = getFromCache( key );
         if( data == null ) {
-            data = super.getCvTermByIdentifier(
-                    termIdentifier, ontologyDatabaseName, fetchChildren, fetchParents);
+            data = super.getCvTermByIdentifier(termIdentifier, ontologyDatabaseName,fetchChildren, fetchParents);
             storeInCache( key, data );
         }
         return (OntologyTerm) data;
@@ -108,11 +147,11 @@ public class CachedOntologyOLSFetcher
                                               boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException{
 
-        final String key = "getOntologyTermByIdentifier#"+termIdentifier+"#"+ontologyDatabase+
+        final String key = "getCvTermByIdentifier#"+termIdentifier+"#CVTERM:"+ontologyDatabase+
                 "#"+fetchChildren+"#"+fetchParents;
         Object data = getFromCache( key );
         if( data == null ) {
-            data = getCvTermByIdentifier(termIdentifier, ontologyDatabase, fetchChildren, fetchParents);
+            data = super.getCvTermByIdentifier(termIdentifier, ontologyDatabase,fetchChildren, fetchParents);
             storeInCache( key, data );
         }
         return (OntologyTerm) data;
@@ -123,11 +162,11 @@ public class CachedOntologyOLSFetcher
                                              boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException{
 
-        final String key = "getOntologyTermByIdentifier#"+searchName+"#"+ontologyDatabaseName+
+        final String key = "getCvTermByExactName#"+searchName+"#DBNAME:"+ontologyDatabaseName+
                 "#"+fetchChildren+"#"+fetchParents;
         Object data = getFromCache( key );
         if( data == null ) {
-            data = super.getCvTermByExactName(searchName, ontologyDatabaseName, fetchChildren, fetchParents);
+            data = super.getCvTermByExactName(searchName, ontologyDatabaseName,fetchChildren , fetchParents);
             storeInCache( key, data );
         }
         return (OntologyTerm) data;
@@ -138,10 +177,10 @@ public class CachedOntologyOLSFetcher
     public OntologyTerm getCvTermByExactName(String searchName , boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException{
 
-        final String key = "getOntologyTermByIdentifier#"+searchName+"#"+fetchChildren+"#"+fetchParents;
+        final String key = "getCvTermByExactName#"+searchName+"#"+fetchChildren+"#"+fetchParents;
         Object data = getFromCache( key );
         if( data == null ) {
-            data = super.getCvTermByExactName(searchName, fetchChildren, fetchParents);
+            data = super.getCvTermByExactName(searchName ,fetchChildren, fetchParents);
             storeInCache( key, data );
         }
         return (OntologyTerm) data;
@@ -178,12 +217,6 @@ public class CachedOntologyOLSFetcher
     }
 
 
-
-
-
-
-
-
     /////////////////////////
     // EH CACHE utilities
 
@@ -192,6 +225,7 @@ public class CachedOntologyOLSFetcher
         Element element = cache.get( key );
         if( element != null ){
             data = element.getValue();
+            log.info("Found key in cache "+key);
         }
         return data;
     }
@@ -199,5 +233,6 @@ public class CachedOntologyOLSFetcher
     private void storeInCache( String key, Object data ) {
         Element element = new Element( key, data );
         cache.put( element );
+        log.info("added to cache key "+key);
     }
 }
