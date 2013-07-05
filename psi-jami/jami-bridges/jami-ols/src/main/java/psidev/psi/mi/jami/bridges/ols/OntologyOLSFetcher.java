@@ -49,26 +49,34 @@ public class OntologyOLSFetcher
     /**
      * Finds all the leaf children and then their parents non-redundantly.
      * <p>
-     * The cache is used to store the details of each parent.
-     * Before searching the OLS for the parent, the cache is checked.
-     * If the parent is in the cache, this will be used instead.
+     * Finds the identifiers of all leaf children.
+     * Then finds the OntologyTerm for these identifiers and all parents.
      *
-     * @param ontologyTerm
+     *
+     * @param ontologyTerm  A complete ontology term
      * @return
      * @throws BridgeFailedException
      */
-    public Collection<OntologyTerm> findAllParentsOfLeafChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
-        if(ontologyTerm == null) throw new IllegalArgumentException("Can not find children for a bull OntologyTerm.");
+    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
+        if(ontologyTerm == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+        if(!ontologyTerm.getIdentifiers().iterator().hasNext()) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
 
         Xref identity = ontologyTerm.getIdentifiers().iterator().next();
 
+        return findAllParentsOfDeepestChildren(ontologyTerm , identity);
+    }
+
+    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm , Xref identifier) throws BridgeFailedException {
+        if(ontologyTerm == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+        if(identifier == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
+
         Collection<String> leafIDs = new ArrayList<String>();
-        findLeafIds(leafIDs , identity.getId());
+        findLeafIds(leafIDs , identifier.getId());
 
         Collection<OntologyTerm> leafOntologyTerms = new ArrayList<OntologyTerm>();
 
         for(String leaf : leafIDs){
-            leafOntologyTerms.add(getCvTermByIdentifier(leaf , identity.getDatabase() , false , true));
+            leafOntologyTerms.add(getCvTermByIdentifier(leaf , identifier.getDatabase() , false , true));
         }
 
         return leafOntologyTerms;
@@ -139,16 +147,6 @@ public class OntologyOLSFetcher
         }
     }
 
-
-    /*public static void listParents(OntologyTerm ontologyTerm, String path){
-        if(ontologyTerm.getParents().isEmpty())
-            log.info(path+ontologyTerm.toString());
-
-        for(OntologyTerm parent : ontologyTerm.getParents()){
-            listParents(parent , path+ontologyTerm.toString()+" -> ");
-        }
-    }*/
-
     //=======================================
     // Find with Relations
 
@@ -172,7 +170,7 @@ public class OntologyOLSFetcher
         if(ontologyTermFetched == null) return null;
         CvTerm ontologyDatabase = ontologyTermFetched.getIdentifiers().iterator().next().getDatabase();
 
-        if(fetchChildren && fetchParents) findAllParentsOfLeafChildren(ontologyTermFetched);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
         else if(fetchChildren) findChildren(termIdentifier , ontologyDatabase, ontologyTermFetched);
         else if(fetchParents) findParents(termIdentifier , ontologyDatabase, ontologyTermFetched);
 
@@ -186,7 +184,7 @@ public class OntologyOLSFetcher
         OntologyTerm ontologyTermFetched = getOntologyTermFromCvTerm(
                 olsFetcher.getCvTermByIdentifier(termIdentifier, ontologyDatabase));
 
-        if(fetchChildren && fetchParents) findAllParentsOfLeafChildren(ontologyTermFetched);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
         else if(fetchChildren) findChildren(termIdentifier , ontologyDatabase, ontologyTermFetched);
         else if(fetchParents) findParents(termIdentifier , ontologyDatabase, ontologyTermFetched);
 
@@ -204,7 +202,7 @@ public class OntologyOLSFetcher
 
         Xref identifier = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfLeafChildren(ontologyTermFetched);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
         else if(fetchChildren) findChildren(identifier.getId() , identifier.getDatabase(), ontologyTermFetched);
         else if(fetchParents)findParents(identifier.getId()  , identifier.getDatabase(), ontologyTermFetched);
 
@@ -221,9 +219,9 @@ public class OntologyOLSFetcher
 
         Xref identifier = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfLeafChildren(ontologyTermFetched);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
         else if(fetchChildren) findChildren(identifier.getId() , identifier.getDatabase(), ontologyTermFetched);
-        else if(fetchParents)findParents(identifier.getId()  , identifier.getDatabase(), ontologyTermFetched);
+        else if(fetchParents) findParents(identifier.getId()  , identifier.getDatabase(), ontologyTermFetched);
 
         return ontologyTermFetched;
     }

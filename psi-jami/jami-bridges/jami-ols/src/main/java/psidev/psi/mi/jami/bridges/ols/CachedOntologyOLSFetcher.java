@@ -8,14 +8,9 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 import java.net.URL;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.model.Xref;
 
 
@@ -59,16 +54,16 @@ public class CachedOntologyOLSFetcher
      * @return
      * @throws BridgeFailedException
      */
-    public Collection<OntologyTerm> findAllParentsOfLeafChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
+    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
         if(ontologyTerm == null) throw new IllegalArgumentException("Can not find children for a bull OntologyTerm.");
 
         Xref identity = ontologyTerm.getIdentifiers().iterator().next();
 
-        final String key = "findAllParentsOfLeafChildren#"+ontologyTerm+"#"+identity.getDatabase();
+        final String key = "findAllParentsOfDeepestChildren#"+ontologyTerm+"#"+identity.getDatabase();
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.findAllParentsOfLeafChildren(ontologyTerm);
+            data = super.findAllParentsOfDeepestChildren(ontologyTerm);
             storeInCache(key, data);
         }
         return (Collection<OntologyTerm>)data;
@@ -87,7 +82,7 @@ public class CachedOntologyOLSFetcher
     }
 
     /**
-     * Checks the
+     *
      * @param termIdentifier
      * @param ontologyDatabase
      * @param ontologyTermNeedingParents
@@ -101,8 +96,8 @@ public class CachedOntologyOLSFetcher
 
         Object data = getFromCache( key );
         if( data == null) {
-            super.findParents(termIdentifier , ontologyDatabase, ontologyTermNeedingParents);
-            storeInCache( key, ontologyTermNeedingParents );
+            super.findParents(termIdentifier, ontologyDatabase, ontologyTermNeedingParents);
+            storeInCache(key, ontologyTermNeedingParents);
         }
     }
 
@@ -121,7 +116,7 @@ public class CachedOntologyOLSFetcher
         Object data = getFromCache( key );
         if( data == null) {
             super.findChildren(termIdentifier , ontologyDatabase, ontologyTermNeedingChildren );
-            storeInCache( key, ontologyTermNeedingChildren );
+            storeInCache(key, ontologyTermNeedingChildren);
         }
     }
 
