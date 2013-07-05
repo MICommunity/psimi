@@ -19,6 +19,21 @@ public interface OntologyTermFetcher extends CvTermFetcher<OntologyTerm>{
 
     //===========
 
+    /**
+     * Finds an ontologyTerm using a termIdentifier and an ontology database name,
+     * and will then find its parents and children to the indicated depth.
+     * <p>
+     * If c
+     *
+     * @param termIdentifier        The identifier for the CvTerm to fetch.
+     * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
+     * @param childrenDepth         Flag to note the depth of children that should be found.
+     *                              0 if no children should be found, -1 if the depth should be infinite
+     * @param parentDepth           Flag to note the depth of parents that should be found.
+     *                              0 if no parents should be found, -1 if the depth should be infinite
+     * @return          A completed term or null if no term could be found.
+     * @throws BridgeFailedException
+     */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName, int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 

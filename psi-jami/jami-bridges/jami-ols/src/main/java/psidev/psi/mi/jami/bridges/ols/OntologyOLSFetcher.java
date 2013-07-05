@@ -99,7 +99,7 @@ public class OntologyOLSFetcher
         }
     }
 
-    public Map<String , String> getChildrenIDs(String termIdentifier) throws BridgeFailedException {
+    protected Map<String , String> getChildrenIDs(String termIdentifier) throws BridgeFailedException {
         Map<String,String> childrenIDs;
         try{
             childrenIDs = queryService.getTermChildren(termIdentifier, null, 1, null);
