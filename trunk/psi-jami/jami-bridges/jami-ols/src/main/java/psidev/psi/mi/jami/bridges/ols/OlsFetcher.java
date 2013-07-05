@@ -44,7 +44,7 @@ public class OlsFetcher
     }
 
     /**
-     * The database short name as the key and the OLS identifier as the value
+     * The CvTerm shortName for a database as the key and the OLS identifier as the value.
      */
     private Map<String,String> dbMap = new HashMap<String, String>();
     private void initialiseDbMap(){
@@ -56,6 +56,7 @@ public class OlsFetcher
 
     /**
      * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
+     *
      * @param termIdentifier    The identifier for the CvTerm to fetch.
      * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
      * @return  A full cvTerm which matches the search term or null if one cannot be found.

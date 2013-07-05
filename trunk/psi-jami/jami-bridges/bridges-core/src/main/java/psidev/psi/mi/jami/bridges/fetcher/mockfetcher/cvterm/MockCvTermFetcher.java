@@ -63,19 +63,22 @@ public class MockCvTermFetcher
         return list;
     }
 
-    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers) throws BridgeFailedException {
+
+
+    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName) throws BridgeFailedException {
         return Collections.EMPTY_LIST;
     }
 
-    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String, CvTerm> identifiers) throws BridgeFailedException {
+    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         return Collections.EMPTY_LIST;
     }
 
-    public Collection<CvTerm> getCvTermsByExactNames(HashMap<String, String> termNames) throws BridgeFailedException {
+    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
         return Collections.EMPTY_LIST;
     }
 
     public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames) throws BridgeFailedException {
         return Collections.EMPTY_LIST;
     }
+
 }
