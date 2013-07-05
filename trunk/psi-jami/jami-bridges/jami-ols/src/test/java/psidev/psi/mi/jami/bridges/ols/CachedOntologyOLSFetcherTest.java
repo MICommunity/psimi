@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.bridges.ols;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class CachedOntologyOLSFetcherTest {
 
 
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier("MI:0113", "psi-mi");
-        Collection<OntologyTerm> resultLeaves = ontologyOLSFetcher.findAllParentsOfLeafChildren(result);
+        Collection<OntologyTerm> resultLeaves = ontologyOLSFetcher.findAllParentsOfDeepestChildren(result);
         log.info("First term: "+result.toString()+" has "+resultLeaves.size()+" leaves.");
         for(OntologyTerm leaf : resultLeaves){
             log.info("Leaf "+leaf.toString()+" :");
@@ -42,7 +41,7 @@ public class CachedOntologyOLSFetcherTest {
         }
 
         result = ontologyOLSFetcher.getCvTermByIdentifier("MI:0113", "psi-mi");
-        resultLeaves = ontologyOLSFetcher.findAllParentsOfLeafChildren(result);
+        resultLeaves = ontologyOLSFetcher.findAllParentsOfDeepestChildren(result);
         log.info("First term: "+result.toString()+" has "+resultLeaves.size()+" leaves.");
         for(OntologyTerm leaf : resultLeaves){
             log.info("Leaf "+leaf.toString()+" :");
@@ -81,7 +80,7 @@ public class CachedOntologyOLSFetcherTest {
         for(String test : tests){
             result = ontologyOLSFetcher.getCvTermByIdentifier(test , "psi-mi");
 
-            resultLeaves = ontologyOLSFetcher.findAllParentsOfLeafChildren(result);
+            resultLeaves = ontologyOLSFetcher.findAllParentsOfDeepestChildren(result);
             log.info("First term: "+result.toString()+" has "+resultLeaves.size()+" leaves.");
             for(OntologyTerm leaf : resultLeaves){
                 log.info("Leaf "+leaf.toString()+" :");
