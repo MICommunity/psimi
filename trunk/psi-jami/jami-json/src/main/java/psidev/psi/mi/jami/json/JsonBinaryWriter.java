@@ -1,12 +1,14 @@
 package psidev.psi.mi.jami.json;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.OntologyTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 
@@ -270,7 +272,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         }
     }
 
-    protected void recognizeFeatureTypeAndSplitInFeatureCollections(FeatureEvidence feature){
+    protected void recognizeFeatureTypeAndSplitInFeatureCollections(FeatureEvidence feature) {
 
         // feature type is not null, we can recognize the feature
         if (feature.getType() != null){
@@ -280,22 +282,98 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                 ptms.add(feature);
             }
             else if (type.getMIIdentifier() != null){
+                OntologyTerm term = null;
+                try {
+                    term = fetcher.getCvTermByIdentifier(type.getMIIdentifier(), CvTerm.PSI_MI, 0, -1);
+                } catch (BridgeFailedException e) {
+                    logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + type.getMIIdentifier(), e);
+                }
 
-                // we have linked features, it could be a binding site
-                if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                // we cannot retrieve the MI term
+                if (term == null){
+                    // we have linked features, it could be a binding site
+                    if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                        bindingSites.add(feature);
+                    }
+                    // if one range is not undetermined, it is likely to be a binding site
+                    else {
+                        for (Range r : feature.getRanges()){
+                            if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
+                                bindingSites.add(feature);
+                                return;
+                            }
+                        }
+                        experimentalFeatures.add(feature);
+                    }
+                }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
+                    experimentalFeatures.add(feature);
+                }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
                     bindingSites.add(feature);
                 }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.MUTATION_MI, Feature.MUTATION) ||
+                        OntologyTermUtils.isCvTermChildOf(term, Feature.VARIANT_MI, Feature.VARIANT)) {
+                    mutations.add(feature);
+                }
+                // we consider any other MI terms as old PTM
                 else {
-                    experimentalFeatures.add(feature);
+                    ptms.add(feature);
                 }
             }
             else {
+                OntologyTerm term = null;
+                try {
+                    term = fetcher.getCvTermByExactName(type.getFullName() != null ? type.getFullName() : type.getShortName(), CvTerm.PSI_MI, 0, -1);
+                    if (term == null){
+                        term = fetcher.getCvTermByExactName(type.getFullName() != null ? type.getFullName() : type.getShortName(), CvTerm.PSI_MOD, 0, -1);
+                    }
+                } catch (BridgeFailedException e) {
+                    logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + (type.getFullName() != null ? type.getFullName() : type.getShortName()), e);
+                }
 
-                // we have linked features, it could be a binding site
-                if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                // cannot retrieve the term using name
+                if (term == null){
+
+                    // we have linked features, it could be a binding site
+                    if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                        bindingSites.add(feature);
+                    }
+                    // if one range is not undetermined, it is likely to be a binding site
+                    else {
+                        for (Range r : feature.getRanges()){
+                            if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
+                                bindingSites.add(feature);
+                                return;
+                            }
+                        }
+                        experimentalFeatures.add(feature);
+                    }
+                }
+                else if (term.getMODIdentifier() != null){
+                    ptms.add(feature);
+                }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
+                    experimentalFeatures.add(feature);
+                }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
                     bindingSites.add(feature);
                 }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.MUTATION_MI, Feature.MUTATION) ||
+                        OntologyTermUtils.isCvTermChildOf(term, Feature.VARIANT_MI, Feature.VARIANT)) {
+                    mutations.add(feature);
+                }
+                else if (!feature.getLinkedFeatureEvidences().isEmpty()){
+                    bindingSites.add(feature);
+                }
+                // if one range is not undetermined, it is likely to be a binding site
                 else {
+                    for (Range r : feature.getRanges()){
+                        if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
+                            bindingSites.add(feature);
+                            return;
+                        }
+                    }
                     experimentalFeatures.add(feature);
                 }
             }
@@ -306,7 +384,14 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             if (!feature.getLinkedFeatureEvidences().isEmpty()){
                 bindingSites.add(feature);
             }
+            // if one range is not undetermined, it is likely to be a binding site
             else {
+                for (Range r : feature.getRanges()){
+                    if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
+                        bindingSites.add(feature);
+                        return;
+                    }
+                }
                 experimentalFeatures.add(feature);
             }
         }
