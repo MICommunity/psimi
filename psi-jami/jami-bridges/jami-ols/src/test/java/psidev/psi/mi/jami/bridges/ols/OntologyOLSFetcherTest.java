@@ -33,6 +33,19 @@ public class OntologyOLSFetcherTest {
         ontologyOLSFetcher = new OntologyOLSFetcher();
     }
 
+
+    @Test
+    public void baseLineReadOut() throws BridgeFailedException {
+        String[] tests = {"MI:0100" , "MI:0077" , "MI:0113"};//nuclear magnetic resonance
+        for(String test : tests){
+            OntologyTerm ontologyTerm = ontologyOLSFetcher.getCvTermByIdentifier(test,"psi-mi",true,true);
+            assertNotNull(ontologyTerm);
+            log.info("First term: "+ontologyTerm.toString());
+            listChildren(ontologyTerm  , "");
+            listParents(ontologyTerm , "");
+        }
+    }
+
     /**
      * Confirm that the Ontology term is correctly retrieved
      * @throws BridgeFailedException
@@ -94,33 +107,23 @@ public class OntologyOLSFetcherTest {
         assertTrue(result.getParents().size() > 0);
     }
 
-    /* @Test
-    public void baseLineReadOut() throws BridgeFailedException {
-        String[] tests = {"MI:0100" , "MI:0077" , "MI:0113"};//nuclear magnetic resonance
-        for(String test : tests){
-            OntologyTerm ontologyTerm = ontologyOLSFetcher.getCvTermByIdentifier(test,"psi-mi",true,true);
-            assertNotNull(ontologyTerm);
-            log.info("First term: "+ontologyTerm.toString());
-            listChildren(ontologyTerm  , "");
-            listParents(ontologyTerm , "");
-        }
-    }
+
 
     public static void listChildren(OntologyTerm ontologyTerm , String path){
         if(ontologyTerm.getChildren().isEmpty())
-            log.info(path+ontologyTerm.getFullName());
+            log.info(path+ontologyTerm);
 
         for(OntologyTerm child : ontologyTerm.getChildren()){
-            listChildren(child , path+ontologyTerm.getFullName()+" <- ");
+            listChildren(child , path+ontologyTerm+" <- ");
         }
     }
 
     public static void listParents(OntologyTerm ontologyTerm, String path){
         if(ontologyTerm.getParents().isEmpty())
-            log.info(path+ontologyTerm.getFullName());
+            log.info(path+ontologyTerm);
 
         for(OntologyTerm parent : ontologyTerm.getParents()){
-            listParents(parent , path+ontologyTerm.getFullName()+" -> ");
+            listParents(parent , path+ontologyTerm+" -> ");
         }
-    }*/
+    }
 }

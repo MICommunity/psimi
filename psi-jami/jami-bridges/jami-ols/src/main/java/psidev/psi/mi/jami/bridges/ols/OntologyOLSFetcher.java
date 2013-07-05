@@ -17,7 +17,11 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * Finds ontology terms in the Ontology Lookup Service
+ * as well as having options to recursively find parents and or children.
+ *
+ * Implements CvTermFetcher, returning the results as OntologyTerms.
+ * Further to this, the OntologyTermFetcher is implemented to include methods for finding children and parents.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
@@ -39,22 +43,18 @@ public class OntologyOLSFetcher
         olsFetcher = new OlsFetcher();
     }
 
-
-
     //=======================================
     // Find Relations
 
-
-
     /**
-     * Finds all the leaf children and then their parents non-redundantly.
+     * Finds all the leaf children and then their parents using the first identifier of the provided term as a starting point.
      * <p>
      * Finds the identifiers of all leaf children.
      * Then finds the OntologyTerm for these identifiers and all parents.
+     * If the provided term has no identifiers, an exception will be thrown.
      *
-     *
-     * @param ontologyTerm  A complete ontology term
-     * @return
+     * @param ontologyTerm  A complete ontologyTerm to find children for
+     * @return      A collection of all the deepest children
      * @throws BridgeFailedException
      */
     public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
@@ -85,8 +85,7 @@ public class OntologyOLSFetcher
     /**
      * Follows the children of a resolved ontology term to find all the leaves.
      */
-    public void findLeafIds(Collection<String> leafIDs , String termIdentifier) throws BridgeFailedException {
-
+    private void findLeafIds(Collection<String> leafIDs , String termIdentifier) throws BridgeFailedException {
         Map<String,String> childrenIds = getChildrenIDs(termIdentifier);
         if(childrenIds.isEmpty()) leafIDs.add(termIdentifier);
         else{
@@ -106,22 +105,15 @@ public class OntologyOLSFetcher
         return childrenIDs;
     }
 
-    /**
-     * Checks the
-     * @param termIdentifier
-     * @param ontologyDatabase
-     * @param ontologyTermNeedingParents
-     * @throws BridgeFailedException
-     */
-    public void findParents(String termIdentifier , CvTerm ontologyDatabase,
-                            OntologyTerm ontologyTermNeedingParents )
+
+    protected void findParents(OntologyTerm ontologyTermNeedingParents , Xref identity )
             throws BridgeFailedException {
 
         try{
             HashMap<String, String> parents = queryService.getTermParents(
-                    termIdentifier , null);
+                    identity.getId() , null);
             for(Map.Entry<String,String> entry: parents.entrySet()){
-                OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , ontologyDatabase, false , true);
+                OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , false , true);
                 if(parent == null) throw new IllegalArgumentException("Null parent from known identifier.");
                 ontologyTermNeedingParents.getParents().add(parent);
             }
@@ -130,18 +122,22 @@ public class OntologyOLSFetcher
         }
     }
 
-
     /**
-     * Adds all the children to an ontologyTerm.
-     * If the term already has children, they will be cleared and reloaded.
-     * Children are searched for in the cache first, then the service.
+     * Finds all the children of the OntologyTerm, searching for their children recursively.
+     * If the
+     * @param ontologyTermNeedingChildren   An ontologyTerm to find the children for
+     * @param identity  The identifier to use for this ontology term.
+     * @throws BridgeFailedException
      */
-    public void findChildren(String termIdentifier , CvTerm ontologyDatabase,
-                             OntologyTerm ontologyTermNeedingChildren )
+    protected void findChildren(OntologyTerm ontologyTermNeedingChildren , Xref identity )
             throws BridgeFailedException {
-        Map<String, String> children = getChildrenIDs(termIdentifier);
+        if(!ontologyTermNeedingChildren.getChildren().isEmpty())
+            log.warn("Adding to a term which has children already " +
+                    "("+ontologyTermNeedingChildren.getChildren()+")");
+
+        Map<String, String> children = getChildrenIDs(identity.getId());
         for(Map.Entry<String,String> entry: children.entrySet()){
-            OntologyTerm child = getCvTermByIdentifier(entry.getKey() , ontologyDatabase, true , false);
+            OntologyTerm child = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , true , false);
             if(child == null) throw new IllegalArgumentException("Null parent from known identifier.");
             ontologyTermNeedingChildren.getChildren().add(child);
         }
@@ -152,7 +148,9 @@ public class OntologyOLSFetcher
 
     /**
      * Finds an ontologyTerm using a termIdentifier and an ontology database name.
-     * If children or parents are selected it will recursively find them until the
+     * If children or parents are selected it will recursively find them.
+     * If both are selected, all parents of the deepest children will be found.
+     *
      * @param termIdentifier        The identifier for the CvTerm to fetch.
      * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
      * @param fetchChildren         Flag to note that children should be found
@@ -168,15 +166,27 @@ public class OntologyOLSFetcher
                 olsFetcher.getCvTermByIdentifier(termIdentifier, ontologyDatabaseName));
 
         if(ontologyTermFetched == null) return null;
-        CvTerm ontologyDatabase = ontologyTermFetched.getIdentifiers().iterator().next().getDatabase();
+        Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
-        else if(fetchChildren) findChildren(termIdentifier , ontologyDatabase, ontologyTermFetched);
-        else if(fetchParents) findParents(termIdentifier , ontologyDatabase, ontologyTermFetched);
+        if(fetchChildren) findChildren(ontologyTermFetched , identity);
+        if(fetchParents) findParents(ontologyTermFetched , identity);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
 
+    /**
+     * Finds an ontologyTerm using a termIdentifier and an ontology database CvTerm.
+     * If children or parents are selected it will recursively find them.
+     * If both are selected, all parents of the deepest children will be found.
+     *
+     * @param termIdentifier
+     * @param ontologyDatabase
+     * @param fetchChildren
+     * @param fetchParents
+     * @return
+     * @throws BridgeFailedException
+     */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase,
                                               boolean fetchChildren, boolean fetchParents)
             throws BridgeFailedException {
@@ -184,9 +194,11 @@ public class OntologyOLSFetcher
         OntologyTerm ontologyTermFetched = getOntologyTermFromCvTerm(
                 olsFetcher.getCvTermByIdentifier(termIdentifier, ontologyDatabase));
 
+        Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
+
+        if(fetchChildren) findChildren(ontologyTermFetched , identity);
+        if(fetchParents) findParents(ontologyTermFetched , identity);
         if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
-        else if(fetchChildren) findChildren(termIdentifier , ontologyDatabase, ontologyTermFetched);
-        else if(fetchParents) findParents(termIdentifier , ontologyDatabase, ontologyTermFetched);
 
         return ontologyTermFetched;
     }
@@ -200,11 +212,11 @@ public class OntologyOLSFetcher
 
         if(ontologyTermFetched == null) return null;
 
-        Xref identifier = ontologyTermFetched.getIdentifiers().iterator().next();
+        Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
-        else if(fetchChildren) findChildren(identifier.getId() , identifier.getDatabase(), ontologyTermFetched);
-        else if(fetchParents)findParents(identifier.getId()  , identifier.getDatabase(), ontologyTermFetched);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
+        if(fetchChildren) findChildren(ontologyTermFetched , identity);
+        if(fetchParents)findParents(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
@@ -217,11 +229,11 @@ public class OntologyOLSFetcher
 
         if(ontologyTermFetched == null) return null;
 
-        Xref identifier = ontologyTermFetched.getIdentifiers().iterator().next();
+        Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
-        else if(fetchChildren) findChildren(identifier.getId() , identifier.getDatabase(), ontologyTermFetched);
-        else if(fetchParents) findParents(identifier.getId()  , identifier.getDatabase(), ontologyTermFetched);
+        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
+        if(fetchChildren) findChildren(ontologyTermFetched , identity);
+        if(fetchParents)findParents(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
@@ -327,7 +339,7 @@ public class OntologyOLSFetcher
     /**
      * Converts a CvTerm into an ontologyTerm
      * @param cvterm    A cvTerm to convert
-     * @return          The ontologyterm of the cvTerm
+     * @return          The ontologyTerm of the cvTerm
      */
     public static OntologyTerm getOntologyTermFromCvTerm(CvTerm cvterm){
         if (cvterm == null) return null;

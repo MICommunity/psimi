@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -45,19 +46,20 @@ public class CachedOntologyOLSFetcher
     //=======================================
     // Find Relations
 
+
     /**
-     * Finds all the leaf children and then their parents redundantly.
+     * Finds all the leaf children and then their parents using the first identifier of the provided term as a starting point.
      * <p>
+     * Finds the identifiers of all leaf children.
+     * Then finds the OntologyTerm for these identifiers and all parents.
      *
-     *
-     * @param ontologyTerm
-     * @return
+     * @param ontologyTerm  A complete ontologyTerm to find children for
+     * @return      A collection of all the deepest children
      * @throws BridgeFailedException
      */
-    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
-        if(ontologyTerm == null) throw new IllegalArgumentException("Can not find children for a bull OntologyTerm.");
-
-        Xref identity = ontologyTerm.getIdentifiers().iterator().next();
+    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm , Xref identity) throws BridgeFailedException {
+        if(ontologyTerm == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+        if(identity == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
 
         final String key = "findAllParentsOfDeepestChildren#"+ontologyTerm+"#"+identity.getDatabase();
 
@@ -80,45 +82,32 @@ public class CachedOntologyOLSFetcher
         return (Map<String , String>)data;
 
     }
-
-    /**
-     *
-     * @param termIdentifier
-     * @param ontologyDatabase
-     * @param ontologyTermNeedingParents
-     * @throws BridgeFailedException
-     */
-    public void findParents(String termIdentifier , CvTerm ontologyDatabase,
-                            OntologyTerm ontologyTermNeedingParents )
+     /*
+    public void findParents(OntologyTerm ontologyTermNeedingParents , Xref identity )
             throws BridgeFailedException {
 
-        final String key = "findParents#"+termIdentifier+"#CVTERM:"+ontologyDatabase;
+        final String key = "findParents#"+ontologyTermNeedingParents+
+                "#"+identity.getId()+"#CVTERM:"+identity.getDatabase();
 
         Object data = getFromCache( key );
         if( data == null) {
-            super.findParents(termIdentifier, ontologyDatabase, ontologyTermNeedingParents);
+            super.findParents(ontologyTermNeedingParents,identity);
             storeInCache(key, ontologyTermNeedingParents);
         }
     }
 
-
-    /**
-     * Adds all the children to an ontologyTerm.
-     * If the term already has children, they will be cleared and reloaded.
-     * Children are searched for in the cache first, then the service.
-     */
-    public void findChildren(String termIdentifier , CvTerm ontologyDatabase,
-                            OntologyTerm ontologyTermNeedingChildren )
+    public void findChildren(OntologyTerm ontologyTermNeedingChildren  , Xref identity )
             throws BridgeFailedException {
 
-        final String key = "findChildren#"+termIdentifier+"#CVTERM:"+ontologyDatabase;
+        final String key = "findChildren#"+ontologyTermNeedingChildren+
+                "#"+identity.getId()+"#CVTERM:"+identity.getDatabase();
 
         Object data = getFromCache( key );
         if( data == null) {
-            super.findChildren(termIdentifier , ontologyDatabase, ontologyTermNeedingChildren );
+            super.findChildren(ontologyTermNeedingChildren , identity);
             storeInCache(key, ontologyTermNeedingChildren);
         }
-    }
+    } */
 
 
     //=======================================
@@ -220,7 +209,7 @@ public class CachedOntologyOLSFetcher
         Element element = cache.get( key );
         if( element != null ){
             data = element.getValue();
-            log.info("Found key in cache "+key);
+            //log.info("Found key in cache "+key);
         }
         return data;
     }
@@ -228,6 +217,6 @@ public class CachedOntologyOLSFetcher
     private void storeInCache( String key, Object data ) {
         Element element = new Element( key, data );
         cache.put( element );
-        log.info("added to cache key "+key);
+        //log.info("added to cache key "+key);
     }
 }
