@@ -57,7 +57,9 @@ public class OntologyOLSFetcher
      * @return      A collection of all the deepest children
      * @throws BridgeFailedException
      */
-    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm) throws BridgeFailedException {
+    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm)
+            throws BridgeFailedException {
+
         if(ontologyTerm == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
         if(!ontologyTerm.getIdentifiers().iterator().hasNext()) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
 
@@ -66,7 +68,9 @@ public class OntologyOLSFetcher
         return findAllParentsOfDeepestChildren(ontologyTerm , identity);
     }
 
-    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm , Xref identifier) throws BridgeFailedException {
+    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm , Xref identifier)
+            throws BridgeFailedException {
+
         if(ontologyTerm == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
         if(identifier == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
 
@@ -76,7 +80,7 @@ public class OntologyOLSFetcher
         Collection<OntologyTerm> leafOntologyTerms = new ArrayList<OntologyTerm>();
 
         for(String leaf : leafIDs){
-            leafOntologyTerms.add(getCvTermByIdentifier(leaf , identifier.getDatabase() , false , true));
+            leafOntologyTerms.add(getCvTermByIdentifier(leaf , identifier.getDatabase() , 0 , -1));
         }
 
         return leafOntologyTerms;
@@ -106,14 +110,16 @@ public class OntologyOLSFetcher
     }
 
 
-    protected void findParents(OntologyTerm ontologyTermNeedingParents , Xref identity )
+    protected void findParents(OntologyTerm ontologyTermNeedingParents , Xref identity , int depth)
             throws BridgeFailedException {
+
+        if( depth > 0 ) depth --;
 
         try{
             HashMap<String, String> parents = queryService.getTermParents(
                     identity.getId() , null);
             for(Map.Entry<String,String> entry: parents.entrySet()){
-                OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , false , true);
+                OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , 0 , depth);
                 if(parent == null) throw new IllegalArgumentException("Null parent from known identifier.");
                 ontologyTermNeedingParents.getParents().add(parent);
             }
@@ -129,15 +135,16 @@ public class OntologyOLSFetcher
      * @param identity  The identifier to use for this ontology term.
      * @throws BridgeFailedException
      */
-    protected void findChildren(OntologyTerm ontologyTermNeedingChildren , Xref identity )
+    protected void findChildren(OntologyTerm ontologyTermNeedingChildren , Xref identity , int depth)
             throws BridgeFailedException {
         if(!ontologyTermNeedingChildren.getChildren().isEmpty())
             log.warn("Adding to a term which has children already " +
                     "("+ontologyTermNeedingChildren.getChildren()+")");
 
+        if( depth > 0 ) depth --;
         Map<String, String> children = getChildrenIDs(identity.getId());
         for(Map.Entry<String,String> entry: children.entrySet()){
-            OntologyTerm child = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , true , false);
+            OntologyTerm child = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , depth , 0);
             if(child == null) throw new IllegalArgumentException("Null parent from known identifier.");
             ontologyTermNeedingChildren.getChildren().add(child);
         }
@@ -153,13 +160,15 @@ public class OntologyOLSFetcher
      *
      * @param termIdentifier        The identifier for the CvTerm to fetch.
      * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
-     * @param fetchChildren         Flag to note that children should be found
-     * @param fetchParents          Flag to note that parents should be found
+     * @param childrenDepth         Flag to note the depth of children that should be found.
+     *                              0 if no children should be found, -1 if the depth should be infinite
+     * @param parentDepth           Flag to note the depth of parents that should be found.
+     *                              0 if no parents should be found, -1 if the depth should be infinite
      * @return          A completed term or null if no term could be found.
      * @throws BridgeFailedException
      */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName,
-                                              boolean fetchChildren, boolean fetchParents)
+                                              int childrenDepth, int parentDepth)
             throws BridgeFailedException {
 
         OntologyTerm ontologyTermFetched = getOntologyTermFromCvTerm(
@@ -168,9 +177,9 @@ public class OntologyOLSFetcher
         if(ontologyTermFetched == null) return null;
         Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren) findChildren(ontologyTermFetched , identity);
-        if(fetchParents) findParents(ontologyTermFetched , identity);
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
+        if(childrenDepth == -1 || 0 < childrenDepth ) findChildren(ontologyTermFetched , identity , childrenDepth);
+        if(parentDepth == -1 || 0 < parentDepth ) findParents(ontologyTermFetched , identity , parentDepth);
+        if(childrenDepth == -1 && parentDepth == 1) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
@@ -182,13 +191,15 @@ public class OntologyOLSFetcher
      *
      * @param termIdentifier
      * @param ontologyDatabase
-     * @param fetchChildren
-     * @param fetchParents
+     * @param childrenDepth     Flag to note the depth of children that should be found.
+     *                              0 if no children should be found, -1 if the depth should be infinite
+     * @param parentDepth       Flag to note the depth of parents that should be found.
+     *                              0 if no parents should be found, -1 if the depth should be infinite
      * @return
      * @throws BridgeFailedException
      */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase,
-                                              boolean fetchChildren, boolean fetchParents)
+                                              int childrenDepth, int parentDepth)
             throws BridgeFailedException {
 
         OntologyTerm ontologyTermFetched = getOntologyTermFromCvTerm(
@@ -196,15 +207,15 @@ public class OntologyOLSFetcher
 
         Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren) findChildren(ontologyTermFetched , identity);
-        if(fetchParents) findParents(ontologyTermFetched , identity);
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched);
+        if(childrenDepth == -1 || 0 < childrenDepth ) findChildren(ontologyTermFetched , identity , childrenDepth);
+        if(parentDepth == -1 || 0 < parentDepth ) findParents(ontologyTermFetched , identity , parentDepth);
+        if(childrenDepth == -1 && parentDepth == 1) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
 
     public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,
-                                             boolean fetchChildren, boolean fetchParents)
+                                             int childrenDepth, int parentDepth)
             throws BridgeFailedException {
 
         OntologyTerm ontologyTermFetched = getOntologyTermFromCvTerm(
@@ -214,14 +225,14 @@ public class OntologyOLSFetcher
 
         Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
-        if(fetchChildren) findChildren(ontologyTermFetched , identity);
-        if(fetchParents)findParents(ontologyTermFetched , identity);
+        if(childrenDepth == -1 || 0 < childrenDepth ) findChildren(ontologyTermFetched , identity , childrenDepth);
+        if(parentDepth == -1 || 0 < parentDepth ) findParents(ontologyTermFetched , identity , parentDepth);
+        if(childrenDepth == -1 && parentDepth == 1) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
 
-    public OntologyTerm getCvTermByExactName(String searchName, boolean fetchChildren, boolean fetchParents)
+    public OntologyTerm getCvTermByExactName(String searchName, int childrenDepth, int parentDepth)
             throws BridgeFailedException {
 
         OntologyTerm ontologyTermFetched = getOntologyTermFromCvTerm(
@@ -231,12 +242,13 @@ public class OntologyOLSFetcher
 
         Xref identity = ontologyTermFetched.getIdentifiers().iterator().next();
 
-        if(fetchChildren && fetchParents) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
-        if(fetchChildren) findChildren(ontologyTermFetched , identity);
-        if(fetchParents)findParents(ontologyTermFetched , identity);
+        if(childrenDepth == -1 || 0 < childrenDepth ) findChildren(ontologyTermFetched , identity , childrenDepth);
+        if(parentDepth == -1 || 0 < parentDepth ) findParents(ontologyTermFetched , identity , parentDepth);
+        if(childrenDepth == -1 && parentDepth == 1) findAllParentsOfDeepestChildren(ontologyTermFetched , identity);
 
         return ontologyTermFetched;
     }
+
 
     //===============================
     // Find without Relations
@@ -250,47 +262,47 @@ public class OntologyOLSFetcher
      */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
             throws BridgeFailedException {
-        return getCvTermByIdentifier(termIdentifier, ontologyDatabaseName, false, false);
+        return getCvTermByIdentifier(termIdentifier, ontologyDatabaseName, 0, 0);
     }
 
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException {
-        return getCvTermByIdentifier(termIdentifier, ontologyDatabase , false, false);
+        return getCvTermByIdentifier(termIdentifier, ontologyDatabase , 0, 0);
     }
 
     public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException {
-        return getCvTermByExactName(searchName, ontologyDatabaseName, false, false);
+        return getCvTermByExactName(searchName, ontologyDatabaseName, 0, 0);
     }
 
     public OntologyTerm getCvTermByExactName(String searchName)
             throws BridgeFailedException {
-        return getCvTermByExactName(searchName, false, false);
+        return getCvTermByExactName(searchName, 0, 0);
     }
 
     //================================
     // Multi' Methods with Relations
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers,
-                                                                             boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName,
+                                                            int childrenDepth, int parentDepth)
             throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String, CvTerm> identifiers,
-                                                                               boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase,
+                                                            int childrenDepth, int parentDepth)
             throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Collection<OntologyTerm> getCvTermsByExactNames(HashMap<String, String> termNames,
-                                                           boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName,
+                                                           int childrenDepth, int parentDepth)
             throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames,
-                                                           boolean fetchChildren, boolean fetchParents)
+                                                           int childrenDepth, int parentDepth)
             throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -300,41 +312,37 @@ public class OntologyOLSFetcher
     // Multi' Methods without Relations
 
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers)
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
             throws BridgeFailedException {
-        return null;
+        return getCvTermsByIdentifiers(identifiers, ontologyDatabaseName , 0 , 0 );
     }
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String, CvTerm> identifiers)
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException {
-        return null;
+        return getCvTermsByIdentifiers(identifiers, ontologyDatabase , 0 , 0 );
     }
 
-    public Collection<OntologyTerm> getCvTermsByExactNames(HashMap<String, String> termNames)
+    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName)
             throws BridgeFailedException {
-        return null;
+        return getCvTermsByExactNames(searchNames, ontologyDatabaseName , 0 , 0 );
     }
 
     public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames)
             throws BridgeFailedException {
-        return null;
+        return getCvTermsByExactNames(searchNames , 0 , 0 );
     }
 
 
     ///////////////////////////////
     public Collection<OntologyTerm> getCvTermByInexactName(String searchName, String databaseName)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public Collection<OntologyTerm> getCvTermByInexactName(String searchName, CvTerm database)
             throws BridgeFailedException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
-
-
-
 
     /**
      * Converts a CvTerm into an ontologyTerm
