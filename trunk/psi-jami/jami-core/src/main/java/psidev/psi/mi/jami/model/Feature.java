@@ -14,6 +14,18 @@ public interface Feature {
 
     public static String BIOLOGICAL_FEATURE = "biological feature";
     public static String BIOLOGICAL_FEATURE_MI ="MI:0252";
+    public static String EXPERIMENTAL_FEATURE = "experimental feature";
+    public static String EXPERIMENTAL_FEATURE_MI ="MI:0505";
+    public static String MUTATION = "mutation";
+    public static String MUTATION_MI ="MI:0118";
+    public static String ALLOSTERIC_PTM = "allosteric post-translational modification";
+    public static String ALLOSTERIC_PTM_MI ="MI:1175";
+    public static String VARIANT = "variant";
+    public static String VARIANT_MI ="MI:1241";
+    public static String SUFFICIENT_BINDING = "sufficient binding region";
+    public static String SUFFICIENT_BINDING_MI ="MI:0442";
+    public static String DIRECT_BINDING = "direct binding region";
+    public static String DIRECT_BINDING_MI ="MI:1125";
 
     /**
      * The short name of a feature.
