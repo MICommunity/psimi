@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
-import com.sun.istack.internal.NotNull;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Protein;
 
