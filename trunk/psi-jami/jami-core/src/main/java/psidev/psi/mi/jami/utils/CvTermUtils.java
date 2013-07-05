@@ -433,4 +433,26 @@ public class CvTermUtils {
     public static CvTerm createUnknownInteractorType(){
         return createMICvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
     }
+
+    /**
+     * Check if the CvTerm natches the MI term and/or the name if no MI term exist
+     * @param term : the term to check
+     * @param mi : the mi id to compare
+     * @param name : the name to compare
+     * @return true if the CvTerm natches the MI term and/or the name
+     */
+    public static boolean isCvTerm(CvTerm term, String mi, String name){
+
+        if (term.getMIIdentifier() != null && mi != null){
+            return term.getMIIdentifier().equals(mi);
+        }
+        else{
+            if (term.getShortName().equalsIgnoreCase(name) || (term.getFullName() != null && term.getFullName().equalsIgnoreCase(name))){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
 }
