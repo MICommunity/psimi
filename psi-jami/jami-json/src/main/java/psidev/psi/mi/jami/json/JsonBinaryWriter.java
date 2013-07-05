@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 
 import java.io.*;
@@ -29,27 +30,35 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
     private static final Logger logger = Logger.getLogger("MitabParserLogger");
     private Integer expansionId;
     private int currentExpansion=1;
+    private Collection<FeatureEvidence> experimentalFeatures;
+    private Collection<FeatureEvidence> bindingSites;
+    private Collection<FeatureEvidence> mutations;
+    private Collection<FeatureEvidence> ptms;
 
     public JsonBinaryWriter(){
         processedInteractors = new HashSet<String>();
+        initialiseFeatureCollections();
     }
 
     public JsonBinaryWriter(File file) throws IOException {
 
         initialiseFile(file);
         processedInteractors = new HashSet<String>();
+        initialiseFeatureCollections();
     }
 
     public JsonBinaryWriter(OutputStream output) {
 
         initialiseOutputStream(output);
         processedInteractors = new HashSet<String>();
+        initialiseFeatureCollections();
     }
 
     public JsonBinaryWriter(Writer writer) {
 
         initialiseWriter(writer);
         processedInteractors = new HashSet<String>();
+        initialiseFeatureCollections();
     }
 
     public void initialiseContext(Map<String, Object> options) {
@@ -140,11 +149,14 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
     }
 
     public void write(Collection<BinaryInteractionEvidence> interactions) throws DataSourceWriterException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Iterator<BinaryInteractionEvidence> binaryIterator = interactions.iterator();
+        write(binaryIterator);
     }
 
     public void write(Iterator<BinaryInteractionEvidence> interactions) throws DataSourceWriterException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        while(interactions.hasNext()){
+            write(interactions.next());
+        }
     }
 
     public void flush() throws DataSourceWriterException{
@@ -160,23 +172,288 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
     public void close() throws DataSourceWriterException{
         if (isInitialised){
             try {
-                flush();
+                writeEnd();
+            } catch (IOException e) {
+                throw new DataSourceWriterException("Impossible to close the JSON writer", e);
             }
-            finally {
+            finally{
                 try {
-                    writer.close();
-                } catch (IOException e) {
-                    throw new DataSourceWriterException("Impossible to close the JSON writer", e);
+                    flush();
+                }
+                finally {
+                    try {
+                        writer.close();
+                    } catch (IOException e) {
+                        throw new DataSourceWriterException("Impossible to close the JSON writer", e);
+                    }
+                }
+                clearFeatureCollections();
+                isInitialised = false;
+                writer = null;
+                hasOpened = false;
+                processedInteractors.clear();
+                expansionId = null;
+                currentExpansion=1;
+            }
+        }
+    }
+
+    protected void writeFeatures(String name, Collection<FeatureEvidence> features, boolean writeLinkedFeatures, boolean writeInterpro) throws IOException {
+        writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+        writeStartObject(name);
+        writer.write(JsonUtils.OPEN_ARRAY);
+
+        Iterator<FeatureEvidence> featureIterator = features.iterator();
+        while (featureIterator.hasNext()){
+            FeatureEvidence feature = featureIterator.next();
+            writeFeature(feature, writeLinkedFeatures, writeInterpro);
+            if (featureIterator.hasNext()){
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            }
+        }
+
+        writer.write(JsonUtils.CLOSE_ARRAY);
+    }
+
+    protected void writeAllFeatures(Collection<FeatureEvidence> features) throws IOException {
+        // first split the features in the proper collection of features
+        clearFeatureCollections();
+        Iterator<FeatureEvidence> featureIterator = features.iterator();
+        while (featureIterator.hasNext()){
+            recognizeFeatureTypeAndSplitInFeatureCollections(featureIterator.next());
+        }
+
+        if (!experimentalFeatures.isEmpty()){
+            writeFeatures("experimentalFeatures", experimentalFeatures, false, false);
+        }
+        if (!mutations.isEmpty()){
+            writeFeatures("pointMutations", mutations, false, false);
+        }
+        if (!bindingSites.isEmpty()){
+            writeFeatures("bindingSites", bindingSites, true, true);
+        }
+        if (!ptms.isEmpty()){
+            writeFeatures("ptms", ptms, true, false);
+        }
+    }
+
+    protected void recognizeFeatureTypeAndSplitInFeatureCollections(FeatureEvidence feature){
+
+    }
+
+    protected void writeFeature(FeatureEvidence feature, boolean writeLinkedFeatures, boolean writeInterpro) throws IOException {
+
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+        writer.write(JsonUtils.OPEN);
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+        writer.write(JsonUtils.INDENT);
+
+        // write identifier == hashcode of feature
+        writerProperty("id", Integer.toString(feature.hashCode()));
+
+        // write name
+        if (feature.getFullName() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writer.write(JsonUtils.INDENT);
+            writerProperty("name", feature.getFullName());
+        }
+        else if (feature.getShortName() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writer.write(JsonUtils.INDENT);
+            writerProperty("name", feature.getShortName());
+        }
+
+        // write type
+        if (feature.getType() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writeStartObject("type");
+            writeCvTerm(feature.getType());
+        }
+
+        // detection methods
+        if (!feature.getDetectionMethods().isEmpty()){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writeStartObject("detmethods");
+            writer.write(JsonUtils.OPEN_ARRAY);
+
+            Iterator<CvTerm> methodIterator = feature.getDetectionMethods().iterator();
+            while (methodIterator.hasNext()){
+                CvTerm method = methodIterator.next();
+                writeCvTerm(method);
+                if (methodIterator.hasNext()){
+                    writer.write(JsonUtils.ELEMENT_SEPARATOR);
                 }
             }
 
-            isInitialised = false;
-            writer = null;
-            hasOpened = false;
-            processedInteractors.clear();
-            expansionId = null;
-            currentExpansion=1;
+            writer.write(JsonUtils.CLOSE_ARRAY);
         }
+
+        // ranges
+        if (!feature.getRanges().isEmpty()){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writeStartObject("sequenceData");
+            writer.write(JsonUtils.OPEN_ARRAY);
+
+            Iterator<Range> rangeIterator = feature.getRanges().iterator();
+            while (rangeIterator.hasNext()){
+                Range range = rangeIterator.next();
+                writeRange(range);
+                if (rangeIterator.hasNext()){
+                    writer.write(JsonUtils.ELEMENT_SEPARATOR);
+                }
+            }
+
+            writer.write(JsonUtils.CLOSE_ARRAY);
+        }
+
+        // write linked features if required
+        if (writeLinkedFeatures && !feature.getLinkedFeatureEvidences().isEmpty()){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writeStartObject("linkedFeatures");
+            writer.write(JsonUtils.OPEN_ARRAY);
+
+            Iterator<FeatureEvidence> featureIterator = feature.getLinkedFeatureEvidences().iterator();
+            while (featureIterator.hasNext()){
+                FeatureEvidence f = featureIterator.next();
+                writerProperty("id", Integer.toString(f.hashCode()));
+                if (featureIterator.hasNext()){
+                    writer.write(JsonUtils.ELEMENT_SEPARATOR);
+                }
+            }
+
+            writer.write(JsonUtils.CLOSE_ARRAY);
+        }
+
+        // write interpro if required
+        if (writeInterpro && feature.getInterpro() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writerProperty("Binding_Site_Domain", feature.getInterpro());
+        }
+
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeRange(Range range) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        writerProperty("range", RangeUtils.convertRangeToString(range));
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeParticipant(ParticipantEvidence participant, String name) throws IOException {
+
+        writeNextPropertySeparatorAndIndent();
+        writeStartObject(name);
+        writer.write(JsonUtils.OPEN);
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+
+        // write identifier
+        writeStartObject("identifier");
+        Xref preferredIdentifier = participant.getInteractor().getPreferredIdentifier();
+        String interactorId = null;
+        String db = null;
+        if (preferredIdentifier != null){
+            interactorId = preferredIdentifier.getId();
+            db = preferredIdentifier.getDatabase().getShortName();
+        }
+        else{
+            interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(participant.getInteractor()));
+            db = "generated";
+        }
+        writeIdentifier(db, interactorId);
+
+        // write biorole
+        writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+        writeStartObject("bioRole");
+        writeCvTerm(participant.getBiologicalRole());
+
+        // write expRole
+        writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.INDENT);
+        writeStartObject("expRole");
+        writeCvTerm(participant.getExperimentalRole());
+
+        // identification methods
+        if (!participant.getIdentificationMethods().isEmpty()){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writeStartObject("identificationMethods");
+            writer.write(JsonUtils.OPEN_ARRAY);
+
+            Iterator<CvTerm> methodIterator = participant.getIdentificationMethods().iterator();
+            while (methodIterator.hasNext()){
+                CvTerm method = methodIterator.next();
+                writeCvTerm(method);
+                if (methodIterator.hasNext()){
+                    writer.write(JsonUtils.ELEMENT_SEPARATOR);
+                }
+            }
+
+            writer.write(JsonUtils.CLOSE_ARRAY);
+        }
+
+        // expressed in
+        if (participant.getExpressedInOrganism() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writer.write(JsonUtils.INDENT);
+            writeStartObject("expressedIn");
+            writeOrganism(participant.getExpressedInOrganism());
+        }
+
+        // features
+        if (!participant.getFeatures().isEmpty()){
+            writeAllFeatures(participant.getFeatures());
+        }
+
+        writeNextPropertySeparatorAndIndent();
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeAnnotation(String name, String text) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        writerProperty(name, text != null ? text : "");
+        writer.write(JsonUtils.CLOSE);
+
+    }
+
+    protected void writeAllAnnotations(String name, Collection<Annotation> figures) throws IOException {
+        writer.write(JsonUtils.OPEN_ARRAY);
+
+        Iterator<Annotation> annotIterator = figures.iterator();
+        while (annotIterator.hasNext()){
+            Annotation annot = annotIterator.next();
+            writeAnnotation(name, annot != null ? annot.getValue():"");
+            if (annotIterator.hasNext()){
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            }
+        }
+
+        writer.write(JsonUtils.CLOSE_ARRAY);
     }
 
     protected void writePublication(Publication publication) throws IOException {
@@ -194,6 +471,64 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             writeStartObject("source");
             writeCvTerm(publication.getSource());
         }
+    }
+
+    protected void writeExpansionMethod(CvTerm expansion) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        if (expansionId != null){
+            writerProperty("id", Integer.toString(expansionId));
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        }
+        writerProperty("name", expansion.getShortName());
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeConfidence(String type, String value) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        writerProperty("type", type);
+        writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        writerProperty("value", value);
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeAllConfidences(Collection<Confidence> confidences) throws IOException {
+        writer.write(JsonUtils.OPEN_ARRAY);
+
+        Iterator<Confidence> confidencesIterator = confidences.iterator();
+        while (confidencesIterator.hasNext()){
+            Confidence conf = confidencesIterator.next();
+            if (conf != null){
+                writeConfidence(conf.getType().getShortName(), conf.getValue());
+            }
+            else {
+                writeConfidence("unknown","");
+            }
+            if (confidencesIterator.hasNext()){
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            }
+        }
+
+        writer.write(JsonUtils.CLOSE_ARRAY);
+    }
+
+    protected void writeAllIdentifiers(Collection<Xref> identifiers) throws IOException {
+        writer.write(JsonUtils.OPEN_ARRAY);
+
+        Iterator<Xref> identifierIterator = identifiers.iterator();
+        while (identifierIterator.hasNext()){
+            Xref identifier = identifierIterator.next();
+            if (identifier != null){
+                writeIdentifier(identifier.getDatabase().getShortName(), identifier.getId());
+            }
+            else {
+                writeIdentifier("unknown", identifier.getId());
+            }
+            if (identifierIterator.hasNext()){
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            }
+        }
+
+        writer.write(JsonUtils.CLOSE_ARRAY);
     }
 
     protected boolean writeExperiment(InteractionEvidence interaction) throws IOException {
@@ -253,7 +588,6 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             }
 
             writeNextPropertySeparatorAndIndent();
-            writer.write(JsonUtils.INDENT);
             writer.write(JsonUtils.CLOSE);
             return true;
         }
@@ -269,26 +603,81 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             writeAllAnnotations("figure", figures);
 
             writeNextPropertySeparatorAndIndent();
-            writer.write(JsonUtils.INDENT);
             writer.write(JsonUtils.CLOSE);
             return true;
         }
         return false;
     }
 
-    private void writeAllAnnotations(String name, Collection<Annotation> figures) throws IOException {
-        writer.write(JsonUtils.OPEN_ARRAY);
+    protected void writeIdentifier(String db, String id) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        writerProperty("db", db);
+        writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        writerProperty("id", id);
+        writer.write(JsonUtils.CLOSE);
+    }
 
-        Iterator<Annotation> annotIterator = figures.iterator();
-        while (annotIterator.hasNext()){
-            Annotation annot = annotIterator.next();
-            writeAnnotation(name, annot != null ? annot.getValue():"");
-            if (annotIterator.hasNext()){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+    protected void writeOrganism(Organism organism) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        writerProperty("taxid", Integer.toString(organism.getTaxId()));
+        if (organism.getCommonName() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writerProperty("common", organism.getCommonName());
+        }
+        if (organism.getScientificName() != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writerProperty("scientific", organism.getScientificName());
+        }
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeCvTerm(CvTerm term) throws IOException {
+        writer.write(JsonUtils.OPEN);
+        boolean hasId = false;
+        if (term.getMIIdentifier() != null){
+            writerProperty("id", term.getMIIdentifier());
+            hasId = true;
+        }
+        else if (term.getMODIdentifier() != null){
+            writerProperty("id", term.getMODIdentifier());
+            hasId = true;
+        }
+        else if (term.getPARIdentifier() != null){
+            writerProperty("id", term.getPARIdentifier());
+            hasId = true;
         }
 
-        writer.write(JsonUtils.CLOSE_ARRAY);
+        if (hasId){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+        }
+
+        if (term.getFullName() != null){
+            writerProperty("name", term.getFullName());
+        }
+        else {
+            writerProperty("name", term.getShortName());
+        }
+        writer.write(JsonUtils.CLOSE);
+    }
+
+    protected void writeStartObject(String object) throws IOException {
+        writer.write(JsonUtils.PROPERTY_DELIMITER);
+        writer.write(object);
+        writer.write(JsonUtils.PROPERTY_DELIMITER);
+        writer.write(JsonUtils.PROPERTY_VALUE_SEPARATOR);
+    }
+
+    protected void writerProperty(String propertyName, String value) throws IOException {
+        writeStartObject(propertyName);
+        writer.write(JsonUtils.PROPERTY_DELIMITER);
+        writer.write(value);
+        writer.write(JsonUtils.PROPERTY_DELIMITER);
+    }
+
+    protected void writeNextPropertySeparatorAndIndent() throws IOException {
+        writer.write(JsonUtils.LINE_SEPARATOR);
+        writer.write(JsonUtils.INDENT);
+        writer.write(JsonUtils.INDENT);
     }
 
     protected void writeInteraction(BinaryInteractionEvidence binary, ParticipantEvidence A, ParticipantEvidence B) throws IOException {
@@ -343,46 +732,42 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             writeStartObject("expansion");
             writeExpansionMethod(binary.getComplexExpansion());
         }
-    }
 
-    protected void writeAllConfidences(Collection<Confidence> confidences) throws IOException {
-        writer.write(JsonUtils.OPEN_ARRAY);
-
-        Iterator<Confidence> confidencesIterator = confidences.iterator();
-        while (confidencesIterator.hasNext()){
-            Confidence conf = confidencesIterator.next();
-            if (conf != null){
-                writeConfidence(conf.getType().getShortName(), conf.getValue());
-            }
-            else {
-                writeConfidence("unknown","");
-            }
-            if (confidencesIterator.hasNext()){
+        // then participant A and B
+        if (A != null){
+            if (hasComplexExpansion || (!hasComplexExpansion && (hasConfidences || (!hasConfidences && (hasIdentifiers || (!hasIdentifiers && (hasType || (!hasType && hasExperiment)))))))){
                 writer.write(JsonUtils.ELEMENT_SEPARATOR);
             }
-        }
+            writeNextPropertySeparatorAndIndent();
+            writeParticipant(A, "source");
 
-        writer.write(JsonUtils.CLOSE_ARRAY);
-    }
-
-    protected void writeAllIdentifiers(Collection<Xref> identifiers) throws IOException {
-        writer.write(JsonUtils.OPEN_ARRAY);
-
-        Iterator<Xref> identifierIterator = identifiers.iterator();
-        while (identifierIterator.hasNext()){
-            Xref identifier = identifierIterator.next();
-            if (identifier != null){
-                writeIdentifier(identifier.getDatabase().getShortName(), identifier.getId());
+            if (B != null){
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                writeParticipant(B, "target");
             }
             else {
-                writeIdentifier("unknown", identifier.getId());
-            }
-            if (identifierIterator.hasNext()){
                 writer.write(JsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                writeParticipant(A, "target");
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                writerProperty("intramolecular", "true");
             }
         }
-
-        writer.write(JsonUtils.CLOSE_ARRAY);
+        else if (B != null){
+            if (hasComplexExpansion || (!hasComplexExpansion && (hasConfidences || (!hasConfidences && (hasIdentifiers || (!hasIdentifiers && (hasType || (!hasType && hasExperiment)))))))){
+                writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            }
+            writeNextPropertySeparatorAndIndent();
+            writeParticipant(B, "source");
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writeParticipant(B, "target");
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writerProperty("intramolecular", "true");
+        }
     }
 
     protected void registerAndWriteInteractor(ParticipantEvidence participant, boolean writeElementSeparator) throws IOException {
@@ -452,108 +837,20 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         }
     }
 
-    protected void writeExpansionMethod(CvTerm expansion) throws IOException {
-        writer.write(JsonUtils.OPEN);
-        if (expansionId != null){
-            writerProperty("id", Integer.toString(expansionId));
-            writer.write(JsonUtils.ELEMENT_SEPARATOR);
-        }
-        writerProperty("name", expansion.getShortName());
-        writer.write(JsonUtils.CLOSE);
-    }
-
-    protected void writeOrganism(Organism organism) throws IOException {
-        writer.write(JsonUtils.OPEN);
-        writerProperty("taxid", Integer.toString(organism.getTaxId()));
-        if (organism.getCommonName() != null){
-            writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            writerProperty("common", organism.getCommonName());
-        }
-        if (organism.getScientificName() != null){
-            writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            writerProperty("scientific", organism.getScientificName());
-        }
-        writer.write(JsonUtils.CLOSE);
-    }
-
-    protected void writeCvTerm(CvTerm term) throws IOException {
-        writer.write(JsonUtils.OPEN);
-        boolean hasId = false;
-        if (term.getMIIdentifier() != null){
-            writerProperty("id", term.getMIIdentifier());
-            hasId = true;
-        }
-        else if (term.getMODIdentifier() != null){
-            writerProperty("id", term.getMODIdentifier());
-            hasId = true;
-        }
-        else if (term.getPARIdentifier() != null){
-            writerProperty("id", term.getPARIdentifier());
-            hasId = true;
-        }
-
-        if (hasId){
-            writer.write(JsonUtils.ELEMENT_SEPARATOR);
-        }
-
-        if (term.getFullName() != null){
-            writerProperty("name", term.getFullName());
-        }
-        else {
-            writerProperty("name", term.getShortName());
-        }
-        writer.write(JsonUtils.CLOSE);
-    }
-
-    protected void writeAnnotation(String name, String text) throws IOException {
-        writer.write(JsonUtils.OPEN);
-        writerProperty(name, text != null ? text : "");
-        writer.write(JsonUtils.CLOSE);
-
-    }
-
-    protected void writeConfidence(String type, String value) throws IOException {
-        writer.write(JsonUtils.OPEN);
-        writerProperty("type", type);
-        writer.write(JsonUtils.ELEMENT_SEPARATOR);
-        writerProperty("value", value);
-        writer.write(JsonUtils.CLOSE);
-    }
-
-    protected void writeIdentifier(String db, String id) throws IOException {
-        writer.write(JsonUtils.OPEN);
-        writerProperty("db", db);
-        writer.write(JsonUtils.ELEMENT_SEPARATOR);
-        writerProperty("id", id);
-        writer.write(JsonUtils.CLOSE);
-    }
-
-    protected void writerProperty(String propertyName, String value) throws IOException {
-        writeStartObject(propertyName);
-        writer.write(JsonUtils.PROPERTY_DELIMITER);
-        writer.write(value);
-        writer.write(JsonUtils.PROPERTY_DELIMITER);
-    }
-
-    protected void writeNextPropertySeparatorAndIndent() throws IOException {
-        writer.write(JsonUtils.LINE_SEPARATOR);
-        writer.write(JsonUtils.INDENT);
-        writer.write(JsonUtils.INDENT);
-    }
-
-    private void writeStartObject(String object) throws IOException {
-        writer.write(JsonUtils.PROPERTY_DELIMITER);
-        writer.write(object);
-        writer.write(JsonUtils.PROPERTY_DELIMITER);
-        writer.write(JsonUtils.PROPERTY_VALUE_SEPARATOR);
-    }
-
     protected void writeStart() throws IOException {
         hasOpened = true;
         writer.write(JsonUtils.OPEN);
         writer.write(JsonUtils.LINE_SEPARATOR);
         writeStartObject("data");
         writer.write(JsonUtils.OPEN_ARRAY);
+    }
+
+    protected void writeEnd() throws IOException {
+        hasOpened = false;
+        writer.write(JsonUtils.LINE_SEPARATOR);
+        writer.write(JsonUtils.CLOSE_ARRAY);
+        writer.write(JsonUtils.CLOSE);
+
     }
 
     private void initialiseWriter(Writer writer) {
@@ -584,5 +881,19 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
 
         this.writer = new BufferedWriter(new FileWriter(file));
         isInitialised = true;
+    }
+
+    private void initialiseFeatureCollections(){
+        this.experimentalFeatures = new ArrayList<FeatureEvidence>();
+        this.bindingSites = new ArrayList<FeatureEvidence>();
+        this.ptms = new ArrayList<FeatureEvidence>();
+        this.mutations = new ArrayList<FeatureEvidence>();
+    }
+
+    private void clearFeatureCollections(){
+        this.experimentalFeatures.clear();
+        this.bindingSites.clear();
+        this.ptms.clear();
+        this.mutations.clear();
     }
 }
