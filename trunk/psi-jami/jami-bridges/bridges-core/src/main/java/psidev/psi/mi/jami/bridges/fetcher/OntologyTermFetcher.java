@@ -17,42 +17,31 @@ import java.util.HashMap;
  */
 public interface OntologyTermFetcher extends CvTermFetcher<OntologyTerm>{
 
-    //============
-
-    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm)
-            throws BridgeFailedException;
-
-    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm , Xref identifier)
-            throws BridgeFailedException;
-
-
-
-
     //===========
 
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName, boolean fetchChildren, boolean fetchParents)
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName, int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase, boolean fetchChildren, boolean fetchParents)
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase, int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
-    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,  boolean fetchChildren, boolean fetchParents)
+    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName, int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
-    public OntologyTerm getCvTermByExactName(String searchName , boolean fetchChildren, boolean fetchParents)
+    public OntologyTerm getCvTermByExactName(String searchName , int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
     //===========
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String,String> identifiers,  boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName, int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String,CvTerm> identifiers,  boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase, int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
-    public Collection<OntologyTerm> getCvTermsByExactNames(HashMap<String,String> termNames,  boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName,  int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 
-    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames,  boolean fetchChildren, boolean fetchParents)
+    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames,  int childrenDepth, int parentDepth)
             throws BridgeFailedException;
 }

@@ -271,6 +271,31 @@ public class OlsFetcher
         return null;
     }
 
+    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
+            throws BridgeFailedException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
+            throws BridgeFailedException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName)
+            throws BridgeFailedException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames)
+            throws BridgeFailedException {
+        return null;
+    }
+
+
+    //----------
+    // Private Methods
+
     /**
      * Uses the identifier to fetch the full name.
      *
@@ -294,31 +319,6 @@ public class OlsFetcher
         }
     }
 
-    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyNames(HashMap<String, String> identifiers)
-            throws BridgeFailedException {
-        return null;
-    }
-
-    public Collection<CvTerm> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String, CvTerm> identifiers)
-            throws BridgeFailedException {
-        return null;
-    }
-
-    public Collection<CvTerm> getCvTermsByExactNames(HashMap<String, String> termNames)
-            throws BridgeFailedException {
-        return null;
-    }
-
-    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames)
-            throws BridgeFailedException {
-        return null;
-    }
-
-
-    //----------
-    // Private Methods
-
-
     /**
      * Adds additional information after the identifier and full name has been resolved.
      * This adds the short name (if it can be found) and the synonyms (if there are any).
@@ -332,7 +332,7 @@ public class OlsFetcher
     private CvTerm completeIdentifiedCvTerm(CvTerm cvTermFetched, String identifier, String databaseName)
             throws BridgeFailedException {
 
-        HashMap metaDataMap = fetchMetaDataByIdentifier(identifier);
+        Map metaDataMap = fetchMetaDataByIdentifier(identifier);
         String shortName = extractShortNameFromMetaData(metaDataMap, databaseName);
         if(shortName != null) cvTermFetched.setShortName(shortName);
         Collection<Alias> synonyms = extractSynonymsFromMetaData(metaDataMap, databaseName);
@@ -351,7 +351,7 @@ public class OlsFetcher
      * @return          A new CvTerm with any results that were found filled in.
      * @throws BridgeFailedException
      */
-    private HashMap fetchMetaDataByIdentifier(String identifier)
+    private Map fetchMetaDataByIdentifier(String identifier)
             throws BridgeFailedException{
 
         try{
@@ -368,7 +368,7 @@ public class OlsFetcher
      * @return
      */
     private String extractShortNameFromMetaData(
-            HashMap metaDataMap, String database){
+            Map metaDataMap, String database){
 
         String META_DATA_SEPARATOR = "_";
         String SHORTLABEL_IDENTIFIER;
@@ -394,7 +394,7 @@ public class OlsFetcher
      * @return
      */
     private String extractDescriptionFromMetaData(
-            HashMap metaDataMap){
+            Map metaDataMap){
         String DEFINITION_KEY = "definition";
         if (metaDataMap != null) {
             for (Object key : metaDataMap.keySet()){
@@ -414,7 +414,7 @@ public class OlsFetcher
      * @return
      */
     private Collection<Alias> extractSynonymsFromMetaData(
-            HashMap metaDataMap, String database){
+            Map metaDataMap, String database){
 
         String META_DATA_SEPARATOR = "_";
         String SYNONYM_IDENTIFIER;

@@ -73,7 +73,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiersWithOntologyNames(HashMap<String,String> identifiers)
+    public Collection<C> getCvTermsByIdentifiers(Collection<String> identifiers , String ontologyDatabaseName)
             throws BridgeFailedException;
 
     /**
@@ -82,7 +82,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiersWithOntologyCvTerms(HashMap<String,CvTerm> identifiers)
+    public Collection<C> getCvTermsByIdentifiers(Collection<String> identifiers , CvTerm ontologyDatabase)
             throws BridgeFailedException;
 
     /**
@@ -91,7 +91,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByExactNames(HashMap<String,String> termNames)
+    public Collection<C> getCvTermsByExactNames(Collection<String> searchNames , String ontologyDatabaseName )
             throws BridgeFailedException;
 
 
