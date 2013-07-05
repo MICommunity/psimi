@@ -67,6 +67,10 @@ public interface Annotation {
     public static final String CLUSTERED_MI = "MI:1052";
     public static final String EVIDENCE = "evidence";
     public static final String EVIDENCE_MI = "MI:1051";
+    public static final String FIGURE_LEGEND = "figure legend";
+    public static final String FIGURE_LEGEND_MI = "MI:0599";
+    public static final String EXP_MODIFICATION = "experiment modification";
+    public static final String EXP_MODIFICATION_MI = "MI:0627";
 
     /**
      * The annotation topic is a controlled vocabulary term and it cannot be null.
