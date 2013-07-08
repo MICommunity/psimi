@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.io.iterator.MitabBinaryEvidenceIterator;
 
@@ -56,7 +57,7 @@ public class MitabBinaryEvidenceDataSource extends AbstractMitabDataSource<Binar
             InputStream stream = new BufferedInputStream(new FileInputStream(file));
             initialiseMitabLineParser(stream);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Impossible to open the file " + file.getName());
+            throw new MIIOException("Impossible to open the file " + file.getName());
         }
     }
 
@@ -72,7 +73,7 @@ public class MitabBinaryEvidenceDataSource extends AbstractMitabDataSource<Binar
     }
 
     @Override
-    protected void initialiseMitabLineParser(URL url) {
+    protected void initialiseMitabLineParser(URL url) throws MIIOException{
         if (url == null){
             throw new IllegalArgumentException("The url cannot be null.");
         }
@@ -81,7 +82,7 @@ public class MitabBinaryEvidenceDataSource extends AbstractMitabDataSource<Binar
             InputStream stream = new BufferedInputStream(url.openStream());
             initialiseMitabLineParser(stream);
         } catch (IOException e) {
-            throw new RuntimeException("Impossible to open the url " + url.toExternalForm());
+            throw new MIIOException("Impossible to open the url " + url.toExternalForm());
         }
     }
 }

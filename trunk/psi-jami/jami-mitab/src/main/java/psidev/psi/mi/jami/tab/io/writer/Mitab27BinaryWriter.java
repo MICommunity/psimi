@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Participant;
@@ -55,7 +55,14 @@ public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInter
     }
 
     @Override
-    public void close() throws DataSourceWriterException {
+    public void start() throws MIIOException {
+        super.start();
+        this.modelledBinaryWriter.start();
+        this.binaryEvidenceWriter.start();
+    }
+
+    @Override
+    public void close() throws MIIOException {
         try{
             super.close();
         }
@@ -66,7 +73,7 @@ public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInter
     }
 
     @Override
-    public void reset() throws DataSourceWriterException {
+    public void reset() throws MIIOException {
         try{
             super.reset();
         }
@@ -77,34 +84,30 @@ public class Mitab27BinaryWriter extends AbstractMitab27BinaryWriter<BinaryInter
     }
 
     @Override
-    public void write(BinaryInteraction interaction) throws DataSourceWriterException {
+    public void write(BinaryInteraction interaction) throws MIIOException {
         if (this.binaryEvidenceWriter == null || this.modelledBinaryWriter == null){
             throw new IllegalStateException("The Mitab writer has not been initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
-        }
-        // did not start yet so need to write the header if required
-        else if (!hasWrittenHeader()){
-            try{
-                writeHeaderIfNotDone();
-                this.binaryEvidenceWriter.setHasWrittenHeader(false);
-                this.modelledBinaryWriter.setHasWrittenHeader(false);
-            }
-            catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to write MITAB header ", e);
-            }
-        }
-        // we already started to write binary
-        else{
-            this.binaryEvidenceWriter.setHasWrittenHeader(true);
-            this.modelledBinaryWriter.setHasWrittenHeader(true);
         }
 
         if (interaction instanceof BinaryInteractionEvidence){
             this.binaryEvidenceWriter.write((BinaryInteractionEvidence) interaction);
+            if (!hasStarted()){
+                this.modelledBinaryWriter.start();
+                setStarted(true);
+            }
         }
         else if (interaction instanceof ModelledBinaryInteraction){
             this.modelledBinaryWriter.write((ModelledBinaryInteraction) interaction);
+            if (!hasStarted()){
+                this.binaryEvidenceWriter.start();
+                setStarted(true);
+            }
         }
         else {
+            if (!hasStarted()){
+                this.modelledBinaryWriter.start();
+                this.binaryEvidenceWriter.start();
+            }
             super.write(interaction);
         }
     }

@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.mitab.io.writer;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
@@ -39,19 +38,19 @@ public class Mitab27ModelledInteractionWriterTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_not_initialised_writer() throws DataSourceWriterException {
+    public void test_not_initialised_writer() {
         Mitab27ModelledInteractionWriter binaryWriter = new Mitab27ModelledInteractionWriter();
         binaryWriter.write(new MitabModelledInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_not_initialised_no_options() throws DataSourceWriterException {
+    public void test_not_initialised_no_options() {
         Mitab27ModelledInteractionWriter binaryWriter = new Mitab27ModelledInteractionWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_interaction() throws DataSourceWriterException, IllegalParameterException, ParseException {
+    public void test_write_interaction() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
         Mitab27ModelledInteractionWriter interactionWriter = new Mitab27ModelledInteractionWriter(writer);
         interactionWriter.setWriteHeader(false);
@@ -65,7 +64,7 @@ public class Mitab27ModelledInteractionWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws DataSourceWriterException, IllegalParameterException, ParseException {
+    public void test_write_binary_list() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
         Mitab27ModelledInteractionWriter binaryWriter = new Mitab27ModelledInteractionWriter(writer);
         binaryWriter.setWriteHeader(false);
@@ -79,7 +78,7 @@ public class Mitab27ModelledInteractionWriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws DataSourceWriterException, IllegalParameterException, ParseException {
+    public void test_write_binary2() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
         Mitab27ModelledInteractionWriter binaryWriter = new Mitab27ModelledInteractionWriter();
         Map<String, Object> options = new HashMap<String, Object>();

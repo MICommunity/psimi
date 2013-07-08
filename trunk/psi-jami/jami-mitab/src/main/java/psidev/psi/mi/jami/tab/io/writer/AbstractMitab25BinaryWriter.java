@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabColumnName;
@@ -29,8 +29,8 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
     private boolean isInitialised = false;
     private MitabVersion version = MitabVersion.v2_5;
     private boolean writeHeader = true;
-    private boolean hasWrittenHeader = false;
     private MitabColumnFeeder<T, P> columnFeeder;
+    private boolean hasStarted;
 
     public AbstractMitab25BinaryWriter(){
 
@@ -58,20 +58,12 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         return version;
     }
 
-    protected void setVersion(MitabVersion version){
-        this.version = version;
-    }
-
     public boolean isWriteHeader() {
         return writeHeader;
     }
 
     public void setWriteHeader(boolean writeHeader) {
         this.writeHeader = writeHeader;
-    }
-
-    protected Writer getWriter() {
-        return writer;
     }
 
     public void initialiseContext(Map<String, Object> options) {
@@ -121,6 +113,27 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         isInitialised = true;
     }
 
+    public void end() throws MIIOException {
+        // nothing to do
+        if (!isInitialised){
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+        }
+    }
+
+    public void start() throws MIIOException {
+        if (!isInitialised){
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+        }
+        else if (writeHeader){
+            try {
+                writeHeader();
+            } catch (IOException e) {
+                throw new MIIOException("Impossible to write the MITAB header.", e);
+            }
+        }
+        hasStarted = true;
+    }
+
     /**
      * Writes a binary interaction.
      * Does not write any extended properties from participants, interaction and features
@@ -128,21 +141,20 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
      * source and confidences.
      * It will also ignore experimental roles, host organism, interaction parameters and participant identification methods
      * @param interaction
-     * @throws IOException
+     * @throws MIIOException
      */
-    public void write(T interaction) throws DataSourceWriterException {
+    public void write(T interaction) throws MIIOException {
         if (!isInitialised){
             throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
-        try{
-            writeHeaderIfNotDone();
 
+        try{
             P A = (P) interaction.getParticipantA();
             P B = (P) interaction.getParticipantB();
             writeBinary(interaction, A, B);
         }
         catch (IOException e) {
-            throw new DataSourceWriterException("Impossible to write " +interaction.toString(), e);
+            throw new MIIOException("Impossible to write " +interaction.toString(), e);
         }
     }
 
@@ -153,80 +165,67 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
      * source and confidences.
      * It will also ignore experimental roles, host organism, interaction parameters and participant identification methods
      * @param interactions
-     * @throws IOException
+     * @throws MIIOException
      */
-    public void write(Collection<T> interactions) throws DataSourceWriterException {
-
+    public void write(Collection<T> interactions) throws MIIOException {
         Iterator<T> binaryIterator = interactions.iterator();
         write(binaryIterator);
     }
 
-    public void write(Iterator<T> interactions) throws DataSourceWriterException {
-
+    public void write(Iterator<T> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }
     }
 
-    public void flush() throws DataSourceWriterException{
+    public void flush() throws MIIOException{
         if (isInitialised){
             try {
                 writer.flush();
             } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to flush the MITAB writer", e);
+                throw new MIIOException("Impossible to flush the MITAB writer", e);
             }
         }
     }
 
-    public void close() throws DataSourceWriterException{
+    public void close() throws MIIOException{
         if (isInitialised){
             try {
                 writer.flush();
             } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to close the MITAB writer", e);
+                throw new MIIOException("Impossible to flush the MITAB writer", e);
             }
             finally {
                 try {
                     writer.close();
                 } catch (IOException e) {
-                    throw new DataSourceWriterException("Impossible to close the MITAB writer", e);
+                    throw new MIIOException("Impossible to close the MITAB writer", e);
                 }
                 finally {
                     isInitialised = false;
                     writer = null;
                     writeHeader = true;
                     version = MitabVersion.v2_5;
-                    hasWrittenHeader = false;
                     columnFeeder = null;
                 }
             }
         }
     }
-    public void reset() throws DataSourceWriterException{
+    public void reset() throws MIIOException{
         if (isInitialised){
             try {
                 writer.flush();
             } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to flush the MITAB writer", e);
+                throw new MIIOException("Impossible to flush the MITAB writer", e);
             }
             finally {
                 isInitialised = false;
                 writer = null;
                 writeHeader = true;
                 version = MitabVersion.v2_5;
-                hasWrittenHeader = false;
                 columnFeeder = null;
             }
         }
-    }
-
-
-    public boolean hasWrittenHeader() {
-        return hasWrittenHeader;
-    }
-
-    public void setHasWrittenHeader(boolean hasWrittenHeader) {
-        this.hasWrittenHeader = hasWrittenHeader;
     }
 
     protected MitabColumnFeeder<T, P> getColumnFeeder() {
@@ -247,6 +246,13 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
      * @throws IOException
      */
     protected void writeBinary(T interaction, P a, P b) throws IOException {
+        if (hasStarted){
+            writer.write(MitabUtils.LINE_BREAK);
+        }
+        else {
+            hasStarted = true;
+        }
+
         // id A
         this.columnFeeder.writeUniqueIdentifier(a);
         writer.write(MitabUtils.COLUMN_SEPARATOR);
@@ -262,7 +268,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         // aliases
         // alias A
         this.columnFeeder.writeAliases(a);
-        getWriter().write(MitabUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // alias B
         this.columnFeeder.writeAliases(b);
         writer.write(MitabUtils.COLUMN_SEPARATOR);
@@ -295,6 +301,10 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         this.columnFeeder.writeInteractionConfidences(interaction);
     }
 
+    protected Writer getWriter() {
+        return writer;
+    }
+
     /**
      * Write the header
      * @throws IOException
@@ -313,19 +323,18 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
                 break;
             }
         }
-        writer.write(MitabUtils.LINE_BREAK);
     }
 
-    public void writeHeaderIfNotDone() throws IOException {
-        if (!hasWrittenHeader){
-            if (writeHeader){
-                writeHeader();
-            }
-            setHasWrittenHeader(true);
-        }
-        else {
-            writer.write(MitabUtils.LINE_BREAK);
-        }
+    protected void setVersion(MitabVersion version){
+        this.version = version;
+    }
+
+    protected boolean hasStarted() {
+        return hasStarted;
+    }
+
+    protected void setStarted(boolean start){
+        this.hasStarted = start;
     }
 
     private void initialiseWriter(Writer writer) {

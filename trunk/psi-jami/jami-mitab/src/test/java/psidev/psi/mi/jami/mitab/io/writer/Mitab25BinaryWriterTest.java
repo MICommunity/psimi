@@ -5,7 +5,6 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -40,19 +39,19 @@ public class Mitab25BinaryWriterTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_not_initialised_writer() throws DataSourceWriterException {
+    public void test_not_initialised_writer() {
         Mitab25BinaryWriter binaryWriter = new Mitab25BinaryWriter();
         binaryWriter.write(new MitabModelledBinaryInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_not_initialised_no_options() throws DataSourceWriterException {
+    public void test_not_initialised_no_options() {
         Mitab25BinaryWriter binaryWriter = new Mitab25BinaryWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_binary() throws DataSourceWriterException {
+    public void test_write_binary() {
         StringWriter writer = new StringWriter();
         Mitab25BinaryWriter binaryWriter = new Mitab25BinaryWriter(writer);
         binaryWriter.setWriteHeader(false);
@@ -66,7 +65,7 @@ public class Mitab25BinaryWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws DataSourceWriterException, ParseException {
+    public void test_write_binary_list() throws ParseException {
         StringWriter writer = new StringWriter();
         Mitab25BinaryWriter binaryWriter = new Mitab25BinaryWriter(writer);
         binaryWriter.setWriteHeader(false);
@@ -83,7 +82,7 @@ public class Mitab25BinaryWriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws DataSourceWriterException, ParseException {
+    public void test_write_binary2() throws ParseException {
         StringWriter writer = new StringWriter();
         Mitab25BinaryWriter binaryWriter = new Mitab25BinaryWriter();
         Map<String, Object> options = new HashMap<String, Object>();

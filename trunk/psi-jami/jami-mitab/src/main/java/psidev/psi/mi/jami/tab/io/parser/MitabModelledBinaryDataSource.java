@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.tab.io.iterator.MitabModelledBinaryIterator;
 
@@ -56,7 +57,7 @@ public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<Model
             InputStream stream = new BufferedInputStream(new FileInputStream(file));
             initialiseMitabLineParser(stream);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Impossible to open the file " + file.getName());
+            throw new MIIOException("Impossible to open the file " + file.getName());
         }
     }
 
@@ -67,7 +68,7 @@ public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<Model
     }
 
     @Override
-    protected Iterator<ModelledBinaryInteraction> createMitabIterator() {
+    protected Iterator<ModelledBinaryInteraction> createMitabIterator() throws MIIOException{
         return new MitabModelledBinaryIterator(getLineParser());
     }
 
@@ -81,7 +82,7 @@ public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<Model
             InputStream stream = new BufferedInputStream(url.openStream());
             initialiseMitabLineParser(stream);
         } catch (IOException e) {
-            throw new RuntimeException("Impossible to open the url " + url.toExternalForm());
+            throw new MIIOException("Impossible to open the url " + url.toExternalForm());
         }
     }
 }

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.io.iterator.MitabInteractionEvidenceIterator;
@@ -56,7 +57,7 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
             InputStream stream = new BufferedInputStream(new FileInputStream(file));
             initialiseMitabLineParser(stream);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Impossible to open the file " + file.getName());
+            throw new MIIOException("Impossible to open the file " + file.getName());
         }
     }
 
@@ -67,7 +68,7 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
     }
 
     @Override
-    protected Iterator<InteractionEvidence> createMitabIterator() {
+    protected Iterator<InteractionEvidence> createMitabIterator() throws MIIOException {
         return new MitabInteractionEvidenceIterator(getLineParser());
     }
 
@@ -81,7 +82,7 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
             InputStream stream = new BufferedInputStream(url.openStream());
             initialiseMitabLineParser(stream);
         } catch (IOException e) {
-            throw new RuntimeException("Impossible to open the url " + url.toExternalForm());
+            throw new MIIOException("Impossible to open the url " + url.toExternalForm());
         }
     }
 }

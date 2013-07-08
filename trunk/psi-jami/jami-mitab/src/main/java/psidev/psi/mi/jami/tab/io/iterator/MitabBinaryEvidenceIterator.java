@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.iterator;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
 
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
  */
 
 public class MitabBinaryEvidenceIterator extends AbstractMitabIterator<BinaryInteractionEvidence, ParticipantEvidence>{
-    public MitabBinaryEvidenceIterator(MitabLineParser<BinaryInteractionEvidence, ParticipantEvidence> lineParser) {
+    public MitabBinaryEvidenceIterator(MitabLineParser<BinaryInteractionEvidence, ParticipantEvidence> lineParser) throws MIIOException {
         super(lineParser);
     }
 }
