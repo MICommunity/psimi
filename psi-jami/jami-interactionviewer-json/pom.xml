@@ -9,7 +9,7 @@
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
-  <artifactId>jami-json</artifactId>
+  <artifactId>jami-interactionviewer-json</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
     <name>PSI :: JAMI - JSON</name>
