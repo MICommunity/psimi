@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.json;
 
+import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
@@ -37,6 +38,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
     private Collection<FeatureEvidence> bindingSites;
     private Collection<FeatureEvidence> mutations;
     private Collection<FeatureEvidence> ptms;
+    private Collection<FeatureEvidence> otherFeatures;
     private OntologyTermFetcher fetcher;
 
     public JsonBinaryWriter(){
@@ -223,10 +225,6 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         }
     }
 
-    public Integer getExpansionId() {
-        return expansionId;
-    }
-
     public void setExpansionId(Integer expansionId) {
         this.expansionId = expansionId;
     }
@@ -270,6 +268,9 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         if (!ptms.isEmpty()){
             writeFeatures("ptms", ptms, true, false);
         }
+        if (!otherFeatures.isEmpty()){
+            writeFeatures("otherFeatures", otherFeatures, true, false);
+        }
     }
 
     protected void recognizeFeatureTypeAndSplitInFeatureCollections(FeatureEvidence feature) {
@@ -291,23 +292,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
 
                 // we cannot retrieve the MI term
                 if (term == null){
-                    // we have linked features, it could be a binding site
-                    if (!feature.getLinkedFeatureEvidences().isEmpty()){
-                        bindingSites.add(feature);
-                    }
-                    // if one range is not undetermined, it is likely to be a binding site
-                    else {
-                        for (Range r : feature.getRanges()){
-                            if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
-                                bindingSites.add(feature);
-                                return;
-                            }
-                        }
-                        experimentalFeatures.add(feature);
-                    }
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
-                    experimentalFeatures.add(feature);
+                    otherFeatures.add(feature);
                 }
                 else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
                     bindingSites.add(feature);
@@ -316,9 +301,15 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                         OntologyTermUtils.isCvTermChildOf(term, Feature.VARIANT_MI, Feature.VARIANT)) {
                     mutations.add(feature);
                 }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
+                    experimentalFeatures.add(feature);
+                }
                 // we consider any other MI terms as old PTM
-                else {
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BIOLOGICAL_FEATURE_MI, Feature.BIOLOGICAL_FEATURE)){
                     ptms.add(feature);
+                }
+                else {
+                    otherFeatures.add(feature);
                 }
             }
             else {
@@ -335,26 +326,10 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                 // cannot retrieve the term using name
                 if (term == null){
 
-                    // we have linked features, it could be a binding site
-                    if (!feature.getLinkedFeatureEvidences().isEmpty()){
-                        bindingSites.add(feature);
-                    }
-                    // if one range is not undetermined, it is likely to be a binding site
-                    else {
-                        for (Range r : feature.getRanges()){
-                            if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
-                                bindingSites.add(feature);
-                                return;
-                            }
-                        }
-                        experimentalFeatures.add(feature);
-                    }
+                    otherFeatures.add(feature);
                 }
                 else if (term.getMODIdentifier() != null){
                     ptms.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
-                    experimentalFeatures.add(feature);
                 }
                 else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
                     bindingSites.add(feature);
@@ -363,37 +338,20 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                         OntologyTermUtils.isCvTermChildOf(term, Feature.VARIANT_MI, Feature.VARIANT)) {
                     mutations.add(feature);
                 }
-                else if (!feature.getLinkedFeatureEvidences().isEmpty()){
-                    bindingSites.add(feature);
-                }
-                // if one range is not undetermined, it is likely to be a binding site
-                else {
-                    for (Range r : feature.getRanges()){
-                        if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
-                            bindingSites.add(feature);
-                            return;
-                        }
-                    }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
                     experimentalFeatures.add(feature);
+                }
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BIOLOGICAL_FEATURE_MI, Feature.BIOLOGICAL_FEATURE)){
+                    ptms.add(feature);
+                }
+                else {
+                    otherFeatures.add(feature);
                 }
             }
         }
-        // we need to recognize the feature
+        // we cannot recognize the feature
         else {
-            // we have linked features, it could be a binding site
-            if (!feature.getLinkedFeatureEvidences().isEmpty()){
-                bindingSites.add(feature);
-            }
-            // if one range is not undetermined, it is likely to be a binding site
-            else {
-                for (Range r : feature.getRanges()){
-                    if (!r.getStart().isPositionUndetermined() || !r.getEnd().isPositionUndetermined()){
-                        bindingSites.add(feature);
-                        return;
-                    }
-                }
-                experimentalFeatures.add(feature);
-            }
+            otherFeatures.add(feature);
         }
     }
 
@@ -415,14 +373,14 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             writeNextPropertySeparatorAndIndent();
             writer.write(JsonUtils.INDENT);
             writer.write(JsonUtils.INDENT);
-            writerProperty("name", feature.getFullName());
+            writerProperty("name", JSONValue.escape(feature.getFullName()));
         }
         else if (feature.getShortName() != null){
             writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writer.write(JsonUtils.INDENT);
             writer.write(JsonUtils.INDENT);
-            writerProperty("name", feature.getShortName());
+            writerProperty("name", JSONValue.escape(feature.getShortName()));
         }
 
         // write type
@@ -499,7 +457,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writer.write(JsonUtils.INDENT);
-            writerProperty("Binding_Site_Domain", feature.getInterpro());
+            writerProperty("Binding_Site_Domain", JSONValue.escape(feature.getInterpro()));
         }
 
         writeNextPropertySeparatorAndIndent();
@@ -527,8 +485,8 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         String interactorId = null;
         String db = null;
         if (preferredIdentifier != null){
-            interactorId = preferredIdentifier.getId();
-            db = preferredIdentifier.getDatabase().getShortName();
+            interactorId = JSONValue.escape(preferredIdentifier.getId());
+            db = JSONValue.escape(preferredIdentifier.getDatabase().getShortName());
         }
         else{
             interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(participant.getInteractor()));
@@ -601,7 +559,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         Iterator<Annotation> annotIterator = figures.iterator();
         while (annotIterator.hasNext()){
             Annotation annot = annotIterator.next();
-            writeAnnotation(name, annot != null ? annot.getValue():"");
+            writeAnnotation(name, annot != null ? JSONValue.escape(annot.getValue()):"");
             if (annotIterator.hasNext()){
                 writer.write(JsonUtils.ELEMENT_SEPARATOR);
             }
@@ -633,7 +591,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             writerProperty("id", Integer.toString(expansionId));
             writer.write(JsonUtils.ELEMENT_SEPARATOR);
         }
-        writerProperty("name", expansion.getShortName());
+        writerProperty("name", JSONValue.escape(expansion.getShortName()));
         writer.write(JsonUtils.CLOSE);
     }
 
@@ -652,7 +610,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         while (confidencesIterator.hasNext()){
             Confidence conf = confidencesIterator.next();
             if (conf != null){
-                writeConfidence(conf.getType().getShortName(), conf.getValue());
+                writeConfidence(JSONValue.escape(conf.getType().getShortName()), JSONValue.escape(conf.getValue()));
             }
             else {
                 writeConfidence("unknown","");
@@ -672,10 +630,10 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         while (identifierIterator.hasNext()){
             Xref identifier = identifierIterator.next();
             if (identifier != null){
-                writeIdentifier(identifier.getDatabase().getShortName(), identifier.getId());
+                writeIdentifier(JSONValue.escape(identifier.getDatabase().getShortName()), JSONValue.escape(identifier.getId()));
             }
             else {
-                writeIdentifier("unknown", identifier.getId());
+                writeIdentifier("unknown", JSONValue.escape(identifier.getId()));
             }
             if (identifierIterator.hasNext()){
                 writer.write(JsonUtils.ELEMENT_SEPARATOR);
@@ -690,6 +648,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         Collection<Annotation> figures = AnnotationUtils.collectAllAnnotationsHavingTopic(interaction.getAnnotations(), Annotation.FIGURE_LEGEND_MI, Annotation.FIGURE_LEGEND);
 
         if (experiment != null){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("experiment");
             writer.write(JsonUtils.OPEN);
@@ -746,6 +705,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             return true;
         }
         else if (!figures.isEmpty()){
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("experiment");
             writer.write(JsonUtils.OPEN);
@@ -776,11 +736,11 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         writerProperty("taxid", Integer.toString(organism.getTaxId()));
         if (organism.getCommonName() != null){
             writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            writerProperty("common", organism.getCommonName());
+            writerProperty("common", JSONValue.escape(organism.getCommonName()));
         }
         if (organism.getScientificName() != null){
             writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            writerProperty("scientific", organism.getScientificName());
+            writerProperty("scientific", JSONValue.escape(organism.getScientificName()));
         }
         writer.write(JsonUtils.CLOSE);
     }
@@ -789,15 +749,15 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         writer.write(JsonUtils.OPEN);
         boolean hasId = false;
         if (term.getMIIdentifier() != null){
-            writerProperty("id", term.getMIIdentifier());
+            writerProperty("id", JSONValue.escape(term.getMIIdentifier()));
             hasId = true;
         }
         else if (term.getMODIdentifier() != null){
-            writerProperty("id", term.getMODIdentifier());
+            writerProperty("id", JSONValue.escape(term.getMODIdentifier()));
             hasId = true;
         }
         else if (term.getPARIdentifier() != null){
-            writerProperty("id", term.getPARIdentifier());
+            writerProperty("id", JSONValue.escape(term.getPARIdentifier()));
             hasId = true;
         }
 
@@ -806,10 +766,10 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         }
 
         if (term.getFullName() != null){
-            writerProperty("name", term.getFullName());
+            writerProperty("name", JSONValue.escape(term.getFullName()));
         }
         else {
-            writerProperty("name", term.getShortName());
+            writerProperty("name", JSONValue.escape(term.getShortName()));
         }
         writer.write(JsonUtils.CLOSE);
     }
@@ -840,15 +800,16 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         writer.write(JsonUtils.INDENT);
         writer.write(JsonUtils.OPEN);
 
+        writeNextPropertySeparatorAndIndent();
+        writerProperty("object","interaction");
+
         // first experiment
         boolean hasExperiment = writeExperiment(binary);
 
         // then interaction type
         boolean hasType = binary.getInteractionType() != null;
         if (hasType){
-            if (hasExperiment){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("interactionType");
             writeCvTerm(binary.getInteractionType());
@@ -857,9 +818,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         // then interaction identifiers
         boolean hasIdentifiers = !binary.getIdentifiers().isEmpty();
         if (hasIdentifiers){
-            if (hasType || (!hasType && hasExperiment)){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("identifiers");
             writeAllIdentifiers(binary.getIdentifiers());
@@ -868,9 +827,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         // then confidences
         boolean hasConfidences = !binary.getConfidences().isEmpty();
         if (hasConfidences){
-            if (hasIdentifiers || (!hasIdentifiers && (hasType || (!hasType && hasExperiment)))){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("confidences");
             writeAllConfidences(binary.getConfidences());
@@ -879,9 +836,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         // then complex expansion
         boolean hasComplexExpansion = binary.getComplexExpansion() != null;
         if (hasComplexExpansion){
-            if (hasConfidences || (!hasConfidences && (hasIdentifiers || (!hasIdentifiers && (hasType || (!hasType && hasExperiment)))))){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("expansion");
             writeExpansionMethod(binary.getComplexExpansion());
@@ -889,9 +844,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
 
         // then participant A and B
         if (A != null){
-            if (hasComplexExpansion || (!hasComplexExpansion && (hasConfidences || (!hasConfidences && (hasIdentifiers || (!hasIdentifiers && (hasType || (!hasType && hasExperiment)))))))){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeParticipant(A, "source");
 
@@ -910,9 +863,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             }
         }
         else if (B != null){
-            if (hasComplexExpansion || (!hasComplexExpansion && (hasConfidences || (!hasConfidences && (hasIdentifiers || (!hasIdentifiers && (hasType || (!hasType && hasExperiment)))))))){
-                writer.write(JsonUtils.ELEMENT_SEPARATOR);
-            }
+            writer.write(JsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeParticipant(B, "source");
             writer.write(JsonUtils.ELEMENT_SEPARATOR);
@@ -932,8 +883,8 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
             String interactorId = null;
             String db = null;
             if (preferredIdentifier != null){
-                interactorId = preferredIdentifier.getId();
-                db = preferredIdentifier.getDatabase().getShortName();
+                interactorId = JSONValue.escape(preferredIdentifier.getId());
+                db = JSONValue.escape(preferredIdentifier.getDatabase().getShortName());
             }
             else{
                 interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(interactor));
@@ -959,7 +910,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                 if (interactor instanceof Polymer){
                     Polymer polymer = (Polymer) interactor;
                     if (polymer.getSequence() != null){
-                        writerProperty("sequence", polymer.getSequence());
+                        writerProperty("sequence", JSONValue.escape(polymer.getSequence()));
                         writer.write(JsonUtils.ELEMENT_SEPARATOR);
                         writeNextPropertySeparatorAndIndent();
                     }
@@ -982,7 +933,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
                 writer.write(JsonUtils.ELEMENT_SEPARATOR);
                 writeNextPropertySeparatorAndIndent();
                 // write label
-                writerProperty("label", interactor.getShortName());
+                writerProperty("label", JSONValue.escape(interactor.getShortName()));
                 writer.write(JsonUtils.ELEMENT_SEPARATOR);
                 writer.write(JsonUtils.LINE_SEPARATOR);
                 writer.write(JsonUtils.INDENT);
@@ -1004,7 +955,6 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         writer.write(JsonUtils.LINE_SEPARATOR);
         writer.write(JsonUtils.CLOSE_ARRAY);
         writer.write(JsonUtils.CLOSE);
-
     }
 
     private void initialiseWriter(Writer writer) {
@@ -1042,6 +992,7 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         this.bindingSites = new ArrayList<FeatureEvidence>();
         this.ptms = new ArrayList<FeatureEvidence>();
         this.mutations = new ArrayList<FeatureEvidence>();
+        this.otherFeatures = new ArrayList<FeatureEvidence>();
     }
 
     private void clearFeatureCollections(){
@@ -1049,5 +1000,6 @@ public class JsonBinaryWriter implements InteractionWriter<BinaryInteractionEvid
         this.bindingSites.clear();
         this.ptms.clear();
         this.mutations.clear();
+        this.otherFeatures.clear();
     }
 }
