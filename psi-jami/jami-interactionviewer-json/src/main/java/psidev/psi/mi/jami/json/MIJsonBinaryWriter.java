@@ -32,6 +32,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
     private boolean isInitialised = false;
     private Writer writer;
     private boolean hasOpened = false;
+    private boolean hasClosed = false;
     private Set<String> processedInteractors;
     private static final Logger logger = Logger.getLogger("MitabParserLogger");
     private Integer expansionId;
@@ -200,8 +201,11 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
     public void close() throws DataSourceWriterException{
         if (isInitialised){
+
             try {
-                writeEnd();
+                if (!hasClosed){
+                    writeEnd();
+                }
             } catch (IOException e) {
                 throw new DataSourceWriterException("Impossible to close the JSON writer", e);
             }
@@ -220,9 +224,41 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 isInitialised = false;
                 writer = null;
                 hasOpened = false;
+                hasClosed = false;
                 processedInteractors.clear();
                 expansionId = null;
                 this.fetcher = null;
+            }
+        }
+    }
+
+    public void reset() throws DataSourceWriterException {
+        if (isInitialised){
+
+            try {
+                if (!hasClosed){
+                    writeEnd();
+                }
+            } catch (IOException e) {
+                throw new DataSourceWriterException("Impossible to close the JSON writer", e);
+            }
+            finally{
+                try {
+                    writer.flush();
+                }
+                catch (IOException e) {
+                    throw new DataSourceWriterException("Impossible to close the JSON writer", e);
+                }
+                finally {
+                    clearFeatureCollections();
+                    isInitialised = false;
+                    writer = null;
+                    hasOpened = false;
+                    hasClosed = false;
+                    processedInteractors.clear();
+                    expansionId = null;
+                    this.fetcher = null;
+                }
             }
         }
     }
@@ -978,6 +1014,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writeStartObject("data");
         writer.write(MIJsonUtils.OPEN_ARRAY);
         writer.write(MIJsonUtils.LINE_SEPARATOR);
+        hasClosed = false;
     }
 
     protected void writeEnd() throws IOException {
@@ -987,6 +1024,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writer.write(MIJsonUtils.CLOSE_ARRAY);
         writer.write(MIJsonUtils.LINE_SEPARATOR);
         writer.write(MIJsonUtils.CLOSE);
+        hasClosed = true;
     }
 
     private void initialiseWriter(Writer writer) {

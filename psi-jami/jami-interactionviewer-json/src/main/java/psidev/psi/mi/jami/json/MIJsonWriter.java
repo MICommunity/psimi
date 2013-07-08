@@ -142,11 +142,28 @@ public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
     }
 
     public void close() throws DataSourceWriterException {
-        if (binaryWriter != null){
-            binaryWriter.close();
+        try{
+            if (binaryWriter != null){
+                binaryWriter.close();
+            }
         }
-        binaryWriter = null;
-        currentExpansionId = 0;
-        expansionMethod = null;
+        finally {
+            binaryWriter = null;
+            currentExpansionId = 0;
+            expansionMethod = null;
+        }
+    }
+
+    public void reset() throws DataSourceWriterException {
+        try{
+            if (binaryWriter != null){
+                binaryWriter.reset();
+            }
+        }
+        finally {
+            binaryWriter = null;
+            currentExpansionId = 0;
+            expansionMethod = null;
+        }
     }
 }
