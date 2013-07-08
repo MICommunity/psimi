@@ -25,6 +25,7 @@
     <module>jami-enricher</module>
     <module>jami-mitab</module>
     <module>jami-commons</module>
+    <module>jami-interactionviewer-json</module>
   </modules>
 
   <dependencies>
