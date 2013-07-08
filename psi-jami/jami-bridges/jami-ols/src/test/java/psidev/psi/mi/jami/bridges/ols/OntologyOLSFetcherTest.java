@@ -22,10 +22,15 @@ public class OntologyOLSFetcherTest {
 
     protected static final Logger log = LoggerFactory.getLogger(OntologyOLSFetcherTest.class.getName());
 
-    OntologyOLSFetcher ontologyOLSFetcher;
+    private OntologyOLSFetcher ontologyOLSFetcher;
+
     public static final String TEST_TERM_A_IDENTIFIER = "MI:0113";
     public static final String TEST_TERM_A_DBNAME = "psi-mi";
     public static final String TEST_TERM_A_SHORTNAME = "western blot";
+    public static final String TEST_TERM_B_IDENTIFIER = "MI:0661";
+    public static final String TEST_TERM_B_DBNAME = "psi-mi";
+    public static final String TEST_TERM_B_SHORTNAME = "experimental particp";
+    public static final String TEST_TERM_B_FULLNAME = "experimental participant identification";
 
 
     @Before
@@ -34,7 +39,7 @@ public class OntologyOLSFetcherTest {
     }
 
 
-    @Test
+    //@Test
     public void baseLineReadOut() throws BridgeFailedException {
         String[] tests = {"MI:0100" , "MI:0077" , "MI:0113"};//nuclear magnetic resonance
         for(String test : tests){
@@ -74,7 +79,7 @@ public class OntologyOLSFetcherTest {
     public void test_getCvTermByIdentifier_with_children() throws BridgeFailedException {
 
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
-                TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME , 0 , 0);
+                TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME , -1 , 0);
 
         assertNotNull(result);
         assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());
@@ -91,11 +96,11 @@ public class OntologyOLSFetcherTest {
      * Confirm that the Ontology term is correctly retrieved
      * @throws BridgeFailedException
      */
-    //@Test
+    @Test
     public void test_getCvTermByIdentifier_with_parents() throws BridgeFailedException {
 
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
-                TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME , 0 , 0);
+                TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME , 0 , -1);
 
         assertNotNull(result);
         assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());
@@ -105,6 +110,166 @@ public class OntologyOLSFetcherTest {
 
         assertTrue(result.getChildren().isEmpty());
         assertTrue(result.getParents().size() > 0);
+    }
+
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByIdentifier_with_finite_children() throws BridgeFailedException {
+        int childrenLimit = 1;
+
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
+                TEST_TERM_B_IDENTIFIER , TEST_TERM_A_DBNAME , childrenLimit , 0);
+
+        assertNotNull(result);
+        assertTrue(result.getChildren().size() > 0);
+        assertTrue(result.getParents().isEmpty());
+
+        int childrenCount = 0;
+        OntologyTerm testTerm = result;
+
+        while(!testTerm.getChildren().isEmpty()){
+            childrenCount ++;
+            testTerm = testTerm.getChildren().iterator().next();
+        }
+        assertEquals(childrenLimit , childrenCount);
+    }
+
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByIdentifier_with_finite_parents() throws BridgeFailedException {
+        int parentLimit = 2;
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
+                TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME , 0 , parentLimit);
+
+        assertNotNull(result);
+
+        assertTrue(result.getChildren().isEmpty());
+        assertTrue(result.getParents().size() > 0);
+
+        int parentCount = 0;
+        OntologyTerm testTerm = result;
+
+        while(!testTerm.getParents().isEmpty()){
+            parentCount ++;
+            testTerm = testTerm.getParents().iterator().next();
+        }
+        assertEquals(parentLimit , parentCount);
+    }
+
+    //===========================
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByExactName_without_relations() throws BridgeFailedException {
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME);
+
+        assertNotNull(result);
+        assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());
+        assertTrue(result.getIdentifiers().size() == 1);
+        assertTrue(result.getIdentifiers().iterator().hasNext());
+        assertEquals(TEST_TERM_A_IDENTIFIER , result.getIdentifiers().iterator().next().getId());
+
+        assertTrue(result.getChildren().isEmpty());
+        assertTrue(result.getParents().isEmpty());
+    }
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByExactName__with_children() throws BridgeFailedException {
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME, TEST_TERM_A_DBNAME , -1 , 0);
+
+        assertNotNull(result);
+        assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());
+        assertTrue(result.getIdentifiers().size() == 1);
+        assertTrue(result.getIdentifiers().iterator().hasNext());
+        assertEquals(TEST_TERM_A_IDENTIFIER , result.getIdentifiers().iterator().next().getId());
+
+        assertTrue(result.getChildren().size() > 0);
+        assertTrue(result.getParents().isEmpty());
+    }
+
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByExactName__with_parents() throws BridgeFailedException {
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME , 0 , -1);
+
+        assertNotNull(result);
+        assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());
+        assertTrue(result.getIdentifiers().size() == 1);
+        assertTrue(result.getIdentifiers().iterator().hasNext());
+        assertEquals(TEST_TERM_A_IDENTIFIER , result.getIdentifiers().iterator().next().getId());
+
+        assertTrue(result.getChildren().isEmpty());
+        assertTrue(result.getParents().size() > 0);
+    }
+
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByExactName__with_finite_children() throws BridgeFailedException {
+        int childrenLimit = 1;
+
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_B_FULLNAME , TEST_TERM_B_DBNAME , childrenLimit , 0);
+
+        assertNotNull(result);
+        assertTrue(result.getChildren().size() > 0);
+        assertTrue(result.getParents().isEmpty());
+
+        int childrenCount = 0;
+        OntologyTerm testTerm = result;
+
+        while(!testTerm.getChildren().isEmpty()){
+            childrenCount ++;
+            testTerm = testTerm.getChildren().iterator().next();
+        }
+        assertEquals(childrenLimit , childrenCount);
+    }
+
+
+    /**
+     * Confirm that the Ontology term is correctly retrieved
+     * @throws BridgeFailedException
+     */
+    @Test
+    public void test_getCvTermByExactName_with_finite_parents() throws BridgeFailedException {
+        int parentLimit = 2;
+        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(
+                TEST_TERM_B_FULLNAME , TEST_TERM_B_DBNAME , 0 , parentLimit);
+
+        assertNotNull(result);
+
+        assertTrue(result.getChildren().isEmpty());
+        assertTrue(result.getParents().size() > 0);
+
+        int parentCount = 0;
+        OntologyTerm testTerm = result;
+
+        while(!testTerm.getParents().isEmpty()){
+            parentCount ++;
+            testTerm = testTerm.getParents().iterator().next();
+        }
+        assertEquals(parentLimit , parentCount);
     }
 
 

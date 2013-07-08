@@ -3,11 +3,8 @@ package psidev.psi.mi.jami.bridges.fetcher;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
-import psidev.psi.mi.jami.model.Xref;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 /**
  * Finds ontology terms in the Ontology Lookup Service
