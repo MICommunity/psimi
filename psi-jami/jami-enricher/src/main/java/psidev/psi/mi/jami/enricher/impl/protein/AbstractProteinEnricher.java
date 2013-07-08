@@ -8,9 +8,11 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 import java.util.Collection;
@@ -24,6 +26,7 @@ import java.util.Collection;
  */
 public abstract class AbstractProteinEnricher
 implements ProteinEnricher {
+    public static final int RETRY_COUNT = 5;
 
     protected ProteinFetcher fetcher = null;
     protected ProteinEnricherListener listener = null;
@@ -38,13 +41,9 @@ implements ProteinEnricher {
      *
      * @param proteinToEnrich   the Protein which is being enriched
      * @return  a boolean denoting whether the enrichment was successful
-
      */
     public boolean enrichProtein(Protein proteinToEnrich) throws EnricherException {
-
-
-        // In your enricher, if you have several entries,
-        // try to look for the one with the same organism as the protein you try to enrich.
+        // If there are several entries, try to find one with the same organism as the proteinToEnrich
         // If you don't find one or several entries have the same organism,
         // fire a specific event because we want to track these proteins.
 
@@ -53,7 +52,7 @@ implements ProteinEnricher {
             return false;
         }
 
-        if (! areNoConflicts(proteinToEnrich) ) return false;
+        if (! proteinIsConflictFree(proteinToEnrich) ) return false;
 
         if (getOrganismEnricher().getFetcher() instanceof MockOrganismFetcher){
             MockOrganismFetcher organismFetcher = (MockOrganismFetcher)getOrganismEnricher().getFetcher();
@@ -65,7 +64,8 @@ implements ProteinEnricher {
 
         processProtein(proteinToEnrich);
 
-        if(listener != null) listener.onProteinEnriched(proteinToEnrich, "Success. Protein enriched.");
+        if(listener != null)
+            listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.SUCCESS, "Protein enriched.");
         return true;
     }
 
@@ -87,35 +87,37 @@ implements ProteinEnricher {
      * @return  Whether there were any fatal conflicts which
 
      */
-    protected boolean areNoConflicts(Protein proteinToEnrich){
+    protected boolean proteinIsConflictFree(Protein proteinToEnrich){
+        boolean exitStatus = true;
 
         //InteractorType
-        if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
-                Protein.PROTEIN_MI)
-                && !proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
-                Interactor.UNKNOWN_INTERACTOR_MI)){
+        if(! CvTermUtils.isCvTerm(proteinToEnrich.getInteractorType() , Protein.PROTEIN_MI , null)
+                && ! CvTermUtils.isCvTerm(
+                        proteinToEnrich.getInteractorType() , Interactor.UNKNOWN_INTERACTOR_MI , null)){
 
-            if(listener != null) listener.onProteinEnriched(proteinToEnrich, "Failed. Conflict in interactorType. " +
-                    "Found " + proteinToEnrich.getInteractorType().getShortName() + " " +
-                    "(psi-mi id:" + proteinToEnrich.getInteractorType().getMIIdentifier() + ").");
-            return false;
+            if(listener != null)
+                listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                        "Conflict in interactorType. " +
+                        "Found " + proteinToEnrich.getInteractorType().getShortName() + " " +
+                        "(psi-mi id:" + proteinToEnrich.getInteractorType().getMIIdentifier() + ").");
+            exitStatus = false;
         }
 
         //Organism
-        if(proteinFetched.getOrganism() == null) throw new IllegalArgumentException(
-                "The enriched protein has a null organism.");
+        if(proteinFetched.getOrganism() == null) proteinFetched.setOrganism(new DefaultOrganism(-3));
         if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
 
-        if(proteinToEnrich.getOrganism().getTaxId() != -3
-                && ! OrganismTaxIdComparator.areEquals(proteinToEnrich.getOrganism(), proteinFetched.getOrganism())){
+        if(proteinToEnrich.getOrganism().getTaxId() != proteinFetched.getOrganism().getTaxId()){
 
-            if(listener != null) listener.onProteinEnriched(proteinToEnrich, "Failed. Conflict in organism. " +
-                    "Found taxid " + proteinToEnrich.getOrganism().getTaxId() + " " +
-                    "but was enriching taxid " + proteinFetched.getOrganism().getTaxId() + ".");
-            return false;
+            if(listener != null)
+                listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                        "Conflict in organism. " +
+                        "Found taxid " + proteinToEnrich.getOrganism().getTaxId() + " " +
+                        "but was enriching taxid " + proteinFetched.getOrganism().getTaxId() + ".");
+            exitStatus = false;
         }
 
-        return true;
+        return exitStatus;
     }
 
 
@@ -148,23 +150,32 @@ implements ProteinEnricher {
         }
 
         // If the Protein is dead
-        if(proteinsEnriched == null
-                || proteinsEnriched.isEmpty()){
+        if(proteinsEnriched.isEmpty()){
             // If the protein cannot be remapped - exit
             if( ! remapDeadProtein(proteinToEnrich)){
                 return null;
             }else{
-                try {
-                    proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
-                } catch (BridgeFailedException e) {
-                    throw new EnricherException(
-                            "Could not enrich protein with identifier "+proteinToEnrich.getUniprotkb() , e);
+                int retryCount = RETRY_COUNT;
+                while(true){
+                    try {
+                        proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+                        break;
+                    } catch (BridgeFailedException e) {
+                        retryCount --;
+                        if(retryCount >= 0){
+                            throw new EnricherException(
+                                    "Could not enrich protein with identifier "+proteinToEnrich.getUniprotkb()+". "+
+                                    "Tried "+RETRY_COUNT+" times.", e);
+                        }
+                    }
                 }
+
+
                 // If the remapping can not be fetched
                 if(proteinsEnriched == null
                         || proteinsEnriched.isEmpty()){
-                    if(listener != null) listener.onProteinEnriched(proteinToEnrich,
-                            "Failed. Protein is dead. " +
+                    if(listener != null) listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                            "Protein is dead. " +
                             "Was able to remap but the remapped entry also appears to be dead.");
                     return null;
                 }
@@ -186,13 +197,14 @@ implements ProteinEnricher {
         // fire a specific event because we want to track these proteins.
 
         // Many proteins, try and choose
-        if(proteinToEnrich.getOrganism() == null
+        /*if(proteinToEnrich.getOrganism() == null
                 || proteinToEnrich.getOrganism().getTaxId() == -3){
-            if(listener != null) listener.onProteinEnriched(proteinToEnrich,
-                    "Failed. Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
-                    "Cannot choose as proteinToEnrich has no organism.");
+            if(listener != null)
+                listener.onProteinEnriched(proteinToEnrich,  EnrichmentStatus.FAILED ,
+                        "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
+                        "Cannot choose as proteinToEnrich has no organism.");
             return null;
-        }
+        }*/
 
         Protein proteinFetched = null;
 
@@ -200,8 +212,9 @@ implements ProteinEnricher {
             if(protein.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()){
                 if(proteinFetched == null) proteinFetched = protein;
                 else{
-                    if(listener != null) listener.onProteinEnriched(proteinToEnrich,
-                            "Failed. Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
+                    // Multiple proteins share this organism - impossible to choose
+                    if(listener != null) listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                            "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
                             "Cannot choose as multiple entries match organism in proteinToEnrich.");
                     return null;
                 }
@@ -209,8 +222,9 @@ implements ProteinEnricher {
         }
 
         if(proteinFetched == null){
-            if(listener != null) listener.onProteinEnriched(proteinToEnrich,
-                    "Failed. Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
+            // No proteins share this organism, impossible to choose
+            if(listener != null) listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                    "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
                     "Cannot choose as no entries match the organism in proteinToEnrich.");
             return null;
         }
@@ -231,7 +245,7 @@ implements ProteinEnricher {
     protected boolean remapProtein(Protein proteinToEnrich, String remapCause) throws EnricherException {
 
         if( getProteinRemapper() == null ){
-            if(listener != null) listener.onProteinEnriched(proteinToEnrich , "Failed. " +
+            if(listener != null) listener.onProteinEnriched(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
                     "Was unable to complete remap as service was missing.");
             return false;
@@ -244,7 +258,7 @@ implements ProteinEnricher {
         }
 
         if(proteinToEnrich.getUniprotkb() == null){
-            if(listener != null) listener.onProteinEnriched(proteinToEnrich , "Failed. " +
+            if(listener != null) listener.onProteinEnriched(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
                     "Was unable to find a mapping.");
             return false;

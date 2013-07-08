@@ -18,7 +18,7 @@ public interface OrganismEnricher{
      * @param organismToEnrich  the Organism to be enriched
      * @return                  the final status of the enrichment where true is successful and false failed.
      */
-    public boolean enrichOrganism(Organism organismToEnrich) throws EnricherException;
+    public void enrichOrganism(Organism organismToEnrich) throws EnricherException;
     /**
      * Sets the fetcher service to retrieve the organism by.
      * @param fetcher   the service to use when fetching an enrichedOrganism

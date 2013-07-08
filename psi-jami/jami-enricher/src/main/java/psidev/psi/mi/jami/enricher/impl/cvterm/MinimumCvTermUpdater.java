@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.Xref;
  * As an updater, values from the provided CvTerm to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
+ * @since 13/06/13
  */
 public class MinimumCvTermUpdater
         extends AbstractCvTermEnricher
@@ -22,6 +22,7 @@ public class MinimumCvTermUpdater
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
 
+        // Short Name
         if(cvTermFetched.getShortName() != null
                 && ! cvTermFetched.getShortName().equalsIgnoreCase(cvTermToEnrich.getShortName())){
 
@@ -31,7 +32,7 @@ public class MinimumCvTermUpdater
                 listener.onShortNameUpdate(cvTermToEnrich, oldValue);
         }
 
-        //FullName
+        //Full Name
         if(cvTermFetched.getFullName() != null
                 && ! cvTermFetched.getFullName().equalsIgnoreCase(cvTermToEnrich.getFullName())){
 
@@ -41,9 +42,7 @@ public class MinimumCvTermUpdater
                 listener.onFullNameUpdate(cvTermToEnrich, oldValue);
         }
 
-        //TOdo - allow comparison of identifiers
         //Identifiers
-
         if(! cvTermFetched.getIdentifiers().isEmpty()) {
             XrefUpdateMerger merger = new XrefUpdateMerger();
             merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers());

@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
-
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
 import psidev.psi.mi.jami.model.Alias;

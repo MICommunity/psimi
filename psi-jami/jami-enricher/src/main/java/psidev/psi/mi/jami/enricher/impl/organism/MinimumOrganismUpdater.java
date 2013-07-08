@@ -17,10 +17,6 @@ public class MinimumOrganismUpdater
 
     @Override
     protected void processOrganism(Organism organismToEnrich) {
-        if(organismFetched.getTaxId() < -4){
-            throw new IllegalArgumentException( "The organism had an invalid TaxID of "+organismFetched.getTaxId());
-        }
-
         // Only enrich if an organism was fetched
         if(organismFetched.getTaxId() != -3){
 

@@ -4,6 +4,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
@@ -25,7 +26,8 @@ import psidev.psi.mi.jami.model.Xref;
  * @since 03/07/13
  */
 public class CachedOntologyOLSFetcher
-        extends OntologyOLSFetcher {
+        extends OntologyOLSFetcher
+        implements CachedFetcher{
 
     private Cache cache;
     private static CacheManager cacheManager;
@@ -36,11 +38,7 @@ public class CachedOntologyOLSFetcher
 
     public CachedOntologyOLSFetcher() throws BridgeFailedException {
         super();
-        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
-        if( cacheManager == null ) cacheManager = new CacheManager( url );
-        this.cache = cacheManager.getCache( CACHE_NAME );
-        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
+        startCache();
     }
 
     //=======================================
@@ -163,19 +161,30 @@ public class CachedOntologyOLSFetcher
     /////////////////////////
     // EH CACHE utilities
 
-    private Object getFromCache( String key ) {
+    public void startCache(){
+        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        cacheManager = new CacheManager( url );
+        this.cache = cacheManager.getCache( CACHE_NAME );
+        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
+    }
+
+    public Object getFromCache( String key ) {
         Object data = null;
+        //if (cacheManager.)
         Element element = cache.get( key );
         if( element != null ){
             data = element.getValue();
-            //log.info("Found key in cache "+key);
         }
         return data;
     }
 
-    private void storeInCache( String key, Object data ) {
+    public void storeInCache( String key, Object data ) {
         Element element = new Element( key, data );
         cache.put( element );
-        //log.info("added to cache key "+key);
+    }
+
+    public void closeCache(){
+        cacheManager.shutdown();
     }
 }
