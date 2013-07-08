@@ -125,6 +125,9 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
         if (options.containsKey(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY)){
             initialiseExpansionMethod((ComplexExpansionMethod<T,B>)options.get(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY));
         }
+        else {
+            initialiseExpansionMethod(null);
+        }
     }
 
     public void end() throws MIIOException {
