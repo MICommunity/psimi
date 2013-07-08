@@ -26,6 +26,7 @@
     <module>jami-mitab</module>
     <module>jami-commons</module>
     <module>jami-interactionviewer-json</module>
+    <module>interactionviewer-app</module>
   </modules>
 
   <dependencies>
