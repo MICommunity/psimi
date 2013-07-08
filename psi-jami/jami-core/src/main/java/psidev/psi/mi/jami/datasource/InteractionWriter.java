@@ -59,5 +59,5 @@ public interface InteractionWriter<T extends Interaction> {
      * initialiseContext(Map<String, Object> options).
      * Any provided ouputStream or writer will not be closed and will have to be closed separately.
      */
-    public void reset();
+    public void reset() throws DataSourceWriterException;
 }
