@@ -33,6 +33,8 @@ public class OntologyOLSFetcher
     private OlsFetcher olsFetcher;
     protected Query queryService;
 
+    private Collection<String> loopProtection = new ArrayList<String>();
+
     public OntologyOLSFetcher() throws BridgeFailedException {
         try{
             queryService = new QueryServiceLocator().getOntologyQuery();
@@ -114,18 +116,25 @@ public class OntologyOLSFetcher
             throws BridgeFailedException {
 
         if( depth > 0 ) depth --;
+        if(! loopProtection.contains(identity.getId())){
+            loopProtection.add(identity.getId());
+            try{
+                HashMap<String, String> parents = queryService.getTermParents(
+                        identity.getId() , null);
+                for(Map.Entry<String,String> entry: parents.entrySet()){
 
-        try{
-            HashMap<String, String> parents = queryService.getTermParents(
-                    identity.getId() , null);
-            for(Map.Entry<String,String> entry: parents.entrySet()){
-                OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , 0 , depth);
-                if(parent == null) throw new IllegalArgumentException("Null parent from known identifier.");
-                ontologyTermNeedingParents.getParents().add(parent);
+                        OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , 0 , depth);
+                        if(parent == null) throw new IllegalArgumentException("Null parent from known identifier.");
+                        ontologyTermNeedingParents.getParents().add(parent);
+
+                    }
+
+            } catch (RemoteException e) {
+                throw new BridgeFailedException(e);
             }
-        } catch (RemoteException e) {
-            throw new BridgeFailedException(e);
         }
+        loopProtection.remove(identity.getId());
+
     }
 
     /**
@@ -142,12 +151,16 @@ public class OntologyOLSFetcher
                     "("+ontologyTermNeedingChildren.getChildren()+")");
 
         if( depth > 0 ) depth --;
-        Map<String, String> children = getChildrenIDs(identity.getId());
-        for(Map.Entry<String,String> entry: children.entrySet()){
-            OntologyTerm child = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , depth , 0);
-            if(child == null) throw new IllegalArgumentException("Null parent from known identifier.");
-            ontologyTermNeedingChildren.getChildren().add(child);
+        if(! loopProtection.contains(identity.getId())){
+            loopProtection.add(identity.getId());
+            Map<String, String> children = getChildrenIDs(identity.getId());
+            for(Map.Entry<String,String> entry: children.entrySet()){
+                OntologyTerm child = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , depth , 0);
+                if(child == null) throw new IllegalArgumentException("Null parent from known identifier.");
+                ontologyTermNeedingChildren.getChildren().add(child);
+            }
         }
+        loopProtection.remove(identity.getId());
     }
 
     //=======================================
