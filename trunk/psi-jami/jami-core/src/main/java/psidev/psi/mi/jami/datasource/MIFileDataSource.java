@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 
 /**
@@ -22,14 +23,16 @@ public interface MIFileDataSource extends MIDataSource{
      * Validate the syntax of this MIFileDataSource.
      * It returns true if the file syntax is valid, false otherwise.
      * When the file syntax is invalid, the syntax errors are fired and should be retrieved using a proper MIFileParserListener
+     * @throws MIIOException
      */
-    public boolean validateSyntax();
+    public boolean validateSyntax() throws MIIOException;
 
     /**
      * Validate the syntax of this MIFileDataSource and uses the provided MIFileParserListener to listen to the events.
      * The provided listener will be set as the MIFileParserListener of this datasource
      * @param listener
-     * @return
+     * @return true if the file syntax is valid
+     * @throws MIIOException
      */
-    public boolean validateSyntax(MIFileParserListener listener);
+    public boolean validateSyntax(MIFileParserListener listener) throws MIIOException;
 }
