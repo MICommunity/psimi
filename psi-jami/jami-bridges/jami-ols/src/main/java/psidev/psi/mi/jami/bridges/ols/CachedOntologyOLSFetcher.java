@@ -73,7 +73,13 @@ public class CachedOntologyOLSFetcher
         return (Collection<OntologyTerm>)data;
     }
 
-
+    /**
+     * Finds the children of the provided term, checking the cache first.
+     * If the entry has not been cached it uses the inherited form of this method to query OLS
+     * @param termIdentifier
+     * @return
+     * @throws BridgeFailedException
+     */
     public Map<String , String> getChildrenIDs(String termIdentifier) throws BridgeFailedException {
         final String key = "getChildrenIDs#"+termIdentifier;
         Object data = getFromCache( key );
@@ -83,33 +89,6 @@ public class CachedOntologyOLSFetcher
         }
         return (Map<String , String>)data;
     }
-     /*
-    public void findParents(OntologyTerm ontologyTermNeedingParents , Xref identity )
-            throws BridgeFailedException {
-
-        final String key = "findParents#"+ontologyTermNeedingParents+
-                "#"+identity.getId()+"#CVTERM:"+identity.getDatabase();
-
-        Object data = getFromCache( key );
-        if( data == null) {
-            super.findParents(ontologyTermNeedingParents,identity);
-            storeInCache(key, ontologyTermNeedingParents);
-        }
-    }
-
-    public void findChildren(OntologyTerm ontologyTermNeedingChildren  , Xref identity )
-            throws BridgeFailedException {
-
-        final String key = "findChildren#"+ontologyTermNeedingChildren+
-                "#"+identity.getId()+"#CVTERM:"+identity.getDatabase();
-
-        Object data = getFromCache( key );
-        if( data == null) {
-            super.findChildren(ontologyTermNeedingChildren , identity);
-            storeInCache(key, ontologyTermNeedingChildren);
-        }
-    } */
-
 
     //=======================================
     // Find with Relations
