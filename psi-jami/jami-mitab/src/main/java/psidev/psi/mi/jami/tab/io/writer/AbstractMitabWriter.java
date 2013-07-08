@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
@@ -39,6 +39,7 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
 
     private ComplexExpansionMethod<T, B> expansionMethod;
     private AbstractMitab25BinaryWriter<B, P> binaryWriter;
+    private boolean hasStarted;
 
     public AbstractMitabWriter(){
 
@@ -126,36 +127,47 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
         }
     }
 
-    public void write(T interaction) throws DataSourceWriterException {
+    public void end() throws MIIOException {
+        if (binaryWriter == null){
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+        }
+    }
+
+    public void start() throws MIIOException {
+        if (binaryWriter == null){
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+        }
+        this.binaryWriter.start();
+        hasStarted = true;
+    }
+
+    public void write(T interaction) throws MIIOException {
         if (this.binaryWriter == null){
             throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (interaction != null){
-
-            this.binaryWriter.write(getExpansionMethod().expand(interaction));
-        }
+        this.binaryWriter.write(getExpansionMethod().expand(interaction));
     }
 
-    public void write(Collection<T> interactions) throws DataSourceWriterException {
+    public void write(Collection<T> interactions) throws MIIOException {
         for (T interaction : interactions){
             write(interaction);
         }
     }
 
-    public void write(Iterator<T> interactions) throws DataSourceWriterException {
+    public void write(Iterator<T> interactions) throws MIIOException {
         while (interactions.hasNext()){
             write(interactions.next());
         }
     }
 
-    public void flush() throws DataSourceWriterException{
+    public void flush() throws MIIOException{
         if (this.binaryWriter != null){
             this.binaryWriter.flush();
         }
     }
 
-    public void close() throws DataSourceWriterException{
+    public void close() throws MIIOException{
         try{
             if (this.binaryWriter != null){
                 this.binaryWriter.close();
@@ -167,7 +179,7 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
         }
     }
 
-    public void reset() throws DataSourceWriterException {
+    public void reset() throws MIIOException {
         try{
             if (this.binaryWriter != null){
                 this.binaryWriter.reset();
@@ -188,16 +200,6 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
     public void setWriteHeader(boolean writeHeader) {
         if (this.binaryWriter != null){
             this.binaryWriter.setWriteHeader(writeHeader);
-        }
-    }
-
-    public boolean hasWrittenHeader() {
-        return binaryWriter != null ? binaryWriter.hasWrittenHeader():false;
-    }
-
-    public void setHasWrittenHeader(boolean hasWrittenHeader) {
-        if (this.binaryWriter != null){
-            this.binaryWriter.setHasWrittenHeader(hasWrittenHeader);
         }
     }
 
@@ -226,5 +228,13 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
             initialiseExpansionMethod(null);
         }
         return expansionMethod;
+    }
+
+    protected boolean hasStarted() {
+        return hasStarted;
+    }
+
+    protected void setStarted(boolean hasStarted) {
+        this.hasStarted = hasStarted;
     }
 }

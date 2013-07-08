@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.iterator;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.extension.MitabSourceLocator;
@@ -21,7 +22,7 @@ public abstract class AbstractMitabIterator<T extends Interaction, P extends Par
     private MitabLineParser<T,P> lineParser;
     private T nextBinary;
 
-    public AbstractMitabIterator(MitabLineParser<T,P> lineParser){
+    public AbstractMitabIterator(MitabLineParser<T,P> lineParser) throws MIIOException {
         if (lineParser == null){
             throw new IllegalArgumentException("The Mitab iterator needs a non null lineParser.");
         }
@@ -29,7 +30,7 @@ public abstract class AbstractMitabIterator<T extends Interaction, P extends Par
         processNextBinary();
     }
 
-    private void processNextBinary(){
+    private void processNextBinary() throws MIIOException{
         this.nextBinary = null;
 
         while (!this.lineParser.hasFinished() && this.nextBinary == null){
@@ -40,7 +41,7 @@ public abstract class AbstractMitabIterator<T extends Interaction, P extends Par
                     this.lineParser.getParserListener().onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0)), e);
                 }
                 else{
-                    e.printStackTrace();
+                    throw new MIIOException("Impossible to read next interaction.", e);
                 }
             }
         }
@@ -50,7 +51,7 @@ public abstract class AbstractMitabIterator<T extends Interaction, P extends Par
         return this.nextBinary != null;
     }
 
-    public T next() {
+    public T next() throws MIIOException{
         T currentBinary = this.nextBinary;
         processNextBinary();
         return currentBinary;

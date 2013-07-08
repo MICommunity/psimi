@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.io.iterator;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
  */
 
 public class MitabInteractionIterator extends AbstractMitabIterator<Interaction, Participant>{
-    public MitabInteractionIterator(MitabLineParser<Interaction, Participant> lineParser) {
+    public MitabInteractionIterator(MitabLineParser<Interaction, Participant> lineParser) throws MIIOException {
         super(lineParser);
     }
 }

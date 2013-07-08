@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.tab.io.parser;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
@@ -17,6 +18,8 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +33,7 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractMitabDataSource<T extends Interaction, P extends Participant> implements MIFileDataSource, InteractionSource, MitabParserListener{
 
+    private static final Logger logger = Logger.getLogger("AbstractMitabDataSource");
     private MitabLineParser<T,P> lineParser;
     private boolean isInitialised = false;
 
@@ -144,37 +148,68 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         isInitialised = true;
     }
 
-    public void close() {
+    public void close() throws MIIOException{
         if (isInitialised){
+
             if (this.originalStream != null){
                 try {
                     this.originalStream.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("Impossible to close the original stream", e);
+                    throw new MIIOException("Impossible to close the original stream", e);
+                }
+                finally {
+                    this.originalFile = null;
+                    this.originalURL = null;
+                    this.originalStream = null;
+                    this.originalReader = null;
+                    this.lineParser = null;
+                    this.parserListener = null;
+                    this.defaultParserListener = null;
+                    isInitialised = false;
+                    isValid = null;
+                    isInitialised = false;
                 }
             }
-            if (this.originalReader != null){
+            else if (this.originalReader != null){
                 try {
                     this.originalReader.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("Impossible to close the original reader", e);
+                    throw new MIIOException("Impossible to close the original reader", e);
+                }
+                finally {
+                    this.originalFile = null;
+                    this.originalURL = null;
+                    this.originalStream = null;
+                    this.originalReader = null;
+                    this.lineParser = null;
+                    this.parserListener = null;
+                    this.defaultParserListener = null;
+                    isInitialised = false;
+                    isValid = null;
+                    isInitialised = false;
                 }
             }
-            this.originalFile = null;
-            this.originalURL = null;
-            this.lineParser = null;
-            this.parserListener = null;
-            this.defaultParserListener = null;
-            isInitialised = false;
-            isValid = null;
-            isInitialised = false;
+            else{
+                this.originalFile = null;
+                this.originalURL = null;
+                this.originalStream = null;
+                this.originalReader = null;
+                this.lineParser = null;
+                this.parserListener = null;
+                this.defaultParserListener = null;
+                isInitialised = false;
+                isValid = null;
+                isInitialised = false;
+            }
         }
     }
 
-    public void reset() {
+    public void reset() throws MIIOException{
         if (isInitialised){
             this.originalFile = null;
             this.originalURL = null;
+            this.originalStream = null;
+            this.originalReader = null;
             this.lineParser = null;
             this.parserListener = null;
             this.defaultParserListener = null;
@@ -374,7 +409,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     protected abstract Iterator<T> createMitabIterator();
 
-    protected void reInit(){
+    protected void reInit() throws MIIOException{
         if (isInitialised){
             if (this.originalFile != null){
                 // close the previous stream
@@ -382,7 +417,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                     try {
                         this.originalStream.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        logger.log(Level.SEVERE, "Could not close the inputStream.", e);
                     }
                 }
                 // reinitialise mitab parser
@@ -391,7 +426,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                     this.lineParser.ReInit(this.originalStream);
 
                 } catch (FileNotFoundException e) {
-                    throw new RuntimeException("We cannot open the file " + this.originalFile.getName(), e);
+                    throw new MIIOException("We cannot open the file " + this.originalFile.getName(), e);
                 }
             }
             else if (this.originalURL != null){
@@ -400,7 +435,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                     try {
                         this.originalStream.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        logger.log(Level.SEVERE, "Could not close the inputStream.", e);
                     }
                 }
                 // reinitialise mitab parser
@@ -409,7 +444,7 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                     this.lineParser.ReInit(this.originalStream);
 
                 } catch (IOException e) {
-                    throw new RuntimeException("We cannot open the URL " + this.originalURL.toExternalForm(), e);
+                    throw new MIIOException("We cannot open the URL " + this.originalURL.toExternalForm(), e);
                 }
             }
             else if (this.originalStream != null){
@@ -420,11 +455,11 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                         this.lineParser.ReInit(this.originalStream);
 
                     } catch (IOException e) {
-                        throw new RuntimeException("The inputStream has been consumed and cannot be reset", e);
+                        throw new MIIOException("The inputStream has been consumed and cannot be reset", e);
                     }
                 }
                 else {
-                    throw new RuntimeException("The inputStream has been consumed and cannot be reset");
+                    throw new MIIOException("The inputStream has been consumed and cannot be reset");
                 }
             }
             else if (this.originalReader != null){
@@ -434,11 +469,11 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
                         this.originalReader.reset();
                         this.lineParser.ReInit(this.originalReader);
                     } catch (IOException e) {
-                        throw new RuntimeException("The reader has been consumed and cannot be reset", e);
+                        throw new MIIOException("The reader has been consumed and cannot be reset", e);
                     }
                 }
                 else {
-                    throw new RuntimeException("The reader has been consumed and cannot be reset");
+                    throw new MIIOException("The reader has been consumed and cannot be reset");
                 }
             }
         }

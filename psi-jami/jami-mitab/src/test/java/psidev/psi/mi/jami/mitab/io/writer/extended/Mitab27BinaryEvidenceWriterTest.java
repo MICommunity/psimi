@@ -4,7 +4,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Participant;
@@ -14,7 +13,10 @@ import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.io.writer.extended.Mitab27BinaryEvidenceWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.utils.*;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.StringWriter;
 import java.text.ParseException;
@@ -40,19 +42,19 @@ public class Mitab27BinaryEvidenceWriterTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_not_initialised_writer() throws DataSourceWriterException {
+    public void test_not_initialised_writer() {
         Mitab27BinaryEvidenceWriter binaryWriter = new Mitab27BinaryEvidenceWriter();
         binaryWriter.write(new MitabBinaryInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_not_initialised_no_options() throws DataSourceWriterException {
+    public void test_not_initialised_no_options() {
         Mitab27BinaryEvidenceWriter binaryWriter = new Mitab27BinaryEvidenceWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_binary() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         Mitab27BinaryEvidenceWriter binaryWriter = new Mitab27BinaryEvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
@@ -66,7 +68,7 @@ public class Mitab27BinaryEvidenceWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary_list() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         Mitab27BinaryEvidenceWriter binaryWriter = new Mitab27BinaryEvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
@@ -80,7 +82,7 @@ public class Mitab27BinaryEvidenceWriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary2() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         Mitab27BinaryEvidenceWriter binaryWriter = new Mitab27BinaryEvidenceWriter();
         Map<String, Object> options = new HashMap<String, Object>();

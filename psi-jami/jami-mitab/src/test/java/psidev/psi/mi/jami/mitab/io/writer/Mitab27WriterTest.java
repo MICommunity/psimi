@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.mitab.io.writer;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
@@ -38,19 +37,19 @@ public class Mitab27WriterTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_not_initialised_writer() throws DataSourceWriterException {
+    public void test_not_initialised_writer() {
         Mitab27Writer binaryWriter = new Mitab27Writer();
         binaryWriter.write(new MitabModelledBinaryInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_not_initialised_no_options() throws DataSourceWriterException {
+    public void test_not_initialised_no_options() {
         Mitab27Writer binaryWriter = new Mitab27Writer();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_binary() throws DataSourceWriterException, IllegalParameterException, ParseException {
+    public void test_write_binary() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
         Mitab27Writer binaryWriter = new Mitab27Writer(writer);
         binaryWriter.setWriteHeader(false);
@@ -64,7 +63,7 @@ public class Mitab27WriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary_list() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         Mitab27Writer binaryWriter = new Mitab27Writer(writer);
         binaryWriter.setWriteHeader(false);
@@ -81,7 +80,7 @@ public class Mitab27WriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary2() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         Mitab27Writer binaryWriter = new Mitab27Writer();
         Map<String, Object> options = new HashMap<String, Object>();

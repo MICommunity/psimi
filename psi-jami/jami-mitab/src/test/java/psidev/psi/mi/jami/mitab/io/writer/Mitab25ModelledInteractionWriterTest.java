@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.mitab.io.writer;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -38,19 +37,19 @@ public class Mitab25ModelledInteractionWriterTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_not_initialised_writer() throws DataSourceWriterException {
+    public void test_not_initialised_writer() {
         Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
         binaryWriter.write(new MitabModelledInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_not_initialised_no_options() throws DataSourceWriterException {
+    public void test_not_initialised_no_options() {
         Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_interaction() throws DataSourceWriterException {
+    public void test_write_interaction() {
         StringWriter writer = new StringWriter();
         Mitab25ModelledInteractionWriter interactionWriter = new Mitab25ModelledInteractionWriter(writer);
         interactionWriter.setWriteHeader(false);
@@ -64,7 +63,7 @@ public class Mitab25ModelledInteractionWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws DataSourceWriterException {
+    public void test_write_binary_list() {
         StringWriter writer = new StringWriter();
         Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter(writer);
         binaryWriter.setWriteHeader(false);
@@ -78,7 +77,7 @@ public class Mitab25ModelledInteractionWriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws DataSourceWriterException {
+    public void test_write_binary2() {
         StringWriter writer = new StringWriter();
         Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
         Map<String, Object> options = new HashMap<String, Object>();
