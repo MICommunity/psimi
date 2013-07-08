@@ -133,7 +133,6 @@ public class CachedOntologyOLSFetcher
             storeInCache( key, data );
         }
         return (OntologyTerm) data;
-
     }
 
     public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,
@@ -160,30 +159,6 @@ public class CachedOntologyOLSFetcher
         }
         return (OntologyTerm) data;
     }
-
-    //===============================
-    // Find without Relations
-/*
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
-            throws BridgeFailedException {
-        return getCvTermByIdentifier(termIdentifier, ontologyDatabaseName, 0, false);
-    }
-
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
-            throws BridgeFailedException {
-        return getCvTermByIdentifier(termIdentifier, ontologyDatabase , false, false);
-    }
-
-    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
-            throws BridgeFailedException {
-        return getCvTermByExactName(searchName, ontologyDatabaseName, false, false);
-    }
-
-    public OntologyTerm getCvTermByExactName(String searchName)
-            throws BridgeFailedException {
-        return getCvTermByExactName(searchName, false, false);
-    }   */
-
 
     /////////////////////////
     // EH CACHE utilities

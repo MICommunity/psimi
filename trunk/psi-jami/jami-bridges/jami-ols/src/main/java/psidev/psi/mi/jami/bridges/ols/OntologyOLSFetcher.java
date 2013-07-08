@@ -106,6 +106,7 @@ public class OntologyOLSFetcher
         try{
             childrenIDs = queryService.getTermChildren(termIdentifier, null, 1, null);
         } catch (RemoteException e) {
+            loopProtection.clear();
             throw new BridgeFailedException(e);
         }
         return childrenIDs;
@@ -130,6 +131,7 @@ public class OntologyOLSFetcher
                     }
 
             } catch (RemoteException e) {
+                loopProtection.clear();
                 throw new BridgeFailedException(e);
             }
         }
@@ -202,13 +204,13 @@ public class OntologyOLSFetcher
      * If children or parents are selected it will recursively find them.
      * If both are selected, all parents of the deepest children will be found.
      *
-     * @param termIdentifier
-     * @param ontologyDatabase
+     * @param termIdentifier    The identifier for the CvTerm to fetch.
+     * @param ontologyDatabase  The ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
      * @param childrenDepth     Flag to note the depth of children that should be found.
      *                              0 if no children should be found, -1 if the depth should be infinite
      * @param parentDepth       Flag to note the depth of parents that should be found.
      *                              0 if no parents should be found, -1 if the depth should be infinite
-     * @return
+     * @return                  A fully enriched Ontology term.
      * @throws BridgeFailedException
      */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase,
@@ -270,7 +272,7 @@ public class OntologyOLSFetcher
      * Finds an ontologyTerm using a termIdentifier and an ontology database name.
      * @param termIdentifier    The identifier for the CvTerm to fetch.
      * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
-     * @return
+     * @return  A fully enriched ontology term.
      * @throws BridgeFailedException
      */
     public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
@@ -299,25 +301,25 @@ public class OntologyOLSFetcher
     public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName,
                                                             int childrenDepth, int parentDepth)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.EMPTY_LIST;
     }
 
     public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase,
                                                             int childrenDepth, int parentDepth)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.EMPTY_LIST;
     }
 
     public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName,
                                                            int childrenDepth, int parentDepth)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.EMPTY_LIST;
     }
 
     public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames,
                                                            int childrenDepth, int parentDepth)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.EMPTY_LIST;
     }
 
 
@@ -354,7 +356,7 @@ public class OntologyOLSFetcher
 
     public Collection<OntologyTerm> getCvTermByInexactName(String searchName, CvTerm database)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.EMPTY_LIST;
     }
 
     /**

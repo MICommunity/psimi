@@ -24,7 +24,7 @@ public class OlsFetcherTest {
     }
 
     @Test
-    public void test_CvTerm_by_MI_Identifier_and_databaseName() throws BridgeFailedException {
+    public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName() throws BridgeFailedException {
         String identifier = "MI:0580";
         String ontologyName = "psi-mi";
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
@@ -34,8 +34,15 @@ public class OlsFetcherTest {
         assertEquals(identifier , cvTermFetched.getMIIdentifier());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void test_getCvTermByIdentifier_using_MI_Identifier_and_null_databaseName() throws BridgeFailedException {
+        String identifier = "MI:0580";
+        String ontologyName = null;
+        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+    }
+
     @Test
-    public void test_CvTerm_by_MI_Identifier_and_databaseName_with_ShortName() throws BridgeFailedException {
+    public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName_with_ShortName() throws BridgeFailedException {
         String identifier = "MI:0473";
         String ontologyName = "psi-mi";
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
@@ -47,7 +54,7 @@ public class OlsFetcherTest {
     }
 
     @Test
-    public void test_CvTerm_by_MI_Identifier_and_databaseName_with_Synonym() throws BridgeFailedException {
+    public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName_with_Synonym() throws BridgeFailedException {
         String identifier = "MI:1064";
         String ontologyName = "psi-mi";
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
@@ -63,7 +70,7 @@ public class OlsFetcherTest {
 
 
     @Test
-    public void test_CvTerm_by_MI_Identifier_and_databaseName_with_failing_identifier() throws BridgeFailedException {
+    public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName_with_failing_identifier() throws BridgeFailedException {
         String identifier = "Foo";
         String ontologyName = "psi-mi";
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
@@ -72,7 +79,7 @@ public class OlsFetcherTest {
     }
 
     @Test
-    public void test_CvTerm_by_GO_Identifier_and_databaseName() throws BridgeFailedException {
+    public void test_getCvTermByIdentifier_using_GO_Identifier_and_databaseName() throws BridgeFailedException {
         String identifier = "GO:0009055";
         String ontologyName = "go";
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
@@ -83,7 +90,7 @@ public class OlsFetcherTest {
 
 
     @Test
-    public void test_CvTerm_by_MI_Identifier_and_databaseCvTerm() throws BridgeFailedException {
+    public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseCvTerm() throws BridgeFailedException {
         String identifier = "MI:0580";
         CvTerm ontology = CvTermUtils.createPsiMiDatabase();
         CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontology);
@@ -94,7 +101,7 @@ public class OlsFetcherTest {
     }
 
     @Test
-    public void test_CvTerm_by_MI_Term_and_databaseName() throws BridgeFailedException {
+    public void test_getCvTermByExactName_using_MI_TermName_and_databaseName() throws BridgeFailedException {
         String term = "electron acceptor";
         String databaseName = "psi-mi";
         CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term, databaseName);
@@ -105,7 +112,7 @@ public class OlsFetcherTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_CvTerm_by_MI_Term_and_no_databaseName() throws BridgeFailedException {
+    public void test_getCvTermByExactName_using_MI_TermName_and_null_databaseName() throws BridgeFailedException {
         String term = "electron acceptor";
         String databaseName = null;
         CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term, databaseName);

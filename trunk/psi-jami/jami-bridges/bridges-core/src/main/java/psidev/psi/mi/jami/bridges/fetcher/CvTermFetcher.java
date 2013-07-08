@@ -4,13 +4,12 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
+ * The interface for finding a CvTerm
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 08/05/13
+ * @since 08/05/13
  */
 public interface CvTermFetcher<C extends CvTerm>{
 
@@ -44,7 +43,15 @@ public interface CvTermFetcher<C extends CvTerm>{
     public C getCvTermByExactName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException;
 
-
+    /**
+     * Uses the name of the term and the name of the database to search for a complete form of the term.
+     * <p>
+     * If the term can not be resolved to a database, then this method may return null.
+     *
+     * @param searchName    A full or short name for the term to be searched for.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
     public C getCvTermByExactName(String searchName)
             throws BridgeFailedException;
 
@@ -69,32 +76,43 @@ public interface CvTermFetcher<C extends CvTerm>{
 
     /**
      * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
-     * @param identifiers    The identifier for the CvTerm to fetch and the corresponding ontology database name.
+     * @param termIdentifiers       The identifier for the CvTerm to fetch and the corresponding ontology database name.
+     * @param ontologyDatabaseName  The name of the ontology to search for the names in.
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiers(Collection<String> identifiers , String ontologyDatabaseName)
+    public Collection<C> getCvTermsByIdentifiers(Collection<String> termIdentifiers , String ontologyDatabaseName)
             throws BridgeFailedException;
 
     /**
      * Uses the identifier and a cvTerm denoting the database to search to fetch a complete from of the term.
-     * @param identifiers     The identifier for the CvTerm to fetch and the corresponding cvTerm for the ontology.
+     * @param termIdentifiers       The identifier for the CvTerms to fetch.
+     * @param ontologyDatabase      The name of the ontology to search for the terms in.
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiers(Collection<String> identifiers , CvTerm ontologyDatabase)
+    public Collection<C> getCvTermsByIdentifiers(Collection<String> termIdentifiers , CvTerm ontologyDatabase)
             throws BridgeFailedException;
 
     /**
      * Uses the name of the term and the name of the database to search for a complete form of the term.
-     * @param termNames    A full or short name for the term to be searched for and the ontology.
-     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @param searchNames   A full or short name for the term to be searched for.
+     * @param ontologyDatabaseName  The name of the database to search for the names in.
+     * @return              A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
     public Collection<C> getCvTermsByExactNames(Collection<String> searchNames , String ontologyDatabaseName )
             throws BridgeFailedException;
 
-
+    /**
+     * Finds the CvTerms which match the exact names provided.
+     * <p>
+     * If the a term found by the search can not be resolved to a database, this method may return null.
+     *
+     * @param searchNames   A collection full or short names for the term to be searched for.
+     * @return              A collection of cvTerms which matched a search term.
+     * @throws BridgeFailedException
+     */
     public Collection<C> getCvTermsByExactNames(Collection<String> searchNames)
             throws BridgeFailedException;
 
