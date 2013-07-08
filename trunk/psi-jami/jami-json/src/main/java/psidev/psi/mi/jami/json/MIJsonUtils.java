@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.json;
  * @since <pre>05/07/13</pre>
  */
 
-public class JsonUtils {
+public class MIJsonUtils {
     public final static String OPEN = "{";
     public final static String CLOSE = "}";
     public final static String OPEN_ARRAY = "[";
