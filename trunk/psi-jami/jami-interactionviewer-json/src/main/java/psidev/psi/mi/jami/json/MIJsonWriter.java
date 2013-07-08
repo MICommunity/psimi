@@ -80,7 +80,7 @@ public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
     }
 
     public void initialiseContext(Map<String, Object> options) {
-        if (options == null && binaryWriter != null){
+        if (options == null && binaryWriter == null){
             throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
         else if (options == null){
@@ -103,22 +103,28 @@ public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
                 this.expansionMethod = (ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence>)options.get(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY);
             }
         }
+        else{
+            this.expansionMethod = new InteractionEvidenceSpokeExpansion();
+        }
     }
 
     public void start() throws MIIOException {
         if (this.binaryWriter == null){
             throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
+        this.binaryWriter.start();
     }
 
     public void end() throws MIIOException {
         if (this.binaryWriter == null){
             throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
-        }    }
+        }
+        this.binaryWriter.end();
+    }
 
     public void write(InteractionEvidence interaction) throws MIIOException {
         if (this.binaryWriter == null){
-            throw new IllegalArgumentException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         // reset expansion id
