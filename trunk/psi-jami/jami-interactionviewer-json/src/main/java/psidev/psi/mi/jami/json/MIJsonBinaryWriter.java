@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -32,7 +32,6 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
     private boolean isInitialised = false;
     private Writer writer;
     private boolean hasOpened = false;
-    private boolean hasClosed = false;
     private Set<String> processedInteractors;
     private static final Logger logger = Logger.getLogger("MitabParserLogger");
     private Integer expansionId;
@@ -130,7 +129,29 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         isInitialised = true;
     }
 
-    public void write(BinaryInteractionEvidence interaction) throws DataSourceWriterException {
+    public void start() throws MIIOException {
+        if (!isInitialised){
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+        }
+        try {
+            writeStart();
+        } catch (IOException e) {
+            throw new MIIOException("Impossible to write start of JSON file", e);
+        }
+    }
+
+    public void end() throws MIIOException {
+        if (!isInitialised){
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+        }
+        try {
+            writeEnd();
+        } catch (IOException e) {
+            throw new MIIOException("Impossible to write end of JSON file", e);
+        }
+    }
+
+    public void write(BinaryInteractionEvidence interaction) throws MIIOException {
         if (!isInitialised){
             throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
@@ -142,7 +163,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             if (A != null || B != null){
                 // write start element and interactor and beginning of interaction
                 if (!hasOpened){
-                    writeStart();
+                    hasOpened = true;
 
                     if (A != null && B != null){
                         registerAndWriteInteractor(A, false);
@@ -174,91 +195,71 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             }
         }
         catch (IOException e) {
-            throw new DataSourceWriterException("Impossible to write " +interaction.toString(), e);
+            throw new MIIOException("Impossible to write " +interaction.toString(), e);
         }
     }
 
-    public void write(Collection<BinaryInteractionEvidence> interactions) throws DataSourceWriterException {
+    public void write(Collection<BinaryInteractionEvidence> interactions) throws MIIOException {
         Iterator<BinaryInteractionEvidence> binaryIterator = interactions.iterator();
         write(binaryIterator);
     }
 
-    public void write(Iterator<BinaryInteractionEvidence> interactions) throws DataSourceWriterException {
+    public void write(Iterator<BinaryInteractionEvidence> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }
     }
 
-    public void flush() throws DataSourceWriterException{
+    public void flush() throws MIIOException{
         if (isInitialised){
             try {
                 writer.flush();
             } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to flush the JSON writer", e);
+                throw new MIIOException("Impossible to flush the JSON writer", e);
             }
         }
     }
 
-    public void close() throws DataSourceWriterException{
+    public void close() throws MIIOException{
         if (isInitialised){
 
             try {
-                if (!hasClosed){
-                    writeEnd();
-                }
-            } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to close the JSON writer", e);
+                flush();
             }
-            finally{
+            finally {
                 try {
-                    flush();
+                    writer.close();
+                } catch (IOException e) {
+                    throw new MIIOException("Impossible to close the JSON writer", e);
                 }
-                finally {
-                    try {
-                        writer.close();
-                    } catch (IOException e) {
-                        throw new DataSourceWriterException("Impossible to close the JSON writer", e);
-                    }
-                }
+            }
+            clearFeatureCollections();
+            isInitialised = false;
+            writer = null;
+            hasOpened = false;
+            processedInteractors.clear();
+            expansionId = null;
+            this.fetcher = null;
+        }
+    }
+
+    public void reset() throws MIIOException {
+        if (isInitialised){
+
+            try {
+                writer.flush();
+            }
+            catch (IOException e) {
+                throw new MIIOException("Impossible to close the JSON writer", e);
+            }
+            finally {
                 clearFeatureCollections();
                 isInitialised = false;
                 writer = null;
                 hasOpened = false;
-                hasClosed = false;
                 processedInteractors.clear();
                 expansionId = null;
                 this.fetcher = null;
-            }
-        }
-    }
-
-    public void reset() throws DataSourceWriterException {
-        if (isInitialised){
-
-            try {
-                if (!hasClosed){
-                    writeEnd();
-                }
-            } catch (IOException e) {
-                throw new DataSourceWriterException("Impossible to close the JSON writer", e);
-            }
-            finally{
-                try {
-                    writer.flush();
-                }
-                catch (IOException e) {
-                    throw new DataSourceWriterException("Impossible to close the JSON writer", e);
-                }
-                finally {
-                    clearFeatureCollections();
-                    isInitialised = false;
-                    writer = null;
-                    hasOpened = false;
-                    hasClosed = false;
-                    processedInteractors.clear();
-                    expansionId = null;
-                    this.fetcher = null;
-                }
             }
         }
     }
@@ -1008,23 +1009,19 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
     }
 
     protected void writeStart() throws IOException {
-        hasOpened = true;
         writer.write(MIJsonUtils.OPEN);
         writer.write(MIJsonUtils.LINE_SEPARATOR);
         writeStartObject("data");
         writer.write(MIJsonUtils.OPEN_ARRAY);
         writer.write(MIJsonUtils.LINE_SEPARATOR);
-        hasClosed = false;
     }
 
     protected void writeEnd() throws IOException {
-        hasOpened = false;
         writer.write(MIJsonUtils.LINE_SEPARATOR);
         writer.write(MIJsonUtils.INDENT);
         writer.write(MIJsonUtils.CLOSE_ARRAY);
         writer.write(MIJsonUtils.LINE_SEPARATOR);
         writer.write(MIJsonUtils.CLOSE);
-        hasClosed = true;
     }
 
     private void initialiseWriter(Writer writer) {
