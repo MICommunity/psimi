@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Iterator;
@@ -18,12 +19,12 @@ public interface StreamingInteractorSource extends MIDataSource {
      * The interactors iterator for this datasource.
      * @return iterator of interactors for a given datasource
      */
-    public Iterator<? extends Interactor> getInteractorsIterator();
+    public Iterator<? extends Interactor> getInteractorsIterator() throws MIIOException;
 
-    public Iterator<? extends Protein> getProteinsIterator();
-    public Iterator<? extends NucleicAcid> getNucleicAcidsIterator();
-    public Iterator<? extends Gene> getGenesIterator();
-    public Iterator<? extends BioactiveEntity> getBioactiveEntitiesIterator();
-    public Iterator<? extends InteractorSet> getInteractorSetIterator();
-    public Iterator<? extends Complex> getComplexesIterator();
+    public Iterator<? extends Protein> getProteinsIterator() throws MIIOException;
+    public Iterator<? extends NucleicAcid> getNucleicAcidsIterator() throws MIIOException;
+    public Iterator<? extends Gene> getGenesIterator() throws MIIOException;
+    public Iterator<? extends BioactiveEntity> getBioactiveEntitiesIterator() throws MIIOException;
+    public Iterator<? extends InteractorSet> getInteractorSetIterator() throws MIIOException;
+    public Iterator<? extends Complex> getComplexesIterator() throws MIIOException;
 }
