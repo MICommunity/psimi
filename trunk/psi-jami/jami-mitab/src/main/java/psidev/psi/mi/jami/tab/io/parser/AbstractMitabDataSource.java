@@ -171,6 +171,19 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         }
     }
 
+    public void reset() {
+        if (isInitialised){
+            this.originalFile = null;
+            this.originalURL = null;
+            this.lineParser = null;
+            this.parserListener = null;
+            this.defaultParserListener = null;
+            isInitialised = false;
+            isValid = null;
+            isInitialised = false;
+        }
+    }
+
     public boolean validateSyntax(MIFileParserListener listener) {
         setMIFileParserListener(listener);
         return validateSyntax();

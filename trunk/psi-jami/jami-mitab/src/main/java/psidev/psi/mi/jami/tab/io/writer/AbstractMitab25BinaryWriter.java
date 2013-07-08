@@ -191,16 +191,35 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
                 } catch (IOException e) {
                     throw new DataSourceWriterException("Impossible to close the MITAB writer", e);
                 }
+                finally {
+                    isInitialised = false;
+                    writer = null;
+                    writeHeader = true;
+                    version = MitabVersion.v2_5;
+                    hasWrittenHeader = false;
+                    columnFeeder = null;
+                }
             }
-
-            isInitialised = false;
-            writer = null;
-            writeHeader = true;
-            version = MitabVersion.v2_5;
-            hasWrittenHeader = false;
-            columnFeeder = null;
         }
     }
+    public void reset() throws DataSourceWriterException{
+        if (isInitialised){
+            try {
+                writer.flush();
+            } catch (IOException e) {
+                throw new DataSourceWriterException("Impossible to flush the MITAB writer", e);
+            }
+            finally {
+                isInitialised = false;
+                writer = null;
+                writeHeader = true;
+                version = MitabVersion.v2_5;
+                hasWrittenHeader = false;
+                columnFeeder = null;
+            }
+        }
+    }
+
 
     public boolean hasWrittenHeader() {
         return hasWrittenHeader;

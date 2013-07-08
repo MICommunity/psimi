@@ -93,14 +93,27 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
     }
 
     @Override
-    public void flush() throws DataSourceWriterException{
-        if (interactionEvidenceWriter != null){
-            interactionEvidenceWriter.flush();
+    public void close() throws DataSourceWriterException {
+        try{
+            super.close();
         }
-        if (modelledInteractionWriter != null){
-            modelledInteractionWriter.flush();
+        finally {
+            this.modelledInteractionWriter = null;
+            this.interactionEvidenceWriter = null;
+            this.writer = null;
         }
-        super.flush();
+    }
+
+    @Override
+    public void reset() throws DataSourceWriterException {
+        try{
+            super.reset();
+        }
+        finally {
+            this.modelledInteractionWriter = null;
+            this.interactionEvidenceWriter = null;
+            this.writer = null;
+        }
     }
 
     @Override
