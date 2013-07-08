@@ -113,7 +113,7 @@ public class DefaultInteractionEvidenceTest {
         pub.getXrefs().add(new DefaultXref(CvTermUtils.createImexDatabase(), "IM-2-1", CvTermUtils.createImexPrimaryQualifier()));
         Assert.assertEquals("IM-2-1", pub.getImexId());
 
-        // clear xrefs
+        // reset xrefs
         pub.getXrefs().clear();
         Assert.assertNull(pub.getImexId());
 

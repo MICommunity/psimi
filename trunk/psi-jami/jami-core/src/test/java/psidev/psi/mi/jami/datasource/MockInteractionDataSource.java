@@ -22,7 +22,7 @@ public class MockInteractionDataSource implements MIFileDataSource {
         // do nothing
     }
 
-    public void clear() {
+    public void reset() {
     }
 
     public MIFileParserListener getFileParserListener() {
