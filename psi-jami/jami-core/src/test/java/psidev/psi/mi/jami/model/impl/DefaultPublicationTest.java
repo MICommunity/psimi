@@ -177,7 +177,7 @@ public class DefaultPublicationTest {
         pub.getXrefs().add(new DefaultXref(CvTermUtils.createImexDatabase(), "IM-2", CvTermUtils.createImexPrimaryQualifier()));
         Assert.assertEquals("IM-2", pub.getImexId());
 
-        // clear xrefs
+        // reset xrefs
         pub.getXrefs().clear();
         Assert.assertNull(pub.getImexId());
 

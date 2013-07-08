@@ -53,11 +53,11 @@ public interface InteractionWriter<T extends Interaction> {
     public void close() throws DataSourceWriterException;
 
     /**
-     * This method will clear the writer from all loaded options.
+     * This method will reset the writer from all loaded options.
      * The interaction writer will be back to what is was before the initialiseContext was called.
-     * To re-use the interaction writer after calling the clear() method, the data source needs to be re-initialised with
+     * To re-use the interaction writer after calling the reset() method, the data source needs to be re-initialised with
      * initialiseContext(Map<String, Object> options).
      * Any provided ouputStream or writer will not be closed and will have to be closed separately.
      */
-    public void clear();
+    public void reset();
 }
