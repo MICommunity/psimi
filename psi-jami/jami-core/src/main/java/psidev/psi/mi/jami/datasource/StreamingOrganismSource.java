@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Organism;
 
 import java.util.Iterator;
@@ -18,5 +19,5 @@ public interface StreamingOrganismSource extends MIDataSource {
      * The organisms iterator for this datasource.
      * @return iterator of organisms for a given datasource
      */
-    public Iterator<? extends Organism> getOrganismsIterator();
+    public Iterator<? extends Organism> getOrganismsIterator() throws MIIOException;
 }

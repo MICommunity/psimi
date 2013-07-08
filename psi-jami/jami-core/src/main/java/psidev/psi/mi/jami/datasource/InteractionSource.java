@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Iterator;
@@ -14,5 +15,10 @@ import java.util.Iterator;
 
 public interface InteractionSource extends MIDataSource {
 
-    public Iterator<? extends Interaction> getInteractionsIterator();
+    /**
+     * The iterator of Interactions for this datasource
+     * @return iterator of Interactions for this datasource
+     * @throws MIIOException
+     */
+    public Iterator<? extends Interaction> getInteractionsIterator() throws MIIOException;
 }

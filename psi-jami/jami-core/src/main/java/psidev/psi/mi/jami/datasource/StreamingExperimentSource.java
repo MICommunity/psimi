@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Experiment;
 
 import java.util.Iterator;
@@ -18,5 +19,5 @@ public interface StreamingExperimentSource extends MIDataSource {
      * The experiments iterator for this datasource.
      * @return iterator of experiments for a given datasource
      */
-    public Iterator<? extends Experiment> getExperimentsIterator();
+    public Iterator<? extends Experiment> getExperimentsIterator() throws MIIOException;
 }
