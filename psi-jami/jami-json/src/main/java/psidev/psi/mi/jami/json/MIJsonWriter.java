@@ -25,32 +25,32 @@ import java.util.Map;
  * @since <pre>05/07/13</pre>
  */
 
-public class JsonWriter implements InteractionWriter<InteractionEvidence> {
+public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
 
-    private JsonBinaryWriter binaryWriter;
+    private MIJsonBinaryWriter binaryWriter;
     private ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod;
     private int currentExpansionId = 0;
 
-    public JsonWriter(){
+    public MIJsonWriter(){
     }
 
-    public JsonWriter(File file, OntologyTermFetcher fetcher) throws IOException {
-        this.binaryWriter = new JsonBinaryWriter(file, fetcher);
+    public MIJsonWriter(File file, OntologyTermFetcher fetcher) throws IOException {
+        this.binaryWriter = new MIJsonBinaryWriter(file, fetcher);
         this.expansionMethod = new InteractionEvidenceSpokeExpansion();
     }
 
-    public JsonWriter(OutputStream output, OntologyTermFetcher fetcher) {
-        this.binaryWriter = new JsonBinaryWriter(output, fetcher);
+    public MIJsonWriter(OutputStream output, OntologyTermFetcher fetcher) {
+        this.binaryWriter = new MIJsonBinaryWriter(output, fetcher);
         this.expansionMethod = new InteractionEvidenceSpokeExpansion();
     }
 
-    public JsonWriter(Writer writer, OntologyTermFetcher fetcher) {
-        this.binaryWriter = new JsonBinaryWriter(writer, fetcher);
+    public MIJsonWriter(Writer writer, OntologyTermFetcher fetcher) {
+        this.binaryWriter = new MIJsonBinaryWriter(writer, fetcher);
         this.expansionMethod = new InteractionEvidenceSpokeExpansion();
     }
 
-    public JsonWriter(File file, OntologyTermFetcher fetcher, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) throws IOException {
-        this.binaryWriter = new JsonBinaryWriter(file, fetcher);
+    public MIJsonWriter(File file, OntologyTermFetcher fetcher, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) throws IOException {
+        this.binaryWriter = new MIJsonBinaryWriter(file, fetcher);
         if(expansionMethod != null){
             this.expansionMethod = expansionMethod;
         }
@@ -59,8 +59,8 @@ public class JsonWriter implements InteractionWriter<InteractionEvidence> {
         }
     }
 
-    public JsonWriter(OutputStream output, OntologyTermFetcher fetcher, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
-        this.binaryWriter = new JsonBinaryWriter(output, fetcher);
+    public MIJsonWriter(OutputStream output, OntologyTermFetcher fetcher, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+        this.binaryWriter = new MIJsonBinaryWriter(output, fetcher);
         if(expansionMethod != null){
             this.expansionMethod = expansionMethod;
         }
@@ -69,8 +69,8 @@ public class JsonWriter implements InteractionWriter<InteractionEvidence> {
         }
     }
 
-    public JsonWriter(Writer writer, OntologyTermFetcher fetcher, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
-        this.binaryWriter = new JsonBinaryWriter(writer, fetcher);
+    public MIJsonWriter(Writer writer, OntologyTermFetcher fetcher, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+        this.binaryWriter = new MIJsonBinaryWriter(writer, fetcher);
         if(expansionMethod != null){
             this.expansionMethod = expansionMethod;
         }
@@ -81,13 +81,13 @@ public class JsonWriter implements InteractionWriter<InteractionEvidence> {
 
     public void initialiseContext(Map<String, Object> options) {
         if (options == null && binaryWriter != null){
-            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+JsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
         else if (options == null){
             return;
         }
         else if (this.binaryWriter == null){
-            this.binaryWriter = new JsonBinaryWriter();
+            this.binaryWriter = new MIJsonBinaryWriter();
             this.binaryWriter.initialiseContext(options);
         }
         else {
@@ -107,7 +107,7 @@ public class JsonWriter implements InteractionWriter<InteractionEvidence> {
 
     public void write(InteractionEvidence interaction) throws DataSourceWriterException {
         if (this.binaryWriter == null){
-            throw new IllegalArgumentException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+JsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalArgumentException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         // reset expansion id
