@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -17,6 +18,9 @@ import psidev.psi.mi.jami.utils.*;
 import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Unti tester for MIJsonBinaryWriter
@@ -63,6 +67,38 @@ public class MIJsonBinaryWriterTest {
         Assert.assertEquals(expected_json, writer.toString());
     }
 
+    @Test
+    public void test_write_binary_list() throws DataSourceWriterException, ParseException, IllegalParameterException {
+        StringWriter writer = new StringWriter();
+        MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter(writer, null);
+
+        BinaryInteractionEvidence binary = createBinaryInteractionEvidence();
+
+        binaryWriter.write(Arrays.asList(binary, binary));
+        binaryWriter.close();
+
+        String expected_line = getExpectedJson2();
+        Assert.assertEquals(expected_line, writer.toString());
+    }
+
+    @Test
+    public void test_write_binary2() throws DataSourceWriterException, ParseException, IllegalParameterException {
+        StringWriter writer = new StringWriter();
+        MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter();
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
+        binaryWriter.initialiseContext(options);
+
+        BinaryInteractionEvidence binary = createBinaryInteractionEvidence();
+
+        String expected_line = getExpectedJson();
+
+        binaryWriter.write(binary);
+        binaryWriter.close();
+
+        Assert.assertEquals(expected_line, writer.toString());
+    }
+
     private String getExpectedJson() {
         return "{\n" +
                 "\"data\":[\n" +
@@ -101,6 +137,91 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\t\"otherFeatures\":[\n" +
                 "\t\t\t\t{\n" +
                 "\t\t\t\t\"id\":\""+testFeature.hashCode()+"\",\n" +
+                "\t\t\t\t\"type\":{\"name\":\"binding site region\"},\n" +
+                "\t\t\t\t\"sequenceData\":[{\"range\":\"1..3-6..7\"},{\"range\":\">9->9\"}]\n" +
+                "\t\t\t\t}]\n" +
+                "\t\t},\n" +
+                "\t\t\"target\":{\n" +
+                "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12347\"},\n" +
+                "\t\t\t\"bioRole\":{\"id\":\"MI:xxx5\",\"name\":\"enzyme target\"},\n" +
+                "\t\t\t\"expRole\":{\"id\":\"MI:xxx6\",\"name\":\"prey\"},\n" +
+                "\t\t\t\"identificationMethods\":[{\"id\":\"MI:xxxx2\",\"name\":\"predetermined\"}]\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\t]\n" +
+                "}";
+    }
+
+    private String getExpectedJson2(){
+        return "{\n" +
+                "\"data\":[\n" +
+                "\t{\n" +
+                "\t\t\"object\":\"interactor\",\n" +
+                "\t\t\"type\":{\"id\":\"MI:0326\",\"name\":\"protein\"},\n" +
+                "\t\t\"organism\":{\"taxid\":\"9606\",\"common\":\"human\",\"scientific\":\"Homo Sapiens\"},\n" +
+                "\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12345\"},\n" +
+                "\t\t\"label\":\"protein1\"\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"object\":\"interactor\",\n" +
+                "\t\t\"type\":{\"id\":\"MI:0326\",\"name\":\"protein\"},\n" +
+                "\t\t\"organism\":{\"taxid\":\"9606\",\"common\":\"human\",\"scientific\":\"Homo Sapiens\"},\n" +
+                "\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12347\"},\n" +
+                "\t\t\"label\":\"protein2\"\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"object\":\"interaction\",\n" +
+                "\t\t\"experiment\":{\n" +
+                "\t\t\t\"detmethod\":{\"id\":\"MI:xxx2\",\"name\":\"pull down\"},\n" +
+                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
+                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
+                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"}],\n" +
+                "\t\t\t\"source\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
+                "\t\t},\n" +
+                "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
+                "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
+                "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"expansion\":{\"name\":\"spoke expansion\"},\n" +
+                "\t\t\"source\":{\n" +
+                "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12345\"},\n" +
+                "\t\t\t\"bioRole\":{\"id\":\"MI:0501\",\"name\":\"enzyme\"},\n" +
+                "\t\t\t\"expRole\":{\"id\":\"MI:0496\",\"name\":\"bait\"},\n" +
+                "\t\t\t\"identificationMethods\":[{\"id\":\"MI:xxxx1\",\"name\":\"western blot\"}],\n" +
+                "\t\t\t\"otherFeatures\":[\n" +
+                "\t\t\t\t{\n" +
+                "\t\t\t\t\"id\":\"16607409\",\n" +
+                "\t\t\t\t\"type\":{\"name\":\"binding site region\"},\n" +
+                "\t\t\t\t\"sequenceData\":[{\"range\":\"1..3-6..7\"},{\"range\":\">9->9\"}]\n" +
+                "\t\t\t\t}]\n" +
+                "\t\t},\n" +
+                "\t\t\"target\":{\n" +
+                "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12347\"},\n" +
+                "\t\t\t\"bioRole\":{\"id\":\"MI:xxx5\",\"name\":\"enzyme target\"},\n" +
+                "\t\t\t\"expRole\":{\"id\":\"MI:xxx6\",\"name\":\"prey\"},\n" +
+                "\t\t\t\"identificationMethods\":[{\"id\":\"MI:xxxx2\",\"name\":\"predetermined\"}]\n" +
+                "\t\t}\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"object\":\"interaction\",\n" +
+                "\t\t\"experiment\":{\n" +
+                "\t\t\t\"detmethod\":{\"id\":\"MI:xxx2\",\"name\":\"pull down\"},\n" +
+                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
+                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
+                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"}],\n" +
+                "\t\t\t\"source\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
+                "\t\t},\n" +
+                "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
+                "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
+                "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"expansion\":{\"name\":\"spoke expansion\"},\n" +
+                "\t\t\"source\":{\n" +
+                "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12345\"},\n" +
+                "\t\t\t\"bioRole\":{\"id\":\"MI:0501\",\"name\":\"enzyme\"},\n" +
+                "\t\t\t\"expRole\":{\"id\":\"MI:0496\",\"name\":\"bait\"},\n" +
+                "\t\t\t\"identificationMethods\":[{\"id\":\"MI:xxxx1\",\"name\":\"western blot\"}],\n" +
+                "\t\t\t\"otherFeatures\":[\n" +
+                "\t\t\t\t{\n" +
+                "\t\t\t\t\"id\":\"16607409\",\n" +
                 "\t\t\t\t\"type\":{\"name\":\"binding site region\"},\n" +
                 "\t\t\t\t\"sequenceData\":[{\"range\":\"1..3-6..7\"},{\"range\":\">9->9\"}]\n" +
                 "\t\t\t\t}]\n" +
