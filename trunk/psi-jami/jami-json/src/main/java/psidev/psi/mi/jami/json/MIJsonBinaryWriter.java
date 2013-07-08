@@ -380,6 +380,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
+        writer.write(MIJsonUtils.INDENT);
         writer.write(MIJsonUtils.OPEN);
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
@@ -409,6 +410,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writer.write(MIJsonUtils.INDENT);
+            writer.write(MIJsonUtils.INDENT);
             writeStartObject("type");
             writeCvTerm(feature.getType());
         }
@@ -417,6 +419,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         if (!feature.getDetectionMethods().isEmpty()){
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
+            writer.write(MIJsonUtils.INDENT);
             writer.write(MIJsonUtils.INDENT);
             writeStartObject("detmethods");
             writer.write(MIJsonUtils.OPEN_ARRAY);
@@ -437,6 +440,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         if (!feature.getRanges().isEmpty()){
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
+            writer.write(MIJsonUtils.INDENT);
             writer.write(MIJsonUtils.INDENT);
             writeStartObject("sequenceData");
             writer.write(MIJsonUtils.OPEN_ARRAY);
@@ -483,6 +487,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
+        writer.write(MIJsonUtils.INDENT);
         writer.write(MIJsonUtils.CLOSE);
     }
 
@@ -494,7 +499,6 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
     protected void writeParticipant(ParticipantEvidence participant, String name) throws IOException {
 
-        writeNextPropertySeparatorAndIndent();
         writeStartObject(name);
         writer.write(MIJsonUtils.OPEN);
         writeNextPropertySeparatorAndIndent();
@@ -894,6 +898,10 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             writeNextPropertySeparatorAndIndent();
             writerProperty("intramolecular", "true");
         }
+
+        writer.write(MIJsonUtils.LINE_SEPARATOR);
+        writer.write(MIJsonUtils.INDENT);
+        writer.write(MIJsonUtils.CLOSE);
     }
 
     protected void registerAndWriteInteractor(ParticipantEvidence participant, boolean writeElementSeparator) throws IOException {
@@ -922,40 +930,40 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 writer.write(MIJsonUtils.INDENT);
                 writer.write(MIJsonUtils.OPEN);
                 writeNextPropertySeparatorAndIndent();
-
                 writerProperty("object","interactor");
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
 
                 // write sequence if possible
                 if (interactor instanceof Polymer){
                     Polymer polymer = (Polymer) interactor;
                     if (polymer.getSequence() != null){
-                        writerProperty("sequence", JSONValue.escape(polymer.getSequence()));
                         writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
                         writeNextPropertySeparatorAndIndent();
+                        writerProperty("sequence", JSONValue.escape(polymer.getSequence()));
                     }
                 }
                 // write interactor type
+                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
                 writeStartObject("type");
                 writeCvTerm(interactor.getInteractorType());
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
+
                 // write organism
                 if (interactor.getOrganism() != null){
-                    writeStartObject("organism");
                     writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                    writeOrganism(interactor.getOrganism());
                     writeNextPropertySeparatorAndIndent();
+                    writeStartObject("organism");
+                    writeOrganism(interactor.getOrganism());
                 }
                 // write accession
-                writeStartObject("identifier");
-                writeIdentifier(db, interactorId);
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
                 writeNextPropertySeparatorAndIndent();
+                writeStartObject("identifier");
+                writeIdentifier(db, interactorId);
+
                 // write label
-                writerProperty("label", JSONValue.escape(interactor.getShortName()));
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                writerProperty("label", JSONValue.escape(interactor.getShortName()));
                 writer.write(MIJsonUtils.LINE_SEPARATOR);
                 writer.write(MIJsonUtils.INDENT);
                 writer.write(MIJsonUtils.CLOSE);
@@ -969,12 +977,15 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writer.write(MIJsonUtils.LINE_SEPARATOR);
         writeStartObject("data");
         writer.write(MIJsonUtils.OPEN_ARRAY);
+        writer.write(MIJsonUtils.LINE_SEPARATOR);
     }
 
     protected void writeEnd() throws IOException {
         hasOpened = false;
         writer.write(MIJsonUtils.LINE_SEPARATOR);
+        writer.write(MIJsonUtils.INDENT);
         writer.write(MIJsonUtils.CLOSE_ARRAY);
+        writer.write(MIJsonUtils.LINE_SEPARATOR);
         writer.write(MIJsonUtils.CLOSE);
     }
 
