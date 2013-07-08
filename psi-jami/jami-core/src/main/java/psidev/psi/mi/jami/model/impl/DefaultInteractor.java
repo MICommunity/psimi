@@ -232,7 +232,7 @@ public class DefaultInteractor implements Interactor, Serializable {
      * @return the first identifier in the list of identifiers or null if the list is empty
      */
     public Xref getPreferredIdentifier() {
-        return !identifiers.isEmpty() ? identifiers.iterator().next() : null;
+        return !getIdentifiers().isEmpty() ? getIdentifiers().iterator().next() : null;
     }
 
     public Collection<Checksum> getChecksums() {
