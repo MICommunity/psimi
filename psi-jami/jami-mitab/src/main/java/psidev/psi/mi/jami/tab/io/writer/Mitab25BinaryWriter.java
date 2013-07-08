@@ -88,14 +88,25 @@ public class Mitab25BinaryWriter extends AbstractMitab25BinaryWriter<BinaryInter
     }
 
     @Override
-    public void flush() throws DataSourceWriterException{
-        if (binaryEvidenceWriter != null){
-            binaryEvidenceWriter.flush();
+    public void close() throws DataSourceWriterException {
+        try{
+            super.close();
         }
-        if (modelledBinaryWriter != null){
-            modelledBinaryWriter.flush();
+        finally {
+            this.modelledBinaryWriter = null;
+            this.binaryEvidenceWriter = null;
         }
-        super.flush();
+    }
+
+    @Override
+    public void reset() throws DataSourceWriterException {
+        try{
+            super.reset();
+        }
+        finally {
+            this.modelledBinaryWriter = null;
+            this.binaryEvidenceWriter = null;
+        }
     }
 
     protected void initialiseSubWritersWith(Writer writer) {

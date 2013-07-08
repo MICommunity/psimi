@@ -156,11 +156,27 @@ public abstract class AbstractMitabWriter<T extends Interaction, B extends Binar
     }
 
     public void close() throws DataSourceWriterException{
-        if (this.binaryWriter != null){
-            this.binaryWriter.close();
+        try{
+            if (this.binaryWriter != null){
+                this.binaryWriter.close();
+            }
         }
-        this.binaryWriter = null;
-        this.expansionMethod = null;
+        finally {
+            this.binaryWriter = null;
+            this.expansionMethod = null;
+        }
+    }
+
+    public void reset() throws DataSourceWriterException {
+        try{
+            if (this.binaryWriter != null){
+                this.binaryWriter.reset();
+            }
+        }
+        finally {
+            this.binaryWriter = null;
+            this.expansionMethod = null;
+        }
     }
 
     public abstract MitabVersion getVersion();

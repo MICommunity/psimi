@@ -67,6 +67,30 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
     }
 
     @Override
+    public void close() throws DataSourceWriterException {
+        try{
+            super.close();
+        }
+        finally {
+            this.modelledInteractionWriter = null;
+            this.interactionEvidenceWriter = null;
+            this.writer = null;
+        }
+    }
+
+    @Override
+    public void reset() throws DataSourceWriterException {
+        try{
+            super.reset();
+        }
+        finally {
+            this.modelledInteractionWriter = null;
+            this.interactionEvidenceWriter = null;
+            this.writer = null;
+        }
+    }
+
+    @Override
     protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         setExpansionMethod(expansionMethod != null ? expansionMethod : new SpokeExpansion());
     }
