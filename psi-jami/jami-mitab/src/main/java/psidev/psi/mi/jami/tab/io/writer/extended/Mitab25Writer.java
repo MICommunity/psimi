@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.tab.io.writer.extended;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.io.writer.AbstractMitabWriter;
@@ -128,15 +128,15 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
             throw new IllegalStateException("The Mitab writer has not been initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (interaction instanceof BinaryInteractionEvidence){
-            this.interactionEvidenceWriter.write((BinaryInteractionEvidence) interaction);
+        if (interaction instanceof InteractionEvidence){
+            this.interactionEvidenceWriter.write((InteractionEvidence) interaction);
             if (!hasStarted()){
                 this.modelledInteractionWriter.start();
                 setStarted(true);
             }
         }
-        else if (interaction instanceof ModelledBinaryInteraction){
-            this.modelledInteractionWriter.write((ModelledBinaryInteraction) interaction);
+        else if (interaction instanceof ModelledInteraction){
+            this.modelledInteractionWriter.write((ModelledInteraction) interaction);
             if (!hasStarted()){
                 this.interactionEvidenceWriter.start();
                 setStarted(true);
