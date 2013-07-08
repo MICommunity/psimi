@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 
@@ -105,43 +105,52 @@ public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
         }
     }
 
-    public void write(InteractionEvidence interaction) throws DataSourceWriterException {
+    public void start() throws MIIOException {
+        if (this.binaryWriter == null){
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+        }
+    }
+
+    public void end() throws MIIOException {
+        if (this.binaryWriter == null){
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+        }    }
+
+    public void write(InteractionEvidence interaction) throws MIIOException {
         if (this.binaryWriter == null){
             throw new IllegalArgumentException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         // reset expansion id
         this.binaryWriter.setExpansionId(null);
-        if (interaction != null){
-            Collection<BinaryInteractionEvidence> binaryInteractions = expansionMethod.expand(interaction);
+        Collection<BinaryInteractionEvidence> binaryInteractions = expansionMethod.expand(interaction);
 
-            // we expanded a n-ary interaction
-            if(binaryInteractions.size() > 1){
-                this.binaryWriter.setExpansionId(currentExpansionId);
-                currentExpansionId++;
-            }
-            this.binaryWriter.write(binaryInteractions);
+        // we expanded a n-ary interaction
+        if(binaryInteractions.size() > 1){
+            this.binaryWriter.setExpansionId(currentExpansionId);
+            currentExpansionId++;
         }
+        this.binaryWriter.write(binaryInteractions);
     }
 
-    public void write(Collection<InteractionEvidence> interactions) throws DataSourceWriterException {
+    public void write(Collection<InteractionEvidence> interactions) throws MIIOException {
         Iterator<InteractionEvidence> iterator = interactions.iterator();
         write(iterator);
     }
 
-    public void write(Iterator<InteractionEvidence> interactions) throws DataSourceWriterException {
+    public void write(Iterator<InteractionEvidence> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }
     }
 
-    public void flush() throws DataSourceWriterException {
+    public void flush() throws MIIOException {
         if (binaryWriter != null){
             binaryWriter.flush();
         }
     }
 
-    public void close() throws DataSourceWriterException {
+    public void close() throws MIIOException {
         try{
             if (binaryWriter != null){
                 binaryWriter.close();
@@ -154,7 +163,7 @@ public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
         }
     }
 
-    public void reset() throws DataSourceWriterException {
+    public void reset() throws MIIOException {
         try{
             if (binaryWriter != null){
                 binaryWriter.reset();

@@ -5,7 +5,6 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -35,31 +34,34 @@ public class MIJsonBinaryWriterTest {
     private FeatureEvidence testFeature = null;
 
     @Test(expected = IllegalStateException.class)
-    public void test_not_initialised_writer() throws DataSourceWriterException {
+    public void test_not_initialised_writer() {
         MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter();
         binaryWriter.write(new DefaultBinaryInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_not_initialised_no_options() throws DataSourceWriterException {
+    public void test_not_initialised_no_options() {
         MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_create_writer_no_ontology_fetcher() throws DataSourceWriterException {
+    public void test_create_writer_no_ontology_fetcher() {
         MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_binary() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter(writer, null);
 
         BinaryInteractionEvidence binary = createBinaryInteractionEvidence();
 
+        binaryWriter.start();
+
         binaryWriter.write(binary);
+        binaryWriter.end();
         binaryWriter.close();
 
         String expected_json = getExpectedJson();
@@ -68,13 +70,15 @@ public class MIJsonBinaryWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary_list() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter(writer, null);
 
         BinaryInteractionEvidence binary = createBinaryInteractionEvidence();
 
+        binaryWriter.start();
         binaryWriter.write(Arrays.asList(binary, binary));
+        binaryWriter.end();
         binaryWriter.close();
 
         String expected_line = getExpectedJson2();
@@ -82,7 +86,7 @@ public class MIJsonBinaryWriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws DataSourceWriterException, ParseException, IllegalParameterException {
+    public void test_write_binary2() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
         MIJsonBinaryWriter binaryWriter = new MIJsonBinaryWriter();
         Map<String, Object> options = new HashMap<String, Object>();
@@ -93,7 +97,10 @@ public class MIJsonBinaryWriterTest {
 
         String expected_line = getExpectedJson();
 
+        binaryWriter.start();
+
         binaryWriter.write(binary);
+        binaryWriter.end();
         binaryWriter.close();
 
         Assert.assertEquals(expected_line, writer.toString());
