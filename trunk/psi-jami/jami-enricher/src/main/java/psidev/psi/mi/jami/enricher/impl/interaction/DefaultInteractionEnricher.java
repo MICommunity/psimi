@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
@@ -17,6 +19,8 @@ import psidev.psi.mi.jami.model.Participant;
 public class DefaultInteractionEnricher<I extends Interaction, P extends Participant>
         implements InteractionEnricher<I , P> {
 
+    protected final Logger log = LoggerFactory.getLogger(DefaultInteractionEnricher.class.getName());
+
     protected InteractionEnricherListener listener;
     protected ParticipantEnricher<P> participantEnricher;
     protected CvTermEnricher cvTermEnricher;
@@ -30,8 +34,10 @@ public class DefaultInteractionEnricher<I extends Interaction, P extends Partici
             getParticipantEnricher().enrichParticipants(interactionToEnrich.getParticipants());
 
         if(getParticipantEnricher() != null){
+
             for(Participant participant : interactionToEnrich.getParticipants()){
-                getParticipantEnricher().enrichParticipant(participant);
+                    getParticipantEnricher().enrichParticipant((P) participant);
+
             }
         }
     }

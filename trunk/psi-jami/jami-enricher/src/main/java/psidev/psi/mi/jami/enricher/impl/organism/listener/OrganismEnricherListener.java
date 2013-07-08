@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.organism.listener;
 
+import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.OrganismChangeListener;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -11,5 +12,5 @@ import psidev.psi.mi.jami.model.Organism;
  */
 public interface OrganismEnricherListener extends OrganismChangeListener{
 
-    public void onOrganismEnriched(Organism organism , String status);
+    public void onOrganismEnriched(Organism organism , EnrichmentStatus status , String message);
 }

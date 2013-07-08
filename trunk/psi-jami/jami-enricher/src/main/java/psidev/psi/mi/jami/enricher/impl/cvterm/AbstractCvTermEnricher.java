@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
+import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -56,13 +57,13 @@ public abstract class AbstractCvTermEnricher
 
         cvTermFetched = fetchCvTerm(cvTermToEnrich);
         if(cvTermFetched == null){
-            if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, "Failed. No CvTerm could be found.");
+            if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, EnrichmentStatus.FAILED ,"No CvTerm could be found.");
             return;
         }
 
         processCvTerm(cvTermToEnrich);
 
-        if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, "Success. CvTerm minimum enriched.");
+        if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, EnrichmentStatus.SUCCESS , "CvTerm minimum enriched.");
     }
 
     /**
@@ -78,7 +79,7 @@ public abstract class AbstractCvTermEnricher
      * @return  a CvTerm fetched from the fetching service.
      */
     private CvTerm fetchCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
-
+        //Todo
         if(getCvTermFetcher() == null) throw new IllegalStateException("The CvTermFetcher was null.");
         if(cvTermToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null CvTerm.");
 
@@ -90,7 +91,7 @@ public abstract class AbstractCvTermEnricher
             //Try with MI
             for(Xref identifierXref : identifiersList){
                 if( cvTermFetched != null ) break;
-                else if( identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MI_MI)){
+                else if( identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MI)){
                     try {
                         cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
                                 identifierXref.getId(), identifierXref.getDatabase());

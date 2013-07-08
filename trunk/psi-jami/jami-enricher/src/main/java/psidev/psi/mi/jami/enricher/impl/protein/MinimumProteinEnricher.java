@@ -9,8 +9,10 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetch
 import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
 import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
@@ -30,8 +32,9 @@ public class MinimumProteinEnricher
         proteinToEnrich.getXrefs().add(
                 new DefaultXref(
                         CvTermUtils.createUniprotkbDatabase(),
-                        proteinToEnrich.getUniprotkb()
-                )); //TODO UNIPROT REMOVED QUALIFIER
+                        proteinToEnrich.getUniprotkb() ,
+                        new DefaultCvTerm("uniprot-removed-ac")
+                ));
 
         proteinToEnrich.getAnnotations().add(
                 AnnotationUtils.createCaution("This sequence has been withdrawn from Uniprot."));
@@ -66,7 +69,7 @@ public class MinimumProteinEnricher
             if(listener != null) listener.onFullNameUpdate(proteinFetched, null);
         }
 
-        //TODO
+
         //PRIMARY Uniprot AC
         if(proteinToEnrich.getUniprotkb() == null
                 && proteinFetched.getUniprotkb() != null) {

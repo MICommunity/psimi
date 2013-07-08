@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.feature.listener;
 
+import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Feature;
 
 /**
@@ -10,5 +11,5 @@ import psidev.psi.mi.jami.model.Feature;
  */
 public interface FeatureEnricherListener {
 
-    public void onFeatureEnriched(Feature feature , String status);
+    public void onFeatureEnriched(Feature feature , EnrichmentStatus status , String message);
 }

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
+import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Protein;
@@ -26,10 +27,11 @@ public class ProteinEnricherListenerManager implements ProteinEnricherListener {
         proteinEnricherListeners.remove(listener);
     }
 
+    //===================
 
-    public void onProteinEnriched(Protein protein, String status) {
+    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
         for(ProteinEnricherListener l : proteinEnricherListeners){
-            l.onProteinEnriched(protein, status);
+            l.onProteinEnriched(protein, status , message);
         }
     }
 

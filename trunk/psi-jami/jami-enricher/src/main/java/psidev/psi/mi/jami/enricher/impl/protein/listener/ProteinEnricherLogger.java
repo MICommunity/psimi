@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
+import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.impl.ProteinChangeLogger;
 import psidev.psi.mi.jami.model.Protein;
 
@@ -19,8 +20,10 @@ public class ProteinEnricherLogger
 
     private static final Logger proteinChangeLogger = Logger.getLogger("ProteinEnricherLogger");
 
-    public void onProteinEnriched(Protein protein, String status) {
-        proteinChangeLogger.log(Level.INFO, "Protein enriching complete. The status was: "+status);
+
+    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+        proteinChangeLogger.log(Level.INFO, "Protein enriching complete. " +
+                "The status was: "+status+". The message reads: "+message);
     }
 
     public void onProteinRemapped(Protein protein, String oldUniprot) {
