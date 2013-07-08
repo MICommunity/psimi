@@ -34,6 +34,13 @@
           <version>1.0.0-SNAPSHOT</version>
       </dependency>
 
+      <!-- Simple java library to work with json -->
+      <dependency>
+          <groupId>com.googlecode.json-simple</groupId>
+          <artifactId>json-simple</artifactId>
+          <version>1.1.1</version>
+      </dependency>
+
       <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
