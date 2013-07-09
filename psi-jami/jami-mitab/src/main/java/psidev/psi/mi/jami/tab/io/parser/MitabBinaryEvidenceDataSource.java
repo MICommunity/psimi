@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.datasource.BinaryInteractionEvidenceSource;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -18,7 +19,7 @@ import java.util.Iterator;
  * @since <pre>25/06/13</pre>
  */
 
-public class MitabBinaryEvidenceDataSource extends AbstractMitabDataSource<BinaryInteractionEvidence, ParticipantEvidence, FeatureEvidence>{
+public class MitabBinaryEvidenceDataSource extends AbstractMitabDataSource<BinaryInteractionEvidence, ParticipantEvidence, FeatureEvidence> implements BinaryInteractionEvidenceSource{
 
     public MitabBinaryEvidenceDataSource() {
         super();
