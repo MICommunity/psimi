@@ -16,7 +16,7 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractMatrixExpansion<T extends Interaction, B extends BinaryInteraction, P extends Participant> extends AbstractComplexExpansionMethod<T,B> {
+public abstract class AbstractMatrixExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractMatrixExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.MATRIX_EXPANSION, ComplexExpansionMethod.MATRIX_EXPANSION_MI));
@@ -24,13 +24,13 @@ public abstract class AbstractMatrixExpansion<T extends Interaction, B extends B
 
     @Override
     protected Collection<B> collectBinaryInteractionsFrom(T interaction){
-        P[] participants = createParticipantsArray(interaction);
+        Participant[] participants = createParticipantsArray(interaction);
 
         Collection<B> binaryInteractions = new ArrayList<B>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
         for ( int i = 0; i < interaction.getParticipants().size(); i++ ) {
-            P c1 = participants[i];
+            Participant c1 = participants[i];
             for ( int j = ( i + 1 ); j < participants.length; j++ ) {
-                P c2 = participants[j];
+                Participant c2 = participants[j];
                 // build a new interaction
                 B binary = createBinaryInteraction(interaction, c1, c2);
 
@@ -41,7 +41,7 @@ public abstract class AbstractMatrixExpansion<T extends Interaction, B extends B
         return binaryInteractions;
     }
 
-    protected abstract B createBinaryInteraction(T interaction, P c1, P c2);
+    protected abstract <P extends Participant> B createBinaryInteraction(T interaction, P c1, P c2);
 
-    protected abstract P[] createParticipantsArray(T interaction);
+    protected abstract <P extends Participant> P[] createParticipantsArray(T interaction);
 }

@@ -30,7 +30,7 @@ public class DefaultParticipantEvidenceTest {
         Assert.assertNotNull(participant.getParameters());
         Assert.assertNotNull(participant.getConfidences());
         Assert.assertNull(participant.getExpressedInOrganism());
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), participant.getExperimentalRole());
     }
 
@@ -52,18 +52,18 @@ public class DefaultParticipantEvidenceTest {
 
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         InteractionEvidence i = new DefaultInteractionEvidence("test interaction");
-        participant.setInteractionEvidence(i);
+        participant.setInteraction(i);
 
-        Assert.assertTrue(DefaultInteractionEvidenceComparator.areEquals(new DefaultInteractionEvidence("test interaction"), participant.getInteractionEvidence()));
+        Assert.assertTrue(DefaultInteractionEvidenceComparator.areEquals(new DefaultInteractionEvidence("test interaction"), participant.getInteraction()));
         Assert.assertEquals(0, i.getParticipants().size());
 
-        participant.setInteractionEvidenceAndAddParticipantEvidence(i);
-        Assert.assertNotNull(participant.getInteractionEvidence());
+        participant.setInteractionAndAddParticipant(i);
+        Assert.assertNotNull(participant.getInteraction());
         Assert.assertEquals(1, i.getParticipants().size());
         Assert.assertEquals(participant, i.getParticipants().iterator().next());
 
-        participant.setInteractionEvidenceAndAddParticipantEvidence(null);
-        Assert.assertNull(participant.getInteractionEvidence());
+        participant.setInteractionAndAddParticipant(null);
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, i.getParticipants().size());
     }
 
@@ -72,26 +72,26 @@ public class DefaultParticipantEvidenceTest {
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         FeatureEvidence f = new DefaultFeatureEvidence("test", "test feature");
 
-        Assert.assertNull(f.getParticipantEvidence());
+        Assert.assertNull(f.getParticipant());
 
         // add feature and set participantEvidence
-        participant.addFeatureEvidence(f);
-        Assert.assertEquals(participant, f.getParticipantEvidence());
+        participant.addFeature(f);
+        Assert.assertEquals(participant, f.getParticipant());
         Assert.assertEquals(1, participant.getFeatures().size());
 
         // remove feature evidence and set participant to null
-        participant.removeFeatureEvidence(f);
-        Assert.assertNull(f.getParticipantEvidence());
+        participant.removeFeature(f);
+        Assert.assertNull(f.getParticipant());
         Assert.assertEquals(0, participant.getFeatures().size());
 
         // simply add feature evidence
         participant.getFeatures().add(f);
-        Assert.assertNull(f.getParticipantEvidence());
+        Assert.assertNull(f.getParticipant());
         Assert.assertEquals(1, participant.getFeatures().size());
 
         // simply remove feature evidence
         participant.getFeatures().remove(f);
-        Assert.assertNull(f.getParticipantEvidence());
+        Assert.assertNull(f.getParticipant());
         Assert.assertEquals(0, participant.getFeatures().size());
     }
 }

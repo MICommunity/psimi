@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>11/12/12</pre>
  */
 
-public interface InteractionEvidence extends Interaction{
+public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
 
     /**
      * IMEx identifier if the interaction has been curated following IMEx curation rules.
@@ -57,7 +57,7 @@ public interface InteractionEvidence extends Interaction{
      * an empty set.
      * @return the collection of variableParameterValueSet
      */
-    public Collection<VariableParameterValueSet> getVariableParameterValues();
+    public <V extends VariableParameterValueSet> Collection<V> getVariableParameterValues();
 
     /**
      * The availability for this interaction. By default it is null because freely available.
@@ -78,7 +78,7 @@ public interface InteractionEvidence extends Interaction{
      * Ex: IC50, ...
      * @return the parameters
      */
-    public Collection<Parameter> getParameters();
+    public <P extends Parameter> Collection<P> getParameters();
 
     /**
      * Boolean value to know if the interaction is inferred from multiple experiments which on their own would not support the interaction.
@@ -94,47 +94,12 @@ public interface InteractionEvidence extends Interaction{
     public void setInferred(boolean inferred);
 
     /**
-     * The collection of participants involved in this interaction.
-     * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
-     * @return the particiants
-     */
-    public Collection<ParticipantEvidence> getParticipants();
-
-    /**
-     * This method will add the participant evidence and set the interaction evidence of the new participant evidence to this current interaction
-     * @param evidence
-     * @return true if participant evidence is added to the list of participants
-     */
-    public boolean  addParticipantEvidence(ParticipantEvidence evidence);
-
-    /**
-     * This method will remove the participant evidence and set the interaction of the new participant evidence to null
-     * @param evidence
-     * @return true if participant evidence is removed from the list of participants
-     */
-    public boolean removeParticipantEvidence(ParticipantEvidence evidence);
-
-    /**
-     * This method will add all the participant evidences and set the interaction of the new participant evidences to this current interaction
-     * @param evidences
-     * @return true if participant evidences are added to the list of participant evidences
-     */
-    public boolean  addAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences);
-
-    /**
-     * This method will remove the participant evidences and set the interaction of the removed participant evidences to null.
-     * @param evidences
-     * @return true if participant evidences are removed from the list of participant evidences
-     */
-    public boolean removeAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences);
-
-    /**
      * The confidences in this interaction.
      * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
      * Ex: author based scores, statistical confidences, ...
      * @return the confidences
      */
-    public Collection<Confidence> getConfidences();
+    public <C extends Confidence> Collection<C> getConfidences();
 
     /**
      * Boolean value to know if an interaction is negative.

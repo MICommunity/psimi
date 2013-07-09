@@ -16,7 +16,7 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractSpokeExpansion<T extends Interaction, B extends BinaryInteraction, P extends Participant> extends AbstractComplexExpansionMethod<T,B> {
+public abstract class AbstractSpokeExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractSpokeExpansion() {
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.SPOKE_EXPANSION, ComplexExpansionMethod.SPOKE_EXPANSION_MI));
@@ -26,12 +26,12 @@ public abstract class AbstractSpokeExpansion<T extends Interaction, B extends Bi
     protected Collection<B> collectBinaryInteractionsFrom(T interaction) {
         Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size()-1);
 
-        P bait = collectBestBaitForSpokeExpansion(interaction);
+        Participant bait = collectBestBaitForSpokeExpansion(interaction);
 
         for ( Participant p : interaction.getParticipants() ) {
             if (p != bait){
                 // build a new interaction
-                B binary = createBinaryInteraction(interaction, bait, (P)p);
+                B binary = createBinaryInteraction(interaction, bait, p);
 
                 binaryInteractions.add(binary);
             }
@@ -40,7 +40,7 @@ public abstract class AbstractSpokeExpansion<T extends Interaction, B extends Bi
         return binaryInteractions;
     }
 
-    protected abstract B createBinaryInteraction(T interaction, P c1, P c2);
+    protected abstract <P extends Participant> B createBinaryInteraction(T interaction, P c1, P c2);
 
-    protected abstract P collectBestBaitForSpokeExpansion(T interaction);
+    protected abstract <P extends Participant> P collectBestBaitForSpokeExpansion(T interaction);
 }

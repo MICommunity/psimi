@@ -118,7 +118,7 @@ public class InteractorClonerTest {
         sourceInteractor.setUpdatedDate(new Date());
         sourceInteractor.setCreatedDate(new Date(1));
         sourceInteractor.setRigid("xxxxx");
-        sourceInteractor.addModelledParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        sourceInteractor.addParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
         sourceInteractor.getCooperativeEffects().add(new DefaultCooperativeEffect(new DefaultCvTerm("test outcome")));
         sourceInteractor.getInteractionEvidences().add(new DefaultInteractionEvidence());
         sourceInteractor.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("author-score"), "high"));
@@ -131,7 +131,7 @@ public class InteractorClonerTest {
 
         Assert.assertEquals(1, targetInteractor.getParticipants().size());
         Assert.assertTrue(targetInteractor.getParticipants().iterator().next() == sourceInteractor.getParticipants().iterator().next());
-        Assert.assertTrue(targetInteractor.getParticipants().iterator().next().getModelledInteraction() == sourceInteractor);
+        Assert.assertTrue(targetInteractor.getParticipants().iterator().next().getInteraction() == sourceInteractor);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class InteractorClonerTest {
         sourceInteractor.setUpdatedDate(new Date());
         sourceInteractor.setCreatedDate(new Date(1));
         sourceInteractor.setRigid("xxxxx");
-        sourceInteractor.addModelledParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        sourceInteractor.addParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
         sourceInteractor.getCooperativeEffects().add(new DefaultCooperativeEffect(new DefaultCvTerm("test outcome")));
         sourceInteractor.getInteractionEvidences().add(new DefaultInteractionEvidence());
         sourceInteractor.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("author-score"), "high"));
@@ -163,7 +163,7 @@ public class InteractorClonerTest {
         Assert.assertEquals(1, targetInteractor.getParticipants().size());
         Assert.assertFalse(sourceInteractor.getParticipants().iterator().next() == targetInteractor.getParticipants().iterator().next());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteractor.getParticipants().iterator().next(), targetInteractor.getParticipants().iterator().next(), false));
-        Assert.assertTrue(targetInteractor.getParticipants().iterator().next().getModelledInteraction() == targetInteractor);
+        Assert.assertTrue(targetInteractor.getParticipants().iterator().next().getInteraction() == targetInteractor);
     }
 
     @Test

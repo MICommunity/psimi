@@ -22,7 +22,7 @@ import java.util.Collection;
  * @since <pre>04/06/13</pre>
  */
 
-public class MatrixExpansion extends AbstractMatrixExpansion<Interaction, BinaryInteraction, Participant> {
+public class MatrixExpansion extends AbstractMatrixExpansion<Interaction<? extends Participant>, BinaryInteraction> {
 
     private InteractionEvidenceMatrixExpansion interactionEvidenceExpansion;
     private ModelledInteractionMatrixExpansion modelledInteractionExpansion;
@@ -52,9 +52,9 @@ public class MatrixExpansion extends AbstractMatrixExpansion<Interaction, Binary
     }
 
     @Override
-    protected BinaryInteraction createBinaryInteraction(Interaction interaction, Participant c1, Participant c2) {
+    protected <P extends Participant> BinaryInteraction createBinaryInteraction(Interaction<? extends Participant> interaction, P c1, P c2) {
         BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
+        InteractionCloner.copyAndOverrideBasicInteractionProperties((Interaction)interaction, binary, false, true);
         binary.setParticipantA(c1);
         binary.setParticipantB(c2);
         return binary;
@@ -62,6 +62,6 @@ public class MatrixExpansion extends AbstractMatrixExpansion<Interaction, Binary
 
     @Override
     protected Participant[] createParticipantsArray(Interaction interaction) {
-        return interaction.getParticipants().toArray(new DefaultParticipant[]{});
+        return (Participant[]) interaction.getParticipants().toArray(new DefaultParticipant[]{});
     }
 }

@@ -25,26 +25,26 @@ public class BinaryInteractionEvidenceWrapperTest {
         BinaryInteractionEvidence binary = new BinaryInteractionEvidenceWrapper(interaction);
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
 
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
 
         // add participant and set modelledInteraction
-        interaction.addParticipantEvidence(participant);
-        Assert.assertEquals(interaction, participant.getInteractionEvidence());
+        interaction.addParticipant(participant);
+        Assert.assertEquals(interaction, participant.getInteraction());
         Assert.assertEquals(1, binary.getParticipants().size());
 
         // remove modelled participant and set interaction to null
-        interaction.removeParticipantEvidence(participant);
-        Assert.assertNull(participant.getInteractionEvidence());
+        interaction.removeParticipant(participant);
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, interaction.getParticipants().size());
 
         // simply add modelled participant
         binary.setParticipantB(participant);
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(1, interaction.getParticipants().size());
 
         // simply remove modelled participant
         binary.setParticipantB(null);
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, interaction.getParticipants().size());
     }
 }

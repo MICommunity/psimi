@@ -50,7 +50,7 @@ public interface Interactor {
      * Ex: uniprotkb secondary accession O00183, primary accessions, ...
      * @return the alternative identifier
      */
-    public Collection<Xref> getIdentifiers();
+    public <X extends Xref> Collection<X> getIdentifiers();
 
     /**
      * The identifier in the list of identifiers which is the preferred identifier.
@@ -66,14 +66,14 @@ public interface Interactor {
      * Ex: rogid:u1FCes02jPb3CGRj1aDkzpbSiuI9606, standard Inchi key, ...
      * @return the set of checksums
      */
-    public Collection<Checksum> getChecksums();
+    public <C extends Checksum> Collection<C> getChecksums();
 
     /**
      * Collection of other xrefs that give more information about the interactor.
      * Ex: GO references to gives function/process/location information
      * @return other xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Collection of annotations for an interactor.
@@ -81,7 +81,7 @@ public interface Interactor {
      * Ex: pharmacology, isoform-comment, etc.
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * Collection of aliases for an interactor
@@ -89,7 +89,7 @@ public interface Interactor {
      * Ex: complex-synonym, author-assigned name, ...
      * @return the aliases
      */
-    public Collection<Alias> getAliases();
+    public <A extends Alias> Collection<A> getAliases();
 
     /**
      * The original source organism for this interactor.

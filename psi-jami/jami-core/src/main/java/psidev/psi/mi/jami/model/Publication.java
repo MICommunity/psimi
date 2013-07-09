@@ -55,7 +55,7 @@ public interface Publication {
      * Ex: pubmed:14681455
      * @return the publication identifier
      */
-    public Collection<Xref> getIdentifiers();
+    public <X extends Xref> Collection<X> getIdentifiers();
 
     /**
      * IMEx identifier of the publication if it has been registered in IMEx central as a publication curated following IMEx curation rules.
@@ -126,7 +126,7 @@ public interface Publication {
      * Ex: other primary references such as DOI : 10.1023/A:1005823620291
      * @return the xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Other publication annotations which can give more information about the curated publication.
@@ -134,14 +134,14 @@ public interface Publication {
      * Ex: topic = dataset value = Cyanobacteria - Interaction dataset based on Cyanobacteria proteins and related species
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * The curated experiments which have been described in the publication.
      * It cannot be null. If no experiments have been curated in this publication, the method should return an empty collection.
      * @return the collection of experiments
      */
-    public Collection<Experiment> getExperiments();
+    public <E extends Experiment> Collection<E> getExperiments();
 
     /**
      * The curation depth for this publication.

@@ -26,7 +26,7 @@ public class DefaultBinaryInteractionTest {
         Participant p1 = new DefaultParticipant(new DefaultProtein("p1"));
         Participant p2 = new DefaultParticipant(new DefaultProtein("p2"));
 
-        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction<Participant>(p1,
+        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction(p1,
                 p2, new DefaultCvTerm("spoke expansion"));
 
         Assert.assertTrue(p1 == binary.getParticipantA());
@@ -41,7 +41,7 @@ public class DefaultBinaryInteractionTest {
         Participant p1 = new DefaultParticipant(new DefaultProtein("p1"));
         Participant p2 = new DefaultParticipant(new DefaultProtein("p2"));
 
-        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction<Participant>(p1,
+        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction(p1,
                 p2, new DefaultCvTerm("spoke expansion"));
 
         ((Collection<Participant>)binary.getParticipants()).add(new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));

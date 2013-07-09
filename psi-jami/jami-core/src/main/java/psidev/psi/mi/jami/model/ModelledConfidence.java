@@ -19,5 +19,5 @@ public interface ModelledConfidence extends Confidence {
      * The collection cannot be null. If the modelledConfidence does not have any publications, the method should return an empty collection
      * @return the collection of Publication where this modelledConfidence has been reported
      */
-    public Collection<Publication> getPublications();
+    public <P extends Publication> Collection<P> getPublications();
 }

@@ -77,7 +77,7 @@ public class InteractorCloner {
                     for (ModelledParticipant p : source.getParticipants()){
                         ModelledParticipant clone = new DefaultModelledParticipant(p.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(p, clone, true);
-                        target.addModelledParticipant(clone);
+                        target.addParticipant(clone);
                     }
                 }
             }

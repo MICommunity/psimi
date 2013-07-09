@@ -19,7 +19,7 @@ import java.util.Collections;
  * @since <pre>19/06/13</pre>
  */
 
-public class InteractionEvidenceBipartiteExpansion extends AbstractBipartiteExpansion<InteractionEvidence, BinaryInteractionEvidence, ParticipantEvidence>{
+public class InteractionEvidenceBipartiteExpansion extends AbstractBipartiteExpansion<InteractionEvidence, BinaryInteractionEvidence>{
 
     @Override
     protected Collection<BinaryInteractionEvidence> createNewSelfBinaryInteractionsFrom(InteractionEvidence interaction) {
@@ -53,11 +53,11 @@ public class InteractionEvidenceBipartiteExpansion extends AbstractBipartiteExpa
     }
 
     @Override
-    protected BinaryInteractionEvidence createBinaryInteraction(InteractionEvidence interaction, ParticipantEvidence c1, ParticipantEvidence c2){
+    protected <P extends Participant> BinaryInteractionEvidence createBinaryInteraction(InteractionEvidence interaction, P c1, P c2){
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence(getMethod());
         InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
+        binary.setParticipantA((ParticipantEvidence)c1);
+        binary.setParticipantB((ParticipantEvidence)c2);
         return binary;
     }
 

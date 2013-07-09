@@ -70,17 +70,17 @@ public class InteractionInteractorComparator implements Comparator<Interaction> 
             Collection<? extends Participant> participants2 = Collections.EMPTY_LIST;
 
             if (interaction1 instanceof InteractionEvidence){
-                 participants1 = ((InteractionEvidence)interaction1).getParticipants();
+                 participants1 = interaction1.getParticipants();
             }
             else if (interaction1 instanceof ModelledInteraction){
-                participants1 = ((ModelledInteraction)interaction1).getParticipants();
+                participants1 = interaction1.getParticipants();
             }
 
             if (interaction2 instanceof InteractionEvidence){
-                participants2 = ((InteractionEvidence)interaction2).getParticipants();
+                participants2 = interaction2.getParticipants();
             }
             else if (interaction2 instanceof ModelledInteraction){
-                participants2 = ((ModelledInteraction)interaction2).getParticipants();
+                participants2 = interaction2.getParticipants();
             }
 
             return participantCollectionComparator.compare(participants1, participants2);

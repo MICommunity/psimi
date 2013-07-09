@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature {
+public interface Feature<P extends Participant, F extends Feature> {
 
     public static String BIOLOGICAL_FEATURE = "biological feature";
     public static String BIOLOGICAL_FEATURE_MI ="MI:0252";
@@ -79,7 +79,7 @@ public interface Feature {
      * Ex: interpro:IPR003121
      * @return the identifier
      */
-    public Collection<Xref> getIdentifiers();
+    public <X extends Xref> Collection<X> getIdentifiers();
 
     /**
      * Collection of cross references which give more information about the feature.
@@ -87,7 +87,7 @@ public interface Feature {
      * Ex: GO xrefs to give information about process or function
      * @return the xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Collection of annotations which describe the feature
@@ -95,7 +95,7 @@ public interface Feature {
      * Ex: observed ptm, cautions, comments, ...
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * The type for this feature. It is a controlled vocabulary term and can be null.
@@ -115,7 +115,7 @@ public interface Feature {
      * The collection cannot be null. If the feature does not have any ranges, the method should return an empty collection
      * @return a collection of ranges
      */
-    public Collection<Range> getRanges();
+    public <R extends Range> Collection<R> getRanges();
 
     /**
      * The effect of this feature on the interaction where the feature has been reported.
@@ -144,4 +144,31 @@ public interface Feature {
      * @param interactionDependency
      */
     public void setInteractionDependency(CvTerm interactionDependency);
+
+    /**
+     * The participant to which the feature is attached.
+     * It can be null if the feature is not attached to any participants.
+     * @return the participant
+     */
+    public P getParticipant();
+
+    /**
+     * Sets the participant.
+     * @param participant : participant
+     */
+    public void setParticipant(P participant);
+
+    /**
+     * Sets the participant and add this feature to its list of features.
+     * If participant is null, it will remove this feature from the previous participant attached to this feature
+     * @param participant : participant
+     */
+    public void setParticipantAndAddFeature(P participant);
+
+    /**
+     * The other features that can bind to this feature.
+     * The collection cannot be null. If the feature does not bind with any other features, the method should return an empty collection
+     * @return the binding features
+     */
+    public <T extends F> Collection<T> getLinkedFeatures();
 }

@@ -42,7 +42,7 @@ public interface Experiment {
      * Ex: PRIDE experiment/project xrefs
      * @return the xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Collection of annotations for an experiment.
@@ -50,14 +50,14 @@ public interface Experiment {
      * Ex: data-processing, comments, cautions, confidence-mapping annotations
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * Collection of confidences for a specific experiment. It can happen that an authors give different confidences to the same experiment depending on the environment.
      * It cannot be null. If the experiment does not have any confidences, the method should return an empty Collection.
      * @return the confidences for this experiment
      */
-    public Collection<Confidence> getConfidences();
+    public <C extends Confidence> Collection<C> getConfidences();
 
     /**
      * The experimental method to determine the interaction. It is a controlled vocabulary term and cannot not be null.
@@ -92,7 +92,7 @@ public interface Experiment {
      * The collection cannot be null. If the experiment did not show any interactions, the method should return an empty collection
      * @return the interactions
      */
-    public Collection<InteractionEvidence> getInteractionEvidences();
+    public <I extends InteractionEvidence> Collection<I> getInteractionEvidences();
 
     /**
      * This method will add the interaction evidence and set the experiment of the new interaction evidence to this current experiment
@@ -128,7 +128,7 @@ public interface Experiment {
      * this method should return an empty collection.
      * @return the collection of variableParameters and their values used in this experiment
      */
-    public Collection<VariableParameter> getVariableParameters();
+    public <V extends VariableParameter> Collection<V> getVariableParameters();
 
     /**
      * This method will add the variableParameter and set the experiment of the new variableParameter to this current experiment

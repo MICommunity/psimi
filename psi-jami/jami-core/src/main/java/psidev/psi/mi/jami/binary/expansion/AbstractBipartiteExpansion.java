@@ -19,7 +19,7 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractBipartiteExpansion<T extends Interaction, B extends BinaryInteraction, P extends Participant> extends AbstractComplexExpansionMethod<T,B> {
+public abstract class AbstractBipartiteExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractBipartiteExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.BIPARTITE_EXPANSION, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI));
@@ -27,13 +27,13 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction, B extend
 
     @Override
     protected Collection<B> collectBinaryInteractionsFrom(T interaction){
-        P externalEntity =  createParticipantForComplexEntity(createComplexEntity(interaction));
+        Participant externalEntity =  createParticipantForComplexEntity(createComplexEntity(interaction));
 
         Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size());
         for ( Participant p : interaction.getParticipants() ) {
 
             // build a new interaction
-            B binary = createBinaryInteraction(interaction, externalEntity, (P)p);
+            B binary = createBinaryInteraction(interaction, externalEntity, p);
 
             binaryInteractions.add(binary);
         }
@@ -41,9 +41,9 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction, B extend
         return binaryInteractions;
     }
 
-    protected abstract B createBinaryInteraction(T interaction, P c1, P c2);
+    protected abstract <P extends Participant> B createBinaryInteraction(T interaction, P c1, P c2);
 
-    protected abstract P createParticipantForComplexEntity(Complex complexEntity);
+    protected abstract <P extends Participant> P createParticipantForComplexEntity(Complex complexEntity);
 
     protected Complex createComplexEntity(T interaction) {
         String complexName = generateComplexName(interaction);

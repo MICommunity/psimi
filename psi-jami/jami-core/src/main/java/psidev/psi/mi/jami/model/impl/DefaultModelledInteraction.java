@@ -27,11 +27,10 @@ import java.util.Collections;
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultModelledInteraction extends DefaultInteraction implements ModelledInteraction{
+public class DefaultModelledInteraction extends AbstractInteraction<ModelledParticipant> implements ModelledInteraction{
 
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
-    private Collection<ModelledParticipant> modelledParticipants;
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
@@ -56,10 +55,6 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
     public DefaultModelledInteraction(String shortName, Source source, CvTerm type) {
         this(shortName, type);
         this.source = source;
-    }
-
-    protected void initialiseModelledParticipants(){
-        this.modelledParticipants = new ArrayList<ModelledParticipant>();
     }
 
     protected void initialiseInteractionEvidences(){
@@ -114,27 +109,11 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         }
     }
 
-    protected void initialiseModelledParticipantsWith(Collection<ModelledParticipant> participants){
-        if (participants == null){
-            this.modelledParticipants = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledParticipants = participants;
-        }
-    }
-
     public Collection<InteractionEvidence> getInteractionEvidences() {
         if (interactionEvidences == null){
             initialiseInteractionEvidences();
         }
         return this.interactionEvidences;
-    }
-
-    public Collection<ModelledParticipant> getParticipants() {
-        if (modelledParticipants == null){
-            initialiseModelledParticipants();
-        }
-        return this.modelledParticipants;
     }
 
     public Source getSource() {
@@ -143,57 +122,6 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    public boolean addModelledParticipant(ModelledParticipant part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipants().add(part)){
-            part.setModelledInteraction(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeModelledParticipant(ModelledParticipant part) {
-        if (part == null){
-            return false;
-        }
-
-        if (getParticipants().remove(part)){
-            part.setModelledInteraction(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (ModelledParticipant p : participants){
-            if (addModelledParticipant(p)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (ModelledParticipant p : participants){
-            if (removeModelledParticipant(p)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     public Collection<ModelledConfidence> getModelledConfidences() {

@@ -20,7 +20,7 @@ import java.util.Collection;
  * @since <pre>05/06/13</pre>
  */
 
-public class BipartiteExpansion extends AbstractBipartiteExpansion<Interaction, BinaryInteraction, Participant> {
+public class BipartiteExpansion extends AbstractBipartiteExpansion<Interaction<? extends Participant>, BinaryInteraction> {
 
     private InteractionEvidenceBipartiteExpansion interactionEvidenceExpansion;
     private ModelledInteractionBipartiteExpansion modelledInteractionExpansion;

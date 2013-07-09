@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionCategory;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.InteractionUtils;
 
 import java.util.Collection;
@@ -17,7 +18,7 @@ import java.util.Collections;
  * @since <pre>05/06/13</pre>
  */
 
-public abstract class AbstractComplexExpansionMethod<T extends Interaction, B extends BinaryInteraction> implements ComplexExpansionMethod<T,B> {
+public abstract class AbstractComplexExpansionMethod<T extends Interaction<? extends Participant>, B extends BinaryInteraction> implements ComplexExpansionMethod<T,B> {
 
     private CvTerm method;
 

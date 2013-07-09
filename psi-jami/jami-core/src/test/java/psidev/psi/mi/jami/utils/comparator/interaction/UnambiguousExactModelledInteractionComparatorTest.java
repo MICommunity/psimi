@@ -54,13 +54,13 @@ public class UnambiguousExactModelledInteractionComparatorTest {
     @Test
     public void test_different_participants(){
         ModelledInteraction interaction1 = new DefaultModelledInteraction("test", new DefaultCvTerm("prediction"));
-        interaction1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
         ModelledInteraction interaction2 = new DefaultModelledInteraction("test", new DefaultCvTerm("prediction"));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
 
         Assert.assertTrue(comparator.compare(interaction1, interaction2) < 0);
         Assert.assertTrue(comparator.compare(interaction2, interaction1) > 0);
@@ -71,15 +71,15 @@ public class UnambiguousExactModelledInteractionComparatorTest {
     @Test
     public void test_same_participants(){
         ModelledInteraction interaction1 = new DefaultModelledInteraction("test", new DefaultCvTerm("prediction"));
-        interaction1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
-        interaction1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
-        interaction1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
+        interaction1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
+        interaction1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
         ModelledInteraction interaction2 = new DefaultModelledInteraction("test", new DefaultCvTerm("prediction"));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
-        interaction2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
+        interaction2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
 
         Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
         Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);

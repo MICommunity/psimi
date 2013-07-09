@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CausalRelationship;
-import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
@@ -30,13 +29,13 @@ public class DefaultCausalRelationshipTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void test_causal_relationship_no_relationType() throws Exception {
-        Participant<Interactor> p = new DefaultParticipant<Interactor>(null);
+        Participant p = new DefaultParticipant(null);
         CausalRelationship rel = new DefaultCausalRelationship(null, new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void test_causal_relationship_no_target() throws Exception {
-        Participant<Interactor> p = new DefaultParticipant<Interactor>(null);
+        Participant p = new DefaultParticipant(null);
         CausalRelationship rel = new DefaultCausalRelationship(CvTermUtils.createMICvTerm("decreases", "MI:xxxx"), null);
     }
 }
