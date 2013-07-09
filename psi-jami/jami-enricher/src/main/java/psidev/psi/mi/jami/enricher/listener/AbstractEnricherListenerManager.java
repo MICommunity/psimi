@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.util;
+package psidev.psi.mi.jami.enricher.listener;
 
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public abstract class AbstractEnricherListenerManager <T> {
+public abstract class AbstractEnricherListenerManager <T extends EnricherListener> {
     protected ArrayList<T> listenersList = new ArrayList<T>();
 
     public void addEnricherListener(T listener){

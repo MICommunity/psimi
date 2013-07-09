@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.util;
+package psidev.psi.mi.jami.enricher.listener;
 
 /**
  * Created with IntelliJ IDEA.

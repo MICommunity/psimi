@@ -6,9 +6,10 @@ import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
-import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.Collection;
 public abstract class AbstractCvTermEnricher
         implements CvTermEnricher {
 
+    public static final int RETRY_COUNT = 5;
     protected CvTermFetcher fetcher = null;
     protected CvTermEnricherListener listener = null;
 
@@ -85,55 +87,59 @@ public abstract class AbstractCvTermEnricher
 
         CvTerm cvTermFetched = null;
 
-        Collection<Xref> identifiersList = new ArrayList<Xref>();
-        identifiersList.addAll(cvTermToEnrich.getIdentifiers());
-        if(identifiersList.size() > 0){
-            //Try with MI
-            for(Xref identifierXref : identifiersList){
-                if( cvTermFetched != null ) break;
-                else if( identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MI)){
-                    try {
-                        cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
-                                identifierXref.getId(), identifierXref.getDatabase());
-                    } catch (BridgeFailedException e) {
-                        throw new EnricherException("Problem encountered while enriching CvTerm", e);
-                    }
+
+        if(cvTermToEnrich.getMIIdentifier() != null){
+            int retryCount = RETRY_COUNT;
+            while(true){
+                try {
+                    cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                            cvTermToEnrich.getMIIdentifier(), CvTerm.PSI_MI);
+                    break;
+                } catch (BridgeFailedException e) {
+                    if(retryCount <= 0) throw new EnricherException("Problem encountered while enriching CvTerm", e);
                 }
+                if(retryCount <= 0) throw new EnricherException("Problem encountered while enriching CvTerm");
+                retryCount --;
             }
-            //Try with MOD
-            if( cvTermFetched == null){
-                for(Xref identifierXref : identifiersList){
-                    if( cvTermFetched != null ) break;
-                    else if( identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MOD_MI)){
-                        try {
-                            cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
-                                    identifierXref.getId(), identifierXref.getDatabase());
-                        } catch (BridgeFailedException e) {
-                            throw new EnricherException("Problem encountered while enriching CvTerm", e);
-                        }
-                    }
-                }
-            }
-            //Try with all other identifiers (ignoring if the database is one already checked.
-            if( cvTermFetched == null){
-                for(Xref identifierXref : identifiersList){
-                    if( cvTermFetched != null ) break;
-                    else if(! identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MOD_MI)
-                            && ! identifierXref.getDatabase().getShortName().equals(CvTerm.PSI_MI_MI)){
-                        try {
-                            cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
-                                    identifierXref.getId(), identifierXref.getDatabase());
-                        } catch (BridgeFailedException e) {
-                            throw new EnricherException("Problem encountered while enriching CvTerm", e);
-                        }
-                    }
-                }
-            }
+            if(cvTermFetched != null) return cvTermFetched;
         }
 
-        if(cvTermFetched == null){
+        if(cvTermToEnrich.getMODIdentifier() != null){
+            try {
+                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermToEnrich.getMODIdentifier(), CvTerm.PSI_MOD);
+            } catch (BridgeFailedException e) {
+                throw new EnricherException("Problem encountered while enriching CvTerm", e);
+            }
+            if(cvTermFetched != null) return cvTermFetched;
+        }
+
+        if(cvTermToEnrich.getPARIdentifier() != null){
+            try {
+                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermToEnrich.getPARIdentifier(), CvTerm.PSI_PAR);
+            } catch (BridgeFailedException e) {
+                throw new EnricherException("Problem encountered while enriching CvTerm", e);
+            }
+            if(cvTermFetched != null) return cvTermFetched;
+        }
+
+
+        for(Xref identifierXref : cvTermToEnrich.getIdentifiers()){
+            if( cvTermFetched != null ) break;
+            try {
+                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        identifierXref.getId(), identifierXref.getDatabase());
+            } catch (BridgeFailedException e) {
+                throw new EnricherException("Problem encountered while enriching CvTerm", e);
+            }
+
+        }
+
+
+        if(cvTermFetched == null && cvTermToEnrich.getFullName() != null){
             try{
-                getCvTermFetcher().getCvTermByExactName(cvTermToEnrich.getShortName());
+                cvTermFetched = getCvTermFetcher().getCvTermByExactName(cvTermToEnrich.getFullName());
             } catch (BridgeFailedException e) {
                 throw new EnricherException("Problem encountered while enriching CvTerm", e);
             }

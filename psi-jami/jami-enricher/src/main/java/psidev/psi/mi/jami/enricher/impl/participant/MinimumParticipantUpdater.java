@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermUpdater;
 import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureUpdater;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinUpdater;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,9 +16,8 @@ import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinUpdater;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  */
-public class MinimumParticipantUpdater
-        extends DefaultParticipantEnricher
-        implements ParticipantEnricher {
+public class MinimumParticipantUpdater <P extends Participant , F extends Feature>
+        extends AbstractParticipantEnricher <P , F>{
 
 
     @Override
@@ -32,8 +33,8 @@ public class MinimumParticipantUpdater
     }
 
     @Override
-    public FeatureEnricher getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new MinimumFeatureUpdater();
+    public FeatureEnricher<F> getFeatureEnricher(){
+        if(featureEnricher == null) featureEnricher = new MinimumFeatureUpdater<F>();
         return featureEnricher;
     }
 }

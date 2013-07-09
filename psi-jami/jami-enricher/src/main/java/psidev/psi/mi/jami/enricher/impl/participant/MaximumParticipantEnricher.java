@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,9 +16,8 @@ import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  */
-public class MaximumParticipantEnricher
-        extends MinimumParticipantEnricher
-        implements ParticipantEnricher {
+public class MaximumParticipantEnricher <P extends Participant, F extends Feature>
+        extends MinimumParticipantEnricher <P , F>{
 
     @Override
     public ProteinEnricher getProteinEnricher(){
@@ -31,8 +32,8 @@ public class MaximumParticipantEnricher
     }
 
     @Override
-    public FeatureEnricher getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new MaximumFeatureEnricher();
+    public FeatureEnricher<F> getFeatureEnricher(){
+        if(featureEnricher == null) featureEnricher = new MaximumFeatureEnricher<F>();
         return featureEnricher;
     }
 }

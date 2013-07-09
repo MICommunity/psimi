@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 14/05/13
+ * @since  14/05/13
  */
 public class UniprotFetcher
         implements ProteinFetcher {
@@ -75,7 +75,13 @@ public class UniprotFetcher
     }
 
     public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+        Collection<Protein> proteinResults = new ArrayList<Protein>();
+
+        for(String identifier : identifiers){
+            proteinResults.addAll(getProteinsByIdentifier(identifier));
+        }
+
+        return proteinResults;//Collections.EMPTY_LIST;
     }
 
 
@@ -131,7 +137,7 @@ public class UniprotFetcher
             while(entries.hasNext()){
                 UniProtEntry entry = entries.next();
                 AlternativeProductsIsoform isoform = UniprotTranslationUtil.findIsoformInEntry(entry, identifier);
-                if(isoform == null) log.warn("No isoform in entry "+entry.getUniProtId());
+                if(isoform == null) log.warn("No isoform in entry "+entry.getUniProtId());// TODO should this be more serious?
                 else{
                     proteins.add(UniprotTranslationUtil.getProteinIsoformFromEntry(entry, isoform, identifier));
                 }

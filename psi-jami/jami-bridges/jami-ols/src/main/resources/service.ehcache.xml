@@ -311,7 +311,7 @@
     If there are more than 5000 elements it will overflow to the disk cache, which in this configuration will go to
     wherever java.io.tmp is defined on your system. On a standard Linux system this will be /tmp".
     -->
-    <cache name="ols-service-cache"
+    <cache name="service-cache"
            maxElementsInMemory="1000"
            maxElementsOnDisk="50000"
            eternal="false"

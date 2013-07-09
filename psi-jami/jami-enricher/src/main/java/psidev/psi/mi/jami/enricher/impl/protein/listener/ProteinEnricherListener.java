@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
 
-import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.EnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.ProteinChangeListener;
 import psidev.psi.mi.jami.model.Protein;
 
@@ -12,7 +13,8 @@ import psidev.psi.mi.jami.model.Protein;
  * Date: 10/06/13
  * Time: 10:56
  */
-public interface ProteinEnricherListener extends ProteinChangeListener{
+public interface ProteinEnricherListener
+        extends ProteinChangeListener , EnricherListener {
 
     public void onProteinEnriched(Protein protein, EnrichmentStatus status , String message);
 

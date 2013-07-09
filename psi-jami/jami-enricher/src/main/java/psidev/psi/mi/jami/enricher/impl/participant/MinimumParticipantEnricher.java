@@ -10,10 +10,7 @@ import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
 
@@ -23,27 +20,18 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/06/13
  */
-public class MinimumParticipantEnricher<P extends Participant>
-        implements ParticipantEnricher<P>  {
-
-    protected ParticipantEnricherListener listener;
-
-    protected ProteinEnricher proteinEnricher;
-    protected CvTermEnricher cvTermEnricher;
-    protected FeatureEnricher featureEnricher;
+public class MinimumParticipantEnricher<P extends Participant , F extends Feature>
+        extends AbstractParticipantEnricher<P , F>  {
 
 
-    public void enrichParticipants(Collection<? extends Participant> participantsToEnrich) throws EnricherException {
+    public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException {
         for(Participant participant : participantsToEnrich){
-            enrichParticipant(participant);
+            enrichParticipant((P)participant);
         }
     }
 
 
-
-
-
-    public void enrichParticipant(Participant participantToEnrich) throws EnricherException {
+    public void enrichParticipant(P participantToEnrich) throws EnricherException {
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 
@@ -110,8 +98,8 @@ public class MinimumParticipantEnricher<P extends Participant>
         return cvTermEnricher;
     }
 
-    public FeatureEnricher getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new MinimumFeatureEnricher();
+    public FeatureEnricher<F> getFeatureEnricher(){
+        if(featureEnricher == null) featureEnricher = new MinimumFeatureEnricher<F> ();
         return featureEnricher;
     }
 
@@ -131,7 +119,7 @@ public class MinimumParticipantEnricher<P extends Participant>
         this.cvTermEnricher = cvTermEnricher;
     }
 
-    public void setFeatureEnricher(FeatureEnricher featureEnricher){
+    public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
     }
 

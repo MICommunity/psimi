@@ -11,18 +11,14 @@ import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 13/06/13
+ * @since  13/06/13
  */
 public class MinimumProteinUpdater
         extends AbstractProteinEnricher
@@ -31,10 +27,9 @@ public class MinimumProteinUpdater
     protected boolean isRemapped = false;
 
     @Override
-    public boolean enrichProtein(Protein proteinToEnrich) throws EnricherException {
-
+    public void enrichProtein(Protein proteinToEnrich) throws EnricherException {
         isRemapped = false;
-        return super.enrichProtein(proteinToEnrich);
+        super.enrichProtein(proteinToEnrich);
     }
 
     @Override
@@ -95,43 +90,45 @@ public class MinimumProteinUpdater
         }
 
 
+        Checksum crc64ChecksumToEnrich = null;
+        Checksum rogidChecksumToEnrich = null;
+        Checksum fetchedCrc64Checksum = null;
+        Checksum fetchedRogidChecksum = null;
+
         // Checksums
         // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
-        if(proteinFetched.getSequence() != null
-                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
 
-            Checksum crc64ChecksumToEnrich = null;
-            Checksum rogidChecksumToEnrich = null;
-            Checksum fetchedCrc64Checksum = null;
-            Checksum fetchedRogidChecksum = null;
-
-            for(Checksum checksum : proteinToEnrich.getChecksums()){
+            // Find the CRC64 & ROGID in the fetched protein.
+            for(Checksum checksum : proteinFetched.getChecksums()){
                 if(checksum.getMethod() != null){
-                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                            || (checksum.getMethod().getMIIdentifier() != null
-                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
+
+                    if(ChecksumUtils.doesChecksumHaveMethod(checksum , Checksum.ROGID_MI , Checksum.ROGID)){
                         rogidChecksumToEnrich = checksum;
                     }
-                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                    else if(ChecksumUtils.doesChecksumHaveMethod(checksum , null , "CRC64")){
                         crc64ChecksumToEnrich = checksum;
                     }
                 }
                 if(crc64ChecksumToEnrich != null && rogidChecksumToEnrich != null) break;
             }
-
-            for(Checksum checksum : proteinFetched.getChecksums()){
-                if(checksum.getMethod() != null){
-                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                            || (checksum.getMethod().getMIIdentifier() != null
-                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
-                        fetchedRogidChecksum = checksum;
+            // If either were found, look for the crc64 and a the rogid in the enriched
+            if(crc64ChecksumToEnrich != null || rogidChecksumToEnrich != null){
+                for(Checksum checksum : proteinToEnrich.getChecksums()){
+                    if(checksum.getMethod() != null){
+                        if(ChecksumUtils.doesChecksumHaveMethod(checksum , Checksum.ROGID_MI , Checksum.ROGID)){
+                            fetchedRogidChecksum = checksum;
+                        }
+                        else if(ChecksumUtils.doesChecksumHaveMethod(checksum , null , "CRC64")){
+                            fetchedCrc64Checksum = checksum;
+                        }
                     }
-                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                        fetchedCrc64Checksum = checksum;
-                    }
+                    if(fetchedCrc64Checksum != null && fetchedRogidChecksum != null) break;
                 }
-                if(fetchedCrc64Checksum != null && fetchedRogidChecksum != null) break;
             }
+
+
+        if(proteinFetched.getSequence() != null
+                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
 
             if(fetchedCrc64Checksum != null) {
                 if( crc64ChecksumToEnrich != null
