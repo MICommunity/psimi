@@ -8,7 +8,10 @@ import org.apache.commons.io.FilenameUtils;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
+import psidev.psi.mi.jami.bridges.ols.CachedOntologyOLSFetcher;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
@@ -57,6 +60,11 @@ public class MIJsonServlet extends HttpServlet{
         PsiJami.initialiseInteractionEvidenceSources();
         fileAnalyzer = new MIFileAnalyzer();
         expansionMethod = new InteractionEvidenceSpokeExpansion();
+        try {
+            this.fetcher = new CachedOntologyOLSFetcher();
+        } catch (BridgeFailedException e) {
+            logger.log(Level.SEVERE, "cannot load the cached ontology manager.");
+        }
     }
 
     @Override
@@ -215,5 +223,11 @@ public class MIJsonServlet extends HttpServlet{
     {
         fileAnalyzer = null;
         expansionMethod = null;
+        if (this.fetcher instanceof CachedFetcher){
+            CachedFetcher cachedFetcher = (CachedFetcher) fetcher;
+            cachedFetcher.clearCache();
+            cachedFetcher.shutDownCache();
+        }
+        this.fetcher = null;
     }
 }

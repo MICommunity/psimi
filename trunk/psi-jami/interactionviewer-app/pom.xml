@@ -34,6 +34,13 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- JAMI OLS-->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-ols</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- java servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
