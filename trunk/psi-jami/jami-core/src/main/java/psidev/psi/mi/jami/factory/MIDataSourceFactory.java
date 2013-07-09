@@ -62,7 +62,7 @@ public class MIDataSourceFactory {
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
             // we check for a DataSource that can be used with the given options
-            if (entry.getKey().isAssignableFrom(interactionSourceClass) && areSupportedOptions(entry.getValue(), requiredOptions)){
+            if (interactionSourceClass.isAssignableFrom(entry.getKey()) && areSupportedOptions(entry.getValue(), requiredOptions)){
                 try {
                     return (InteractionSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
                 } catch (IllegalAccessException e) {
