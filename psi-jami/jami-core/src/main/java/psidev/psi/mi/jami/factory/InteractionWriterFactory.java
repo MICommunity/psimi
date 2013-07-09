@@ -68,7 +68,7 @@ public class InteractionWriterFactory {
             // we check for a DataSource that can be used with the given options
             if (areSupportedOptions(entry.getValue(), requiredOptions)){
                 try {
-                    return instantiateNewWriter(entry.getKey(), entry.getValue());
+                    return instantiateNewWriter(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
                     logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
