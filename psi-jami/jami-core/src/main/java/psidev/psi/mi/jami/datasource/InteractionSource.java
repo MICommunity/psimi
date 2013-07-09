@@ -20,5 +20,5 @@ public interface InteractionSource extends MIDataSource {
      * @return iterator of Interactions for this datasource
      * @throws MIIOException
      */
-    public Iterator<? extends Interaction> getInteractionsIterator() throws MIIOException;
+    public <I extends Interaction> Iterator<I> getInteractionsIterator() throws MIIOException;
 }
