@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @since <pre>04/06/13</pre>
  */
 
-public interface BinaryInteraction<T extends Participant> extends Interaction {
+public interface BinaryInteraction<T extends Participant> extends Interaction<T> {
 
     /**
      * The first particiipant of the binary interaction.

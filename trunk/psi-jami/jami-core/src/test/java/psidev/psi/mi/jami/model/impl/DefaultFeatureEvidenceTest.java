@@ -22,10 +22,10 @@ public class DefaultFeatureEvidenceTest {
 
         FeatureEvidence feature = new DefaultFeatureEvidence();
 
-        Assert.assertNotNull(feature.getLinkedFeatureEvidences());
-        Assert.assertNull(feature.getParticipantEvidence());
+        Assert.assertNotNull(feature.getLinkedFeatures());
+        Assert.assertNull(feature.getParticipant());
         Assert.assertNull(feature.getType());
-        Assert.assertNotNull(feature.getLinkedFeatureEvidences());
+        Assert.assertNotNull(feature.getLinkedFeatures());
     }
 
     @Test
@@ -33,18 +33,18 @@ public class DefaultFeatureEvidenceTest {
 
         FeatureEvidence feature = new DefaultFeatureEvidence();
         ParticipantEvidence p = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
-        feature.setParticipantEvidence(p);
+        feature.setParticipant(p);
 
-        Assert.assertTrue(DefaultParticipantEvidenceComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipantEvidence()));
+        Assert.assertTrue(DefaultParticipantEvidenceComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant()));
         Assert.assertEquals(0, p.getFeatures().size());
 
-        feature.setParticipantEvidenceAndAddFeature(p);
-        Assert.assertNotNull(feature.getParticipantEvidence());
+        feature.setParticipantAndAddFeature(p);
+        Assert.assertNotNull(feature.getParticipant());
         Assert.assertEquals(1, p.getFeatures().size());
         Assert.assertEquals(feature, p.getFeatures().iterator().next());
 
-        feature.setParticipantEvidenceAndAddFeature(null);
-        Assert.assertNull(feature.getParticipantEvidence());
+        feature.setParticipantAndAddFeature(null);
+        Assert.assertNull(feature.getParticipant());
         Assert.assertEquals(0, p.getFeatures().size());
     }
 }

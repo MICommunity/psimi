@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Participant<T extends Interactor> {
+public interface Participant<I extends Interaction, F extends Feature> {
 
     public static final String UNSPECIFIED_ROLE = "unspecified role";
     public static final String UNSPECIFIED_ROLE_MI = "MI:0499";
@@ -40,14 +40,34 @@ public interface Participant<T extends Interactor> {
      * It cannot be null.
      * @return the interactor
      */
-    public T getInteractor();
+    public Interactor getInteractor();
 
     /**
      * Sets the interactor
      * @param interactor : interactor
      * @throws IllegalArgumentException when interactor is null
      */
-    public void setInteractor(T interactor);
+    public void setInteractor(Interactor interactor);
+
+    /**
+     * Sets the Interaction and add the new Participant to its list of Participants.
+     * If the give interaction is null, it will remove the Participant from the previous interaction it was attached to
+     * @param interaction : interaction
+     */
+    public void setInteractionAndAddParticipant(I interaction);
+
+    /**
+     * The interaction in which the participant is involved.
+     * It can be null if the participant is not attached to any interactions. It can happen if the participant has been removed from an interaction and is now invalid.
+     * @return the interaction
+     */
+    public I getInteraction();
+
+    /**
+     * Sets the interaction.
+     * @param interaction : interaction
+     */
+    public void setInteraction(I interaction);
 
     /**
      * The biological role of the participant.
@@ -86,14 +106,14 @@ public interface Participant<T extends Interactor> {
      * Ex: author identifiers, ...
      * @return the xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Collection of annotations describing the participant.
      * The set cannot be null. If the participant does not have any annotations, the method should return an empty Collection.
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * Collection of aliases which give more information about the participant.
@@ -101,7 +121,7 @@ public interface Participant<T extends Interactor> {
      * Ex: author assigned name, ...
      * @return the xrefs
      */
-    public Collection<Alias> getAliases();
+    public <A extends Alias> Collection<A> getAliases();
 
     /**
      * The stoichiometry for this participant.
@@ -127,5 +147,33 @@ public interface Participant<T extends Interactor> {
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features
      */
-    public Collection<? extends Feature> getFeatures();
+    public <F2 extends F> Collection<F2> getFeatures();
+
+    /**
+     * This method will add the feature and set the participant of the new feature to this current participant
+     * @param feature
+     * @return true if feature is added to the list of features
+     */
+    public boolean  addFeature(F feature);
+
+    /**
+     * This method will remove the feature and set the participant of the removed feature to null.
+     * @param feature
+     * @return true if feature is removed from the list of features
+     */
+    public boolean removeFeature(F feature);
+
+    /**
+     * This method will add all features and set the participant of the new features to this current participant
+     * @param features
+     * @return true if features are added to the list of features
+     */
+    public boolean  addAllFeatures(Collection<? extends F> features);
+
+    /**
+     * This method will remove all the features and set the participant of the removed features to null.
+     * @param features
+     * @return true if features are removed from the list of features
+     */
+    public boolean removeAllFeatures(Collection<? extends F> features);
 }

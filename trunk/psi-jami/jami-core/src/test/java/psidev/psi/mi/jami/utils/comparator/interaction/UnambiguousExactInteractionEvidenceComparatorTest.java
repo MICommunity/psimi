@@ -134,15 +134,15 @@ public class UnambiguousExactInteractionEvidenceComparatorTest {
     public void test_different_participant_evidences(){
         InteractionEvidence interaction1 = new DefaultInteractionEvidence("test", new DefaultCvTerm("association"));
         interaction1.setExperimentAndAddInteractionEvidence(new DefaultExperiment(new DefaultPublication("12345")));
-        interaction1.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction1.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction1.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction1.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
 
         InteractionEvidence interaction2 = new DefaultInteractionEvidence("test", new DefaultCvTerm("association"));
         interaction2.setExperimentAndAddInteractionEvidence(new DefaultExperiment(new DefaultPublication("12345")));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
 
         Assert.assertTrue(comparator.compare(interaction1, interaction2) < 0);
         Assert.assertTrue(comparator.compare(interaction2, interaction1) > 0);
@@ -154,17 +154,17 @@ public class UnambiguousExactInteractionEvidenceComparatorTest {
     public void test_same_participant_evidences(){
         InteractionEvidence interaction1 = new DefaultInteractionEvidence("test", new DefaultCvTerm("association"));
         interaction1.setExperimentAndAddInteractionEvidence(new DefaultExperiment(new DefaultPublication("12345")));
-        interaction1.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
-        interaction1.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
-        interaction1.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction1.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction1.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
+        interaction1.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
+        interaction1.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction1.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
 
         InteractionEvidence interaction2 = new DefaultInteractionEvidence("test", new DefaultCvTerm("association"));
         interaction2.setExperimentAndAddInteractionEvidence(new DefaultExperiment(new DefaultPublication("12345")));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
-        interaction2.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12345"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12346"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 1", XrefUtils.createUniprotIdentity("P12347"))));
+        interaction2.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("test 2", XrefUtils.createUniprotIdentity("P12348"))));
 
         Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
         Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);

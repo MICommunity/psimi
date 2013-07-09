@@ -11,7 +11,7 @@ import java.util.Date;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Interaction {
+public interface Interaction<T extends Participant> {
 
     /**
      * The short name of the interaction.
@@ -49,7 +49,7 @@ public interface Interaction {
      * Ex: original interaction database accession, ...
      * @return the xrefs
      */
-    public Collection<Xref> getIdentifiers();
+    public <X extends Xref> Collection<X> getIdentifiers();
 
     /**
      * The external cross references for an interaction.
@@ -57,7 +57,7 @@ public interface Interaction {
      * Ex: GO process xrefs, GO component xrefs, database accession that can identify the interaction, ...
      * @return the xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Set of checksums computed for this interaction..
@@ -65,7 +65,7 @@ public interface Interaction {
      * Ex: rigid:u1FCes02jPb3CGRj1aDkzpbSiuI9606, ...
      * @return the set of checksums
      */
-    public Collection<Checksum> getChecksums();
+    public <C extends Checksum> Collection<C> getChecksums();
 
     /**
      * The Collection of annotations describing the interaction.
@@ -73,7 +73,7 @@ public interface Interaction {
      * Ex: figure-legend annotations, comments, cautions, ...
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * The last update date.
@@ -120,5 +120,33 @@ public interface Interaction {
      * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
      * @return the particiants
      */
-    public Collection<? extends Participant> getParticipants();
+    public <T2 extends T> Collection<T2> getParticipants();
+
+    /**
+     * This method will add the participant and set the interaction of the new participant to this current interaction
+     * @param part
+     * @return true if participant is added to the list of participants
+     */
+    public boolean addParticipant(T part);
+
+    /**
+     * This method will remove the participant and set the interaction of the new participant to null
+     * @param part
+     * @return true if participant is removed from the list of participants
+     */
+    public boolean removeParticipant(T part);
+
+    /**
+     * This method will add all the participant and set the interaction of the new participant to this current interaction
+     * @param participants
+     * @return true if participant are added to the list of participants
+     */
+    public boolean  addAllParticipants(Collection<? extends T> participants);
+
+    /**
+     * This method will remove the participant and set the interaction of the removed participant to null.
+     * @param participants
+     * @return true if participant are removed from the list of participants
+     */
+    public boolean removeAllParticipants(Collection<? extends T> participants);
 }

@@ -84,17 +84,17 @@ public class UnambiguousExactComplexComparatorTest {
     public void test_complex_different_participants(){
         Complex complex1 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex1.setInteractionType(new DefaultCvTerm("phosphorylation"));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12345"))));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
         Complex complex2 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex2.setInteractionType(new DefaultCvTerm("phosphorylation"));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12345"))));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12347"))));
 
         Assert.assertTrue(comparator.compare(complex1, complex2) < 0);
@@ -107,14 +107,14 @@ public class UnambiguousExactComplexComparatorTest {
     public void test_complex_self_complex_before(){
         Complex complex1 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex1.setInteractionType(new DefaultCvTerm("phosphorylation"));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(complex1));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex1.addParticipant(new DefaultModelledParticipant(complex1));
+        complex1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
         Complex complex2 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex2.setInteractionType(new DefaultCvTerm("phosphorylation"));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12345"))));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
 
         Assert.assertTrue(comparator.compare(complex1, complex2) < 0);
@@ -127,19 +127,19 @@ public class UnambiguousExactComplexComparatorTest {
     public void test_complex_same_participants(){
         Complex complex1 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex1.setInteractionType(new DefaultCvTerm("phosphorylation"));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12347"))));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12345"))));
-        complex1.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex1.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
         Complex complex2 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex2.setInteractionType(new DefaultCvTerm("phosphorylation"));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12345"))));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
-        complex2.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
+        complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12347"))));
 
         Assert.assertTrue(comparator.compare(complex1, complex2) == 0);

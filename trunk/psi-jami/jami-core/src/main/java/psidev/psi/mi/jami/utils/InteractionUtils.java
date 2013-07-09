@@ -39,7 +39,7 @@ public class InteractionUtils {
 
         // only one participant, check stoichiometry
         if (interaction.getParticipants().size() == 1) {
-            Participant p = interaction.getParticipants().iterator().next();
+            Participant p = (Participant)interaction.getParticipants().iterator().next();
 
             // the stoichiometry is not specified
             if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
@@ -160,7 +160,7 @@ public class InteractionUtils {
      * @param interaction
      */
     public static BinaryInteraction createNewSelfBinaryInteractionFrom(Interaction interaction) {
-        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction<Participant>();
+        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction();
         InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
         InteractionCloner.copyAndOverrideBasicParticipantsToBinary(interaction, binary, false, true);
         return binary;

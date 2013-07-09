@@ -29,14 +29,13 @@ import java.util.Collections;
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultInteractionEvidence extends DefaultInteraction implements InteractionEvidence {
+public class DefaultInteractionEvidence extends AbstractInteraction<ParticipantEvidence> implements InteractionEvidence {
 
     private Xref imexId;
     private Experiment experiment;
     private String availability;
     private Collection<Parameter> parameters;
     private boolean isInferred = false;
-    private Collection<ParticipantEvidence> participantEvidences;
     private Collection<Confidence> confidences;
     private boolean isNegative;
 
@@ -145,10 +144,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
     }
 
-    protected void initialiseParticipantEvidences(){
-        this.participantEvidences = new ArrayList<ParticipantEvidence>();
-    }
-
     protected void initialiseExperimentalParameters(){
         this.parameters = new ArrayList<Parameter>();
     }
@@ -159,15 +154,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
         else {
             this.parameters = parameters;
-        }
-    }
-
-    protected void initialiseParticipantEvidencesWith(Collection<ParticipantEvidence> participants){
-        if (participants == null){
-            this.participantEvidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.participantEvidences = participants;
         }
     }
 
@@ -260,63 +246,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
 
     public void setInferred(boolean inferred) {
         this.isInferred = inferred;
-    }
-
-    public Collection<ParticipantEvidence> getParticipants() {
-        if (participantEvidences == null){
-            initialiseParticipantEvidences();
-        }
-        return this.participantEvidences;
-    }
-
-    public boolean addParticipantEvidence(ParticipantEvidence part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipants().add(part)){
-            part.setInteractionEvidence(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeParticipantEvidence(ParticipantEvidence part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipants().remove(part)){
-            part.setInteractionEvidence(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllParticipantEvidences(Collection<? extends ParticipantEvidence> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (ParticipantEvidence p : participants){
-            if (addParticipantEvidence(p)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllParticipantEvidences(Collection<? extends ParticipantEvidence> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (ParticipantEvidence p : participants){
-            if (removeParticipantEvidence(p)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     protected void processAddedXrefEvent(Xref added) {

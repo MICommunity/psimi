@@ -81,8 +81,8 @@ public class ParticipantClonerTest {
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
         sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
-        sourceParticipant.addModelledFeature(new DefaultModelledFeature("test", "test feature"));
-        sourceParticipant.setModelledInteraction(new DefaultModelledInteraction());
+        sourceParticipant.addFeature(new DefaultModelledFeature("test", "test feature"));
+        sourceParticipant.setInteraction(new DefaultModelledInteraction());
 
         ModelledParticipant targetParticipant = new DefaultModelledParticipant(new DefaultProtein("p2"));
 
@@ -92,7 +92,7 @@ public class ParticipantClonerTest {
         Assert.assertEquals(1, targetParticipant.getAnnotations().size());
         Assert.assertEquals(1, targetParticipant.getAliases().size());
         Assert.assertEquals(1, targetParticipant.getFeatures().size());
-        Assert.assertNull(targetParticipant.getModelledInteraction());
+        Assert.assertNull(targetParticipant.getInteraction());
         Assert.assertTrue(targetParticipant.getXrefs().iterator().next() == sourceParticipant.getXrefs().iterator().next());
         Assert.assertTrue(targetParticipant.getAliases().iterator().next() == sourceParticipant.getAliases().iterator().next());
         Assert.assertTrue(targetParticipant.getAnnotations().iterator().next() == sourceParticipant.getAnnotations().iterator().next());
@@ -101,7 +101,7 @@ public class ParticipantClonerTest {
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
         Assert.assertTrue(targetParticipant.getBiologicalRole() == sourceParticipant.getBiologicalRole());
         Assert.assertTrue(targetParticipant.getCausalRelationship() == sourceParticipant.getCausalRelationship());
-        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getModelledParticipant() == sourceParticipant);
+        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipant() == sourceParticipant);
     }
 
     @Test
@@ -114,8 +114,8 @@ public class ParticipantClonerTest {
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
         sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
-        sourceParticipant.addModelledFeature(new DefaultModelledFeature("test", "test feature"));
-        sourceParticipant.setModelledInteraction(new DefaultModelledInteraction());
+        sourceParticipant.addFeature(new DefaultModelledFeature("test", "test feature"));
+        sourceParticipant.setInteraction(new DefaultModelledInteraction());
 
         ModelledParticipant targetParticipant = new DefaultModelledParticipant(new DefaultProtein("p2"));
 
@@ -124,7 +124,7 @@ public class ParticipantClonerTest {
         Assert.assertEquals(1, targetParticipant.getFeatures().size());
         Assert.assertFalse(targetParticipant.getFeatures().iterator().next() == sourceParticipant.getFeatures().iterator().next());
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(targetParticipant.getFeatures().iterator().next(), sourceParticipant.getFeatures().iterator().next()));
-        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getModelledParticipant() == targetParticipant);
+        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipant() == targetParticipant);
     }
 
     @Test
@@ -137,8 +137,8 @@ public class ParticipantClonerTest {
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
         sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
-        sourceParticipant.addFeatureEvidence(new DefaultFeatureEvidence("test", "test feature"));
-        sourceParticipant.setInteractionEvidence(new DefaultInteractionEvidence());
+        sourceParticipant.addFeature(new DefaultFeatureEvidence("test", "test feature"));
+        sourceParticipant.setInteraction(new DefaultInteractionEvidence());
         sourceParticipant.setExperimentalRole(new DefaultCvTerm("bait"));
         sourceParticipant.setExpressedInOrganism(new DefaultOrganism(-1));
         sourceParticipant.getExperimentalPreparations().add(new DefaultCvTerm("test preparation"));
@@ -158,7 +158,7 @@ public class ParticipantClonerTest {
         Assert.assertEquals(1, targetParticipant.getConfidences().size());
         Assert.assertEquals(1, targetParticipant.getExperimentalPreparations().size());
         Assert.assertEquals(1, targetParticipant.getIdentificationMethods().size());
-        Assert.assertNull(targetParticipant.getInteractionEvidence());
+        Assert.assertNull(targetParticipant.getInteraction());
         Assert.assertTrue(targetParticipant.getXrefs().iterator().next() == sourceParticipant.getXrefs().iterator().next());
         Assert.assertTrue(targetParticipant.getAliases().iterator().next() == sourceParticipant.getAliases().iterator().next());
         Assert.assertTrue(targetParticipant.getAnnotations().iterator().next() == sourceParticipant.getAnnotations().iterator().next());
@@ -167,7 +167,7 @@ public class ParticipantClonerTest {
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
         Assert.assertTrue(targetParticipant.getBiologicalRole() == sourceParticipant.getBiologicalRole());
         Assert.assertTrue(targetParticipant.getCausalRelationship() == sourceParticipant.getCausalRelationship());
-        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipantEvidence() == sourceParticipant);
+        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipant() == sourceParticipant);
         Assert.assertTrue(targetParticipant.getExperimentalRole() == sourceParticipant.getExperimentalRole());
         Assert.assertTrue(targetParticipant.getExpressedInOrganism() == sourceParticipant.getExpressedInOrganism());
         Assert.assertTrue(targetParticipant.getExperimentalPreparations().iterator().next() == sourceParticipant.getExperimentalPreparations().iterator().next() );
@@ -187,8 +187,8 @@ public class ParticipantClonerTest {
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
         sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
-        sourceParticipant.addFeatureEvidence(new DefaultFeatureEvidence("test", "test feature"));
-        sourceParticipant.setInteractionEvidence(new DefaultInteractionEvidence());
+        sourceParticipant.addFeature(new DefaultFeatureEvidence("test", "test feature"));
+        sourceParticipant.setInteraction(new DefaultInteractionEvidence());
         sourceParticipant.setExperimentalRole(new DefaultCvTerm("bait"));
         sourceParticipant.setExpressedInOrganism(new DefaultOrganism(-1));
         sourceParticipant.getExperimentalPreparations().add(new DefaultCvTerm("test preparation"));
@@ -202,6 +202,6 @@ public class ParticipantClonerTest {
         Assert.assertEquals(1, targetParticipant.getFeatures().size());
         Assert.assertFalse(targetParticipant.getFeatures().iterator().next() == sourceParticipant.getFeatures().iterator().next());
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(targetParticipant.getFeatures().iterator().next(), sourceParticipant.getFeatures().iterator().next()));
-        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipantEvidence() == targetParticipant);
+        Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipant() == targetParticipant);
     }
 }

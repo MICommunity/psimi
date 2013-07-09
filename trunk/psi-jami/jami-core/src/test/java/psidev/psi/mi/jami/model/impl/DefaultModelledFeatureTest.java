@@ -23,8 +23,8 @@ public class DefaultModelledFeatureTest {
 
         ModelledFeature feature = new DefaultModelledFeature();
 
-        Assert.assertNotNull(feature.getLinkedModelledFeatures());
-        Assert.assertNull(feature.getModelledParticipant());
+        Assert.assertNotNull(feature.getLinkedFeatures());
+        Assert.assertNull(feature.getParticipant());
         Assert.assertEquals(CvTermUtils.createBiologicalFeatureType(), feature.getType());
     }
 
@@ -33,18 +33,18 @@ public class DefaultModelledFeatureTest {
 
         ModelledFeature feature = new DefaultModelledFeature();
         ModelledParticipant p = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        feature.setModelledParticipant(p);
+        feature.setParticipant(p);
 
-        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getModelledParticipant(), true));
+        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant(), true));
         Assert.assertEquals(0, p.getFeatures().size());
 
-        feature.setModelledParticipantAndAddFeature(p);
-        Assert.assertNotNull(feature.getModelledParticipant());
+        feature.setParticipantAndAddFeature(p);
+        Assert.assertNotNull(feature.getParticipant());
         Assert.assertEquals(1, p.getFeatures().size());
         Assert.assertEquals(feature, p.getFeatures().iterator().next());
 
-        feature.setModelledParticipantAndAddFeature(null);
-        Assert.assertNull(feature.getModelledParticipant());
+        feature.setParticipantAndAddFeature(null);
+        Assert.assertNull(feature.getParticipant());
         Assert.assertEquals(0, p.getFeatures().size());
     }
 }

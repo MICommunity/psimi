@@ -203,53 +203,53 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         return this.components;
     }
 
-    public boolean addModelledParticipant(ModelledParticipant part) {
+    public boolean addParticipant(ModelledParticipant part) {
         if (part == null){
             return false;
         }
         if (components == null){
             initialiseComponents();
         }
-        part.setModelledInteraction(this);
+        part.setInteraction(this);
         return components.add(part);
     }
 
-    public boolean removeModelledParticipant(ModelledParticipant part) {
+    public boolean removeParticipant(ModelledParticipant part) {
         if (part == null){
             return false;
         }
         if (components == null){
             initialiseComponents();
         }
-        part.setModelledInteraction(null);
+        part.setInteraction(null);
         if (components.remove(part)){
             return true;
         }
         return false;
     }
 
-    public boolean addAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
+    public boolean addAllParticipants(Collection<? extends ModelledParticipant> participants) {
         if (participants == null){
             return false;
         }
 
         boolean added = false;
         for (ModelledParticipant p : participants){
-            if (addModelledParticipant(p)){
+            if (addParticipant(p)){
                 added = true;
             }
         }
         return added;
     }
 
-    public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
+    public boolean removeAllParticipants(Collection<? extends ModelledParticipant> participants) {
         if (participants == null){
             return false;
         }
 
         boolean removed = false;
         for (ModelledParticipant p : participants){
-            if (removeModelledParticipant(p)){
+            if (removeParticipant(p)){
                 removed = true;
             }
         }
@@ -376,6 +376,26 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
 
     public void setInteractionType(CvTerm term) {
         this.interactionType = term;
+    }
+
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
+    public Collection<Checksum> getChecksums() {
+        return super.getChecksums();
+    }
+
+    public Collection<Xref> getXrefs() {
+        return super.getXrefs();
+    }
+
+    public Collection<Xref> getIdentifiers() {
+        return super.getIdentifiers();
+    }
+
+    public Collection<Alias> getAliases() {
+        return super.getAliases();
     }
 
     protected void processAddedChecksumEvent(Checksum added) {

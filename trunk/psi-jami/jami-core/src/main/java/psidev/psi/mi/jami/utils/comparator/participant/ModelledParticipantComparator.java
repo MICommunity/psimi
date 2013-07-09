@@ -88,9 +88,9 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
 
             if (!checkComplexesAsInteractors){
                 // the bioparticipant 1 contains a complex that self interacts
-                if (bioParticipant1.getInteractor() == bioParticipant1.getModelledInteraction()){
+                if (bioParticipant1.getInteractor() == bioParticipant1.getInteraction()){
                     // the bioparticipant 2 contains a complex that self interacts
-                    if (bioParticipant2.getInteractor() == bioParticipant2.getModelledInteraction()){
+                    if (bioParticipant2.getInteractor() == bioParticipant2.getInteraction()){
                         participantBaseComparator.setIgnoreInteractors(true);
                     }
                     // the bioparticipant 2 is not self, it comes after the self participant
@@ -99,7 +99,7 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
                     }
                 }
                 // the bioparticipant 2 contains a complex that self interacts, comes before
-                else if (bioParticipant2.getInteractor() == bioParticipant2.getModelledInteraction()){
+                else if (bioParticipant2.getInteractor() == bioParticipant2.getInteraction()){
                     return AFTER;
                 }
             }

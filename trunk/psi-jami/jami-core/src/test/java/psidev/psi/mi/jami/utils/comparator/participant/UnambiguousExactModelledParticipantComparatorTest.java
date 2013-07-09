@@ -56,10 +56,10 @@ public class UnambiguousExactModelledParticipantComparatorTest {
     @Test
     public void test_same_interactors_different_features(){
         ModelledParticipant participant1 = new DefaultModelledParticipant(new DefaultProtein("test protein"));
-        participant1.addModelledFeature(new DefaultModelledFeature("test1", "test feature 1"));
+        participant1.addFeature(new DefaultModelledFeature("test1", "test feature 1"));
         ModelledParticipant participant2 = new DefaultModelledParticipant(new DefaultProtein("test protein"));
-        participant2.addModelledFeature(new DefaultModelledFeature("test1", "test feature 1"));
-        participant2.addModelledFeature(new DefaultModelledFeature("test2", "test feature 2"));
+        participant2.addFeature(new DefaultModelledFeature("test1", "test feature 1"));
+        participant2.addFeature(new DefaultModelledFeature("test2", "test feature 2"));
 
         Assert.assertTrue(comparator.compare(participant1, participant2) < 0);
         Assert.assertTrue(comparator.compare(participant2, participant1) > 0);
@@ -70,11 +70,11 @@ public class UnambiguousExactModelledParticipantComparatorTest {
     @Test
     public void test_same_interactors_same_features_ignore_order(){
         ModelledParticipant participant1 = new DefaultModelledParticipant(new DefaultProtein("test protein"));
-        participant1.addModelledFeature(new DefaultModelledFeature("test2", "test feature 2"));
-        participant1.addModelledFeature(new DefaultModelledFeature("test1", "test feature 1"));
+        participant1.addFeature(new DefaultModelledFeature("test2", "test feature 2"));
+        participant1.addFeature(new DefaultModelledFeature("test1", "test feature 1"));
         ModelledParticipant participant2 = new DefaultModelledParticipant(new DefaultProtein("test protein"));
-        participant2.addModelledFeature(new DefaultModelledFeature("test1", "test feature 1"));
-        participant2.addModelledFeature(new DefaultModelledFeature("test2", "test feature 2"));
+        participant2.addFeature(new DefaultModelledFeature("test1", "test feature 1"));
+        participant2.addFeature(new DefaultModelledFeature("test2", "test feature 2"));
 
         Assert.assertTrue(comparator.compare(participant1, participant2) == 0);
         Assert.assertTrue(comparator.compare(participant2, participant1) == 0);

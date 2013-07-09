@@ -5,8 +5,6 @@ import psidev.psi.mi.jami.model.impl.DefaultFeature;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultModelledFeature;
 
-import java.util.Collection;
-
 /**
  * Utility class for cloning a participant
  *
@@ -60,7 +58,7 @@ public class ParticipantCloner {
                 for (FeatureEvidence f : source.getFeatures()){
                     FeatureEvidence clone = new DefaultFeatureEvidence();
                     FeatureCloner.copyAndOverrideFeatureEvidenceProperties(f, clone);
-                    target.addFeatureEvidence(clone);
+                    target.addFeature(clone);
                 }
             }
         }
@@ -99,7 +97,7 @@ public class ParticipantCloner {
                 for (ModelledFeature f : source.getFeatures()){
                     ModelledFeature clone = new DefaultModelledFeature();
                     FeatureCloner.copyAndOverrideModelledFeaturesProperties(f, clone);
-                    target.addModelledFeature(clone);
+                    target.addFeature(clone);
                 }
             }
         }
@@ -111,7 +109,7 @@ public class ParticipantCloner {
      * @param target
      * @param createNewFeature If true, this method will clone each feature from source instead of reusing the feature instances from source.
      */
-    public static void copyAndOverrideBasicParticipantProperties(Participant<Interactor> source, Participant<Interactor> target, boolean createNewFeature){
+    public static void copyAndOverrideBasicParticipantProperties(Participant<Interaction, Feature> source, Participant<Interaction, Feature> target, boolean createNewFeature){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
             target.setInteractor(source.getInteractor());
@@ -129,14 +127,14 @@ public class ParticipantCloner {
             // copy features or create new ones
             if (!createNewFeature){
                 target.getFeatures().clear();
-                ((Collection<Feature>)target.getFeatures()).addAll(source.getFeatures());
+                target.getFeatures().addAll(source.getFeatures());
             }
             else {
                 target.getFeatures().clear();
                 for (Feature f : source.getFeatures()){
                     Feature clone = new DefaultFeature();
                     FeatureCloner.copyAndOverrideBasicFeaturesProperties(f, clone);
-                    ((Collection<Feature>)target.getFeatures()).add(clone);
+                    target.getFeatures().add(clone);
                 }
             }
         }

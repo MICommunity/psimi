@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,7 +19,7 @@ import java.util.Collections;
  * @since <pre>04/06/13</pre>
  */
 
-public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence{
+public class DefaultBinaryInteractionEvidence extends AbstractBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence{
 
     private Xref imexId;
     private Experiment experiment;
@@ -203,113 +202,6 @@ public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<P
 
     public void setInferred(boolean inferred) {
         this.isInferred = inferred;
-    }
-
-    /**
-     * The collection of participants for this binary interaction.
-     * It cannot be changed.
-     * @return
-     */
-    public Collection<ParticipantEvidence> getParticipants() {
-        if (getParticipantA() == null && getParticipantB() == null){
-            return Collections.EMPTY_LIST;
-        }
-        else if (getParticipantB() == null){
-            return Arrays.asList(getParticipantA());
-        }
-        else if (getParticipantA() == null){
-            return Arrays.asList(getParticipantB());
-        }
-        else{
-            return Arrays.asList(getParticipantA(), getParticipantB());
-        }
-    }
-
-    /**
-     * Adds a new ParticipantEvidence and set the interactionEvidence of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param part
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants
-     */
-    public boolean addParticipantEvidence(ParticipantEvidence part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipantB() != null && getParticipantA() != null){
-            throw new IllegalStateException("A BinaryInteractionEvidence cannot have more than two participants.");
-        }
-        else if (getParticipantA() != null){
-            part.setInteractionEvidence(this);
-            setParticipantB(part);
-            return true;
-        }
-        else{
-            part.setInteractionEvidence(this);
-            setParticipantA(part);
-            return true;
-        }
-    }
-
-    /**
-     * Removes the participantEvidence from this binary interaction
-     * @param part
-     * @return
-     */
-    public boolean removeParticipantEvidence(ParticipantEvidence part) {
-        if (part == null){
-            return false;
-        }
-
-        if (getParticipantA() != null && getParticipantA().equals(part)){
-            part.setInteractionEvidence(null);
-            setParticipantA(null);
-            return true;
-        }
-        else if (getParticipantB() != null && getParticipantB().equals(part)){
-            part.setInteractionEvidence(null);
-            setParticipantB(null);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Adds the participants and set the interactionEvidence of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param participants
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
-     */
-    public boolean addAllParticipantEvidences(Collection<? extends ParticipantEvidence> participants) {
-        if (participants == null){
-            return false;
-        }
-        if (participants.size() > 2){
-            throw new IllegalArgumentException("A BinaryInteractionEvidence cannot have more than two participants and we try to add " + participants.size() + " participants");
-        }
-
-        boolean added = false;
-        for (ParticipantEvidence p : participants){
-            if (addParticipantEvidence(p)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllParticipantEvidences(Collection<? extends ParticipantEvidence> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (ParticipantEvidence p : participants){
-            if (removeParticipantEvidence(p)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     protected void processAddedXrefEvent(Xref added) {

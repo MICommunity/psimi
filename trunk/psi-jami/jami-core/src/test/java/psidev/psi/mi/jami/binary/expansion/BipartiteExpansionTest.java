@@ -40,11 +40,11 @@ public class BipartiteExpansionTest {
         Assert.assertFalse(expansion.isInteractionExpandable(new DefaultInteraction()));
 
         InteractionEvidence interactionEvidence = new DefaultInteractionEvidence();
-        interactionEvidence.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        interactionEvidence.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         ModelledInteraction modelledInteraction = new DefaultModelledInteraction();
-        modelledInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
+        modelledInteraction.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
         InteractionEvidence interaction = new DefaultInteractionEvidence();
-        interaction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        interaction.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         Assert.assertTrue(expansion.isInteractionExpandable(interactionEvidence));
         Assert.assertTrue(expansion.isInteractionExpandable(modelledInteraction));
         Assert.assertTrue(expansion.isInteractionExpandable(interaction));
@@ -54,22 +54,22 @@ public class BipartiteExpansionTest {
     public void test_expand_default_interaction(){
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
 
         InteractionEvidence self_intra = new DefaultInteractionEvidence();
-        self_intra.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
+        self_intra.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
 
         InteractionEvidence self_inter= new DefaultInteractionEvidence();
-        self_inter.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
+        self_inter.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
 
         InteractionEvidence nary = new DefaultInteractionEvidence();
         ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("p1"));
         ParticipantEvidence p2 = new DefaultParticipantEvidence(new DefaultProtein("p2"));
         ParticipantEvidence p3 = new DefaultParticipantEvidence(new DefaultProtein("p3"));
-        nary.addParticipantEvidence(p1);
-        nary.addParticipantEvidence(p2);
-        nary.addParticipantEvidence(p3);
+        nary.addParticipant(p1);
+        nary.addParticipant(p2);
+        nary.addParticipant(p3);
 
         Collection<? extends BinaryInteraction> binaryExpanded = expansion.expand(binary);
         Assert.assertEquals(1, binaryExpanded.size());
@@ -87,7 +87,7 @@ public class BipartiteExpansionTest {
 
         Collection<? extends BinaryInteraction> self_inter_expanded = expansion.expand(self_inter);
         Assert.assertEquals(1, self_inter_expanded.size());
-        Assert.assertTrue(self_inter_expanded.iterator().next() instanceof DefaultBinaryInteraction);
+        Assert.assertTrue(self_inter_expanded.iterator().next() instanceof DefaultBinaryInteractionEvidence);
         Iterator<? extends Participant> iterator3 = self_inter.getParticipants().iterator();
         Assert.assertTrue(self_inter_expanded.iterator().next().getParticipantA() == iterator3.next());
         Assert.assertNotNull(self_inter_expanded.iterator().next().getParticipantB());
@@ -96,7 +96,7 @@ public class BipartiteExpansionTest {
         Collection<? extends BinaryInteraction> nary_expanded = expansion.expand(nary);
         Assert.assertEquals(3, nary_expanded.size());
         for (BinaryInteraction binaryInteraction : nary_expanded){
-            Assert.assertTrue(binaryInteraction instanceof DefaultBinaryInteraction);
+            Assert.assertTrue(binaryInteraction instanceof DefaultBinaryInteractionEvidence);
             Assert.assertTrue(binaryInteraction.getParticipantB() == p2 || binaryInteraction.getParticipantB() == p1 || binaryInteraction.getParticipantB() == p3);
             Assert.assertTrue(binaryInteraction.getParticipantA().getInteractor() instanceof Complex);
         }
@@ -106,22 +106,22 @@ public class BipartiteExpansionTest {
     public void test_expand_interaction_evidence(){
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
 
         InteractionEvidence self_intra = new DefaultInteractionEvidence();
-        self_intra.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
+        self_intra.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
 
         InteractionEvidence self_inter= new DefaultInteractionEvidence();
-        self_inter.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
+        self_inter.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
 
         InteractionEvidence nary = new DefaultInteractionEvidence();
         ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("p1"));
         ParticipantEvidence p2 = new DefaultParticipantEvidence(new DefaultProtein("p2"));
         ParticipantEvidence p3 = new DefaultParticipantEvidence(new DefaultProtein("p3"));
-        nary.addParticipantEvidence(p1);
-        nary.addParticipantEvidence(p2);
-        nary.addParticipantEvidence(p3);
+        nary.addParticipant(p1);
+        nary.addParticipant(p2);
+        nary.addParticipant(p3);
 
         Collection<? extends BinaryInteraction> binaryExpanded = expansion.expand(binary);
         Assert.assertEquals(1, binaryExpanded.size());
@@ -158,22 +158,22 @@ public class BipartiteExpansionTest {
     public void test_expand_modelled_interaction(){
 
         ModelledInteraction binary = new DefaultModelledInteraction();
-        binary.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
-        binary.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p2")));
+        binary.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
+        binary.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p2")));
 
         ModelledInteraction self_intra = new DefaultModelledInteraction();
-        self_intra.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
+        self_intra.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
 
         ModelledInteraction self_inter= new DefaultModelledInteraction();
-        self_inter.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
+        self_inter.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
 
         ModelledInteraction nary = new DefaultModelledInteraction();
         ModelledParticipant p1 = new DefaultModelledParticipant(new DefaultProtein("p1"));
         ModelledParticipant p2 = new DefaultModelledParticipant(new DefaultProtein("p2"));
         ModelledParticipant p3 = new DefaultModelledParticipant(new DefaultProtein("p3"));
-        nary.addModelledParticipant(p1);
-        nary.addModelledParticipant(p2);
-        nary.addModelledParticipant(p3);
+        nary.addParticipant(p1);
+        nary.addParticipant(p2);
+        nary.addParticipant(p3);
 
         Collection<? extends BinaryInteraction> binaryExpanded = expansion.expand(binary);
         Assert.assertEquals(1, binaryExpanded.size());

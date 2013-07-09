@@ -181,7 +181,7 @@ public class InteractionClonerTest {
         sourceInteraction.setUpdatedDate(new Date());
         sourceInteraction.setCreatedDate(new Date(1));
         sourceInteraction.setRigid("xxxxx");
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
         sourceInteraction.getCooperativeEffects().add(new DefaultCooperativeEffect(new DefaultCvTerm("test outcome")));
         sourceInteraction.getInteractionEvidences().add(new DefaultInteractionEvidence());
         sourceInteraction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("comment"), "test comment"));
@@ -196,7 +196,7 @@ public class InteractionClonerTest {
 
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertTrue(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
-        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getModelledInteraction() == sourceInteraction);
+        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteraction() == sourceInteraction);
     }
 
     @Test
@@ -208,7 +208,7 @@ public class InteractionClonerTest {
         sourceInteraction.setUpdatedDate(new Date());
         sourceInteraction.setCreatedDate(new Date(1));
         sourceInteraction.setRigid("xxxxx");
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
         sourceInteraction.getCooperativeEffects().add(new DefaultCooperativeEffect(new DefaultCvTerm("test outcome")));
         sourceInteraction.getInteractionEvidences().add(new DefaultInteractionEvidence());
         sourceInteraction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("comment"), "test comment"));
@@ -225,7 +225,7 @@ public class InteractionClonerTest {
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertFalse(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next(), true));
-        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getModelledInteraction() == targetInteraction);
+        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteraction() == targetInteraction);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class InteractionClonerTest {
         sourceInteraction.setUpdatedDate(new Date());
         sourceInteraction.setCreatedDate(new Date(1));
         sourceInteraction.setRigid("xxxxx");
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()));
         sourceInteraction.getVariableParameterValues().add(new DefaultVariableParameterValueSet());
         sourceInteraction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("comment"), "test comment"));
         sourceInteraction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -305,7 +305,7 @@ public class InteractionClonerTest {
 
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertTrue(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
-        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteractionEvidence()== sourceInteraction);
+        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteraction()== sourceInteraction);
     }
 
     @Test
@@ -320,7 +320,7 @@ public class InteractionClonerTest {
         sourceInteraction.setUpdatedDate(new Date());
         sourceInteraction.setCreatedDate(new Date(1));
         sourceInteraction.setRigid("xxxxx");
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()));
         sourceInteraction.getVariableParameterValues().add(new DefaultVariableParameterValueSet());
         sourceInteraction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("comment"), "test comment"));
         sourceInteraction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -337,16 +337,16 @@ public class InteractionClonerTest {
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertFalse(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next(), true));
-        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteractionEvidence() == targetInteraction);
+        Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteraction() == targetInteraction);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_too_many_participant_evidences_to_copy_in_binary(){
 
         InteractionEvidence sourceInteraction = new DefaultInteractionEvidence("source interaction");
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p3")));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
 
@@ -357,8 +357,8 @@ public class InteractionClonerTest {
     public void test_too_many_participant_evidences_to_copy_in_binary_self(){
 
         InteractionEvidence sourceInteraction = new DefaultInteractionEvidence("source interaction");
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        sourceInteraction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        sourceInteraction.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
 
@@ -372,8 +372,8 @@ public class InteractionClonerTest {
         ParticipantEvidence p2 = new DefaultParticipantEvidence(new DefaultProtein("p2"));
 
         InteractionEvidence sourceInteraction = new DefaultInteractionEvidence("source interaction");
-        sourceInteraction.addParticipantEvidence(p1);
-        sourceInteraction.addParticipantEvidence(p2);
+        sourceInteraction.addParticipant(p1);
+        sourceInteraction.addParticipant(p2);
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
 
@@ -381,8 +381,8 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertTrue(p2 == binary.getParticipantB());
-        Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
-        Assert.assertTrue(p2.getInteractionEvidence() == sourceInteraction);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(p2.getInteraction() == sourceInteraction);
 
         // no participants
         sourceInteraction.getParticipants().clear();
@@ -392,12 +392,12 @@ public class InteractionClonerTest {
         Assert.assertNull(binary.getParticipantB());
 
         // one participant
-        sourceInteraction.addParticipantEvidence(p1);
+        sourceInteraction.addParticipant(p1);
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, false, false);
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertNull(binary.getParticipantB());
-        Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
     }
 
     @Test
@@ -406,7 +406,7 @@ public class InteractionClonerTest {
         ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("p1"));
 
         InteractionEvidence sourceInteraction = new DefaultInteractionEvidence("source interaction");
-        sourceInteraction.addParticipantEvidence(p1);
+        sourceInteraction.addParticipant(p1);
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
 
@@ -415,8 +415,8 @@ public class InteractionClonerTest {
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
-        Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
 
         p1.setStoichiometry(3);
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, false, true);
@@ -425,8 +425,8 @@ public class InteractionClonerTest {
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
-        Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
     }
 
     @Test
@@ -436,8 +436,8 @@ public class InteractionClonerTest {
         ParticipantEvidence p2 = new DefaultParticipantEvidence(new DefaultProtein("p2"));
 
         InteractionEvidence sourceInteraction = new DefaultInteractionEvidence("source interaction");
-        sourceInteraction.addParticipantEvidence(p1);
-        sourceInteraction.addParticipantEvidence(p2);
+        sourceInteraction.addParticipant(p1);
+        sourceInteraction.addParticipant(p2);
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
 
@@ -447,8 +447,8 @@ public class InteractionClonerTest {
         Assert.assertFalse(p2 == binary.getParticipantB());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB(), true));
-        Assert.assertTrue(binary.getParticipantA().getInteractionEvidence() == binary);
-        Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
+        Assert.assertTrue(binary.getParticipantA().getInteraction() == binary);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
 
         // no participants
         sourceInteraction.getParticipants().clear();
@@ -458,13 +458,13 @@ public class InteractionClonerTest {
         Assert.assertNull(binary.getParticipantB());
 
         // one participant
-        sourceInteraction.addParticipantEvidence(p1);
+        sourceInteraction.addParticipant(p1);
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, true, false);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertNull(binary.getParticipantB());
-        Assert.assertTrue(binary.getParticipantA().getInteractionEvidence() == binary);
+        Assert.assertTrue(binary.getParticipantA().getInteraction() == binary);
     }
 
     @Test
@@ -473,7 +473,7 @@ public class InteractionClonerTest {
         ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("p1"));
 
         InteractionEvidence sourceInteraction = new DefaultInteractionEvidence("source interaction");
-        sourceInteraction.addParticipantEvidence(p1);
+        sourceInteraction.addParticipant(p1);
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
 
@@ -483,8 +483,8 @@ public class InteractionClonerTest {
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
-        Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
 
         p1.setStoichiometry(3);
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, true, true);
@@ -494,17 +494,17 @@ public class InteractionClonerTest {
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
-        Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_too_many_modelled_participants_to_copy_in_binary(){
 
         ModelledInteraction sourceInteraction = new DefaultModelledInteraction("source interaction");
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p2")));
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p3")));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p2")));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p3")));
 
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
 
@@ -515,8 +515,8 @@ public class InteractionClonerTest {
     public void test_too_many_modelled_participants_to_copy_in_binary_self(){
 
         ModelledInteraction sourceInteraction = new DefaultModelledInteraction("source interaction");
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
-        sourceInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p2")));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
+        sourceInteraction.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p2")));
 
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
 
@@ -530,8 +530,8 @@ public class InteractionClonerTest {
         ModelledParticipant p2 = new DefaultModelledParticipant(new DefaultProtein("p2"));
 
         ModelledInteraction sourceInteraction = new DefaultModelledInteraction("source interaction");
-        sourceInteraction.addModelledParticipant(p1);
-        sourceInteraction.addModelledParticipant(p2);
+        sourceInteraction.addParticipant(p1);
+        sourceInteraction.addParticipant(p2);
 
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
 
@@ -539,8 +539,8 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertTrue(p2 == binary.getParticipantB());
-        Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
-        Assert.assertTrue(p2.getModelledInteraction() == sourceInteraction);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(p2.getInteraction() == sourceInteraction);
 
         // no participants
         sourceInteraction.getParticipants().clear();
@@ -550,12 +550,12 @@ public class InteractionClonerTest {
         Assert.assertNull(binary.getParticipantB());
 
         // one participant
-        sourceInteraction.addModelledParticipant(p1);
+        sourceInteraction.addParticipant(p1);
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, false, false);
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertNull(binary.getParticipantB());
-        Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
     }
 
     @Test
@@ -564,7 +564,7 @@ public class InteractionClonerTest {
         ModelledParticipant p1 = new DefaultModelledParticipant(new DefaultProtein("p1"));
 
         ModelledInteraction sourceInteraction = new DefaultModelledInteraction("source interaction");
-        sourceInteraction.addModelledParticipant(p1);
+        sourceInteraction.addParticipant(p1);
 
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
 
@@ -573,8 +573,8 @@ public class InteractionClonerTest {
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
-        Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
 
         p1.setStoichiometry(3);
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, false, true);
@@ -583,8 +583,8 @@ public class InteractionClonerTest {
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
-        Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
     }
 
     @Test
@@ -594,8 +594,8 @@ public class InteractionClonerTest {
         ModelledParticipant p2 = new DefaultModelledParticipant(new DefaultProtein("p2"));
 
         ModelledInteraction sourceInteraction = new DefaultModelledInteraction("source interaction");
-        sourceInteraction.addModelledParticipant(p1);
-        sourceInteraction.addModelledParticipant(p2);
+        sourceInteraction.addParticipant(p1);
+        sourceInteraction.addParticipant(p2);
 
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
 
@@ -605,8 +605,8 @@ public class InteractionClonerTest {
         Assert.assertFalse(p2 == binary.getParticipantB());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB(), true));
-        Assert.assertTrue(binary.getParticipantA().getModelledInteraction() == binary);
-        Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
+        Assert.assertTrue(binary.getParticipantA().getInteraction() == binary);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
 
         // no participants
         sourceInteraction.getParticipants().clear();
@@ -616,13 +616,13 @@ public class InteractionClonerTest {
         Assert.assertNull(binary.getParticipantB());
 
         // one participant
-        sourceInteraction.addModelledParticipant(p1);
+        sourceInteraction.addParticipant(p1);
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, true, false);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertNull(binary.getParticipantB());
-        Assert.assertTrue(binary.getParticipantA().getModelledInteraction() == binary);
+        Assert.assertTrue(binary.getParticipantA().getInteraction() == binary);
     }
 
     @Test
@@ -631,7 +631,7 @@ public class InteractionClonerTest {
         ModelledParticipant p1 = new DefaultModelledParticipant(new DefaultProtein("p1"));
 
         ModelledInteraction sourceInteraction = new DefaultModelledInteraction("source interaction");
-        sourceInteraction.addModelledParticipant(p1);
+        sourceInteraction.addParticipant(p1);
 
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
 
@@ -641,8 +641,8 @@ public class InteractionClonerTest {
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
-        Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
 
         p1.setStoichiometry(3);
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, true, true);
@@ -652,8 +652,8 @@ public class InteractionClonerTest {
         Assert.assertFalse(binary.getParticipantB() == p1);
         Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
-        Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
-        Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
+        Assert.assertTrue(p1.getInteraction() == sourceInteraction);
+        Assert.assertTrue(binary.getParticipantB().getInteraction() == binary);
     }
 
     @Test(expected = IllegalArgumentException.class)

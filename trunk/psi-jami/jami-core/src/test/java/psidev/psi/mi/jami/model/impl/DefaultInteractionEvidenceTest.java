@@ -34,26 +34,26 @@ public class DefaultInteractionEvidenceTest {
         InteractionEvidence interaction = new DefaultInteractionEvidence("test interaction");
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
 
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
 
         // add participant and set modelledInteraction
-        interaction.addParticipantEvidence(participant);
-        Assert.assertEquals(interaction, participant.getInteractionEvidence());
+        interaction.addParticipant(participant);
+        Assert.assertEquals(interaction, participant.getInteraction());
         Assert.assertEquals(1, interaction.getParticipants().size());
 
         // remove modelled participant and set interaction to null
-        interaction.removeParticipantEvidence(participant);
-        Assert.assertNull(participant.getInteractionEvidence());
+        interaction.removeParticipant(participant);
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, interaction.getParticipants().size());
 
         // simply add modelled participant
         interaction.getParticipants().add(participant);
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(1, interaction.getParticipants().size());
 
         // simply remove modelled participant
         interaction.getParticipants().remove(participant);
-        Assert.assertNull(participant.getInteractionEvidence());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, interaction.getParticipants().size());
     }
 

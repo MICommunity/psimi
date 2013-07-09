@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>07/12/12</pre>
  */
 
-public interface ParticipantEvidence extends Participant<Interactor>{
+public interface ParticipantEvidence extends Participant<InteractionEvidence, FeatureEvidence>{
 
      /**
      * The experimental role of the participant.
@@ -36,7 +36,7 @@ public interface ParticipantEvidence extends Participant<Interactor>{
      * Ex: western blot, immunostaining, ...
      * @return the participant identification method
      */
-    public Collection<CvTerm> getIdentificationMethods();
+    public <C extends CvTerm> Collection<C> getIdentificationMethods();
 
     /**
      * The experimental preparations for this participant.
@@ -45,7 +45,7 @@ public interface ParticipantEvidence extends Participant<Interactor>{
      * Ex: engineered, cDNA library, ...
      * @return the experimental preparations.
      */
-    public Collection<CvTerm> getExperimentalPreparations();
+    public <C extends CvTerm> Collection<C> getExperimentalPreparations();
 
     /**
      * The organisms in which the participant has been expressed.
@@ -67,67 +67,12 @@ public interface ParticipantEvidence extends Participant<Interactor>{
      * Ex: author based scores, statistical confidences, ...
      * @return the confidences
      */
-    public Collection<Confidence> getConfidences();
+    public <C extends Confidence> Collection<C> getConfidences();
 
     /**
      * Numerical parameters associated with this participant.
      * The Collection cannot be null. If the participant does not have any parameters, the method should return an empty Collection.
      * @return the parameters
      */
-    public Collection<Parameter> getParameters();
-
-    /**
-     * Sets the interaction evidence and add the new participant to its list of participant evidences.
-     * If the given interaction is null, it will remove this featureEvidence from the previous interaction it was attached to
-     * @param interaction : interaction evidence
-     */
-    public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction);
-
-    /**
-     * The interaction in which the participant is involved.
-     * It can be null if the participant is not attached to any interactions. It can happen if the participant has been removed from an interaction and is now invalid.
-     * @return the interaction
-     */
-    public InteractionEvidence getInteractionEvidence();
-
-    /**
-     * Sets the interaction.
-     * @param interaction : interaction evidence
-     */
-    public void setInteractionEvidence(InteractionEvidence interaction);
-
-    /**
-     * This method will add the feature and set the participant of the new feature to this current participant
-     * @param feature
-     * @return true if feature is added to the list of features
-     */
-    public boolean  addFeatureEvidence(FeatureEvidence feature);
-
-    /**
-     * This method will remove the feature and set the participant of the removed feature to null.
-     * @param feature
-     * @return true if feature is removed from the list of features
-     */
-    public boolean removeFeatureEvidence(FeatureEvidence feature);
-
-    /**
-     * This method will add all features and set the participant of the new features to this current participant
-     * @param features
-     * @return true if features are added to the list of features
-     */
-    public boolean  addAllFeatureEvidences(Collection<? extends FeatureEvidence> features);
-
-    /**
-     * This method will remove all the features and set the participant of the removed features to null.
-     * @param features
-     * @return true if features are removed from the list of features
-     */
-    public boolean removeAllFeatureEvidences(Collection<? extends FeatureEvidence> features);
-
-    /**
-     * Properties for this participant which are supported by experimental evidences.
-     * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
-     * @return the features
-     */
-    public Collection<FeatureEvidence> getFeatures();
+    public <P extends Parameter> Collection<P> getParameters();
 }

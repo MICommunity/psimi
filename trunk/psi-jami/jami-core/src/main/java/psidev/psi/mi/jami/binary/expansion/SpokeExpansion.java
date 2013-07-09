@@ -21,7 +21,7 @@ import java.util.Collection;
  * @since <pre>05/06/13</pre>
  */
 
-public class SpokeExpansion extends AbstractSpokeExpansion<Interaction, BinaryInteraction, Participant> {
+public class SpokeExpansion extends AbstractSpokeExpansion<Interaction<? extends Participant>, BinaryInteraction> {
     private InteractionEvidenceSpokeExpansion interactionEvidenceExpansion;
     private ModelledInteractionSpokeExpansion modelledInteractionExpansion;
 

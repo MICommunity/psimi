@@ -23,7 +23,7 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> implements ParticipantEvidence {
+public class DefaultParticipantEvidence extends AbstractParticipant<InteractionEvidence, FeatureEvidence> implements ParticipantEvidence {
 
     private CvTerm experimentalRole;
     private Collection<CvTerm> identificationMethods;
@@ -31,8 +31,6 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
     private Organism expressedIn;
     private Collection<Confidence> confidences;
     private Collection<Parameter> parameters;
-    private InteractionEvidence interactionEvidence;
-    private Collection<FeatureEvidence> featureEvidences;
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interactor);
@@ -40,7 +38,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
             getIdentificationMethods().add(participantIdentificationMethod);
         }
         this.experimentalRole = CvTermUtils.createUnspecifiedRole();
-        this.interactionEvidence = interaction;
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
@@ -48,7 +46,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }        this.experimentalRole = CvTermUtils.createUnspecifiedRole();
-        this.interactionEvidence = interaction;
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
@@ -56,7 +54,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }        this.experimentalRole = CvTermUtils.createUnspecifiedRole();
-        this.interactionEvidence = interaction;
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
@@ -64,7 +62,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }        this.experimentalRole = CvTermUtils.createUnspecifiedRole();
-        this.interactionEvidence = interaction;
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
@@ -77,7 +75,8 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         }
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
-        }        this.interactionEvidence = interaction;
+        }
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
@@ -90,7 +89,8 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         }
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
-        }        this.interactionEvidence = interaction;
+        }
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
@@ -105,7 +105,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }
-        this.interactionEvidence = interaction;
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
@@ -120,7 +120,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }
-        this.interactionEvidence = interaction;
+        setInteraction(interaction);
     }
 
     public DefaultParticipantEvidence(Interactor interactor, CvTerm participantIdentificationMethod) {
@@ -223,10 +223,6 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         this.parameters = new ArrayList<Parameter>();
     }
 
-    protected void initialiseFeatureEvidences(){
-        this.featureEvidences = new ArrayList<FeatureEvidence>();
-    }
-
     protected void initialiseIdentificationMethods(){
         this.identificationMethods = new ArrayList<CvTerm>();
     }
@@ -237,15 +233,6 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         }
         else {
             this.identificationMethods = methods;
-        }
-    }
-
-    protected void initialiseFeatureEvidencesWith(Collection<FeatureEvidence> features){
-        if (features == null){
-            this.featureEvidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.featureEvidences = features;
         }
     }
 
@@ -323,87 +310,6 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
             initialiseParameters();
         }
         return this.parameters;
-    }
-
-    public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
-        if (this.interactionEvidence != null){
-            this.interactionEvidence.removeParticipantEvidence(this);
-        }
-
-        if (interaction != null){
-            interaction.addParticipantEvidence(this);
-        }
-    }
-
-    public InteractionEvidence getInteractionEvidence() {
-        return this.interactionEvidence;
-    }
-
-    public void setInteractionEvidence(InteractionEvidence interaction) {
-        this.interactionEvidence = interaction;
-    }
-
-    public Collection<FeatureEvidence> getFeatures() {
-        if (featureEvidences == null){
-            initialiseFeatureEvidences();
-        }
-        return featureEvidences;
-    }
-
-    public boolean addFeatureEvidence(FeatureEvidence feature) {
-
-        if (feature == null){
-            return false;
-        }
-
-        if (getFeatures().add(feature)){
-            feature.setParticipantEvidence(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeFeatureEvidence(FeatureEvidence feature) {
-
-        if (feature == null){
-            return false;
-        }
-
-        if (getFeatures().remove(feature)){
-            feature.setParticipantEvidence(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllFeatureEvidences(Collection<? extends FeatureEvidence> features) {
-        if (features == null){
-            return false;
-        }
-        if (featureEvidences == null){
-            initialiseFeatureEvidences();
-        }
-        boolean added = false;
-        for (FeatureEvidence feature : features){
-            if (addFeatureEvidence(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllFeatureEvidences(Collection<? extends FeatureEvidence> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (FeatureEvidence feature : features){
-            if (removeFeatureEvidence(feature)){
-                added = true;
-            }
-        }
-        return added;
     }
 
     @Override

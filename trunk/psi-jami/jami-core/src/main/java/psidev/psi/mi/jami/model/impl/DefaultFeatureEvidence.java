@@ -21,29 +21,27 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvidence {
+public class DefaultFeatureEvidence extends AbstractFeature<ParticipantEvidence, FeatureEvidence> implements FeatureEvidence {
     private Collection<CvTerm> detectionMethods;
-    private ParticipantEvidence participantEvidence;
-    private Collection<FeatureEvidence> bindingSiteEvidences;
 
     public DefaultFeatureEvidence(ParticipantEvidence participant) {
         super();
-        this.participantEvidence = participant;
+        setParticipant(participant);
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName) {
         super(shortName, fullName);
-        this.participantEvidence = participant;
+        setParticipant(participant);
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type) {
         super(type);
-        this.participantEvidence = participant;
+        setParticipant(participant);
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
         super(shortName, fullName, type);
-        this.participantEvidence = participant;
+        setParticipant(participant);
     }
 
     public DefaultFeatureEvidence() {
@@ -62,21 +60,8 @@ public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvi
         super(shortName, fullName, type);
     }
 
-    protected void initialiseBindingSiteEvidences(){
-        this.bindingSiteEvidences = new ArrayList<FeatureEvidence>();
-    }
-
     protected void initialiseDetectionMethods(){
         this.detectionMethods = new ArrayList<CvTerm>();
-    }
-
-    protected void initialiseBindingSiteEvidencesWith(Collection<FeatureEvidence> features){
-        if (features == null){
-            this.bindingSiteEvidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.bindingSiteEvidences = features;
-        }
     }
 
     protected void initialiseDetectionMethodsWith(Collection<CvTerm> methods){
@@ -88,34 +73,10 @@ public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvi
         }
     }
 
-    public Collection<FeatureEvidence> getLinkedFeatureEvidences() {
-        if(bindingSiteEvidences == null){
-            initialiseBindingSiteEvidences();
-        }
-        return this.bindingSiteEvidences;
-    }
-
     public Collection<CvTerm> getDetectionMethods() {
         if (detectionMethods == null){
             initialiseDetectionMethods();
         }
         return this.detectionMethods;
-    }
-
-    public ParticipantEvidence getParticipantEvidence() {
-        return this.participantEvidence;
-    }
-
-    public void setParticipantEvidence(ParticipantEvidence participant) {
-        this.participantEvidence = participant;
-    }
-
-    public void setParticipantEvidenceAndAddFeature(ParticipantEvidence participant) {
-        if (this.participantEvidence != null){
-            this.participantEvidence.removeFeatureEvidence(this);
-        }
-        if (participant != null){
-            participant.addFeatureEvidence(this);
-        }
     }
 }

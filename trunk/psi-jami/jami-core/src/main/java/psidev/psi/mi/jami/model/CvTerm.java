@@ -55,7 +55,7 @@ public interface CvTerm {
      * Ex: MI:0982 from the psi-mi ontology
      * @return the ontology identifier
      */
-    public Collection<Xref> getIdentifiers();
+    public <X extends Xref> Collection<X> getIdentifiers();
 
     /**
      * The unique PSI-MI identifier which identifies the object in the PSI-MI ontology.
@@ -114,7 +114,7 @@ public interface CvTerm {
      * Ex: publication primary references
      * @return the set of Xrefs
      */
-    public Collection<Xref> getXrefs();
+    public <X extends Xref> Collection<X> getXrefs();
 
     /**
      * Collection of annotations describing the CvTerm.
@@ -122,7 +122,7 @@ public interface CvTerm {
      * Ex: search url, validation regexp, etc
      * @return the set of annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * Collection of synonyms for this CvTerm
@@ -130,5 +130,5 @@ public interface CvTerm {
      * Ex: participant detection is a synonym of participant identification method (MI:0002)
      * @return the se of synonyms
      */
-    public Collection<Alias> getSynonyms();
+    public <A extends Alias> Collection<A> getSynonyms();
 }

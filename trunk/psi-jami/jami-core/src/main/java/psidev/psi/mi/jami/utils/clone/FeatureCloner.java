@@ -33,8 +33,8 @@ public class FeatureCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
-            target.getLinkedFeatureEvidences().clear();
-            target.getLinkedFeatureEvidences().addAll(source.getLinkedFeatureEvidences());
+            target.getLinkedFeatures().clear();
+            target.getLinkedFeatures().addAll(source.getLinkedFeatures());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getRanges().clear();
@@ -63,8 +63,8 @@ public class FeatureCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
-            target.getLinkedModelledFeatures().clear();
-            target.getLinkedModelledFeatures().addAll(source.getLinkedModelledFeatures());
+            target.getLinkedFeatures().clear();
+            target.getLinkedFeatures().addAll(source.getLinkedFeatures());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getRanges().clear();

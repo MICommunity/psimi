@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.model.impl.DefaultModelledParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -69,7 +68,7 @@ public class InteractionCloner {
                     for (ParticipantEvidence p : source.getParticipants()){
                         ParticipantEvidence clone = new DefaultParticipantEvidence(p.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(p, clone, true);
-                        target.addParticipantEvidence(clone);
+                        target.addParticipant(clone);
                     }
                 }
             }
@@ -122,7 +121,7 @@ public class InteractionCloner {
                     for (ModelledParticipant p : source.getParticipants()){
                         ModelledParticipant clone = new DefaultModelledParticipant(p.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(p, clone, true);
-                        target.addModelledParticipant(clone);
+                        target.addParticipant(clone);
                     }
                 }
             }
@@ -157,13 +156,14 @@ public class InteractionCloner {
             if (!ignoreParticipants){
                 target.getParticipants().clear();
                 if (!createNewParticipant){
-                    ((Collection<Participant>)target.getParticipants()).addAll(source.getParticipants());
+                    target.getParticipants().addAll(source.getParticipants());
                 }
                 else{
-                    for (Participant p : source.getParticipants()){
+                    for (Object o : source.getParticipants()){
+                        Participant p = (Participant)o;
                         Participant clone = new DefaultParticipant(p.getInteractor());
                         ParticipantCloner.copyAndOverrideBasicParticipantProperties(p, clone, true);
-                        ((Collection<Participant>)target.getParticipants()).add(clone);
+                        target.getParticipants().add(clone);
                     }
                 }
             }
@@ -201,7 +201,7 @@ public class InteractionCloner {
                     if (self){
                         ParticipantEvidence clone = new DefaultParticipantEvidence(first.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone, true);
-                        clone.setInteractionEvidence(target);
+                        clone.setInteraction(target);
                         // second self interactor has stoichiometry 0 if necessary
                         if (first.getStoichiometry() != null){
                             clone.setStoichiometry(0);
@@ -220,12 +220,12 @@ public class InteractionCloner {
                     ParticipantEvidence clone = new DefaultParticipantEvidence(first.getInteractor());
                     ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone, true);
                     target.setParticipantA(clone);
-                    clone.setInteractionEvidence(target);
+                    clone.setInteraction(target);
 
                     if (self){
                         ParticipantEvidence clone2 = new DefaultParticipantEvidence(first.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone2, true);
-                        clone2.setInteractionEvidence(target);
+                        clone2.setInteraction(target);
                         // second self interactor has stoichiometry 0 if necessary
                         if (first.getStoichiometry() != null){
                             clone2.setStoichiometry(0);
@@ -237,7 +237,7 @@ public class InteractionCloner {
                         ParticipantEvidence clone2 = new DefaultParticipantEvidence(second.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(second, clone2, true);
                         target.setParticipantB(clone2);
-                        clone2.setInteractionEvidence(target);
+                        clone2.setInteraction(target);
                     }
                     else {
                         target.setParticipantB(null);
@@ -279,7 +279,7 @@ public class InteractionCloner {
                     if (self){
                         ModelledParticipant clone = new DefaultModelledParticipant(first.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(first, clone, true);
-                        clone.setModelledInteraction(target);
+                        clone.setInteraction(target);
                         // second self interactor has stoichiometry 0 if necessary
                         if (first.getStoichiometry() != null){
                             clone.setStoichiometry(0);
@@ -298,12 +298,12 @@ public class InteractionCloner {
                     ModelledParticipant clone = new DefaultModelledParticipant(first.getInteractor());
                     ParticipantCloner.copyAndOverrideModelledParticipantProperties(first, clone, true);
                     target.setParticipantA(clone);
-                    clone.setModelledInteraction(target);
+                    clone.setInteraction(target);
 
                     if (self){
                         ModelledParticipant clone2 = new DefaultModelledParticipant(first.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(first, clone2, true);
-                        clone2.setModelledInteraction(target);
+                        clone2.setInteraction(target);
                         // second self interactor has stoichiometry 0 if necessary
                         if (first.getStoichiometry() != null){
                             clone2.setStoichiometry(0);
@@ -315,7 +315,7 @@ public class InteractionCloner {
                         ModelledParticipant clone2 = new DefaultModelledParticipant(second.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(second, clone2, true);
                         target.setParticipantB(clone2);
-                        clone2.setModelledInteraction(target);
+                        clone2.setInteraction(target);
                     }
                     else {
                         target.setParticipantB(null);

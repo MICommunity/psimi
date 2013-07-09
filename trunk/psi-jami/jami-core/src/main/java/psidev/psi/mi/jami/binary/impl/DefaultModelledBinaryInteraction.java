@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -16,7 +15,7 @@ import java.util.Collections;
  * @since <pre>04/06/13</pre>
  */
 
-public class DefaultModelledBinaryInteraction extends DefaultBinaryInteraction<ModelledParticipant> implements ModelledBinaryInteraction{
+public class DefaultModelledBinaryInteraction extends AbstractBinaryInteraction<ModelledParticipant> implements ModelledBinaryInteraction{
 
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
@@ -127,119 +126,12 @@ public class DefaultModelledBinaryInteraction extends DefaultBinaryInteraction<M
         return this.interactionEvidences;
     }
 
-    /**
-     * The collection of participants for this binary interaction.
-     * It cannot be changed.
-     * @return
-     */
-    public Collection<ModelledParticipant> getParticipants() {
-        if (getParticipantA() == null && getParticipantB() == null){
-            return Collections.EMPTY_LIST;
-        }
-        else if (getParticipantB() == null){
-            return Arrays.asList(getParticipantA());
-        }
-        else if (getParticipantA() == null){
-            return Arrays.asList(getParticipantB());
-        }
-        else{
-            return Arrays.asList(getParticipantA(), getParticipantB());
-        }
-    }
-
     public Source getSource() {
         return this.source;
     }
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    /**
-     * Adds a new ModelledParticipant and set the modelledInteraction of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param part
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants
-     */
-    public boolean addModelledParticipant(ModelledParticipant part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipantB() != null && getParticipantA() != null){
-            throw new IllegalStateException("A ModelledBinaryInteraction cannot have more than two participants.");
-        }
-        else if (getParticipantA() != null){
-            part.setModelledInteraction(this);
-            setParticipantB(part);
-            return true;
-        }
-        else{
-            part.setModelledInteraction(this);
-            setParticipantA(part);
-            return true;
-        }
-    }
-
-    /**
-     * Removes the modelledParticipant from this binary interaction
-     * @param part
-     * @return
-     */
-    public boolean removeModelledParticipant(ModelledParticipant part) {
-        if (part == null){
-            return false;
-        }
-
-        if (getParticipantA() != null && getParticipantA().equals(part)){
-            part.setModelledInteraction(null);
-            setParticipantA(null);
-            return true;
-        }
-        else if (getParticipantB() != null && getParticipantB().equals(part)){
-            part.setModelledInteraction(null);
-            setParticipantB(null);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Adds the participants and set the modelledInteraction of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param participants
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
-     */
-    public boolean addAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
-        if (participants == null){
-            return false;
-        }
-        if (participants.size() > 2){
-            throw new IllegalArgumentException("A ModelledBinaryInteraction cannot have more than two participants and we try to add " + participants.size() + " participants");
-        }
-
-        boolean added = false;
-        for (ModelledParticipant p : participants){
-            if (addModelledParticipant(p)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (ModelledParticipant p : participants){
-            if (removeModelledParticipant(p)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     public Collection<ModelledConfidence> getModelledConfidences() {

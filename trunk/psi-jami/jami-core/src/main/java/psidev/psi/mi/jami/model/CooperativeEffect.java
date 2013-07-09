@@ -24,7 +24,7 @@ public interface CooperativeEffect {
      * return an empty collection.
      * @return Collection of experimental methods and publications
      */
-    public Collection<CooperativityEvidence> getCooperativityEvidences();
+    public <T extends CooperativityEvidence> Collection<T> getCooperativityEvidences();
 
     /**
      * Collection of model interactions affected by this model interaction.
@@ -32,7 +32,7 @@ public interface CooperativeEffect {
      * return an empty collection.
      * @return collection of model interactions affected by this model interaction
      */
-    public Collection<ModelledInteraction> getAffectedInteractions();
+    public <T extends ModelledInteraction> Collection<T> getAffectedInteractions();
 
     /**
      * The Collection of annotations describing the cooperativeEffect.
@@ -40,7 +40,7 @@ public interface CooperativeEffect {
      * Ex: comments, cautions, ...
      * @return the annotations
      */
-    public Collection<Annotation> getAnnotations();
+    public <T extends Annotation> Collection<T> getAnnotations();
 
     /**
      * For an interaction that has a cooperative effect on a subsequent interaction, this term indicates whether this effect is

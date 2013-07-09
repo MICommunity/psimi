@@ -48,26 +48,26 @@ public class DefaultModelledBinaryInteractionTest {
         ModelledBinaryInteraction interaction = new DefaultModelledBinaryInteraction("test interaction");
         ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
 
-        Assert.assertNull(participant.getModelledInteraction());
+        Assert.assertNull(participant.getInteraction());
 
         // add participant and set modelledInteraction
-        interaction.addModelledParticipant(participant);
-        Assert.assertEquals(interaction, participant.getModelledInteraction());
+        interaction.addParticipant(participant);
+        Assert.assertEquals(interaction, participant.getInteraction());
         Assert.assertEquals(1, interaction.getParticipants().size());
 
         // remove modelled participant and set interaction to null
-        interaction.removeModelledParticipant(participant);
-        Assert.assertNull(participant.getModelledInteraction());
+        interaction.removeParticipant(participant);
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, interaction.getParticipants().size());
 
         // simply add modelled participant
         interaction.setParticipantA(participant);
-        Assert.assertNull(participant.getModelledInteraction());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(1, interaction.getParticipants().size());
 
         // simply remove modelled participant
         interaction.setParticipantA(null);
-        Assert.assertNull(participant.getModelledInteraction());
+        Assert.assertNull(participant.getInteraction());
         Assert.assertEquals(0, interaction.getParticipants().size());
     }
 

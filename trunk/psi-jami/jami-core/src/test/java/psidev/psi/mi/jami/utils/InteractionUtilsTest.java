@@ -25,30 +25,30 @@ public class InteractionUtilsTest {
         Assert.assertNull(InteractionUtils.findInteractionCategoryOf(null, false));
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
 
         InteractionEvidence self_intra = new DefaultInteractionEvidence();
-        self_intra.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
+        self_intra.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
 
         InteractionEvidence self_inter= new DefaultInteractionEvidence();
-        self_inter.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
+        self_inter.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
 
         InteractionEvidence self_intra_no_stoichiometry_but_self_exp_role = new DefaultInteractionEvidence();
-        self_intra_no_stoichiometry_but_self_exp_role.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_intra_no_stoichiometry_but_self_exp_role.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         self_intra_no_stoichiometry_but_self_exp_role.getParticipants().iterator().next().setExperimentalRole(CvTermUtils.createSelf());
 
         InteractionEvidence self_intra_no_stoichiometry_but_putative_self_exp_role = new DefaultInteractionEvidence();
-        self_intra_no_stoichiometry_but_putative_self_exp_role.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_intra_no_stoichiometry_but_putative_self_exp_role.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         self_intra_no_stoichiometry_but_putative_self_exp_role.getParticipants().iterator().next().setExperimentalRole(CvTermUtils.createPutativeSelf());
 
         InteractionEvidence self_inter_no_stoichiometry = new DefaultInteractionEvidence();
-        self_inter_no_stoichiometry.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_inter_no_stoichiometry.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
 
         InteractionEvidence nary = new DefaultInteractionEvidence();
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p3")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
         Assert.assertEquals(InteractionCategory.binary, InteractionUtils.findInteractionCategoryOf(binary, false));
         Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra, false));
@@ -65,30 +65,30 @@ public class InteractionUtilsTest {
         Assert.assertNull(InteractionUtils.findInteractionCategoryOf(null, false));
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
 
         InteractionEvidence self_intra = new DefaultInteractionEvidence();
-        self_intra.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
+        self_intra.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
 
         InteractionEvidence self_inter= new DefaultInteractionEvidence();
-        self_inter.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
+        self_inter.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
 
         InteractionEvidence self_intra_no_stoichiometry_but_self_exp_role = new DefaultInteractionEvidence();
-        self_intra_no_stoichiometry_but_self_exp_role.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_intra_no_stoichiometry_but_self_exp_role.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         self_intra_no_stoichiometry_but_self_exp_role.getParticipants().iterator().next().setExperimentalRole(CvTermUtils.createSelf());
 
         InteractionEvidence self_intra_no_stoichiometry_but_putative_self_exp_role = new DefaultInteractionEvidence();
-        self_intra_no_stoichiometry_but_putative_self_exp_role.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_intra_no_stoichiometry_but_putative_self_exp_role.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         self_intra_no_stoichiometry_but_putative_self_exp_role.getParticipants().iterator().next().setExperimentalRole(CvTermUtils.createPutativeSelf());
 
         InteractionEvidence self_inter_no_stoichiometry = new DefaultInteractionEvidence();
-        self_inter_no_stoichiometry.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_inter_no_stoichiometry.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
 
         InteractionEvidence nary = new DefaultInteractionEvidence();
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p3")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
         Assert.assertEquals(InteractionCategory.binary, InteractionUtils.findInteractionCategoryOf(binary, true));
         Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra, true));
@@ -105,30 +105,30 @@ public class InteractionUtilsTest {
         Assert.assertNull(InteractionUtils.findInteractionCategoryOf(null, false));
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        binary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
 
         InteractionEvidence self_intra = new DefaultInteractionEvidence();
-        self_intra.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
+        self_intra.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(1)));
 
         InteractionEvidence self_inter= new DefaultInteractionEvidence();
-        self_inter.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
+        self_inter.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1"), new DefaultStoichiometry(3)));
 
         InteractionEvidence self_intra_no_stoichiometry_but_self_exp_role = new DefaultInteractionEvidence();
-        self_intra_no_stoichiometry_but_self_exp_role.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_intra_no_stoichiometry_but_self_exp_role.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         self_intra_no_stoichiometry_but_self_exp_role.getParticipants().iterator().next().setExperimentalRole(CvTermUtils.createSelf());
 
         InteractionEvidence self_intra_no_stoichiometry_but_putative_self_exp_role = new DefaultInteractionEvidence();
-        self_intra_no_stoichiometry_but_putative_self_exp_role.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_intra_no_stoichiometry_but_putative_self_exp_role.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
         self_intra_no_stoichiometry_but_putative_self_exp_role.getParticipants().iterator().next().setExperimentalRole(CvTermUtils.createPutativeSelf());
 
         InteractionEvidence self_inter_no_stoichiometry = new DefaultInteractionEvidence();
-        self_inter_no_stoichiometry.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        self_inter_no_stoichiometry.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
 
         InteractionEvidence nary = new DefaultInteractionEvidence();
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p2")));
-        nary.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p3")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
+        nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
         Assert.assertEquals(InteractionCategory.binary, InteractionUtils.findInteractionEvidenceCategoryOf(binary));
         Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra));
