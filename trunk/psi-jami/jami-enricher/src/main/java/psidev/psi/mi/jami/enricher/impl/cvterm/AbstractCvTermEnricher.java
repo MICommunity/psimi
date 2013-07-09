@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.util.RetryStrategy;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -81,7 +82,6 @@ public abstract class AbstractCvTermEnricher
      * @return  a CvTerm fetched from the fetching service.
      */
     private CvTerm fetchCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
-        //Todo
         if(getCvTermFetcher() == null) throw new IllegalStateException("The CvTermFetcher was null.");
         if(cvTermToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null CvTerm.");
 
@@ -89,18 +89,19 @@ public abstract class AbstractCvTermEnricher
 
 
         if(cvTermToEnrich.getMIIdentifier() != null){
-            int retryCount = RETRY_COUNT;
-            while(true){
+
+            //TODO roll this out across all queries if given go ahead
+            RetryStrategy retryStrategy = new RetryStrategy(RETRY_COUNT , null );
+            while(retryStrategy.retry()){
                 try {
                     cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
                             cvTermToEnrich.getMIIdentifier(), CvTerm.PSI_MI);
-                    break;
+                    retryStrategy.attemptSucceeded();
                 } catch (BridgeFailedException e) {
-                    if(retryCount <= 0) throw new EnricherException("Problem encountered while enriching CvTerm", e);
+                    retryStrategy.reportException(e);
                 }
-                if(retryCount <= 0) throw new EnricherException("Problem encountered while enriching CvTerm");
-                retryCount --;
             }
+
             if(cvTermFetched != null) return cvTermFetched;
         }
 

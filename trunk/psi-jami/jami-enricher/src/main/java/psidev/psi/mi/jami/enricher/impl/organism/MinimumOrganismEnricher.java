@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Created with IntelliJ IDEA.
+ * Enriches the organism to its minimum level.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 22/05/13
@@ -18,13 +18,12 @@ public class MinimumOrganismEnricher
     @Override
     protected void processOrganism(Organism organismToEnrich)  {
         if(organismFetched == null) throw new IllegalArgumentException(
-                "The organism had an invalid taxID of "+organismToEnrich.getTaxId());
+                "The fetched organism is null, cannot enrich" );
 
         //TaxID
-        if(organismToEnrich.getTaxId() == -3){
+        if(organismToEnrich.getTaxId() == -3 && organismFetched.getTaxId() != -3){
             organismToEnrich.setTaxId(organismFetched.getTaxId());
             if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
-
         }
 
         //TODO - check that the organism details don't enrich if there is no match on taxID
@@ -47,4 +46,3 @@ public class MinimumOrganismEnricher
         }
     }
 }
-

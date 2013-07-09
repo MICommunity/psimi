@@ -53,10 +53,11 @@ implements ProteinEnricher {
 
         if (! proteinIsConflictFree(proteinToEnrich) ) return;
 
-        if (getOrganismEnricher().getFetcher() instanceof MockOrganismFetcher){
-            MockOrganismFetcher organismFetcher = (MockOrganismFetcher)getOrganismEnricher().getFetcher();
-            organismFetcher.clearOrganisms();
-            organismFetcher.addNewOrganism(""+proteinToEnrich.getOrganism().getTaxId(), proteinFetched.getOrganism());
+        if (getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
+            getOrganismEnricher().getMockFetcher().clearOrganisms();
+            getOrganismEnricher().getMockFetcher().addNewOrganism(
+                    ""+proteinToEnrich.getOrganism().getTaxId(),
+                    proteinFetched.getOrganism());
         }
 
         getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
@@ -65,7 +66,6 @@ implements ProteinEnricher {
 
         if(listener != null)
             listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.SUCCESS, "Protein enriched.");
-        return ;
     }
 
 
@@ -107,7 +107,6 @@ implements ProteinEnricher {
         if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
 
         if(proteinToEnrich.getOrganism().getTaxId() != proteinFetched.getOrganism().getTaxId()){
-
             if(listener != null)
                 listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
                         "Conflict in organism. " +

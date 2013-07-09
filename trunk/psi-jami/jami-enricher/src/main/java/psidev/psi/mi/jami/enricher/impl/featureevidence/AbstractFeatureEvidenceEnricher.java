@@ -4,11 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.featureevidence.listener.FeatureEvidenceEnricherListener;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Range;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
@@ -19,8 +16,7 @@ import java.util.List;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
- * Time: 16:55
+ * @since  13/06/13
  */
 @Deprecated
 public abstract  class AbstractFeatureEvidenceEnricher{
@@ -28,12 +24,12 @@ public abstract  class AbstractFeatureEvidenceEnricher{
     protected static final Logger log = LoggerFactory.getLogger(AbstractFeatureEvidenceEnricher.class.getName());
 
 
-    protected FeatureEvidenceEnricherListener listener;
+    //protected FeatureEvidenceEnricherListener listener;
 
     protected CvTermEnricher cvTermEnricher;
 
     public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew) throws EnricherException {
-
+        /*
         if(featureEvidenceToEnrich ==  null) {
             if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
                     "Failed. Attempted to enrich null featureEvidence");
