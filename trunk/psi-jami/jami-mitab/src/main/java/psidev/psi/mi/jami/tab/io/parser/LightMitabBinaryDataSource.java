@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.datasource.BinaryInteractionSource;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
@@ -18,7 +19,7 @@ import java.util.Iterator;
  * @since <pre>21/06/13</pre>
  */
 
-public class LightMitabBinaryDataSource extends AbstractMitabDataSource<BinaryInteraction, Participant, Feature>{
+public class LightMitabBinaryDataSource extends AbstractMitabDataSource<BinaryInteraction, Participant, Feature> implements BinaryInteractionSource{
 
     public LightMitabBinaryDataSource() {
         super();

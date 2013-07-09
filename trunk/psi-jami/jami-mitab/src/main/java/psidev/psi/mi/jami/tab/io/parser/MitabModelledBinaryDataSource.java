@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
+import psidev.psi.mi.jami.datasource.ModelledBinaryInteractionSource;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -18,7 +19,7 @@ import java.util.Iterator;
  * @since <pre>21/06/13</pre>
  */
 
-public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<ModelledBinaryInteraction, ModelledParticipant, ModelledFeature>{
+public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<ModelledBinaryInteraction, ModelledParticipant, ModelledFeature> implements ModelledBinaryInteractionSource{
 
     public MitabModelledBinaryDataSource() {
         super();
