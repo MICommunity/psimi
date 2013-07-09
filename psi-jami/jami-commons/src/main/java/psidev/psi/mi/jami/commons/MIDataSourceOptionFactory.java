@@ -193,4 +193,14 @@ public class MIDataSourceOptionFactory {
 
         return options;
     }
+
+    public Map<String, Object> getXmlOptions(InteractionObjectCategory objectCategory, boolean streaming){
+        Map<String, Object> options = new HashMap<String, Object>(10);
+
+        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
+        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.mixed);
+        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
+
+        return options;
+    }
 }
