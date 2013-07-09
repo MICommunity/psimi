@@ -14,13 +14,13 @@ import uk.ac.ebi.intact.commons.util.diff.DiffCalculator;
  * @author  Gabriel Aldam (galdam@ebi.ac.uk)
  * @since   19/06/13
  */
-public class MaximumFeatureEnricher
-        extends MinimumFeatureEnricher
-        implements FeatureEnricher {
+public class MaximumFeatureEnricher <F extends Feature>
+        extends MinimumFeatureEnricher <F>
+        implements FeatureEnricher <F> {
 
 
     @Override
-    public void processFeature(Feature featureToEnrich) {
+    public void processFeature(F featureToEnrich) {
         super.processFeature(featureToEnrich);
 
         featureToEnrich.getRanges();

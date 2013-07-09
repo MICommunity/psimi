@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participant;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
@@ -10,11 +11,13 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class ParticipantEvidenceEnricher
-        extends DefaultParticipantEnricher<ParticipantEvidence> {
+public class MinimumParticipantEvidenceEnricher
+        extends MinimumParticipantEnricher<ParticipantEvidence , FeatureEvidence> {
 
     @Override
-    public void enrichParticipant(ParticipantEvidence participantEvidenceToEnrich) throws EnricherException {
+    public void enrichParticipant(ParticipantEvidence participantEvidenceToEnrich)
+            throws EnricherException {
+
         super.enrichParticipant(participantEvidenceToEnrich);
 
         if(getCvTermEnricher() != null){

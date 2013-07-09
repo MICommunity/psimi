@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
-import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.impl.ProteinChangeLogger;
 import psidev.psi.mi.jami.model.Protein;
 

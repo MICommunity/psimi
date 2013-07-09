@@ -72,7 +72,7 @@ public class UniprotTranslationUtil {
      * @param e
      * @return
      * @throws BridgeFailedException
-     */
+     */                                     //TODO should be a static method
     public Protein getProteinFromEntry(UniProtEntry e) throws BridgeFailedException {
 
         if(e == null) throw new IllegalArgumentException("The Uniprot entry was null");

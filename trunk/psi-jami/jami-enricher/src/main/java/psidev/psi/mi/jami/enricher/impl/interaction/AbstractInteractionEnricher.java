@@ -3,10 +3,12 @@ package psidev.psi.mi.jami.enricher.impl.interaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.interaction.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 
@@ -16,13 +18,13 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class DefaultInteractionEnricher<I extends Interaction, P extends Participant>
-        implements InteractionEnricher<I , P> {
+public class AbstractInteractionEnricher<I extends Interaction, P extends Participant, F extends Feature>
+        implements InteractionEnricher<I , P , F> {
 
-    protected final Logger log = LoggerFactory.getLogger(DefaultInteractionEnricher.class.getName());
+    protected final Logger log = LoggerFactory.getLogger(AbstractInteractionEnricher.class.getName());
 
     protected InteractionEnricherListener listener;
-    protected ParticipantEnricher<P> participantEnricher;
+    protected ParticipantEnricher<P , F> participantEnricher;
     protected CvTermEnricher cvTermEnricher;
 
     public void enrichInteraction(I interactionToEnrich) throws EnricherException {
@@ -34,14 +36,11 @@ public class DefaultInteractionEnricher<I extends Interaction, P extends Partici
             getParticipantEnricher().enrichParticipants(interactionToEnrich.getParticipants());
 
         if(getParticipantEnricher() != null){
-
-            for(Participant participant : interactionToEnrich.getParticipants()){
-                    getParticipantEnricher().enrichParticipant((P) participant);
-
+            for(Object participant : interactionToEnrich.getParticipants()){
+                getParticipantEnricher().enrichParticipant((P) participant);
             }
         }
     }
-
 
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
@@ -52,11 +51,15 @@ public class DefaultInteractionEnricher<I extends Interaction, P extends Partici
         return cvTermEnricher;
     }
 
-    public void setParticipantEnricher(ParticipantEnricher<P> participantEnricher){
+    public void setParticipantEnricher(ParticipantEnricher<P , F> participantEnricher){
         this.participantEnricher = participantEnricher;
     }
 
-    public ParticipantEnricher<P> getParticipantEnricher(){
+    public void setFeatureEnricher(FeatureEnricher<F> featureEnricher) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public ParticipantEnricher<P , F> getParticipantEnricher(){
         return participantEnricher;
     }
 

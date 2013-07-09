@@ -8,12 +8,11 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.util.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 import java.util.Collection;
 
@@ -42,17 +41,17 @@ implements ProteinEnricher {
      * @param proteinToEnrich   the Protein which is being enriched
      * @return  a boolean denoting whether the enrichment was successful
      */
-    public boolean enrichProtein(Protein proteinToEnrich) throws EnricherException {
+    public void enrichProtein(Protein proteinToEnrich) throws EnricherException {
         // If there are several entries, try to find one with the same organism as the proteinToEnrich
         // If you don't find one or several entries have the same organism,
         // fire a specific event because we want to track these proteins.
 
         proteinFetched = fetchProtein(proteinToEnrich);
         if(proteinFetched == null){
-            return false;
+            return ;
         }
 
-        if (! proteinIsConflictFree(proteinToEnrich) ) return false;
+        if (! proteinIsConflictFree(proteinToEnrich) ) return;
 
         if (getOrganismEnricher().getFetcher() instanceof MockOrganismFetcher){
             MockOrganismFetcher organismFetcher = (MockOrganismFetcher)getOrganismEnricher().getFetcher();
@@ -66,7 +65,7 @@ implements ProteinEnricher {
 
         if(listener != null)
             listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.SUCCESS, "Protein enriched.");
-        return true;
+        return ;
     }
 
 
@@ -155,21 +154,21 @@ implements ProteinEnricher {
             if( ! remapDeadProtein(proteinToEnrich)){
                 return null;
             }else{
+
                 int retryCount = RETRY_COUNT;
                 while(true){
                     try {
                         proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
                         break;
                     } catch (BridgeFailedException e) {
-                        retryCount --;
                         if(retryCount >= 0){
                             throw new EnricherException(
                                     "Could not enrich protein with identifier "+proteinToEnrich.getUniprotkb()+". "+
                                     "Tried "+RETRY_COUNT+" times.", e);
                         }
                     }
+                    retryCount --;
                 }
-
 
                 // If the remapping can not be fetched
                 if(proteinsEnriched == null

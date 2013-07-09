@@ -17,35 +17,32 @@ public class MinimumOrganismEnricher
 
     @Override
     protected void processOrganism(Organism organismToEnrich)  {
-        if(organismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
-            throw new IllegalArgumentException( "The organism had an invalid taxID of "+organismFetched.getTaxId());
+        if(organismFetched == null) throw new IllegalArgumentException(
+                "The organism had an invalid taxID of "+organismToEnrich.getTaxId());
+
+        //TaxID
+        if(organismToEnrich.getTaxId() == -3){
+            organismToEnrich.setTaxId(organismFetched.getTaxId());
+            if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
+
         }
 
-        if(organismFetched.getTaxId() != -3) {
-            //TaxID
-            if(organismToEnrich.getTaxId() == -3){
-                organismToEnrich.setTaxId(organismFetched.getTaxId());
-                if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
-
+        //TODO - check that the organism details don't enrich if there is no match on taxID
+        if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){
+            //Scientific name
+            if(organismToEnrich.getScientificName() == null
+                    && organismFetched.getScientificName() != null){
+                organismToEnrich.setScientificName(organismFetched.getScientificName());
+                if (listener != null)
+                    listener.onScientificNameUpdate(organismToEnrich , null);
             }
 
-            //TODO - check that the organism details don't enrich if there is no match on taxID
-            if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){
-                //Scientific name
-                if(organismToEnrich.getScientificName() == null
-                        && organismFetched.getScientificName() != null){
-                    organismToEnrich.setScientificName(organismFetched.getScientificName());
-                    if (listener != null)
-                        listener.onScientificNameUpdate(organismToEnrich , null);
-                }
-
-                //Common name
-                if(organismToEnrich.getCommonName() == null
-                        && organismFetched.getCommonName() != null){
-                    organismToEnrich.setCommonName(organismFetched.getCommonName());
-                    if (listener != null)
-                        listener.onCommonNameUpdate(organismToEnrich , null);
-                }
+            //Common name
+            if(organismToEnrich.getCommonName() == null
+                    && organismFetched.getCommonName() != null){
+                organismToEnrich.setCommonName(organismFetched.getCommonName());
+                if (listener != null)
+                    listener.onCommonNameUpdate(organismToEnrich , null);
             }
         }
     }

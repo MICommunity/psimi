@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participant.listener;
 
+import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
@@ -9,7 +10,7 @@ import psidev.psi.mi.jami.model.Participant;
  * Date: 13/06/13
  * Time: 16:57
  */
-public interface ParticipantEnricherListener {
+public interface ParticipantEnricherListener extends EnricherListener {
 
     public void onParticipantEnriched(Participant participant, String status);
 

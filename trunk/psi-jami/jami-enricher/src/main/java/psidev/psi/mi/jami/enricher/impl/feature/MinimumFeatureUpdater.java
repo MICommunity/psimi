@@ -12,13 +12,13 @@ import psidev.psi.mi.jami.model.Feature;
  * Date: 19/06/13
  * Time: 11:41
  */
-public class MinimumFeatureUpdater
-        extends AbstractFeatureEnricher
-        implements FeatureEnricher {
+public class MinimumFeatureUpdater <F extends Feature>
+        extends AbstractFeatureEnricher <F>
+        implements FeatureEnricher <F> {
 
 
     @Override
-    public void processFeature(Feature featureToEnrich) {
+    public void processFeature(F featureToEnrich) {
 
         /*if(featureFetched.getType() != null
                 && ! featureFetched.getType().getShortName().equalsIgnoreCase(

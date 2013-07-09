@@ -21,7 +21,7 @@ public interface ProteinEnricher {
      *
      * @param proteinToEnrich
      */
-    public boolean enrichProtein(Protein proteinToEnrich) throws EnricherException;
+    public void enrichProtein(Protein proteinToEnrich) throws EnricherException;
 
     /**
      *

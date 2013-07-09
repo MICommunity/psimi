@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,13 +33,13 @@ public class CachedOntologyOLSFetcher
     private Cache cache;
     private static CacheManager cacheManager;
 
-    public static final String EHCACHE_CONFIG_FILE = "/ols-service.ehcache.xml";
-    public static final String CACHE_NAME = "ols-service-cache";
+    public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
+    public static final String CACHE_NAME = "service-cache";
 
 
     public CachedOntologyOLSFetcher() throws BridgeFailedException {
         super();
-        startCache();
+        initialiseCache();
     }
 
     //=======================================
@@ -161,13 +162,32 @@ public class CachedOntologyOLSFetcher
     /////////////////////////
     // EH CACHE utilities
 
-    public void startCache(){
+
+
+    public void initialiseCache() {
         URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
         if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
         cacheManager = new CacheManager( url );
-        this.cache = cacheManager.getCache( CACHE_NAME );
-        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
+        if(cacheManager.getCacheNames().length>0){
+            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
+        }
+        if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
+
+    public void initialiseCache(File settingsFile) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void initialiseCache(String settingsFile) {
+        URL url = getClass().getResource( settingsFile );
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        cacheManager = new CacheManager( url );
+        if(cacheManager.getCacheNames().length>0){
+            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
+        }
+        if( cache == null ) throw new IllegalStateException( "Could not load cache" );
+    }
+
 
     public Object getFromCache( String key ) {
         Object data = null;
@@ -184,7 +204,11 @@ public class CachedOntologyOLSFetcher
         cache.put( element );
     }
 
-    public void closeCache(){
+    public void clearCache() {
+        cacheManager.clearAll();
+    }
+
+    public void shutDownCache() {
         cacheManager.shutdown();
     }
 }

@@ -16,15 +16,24 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13
  */
-public abstract class DefaultParticipantEnricher<P extends Participant>
-        implements ParticipantEnricher<P>  {
+public abstract class AbstractParticipantEnricher<P extends Participant , F extends Feature>
+        implements ParticipantEnricher<P , F>  {
 
 
     protected ParticipantEnricherListener listener;
 
     protected ProteinEnricher proteinEnricher;
     protected CvTermEnricher cvTermEnricher;
-    protected FeatureEnricher featureEnricher;
+    protected FeatureEnricher<F> featureEnricher;
+
+
+    public void enrichParticipant(P participantEvidenceToEnrich) throws EnricherException {
+
+    }
+
+    public void enrichParticipants(Collection<P> participantToEnrich) throws EnricherException {
+
+    }
 
 
     public void setParticipantListener(ParticipantEnricherListener participantEnricherListener) {
@@ -39,24 +48,24 @@ public abstract class DefaultParticipantEnricher<P extends Participant>
         this.proteinEnricher = proteinEnricher;
     }
 
-    /*public ProteinEnricher getProteinEnricher() {
+    public ProteinEnricher getProteinEnricher() {
         return proteinEnricher;
-    } */
+    }
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
         this.cvTermEnricher = cvTermEnricher;
     }
 
-    /*public CvTermEnricher getCvTermEnricher(){
+    public CvTermEnricher getCvTermEnricher(){
         return cvTermEnricher;
-    }  */
+    }
 
-    public void setFeatureEnricher(FeatureEnricher featureEnricher){
+    public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
     }
 
-   /* public FeatureEnricher getFeatureEnricher(){
+   public FeatureEnricher getFeatureEnricher(){
         return featureEnricher;
-    }  */
+    }
 
 }

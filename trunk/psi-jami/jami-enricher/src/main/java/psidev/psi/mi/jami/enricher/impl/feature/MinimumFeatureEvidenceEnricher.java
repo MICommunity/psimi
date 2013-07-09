@@ -8,5 +8,8 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public class MinimumFeatureEvidenceEnricher extends MinimumFeatureEnricher<FeatureEvidence> {
+public class MinimumFeatureEvidenceEnricher
+        extends MinimumFeatureEnricher<FeatureEvidence> {
+
+
 }

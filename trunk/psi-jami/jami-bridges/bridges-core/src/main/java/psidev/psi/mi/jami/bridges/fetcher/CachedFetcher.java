@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
-import net.sf.ehcache.Element;
+import java.io.File;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,11 +10,13 @@ import net.sf.ehcache.Element;
  */
 public interface CachedFetcher {
 
-    public void startCache();
+    public void initialiseCache();
 
-    public void closeCache();
+    public void initialiseCache(File settingsFile);
 
-    public Object getFromCache( String key );
+    public void initialiseCache(String settingsFile);
 
-    public void storeInCache( String key, Object data );
+    public void clearCache();
+
+    public void shutDownCache();
 }
