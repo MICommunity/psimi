@@ -128,6 +128,7 @@ public class MIJsonWriterTest {
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
                 "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"parameters\":[{\"type\":\"ic50\",\"value\":\"5x10^(-1)\"\"unit\":\"molar\"}],\n" +
                 "\t\t\"expansion\":{\"id\":\"0\",\"name\":\"spoke expansion\"},\n" +
                 "\t\t\"source\":{\n" +
                 "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12349\"},\n" +
@@ -166,6 +167,7 @@ public class MIJsonWriterTest {
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
                 "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"parameters\":[{\"type\":\"ic50\",\"value\":\"5x10^(-1)\"\"unit\":\"molar\"}],\n" +
                 "\t\t\"expansion\":{\"id\":\"0\",\"name\":\"spoke expansion\"},\n" +
                 "\t\t\"source\":{\n" +
                 "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12349\"},\n" +
@@ -213,6 +215,7 @@ public class MIJsonWriterTest {
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
                 "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"parameters\":[{\"type\":\"ic50\",\"value\":\"5x10^(-1)\"\"unit\":\"molar\"}],\n" +
                 "\t\t\"expansion\":{\"id\":\"0\",\"name\":\"spoke expansion\"},\n" +
                 "\t\t\"source\":{\n" +
                 "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12349\"},\n" +
@@ -251,6 +254,7 @@ public class MIJsonWriterTest {
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
                 "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"parameters\":[{\"type\":\"ic50\",\"value\":\"5x10^(-1)\"\"unit\":\"molar\"}],\n" +
                 "\t\t\"expansion\":{\"id\":\"0\",\"name\":\"spoke expansion\"},\n" +
                 "\t\t\"source\":{\n" +
                 "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12349\"},\n" +
@@ -277,6 +281,7 @@ public class MIJsonWriterTest {
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
                 "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"parameters\":[{\"type\":\"ic50\",\"value\":\"5x10^(-1)\"\"unit\":\"molar\"}],\n" +
                 "\t\t\"expansion\":{\"id\":\"1\",\"name\":\"spoke expansion\"},\n" +
                 "\t\t\"source\":{\n" +
                 "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12349\"},\n" +
@@ -309,6 +314,7 @@ public class MIJsonWriterTest {
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
                 "\t\t\"confidences\":[{\"type\":\"author-score\",\"value\":\"high\"}],\n" +
+                "\t\t\"parameters\":[{\"type\":\"ic50\",\"value\":\"5x10^(-1)\"\"unit\":\"molar\"}],\n" +
                 "\t\t\"expansion\":{\"id\":\"1\",\"name\":\"spoke expansion\"},\n" +
                 "\t\t\"source\":{\n" +
                 "\t\t\t\"identifier\":{\"db\":\"uniprotkb\",\"id\":\"P12349\"},\n" +

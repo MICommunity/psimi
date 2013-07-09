@@ -8,10 +8,7 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.OntologyTermUtils;
-import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.utils.*;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 
 import java.io.*;
@@ -657,6 +654,37 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writer.write(MIJsonUtils.CLOSE);
     }
 
+    protected void writeParameter(String type, String value, String unit) throws IOException {
+        writer.write(MIJsonUtils.OPEN);
+        writerProperty("type", type);
+        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+        writerProperty("value", value);
+        if (unit != null){
+            writerProperty("unit", unit);
+        }
+        writer.write(MIJsonUtils.CLOSE);
+    }
+
+    protected void writeAllParameters(Collection<Parameter> parameters) throws IOException {
+        writer.write(MIJsonUtils.OPEN_ARRAY);
+
+        Iterator<Parameter> paramIterator = parameters.iterator();
+        while (paramIterator.hasNext()){
+            Parameter param = paramIterator.next();
+            if (param != null){
+                writeParameter(JSONValue.escape(param.getType().getShortName()), JSONValue.escape(ParameterUtils.getParameterValueAsString(param)), param.getUnit() != null ? JSONValue.escape(param.getUnit().getShortName()) : null);
+            }
+            else {
+                writeParameter("unknown","", null);
+            }
+            if (paramIterator.hasNext()){
+                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            }
+        }
+
+        writer.write(MIJsonUtils.CLOSE_ARRAY);
+    }
+
     protected void writeConfidence(String type, String value) throws IOException {
         writer.write(MIJsonUtils.OPEN);
         writerProperty("type", type);
@@ -893,6 +921,15 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             writeNextPropertySeparatorAndIndent();
             writeStartObject("confidences");
             writeAllConfidences(binary.getConfidences());
+        }
+
+        // then parameters
+        boolean hasParameters = !binary.getParameters().isEmpty();
+        if (hasParameters){
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writeStartObject("parameters");
+            writeAllParameters(binary.getParameters());
         }
 
         // then complex expansion
