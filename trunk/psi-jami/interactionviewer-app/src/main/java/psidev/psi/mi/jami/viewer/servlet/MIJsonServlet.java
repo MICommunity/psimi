@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
 import psidev.psi.mi.jami.commons.PsiJami;
-import psidev.psi.mi.jami.datasource.InteractionEvidenceSource;
+import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +55,7 @@ public class MIJsonServlet extends HttpServlet{
     public final static String FILE_PARAM="file";
     private MIFileAnalyzer fileAnalyzer;
     private static final Logger logger = Logger.getLogger("MIJsonServlet");
+    private int timeOut = 30000;
 
     public void init() throws ServletException
     {
@@ -92,15 +94,22 @@ public class MIJsonServlet extends HttpServlet{
         Writer writer = resp.getWriter();
 
         InputStream stream = null;
-        InteractionEvidenceSource miDataSource = null;
+        InteractionSource miDataSource = null;
         InteractionWriter interactionWriter = null;
         try {
             URL url = new URL(urlString);
+            URLConnection connection1 = url.openConnection();
+            connection1.setReadTimeout(5000);
+            connection1.setConnectTimeout(5000);
+            URLConnection connection = url.openConnection();
+            connection.setReadTimeout(timeOut);
+            connection.setConnectTimeout(timeOut);
 
             // first recognize file and create data source
-            stream = url.openStream();
-            miDataSource = processMIData(urlString, url.openStream(), resp, writer, stream, miDataSource, interactionWriter);
+            stream = connection.getInputStream();
+            miDataSource = processMIData(urlString, connection1.getInputStream(), resp, writer, stream, miDataSource, interactionWriter);
             interactionWriter.end();
+            interactionWriter.flush();
 
         } catch (MalformedURLException e) {
             logger.log(Level.SEVERE, "The url " + urlString + " is not a valid url.", e);
@@ -133,18 +142,50 @@ public class MIJsonServlet extends HttpServlet{
         }
     }
 
-    private InteractionEvidenceSource processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionEvidenceSource miDataSource, InteractionWriter interactionWriter) throws IOException {
+    protected OntologyTermFetcher getFetcher() {
+        return fetcher;
+    }
+
+    protected void setFetcher(OntologyTermFetcher fetcher) {
+        this.fetcher = fetcher;
+    }
+
+    protected ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> getExpansionMethod() {
+        return expansionMethod;
+    }
+
+    protected void setExpansionMethod(ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+        this.expansionMethod = expansionMethod;
+    }
+
+    protected MIFileAnalyzer getFileAnalyzer() {
+        return fileAnalyzer;
+    }
+
+    protected void setFileAnalyzer(MIFileAnalyzer fileAnalyzer) {
+        this.fileAnalyzer = fileAnalyzer;
+    }
+
+    protected int getTimeOut() {
+        return timeOut;
+    }
+
+    protected void setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    private InteractionSource processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionSource miDataSource, InteractionWriter interactionWriter) throws IOException {
         MIFileType fileType = fileAnalyzer.identifyMIFileTypeFor(stream);
         MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
         MIDataSourceFactory miFactory = MIDataSourceFactory.getInstance();
 
         switch (fileType){
             case mitab:
-               miDataSource = (InteractionEvidenceSource) miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionObjectCategory.binary_evidence, true, null, dataStream));
+               miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionObjectCategory.binary_evidence, true, null, dataStream));
                interactionWriter = new MIJsonBinaryWriter(writer, this.fetcher);
                break;
             case psi25_xml:
-                miDataSource = (InteractionEvidenceSource) miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionObjectCategory.binary_evidence, true, dataStream));
+                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionObjectCategory.binary_evidence, true, dataStream));
                 interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
                 break;
             default:
@@ -160,7 +201,6 @@ public class MIJsonServlet extends HttpServlet{
         // then write
         interactionWriter.start();
         interactionWriter.write(miDataSource.getInteractionsIterator());
-        interactionWriter.flush();
         resp.setStatus(200);
         return miDataSource;
     }
@@ -169,7 +209,7 @@ public class MIJsonServlet extends HttpServlet{
         Writer writer = resp.getWriter();
 
         InputStream stream = null;
-        InteractionEvidenceSource miDataSource = null;
+        InteractionSource miDataSource = null;
         InteractionWriter interactionWriter = null;
         try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
@@ -187,6 +227,7 @@ public class MIJsonServlet extends HttpServlet{
                 }
             }
             interactionWriter.end();
+            interactionWriter.flush();
 
         } catch (FileUploadException e) {
             logger.log(Level.SEVERE, "The uploaded file is not a valid file.", e);
