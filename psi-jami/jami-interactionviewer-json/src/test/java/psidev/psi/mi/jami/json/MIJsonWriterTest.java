@@ -374,7 +374,7 @@ public class MIJsonWriterTest {
         testFeature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         testFeature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         testFeature.setInterpro("interpro:xxxx");
-        participantA.addFeatureEvidence(testFeature);
+        participantA.addFeature(testFeature);
         // stc
         participantA.setStoichiometry(2);
         participantB.setStoichiometry(5);
@@ -385,9 +385,9 @@ public class MIJsonWriterTest {
         participantC.getIdentificationMethods().add(new DefaultCvTerm("western blot", "MI:xxxx1"));
 
         InteractionEvidence interaction = new DefaultInteractionEvidence();
-        interaction.addParticipantEvidence(participantA);
-        interaction.addParticipantEvidence(participantB);
-        interaction.addParticipantEvidence(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // detection method
         interaction.setExperiment(new DefaultExperiment(new DefaultPublication()));

@@ -495,14 +495,14 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         }
 
         // write linked features if required
-        if (writeLinkedFeatures && !feature.getLinkedFeatureEvidences().isEmpty()){
+        if (writeLinkedFeatures && !feature.getLinkedFeatures().isEmpty()){
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writer.write(MIJsonUtils.INDENT);
             writeStartObject("linkedFeatures");
             writer.write(MIJsonUtils.OPEN_ARRAY);
 
-            Iterator<FeatureEvidence> featureIterator = feature.getLinkedFeatureEvidences().iterator();
+            Iterator<FeatureEvidence> featureIterator = feature.getLinkedFeatures().iterator();
             while (featureIterator.hasNext()){
                 FeatureEvidence f = featureIterator.next();
                 writerProperty("id", Integer.toString(f.hashCode()));
