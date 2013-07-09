@@ -223,9 +223,9 @@ public class Mitab26InteractionEvidenceWriterTest {
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
 
         InteractionEvidence interaction = new MitabInteractionEvidence();
-        interaction.addParticipantEvidence(participantA);
-        interaction.addParticipantEvidence(participantB);
-        interaction.addParticipantEvidence(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // detection method
         interaction.setExperiment(new MitabExperiment(new MitabPublication()));

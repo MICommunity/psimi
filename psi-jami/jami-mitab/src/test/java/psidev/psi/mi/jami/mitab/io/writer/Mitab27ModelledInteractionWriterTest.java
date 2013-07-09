@@ -228,20 +228,20 @@ public class Mitab27ModelledInteractionWriterTest {
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
         // features
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        MitabModelledFeature feature = new MitabModelledFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
-        participantA.addModelledFeature(feature);
+        participantA.addFeature(feature);
         // stoichiometry
         participantA.setStoichiometry(2);
         participantB.setStoichiometry(5);
         participantC.setStoichiometry(1);
 
         ModelledInteraction interaction = new MitabModelledInteraction();
-        interaction.addModelledParticipant(participantA);
-        interaction.addModelledParticipant(participantB);
-        interaction.addModelledParticipant(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // interaction type
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

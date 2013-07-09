@@ -131,8 +131,8 @@ public class Mitab25ModelledBinaryWriterTest {
         participantB.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
 
         ModelledBinaryInteraction binary = new MitabModelledBinaryInteraction(participantA, participantB);
-        participantA.setModelledInteraction(binary);
-        participantB.setModelledInteraction(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // interaction type
         binary.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

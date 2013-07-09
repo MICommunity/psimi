@@ -159,9 +159,9 @@ public class Mitab25InteractionEvidenceWriterTest {
         participantC.setExperimentalRole(new MitabCvTerm("bait"));
 
         InteractionEvidence interaction = new MitabInteractionEvidence();
-        interaction.addParticipantEvidence(participantA);
-        interaction.addParticipantEvidence(participantB);
-        interaction.addParticipantEvidence(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // detection method
         interaction.setExperiment(new MitabExperiment(new MitabPublication()));

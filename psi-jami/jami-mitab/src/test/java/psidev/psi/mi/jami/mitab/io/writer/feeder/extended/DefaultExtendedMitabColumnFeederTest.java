@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
 import psidev.psi.mi.jami.tab.extension.MitabAlias;
-import psidev.psi.mi.jami.tab.extension.MitabFeature;
+import psidev.psi.mi.jami.tab.extension.DefaultMitabFeature;
 import psidev.psi.mi.jami.tab.extension.MitabParticipant;
 import psidev.psi.mi.jami.tab.extension.MitabProtein;
 import psidev.psi.mi.jami.tab.io.writer.feeder.extended.DefaultExtendedMitabColumnFeeder;
@@ -128,7 +128,7 @@ public class DefaultExtendedMitabColumnFeederTest {
         StringWriter writer = new StringWriter();
         DefaultExtendedMitabColumnFeeder feeder = new DefaultExtendedMitabColumnFeeder(writer);
 
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        DefaultMitabFeature feature = new DefaultMitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.setText("text");
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));

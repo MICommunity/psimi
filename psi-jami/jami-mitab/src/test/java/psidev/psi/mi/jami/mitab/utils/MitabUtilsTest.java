@@ -94,7 +94,7 @@ public class MitabUtilsTest {
     public void test_find_db_source_from_alias_and_participant_evidence(){
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         InteractionEvidence interaction = InteractionUtils.createEmptyBasicExperimentalInteraction();
-        participant.setInteractionEvidenceAndAddParticipantEvidence(interaction);
+        participant.setInteractionAndAddParticipant(interaction);
         interaction.getExperiment().getPublication().setSource(new DefaultSource("intact"));
 
         Assert.assertEquals(MitabUtils.UNKNOWN_DATABASE, MitabUtils.findDbSourceForAlias(null));
@@ -113,7 +113,7 @@ public class MitabUtilsTest {
     public void test_find_db_source_from_alias_and_modelled_participant(){
         ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         ModelledInteraction interaction = new DefaultModelledInteraction();
-        participant.setModelledInteractionAndAddModelledParticipant(interaction);
+        participant.setInteractionAndAddParticipant(interaction);
         interaction.setSource(new DefaultSource("intact"));
 
         Assert.assertEquals(MitabUtils.UNKNOWN_DATABASE, MitabUtils.findDbSourceForAlias(null));

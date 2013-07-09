@@ -702,7 +702,7 @@ public class DefaultMitabColumnFeederTest {
         StringWriter writer = new StringWriter();
         DefaultMitabColumnFeeder feeder = new DefaultMitabColumnFeeder(writer);
 
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        DefaultMitabFeature feature = new DefaultMitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
@@ -790,14 +790,14 @@ public class DefaultMitabColumnFeederTest {
 
         ParticipantEvidence participant = new MitabParticipantEvidence(new MitabProtein("p12345"));
         ParticipantEvidence participant_no_features = new MitabParticipantEvidence(new MitabProtein("p12345"));
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        MitabFeatureEvidence feature = new MitabFeatureEvidence(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
-        participant.addFeatureEvidence(feature);
-        MitabFeature feature2 = new MitabFeature(new DefaultCvTerm("binding site"));
+        participant.addFeature(feature);
+        MitabFeatureEvidence feature2 = new MitabFeatureEvidence(new DefaultCvTerm("binding site"));
         feature2.getRanges().add(RangeUtils.createCertainRange(10));
-        participant.addFeatureEvidence(feature2);
+        participant.addFeature(feature2);
 
         feeder.writeParticipantFeatures(participant);
         Assert.assertEquals("binding site region:1..3-6..7,>9->9(\"interpro:xxxx\")|binding site:10-10", writer.toString());

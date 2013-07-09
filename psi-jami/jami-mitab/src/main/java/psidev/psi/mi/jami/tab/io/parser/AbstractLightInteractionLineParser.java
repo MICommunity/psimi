@@ -1,9 +1,8 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
@@ -19,7 +18,7 @@ import java.util.Collection;
  * @since <pre>04/07/13</pre>
  */
 
-public abstract class AbstractLightInteractionLineParser<T extends Interaction> extends AbstractInteractionLineParser<T, Participant> {
+public abstract class AbstractLightInteractionLineParser<T extends Interaction> extends AbstractInteractionLineParser<T, Participant, Feature> {
 
     public AbstractLightInteractionLineParser(InputStream stream) {
         super(stream);
@@ -38,7 +37,17 @@ public abstract class AbstractLightInteractionLineParser<T extends Interaction> 
     }
 
     @Override
-    MitabParticipant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot, Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc, Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn) {
+    DefaultMitabFeature createFeature(String type, Collection<Range> ranges, String text, int line, int column, int mitabColumn){
+        DefaultMitabFeature feature = new DefaultMitabFeature(new DefaultCvTerm(type));
+        feature.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
+        feature.getRanges().addAll(ranges);
+        feature.setText(text);
+
+        return feature;
+    }
+
+    @Override
+    MitabParticipant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot, Collection<MitabChecksum> checksum, Collection<Feature> feature, Collection<MitabStoichiometry> stc, Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn) {
         boolean hasParticipantFields = !bioRole.isEmpty() || !annot.isEmpty() || !feature.isEmpty() || !stc.isEmpty();
         // first identify interactor
         Interactor interactor = createInteractorFrom(uniqueId, altid, aliases, taxid, type, xref, checksum, line, column, mitabColumn);
@@ -72,7 +81,7 @@ public abstract class AbstractLightInteractionLineParser<T extends Interaction> 
             // add annotations
             participant.getAnnotations().addAll(annot);
             // add features
-            participant.getFeatures().addAll(feature);
+            participant.addAllFeatures(feature);
             // add stc
             if (stc.size() > 1){
                 if (getParserListener() != null){

@@ -172,8 +172,8 @@ public class Mitab26BinaryEvidenceWriterTest {
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
 
         BinaryInteractionEvidence binary = new MitabBinaryInteractionEvidence(participantA, participantB);
-        participantA.setInteractionEvidence(binary);
-        participantB.setInteractionEvidence(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // detection method
         binary.setExperiment(new MitabExperiment(new MitabPublication()));

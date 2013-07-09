@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
-public abstract class MitabLineParser<T extends Interaction, P extends Participant> implements MitabLineParserConstants {
+public abstract class MitabLineParser<T extends Interaction, P extends Participant, F extends Feature> implements MitabLineParserConstants {
 
         void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e) {
             fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, e);
@@ -33,10 +33,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
 
     abstract java.lang.StringBuilder resetStringBuilder();
 
+    abstract F createFeature(String type, Collection<Range> ranges, String text, int line, int column, int mitabColumn);
+
         abstract P finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
                                                Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
                                                Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot,
-                                               Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc,
+                                               Collection<MitabChecksum> checksum, Collection<F> feature, Collection<MitabStoichiometry> stc,
                                                Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn);
         abstract T finishInteraction(P A, P B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor,
                                                Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source,
@@ -82,8 +84,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   Collection<MitabChecksum> checksumB = Collections.EMPTY_LIST;
   Collection<MitabChecksum> checksumI = Collections.EMPTY_LIST;
   boolean isNegative = false;
-  Collection<MitabFeature> featureA = Collections.EMPTY_LIST;
-  Collection<MitabFeature> featureB = Collections.EMPTY_LIST;
+  Collection<F> featureA = Collections.EMPTY_LIST;
+  Collection<F> featureB = Collections.EMPTY_LIST;
   Collection<MitabStoichiometry> stcA = Collections.EMPTY_LIST;
   Collection<MitabStoichiometry> stcB = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> pmethodA = Collections.EMPTY_LIST;
@@ -1064,11 +1066,11 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     throw new Error("Missing return statement in function");
   }
 
-  final public Collection<MitabFeature> features(int column) throws ParseException {
-  Collection<MitabFeature> features;
-  MitabFeature var;
+  final public Collection<F> features(int column) throws ParseException {
+  Collection<F> features;
+  F var;
     var = feature(column);
-        features = new ArrayList<MitabFeature>(); if (var != null) {features.add(var);}
+        features = new ArrayList<F>(); if (var != null) {features.add(var);}
     label_13:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1157,12 +1159,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     throw new Error("Missing return statement in function");
   }
 
-  final public MitabFeature feature(int columnNumber) throws ParseException {
+  final public F feature(int columnNumber) throws ParseException {
   java.lang.String type;
   Collection<Range> ranges;
   Range var;
   java.lang.String text = null;
-  MitabFeature feature;
+  F feature;
   int beginLine=0;
   int beginColumn=0;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
@@ -1197,10 +1199,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_la1[60] = jj_gen;
         ;
       }
-        feature = new MitabFeature(type);
-        feature.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-        feature.getRanges().addAll(ranges);
-        feature.setText(text);
+        feature = createFeature(type, ranges, text, beginLine, beginColumn, columnNumber);
 
         {if (true) return feature;}
     } catch (ParseException e) {

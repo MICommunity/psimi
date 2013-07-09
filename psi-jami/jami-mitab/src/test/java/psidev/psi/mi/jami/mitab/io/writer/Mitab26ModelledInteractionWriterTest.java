@@ -219,9 +219,9 @@ public class Mitab26ModelledInteractionWriterTest {
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
 
         ModelledInteraction interaction = new MitabModelledInteraction();
-        interaction.addModelledParticipant(participantA);
-        interaction.addModelledParticipant(participantB);
-        interaction.addModelledParticipant(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // interaction type
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

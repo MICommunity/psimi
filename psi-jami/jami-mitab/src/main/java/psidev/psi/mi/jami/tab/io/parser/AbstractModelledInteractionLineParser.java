@@ -1,9 +1,8 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
@@ -19,7 +18,7 @@ import java.util.Collection;
  * @since <pre>04/07/13</pre>
  */
 
-public abstract class AbstractModelledInteractionLineParser<T extends ModelledInteraction> extends AbstractInteractionLineParser<T, ModelledParticipant>{
+public abstract class AbstractModelledInteractionLineParser<T extends ModelledInteraction> extends AbstractInteractionLineParser<T, ModelledParticipant, ModelledFeature>{
 
     public AbstractModelledInteractionLineParser(InputStream stream) {
         super(stream);
@@ -38,7 +37,17 @@ public abstract class AbstractModelledInteractionLineParser<T extends ModelledIn
     }
 
     @Override
-    MitabModelledParticipant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot, Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc, Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn) {
+    MitabModelledFeature createFeature(String type, Collection<Range> ranges, String text, int line, int column, int mitabColumn){
+        MitabModelledFeature feature = new MitabModelledFeature(new DefaultCvTerm(type));
+        feature.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
+        feature.getRanges().addAll(ranges);
+        feature.setText(text);
+
+        return feature;
+    }
+
+    @Override
+    MitabModelledParticipant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot, Collection<MitabChecksum> checksum, Collection<ModelledFeature> feature, Collection<MitabStoichiometry> stc, Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn) {
         boolean hasParticipantFields = !bioRole.isEmpty() || !annot.isEmpty() || !feature.isEmpty() || !stc.isEmpty();
         // first identify interactor
         Interactor interactor = createInteractorFrom(uniqueId, altid, aliases, taxid, type, xref, checksum, line, column, mitabColumn);
@@ -72,7 +81,7 @@ public abstract class AbstractModelledInteractionLineParser<T extends ModelledIn
             // add annotations
             participant.getAnnotations().addAll(annot);
             // add features
-            participant.getFeatures().addAll(feature);
+            participant.addAllFeatures(feature);
             // add stc
             if (stc.size() > 1){
                 if (getParserListener() != null){
@@ -175,10 +184,10 @@ public abstract class AbstractModelledInteractionLineParser<T extends ModelledIn
         }
 
         if (A != null){
-            interaction.addModelledParticipant(A);
+            interaction.addParticipant(A);
         }
         if (B != null){
-            interaction.addModelledParticipant(B);
+            interaction.addParticipant(B);
         }
 
         ((FileSourceContext)interaction).setSourceLocator(new MitabSourceLocator(line, 0, 0));

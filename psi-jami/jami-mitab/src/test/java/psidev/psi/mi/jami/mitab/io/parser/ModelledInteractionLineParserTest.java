@@ -4,7 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.tab.extension.MitabFeature;
+import psidev.psi.mi.jami.tab.extension.MitabModelledFeature;
 import psidev.psi.mi.jami.tab.io.parser.ModelledInteractionLineParser;
 import psidev.psi.mi.jami.tab.io.parser.ParseException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
@@ -222,7 +222,7 @@ public class ModelledInteractionLineParserTest {
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
         Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
         Assert.assertEquals(1, A.getFeatures().size());
-        MitabFeature f = (MitabFeature)A.getFeatures().iterator().next();
+        MitabModelledFeature f = (MitabModelledFeature)A.getFeatures().iterator().next();
         Assert.assertEquals(new DefaultCvTerm("binding site"), f.getType());
         Assert.assertEquals(2, f.getRanges().size());
         Iterator<Range> rangeIterator = f.getRanges().iterator();

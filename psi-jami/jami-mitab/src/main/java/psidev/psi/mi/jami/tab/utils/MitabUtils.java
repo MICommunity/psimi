@@ -114,8 +114,8 @@ public class MitabUtils {
                 return Xref.UNIPROTKB;
             }
             // check source
-            else if (participant.getInteractionEvidence() != null){
-                InteractionEvidence interaction = participant.getInteractionEvidence();
+            else if (participant.getInteraction() != null){
+                InteractionEvidence interaction = participant.getInteraction();
                 if (interaction.getExperiment() != null){
                     Experiment exp = interaction.getExperiment();
                     if (exp.getPublication() != null){
@@ -152,8 +152,8 @@ public class MitabUtils {
                 return Xref.UNIPROTKB;
             }
             // check source
-            else if (participant.getModelledInteraction() != null){
-                ModelledInteraction interaction = participant.getModelledInteraction();
+            else if (participant.getInteraction() != null){
+                ModelledInteraction interaction = participant.getInteraction();
                 if (interaction.getSource() != null){
                     return interaction.getSource().getShortName();
                 }

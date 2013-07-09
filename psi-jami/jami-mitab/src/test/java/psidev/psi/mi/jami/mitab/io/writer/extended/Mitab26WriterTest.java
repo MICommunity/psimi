@@ -73,7 +73,7 @@ public class Mitab26WriterTest {
 
         InteractionEvidence binary2 = createBinaryInteractionEvidence();
 
-        binaryWriter.write(Arrays.asList((Interaction) binary, (Interaction) binary2));
+        binaryWriter.write(Arrays.asList((Interaction<? extends Participant>) binary, (Interaction<? extends Participant>) binary2));
 
         String expected_line = getExpectedMitabLine1();
         String expected_line2 = getExpectedMitabLine2();
@@ -301,9 +301,9 @@ public class Mitab26WriterTest {
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
 
         InteractionEvidence interaction = new MitabInteractionEvidence();
-        interaction.addParticipantEvidence(participantA);
-        interaction.addParticipantEvidence(participantB);
-        interaction.addParticipantEvidence(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // detection method
         interaction.setExperiment(new MitabExperiment(new MitabPublication()));
@@ -391,9 +391,9 @@ public class Mitab26WriterTest {
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
 
         ModelledInteraction interaction = new MitabModelledInteraction();
-        interaction.addModelledParticipant(participantA);
-        interaction.addModelledParticipant(participantB);
-        interaction.addModelledParticipant(participantC);
+        interaction.addParticipant(participantA);
+        interaction.addParticipant(participantB);
+        interaction.addParticipant(participantC);
 
         // interaction type
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

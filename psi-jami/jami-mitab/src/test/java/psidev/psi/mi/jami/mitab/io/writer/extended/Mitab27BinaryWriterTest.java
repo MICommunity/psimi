@@ -231,12 +231,12 @@ public class Mitab27BinaryWriterTest {
         participantA.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx1"));
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
         // features
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        MitabFeatureEvidence feature = new MitabFeatureEvidence(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
         feature.setText("text");
-        participantA.addFeatureEvidence(feature);
+        participantA.addFeature(feature);
         // stc
         participantA.setStoichiometry(2);
         participantB.setStoichiometry(5);
@@ -245,8 +245,8 @@ public class Mitab27BinaryWriterTest {
         participantB.getIdentificationMethods().add(new MitabCvTerm("predetermined", "MI:xxxx2"));
 
         BinaryInteractionEvidence binary = new MitabBinaryInteractionEvidence(participantA, participantB);
-        participantA.setInteractionEvidence(binary);
-        participantB.setInteractionEvidence(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // detection method
         binary.setExperiment(new MitabExperiment(new MitabPublication()));
@@ -323,19 +323,19 @@ public class Mitab27BinaryWriterTest {
         participantA.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx1"));
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
         // features
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        MitabModelledFeature feature = new MitabModelledFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.setText("text");
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
-        participantA.addModelledFeature(feature);
+        participantA.addFeature(feature);
         // stoichiometry
         participantA.setStoichiometry(2);
         participantB.setStoichiometry(5);
 
         ModelledBinaryInteraction binary = new MitabModelledBinaryInteraction(participantA, participantB);
-        participantA.setModelledInteraction(binary);
-        participantB.setModelledInteraction(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // interaction type
         binary.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

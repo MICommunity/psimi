@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.tab.extension.MitabFeature;
+import psidev.psi.mi.jami.tab.extension.DefaultMitabFeature;
 import psidev.psi.mi.jami.tab.io.parser.InteractionLineParser;
 import psidev.psi.mi.jami.tab.io.parser.ParseException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
@@ -221,7 +221,7 @@ public class InteractionLineParserTest {
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
         Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
         Assert.assertEquals(1, A.getFeatures().size());
-        MitabFeature f = (MitabFeature)A.getFeatures().iterator().next();
+        DefaultMitabFeature f = (DefaultMitabFeature)A.getFeatures().iterator().next();
         Assert.assertEquals(new DefaultCvTerm("binding site"), f.getType());
         Assert.assertEquals(2, f.getRanges().size());
         Iterator<Range> rangeIterator = f.getRanges().iterator();
@@ -329,7 +329,7 @@ public class InteractionLineParserTest {
         InteractionLineParser parser = new InteractionLineParser(stream);
 
         // read title
-        Interaction line1 = parser.MitabLine();
+        Interaction<Participant> line1 = parser.MitabLine();
         Assert.assertNotNull(line1);
         Assert.assertEquals(2, line1.getParticipants().iterator().next().getInteractor().getIdentifiers().size());
         Iterator<Xref> identifierIterator = line1.getParticipants().iterator().next().getInteractor().getIdentifiers().iterator();

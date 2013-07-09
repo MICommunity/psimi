@@ -16,23 +16,23 @@ import psidev.psi.mi.jami.model.impl.DefaultParticipant;
  * @since <pre>11/06/13</pre>
  */
 
-public class MitabParticipant<T extends Interactor> extends DefaultParticipant<T> implements FileSourceContext{
+public class MitabParticipant extends DefaultParticipant implements FileSourceContext{
 
     private FileSourceLocator sourceLocator;
 
-    public MitabParticipant(T interactor) {
+    public MitabParticipant(Interactor interactor) {
         super(interactor);
     }
 
-    public MitabParticipant(T interactor, CvTerm bioRole) {
+    public MitabParticipant(Interactor interactor, CvTerm bioRole) {
         super(interactor, bioRole);
     }
 
-    public MitabParticipant(T interactor, Stoichiometry stoichiometry) {
+    public MitabParticipant(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
     }
 
-    public MitabParticipant(T interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public MitabParticipant(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
     }
 
