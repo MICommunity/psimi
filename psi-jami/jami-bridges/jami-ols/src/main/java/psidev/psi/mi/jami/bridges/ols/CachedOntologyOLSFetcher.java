@@ -34,7 +34,7 @@ public class CachedOntologyOLSFetcher
     private static CacheManager cacheManager;
 
     public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
-    public static final String CACHE_NAME = "service-cache";
+    //public static final String CACHE_NAME = "service-cache";
 
 
     public CachedOntologyOLSFetcher() throws BridgeFailedException {
@@ -182,7 +182,7 @@ public class CachedOntologyOLSFetcher
         URL url = getClass().getResource( settingsFile );
         if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
         cacheManager = new CacheManager( url );
-        if(cacheManager.getCacheNames().length>0){
+        if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
             this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
         }
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );

@@ -15,6 +15,7 @@ import uk.ac.ebi.kraken.interfaces.uniprot.comments.AlternativeProductsIsoform;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.Feature;
 import uk.ac.ebi.kraken.uuw.services.remoting.*;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +45,7 @@ public class CachedUniprotFetcher
 
     public CachedUniprotFetcher() {
         super();
-        startCache();
+        initialiseCache();
     }
 
     public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
@@ -69,14 +70,6 @@ public class CachedUniprotFetcher
     /////////////////////////
     // EH CACHE utilities
 
-    public void startCache(){
-        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
-        cacheManager = new CacheManager( url );
-        this.cache = cacheManager.getCache( CACHE_NAME );
-        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
-    }
-
     public Object getFromCache( String key ) {
         Object data = null;
         //if (cacheManager.)
@@ -92,7 +85,33 @@ public class CachedUniprotFetcher
         cache.put( element );
     }
 
-    public void closeCache(){
+    public void initialiseCache() {
+        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        cacheManager = new CacheManager( url );
+        this.cache = cacheManager.getCache( CACHE_NAME );
+        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
+    }
+
+    public void initialiseCache(File settingsFile) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void initialiseCache(String settingsFile) {
+        URL url = getClass().getResource( settingsFile );
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        cacheManager = new CacheManager( url );
+        if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
+            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
+        }
+        if( cache == null ) throw new IllegalStateException( "Could not load cache" );
+    }
+
+    public void clearCache() {
+       cacheManager.clearAll();
+    }
+
+    public void shutDownCache() {
         cacheManager.shutdown();
     }
 }
