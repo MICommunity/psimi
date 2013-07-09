@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +45,26 @@ public class MIDataSourceOptionFactory {
 
         Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(file));
         options.put(MIDataSourceFactory.INPUT_OPTION_KEY, file);
+
+        return options;
+    }
+
+    /**
+     * Creates a map with the default options to retrieve MI datasource that will read the URL content
+     * @param url
+     * @return the default options for the MI datasource corresponding to this url
+     * @throws IOException
+     */
+    public Map<String, Object> getDefaultOptions(URL url) throws IOException {
+        InputStream stream = url.openStream();
+        Map<String, Object> options = Collections.EMPTY_MAP;
+        try {
+            options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(stream));
+            options.put(MIDataSourceFactory.INPUT_OPTION_KEY, url.openStream());
+        }
+        finally {
+            stream.close();
+        }
 
         return options;
     }
