@@ -46,7 +46,7 @@ public class MIDataSourceFactory {
             // we check for a DataSource that can be used with the given options
             if (areSupportedOptions(entry.getValue(), requiredOptions)){
                 try {
-                    return instantiateNewDataSource(entry.getKey(), entry.getValue());
+                    return instantiateNewDataSource(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
                     logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
@@ -64,7 +64,7 @@ public class MIDataSourceFactory {
             // we check for a DataSource that can be used with the given options
             if (interactionSourceClass.isAssignableFrom(entry.getKey()) && areSupportedOptions(entry.getValue(), requiredOptions)){
                 try {
-                    return (InteractionSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
+                    return (InteractionSource) instantiateNewDataSource(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
                     logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
