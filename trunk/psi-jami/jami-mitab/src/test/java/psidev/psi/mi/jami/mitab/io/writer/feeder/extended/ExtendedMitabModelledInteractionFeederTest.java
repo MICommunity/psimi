@@ -152,7 +152,7 @@ public class ExtendedMitabModelledInteractionFeederTest {
         StringWriter writer = new StringWriter();
         ExtendedMitabModelledInteractionFeeder feeder = new ExtendedMitabModelledInteractionFeeder(writer);
 
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        DefaultMitabFeature feature = new DefaultMitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.setText("text");
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));

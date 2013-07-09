@@ -35,7 +35,7 @@ import java.util.Map;
  * @since <pre>11/06/13</pre>
  */
 
-public abstract class AbstractMitabWriter<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
+public abstract class AbstractMitabWriter<T extends Interaction<? extends Participant>, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
 
     private ComplexExpansionMethod<T, B> expansionMethod;
     private AbstractMitab25BinaryWriter<B, P> binaryWriter;

@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.tab.extension.MitabInteraction;
 
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.Collection;
 
 /**
  * An extension of MitabLineParser that returns simple interactions only.
@@ -37,7 +36,7 @@ public class InteractionLineParser extends AbstractLightInteractionLineParser<In
     }
 
     protected void addParticipant(Participant participant, Interaction interaction) {
-        ((Collection<Participant>)interaction.getParticipants()).add(participant);
+        interaction.addParticipant(participant);
     }
 
     @Override

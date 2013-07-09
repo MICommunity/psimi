@@ -31,10 +31,10 @@ import java.util.regex.Pattern;
  * @since <pre>21/06/13</pre>
  */
 
-public abstract class AbstractMitabDataSource<T extends Interaction, P extends Participant> implements MIFileDataSource, InteractionSource, MitabParserListener{
+public abstract class AbstractMitabDataSource<T extends Interaction, P extends Participant, F extends Feature> implements MIFileDataSource, InteractionSource, MitabParserListener{
 
     private static final Logger logger = Logger.getLogger("AbstractMitabDataSource");
-    private MitabLineParser<T,P> lineParser;
+    private MitabLineParser<T,P,F> lineParser;
     private boolean isInitialised = false;
 
     private URL originalURL;
@@ -390,11 +390,11 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         return createMitabIterator();
     }
 
-    protected MitabLineParser<T,P> getLineParser() {
+    protected MitabLineParser<T,P,F> getLineParser() {
         return lineParser;
     }
 
-    protected void setLineParser(MitabLineParser<T,P> lineParser) {
+    protected void setLineParser(MitabLineParser<T,P,F> lineParser) {
         this.lineParser = lineParser;
         this.lineParser.setParserListener(this);
     }

@@ -218,8 +218,8 @@ public class Mitab26BinaryWriterTest {
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
 
         BinaryInteractionEvidence binary = new MitabBinaryInteractionEvidence(participantA, participantB);
-        participantA.setInteractionEvidence(binary);
-        participantB.setInteractionEvidence(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // detection method
         binary.setExperiment(new MitabExperiment(new MitabPublication()));
@@ -297,8 +297,8 @@ public class Mitab26BinaryWriterTest {
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
 
         ModelledBinaryInteraction binary = new MitabModelledBinaryInteraction(participantA, participantB);
-        participantA.setModelledInteraction(binary);
-        participantB.setModelledInteraction(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // interaction type
         binary.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

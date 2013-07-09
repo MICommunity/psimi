@@ -114,8 +114,8 @@ public class Mitab25BinaryEvidenceWriterTest {
         participantB.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
 
         BinaryInteractionEvidence binary = new MitabBinaryInteractionEvidence(participantA, participantB);
-        participantA.setInteractionEvidence(binary);
-        participantB.setInteractionEvidence(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // detection method
         binary.setExperiment(new MitabExperiment(new MitabPublication()));

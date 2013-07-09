@@ -88,8 +88,8 @@ public class MitabModelledInteractionFeederTest {
         MitabModelledBinaryInteraction binary = new MitabModelledBinaryInteraction(participant_no_aliases, participant_with_aliases);
         binary.setSource(new DefaultSource("intact"));
         binary.getSource().setMIIdentifier("MI:xxxx");
-        participant_no_aliases.setModelledInteraction(binary);
-        participant_with_aliases.setModelledInteraction(binary);
+        participant_no_aliases.setInteraction(binary);
+        participant_with_aliases.setInteraction(binary);
 
         feeder.writeAliases(participant_null);
         Assert.assertEquals("-", writer.toString());
@@ -442,7 +442,7 @@ public class MitabModelledInteractionFeederTest {
         StringWriter writer = new StringWriter();
         MitabModelledInteractionFeeder feeder = new MitabModelledInteractionFeeder(writer);
 
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        DefaultMitabFeature feature = new DefaultMitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
@@ -530,14 +530,14 @@ public class MitabModelledInteractionFeederTest {
 
         ModelledParticipant participant = new MitabModelledParticipant(new MitabProtein("p12345"));
         ModelledParticipant participant_no_features = new MitabModelledParticipant(new MitabProtein("p12345"));
-        MitabFeature feature = new MitabFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        MitabModelledFeature feature = new MitabModelledFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
         feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         feature.setInterpro("interpro:xxxx");
-        participant.addModelledFeature(feature);
-        MitabFeature feature2 = new MitabFeature(new DefaultCvTerm("binding site"));
+        participant.addFeature(feature);
+        MitabModelledFeature feature2 = new MitabModelledFeature(new DefaultCvTerm("binding site"));
         feature2.getRanges().add(RangeUtils.createCertainRange(10));
-        participant.addModelledFeature(feature2);
+        participant.addFeature(feature2);
 
         feeder.writeParticipantFeatures(participant);
         Assert.assertEquals("binding site region:1..3-6..7,>9->9(\"interpro:xxxx\")|binding site:10-10", writer.toString());

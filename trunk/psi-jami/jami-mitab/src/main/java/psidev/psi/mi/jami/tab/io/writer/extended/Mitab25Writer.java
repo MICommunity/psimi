@@ -17,7 +17,7 @@ import java.io.*;
 /**
  * The simple MITAB 2.5 writer will write interactions using the JAMI interfaces.
  *
- * It will not check for MITAB extended objects (such as MitabAlias and MitabFeature).
+ * It will not check for MITAB extended objects (such as MitabAlias and DefaultMitabFeature).
  *
  * The default Complex expansion method is spoke expansion.
  *
@@ -27,7 +27,7 @@ import java.io.*;
  * @since <pre>10/06/13</pre>
  */
 
-public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryInteraction, Participant> {
+public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Participant>, BinaryInteraction, Participant> {
 
     private Mitab25ModelledInteractionWriter modelledInteractionWriter;
     private Mitab25InteractionEvidenceWriter interactionEvidenceWriter;
@@ -49,15 +49,15 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
         super(writer);
     }
 
-    public Mitab25Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25Writer(File file, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
         super(output, expansionMethod);
     }
 
-    public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
     }
 
@@ -91,7 +91,7 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryIntera
     }
 
     @Override
-    protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
+    protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) {
         setExpansionMethod(expansionMethod != null ? expansionMethod : new SpokeExpansion());
     }
 

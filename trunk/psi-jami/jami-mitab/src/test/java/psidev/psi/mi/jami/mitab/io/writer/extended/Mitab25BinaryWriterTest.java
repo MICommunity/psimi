@@ -156,8 +156,8 @@ public class Mitab25BinaryWriterTest {
         participantB.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
 
         BinaryInteractionEvidence binary = new MitabBinaryInteractionEvidence(participantA, participantB);
-        participantA.setInteractionEvidence(binary);
-        participantB.setInteractionEvidence(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // detection method
         binary.setExperiment(new MitabExperiment(new MitabPublication()));
@@ -205,8 +205,8 @@ public class Mitab25BinaryWriterTest {
         participantB.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
 
         ModelledBinaryInteraction binary = new MitabModelledBinaryInteraction(participantA, participantB);
-        participantA.setModelledInteraction(binary);
-        participantB.setModelledInteraction(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // interaction type
         binary.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

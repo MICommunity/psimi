@@ -169,8 +169,8 @@ public class Mitab26ModelledBinaryWriterTest {
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
 
         ModelledBinaryInteraction binary = new MitabModelledBinaryInteraction(participantA, participantB);
-        participantA.setModelledInteraction(binary);
-        participantB.setModelledInteraction(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // interaction type
         binary.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:xxxx"));

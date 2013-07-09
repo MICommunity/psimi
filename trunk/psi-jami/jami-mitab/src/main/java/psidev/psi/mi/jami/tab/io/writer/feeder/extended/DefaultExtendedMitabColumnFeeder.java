@@ -14,7 +14,7 @@ import java.util.Iterator;
 /**
  * Default Mitab 2.5 extended feeder for interaction.
  *
- * It will cast Alias with MitabAlias to write a specified dbsource, it will cast Feature with MitabFeature to write a specific feature text and
+ * It will cast Alias with MitabAlias to write a specified dbsource, it will cast Feature with DefaultMitabFeature to write a specific feature text and
  * it will cast Confidence with MitabConfidence to write a specific text
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

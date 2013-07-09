@@ -22,7 +22,7 @@ import java.util.Iterator;
  * @since <pre>20/06/13</pre>
  */
 
-public abstract class AbstractInteractionLineParser<T extends Interaction, P extends Participant> extends MitabLineParser<T,P> {
+public abstract class AbstractInteractionLineParser<T extends Interaction, P extends Participant, F extends Feature> extends MitabLineParser<T,P,F> {
 
     private MitabParserListener listener;
     private MitabInteractorFactory interactorFactory;

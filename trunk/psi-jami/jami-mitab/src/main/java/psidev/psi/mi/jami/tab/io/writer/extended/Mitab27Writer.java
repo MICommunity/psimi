@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer.extended;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.io.Writer;
 /**
  * The simple MITAB 2.7 writer will write interactions using the JAMI interfaces.
  *
- * It will not check for MITAB extended objects (such as MitabAlias and MitabFeature).
+ * It will not check for MITAB extended objects (such as MitabAlias and DefaultMitabFeature).
  *
  * The default Complex expansion method is spoke expansion.
  *
@@ -40,15 +41,15 @@ public class Mitab27Writer extends Mitab26Writer {
         super(writer);
     }
 
-    public Mitab27Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab27Writer(File file, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab27Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab27Writer(OutputStream output, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
         super(output, expansionMethod);
     }
 
-    public Mitab27Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab27Writer(Writer writer, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
     }
 
