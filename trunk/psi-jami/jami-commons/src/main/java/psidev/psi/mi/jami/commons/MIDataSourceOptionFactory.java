@@ -43,10 +43,7 @@ public class MIDataSourceOptionFactory {
      */
     public Map<String, Object> getDefaultOptions(File file) throws IOException {
 
-        Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(file));
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, file);
-
-        return options;
+        return getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(file), file);
     }
 
     /**
@@ -59,8 +56,7 @@ public class MIDataSourceOptionFactory {
         InputStream stream = url.openStream();
         Map<String, Object> options = Collections.EMPTY_MAP;
         try {
-            options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(stream));
-            options.put(MIDataSourceFactory.INPUT_OPTION_KEY, url.openStream());
+            options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(stream), url);
         }
         finally {
             stream.close();
@@ -78,10 +74,7 @@ public class MIDataSourceOptionFactory {
      */
     public Map<String, Object> getDefaultOptions(InputStream streamToAnalyse, InputStream source) throws IOException {
 
-        Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(streamToAnalyse));
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, source);
-
-        return options;
+        return getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(streamToAnalyse), source);
     }
 
     /**
@@ -93,10 +86,7 @@ public class MIDataSourceOptionFactory {
      */
     public Map<String, Object> getDefaultOptions(Reader readerToAnalyze, Reader sourceReader) throws IOException {
 
-        Map<String, Object> options = getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(readerToAnalyze));
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, sourceReader);
-
-        return options;
+        return getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(readerToAnalyze), sourceReader);
     }
 
     /**
@@ -105,13 +95,13 @@ public class MIDataSourceOptionFactory {
      * @param sourceType
      * @return the map of default options for this sourceType
      */
-    public Map<String, Object> getDefaultFileOptions(MIFileType sourceType){
+    public Map<String, Object> getDefaultFileOptions(MIFileType sourceType, Object inputData){
 
         switch (sourceType){
             case mitab:
-                return getDefaultMitabOptions();
+                return getDefaultMitabOptions(inputData);
             case psi25_xml:
-                return getDefaultXmlOptions();
+                return getDefaultXmlOptions(inputData);
             default:
                 return null;
         }
@@ -123,8 +113,8 @@ public class MIDataSourceOptionFactory {
      * It will use the MitabParserLogger to listen to the MITAB parsing events
      * @return the default options for the MITAB datasource
      */
-    public Map<String, Object> getDefaultMitabOptions(){
-        return getMitabOptions(InteractionObjectCategory.evidence, true, new MitabParserLogger());
+    public Map<String, Object> getDefaultMitabOptions(Object inputData){
+        return getMitabOptions(InteractionObjectCategory.evidence, true, new MitabParserLogger(), inputData);
     }
 
     /**
@@ -134,8 +124,8 @@ public class MIDataSourceOptionFactory {
      * @param objectCategory
      * @return the options for the MITAB datasource using the provided objectCategory
      */
-    public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory){
-        return getMitabOptions(objectCategory, true, null);
+    public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, Object inputData){
+        return getMitabOptions(objectCategory, true, null, inputData);
     }
 
     /**
@@ -145,18 +135,19 @@ public class MIDataSourceOptionFactory {
      * @param streaming : tru if we want to read the interactions in a streaming way
      * @return the options for the MITAB datasource and specify if we want a Streaming MIFileDatasource
      */
-    public Map<String, Object> getMitabOptions(boolean streaming){
-        return getMitabOptions(null, streaming, null);
+    public Map<String, Object> getMitabOptions(boolean streaming, Object inputData){
+        return getMitabOptions(null, streaming, null, inputData);
     }
 
     /**
      * Create the options for the MITAB datasource using the provided MIFileParserListener.
      * It will read InteractionEvidence elements in a streaming way.
      * @param listener
+     * @param inputData is the mitab data to read
      * @return the options for the MITAB datasource with the provided listener
      */
-    public Map<String, Object> getMitabOptions(MIFileParserListener listener){
-        return getMitabOptions(null, true, listener);
+    public Map<String, Object> getMitabOptions(MIFileParserListener listener, Object inputData){
+        return getMitabOptions(null, true, listener, inputData);
     }
 
     /**
@@ -166,7 +157,7 @@ public class MIDataSourceOptionFactory {
      * @param listener : the listener to use for listening MITAB parsing events
      * @return the MITAB datasource options
      */
-    public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener){
+    public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.mitab.toString());
@@ -175,6 +166,7 @@ public class MIDataSourceOptionFactory {
         if (listener != null){
             options.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, listener);
         }
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
 
         return options;
     }
@@ -184,22 +176,24 @@ public class MIDataSourceOptionFactory {
      * It will read a mix of InteractionEvidence and ModelledInteraction elements in a streaming way.
      * @return the default options for the PSI-XML datasource
      */
-    public Map<String, Object> getDefaultXmlOptions(){
+    public Map<String, Object> getDefaultXmlOptions(Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
         options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, InteractionObjectCategory.mixed);
         options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, true);
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
 
         return options;
     }
 
-    public Map<String, Object> getXmlOptions(InteractionObjectCategory objectCategory, boolean streaming){
+    public Map<String, Object> getXmlOptions(InteractionObjectCategory objectCategory, boolean streaming, Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
         options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.mixed);
         options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
 
         return options;
     }
