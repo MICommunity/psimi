@@ -284,7 +284,7 @@ public class MIJsonBinaryWriterTest {
         testFeature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
         testFeature.getRanges().add(RangeUtils.createGreaterThanRange(9));
         testFeature.setInterpro("interpro:xxxx");
-        participantA.addFeatureEvidence(testFeature);
+        participantA.addFeature(testFeature);
         // stc
         participantA.setStoichiometry(2);
         participantB.setStoichiometry(5);
@@ -293,8 +293,8 @@ public class MIJsonBinaryWriterTest {
         participantB.getIdentificationMethods().add(new DefaultCvTerm("predetermined", "MI:xxxx2"));
 
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence(participantA, participantB);
-        participantA.setInteractionEvidence(binary);
-        participantB.setInteractionEvidence(binary);
+        participantA.setInteraction(binary);
+        participantB.setInteraction(binary);
 
         // detection method
         binary.setExperiment(new DefaultExperiment(new DefaultPublication()));
