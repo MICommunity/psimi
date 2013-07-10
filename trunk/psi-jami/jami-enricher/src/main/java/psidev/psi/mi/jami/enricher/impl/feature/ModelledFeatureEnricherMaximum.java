@@ -12,5 +12,4 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 public class ModelledFeatureEnricherMaximum
         extends FeatureEnricherMaximum<ModelledFeature> {
 
-
 }

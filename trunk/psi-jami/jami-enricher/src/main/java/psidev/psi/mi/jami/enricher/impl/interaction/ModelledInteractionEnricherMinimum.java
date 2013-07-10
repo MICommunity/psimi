@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.interaction;
 
 
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
+import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum;
 import psidev.psi.mi.jami.model.*;
 
@@ -17,7 +18,7 @@ public class ModelledInteractionEnricherMinimum
 
     @Override
     public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher(){
-        if(participantEnricher == null) participantEnricher = new ModelledParticipantUpdaterMaximum();
+        if(participantEnricher == null) participantEnricher = new ModelledParticipantEnricherMinimum();
         return participantEnricher;
     }
 }

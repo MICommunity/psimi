@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
@@ -10,6 +12,19 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  */
 public class FeatureEvidenceEnricherMinimum
         extends FeatureEnricherMinimum<FeatureEvidence> {
+
+    @Override
+    public void processFeature(FeatureEvidence featureToEnrich)
+            throws EnricherException {
+
+        super.processFeature(featureToEnrich);
+
+        if(getCvTermEnricher() != null){
+            for(CvTerm cvTerm : featureToEnrich.getDetectionMethods()){
+                getCvTermEnricher().enrichCvTerm(cvTerm);
+            }
+        }
+    }
 
 
 }
