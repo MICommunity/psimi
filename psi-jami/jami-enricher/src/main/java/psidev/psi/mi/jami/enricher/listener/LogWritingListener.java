@@ -23,8 +23,8 @@ public abstract class LogWritingListener implements EnricherListener{
         }
     }
 
-    public void test() throws IOException {
-        bufferedWriter.write("test");
+    protected void write(String string) throws IOException {
+        bufferedWriter.write(string);
     }
 
 

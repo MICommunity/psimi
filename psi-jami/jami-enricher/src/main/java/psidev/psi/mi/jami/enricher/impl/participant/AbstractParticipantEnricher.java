@@ -60,11 +60,13 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         return cvTermEnricher;
     }
 
+
+
     public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
     }
 
-   public FeatureEnricher getFeatureEnricher(){
+    public FeatureEnricher getFeatureEnricher(){
         return featureEnricher;
     }
 

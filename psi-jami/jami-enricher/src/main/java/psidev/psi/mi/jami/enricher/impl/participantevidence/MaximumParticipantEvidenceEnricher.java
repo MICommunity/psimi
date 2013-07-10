@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participantevidence;
 
 
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +17,7 @@ public class MaximumParticipantEvidenceEnricher
 
     @Override
     public ProteinEnricher getProteinEnricher(){
-        if(proteinEnricher == null) proteinEnricher = new MaximumProteinEnricher();
+        if(proteinEnricher == null) proteinEnricher = new ProteinEnricherMaximum();
         return proteinEnricher;
     }
 }

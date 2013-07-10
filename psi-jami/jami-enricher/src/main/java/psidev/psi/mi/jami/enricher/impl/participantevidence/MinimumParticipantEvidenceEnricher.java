@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participantevidence;
 
 
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +18,7 @@ public class MinimumParticipantEvidenceEnricher
 
     @Override
     public ProteinEnricher getProteinEnricher(){
-        if(proteinEnricher == null) proteinEnricher = new MinimumProteinEnricher();
+        if(proteinEnricher == null) proteinEnricher = new ProteinEnricherMinimum();
         return proteinEnricher;
     }
 }

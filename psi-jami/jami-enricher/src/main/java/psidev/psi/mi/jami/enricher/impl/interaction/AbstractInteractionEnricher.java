@@ -55,9 +55,6 @@ public class AbstractInteractionEnricher<I extends Interaction, P extends Partic
         this.participantEnricher = participantEnricher;
     }
 
-    public void setFeatureEnricher(FeatureEnricher<F> featureEnricher) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public ParticipantEnricher<P , F> getParticipantEnricher(){
         return participantEnricher;
