@@ -15,8 +15,6 @@ public class FeatureEnricherMinimum<F extends Feature>
         extends AbstractFeatureEnricher <F>
         implements FeatureEnricher <F> {
 
-
-
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMinimum();
         return cvTermEnricher;

@@ -9,8 +9,7 @@ import psidev.psi.mi.jami.model.Feature;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 19/06/13
- * Time: 11:42
+ * @since  19/06/13
  */
 public class FeatureUpdaterMaximum<F extends Feature>
         extends FeatureUpdaterMinimum<F>

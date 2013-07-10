@@ -29,6 +29,13 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
 
+
+    protected Protein oldSequenceSource;
+    protected String oldSequence;
+    protected Protein lastEnrichedSequence;
+
+
+
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
         for(F featureToEnrich : featuresToEnrich){
             enrichFeature(featureToEnrich);
@@ -44,6 +51,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     }
 
     protected void processFeature(F featureToEnrich) throws EnricherException{
+
         if(getCvTermEnricher() != null) {
             getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
             getCvTermEnricher().enrichCvTerm(featureToEnrich.getInteractionDependency());
@@ -51,24 +59,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         }
 
 
-
-
-
-
-
-        /*
-        if(featureEvidenceToEnrich ==  null) {
-            if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
-                    "Failed. Attempted to enrich null featureEvidence");
-            return false;
-        }
-
-        if(cvTermEnricher != null){
-            cvTermEnricher.enrichCvTerm(featureEvidenceToEnrich.getType());
-            for(CvTerm cvTerm : featureEvidenceToEnrich.getDetectionMethods()){
-                cvTermEnricher.enrichCvTerm(cvTerm);
-            }
-        }
+       /*
 
         if(sequenceOld == null){
             if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
@@ -158,9 +149,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         this.cvTermEnricher = cvTermEnricher;
     }
 
-    protected Protein oldSequenceSource;
-    protected String oldSequence;
-    protected Protein lastEnrichedSequence;
+
 
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         this.oldSequence = oldSequence;

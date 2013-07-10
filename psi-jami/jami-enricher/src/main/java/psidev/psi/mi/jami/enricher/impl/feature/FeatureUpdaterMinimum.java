@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.feature;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum;
 import psidev.psi.mi.jami.model.Feature;
 
@@ -9,8 +10,7 @@ import psidev.psi.mi.jami.model.Feature;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 19/06/13
- * Time: 11:41
+ * @since  19/06/13
  */
 public class FeatureUpdaterMinimum<F extends Feature>
         extends AbstractFeatureEnricher <F>
@@ -18,7 +18,7 @@ public class FeatureUpdaterMinimum<F extends Feature>
 
 
     @Override
-    public void processFeature(F featureToEnrich) {
+    public void processFeature(F featureToEnrich) throws EnricherException {
 
         /*if(featureFetched.getType() != null
                 && ! featureFetched.getType().getShortName().equalsIgnoreCase(
