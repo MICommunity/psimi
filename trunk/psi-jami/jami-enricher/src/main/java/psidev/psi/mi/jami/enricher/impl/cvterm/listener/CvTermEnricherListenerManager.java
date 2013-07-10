@@ -7,7 +7,9 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 /**
- * Created with IntelliJ IDEA.
+ * An enricher listener manager for CvTerm listeners.
+ *
+ * Has a list of CvTermListeners and fires their corresponding events when fired in the manager.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13

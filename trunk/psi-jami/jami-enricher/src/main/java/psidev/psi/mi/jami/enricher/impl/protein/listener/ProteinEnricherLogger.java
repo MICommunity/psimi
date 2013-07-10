@@ -10,9 +10,8 @@ import java.util.logging.Logger;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 11/06/13
- * Time: 11:09
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  11/06/13
  */
 public class ProteinEnricherLogger
         extends ProteinChangeLogger

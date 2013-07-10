@@ -16,6 +16,10 @@ public class FailureLogWritingListener extends LogWritingListener{
         super(outputFile);
     }
 
+    public void writeFailure(){
+
+    }
+
 
 
 }
