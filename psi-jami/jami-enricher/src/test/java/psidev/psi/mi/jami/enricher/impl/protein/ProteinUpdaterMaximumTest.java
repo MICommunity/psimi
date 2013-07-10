@@ -17,8 +17,8 @@ import psidev.psi.mi.jami.model.impl.DefaultProtein;
  * Date: 23/05/13
  * Time: 14:39
  */
-public class MaximumProteinUpdaterTest {
-    private MaximumProteinUpdater maximumProteinUpdater;
+public class ProteinUpdaterMaximumTest {
+    private ProteinUpdaterMaximum proteinUpdaterMaximum;
     private MockProteinFetcher fetcher;
 
     private static final String TEST_SHORTNAME = "test shortName";
@@ -31,8 +31,8 @@ public class MaximumProteinUpdaterTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         this.fetcher = new MockProteinFetcher();
-        this.maximumProteinUpdater = new MaximumProteinUpdater();
-        maximumProteinUpdater.setFetcher(fetcher);
+        this.proteinUpdaterMaximum = new ProteinUpdaterMaximum();
+        proteinUpdaterMaximum.setFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -57,7 +57,7 @@ public class MaximumProteinUpdaterTest {
         assertNotNull(protein_with_all_fields.getUniprotkb());
         assertNotNull(protein_with_all_fields.getSequence());
 
-        this.maximumProteinUpdater.enrichProtein(protein_with_all_fields);
+        this.proteinUpdaterMaximum.enrichProtein(protein_with_all_fields);
 
         assertEquals( protein_with_all_fields.getShortName(), TEST_SHORTNAME);
         assertEquals( protein_with_all_fields.getFullName(), TEST_FULLNAME);
@@ -76,7 +76,7 @@ public class MaximumProteinUpdaterTest {
         protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
         protein_with_all_fields.setSequence("TAGTAG");
 
-        this.maximumProteinUpdater.enrichProtein(protein_with_all_fields);
+        this.proteinUpdaterMaximum.enrichProtein(protein_with_all_fields);
 
         assertNotNull(protein_with_all_fields.getFullName());
         assertNotNull(protein_with_all_fields.getShortName());
@@ -104,14 +104,14 @@ public class MaximumProteinUpdaterTest {
         protein_test_two.setUniprotkb(TEST_AC_FULL_PROT);
         protein_test_two.setSequence(TEST_SEQUENCE);
 
-        maximumProteinUpdater.enrichProtein(protein_test_one);
+        proteinUpdaterMaximum.enrichProtein(protein_test_one);
 
         //assertEquals(event.getQueryID(), TEST_AC_HALF_PROT);
         //assertTrue(event.getAdditions().size() == 0);
         //assertTrue(event.getMismatches().size() == 0);
         //assertTrue(event.getOverwrites().size() == 1);
 
-        maximumProteinUpdater.enrichProtein(protein_test_two);
+        proteinUpdaterMaximum.enrichProtein(protein_test_two);
 
         //assertEquals(event.getQueryID(), TEST_AC_FULL_PROT);
         //assertTrue(event.getAdditions().size() == 0);
@@ -129,7 +129,7 @@ public class MaximumProteinUpdaterTest {
 
 
 
-        maximumProteinUpdater.enrichProtein(protein_to_enrich);
+        proteinUpdaterMaximum.enrichProtein(protein_to_enrich);
 
        // assertNotNull(event);
         //assertTrue(event.getObjectType().equals("Protein"));

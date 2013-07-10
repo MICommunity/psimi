@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -15,9 +17,10 @@ import psidev.psi.mi.jami.model.Feature;
 public interface FeatureEnricher <F extends Feature>
         extends ProteinEnricherListener{
 
-   // public void enrichFeature(F featureToEnrich, String sequenceOld, String sequenceNew);
-
     public void enrichFeature(F featureToEnrich) throws EnricherException;
+    public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException;
+
+
 
     public void setFeatureEnricherListener(FeatureEnricherListener listener);
     public FeatureEnricherListener getFeatureEnricherListener();

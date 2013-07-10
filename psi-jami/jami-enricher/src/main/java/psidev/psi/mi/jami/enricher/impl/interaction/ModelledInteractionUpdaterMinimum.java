@@ -1,14 +1,13 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
+
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum;
-import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum;
 import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMinimum;
 import psidev.psi.mi.jami.model.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * An extension of the interaction enricher which only accepts ModelledInteraction
+ * Overrides the default ParticipantEnricher to the modelled only form.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/07/13
@@ -18,6 +17,7 @@ public class ModelledInteractionUpdaterMinimum
 
 
 
+    @Override
     public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ModelledParticipantUpdaterMinimum();
         return participantEnricher;

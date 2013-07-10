@@ -21,9 +21,8 @@ import java.util.Collection;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author : Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 14/06/13
- * Time: 15:34
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  14/06/13
  */
 public abstract class AbstractProteinEnricher
 implements ProteinEnricher {
@@ -36,6 +35,15 @@ implements ProteinEnricher {
     protected ProteinRemapper proteinRemapper = null;
 
     protected Protein proteinFetched = null;
+
+
+
+    public void enrichProteins(Collection<Protein> proteinsToEnrich) throws EnricherException {
+        for(Protein proteinToEnrich : proteinsToEnrich){
+            enrichProtein(proteinToEnrich);
+        }
+    }
+
 
     /**
      * Takes a protein, gathers information about it and will try to return a more complete form.

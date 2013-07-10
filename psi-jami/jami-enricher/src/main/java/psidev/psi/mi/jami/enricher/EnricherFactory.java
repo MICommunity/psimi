@@ -1,10 +1,8 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum;
-import psidev.psi.mi.jami.model.ModelledFeature;
+
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,18 +12,24 @@ import psidev.psi.mi.jami.model.ModelledFeature;
  */
 public class EnricherFactory {
 
-    public void test(){
+    public void linkFeatureToProtein(InteractionEnricher enricher){
 
+        FeatureEnricher featureEnricher = enricher.getParticipantEnricher().getFeatureEnricher();
+        ProteinEnricherListener listener = enricher.getParticipantEnricher().getProteinEnricher().getProteinEnricherListener();
+        if(listener != null) {
+            ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
+            manager.addEnricherListener(listener);
+            manager.addEnricherListener(featureEnricher);
+            enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(manager);
+        } else {
+            enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(featureEnricher);
+        }
+    }
 
-        ModelledInteractionEnricherMinimum interactionEnricher = new ModelledInteractionEnricherMinimum();
-        interactionEnricher.setParticipantEnricher(new ModelledParticipantEnricherMinimum());
-        interactionEnricher.setCvTermEnricher(new CvTermEnricherMinimum());
-        interactionEnricher.setFeatureEnricher(new FeatureEnricherMinimum<ModelledFeature>());
-
-       // interactionEnricher.getParticipantEnricher().get;
-
-
-
+    public void unifyCvTermEnricher(InteractionEnricher enricher){
+        CvTermEnricher cvTermEnricher = enricher.getCvTermEnricher();
+        enricher.getParticipantEnricher().setCvTermEnricher(cvTermEnricher);
+        enricher.getParticipantEnricher().getFeatureEnricher().setCvTermEnricher(cvTermEnricher);
     }
 
 }

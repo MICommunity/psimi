@@ -19,9 +19,9 @@ import static junit.framework.Assert.assertNull;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
-public class MaximumCvTermEnricherTest {
+public class CvTermEnricherMaximumTest {
 
-    MaximumCvTermEnricher maximumCvTermEnricher;
+    CvTermEnricherMaximum cvTermEnricherMaximum;
     MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
 
     private String SHORT_NAME = "ShortName";
@@ -31,8 +31,8 @@ public class MaximumCvTermEnricherTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        maximumCvTermEnricher = new MaximumCvTermEnricher();
-        maximumCvTermEnricher.setCvTermFetcher(mockCvTermFetcher);
+        cvTermEnricherMaximum = new CvTermEnricherMaximum();
+        cvTermEnricherMaximum.setCvTermFetcher(mockCvTermFetcher);
 
         CvTerm cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
@@ -51,7 +51,7 @@ public class MaximumCvTermEnricherTest {
         assertEquals(1, cvTermToEnrich.getIdentifiers().size());
         assertEquals(0 , cvTermToEnrich.getSynonyms().size());
 
-        maximumCvTermEnricher.enrichCvTerm(cvTermToEnrich);
+        cvTermEnricherMaximum.enrichCvTerm(cvTermToEnrich);
 
         assertEquals("test" , cvTermToEnrich.getShortName());
         assertNotNull(cvTermToEnrich.getFullName());

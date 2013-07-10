@@ -22,7 +22,7 @@ public class CvTermTest {
 
     public void maxenrich(){
         try{
-            cvTermEnricher = new MaximumCvTermUpdater();
+            cvTermEnricher = new CvTermUpdaterMaximum();
             cvTermEnricher.addEnricherListener(new EnricherListenerLog());
         } catch (Exception e){
             log.debug("the cv enricher did not initialise");
@@ -32,7 +32,7 @@ public class CvTermTest {
 
     public void minenrich(){
         try{
-            cvTermEnricher = new MinimumCvTermEnricher();
+            cvTermEnricher = new CvTermEnricherMinimum();
             cvTermEnricher.addEnricherListener(new EnricherListenerLog());
         } catch (Exception e){
             log.debug("the cv enricher did not initialise");

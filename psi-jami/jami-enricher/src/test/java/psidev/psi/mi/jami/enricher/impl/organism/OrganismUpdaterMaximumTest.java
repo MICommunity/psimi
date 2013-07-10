@@ -18,10 +18,10 @@ import static junit.framework.Assert.assertTrue;
  * Date: 24/05/13
  * Time: 14:52
  */
-public class MaximumOrganismUpdaterTest {
+public class OrganismUpdaterMaximumTest {
 
 
-    private MaximumOrganismUpdater maximumOrganismUpdater;
+    private OrganismUpdaterMaximum organismUpdaterMaximum;
     private MockOrganismFetcher fetcher;
     //private EnricherEvent event;
 
@@ -33,8 +33,8 @@ public class MaximumOrganismUpdaterTest {
     @Before
     public void initialiseFetcherAndEnricher() {
         this.fetcher = new MockOrganismFetcher();
-        this.maximumOrganismUpdater = new MaximumOrganismUpdater();
-        maximumOrganismUpdater.setFetcher(fetcher);
+        this.organismUpdaterMaximum = new OrganismUpdaterMaximum();
+        organismUpdaterMaximum.setFetcher(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism("" + TEST_AC_FULL_ORG, fullOrganism);
@@ -58,7 +58,7 @@ public class MaximumOrganismUpdaterTest {
         assertNotNull(organism_with_all_fields.getCommonName());
         assertNotNull(organism_with_all_fields.getScientificName());
 
-        this.maximumOrganismUpdater.enrichOrganism(organism_with_all_fields);
+        this.organismUpdaterMaximum.enrichOrganism(organism_with_all_fields);
 
         assertEquals(TEST_AC_FULL_ORG, organism_with_all_fields.getTaxId());
         assertEquals(TEST_COMMONNAME, organism_with_all_fields.getCommonName());
@@ -78,7 +78,7 @@ public class MaximumOrganismUpdaterTest {
         assertEquals("common", organism_with_all_fields.getCommonName());
         assertEquals("scientific", organism_with_all_fields.getScientificName());
 
-        this.maximumOrganismUpdater.enrichOrganism(organism_with_all_fields);
+        this.organismUpdaterMaximum.enrichOrganism(organism_with_all_fields);
 
         assertNotNull(organism_with_all_fields.getTaxId());
         assertNotNull(organism_with_all_fields.getCommonName());
@@ -107,7 +107,7 @@ public class MaximumOrganismUpdaterTest {
 
         Organism organism_test_three = new DefaultOrganism(TEST_AC_HALF_ORG);
 
-        maximumOrganismUpdater.enrichOrganism(organism_test_one);
+        organismUpdaterMaximum.enrichOrganism(organism_test_one);
 
         assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
 
@@ -115,14 +115,14 @@ public class MaximumOrganismUpdaterTest {
         assertTrue(event.getMismatches().size() == 0);
         assertTrue(event.getOverwrites().size() == 0);
 
-        maximumOrganismUpdater.enrichOrganism(organism_test_two);
+        organismUpdaterMaximum.enrichOrganism(organism_test_two);
 
         assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
         assertTrue(event.getAdditions().size() == 0);
         assertTrue(event.getMismatches().size() == 0);
         assertTrue(event.getOverwrites().size() > 0);
 
-        maximumOrganismUpdater.enrichOrganism(organism_test_three);
+        organismUpdaterMaximum.enrichOrganism(organism_test_three);
 
         assertEquals(event.getQueryID(), ""+TEST_AC_HALF_ORG);
         assertTrue(event.getAdditions().size() == 0);
@@ -142,15 +142,15 @@ public class MaximumOrganismUpdaterTest {
     public void test_enricher_event_is_fired_and_has_correct_content() throws EnrichmentException {
         Organism organism_to_enrich = new DefaultOrganism(TEST_AC_FULL_ORG, "testpart2 commonName", "testpart2 scientificName");
 
-        this.maximumOrganismUpdater.addEnricherListener(new EnricherListener() {
+        this.organismUpdaterMaximum.addEnricherListener(new EnricherListener() {
             public void onEnricherEvent(EnricherEvent e) {
                 event = e;
             }
         });
 
-        //this.maximumOrganismUpdater.addEnricherListener(new LoggingEnricherListener());
+        //this.organismUpdaterMaximum.addEnricherListener(new LoggingEnricherListener());
 
-        maximumOrganismUpdater.enrichOrganism(organism_to_enrich);
+        organismUpdaterMaximum.enrichOrganism(organism_to_enrich);
 
         assertNotNull(event);
         assertEquals(event.getObjectType(), "Organism");

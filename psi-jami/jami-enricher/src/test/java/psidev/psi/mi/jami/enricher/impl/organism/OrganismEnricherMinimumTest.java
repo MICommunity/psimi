@@ -16,9 +16,9 @@ import static junit.framework.Assert.*;
  * Date: 24/05/13
  * Time: 14:04
  */
-public class MinimumOrganismEnricherTest {
+public class OrganismEnricherMinimumTest {
 
-    private MinimumOrganismEnricher minimumOrganismEnricher;
+    private OrganismEnricherMinimum organismEnricherMinimum;
     private MockOrganismFetcher fetcher;
     //private EnricherEvent event;
 
@@ -30,8 +30,8 @@ public class MinimumOrganismEnricherTest {
     @Before
     public void initialiseFetcherAndEnricher() {
         this.fetcher = new MockOrganismFetcher();
-        this.minimumOrganismEnricher = new MinimumOrganismEnricher();
-        minimumOrganismEnricher.setFetcher(fetcher);
+        this.organismEnricherMinimum = new OrganismEnricherMinimum();
+        organismEnricherMinimum.setFetcher(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism("" + TEST_AC_FULL_ORG, fullOrganism);
@@ -54,7 +54,7 @@ public class MinimumOrganismEnricherTest {
 
         assertNull(organism_without_scientificName.getScientificName());
 
-        this.minimumOrganismEnricher.enrichOrganism(organism_without_scientificName);
+        this.organismEnricherMinimum.enrichOrganism(organism_without_scientificName);
 
         assertNotNull(organism_without_scientificName.getScientificName());
         assertEquals(TEST_SCIENTIFICNAME, organism_without_scientificName.getScientificName());
@@ -71,7 +71,7 @@ public class MinimumOrganismEnricherTest {
 
         assertNull(organism_without_commonName.getCommonName());
 
-        this.minimumOrganismEnricher.enrichOrganism(organism_without_commonName);
+        this.organismEnricherMinimum.enrichOrganism(organism_without_commonName);
 
         assertNotNull(organism_without_commonName.getCommonName());
         assertEquals(TEST_COMMONNAME, organism_without_commonName.getCommonName());
@@ -90,7 +90,7 @@ public class MinimumOrganismEnricherTest {
         assertNotNull(organism_with_all_fields.getCommonName());
         assertNotNull(organism_with_all_fields.getScientificName());
 
-        this.minimumOrganismEnricher.enrichOrganism(organism_with_all_fields);
+        this.organismEnricherMinimum.enrichOrganism(organism_with_all_fields);
 
         assertEquals( organism_with_all_fields.getTaxId(), TEST_AC_FULL_ORG );
         assertEquals( organism_with_all_fields.getCommonName() , "commonName" );
@@ -106,7 +106,7 @@ public class MinimumOrganismEnricherTest {
 
         Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_HALF_ORG, "commonName", "scientificName");
 
-        this.minimumOrganismEnricher.enrichOrganism(organism_with_all_fields);
+        this.organismEnricherMinimum.enrichOrganism(organism_with_all_fields);
 
         //assertTrue(event.getMismatches().size() == 0);
     }
