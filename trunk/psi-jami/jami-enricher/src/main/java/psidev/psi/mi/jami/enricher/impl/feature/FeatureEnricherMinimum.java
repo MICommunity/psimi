@@ -16,12 +16,6 @@ public class FeatureEnricherMinimum<F extends Feature>
         implements FeatureEnricher <F> {
 
 
-    @Override
-    public void processFeature(F featureToEnrich) {
-
-        //add feature type
-        return;
-    }
 
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMinimum();

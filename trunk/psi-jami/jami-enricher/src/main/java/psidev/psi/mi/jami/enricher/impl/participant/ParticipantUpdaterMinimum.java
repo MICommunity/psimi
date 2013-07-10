@@ -19,19 +19,19 @@ public class ParticipantUpdaterMinimum<P extends Participant , F extends Feature
         extends AbstractParticipantEnricher <P , F>{
 
 
-    @Override
+
     public ProteinEnricher getProteinEnricher(){
         if(proteinEnricher == null) proteinEnricher = new ProteinUpdaterMinimum();
         return proteinEnricher;
     }
 
-    @Override
+
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMinimum();
         return cvTermEnricher;
     }
 
-    @Override
+
     public FeatureEnricher<F> getFeatureEnricher(){
         if(featureEnricher == null) featureEnricher = new FeatureUpdaterMinimum<F>();
         return featureEnricher;

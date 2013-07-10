@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -16,12 +18,14 @@ public interface ProteinEnricher {
 
     /**
      * Takes the provided protein, finds additional information and includes it in the object.
-     *
-     *
-     *
      * @param proteinToEnrich
      */
     public void enrichProtein(Protein proteinToEnrich) throws EnricherException;
+    public void enrichProteins(Collection<Protein> proteinsToEnrich) throws EnricherException;
+
+
+    //====================
+
 
     /**
      *

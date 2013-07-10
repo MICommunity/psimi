@@ -51,6 +51,14 @@ public abstract class AbstractCvTermEnricher
         return listener;
     }
 
+
+
+    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException {
+        for(CvTerm cvTermToEnrich : cvTermsToEnrich){
+            enrichCvTerm(cvTermToEnrich);
+        }
+    }
+
     /**
      * Uses the CvTermToEnrich to fetch a more complete term
      * and then processes the CvTerm to modify it to a more enriched or updated form.

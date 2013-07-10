@@ -18,13 +18,12 @@ public class ParticipantEvidenceEnricherMinimum
         extends ParticipantEnricherMinimum<ParticipantEvidence , FeatureEvidence> {
 
     @Override
-    public void enrichParticipant(ParticipantEvidence participantEvidenceToEnrich)
+    protected void processParticipant(ParticipantEvidence participantEvidenceToEnrich)
             throws EnricherException {
 
-        super.enrichParticipant(participantEvidenceToEnrich);
+        super.processParticipant(participantEvidenceToEnrich);
 
         if(getCvTermEnricher() != null){
-
             getCvTermEnricher().enrichCvTerm(
                     participantEvidenceToEnrich.getExperimentalRole());
 

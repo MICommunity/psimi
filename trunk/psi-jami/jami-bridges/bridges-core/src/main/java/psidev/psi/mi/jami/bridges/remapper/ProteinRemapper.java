@@ -7,11 +7,9 @@ import psidev.psi.mi.jami.model.Protein;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 07/06/13
+ * @since  07/06/13
  */
 public interface ProteinRemapper {
-
-    //public ProteinRemapper(RemapperBridge bridge);
 
     public void setRemapListener(ProteinRemapperListener listener);
     public ProteinRemapperListener getRemapListener();

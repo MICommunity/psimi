@@ -16,21 +16,6 @@ public class FeatureEnricherMaximum<F extends Feature>
         implements FeatureEnricher <F> {
 
 
-    @Override
-    public void processFeature(F featureToEnrich) {
-        super.processFeature(featureToEnrich);
-
-        featureToEnrich.getRanges();
-
-        //If ranges are invalid - stop
-
-        //else
-
-        //
-
-        return;
-    }
-
 
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMaximum();

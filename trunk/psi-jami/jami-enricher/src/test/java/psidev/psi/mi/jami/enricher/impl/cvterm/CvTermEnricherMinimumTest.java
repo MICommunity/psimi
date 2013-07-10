@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
-import psidev.psi.mi.jami.bridges.ols.OlsFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -19,9 +18,9 @@ import static junit.framework.Assert.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
-public class MinimumCvTermEnricherTest {
+public class CvTermEnricherMinimumTest {
 
-    MinimumCvTermEnricher minimumCvTermEnricher;
+    CvTermEnricherMinimum cvTermEnricherMinimum;
     MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
 
     private String SHORT_NAME = "ShortName";
@@ -31,8 +30,8 @@ public class MinimumCvTermEnricherTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        minimumCvTermEnricher = new MinimumCvTermEnricher();
-        minimumCvTermEnricher.setCvTermFetcher(mockCvTermFetcher);
+        cvTermEnricherMinimum = new CvTermEnricherMinimum();
+        cvTermEnricherMinimum.setCvTermFetcher(mockCvTermFetcher);
 
         CvTerm cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
@@ -51,7 +50,7 @@ public class MinimumCvTermEnricherTest {
         assertEquals(1, cvTermToEnrich.getIdentifiers().size());
         assertEquals(0 , cvTermToEnrich.getSynonyms().size());
 
-        minimumCvTermEnricher.enrichCvTerm(cvTermToEnrich);
+        cvTermEnricherMinimum.enrichCvTerm(cvTermToEnrich);
 
         assertEquals("test" , cvTermToEnrich.getShortName());
         assertNotNull(cvTermToEnrich.getFullName());
@@ -64,14 +63,14 @@ public class MinimumCvTermEnricherTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTerm() throws EnricherException {
         CvTerm nullCvTerm = null;
-        minimumCvTermEnricher.enrichCvTerm(nullCvTerm);
+        cvTermEnricherMinimum.enrichCvTerm(nullCvTerm);
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         CvTerm cvTerm = new DefaultCvTerm(SHORT_NAME , MI_ID);
-        minimumCvTermEnricher.setCvTermFetcher(null);
-        minimumCvTermEnricher.enrichCvTerm(cvTerm);
+        cvTermEnricherMinimum.setCvTermFetcher(null);
+        cvTermEnricherMinimum.enrichCvTerm(cvTerm);
     }
 
 }

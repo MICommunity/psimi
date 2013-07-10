@@ -19,6 +19,9 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
     public void enrichParticipant(P participantToEnrich) throws EnricherException;
     public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException;
 
+
+
+
     public void setParticipantListener(ParticipantEnricherListener listener);
     public ParticipantEnricherListener getParticipantEnricherListener();
 

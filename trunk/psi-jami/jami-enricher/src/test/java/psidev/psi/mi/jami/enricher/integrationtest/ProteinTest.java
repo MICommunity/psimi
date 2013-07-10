@@ -8,8 +8,8 @@ import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.UniprotProteinRemapper;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.participant.MaximumParticipantEnricher;
-import psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEnricher;
+import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum;
+import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -41,7 +41,7 @@ public class ProteinTest {
 
 
     public void min(){
-        participantEnricher = new MinimumParticipantEnricher();
+        participantEnricher = new ParticipantEnricherMinimum();
         participantEnricher.getProteinEnricher().setFetcher(fetcher);
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
@@ -49,7 +49,7 @@ public class ProteinTest {
     }
 
     public void max(){
-        participantEnricher = new MaximumParticipantEnricher();
+        participantEnricher = new ParticipantEnricherMaximum();
         participantEnricher.getProteinEnricher().setFetcher(fetcher);
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);

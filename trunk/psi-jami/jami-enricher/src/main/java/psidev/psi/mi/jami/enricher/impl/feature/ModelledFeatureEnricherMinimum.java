@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
-import psidev.psi.mi.jami.model.FeatureEvidence;
+
 import psidev.psi.mi.jami.model.ModelledFeature;
 
 /**

@@ -5,7 +5,8 @@ import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherM
 import psidev.psi.mi.jami.model.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * An extension of the interaction enricher which only accepts InteractionEvidence
+ * Overrides the default ParticipantEnricher to the evidence only form.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/07/13
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.model.*;
 public class InteractionEvidenceEnricherMaximum
     extends InteractionEnricherMaximum<InteractionEvidence, ParticipantEvidence, FeatureEvidence> {
 
-
+    @Override
     public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ParticipantEvidenceEnricherMaximum();
         return participantEnricher;

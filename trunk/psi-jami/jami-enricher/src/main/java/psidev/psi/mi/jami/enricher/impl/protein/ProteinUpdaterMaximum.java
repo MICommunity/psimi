@@ -26,7 +26,6 @@ public class ProteinUpdaterMaximum
     protected void processProtein(Protein proteinToEnrich){
         super.processProtein(proteinToEnrich);
 
-
         if(! proteinFetched.getXrefs().isEmpty()) {
             XrefUpdateMerger merger = new XrefUpdateMerger();
             merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs());

@@ -24,7 +24,7 @@ public interface CvTermEnricher{
      */
     public void enrichCvTerm(CvTerm cvTermToEnrich) throws EnricherException;
 
-    //public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);
+    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException;
 
 
     /**
@@ -33,7 +33,6 @@ public interface CvTermEnricher{
      */
     public void setCvTermFetcher(CvTermFetcher fetcher);
     public CvTermFetcher getCvTermFetcher();
-
 
     public void setCvTermEnricherListener(CvTermEnricherListener listener);
     public CvTermEnricherListener getCvTermEnricherListener();
