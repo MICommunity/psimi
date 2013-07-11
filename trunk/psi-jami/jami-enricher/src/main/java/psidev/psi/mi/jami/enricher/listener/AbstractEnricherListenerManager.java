@@ -16,9 +16,9 @@ public abstract class AbstractEnricherListenerManager <T extends EnricherListene
     public void addEnricherListener(T listener){
         listenersList.add(listener);
     }
-    public void addAllEnricherListeners(Collection<T> listeners){
+    /* public void addAllEnricherListeners(Collection<T> listeners){
         listenersList.addAll(listeners);
-    }
+    } */
 
     public void removeEnricherListener(T listener){
         listenersList.remove(listener);

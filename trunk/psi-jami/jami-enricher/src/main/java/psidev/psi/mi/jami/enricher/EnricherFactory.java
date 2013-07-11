@@ -17,7 +17,7 @@ public class EnricherFactory {
      * creating a listener manager if there is already a listener (which isn't the feature enricher)
      * @param enricher
      */
-    public static void linkFeatureToProtein(InteractionEnricher enricher){
+    public static void linkFeatureEnricherToProteinEnricher(InteractionEnricher enricher){
 
         FeatureEnricher featureEnricher = enricher.getParticipantEnricher().getFeatureEnricher();
         ProteinEnricherListener listener = enricher.getParticipantEnricher().getProteinEnricher().getProteinEnricherListener();

@@ -24,9 +24,17 @@ public class ProteinEnricherMinimum
         extends AbstractProteinEnricher
         implements ProteinEnricher {
 
-
+    /**
+     * Prepares a protein with a dead identifier to be remapped.
+     * Fires a report if the remap was successful.
+     * @param proteinToEnrich   The protein to be enriched
+     * @return                  The status of the enrichment
+     * @throws EnricherException
+     */
     @Override
     protected boolean remapDeadProtein(Protein proteinToEnrich) throws EnricherException {
+        String oldUniprot = proteinToEnrich.getUniprotkb();
+
         proteinToEnrich.getXrefs().add(
                 new DefaultXref(
                         CvTermUtils.createUniprotkbDatabase(),
@@ -39,7 +47,13 @@ public class ProteinEnricherMinimum
 
         proteinToEnrich.setUniprotkb(null);
 
-        return remapProtein(proteinToEnrich , "proteinToEnrich has a dead UniprotKB ID.");
+        if(remapProtein(proteinToEnrich , "proteinToEnrich has a dead UniprotKB ID.")){
+            listener.onProteinRemapped(proteinToEnrich , oldUniprot);
+            listener.onUniprotKbUpdate(proteinToEnrich , oldUniprot);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

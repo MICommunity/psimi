@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.enricher.impl.interaction;
 
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum;
 import psidev.psi.mi.jami.model.*;
 
 /**

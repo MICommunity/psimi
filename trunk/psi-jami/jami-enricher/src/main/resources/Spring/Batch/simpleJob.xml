@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/batch"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/batch
+http://www.springframework.org/schema/batch/spring-batch-2.0.xsd">
+
+    <beans:import resource="applicationContext.xml"/>
+
+    <job id="helloWorldJob" job-repository="jobRepository">
+        <step id="step1">
+            <tasklet ref="helloWorldTasklet" />
+            <!--<tasklet>
+                <chunk reader="fooReader" processor="compositeProcessor" writer="foobarWriter"
+                       commit-interval="2"/>
+            </tasklet> -->
+        </step>
+    </job>
+
+    <beans:bean name="helloWorldTasklet" class="psidev.psi.mi.jami.enricher.springbatchattempt.HelloTasklet"/>
+
+    <!--
+    To run the job from the command line type the following:
+    mvn exec:java -Dexec.mainClass=org.springframework.batch.core.launch.support.CommandLineJobRunner -Dexec.args="simpleJob.xml helloWorldJob"
+     -->
+</beans:beans>
