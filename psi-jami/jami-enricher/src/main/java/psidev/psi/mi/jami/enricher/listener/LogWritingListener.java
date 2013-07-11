@@ -15,6 +15,9 @@ public abstract class LogWritingListener implements EnricherListener{
 
     private BufferedWriter bufferedWriter;
 
+    public static final String NEW_LINE = "/n";
+    public static final String NEW_ENTRY = "/t";
+
     public LogWritingListener(File outputFile) throws IOException {
         if(outputFile == null) throw new IllegalArgumentException("Provided a null file to write to.");
 

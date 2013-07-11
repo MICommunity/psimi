@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
@@ -32,7 +33,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
     protected Protein oldSequenceSource;
     protected String oldSequence;
-    protected Protein lastEnrichedSequence;
+    protected Protein lastEnrichedProtein;
 
 
 
@@ -54,50 +55,67 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
         if(getCvTermEnricher() != null) {
             getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
-            getCvTermEnricher().enrichCvTerm(featureToEnrich.getInteractionDependency());
-            getCvTermEnricher().enrichCvTerm(featureToEnrich.getInteractionEffect());
+            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionDependency() );
+            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );
         }
 
+        // The last enriched protein is participant of this feature
+        if(featureToEnrich.getParticipant() == lastEnrichedProtein){
+            String firstSequence = null;
+            String secondSequence = null;
 
-       /*
+            // The sequence was changed
+            if(featureToEnrich.getParticipant() == oldSequenceSource){
+                if( oldSequence == null || ! oldSequence.equals("") ){
+                    if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.FAILED ,
+                            "The original sequence is null which invalidates all features.");
+                    return; //TODO
+                } else {
+                    firstSequence = oldSequence;
+                    secondSequence = lastEnrichedProtein.getSequence();
+                }
+            } else {
+                if( lastEnrichedProtein.getSequence() == null || ! lastEnrichedProtein.getSequence().equals("") ){
+                    if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.FAILED ,
+                            "The original sequence is null which invalidates all features.");
+                    return; //TODO
+                } else {
+                    firstSequence = lastEnrichedProtein.getSequence();
+                }
+            }
 
-        if(sequenceOld == null){
-            if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
-                    "Failed. The original sequence is null which invalidates all features.");
-            return false;
+
+            for(Object object : featureToEnrich.getRanges()) {
+                Range range = (Range)object;
+
+                if( ! range.getStart().isPositionUndetermined()
+                        && ! range.getEnd().isPositionUndetermined()
+                        && PositionUtils.areRangePositionsValid(
+                                range.getStart().getStart(), range.getEnd().getEnd())
+                        && ! PositionUtils.areRangePositionsOutOfBounds(
+                                range.getStart().getStart(), range.getEnd().getEnd(),firstSequence.length())) {
+
+                    //Do something
+
+                    //VALID
+                }
+                else {
+                   // if(listener != null) ;//listener. note that the feature has invalid range
+                    range.getStart().getStatus().getAnnotations().add(
+                            AnnotationUtils.createCaution(
+                                    "Invalid range: " +
+                                            range.getStart().getStart() + "," +
+                                            range.getEnd().getEnd()));  //todo
+                    //range.getStart().PositionUtils.createUndeterminedPosition());
+                    //allValid = false;
+                }
+
+            }
+
+
+
         }
 
-        //boolean allValid = true;
-        for(Range range : featureEvidenceToEnrich.getRanges()) {
-
-            if( range.getStart().isPositionUndetermined()
-                    || range.getEnd().isPositionUndetermined()){
-                //Entry already considered invalid;
-            }
-            else if( PositionUtils.areRangePositionsValid(
-                        range.getStart().getStart(), range.getEnd().getEnd())
-                    && PositionUtils.areRangePositionsOutOfBounds(
-                        range.getStart().getStart(), range.getEnd().getEnd(),
-                        sequenceOld.length())) {
-                //VALID
-            }
-            else {
-                if(listener != null) ;//listener. note that the feature has invalid range
-                range.getStart().getStatus().getAnnotations().add(
-                        AnnotationUtils.createCaution(
-                                "Invalid range: "+
-                                range.getStart().getStart() + "," +
-                                range.getEnd().getEnd()));  //todo
-                //range.getStart().PositionUtils.createUndeterminedPosition());
-                //allValid = false;
-            }
-        }
-        /*if( ! allValid){
-
-            if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
-                    "Failed. Feature has invalid ranges.");
-            return false;
-        } */
 
          /*
         List<Diff> sequenceChanges  = DiffUtils.diff(sequenceOld, sequenceNew);
@@ -149,15 +167,13 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         this.cvTermEnricher = cvTermEnricher;
     }
 
-
-
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         this.oldSequence = oldSequence;
         this.oldSequenceSource = protein;
     }
 
     public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
-        this.lastEnrichedSequence = protein;
+        this.lastEnrichedProtein = protein;
     }
 
     public void onProteinRemapped(Protein protein, String oldUniprot) {}

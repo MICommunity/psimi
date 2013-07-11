@@ -37,7 +37,11 @@ implements ProteinEnricher {
     protected Protein proteinFetched = null;
 
 
-
+    /**
+     * Enriches a collection of proteins.
+     * @param proteinsToEnrich
+     * @throws EnricherException
+     */
     public void enrichProteins(Collection<Protein> proteinsToEnrich) throws EnricherException {
         for(Protein proteinToEnrich : proteinsToEnrich){
             enrichProtein(proteinToEnrich);
@@ -46,10 +50,9 @@ implements ProteinEnricher {
 
 
     /**
-     * Takes a protein, gathers information about it and will try to return a more complete form.
+     * Fetches a complete record for a protein and uses the processing strategy to integrate the additional data.
      *
      * @param proteinToEnrich   the Protein which is being enriched
-     * @return  a boolean denoting whether the enrichment was successful
      */
     public void enrichProtein(Protein proteinToEnrich) throws EnricherException {
         // If there are several entries, try to find one with the same organism as the proteinToEnrich
@@ -93,8 +96,7 @@ implements ProteinEnricher {
      * In both cases, if false is returned, an onProteinEnriched event is fired with a 'failed' status.
      *
      * @param proteinToEnrich   The protein which is being enriched.
-     * @return  Whether there were any fatal conflicts which
-
+     * @return                  Whether there were any conflicts which would halt enrichment
      */
     protected boolean proteinIsConflictFree(Protein proteinToEnrich){
         boolean exitStatus = true;
@@ -112,6 +114,7 @@ implements ProteinEnricher {
             exitStatus = false;
         }
 
+        // TODO - consider the fine tuning of this failure
         //Organism
         if(proteinFetched.getOrganism() == null) proteinFetched.setOrganism(new DefaultOrganism(-3));
         if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
@@ -133,23 +136,30 @@ implements ProteinEnricher {
     /**
      * Fetches the protein entry which matches the proteinToEnrich.
      * Uses the provided proteinFetcher.
+     * Will also resort to the proteinRemapper if the protein is dead..
      *
-     * @param proteinToEnrich
-     * @return
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @return                  A complete protein record which matches the proteinToEnrich
      */
     protected Protein fetchProtein(Protein proteinToEnrich) throws EnricherException {
 
         if(getFetcher() == null) throw new IllegalStateException("ProteinFetcher has not been provided.");
-        if(proteinToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null protein.");
+        if(proteinToEnrich == null) throw new IllegalArgumentException("Attempted to fetch for a null protein.");
 
+        // If there is no uniprotID - try and remap.
         if(proteinToEnrich.getUniprotkb() == null) {
             if(getProteinRemapper() == null){
                 if(! remapProtein(proteinToEnrich , "proteinToEnrich has no UniprotKB ID.")){
+                    if(listener != null) {
+                        listener.onProteinRemapped(proteinToEnrich , null);
+                        listener.onUniprotKbUpdate(proteinToEnrich , null);
+                    }
                     return null;
                 }
             }
         }
 
+        //
         Collection<Protein> proteinsEnriched;
         try {
             proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
@@ -164,7 +174,7 @@ implements ProteinEnricher {
             if( ! remapDeadProtein(proteinToEnrich)){
                 return null;
             }else{
-
+                // Otherwise fetch the details of the protein using the fetcher.
                 RetryStrategy retryStrategy = new RetryStrategy(RETRY_COUNT , null );
                 while(retryStrategy.retry()){
                     try {
@@ -180,7 +190,7 @@ implements ProteinEnricher {
                         || proteinsEnriched.isEmpty()){
                     if(listener != null) listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
                             "Protein is dead. " +
-                            "Was able to remap but the remapped entry also appears to be dead.");
+                            "Was able to remap but the remapped identifier returned no results.");
                     return null;
                 }
             }
@@ -201,19 +211,22 @@ implements ProteinEnricher {
         // fire a specific event because we want to track these proteins.
 
         // Many proteins, try and choose
-        /*if(proteinToEnrich.getOrganism() == null
+        // TODO - review this as it was commented for an unknown reason.
+        if(proteinToEnrich.getOrganism() == null
                 || proteinToEnrich.getOrganism().getTaxId() == -3){
             if(listener != null)
                 listener.onProteinEnriched(proteinToEnrich,  EnrichmentStatus.FAILED ,
                         "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
                         "Cannot choose as proteinToEnrich has no organism.");
             return null;
-        }*/
+        }
 
         Protein proteinFetched = null;
 
         for(Protein protein : proteinsEnriched){
-            if(protein.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()){
+            if(protein.getOrganism() != null && proteinToEnrich.getOrganism() != null
+                    && protein.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()){
+
                 if(proteinFetched == null) proteinFetched = protein;
                 else{
                     // Multiple proteins share this organism - impossible to choose
@@ -242,12 +255,14 @@ implements ProteinEnricher {
      * If one has not been included, this method returns false and reports a failure to the listener.
      * If after remapping, the protein still has no entry, this entry returns false.
      *
-     * @param proteinToEnrich
-     * @param remapCause
-     * @return
+     * @param proteinToEnrich   The protein to find a remapping for.
+     * @param remapCause        The reason the remapping was requested.
+     *                          Will be included in the output if the remapping fails.
+     * @return                  Whether the remapping was successful.
      */
     protected boolean remapProtein(Protein proteinToEnrich, String remapCause) throws EnricherException {
 
+        // If there is no protein remapper, the enrichment fails
         if( getProteinRemapper() == null ){
             if(listener != null) listener.onProteinEnriched(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
@@ -255,22 +270,22 @@ implements ProteinEnricher {
             return false;
         }
 
+
+
+        // Attempt the remapping
         try {
             getProteinRemapper().remapProtein(proteinToEnrich);
         } catch (BridgeFailedException e) {
             throw new EnricherException(e);
         }
 
+        //
         if(proteinToEnrich.getUniprotkb() == null){
             if(listener != null) listener.onProteinEnriched(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
                     "Was unable to find a mapping.");
             return false;
         } else {
-            if(listener != null) {
-                listener.onProteinRemapped(proteinToEnrich , null);
-                listener.onUniprotKbUpdate(proteinToEnrich , null);
-            }
             return true;
         }
     }
