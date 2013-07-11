@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMinimum;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.ChecksumMerger;
 import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
@@ -89,76 +90,8 @@ public class ProteinUpdaterMinimum
             if(listener != null) listener.onSequenceUpdate(proteinToEnrich, oldValue);
         }
 
-
-        Checksum crc64ChecksumToEnrich = null;
-        Checksum rogidChecksumToEnrich = null;
-        Checksum fetchedCrc64Checksum = null;
-        Checksum fetchedRogidChecksum = null;
-
-        // Checksums
-        // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
-
-            // Find the CRC64 & ROGID in the fetched protein.
-            for(Checksum checksum : proteinFetched.getChecksums()){
-                if(checksum.getMethod() != null){
-
-                    if(ChecksumUtils.doesChecksumHaveMethod(checksum , Checksum.ROGID_MI , Checksum.ROGID)){
-                        rogidChecksumToEnrich = checksum;
-                    }
-                    else if(ChecksumUtils.doesChecksumHaveMethod(checksum , null , "CRC64")){
-                        crc64ChecksumToEnrich = checksum;
-                    }
-                }
-                if(crc64ChecksumToEnrich != null && rogidChecksumToEnrich != null) break;
-            }
-            // If either were found, look for the crc64 and a the rogid in the enriched
-            if(crc64ChecksumToEnrich != null || rogidChecksumToEnrich != null){
-                for(Checksum checksum : proteinToEnrich.getChecksums()){
-                    if(checksum.getMethod() != null){
-                        if(ChecksumUtils.doesChecksumHaveMethod(checksum , Checksum.ROGID_MI , Checksum.ROGID)){
-                            fetchedRogidChecksum = checksum;
-                        }
-                        else if(ChecksumUtils.doesChecksumHaveMethod(checksum , null , "CRC64")){
-                            fetchedCrc64Checksum = checksum;
-                        }
-                    }
-                    if(fetchedCrc64Checksum != null && fetchedRogidChecksum != null) break;
-                }
-            }
-
-
-        if(proteinFetched.getSequence() != null
-                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
-
-            if(fetchedCrc64Checksum != null) {
-                if( crc64ChecksumToEnrich != null
-                        && ! fetchedCrc64Checksum.getValue().equalsIgnoreCase(crc64ChecksumToEnrich.getValue())) {
-                    proteinToEnrich.getChecksums().remove(crc64ChecksumToEnrich);
-                    if(listener != null) listener.onRemovedChecksum(proteinToEnrich, crc64ChecksumToEnrich);
-                    crc64ChecksumToEnrich = null;
-                }
-                if(crc64ChecksumToEnrich == null){
-                    proteinToEnrich.getChecksums().add(fetchedCrc64Checksum);
-                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedCrc64Checksum);
-                }
-            }
-
-            if(fetchedRogidChecksum != null
-                    && proteinFetched.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()
-                    && proteinToEnrich.getOrganism().getTaxId() != -3){
-
-                if( rogidChecksumToEnrich != null
-                        && ! fetchedRogidChecksum.getValue().equalsIgnoreCase(rogidChecksumToEnrich.getValue())) {
-                    proteinToEnrich.getChecksums().remove(rogidChecksumToEnrich);
-                    if(listener != null) listener.onRemovedChecksum(proteinToEnrich, rogidChecksumToEnrich);
-                    rogidChecksumToEnrich = null;
-                }
-                if(rogidChecksumToEnrich == null){
-                    proteinToEnrich.getChecksums().add(fetchedRogidChecksum);
-                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedRogidChecksum);
-                }
-            }
-        }
+        ChecksumMerger checksumMerger = new ChecksumMerger();
+        //TODO
 
 
 
@@ -170,15 +103,15 @@ public class ProteinUpdaterMinimum
 
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
-            XrefUpdateMerger merger = new XrefUpdateMerger();
-            merger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers());
+            XrefUpdateMerger xrefMerger = new XrefUpdateMerger();
+            xrefMerger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers());
 
-            for(Xref xref: merger.getToRemove()){
+            for(Xref xref: xrefMerger.getToRemove()){
                 proteinToEnrich.getIdentifiers().remove(xref);
                 if(listener != null) listener.onRemovedIdentifier(proteinToEnrich , xref);
             }
 
-            for(Xref xref: merger.getToAdd()){
+            for(Xref xref: xrefMerger.getToAdd()){
                 proteinToEnrich.getIdentifiers().add(xref);
                 if(listener != null) listener.onAddedIdentifier(proteinToEnrich, xref);
             }
@@ -188,15 +121,15 @@ public class ProteinUpdaterMinimum
 
         // == Alias ==
         if(! proteinFetched.getAliases().isEmpty()) {
-            AliasUpdateMerger merger = new AliasUpdateMerger();
-            merger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
+            AliasUpdateMerger aliasMerger = new AliasUpdateMerger();
+            aliasMerger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
 
-            for(Alias alias: merger.getToRemove()){
+            for(Alias alias: aliasMerger.getToRemove()){
                 proteinToEnrich.getAliases().remove(alias);
                 if(listener != null) listener.onRemovedAlias(proteinToEnrich , alias);
             }
 
-            for(Alias alias: merger.getToAdd()){
+            for(Alias alias: aliasMerger.getToAdd()){
                 proteinToEnrich.getAliases().add(alias);
                 if(listener != null) listener.onAddedAlias(proteinToEnrich, alias);
             }
