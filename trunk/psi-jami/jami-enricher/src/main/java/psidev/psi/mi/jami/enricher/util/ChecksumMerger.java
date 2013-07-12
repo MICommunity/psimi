@@ -60,8 +60,6 @@ public class ChecksumMerger {
                 if(fetchedCrc64Checksum != null && fetchedRogidChecksum != null) break;
             }
         }
-
-
     }
 
     public void test(String sequence){

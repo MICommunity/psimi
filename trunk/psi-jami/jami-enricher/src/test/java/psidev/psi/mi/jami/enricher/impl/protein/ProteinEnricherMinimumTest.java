@@ -2,16 +2,17 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum;
+import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherCounter;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
@@ -28,10 +29,8 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 
 public class ProteinEnricherMinimumTest {
 
-    private ProteinEnricherMinimum minimumProteinEnricher;
+    private ProteinEnricherMinimum proteinEnricher;
     private MockProteinFetcher fetcher;
-
-    //private ProteinEnricherCounter counter;
 
     private static final String TEST_SHORTNAME = "test shortName";
     private static final String TEST_FULLNAME = "test fullName";
@@ -45,8 +44,8 @@ public class ProteinEnricherMinimumTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         this.fetcher = new MockProteinFetcher();
-        this.minimumProteinEnricher = new ProteinEnricherMinimum();
-        minimumProteinEnricher.setFetcher(fetcher);
+        this.proteinEnricher = new ProteinEnricherMinimum();
+        proteinEnricher.setFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -59,23 +58,31 @@ public class ProteinEnricherMinimumTest {
         halfProtein.setOrganism(new DefaultOrganism(-3));
         fetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
 
-        ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
+        //ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
         //counter = new ProteinEnricherCounter();
 
         //manager.addProteinEnricherListener(new ProteinEnricherLogger());
         //manager.addProteinEnricherListener(counter);
-        minimumProteinEnricher.setProteinEnricherListener(manager);
-        minimumProteinEnricher.getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
+        //proteinEnricher.setProteinEnricherListener(manager);
+        //proteinEnricher.getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
     }
 
     /**
-     * Checks that when a null protein is provided, an exception is thrown
+     * Confirm that when a null protein is provided, an exception is thrown
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_exception_when_fetching_on_null_protein() throws EnricherException {
 
         Protein null_protein = null;
-        this.minimumProteinEnricher.enrichProtein(null_protein);
+        this.proteinEnricher.enrichProtein(null_protein);
+    }
+
+    /**
+     * Confirm that the default organism enricher matches the protein enricher.
+     */
+    @Test
+    public void test_organism_enricher_is_of_matching_type(){
+        assertTrue(proteinEnricher.getOrganismEnricher() instanceof OrganismEnricherMinimum);
     }
 
     /**
@@ -89,7 +96,9 @@ public class ProteinEnricherMinimumTest {
         Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
         assertNull(null_identifier_protein.getUniprotkb());
 
-        this.minimumProteinEnricher.enrichProtein(null_identifier_protein);
+        //proteinEnricher.setProteinEnricherListener();
+
+        this.proteinEnricher.enrichProtein(null_identifier_protein);
 
         assertNull(null_identifier_protein.getUniprotkb());
         //assertTrue(counter.getStatus().contains("Failed"));
@@ -106,7 +115,7 @@ public class ProteinEnricherMinimumTest {
 
         protein_with_interactor_type.setInteractorType(value);
 
-        minimumProteinEnricher.enrichProtein(protein_with_interactor_type);
+        proteinEnricher.enrichProtein(protein_with_interactor_type);
 
         //assertEquals(0, counter.getAdded());
         assertTrue(protein_with_interactor_type.getInteractorType() == value); //Show they are the same instance
@@ -126,7 +135,7 @@ public class ProteinEnricherMinimumTest {
         assertEquals(Protein.UNKNOWN_INTERACTOR,
                 protein_with_no_interactor_type.getInteractorType().getShortName());
 
-        minimumProteinEnricher.enrichProtein(protein_with_no_interactor_type);
+        proteinEnricher.enrichProtein(protein_with_no_interactor_type);
 
         assertEquals(Protein.PROTEIN,
                 protein_with_no_interactor_type.getInteractorType().getShortName());
@@ -145,7 +154,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_bad_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
         protein_with_bad_interactor_type.setInteractorType(CvTermUtils.createGeneInteractorType());
 
-        minimumProteinEnricher.enrichProtein(protein_with_bad_interactor_type);
+        proteinEnricher.enrichProtein(protein_with_bad_interactor_type);
 
         //assertEquals(0, counter.getAdded());
         //assertEquals(0, counter.getRemoved());
@@ -163,7 +172,7 @@ public class ProteinEnricherMinimumTest {
         Protein protein_without_fullName = new DefaultProtein("test2 shortName");
         protein_without_fullName.setUniprotkb(TEST_AC_FULL_PROT);
 
-        this.minimumProteinEnricher.enrichProtein(protein_without_fullName);
+        this.proteinEnricher.enrichProtein(protein_without_fullName);
 
         assertNotNull(protein_without_fullName.getFullName());
         assertEquals(TEST_FULLNAME, protein_without_fullName.getFullName());
@@ -175,7 +184,7 @@ public class ProteinEnricherMinimumTest {
     //
     //    Protein protein_without_AC = new DefaultProtein("test2 shortName");
     //
-    //    this.minimumProteinEnricher.enrichProtein(protein_without_AC);
+    //    this.proteinEnricher.enrichProtein(protein_without_AC);
     //
     //    Assert.assertNotNull(protein_without_fullName.getFullName());
     //    Assert.assertEquals("test1 fullName", protein_without_fullName.getFullName());
@@ -192,7 +201,7 @@ public class ProteinEnricherMinimumTest {
         Protein protein_without_sequence = new DefaultProtein("test2 shortName");
         protein_without_sequence.setUniprotkb(TEST_AC_FULL_PROT);
 
-        this.minimumProteinEnricher.enrichProtein(protein_without_sequence);
+        this.proteinEnricher.enrichProtein(protein_without_sequence);
 
         assertNotNull(protein_without_sequence.getSequence());
         assertEquals(TEST_SEQUENCE, protein_without_sequence.getSequence());
@@ -214,14 +223,14 @@ public class ProteinEnricherMinimumTest {
 
         assertNull(protein_without_organism.getOrganism());
 
-        this.minimumProteinEnricher.enrichProtein(protein_without_organism);
+        this.proteinEnricher.enrichProtein(protein_without_organism);
 
         assertNotNull(protein_without_organism.getOrganism());
         assertEquals(TEST_ORGANISM_ID , protein_without_organism.getOrganism().getTaxId());
         assertEquals(TEST_ORGANISM_COMMON , protein_without_organism.getOrganism().getCommonName());
         assertEquals(TEST_ORGANISM_SCIENTIFIC , protein_without_organism.getOrganism().getScientificName());
     }
-
+    /*
     @Test
     public void test_organism_conflict() throws EnricherException {
 
@@ -232,7 +241,7 @@ public class ProteinEnricherMinimumTest {
 
         assertNotNull(protein_with_wrong_organism.getOrganism());
 
-        this.minimumProteinEnricher.enrichProtein(protein_with_wrong_organism);
+        this.proteinEnricher.enrichProtein(protein_with_wrong_organism);
         assertEquals(0, counter.getAdded());
         assertEquals(0, counter.getRemoved());
         assertEquals(0, counter.getUpdated());
@@ -255,7 +264,7 @@ public class ProteinEnricherMinimumTest {
         assertNotNull(protein_with_all_fields.getUniprotkb());
         assertNotNull(protein_with_all_fields.getSequence());
 
-        this.minimumProteinEnricher.enrichProtein(protein_with_all_fields);
+        this.proteinEnricher.enrichProtein(protein_with_all_fields);
 
         assertEquals( protein_with_all_fields.getShortName(), "test2 shortName");
         assertEquals( protein_with_all_fields.getFullName(), "test2 fullName");
@@ -274,9 +283,9 @@ public class ProteinEnricherMinimumTest {
         protein_with_all_fields.setSequence("TAGTAG");
 
         //If this is failing, you may wish to use a logging listener to read the log.
-        //this.minimumProteinEnricher.addEnricherListener(new LoggingEnricherListener());
+        //this.proteinEnricher.addEnricherListener(new LoggingEnricherListener());
 
-        this.minimumProteinEnricher.enrichProtein(protein_with_all_fields);
+        this.proteinEnricher.enrichProtein(protein_with_all_fields);
 
         //assertTrue(event.getMismatches().size() == 1);
     }
@@ -301,7 +310,7 @@ public class ProteinEnricherMinimumTest {
 
 
         assertTrue(protein_with_no_rogid.getRogid() == null);
-        minimumProteinEnricher.enrichProtein(protein_with_no_rogid);
+        proteinEnricher.enrichProtein(protein_with_no_rogid);
         assertTrue(protein_with_no_rogid.getRogid() != null);
 
         RogidGenerator rogidGenerator = new RogidGenerator();
@@ -332,7 +341,7 @@ public class ProteinEnricherMinimumTest {
 
         assertEquals(rogid, protein_with_a_rogid.getRogid());
 
-        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+        proteinEnricher.enrichProtein(protein_with_a_rogid);
 
         assertEquals(rogid, protein_with_a_rogid.getRogid());
     }  */
@@ -357,7 +366,7 @@ public class ProteinEnricherMinimumTest {
         }
 
 
-        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+        proteinEnricher.enrichProtein(protein_with_a_rogid);
     }  */
 
 
@@ -373,7 +382,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_a_rogid.setSequence(TEST_SEQUENCE);
         protein_with_a_rogid.setRogid("This is a bad ROGID");
 
-        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+        proteinEnricher.enrichProtein(protein_with_a_rogid);
     }
 
     //TODO
@@ -393,18 +402,18 @@ public class ProteinEnricherMinimumTest {
             protein.setOrganism(new DefaultOrganism(-3));
         }
 
-        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+        proteinEnricher.enrichProtein(protein_with_a_rogid);
     }
 
 
     //TODO
     /**
      * If there is not sequence but a rogid is present, it cannot be confirmed so throw a conflict.
-     * @throws SeguidException
+
      */
     @Test
     public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_sequence()
-            throws EnricherException, BridgeFailedException {
+            throws EnricherException , BridgeFailedException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -417,7 +426,7 @@ public class ProteinEnricherMinimumTest {
             protein.setSequence("");
         }
 
-        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+        proteinEnricher.enrichProtein(protein_with_a_rogid);
     }
 
 
@@ -438,7 +447,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_no_checksum.setUniprotkb(TEST_AC_FULL_PROT);
 
         assertTrue(protein_with_no_checksum.getChecksums().size() == 0);
-        minimumProteinEnricher.enrichProtein(protein_with_no_checksum);
+        proteinEnricher.enrichProtein(protein_with_no_checksum);
         assertTrue(protein_with_no_checksum.getChecksums().size() > 0);
     }
 
@@ -446,7 +455,7 @@ public class ProteinEnricherMinimumTest {
      * Tests that when the proteinToEnrich contains an identical CRC64 checksum,
      * it is not added.
      */
-    @Test
+    /*@Test
     public void test_identical_CRC64_is_not_added() throws EnricherException, BridgeFailedException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_HALF_PROT)){
@@ -467,7 +476,7 @@ public class ProteinEnricherMinimumTest {
         }
         assertTrue(crc64ChecksumCount == 1);
 
-        minimumProteinEnricher.enrichProtein(protein_with_matching_checksum);
+        proteinEnricher.enrichProtein(protein_with_matching_checksum);
 
         crc64ChecksumCount = 0;
         for(Checksum checksum : protein_with_matching_checksum.getChecksums()){
@@ -503,7 +512,7 @@ public class ProteinEnricherMinimumTest {
 
         assertEquals(1 , protein_with_mismatched_checksum.getChecksums().size());
 
-        minimumProteinEnricher.enrichProtein(protein_with_mismatched_checksum);
+        proteinEnricher.enrichProtein(protein_with_mismatched_checksum);
 
         assertEquals(1 , protein_with_mismatched_checksum.getChecksums().size());
         Checksum checksum = protein_with_mismatched_checksum.getChecksums().iterator().next();
@@ -533,7 +542,7 @@ public class ProteinEnricherMinimumTest {
             assertTrue(protein.getChecksums().size() == 2);
         }
 
-        minimumProteinEnricher.enrichProtein(protein_with_mismatched_checksum);
+        proteinEnricher.enrichProtein(protein_with_mismatched_checksum);
     }
 
 
@@ -565,9 +574,9 @@ public class ProteinEnricherMinimumTest {
         protein_test_two.setSequence("TAGTAG");
 
         //If this is failing, you may wish to use a logging listener to read the log.
-        //this.minimumProteinEnricher.addEnricherListener(new LoggingEnricherListener());
+        //this.proteinEnricher.addEnricherListener(new LoggingEnricherListener());
 
-        minimumProteinEnricher.enrichProtein(protein_test_one);
+        proteinEnricher.enrichProtein(protein_test_one);
 
         assertEquals(event.getQueryID(), TEST_AC_FULL_PROT);
 
@@ -575,7 +584,7 @@ public class ProteinEnricherMinimumTest {
         assertTrue(event.getMismatches().size() > 0);
         assertTrue(event.getOverwrites().size() == 0);
 
-        minimumProteinEnricher.enrichProtein(protein_test_two);
+        proteinEnricher.enrichProtein(protein_test_two);
 
         assertEquals(event.getQueryID(), TEST_AC_HALF_PROT);
         assertTrue(event.getAdditions().size() == 0);
@@ -598,13 +607,13 @@ public class ProteinEnricherMinimumTest {
         Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_to_enrich.setUniprotkb(TEST_AC_FULL_PROT);
 
-        minimumProteinEnricher.enrichProtein(protein_to_enrich);
+        proteinEnricher.enrichProtein(protein_to_enrich);
 
         //assertNotNull(event);
         //assertEquals(event.getObjectType(), "Protein");
         //assertEquals(event.getQueryID(), TEST_AC_FULL_PROT);
         //assertEquals(event.getQueryIDType(), "UniprotKB AC");
-        assertTrue(counter.getAdded() > 0);
-        assertTrue(counter.getRemoved() == 0);
+        //assertTrue(counter.getAdded() > 0);
+        //assertTrue(counter.getRemoved() == 0);
     }
 }
