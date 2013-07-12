@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.organism.listener;
 
 
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.impl.OrganismChangeLogger;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -20,7 +21,9 @@ public class OrganismEnricherLogger
 
     private static final Logger organismChangeLogger = Logger.getLogger("ProteinEnricherLogger");
 
-    public void onOrganismEnriched(Organism organism, String status) {
-        organismChangeLogger.log(Level.INFO, "Organism enriching complete. The status was: "+status);
+
+    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+        organismChangeLogger.log(Level.INFO, "Organism enriching complete. " +
+                "The status was: "+status+". Additional info: "+message);
     }
 }

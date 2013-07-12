@@ -29,7 +29,7 @@ public class CachedUniprotFetcherTest {
         fetcher = new UniprotFetcher();
     }
 
-
+    /*
     @Test
     public void test_stuff(){
         String[] identifiers = {
@@ -44,10 +44,7 @@ public class CachedUniprotFetcherTest {
             log.warn("doing identifier "+identifier);
             log.warn("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
         }
-
-
-
-    }
+    }*/
 
     //--------------MASTER
 
@@ -61,7 +58,7 @@ public class CachedUniprotFetcherTest {
      * Check that they return a single protein.
      * Check that the protein has only expected fields.
      *
-     * @throws psidev.psi.mi.jami.bridges.exception.BridgeFailedException
+     * @throws BridgeFailedException
      */
     @Test
     public void test_isoform_returned_identifier()
@@ -91,7 +88,7 @@ public class CachedUniprotFetcherTest {
      * Check that the regular expression catches them,
      * check that they return a single protein.
      *
-     * @throws psidev.psi.mi.jami.bridges.exception.BridgeFailedException
+     * @throws BridgeFailedException
      */
     @Test
     public void test_feature_chain_search_regular_expression()

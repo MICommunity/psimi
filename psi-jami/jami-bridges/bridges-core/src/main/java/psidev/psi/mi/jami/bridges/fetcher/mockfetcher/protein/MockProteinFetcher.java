@@ -30,7 +30,7 @@ public class MockProteinFetcher
      * @param identifier
      * @return
      */
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException{
+    public Collection<Protein> getProteinsByIdentifier(String identifier) {
         if(identifier == null) throw new IllegalArgumentException(
                 "Attempted to query mock protein fetcher for null identifier.");
 
@@ -43,7 +43,7 @@ public class MockProteinFetcher
         }
     }
 
-    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers)  {
         return Collections.EMPTY_LIST;
     }
 
