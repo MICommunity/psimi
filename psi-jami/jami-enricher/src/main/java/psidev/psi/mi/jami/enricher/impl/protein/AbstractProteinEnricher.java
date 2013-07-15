@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.util.RetryStrategy;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -160,13 +161,8 @@ implements ProteinEnricher {
         }
 
         //
-        Collection<Protein> proteinsEnriched;
-        try {
-            proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
-        } catch (BridgeFailedException e) {
-            throw new EnricherException(
-                    "Could not enrich protein with identifier "+proteinToEnrich.getUniprotkb() , e);
-        }
+        Collection<Protein> proteinsEnriched = fetchProteinList(proteinToEnrich);
+
 
         // If the Protein is dead
         if(proteinsEnriched.isEmpty()){
@@ -175,15 +171,7 @@ implements ProteinEnricher {
                 return null;
             }else{
                 // Otherwise fetch the details of the protein using the fetcher.
-                RetryStrategy retryStrategy = new RetryStrategy(RETRY_COUNT , null );
-                while(retryStrategy.retry()){
-                    try {
-                        proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
-                        retryStrategy.attemptSucceeded();
-                    } catch (BridgeFailedException e) {
-                        retryStrategy.reportException(e);
-                    }
-                }
+                proteinsEnriched = fetchProteinList(proteinToEnrich);
 
                 // If the remapping can not be fetched
                 if(proteinsEnriched == null
@@ -248,6 +236,23 @@ implements ProteinEnricher {
 
         //if(log.isInfoEnabled()) log.info("Chose a demerged protein from a choice of "+proteinsEnriched.size());
         return proteinFetched;
+    }
+
+    private Collection<Protein> fetchProteinList(Protein proteinToEnrich) throws EnricherException {
+        try {
+            return fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+        } catch (BridgeFailedException e) {
+            int index = 0;
+            while(index < RETRY_COUNT){
+                try {
+                    return fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+                } catch (BridgeFailedException ee) {
+                    ee.printStackTrace();
+                }
+                index++;
+            }
+            throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
+        }
     }
 
     /**

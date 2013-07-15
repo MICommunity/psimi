@@ -42,7 +42,7 @@ public class RetryStrategy {
             return true;
         }
         else{
-            throw new EnricherException("A jobs could not be completed. Attempted "+attemptTotal+" times. " +
+            throw new EnricherException("A job could not be completed. Attempted "+attemptTotal+" times. " +
                     "Additional information:"+message);
         }
     }
