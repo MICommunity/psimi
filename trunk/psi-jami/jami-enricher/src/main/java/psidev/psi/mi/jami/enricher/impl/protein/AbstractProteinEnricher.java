@@ -7,10 +7,8 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.util.RetryStrategy;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -50,7 +48,9 @@ implements ProteinEnricher {
 
 
     /**
-     * Fetches a complete record for a protein and uses the processing strategy to integrate the additional data.
+     * Enriches a single protein.
+     * First it fetches a complete record for a protein
+     * and then uses the processing strategy to integrate the additional data.
      *
      * @param proteinToEnrich   the Protein which is being enriched
      */
@@ -64,7 +64,7 @@ implements ProteinEnricher {
             return ;
         }
 
-        if (! proteinIsConflictFree(proteinToEnrich) ) return;
+        if (! isProteinConflictFree(proteinToEnrich) ) return;
 
         if (getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
             getOrganismEnricher().getMockFetcher().clearOrganisms();
@@ -98,7 +98,7 @@ implements ProteinEnricher {
      * @param proteinToEnrich   The protein which is being enriched.
      * @return                  Whether there were any conflicts which would halt enrichment
      */
-    protected boolean proteinIsConflictFree(Protein proteinToEnrich){
+    protected boolean isProteinConflictFree(Protein proteinToEnrich){
         boolean exitStatus = true;
 
         //InteractorType
@@ -311,7 +311,7 @@ implements ProteinEnricher {
      * Sets the protein fetching service which will be used to fetch the enriched form
      * @param fetcher
      */
-    public void setFetcher(ProteinFetcher fetcher) {
+    public void setProteinFetcher(ProteinFetcher fetcher) {
         this.fetcher = fetcher;
     }
 
@@ -328,7 +328,7 @@ implements ProteinEnricher {
     }
 
     public ProteinEnricherListener getProteinEnricherListener() {
-        return listener;  //To change body of implemented methods use File | Settings | File Templates.
+        return listener;
     }
 
     public void setProteinRemapper(ProteinRemapper proteinRemapper){

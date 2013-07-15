@@ -13,8 +13,8 @@ import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
 
 
-
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,15 +26,12 @@ import java.util.List;
 public abstract class AbstractFeatureEnricher <F extends Feature>
         implements FeatureEnricher<F>{
 
-
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
 
-
-    protected Protein oldSequenceSource;
+    protected Polymer oldSequencePolymer;
     protected String oldSequence;
-    protected Protein lastEnrichedProtein;
-
+    protected Polymer lastEnrichedPolymer;
 
 
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
@@ -47,11 +44,10 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         if(featureToEnrich == null) throw new IllegalArgumentException("Feature enricher was passed a null feature.");
 
         processFeature(featureToEnrich);
-
-        if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
     }
 
-    protected void processFeature(F featureToEnrich) throws EnricherException{
+    protected void processFeature(F featureToEnrich)
+            throws EnricherException{
 
         if(getCvTermEnricher() != null) {
             getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
@@ -59,28 +55,34 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );
         }
 
-        // The last enriched protein is participant of this feature
-        if(featureToEnrich.getParticipant() == lastEnrichedProtein){
+        // The last enriched polymer is participant of this feature
+        if(featureToEnrich.getParticipant() == lastEnrichedPolymer){
             String firstSequence = null;
             String secondSequence = null;
+            List<Diff> sequenceChanges = Collections.EMPTY_LIST;
 
-            // The sequence was changed
-            if(featureToEnrich.getParticipant() == oldSequenceSource){
+            // The sequence was changed - set first and second sequence
+            if(featureToEnrich.getParticipant() == oldSequencePolymer){
                 if( oldSequence == null || ! oldSequence.equals("") ){
                     if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.FAILED ,
                             "The original sequence is null which invalidates all features.");
                     return; //TODO
                 } else {
                     firstSequence = oldSequence;
-                    secondSequence = lastEnrichedProtein.getSequence();
+                    // Second sequence is never null/empty
+                    secondSequence = lastEnrichedPolymer.getSequence();
+                    // Find all the differences between the sequences
+                    sequenceChanges  = DiffUtils.diff(firstSequence, secondSequence);
                 }
-            } else {
-                if( lastEnrichedProtein.getSequence() == null || ! lastEnrichedProtein.getSequence().equals("") ){
+            }
+            // The sequence had not changed, set only the second sequence
+            else {
+                if( lastEnrichedPolymer.getSequence() == null || ! lastEnrichedPolymer.getSequence().equals("") ){
                     if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.FAILED ,
                             "The original sequence is null which invalidates all features.");
                     return; //TODO
                 } else {
-                    firstSequence = lastEnrichedProtein.getSequence();
+                    firstSequence = lastEnrichedPolymer.getSequence();
                 }
             }
 
@@ -88,45 +90,30 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             for(Object object : featureToEnrich.getRanges()) {
                 Range range = (Range)object;
 
-                if( ! range.getStart().isPositionUndetermined()
-                        && ! range.getEnd().isPositionUndetermined()
-                        && PositionUtils.areRangePositionsValid(
-                                range.getStart().getStart(), range.getEnd().getEnd())
-                        && ! PositionUtils.areRangePositionsOutOfBounds(
-                                range.getStart().getStart(), range.getEnd().getEnd(),firstSequence.length())) {
+                // If the start and end are undetermined and invalid
+                if( range.getStart().isPositionUndetermined()
+                        || range.getEnd().isPositionUndetermined()
+                        || ! PositionUtils.areRangePositionsValid( range.getStart().getStart(), range.getEnd().getEnd())
+                        || PositionUtils.areRangePositionsOutOfBounds( range.getStart().getStart(), range.getEnd().getEnd(),firstSequence.length())) {
 
-                    //Do something
-
-                    //VALID
-                }
-                else {
-                   // if(listener != null) ;//listener. note that the feature has invalid range
-                    range.getStart().getStatus().getAnnotations().add(
-                            AnnotationUtils.createCaution(
-                                    "Invalid range: " +
+                    // if(listener != null) ;//listener. note that the feature has invalid range
+                    // range.getStart().getStatus().getAnnotations().add(
+                    featureToEnrich.getAnnotations().add(
+                            AnnotationUtils.createCaution("Invalid range: " +
                                             range.getStart().getStart() + "," +
                                             range.getEnd().getEnd()));  //todo
-                    //range.getStart().PositionUtils.createUndeterminedPosition());
-                    //allValid = false;
+                    // range.getStart().PositionUtils.createUndeterminedPosition());
                 }
-
             }
 
 
+            // Run an update on all the ranges if the sequence has changed
+            if(secondSequence != null && ! sequenceChanges.isEmpty()){
+                for(Object object : featureToEnrich.getRanges()) {
+                    Range range = (Range)object;
 
-        }
-
-
-         /*
-        List<Diff> sequenceChanges  = DiffUtils.diff(sequenceOld, sequenceNew);
-
-        if(sequenceChanges != null
-                && ! sequenceChanges.isEmpty()){
-            for(Range range : featureEvidenceToEnrich.getRanges()) {
-                if( ! range.getStart().isPositionUndetermined()
-                        && ! range.getEnd().isPositionUndetermined()){
                     // Try and remap the valid sequences.
-                    String oldValue = sequenceOld.substring(
+                    String oldValue = firstSequence.substring(
                             (int)range.getStart().getStart() , (int)range.getEnd().getEnd());
 
                     range.setPositions(
@@ -135,22 +122,20 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
                             PositionUtils.createCertainPosition(
                                     DiffUtils.calculateIndexShift(sequenceChanges ,(int)range.getEnd().getEnd())));
 
-                    String newValue = sequenceNew.substring(
-                            (int) range.getStart().getStart(), (int) range.getEnd().getEnd());
+                    String newValue = secondSequence.substring((int) range.getStart().getStart(), (int) range.getEnd().getEnd());
 
                     if( ! oldValue.equalsIgnoreCase(newValue)){ //TODO
-                        log.warn("Sub sequence: " + oldValue +
-                                " is not equal to new sub sequence: " + newValue);
+                        //log.warn("Sub sequence: " + oldValue +
+                        //        " is not equal to new sub sequence: " + newValue);
                     }
-                }
 
+
+                }
             }
 
-        }  */
+        }
 
-
-
-
+        if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
 
     }
 
@@ -169,11 +154,11 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         this.oldSequence = oldSequence;
-        this.oldSequenceSource = protein;
+        this.oldSequencePolymer = protein;
     }
 
     public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
-        this.lastEnrichedProtein = protein;
+        this.lastEnrichedPolymer = protein;
     }
 
     public void onProteinRemapped(Protein protein, String oldUniprot) {}

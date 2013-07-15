@@ -191,7 +191,6 @@ public class ProteinEnricherMinimum
     public OrganismEnricher getOrganismEnricher() {
         if( organismEnricher == null ){
             organismEnricher = new OrganismEnricherMinimum();
-            organismEnricher.setFetcher(new MockOrganismFetcher());
         }
 
         return organismEnricher;

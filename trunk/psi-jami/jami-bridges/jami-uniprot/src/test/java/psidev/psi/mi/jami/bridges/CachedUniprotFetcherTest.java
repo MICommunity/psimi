@@ -118,7 +118,7 @@ public class CachedUniprotFetcherTest {
      * check that the sequence it returns is of the correct length
      * check that the sequence is returns is correct.
      *
-     * @throws psidev.psi.mi.jami.bridges.exception.BridgeFailedException
+     * @throws BridgeFailedException
      */
     @Test
     public void test_feature_chain_search_has_correct_sequence_for_truncation_to_end()
@@ -145,7 +145,7 @@ public class CachedUniprotFetcherTest {
      * check that the sequence it returns is of the correct length
      * check that the sequence is returns is correct.
      *
-     * @throws psidev.psi.mi.jami.bridges.exception.BridgeFailedException
+     * @throws BridgeFailedException
      */
     @Test
     public void test_feature_chain_search_has_correct_sequence_for_truncation_from_start()

@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.enricher;
 
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.ols.OlsFetcher;
+import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 
@@ -13,8 +16,30 @@ import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener
 public class EnricherFactory {
 
     /**
-     * Adds the FeatureEnricher as a listener of the ProteinEnricher,
-     * creating a listener manager if there is already a listener (which isn't the feature enricher)
+     * Sets up the
+     * @param enricher
+     * @throws BridgeFailedException
+     */
+    public static void setAllFetchersToCurrentOptions(InteractionEnricher enricher)
+            throws BridgeFailedException {
+
+        enricher.getCvTermEnricher().setCvTermFetcher(new OlsFetcher());
+        unifyCvTermEnrichers(enricher);
+        enricher.getParticipantEnricher().getProteinEnricher().setProteinFetcher(new UniprotFetcher());
+        linkFeatureEnricherToProteinEnricher(enricher);
+
+    }
+
+
+    /**
+     * Adds the FeatureEnricher as a listener of the ProteinEnricher.
+     *
+     * If the ProteinEnricher already has a listener, if is checked to see if it is the featureEnricher.
+     * if so, no changes need to be made.
+     * If it is not the featureEnricher, it is checked to see if it is a listenerManager,
+     * if so, the feature enricher is added to the manager.
+     * If not, a new manager is created and both listeners are added.
+     *
      * @param enricher
      */
     public static void linkFeatureEnricherToProteinEnricher(InteractionEnricher enricher){
@@ -22,10 +47,15 @@ public class EnricherFactory {
         FeatureEnricher featureEnricher = enricher.getParticipantEnricher().getFeatureEnricher();
         ProteinEnricherListener listener = enricher.getParticipantEnricher().getProteinEnricher().getProteinEnricherListener();
         if(listener != null && listener != featureEnricher) {
-            ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
-            manager.addEnricherListener(listener);
-            manager.addEnricherListener(featureEnricher);
-            enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(manager);
+            if(listener instanceof ProteinEnricherListenerManager){
+                ProteinEnricherListenerManager manager = (ProteinEnricherListenerManager) listener;
+                manager.addEnricherListener(featureEnricher);
+            } else {
+                ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
+                manager.addEnricherListener(listener);
+                manager.addEnricherListener(featureEnricher);
+                enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(manager);
+            }
         } else {
             enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(featureEnricher);
         }
@@ -36,11 +66,9 @@ public class EnricherFactory {
      * @param enricher
      */
     public static void unifyCvTermEnrichers(InteractionEnricher enricher){
-
         CvTermEnricher cvTermEnricher = enricher.getCvTermEnricher();
         enricher.getParticipantEnricher().setCvTermEnricher(cvTermEnricher);
         enricher.getParticipantEnricher().getFeatureEnricher().setCvTermEnricher(cvTermEnricher);
-
     }
 
 }

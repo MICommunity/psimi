@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.bridges.ols;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -38,6 +39,11 @@ public class CachedOntologyOLSFetcherTest {
         ontologyOLSFetcher = new CachedOntologyOLSFetcher();
     }
 
+    @After
+    public void tearDown(){
+        ontologyOLSFetcher.shutDownCache();
+    }
+
 
     /**
      * Test that an ontology term is correctly retrieved with no parents or children.
@@ -45,7 +51,6 @@ public class CachedOntologyOLSFetcherTest {
      */
     @Test
     public void test_getCvTermByIdentifier_without_relations() throws BridgeFailedException {
-
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
                 TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME);
 

@@ -31,7 +31,7 @@ public interface ProteinEnricher {
      *
      * @param fetcher
      */
-    public void setFetcher(ProteinFetcher fetcher);
+    public void setProteinFetcher(ProteinFetcher fetcher);
     /**
      *
      * @return
@@ -68,13 +68,13 @@ public interface ProteinEnricher {
     public OrganismEnricher getOrganismEnricher();
 
     /**
-     * The protein mapper to be used when a protein doesn't hav e a uniprot id or the uniprotID is dead.
+     * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
      * @param proteinRemapper
      */
     public void setProteinRemapper(ProteinRemapper proteinRemapper);
 
     /**
-     *
+     * The protein remapper has no default and can be left null
      * @return
      */
     public ProteinRemapper getProteinRemapper();

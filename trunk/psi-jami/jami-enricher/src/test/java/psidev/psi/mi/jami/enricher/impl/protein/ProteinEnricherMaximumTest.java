@@ -38,7 +38,7 @@ public class ProteinEnricherMaximumTest {
     public void initialiseFetcherAndEnricher(){
         this.fetcher = new MockProteinFetcher();
         this.proteinEnricher = new ProteinEnricherMaximum();
-        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher.setProteinFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);

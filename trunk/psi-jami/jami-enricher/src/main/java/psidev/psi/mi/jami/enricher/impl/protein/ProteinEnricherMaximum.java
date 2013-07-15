@@ -39,7 +39,6 @@ public class ProteinEnricherMaximum
     public OrganismEnricher getOrganismEnricher() {
         if( organismEnricher == null ){
             organismEnricher = new OrganismEnricherMaximum();
-            organismEnricher.setFetcher(new MockOrganismFetcher());
         }
 
         return organismEnricher;

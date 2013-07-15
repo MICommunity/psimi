@@ -100,14 +100,18 @@ public abstract class AbstractCvTermEnricher
 
             //TODO roll this out across all queries if given go ahead
             RetryStrategy retryStrategy = new RetryStrategy(RETRY_COUNT , null );
-            while(retryStrategy.retry()){
-                try {
-                    cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
-                            cvTermToEnrich.getMIIdentifier(), CvTerm.PSI_MI);
-                    retryStrategy.attemptSucceeded();
-                } catch (BridgeFailedException e) {
-                    retryStrategy.reportException(e);
-                }
+            try {
+                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermToEnrich.getMIIdentifier(), CvTerm.PSI_MI);
+                retryStrategy.attemptSucceeded();
+            } catch (BridgeFailedException e) {
+                retryStrategy.reportException(e);
+            }
+            int index = 0;
+            while(index < RETRY_COUNT){
+
+
+                index++;
             }
 
             if(cvTermFetched != null) return cvTermFetched;

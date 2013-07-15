@@ -192,14 +192,19 @@ public class CachedOntologyOLSFetcher
     public Object getFromCache( String key ) {
         Object data = null;
         //if (cacheManager.)
+
+
         Element element = cache.get( key );
         if( element != null ){
+            if( log.isDebugEnabled() ) log.debug("getting key: "+key);
             data = element.getValue();
         }
         return data;
     }
 
     public void storeInCache( String key, Object data ) {
+        if( log.isDebugEnabled() ) log.debug("storing key: "+key);
+
         Element element = new Element( key, data );
         cache.put( element );
     }
