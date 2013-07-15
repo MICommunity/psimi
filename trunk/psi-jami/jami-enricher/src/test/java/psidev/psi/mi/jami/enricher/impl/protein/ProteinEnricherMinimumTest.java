@@ -4,17 +4,25 @@ import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.ExceptionThrowingMockProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Unit tester for ProteinEnricherMinimum
@@ -63,6 +71,41 @@ public class ProteinEnricherMinimumTest {
         //proteinEnricher.setProteinEnricherListener(manager);
         //proteinEnricher.getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
     }
+
+    @Test(expected = EnricherException.class)
+    public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
+        String IDENT = "P1234";
+        ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(-1);
+        Protein proteinToEnrich = new DefaultProtein("Short");
+        proteinToEnrich.setUniprotkb(IDENT);
+
+        Protein proteinFetched = new DefaultProtein("Short","Full");
+        proteinFetched.setUniprotkb(IDENT);
+        fetcher.addNewProtein(IDENT , proteinFetched);
+        proteinEnricher.setProteinFetcher(fetcher);
+        proteinEnricher.enrichProtein(proteinToEnrich);
+    }
+
+    @Test
+    public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
+        int timesToTry = 3;
+
+        Assert.assertTrue(timesToTry < ProteinEnricherMinimum.RETRY_COUNT);
+
+        String IDENT = "P1234";
+        ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(timesToTry);
+        Protein proteinToEnrich = new DefaultProtein("Short");
+        proteinToEnrich.setUniprotkb(IDENT);
+
+        Protein proteinFetched = new DefaultProtein("Short","Full");
+        proteinFetched.setUniprotkb(IDENT);
+        fetcher.addNewProtein(IDENT , proteinFetched);
+        proteinEnricher.setProteinFetcher(fetcher);
+        proteinEnricher.enrichProtein(proteinToEnrich);
+
+        assertEquals("Full" , proteinToEnrich.getFullName() );
+    }
+
 
     /**
      * Confirm that when a null protein is provided, an exception is thrown
