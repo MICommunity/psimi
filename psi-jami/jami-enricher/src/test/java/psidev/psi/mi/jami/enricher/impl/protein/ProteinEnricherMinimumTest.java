@@ -9,10 +9,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum;
 import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
@@ -45,7 +42,7 @@ public class ProteinEnricherMinimumTest {
     public void initialiseFetcherAndEnricher(){
         this.fetcher = new MockProteinFetcher();
         this.proteinEnricher = new ProteinEnricherMinimum();
-        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher.setProteinFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);

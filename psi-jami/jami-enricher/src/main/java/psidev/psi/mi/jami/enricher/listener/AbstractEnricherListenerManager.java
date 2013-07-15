@@ -13,13 +13,23 @@ import java.util.Collection;
 public abstract class AbstractEnricherListenerManager <T extends EnricherListener> {
     protected ArrayList<T> listenersList = new ArrayList<T>();
 
+    /**
+     * Adds the listener to the list of listeners, if the list does not already contain it.
+     * @param listener
+     */
     public void addEnricherListener(T listener){
-        listenersList.add(listener);
+        if( ! listenersList.contains(listener) )
+            listenersList.add(listener);
     }
-    /* public void addAllEnricherListeners(Collection<T> listeners){
-        listenersList.addAll(listeners);
+
+    /*public boolean containsEnricherListener(T listener){
+        return listenersList.contains(listener);
     } */
 
+    /**
+     * Removes the listener from the list
+     * @param listener
+     */
     public void removeEnricherListener(T listener){
         listenersList.remove(listener);
     }

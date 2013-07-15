@@ -42,7 +42,7 @@ public class ProteinTest {
 
     public void min(){
         participantEnricher = new ParticipantEnricherMinimum();
-        participantEnricher.getProteinEnricher().setFetcher(fetcher);
+        participantEnricher.getProteinEnricher().setProteinFetcher(fetcher);
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
         participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
@@ -50,7 +50,7 @@ public class ProteinTest {
 
     public void max(){
         participantEnricher = new ParticipantEnricherMaximum();
-        participantEnricher.getProteinEnricher().setFetcher(fetcher);
+        participantEnricher.getProteinEnricher().setProteinFetcher(fetcher);
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
         participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());

@@ -117,8 +117,27 @@ public class OlsFetcherTest {
         String databaseName = null;
         CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term, databaseName);
 
+    }
+
+    @Test
+    public void test_getCvTermByExactName_using_MI_TermName() throws BridgeFailedException {
+        String term = "allosteric change in dynamics";
+        //String databaseName = null;
+        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term);
+
         assertNotNull(cvTermFetched);
         assertEquals(term, cvTermFetched.getShortName());
-        assertEquals("MI:0580" , cvTermFetched.getMIIdentifier());
+        assertEquals("MI:1166" , cvTermFetched.getMIIdentifier());
+    }
+
+    @Test
+    public void test_getCvTermByExactName_using_GO_TermName() throws BridgeFailedException {
+        String term = "actin cortical patch localization";
+        //String databaseName = null;
+        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term);
+
+        assertNotNull(cvTermFetched);
+        assertEquals(term, cvTermFetched.getShortName());
+        assertEquals("GO:0051666" , cvTermFetched.getIdentifiers().iterator().next().getId());
     }
 }

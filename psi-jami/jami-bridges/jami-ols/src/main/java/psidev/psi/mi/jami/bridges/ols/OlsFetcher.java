@@ -25,7 +25,7 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 08/05/13
+ * @since 08/05/13
  */
 public class OlsFetcher
         implements CvTermFetcher<CvTerm> {
@@ -186,8 +186,12 @@ public class OlsFetcher
             throw new BridgeFailedException(e);
         }
 
-        if(termNamesMap.isEmpty()) return null;
+        if(termNamesMap.isEmpty()) {
+            if(log.isDebugEnabled()) log.debug("Empty result for name "+searchName);
+            return null;
+        }
         else if(termNamesMap.size() == 1){
+            if(log.isDebugEnabled()) log.debug("One entry for name "+searchName);
             Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
             if(entry.getValue() == null || entry.getKey() == null){
                 throw new IllegalArgumentException("OLS service returned null values in an exact name search.");
@@ -195,9 +199,11 @@ public class OlsFetcher
             // Key is the Identifier, value is the full name
 
             CvTerm ontologyDatabase;
-            if(entry.getValue().startsWith("MI:")) ontologyDatabase = CvTermUtils.createPsiMiDatabase();
-            else if (entry.getValue().startsWith("MOD:")) ontologyDatabase = CvTermUtils.createPsiModDatabase();
-            else return null;
+            if(entry.getKey().startsWith("MI:")) ontologyDatabase = CvTermUtils.createPsiMiDatabase();
+            else if (entry.getKey().startsWith("MOD:")) ontologyDatabase = CvTermUtils.createPsiModDatabase();
+            else {
+                ontologyDatabase = new DefaultCvTerm("unknown ontology");
+            }
 
 
             String ontologyDatabaseName = dbMap.get(ontologyDatabase.getShortName());
@@ -207,6 +213,7 @@ public class OlsFetcher
 
             return completeIdentifiedCvTerm(cvTermEnriched, entry.getKey(), ontologyDatabaseName);
         }
+        if(log.isDebugEnabled()) log.debug("Many entries for name "+searchName+ " there were "+termNamesMap.size());
         return null;
     }
 
@@ -214,7 +221,7 @@ public class OlsFetcher
 
     public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database)
@@ -335,7 +342,10 @@ public class OlsFetcher
 
         Map metaDataMap = fetchMetaDataByIdentifier(identifier);
         String shortName = extractShortNameFromMetaData(metaDataMap, databaseName);
-        if(shortName != null) cvTermFetched.setShortName(shortName);
+        if(shortName != null)
+            cvTermFetched.setShortName(shortName);
+        else if(cvTermFetched.getFullName() != null)
+            cvTermFetched.setShortName(cvTermFetched.getFullName());
         Collection<Alias> synonyms = extractSynonymsFromMetaData(metaDataMap, databaseName);
         if(synonyms != null) cvTermFetched.getSynonyms().addAll(synonyms);
 

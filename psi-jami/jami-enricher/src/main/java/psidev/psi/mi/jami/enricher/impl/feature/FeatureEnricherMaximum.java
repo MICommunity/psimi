@@ -15,6 +15,7 @@ public class FeatureEnricherMaximum<F extends Feature>
         extends FeatureEnricherMinimum<F>
         implements FeatureEnricher <F> {
 
+
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMaximum();
         return cvTermEnricher;
