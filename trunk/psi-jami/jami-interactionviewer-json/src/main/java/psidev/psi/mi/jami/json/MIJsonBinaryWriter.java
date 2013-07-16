@@ -660,6 +660,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
         writerProperty("value", value);
         if (unit != null){
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writerProperty("unit", unit);
         }
         writer.write(MIJsonUtils.CLOSE);
