@@ -79,13 +79,7 @@ public class MIJsonServlet extends HttpServlet{
             processURL(url, resp);
         }
         else {
-            String fileParameter = req.getParameter(FILE_PARAM);
-            if (fileParameter == null){
-                resp.sendError(400, "Could not find the expected 'url' parameter or 'file' parameter in the request.");
-            }
-            else{
-                processFile(fileParameter, req, resp);
-            }
+            processFile(req, resp);
         }
     }
 
@@ -204,7 +198,7 @@ public class MIJsonServlet extends HttpServlet{
         return miDataSource;
     }
 
-    private void processFile(String fileParam, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void processFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Writer writer = resp.getWriter();
 
         InputStream stream = null;
@@ -216,7 +210,7 @@ public class MIJsonServlet extends HttpServlet{
                 if (!item.isFormField()) {
                     // Process form file field (input type="file").
                     String fieldname = item.getFieldName();
-                    if (fieldname != null && fieldname.equals(fileParam)){
+                    if (fieldname != null && fieldname.equals(FILE_PARAM)){
                         String filename = FilenameUtils.getName(item.getName());
                         stream = item.getInputStream();
                         // first recognize file and create data source
