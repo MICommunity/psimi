@@ -128,9 +128,8 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\"experiment\":{\n" +
                 "\t\t\t\"detmethod\":{\"id\":\"MI:xxx2\",\"name\":\"pull down\"},\n" +
                 "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
-                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
-                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"}],\n" +
-                "\t\t\t\"source\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
+                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"},{\"db\":\"imex\",\"id\":\"IM-1\"}],\n" +
+                "\t\t\t\"sourceDatabase\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
                 "\t\t},\n" +
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
@@ -182,9 +181,8 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\"experiment\":{\n" +
                 "\t\t\t\"detmethod\":{\"id\":\"MI:xxx2\",\"name\":\"pull down\"},\n" +
                 "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
-                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
-                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"}],\n" +
-                "\t\t\t\"source\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
+                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"},{\"db\":\"imex\",\"id\":\"IM-1\"}],\n" +
+                "\t\t\t\"sourceDatabase\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
                 "\t\t},\n" +
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
@@ -215,9 +213,8 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\"experiment\":{\n" +
                 "\t\t\t\"detmethod\":{\"id\":\"MI:xxx2\",\"name\":\"pull down\"},\n" +
                 "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
-                "\t\t\t\"host\":{\"taxid\":\"-1\",\"common\":\"in vitro\"},\n" +
-                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"}],\n" +
-                "\t\t\t\"source\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
+                "\t\t\t\"pubid\":[{\"db\":\"pubmed\",\"id\":\"12345\"},{\"db\":\"imex\",\"id\":\"IM-1\"}],\n" +
+                "\t\t\t\"sourceDatabase\":{\"id\":\"MI:xxx1\",\"name\":\"intact\"}\n" +
                 "\t\t},\n" +
                 "\t\t\"interactionType\":{\"id\":\"MI:xxxx\",\"name\":\"association\"},\n" +
                 "\t\t\"identifiers\":[{\"db\":\"intact\",\"id\":\"EBI-xxxx\"},{\"db\":\"imex\",\"id\":\"IM-1-1\"}],\n" +
