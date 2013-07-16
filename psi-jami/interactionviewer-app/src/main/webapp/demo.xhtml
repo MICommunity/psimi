@@ -16,11 +16,11 @@
 </head>
 <body>
 
-<form action="miJson" method="POST">
+<form action="miJson" method="POST" name="url_form">
     URL: <input type="text" name="url"/>
     <input type="submit" value="Submit" />
 </form>
-<form action="miJson" method="POST">
+<form action="miJson" method="POST" enctype="multipart/form-data" name="file_form">
     Local File: <input type="file" name="file" />
     <input type="submit" value="Submit" />
 </form>
