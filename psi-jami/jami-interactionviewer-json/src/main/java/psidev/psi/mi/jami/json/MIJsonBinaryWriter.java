@@ -631,7 +631,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         // publication identifiers
         if (!publication.getIdentifiers().isEmpty()){
             writeStartObject("pubid");
-            writeAllIdentifiers(publication.getIdentifiers());
+            writeAllIdentifiers(publication.getIdentifiers(), publication.getImexId());
         }
 
         // publication source
@@ -639,7 +639,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writer.write(MIJsonUtils.INDENT);
-            writeStartObject("source");
+            writeStartObject("sourceDatabase");
             writeCvTerm(publication.getSource());
         }
     }
@@ -713,7 +713,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writer.write(MIJsonUtils.CLOSE_ARRAY);
     }
 
-    protected void writeAllIdentifiers(Collection<Xref> identifiers) throws IOException {
+    protected void writeAllIdentifiers(Collection<Xref> identifiers, String imex) throws IOException {
         writer.write(MIJsonUtils.OPEN_ARRAY);
 
         Iterator<Xref> identifierIterator = identifiers.iterator();
@@ -728,6 +728,13 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             if (identifierIterator.hasNext()){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             }
+        }
+
+        if (imex != null){
+            if (!identifiers.isEmpty()){
+                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            }
+            writeIdentifier("imex", JSONValue.escape(imex));
         }
 
         writer.write(MIJsonUtils.CLOSE_ARRAY);
@@ -748,14 +755,6 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             // write detection method
             writeStartObject("detmethod");
             writeCvTerm(experiment.getInteractionDetectionMethod());
-
-            if (experiment.getHostOrganism() != null){
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writer.write(MIJsonUtils.INDENT);
-                writeStartObject("host");
-                writeOrganism(experiment.getHostOrganism());
-            }
 
             if (experiment.getHostOrganism() != null){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
@@ -911,7 +910,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("identifiers");
-            writeAllIdentifiers(binary.getIdentifiers());
+            writeAllIdentifiers(binary.getIdentifiers(), binary.getImexId());
         }
 
         // then confidences
