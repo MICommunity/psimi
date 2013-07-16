@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 /**
  * Abstract mitab line parser
@@ -28,6 +29,8 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
     private MitabInteractorFactory interactorFactory;
     private boolean hasFinished = false;
     private StringBuilder builder = new StringBuilder(82);
+
+    private static final String INTERPRO_PATTERN = "^IPR\\d{6}$";
 
     public AbstractInteractionLineParser(InputStream stream) {
         super(stream);
@@ -479,4 +482,15 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
     }
 
     protected abstract T createInteraction();
+
+    protected void processTextFor(MitabFeature feature, String text){
+        if (text != null){
+            if (Pattern.matches(INTERPRO_PATTERN, text)){
+                feature.setInterpro(text);
+            }
+            else{
+                feature.setText(text);
+            }
+        }
+    }
 }

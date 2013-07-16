@@ -44,7 +44,7 @@ public abstract class AbstractInteractionEvidenceLineParser<T extends Interactio
         MitabFeatureEvidence feature = new MitabFeatureEvidence(new DefaultCvTerm(type));
         feature.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
         feature.getRanges().addAll(ranges);
-        feature.setText(text);
+        processTextFor(feature, text);
 
         return feature;
     }
