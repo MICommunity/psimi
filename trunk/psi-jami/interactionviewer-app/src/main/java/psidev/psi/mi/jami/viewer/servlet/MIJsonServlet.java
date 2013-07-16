@@ -8,10 +8,8 @@ import org.apache.commons.io.FilenameUtils;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.bridges.ols.CachedOntologyOLSFetcher;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
@@ -62,11 +60,12 @@ public class MIJsonServlet extends HttpServlet{
         PsiJami.initialiseInteractionEvidenceSources();
         fileAnalyzer = new MIFileAnalyzer();
         expansionMethod = new InteractionEvidenceSpokeExpansion();
-        try {
+        /*try {
             this.fetcher = new CachedOntologyOLSFetcher();
         } catch (BridgeFailedException e) {
             logger.log(Level.SEVERE, "cannot load the cached ontology manager.");
-        }
+        }*/
+        this.fetcher = null;
     }
 
     @Override
@@ -95,7 +94,6 @@ public class MIJsonServlet extends HttpServlet{
 
         InputStream stream = null;
         InteractionSource miDataSource = null;
-        InteractionWriter interactionWriter = null;
         try {
             URL url = new URL(urlString);
             URLConnection connection1 = url.openConnection();
@@ -107,9 +105,7 @@ public class MIJsonServlet extends HttpServlet{
 
             // first recognize file and create data source
             stream = connection.getInputStream();
-            miDataSource = processMIData(urlString, connection1.getInputStream(), resp, writer, stream, miDataSource, interactionWriter);
-            interactionWriter.end();
-            interactionWriter.flush();
+            miDataSource = processMIData(urlString, connection1.getInputStream(), resp, writer, stream, miDataSource);
 
         } catch (MalformedURLException e) {
             logger.log(Level.SEVERE, "The url " + urlString + " is not a valid url.", e);
@@ -174,10 +170,11 @@ public class MIJsonServlet extends HttpServlet{
         this.timeOut = timeOut;
     }
 
-    private InteractionSource processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionSource miDataSource, InteractionWriter interactionWriter) throws IOException {
+    private InteractionSource processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionSource miDataSource) throws IOException {
         MIFileType fileType = fileAnalyzer.identifyMIFileTypeFor(stream);
         MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
         MIDataSourceFactory miFactory = MIDataSourceFactory.getInstance();
+        InteractionWriter interactionWriter = null;
 
         switch (fileType){
             case mitab:
@@ -201,6 +198,8 @@ public class MIJsonServlet extends HttpServlet{
         // then write
         interactionWriter.start();
         interactionWriter.write(miDataSource.getInteractionsIterator());
+        interactionWriter.end();
+        interactionWriter.flush();
         resp.setStatus(200);
         return miDataSource;
     }
@@ -210,7 +209,6 @@ public class MIJsonServlet extends HttpServlet{
 
         InputStream stream = null;
         InteractionSource miDataSource = null;
-        InteractionWriter interactionWriter = null;
         try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
             for (FileItem item : items) {
@@ -222,12 +220,10 @@ public class MIJsonServlet extends HttpServlet{
                         String filename = FilenameUtils.getName(item.getName());
                         stream = item.getInputStream();
                         // first recognize file and create data source
-                        miDataSource = processMIData(filename, item.getInputStream(), resp, writer, stream, miDataSource, interactionWriter);
+                        miDataSource = processMIData(filename, item.getInputStream(), resp, writer, stream, miDataSource);
                     }
                 }
             }
-            interactionWriter.end();
-            interactionWriter.flush();
 
         } catch (FileUploadException e) {
             logger.log(Level.SEVERE, "The uploaded file is not a valid file.", e);
