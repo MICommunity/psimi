@@ -41,7 +41,7 @@ public abstract class AbstractModelledInteractionLineParser<T extends ModelledIn
         MitabModelledFeature feature = new MitabModelledFeature(new DefaultCvTerm(type));
         feature.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
         feature.getRanges().addAll(ranges);
-        feature.setText(text);
+        processTextFor(feature, text);
 
         return feature;
     }

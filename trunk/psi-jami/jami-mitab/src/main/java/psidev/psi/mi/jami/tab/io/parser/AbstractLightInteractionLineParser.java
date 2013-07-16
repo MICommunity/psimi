@@ -41,7 +41,7 @@ public abstract class AbstractLightInteractionLineParser<T extends Interaction> 
         DefaultMitabFeature feature = new DefaultMitabFeature(new DefaultCvTerm(type));
         feature.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
         feature.getRanges().addAll(ranges);
-        feature.setText(text);
+        processTextFor(feature, text);
 
         return feature;
     }

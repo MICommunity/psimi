@@ -350,6 +350,9 @@ public class InteractionEvidenceLineParserTest {
 
         InteractionEvidence binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);
+        Participant A2 = binary2.getParticipants().iterator().next();
+        Feature f2 = (Feature)A2.getFeatures().iterator().next();
+        Assert.assertEquals("IPR020405", f2.getInterpro());
         Assert.assertTrue(parser.hasFinished());
     }
 
