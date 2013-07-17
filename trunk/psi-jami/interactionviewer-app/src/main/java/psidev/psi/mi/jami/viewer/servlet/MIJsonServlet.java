@@ -132,35 +132,35 @@ public class MIJsonServlet extends HttpServlet{
         }
     }
 
-    protected OntologyTermFetcher getFetcher() {
+    public OntologyTermFetcher getFetcher() {
         return fetcher;
     }
 
-    protected void setFetcher(OntologyTermFetcher fetcher) {
+    public void setFetcher(OntologyTermFetcher fetcher) {
         this.fetcher = fetcher;
     }
 
-    protected ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> getExpansionMethod() {
+    public ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> getExpansionMethod() {
         return expansionMethod;
     }
 
-    protected void setExpansionMethod(ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
-        this.expansionMethod = expansionMethod;
+    public void setExpansionMethod(ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+        this.expansionMethod = expansionMethod != null ? expansionMethod : new InteractionEvidenceSpokeExpansion();
     }
 
-    protected MIFileAnalyzer getFileAnalyzer() {
+    public MIFileAnalyzer getFileAnalyzer() {
         return fileAnalyzer;
     }
 
-    protected void setFileAnalyzer(MIFileAnalyzer fileAnalyzer) {
-        this.fileAnalyzer = fileAnalyzer;
+    public void setFileAnalyzer(MIFileAnalyzer fileAnalyzer) {
+        this.fileAnalyzer = fileAnalyzer != null ? fileAnalyzer : new MIFileAnalyzer();
     }
 
-    protected int getTimeOut() {
+    public int getTimeOut() {
         return timeOut;
     }
 
-    protected void setTimeOut(int timeOut) {
+    public void setTimeOut(int timeOut) {
         this.timeOut = timeOut;
     }
 
