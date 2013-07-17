@@ -265,7 +265,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         this.expansionId = expansionId;
     }
 
-    protected void writeFeatures(String name, Collection<FeatureEvidence> features, boolean writeLinkedFeatures, boolean writeInterpro) throws IOException {
+    protected void writeFeatures(String name, Collection<FeatureEvidence> features) throws IOException {
         writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
@@ -275,7 +275,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         Iterator<FeatureEvidence> featureIterator = features.iterator();
         while (featureIterator.hasNext()){
             FeatureEvidence feature = featureIterator.next();
-            writeFeature(feature, writeLinkedFeatures, writeInterpro);
+            writeFeature(feature);
             if (featureIterator.hasNext()){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             }
@@ -293,19 +293,19 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         }
 
         if (!experimentalFeatures.isEmpty()){
-            writeFeatures("experimentalFeatures", experimentalFeatures, false, false);
+            writeFeatures("experimentalFeatures", experimentalFeatures);
         }
         if (!mutations.isEmpty()){
-            writeFeatures("pointMutations", mutations, false, false);
+            writeFeatures("pointMutations", mutations);
         }
         if (!bindingSites.isEmpty()){
-            writeFeatures("bindingSites", bindingSites, true, true);
+            writeFeatures("bindingSites", bindingSites);
         }
         if (!ptms.isEmpty()){
-            writeFeatures("ptms", ptms, true, false);
+            writeFeatures("ptms", ptms);
         }
         if (!otherFeatures.isEmpty()){
-            writeFeatures("otherFeatures", otherFeatures, true, false);
+            writeFeatures("otherFeatures", otherFeatures);
         }
     }
 
@@ -329,8 +329,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 else if (CvTermUtils.isCvTerm(type, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
                     experimentalFeatures.add(feature);
                 }
-                // we consider any other MI terms as old PTM
-                else if (CvTermUtils.isCvTerm(type, Feature.BIOLOGICAL_FEATURE_MI, Feature.BIOLOGICAL_FEATURE)){
+                else if (CvTermUtils.isCvTerm(type, Feature.ALLOSTERIC_PTM_MI, Feature.ALLOSTERIC_PTM)) {
                     ptms.add(feature);
                 }
                 else {
@@ -359,8 +358,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
                     experimentalFeatures.add(feature);
                 }
-                // we consider any other MI terms as old PTM
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BIOLOGICAL_FEATURE_MI, Feature.BIOLOGICAL_FEATURE)){
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.ALLOSTERIC_PTM_MI, Feature.ALLOSTERIC_PTM)){
                     ptms.add(feature);
                 }
                 else {
@@ -369,10 +367,11 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             }
             else {
                 OntologyTerm term = null;
+                String name = type.getFullName() != null ? type.getFullName() : type.getShortName();
                 try {
-                    term = fetcher.getCvTermByExactName(type.getFullName() != null ? type.getFullName() : type.getShortName(), CvTerm.PSI_MI, 0, -1);
+                    term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MI, 0, -1);
                     if (term == null){
-                        term = fetcher.getCvTermByExactName(type.getFullName() != null ? type.getFullName() : type.getShortName(), CvTerm.PSI_MOD, 0, -1);
+                        term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MOD, 0, -1);
                     }
                 } catch (BridgeFailedException e) {
                     logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + (type.getFullName() != null ? type.getFullName() : type.getShortName()), e);
@@ -380,7 +379,6 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
                 // cannot retrieve the term using name
                 if (term == null){
-
                     otherFeatures.add(feature);
                 }
                 else if (term.getMODIdentifier() != null){
@@ -396,7 +394,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
                     experimentalFeatures.add(feature);
                 }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BIOLOGICAL_FEATURE_MI, Feature.BIOLOGICAL_FEATURE)){
+                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.ALLOSTERIC_PTM_MI, Feature.ALLOSTERIC_PTM)){
                     ptms.add(feature);
                 }
                 else {
@@ -410,7 +408,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         }
     }
 
-    protected void writeFeature(FeatureEvidence feature, boolean writeLinkedFeatures, boolean writeInterpro) throws IOException {
+    protected void writeFeature(FeatureEvidence feature) throws IOException {
 
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
@@ -492,9 +490,10 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         }
 
         // write linked features if required
-        if (writeLinkedFeatures && !feature.getLinkedFeatures().isEmpty()){
+        if (!feature.getLinkedFeatures().isEmpty()){
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
+            writer.write(MIJsonUtils.INDENT);
             writer.write(MIJsonUtils.INDENT);
             writeStartObject("linkedFeatures");
             writer.write(MIJsonUtils.OPEN_ARRAY);
@@ -512,11 +511,12 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         }
 
         // write interpro if required
-        if (writeInterpro && feature.getInterpro() != null){
+        if (feature.getInterpro() != null){
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writer.write(MIJsonUtils.INDENT);
-            writerProperty("Binding_Site_Domain", JSONValue.escape(feature.getInterpro()));
+            writer.write(MIJsonUtils.INDENT);
+            writerProperty("InterPro", JSONValue.escape(feature.getInterpro()));
         }
 
         writeNextPropertySeparatorAndIndent();
