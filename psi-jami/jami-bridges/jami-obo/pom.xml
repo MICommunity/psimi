@@ -33,6 +33,12 @@
           <groupId>uk.ac.ebi.ols</groupId>
           <artifactId>ols-core</artifactId>
           <version>1.19</version>
+          <exclusions>
+              <exclusion>
+                  <artifactId>ojdbc14</artifactId>
+                  <groupId>oracle</groupId>
+              </exclusion>
+          </exclusions>
       </dependency>
 
     <dependency>
