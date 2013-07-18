@@ -371,7 +371,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 try {
                     term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MI, 0, -1);
                     if (term == null){
-                        term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MOD, 0, -1);
+                        term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MOD);
                     }
                 } catch (BridgeFailedException e) {
                     logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + (type.getFullName() != null ? type.getFullName() : type.getShortName()), e);
