@@ -6,7 +6,7 @@
 //
 
 
-package psidev.psi.mi.jami.xml254;
+package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
