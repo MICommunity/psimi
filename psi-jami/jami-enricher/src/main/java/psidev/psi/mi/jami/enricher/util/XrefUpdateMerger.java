@@ -27,7 +27,21 @@ public class XrefUpdateMerger {
         return toRemove;
     }
 
-    public void merge(Collection<Xref> fetchedXrefs , Collection<Xref> toEnrichXrefs){
+
+    /**
+     * Takes two lists of Xrefs and produces a list of those to add and those to remove.
+     *
+     * The Xrefs to add will be those which were fetched, without those which are already in the list being enriched.
+     * Those to remove are all the xrefs on the list being enriched with a cvterm that matches the cvterm of a fetched xref,
+     * unless the xref has qualifier when use qualifiers is true.
+     *
+     * For merging identifiers, 'do not use
+     *
+     * @param fetchedXrefs
+     * @param toEnrichXrefs
+     * @param useQualifiers
+     */
+    public void merge(Collection<Xref> fetchedXrefs , Collection<Xref> toEnrichXrefs, boolean useQualifiers){
         fetchedToAdd.clear();
         fetchedToAdd.addAll(fetchedXrefs); // All the identifiers which were fetched
 
@@ -42,32 +56,30 @@ public class XrefUpdateMerger {
 
         // Check all of the identifiers which are to be enriched
         for(Xref xrefIdentifier : toEnrichXrefs){
-            // Ignore if there's a qualifier
-            if(xrefIdentifier.getQualifier() == null){
-                boolean isInFetchedList = false;
-                //If it's in the list to add, mark that it's to add already
-                for(Xref xrefToAdd : fetchedToAdd){
-                    if(DefaultXrefComparator.areEquals(xrefToAdd, xrefIdentifier)){
-                        isInFetchedList = true;
-                        //No need to add it as it is already there
-                        fetchedToAdd.remove(xrefToAdd);
-                        break;
-                    }
-                }
-                // If it's not in the fetched ones to add,
-                // check if it's CvTerm is managed and add to removals if it is
-                if(! isInFetchedList){
-                    boolean managedCvTerm = false;
-                    for(CvTerm cvTerm : identifierCvTerms){
-                        if(DefaultCvTermComparator.areEquals(cvTerm, xrefIdentifier.getDatabase())){
-                            managedCvTerm = true;
-                            break;
-                        }
-                    }
-                    if(managedCvTerm) toRemove.add(xrefIdentifier);
+            boolean isInFetchedList = false;
+
+            // Check all the fetched xrefs so as not to add the same xref twice
+            for(Xref xrefToAdd : fetchedToAdd){
+                if(DefaultXrefComparator.areEquals(xrefToAdd, xrefIdentifier)){
+                    isInFetchedList = true;
+                    fetchedToAdd.remove(xrefToAdd); // No need to add it as it is already there
+                    break;
                 }
             }
 
+            // If it's not in the fetched to add,
+            // check if its CvTerm marks it for removal
+            // (if it has no qualifier or qualifiers are not being used)
+            if(! isInFetchedList && (!useQualifiers || xrefIdentifier.getQualifier() == null)){
+                boolean managedCvTerm = false;
+                for(CvTerm cvTerm : identifierCvTerms){
+                    if(DefaultCvTermComparator.areEquals(cvTerm, xrefIdentifier.getDatabase())){
+                        managedCvTerm = true;
+                        break;
+                    }
+                }
+                if(managedCvTerm) toRemove.add(xrefIdentifier);
+            }
         }
     }
 
