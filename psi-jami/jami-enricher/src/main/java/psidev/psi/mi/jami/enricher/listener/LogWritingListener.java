@@ -30,8 +30,6 @@ public abstract class LogWritingListener implements EnricherListener{
         bufferedWriter.write(string);
     }
 
-
-
     public void close() throws IOException {
         bufferedWriter.close();
     }
