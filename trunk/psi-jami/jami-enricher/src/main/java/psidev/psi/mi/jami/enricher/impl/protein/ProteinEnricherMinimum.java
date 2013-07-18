@@ -162,7 +162,7 @@ public class ProteinEnricherMinimum
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
             XrefUpdateMerger merger = new XrefUpdateMerger();
-            merger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers());
+            merger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers(), true);
 
             for(Xref xref: merger.getToAdd()){
                 proteinToEnrich.getIdentifiers().add(xref);

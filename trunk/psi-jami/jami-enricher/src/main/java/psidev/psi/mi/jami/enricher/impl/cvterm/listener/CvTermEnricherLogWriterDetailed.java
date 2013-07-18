@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.listener.LogWritingListener;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -12,13 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gabe
- * Date: 18/07/13
- * Time: 09:34
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since 18/07/13
  */
-public class CvTermLoggingListener
+public class CvTermEnricherLogWriterDetailed
         //extends LogWritingListener
         implements CvTermEnricherListener {
 
@@ -29,7 +26,21 @@ public class CvTermLoggingListener
     public static final String NEW_LINE = "/n";
     public static final String NEW_EVENT = "/t";
 
-    public CvTermLoggingListener(File successFile, File failureFile) throws IOException {
+
+    String[] headers = {
+            "CvTerm",
+            "Old Short Name", "New ShortName",
+            "Old Full Name", "New Full Name",
+            "Old MI Identifier" , "New MI Identifier",
+            "MOD Identifier",
+            "PAR Identifier",
+            "Identifier",
+            "Xref",
+            "Synonym"
+    };
+
+
+    public CvTermEnricherLogWriterDetailed(File successFile, File failureFile) throws IOException {
         if(successFile == null || failureFile == null)
             throw new IllegalArgumentException("Provided a null file to write to.");
 
@@ -44,12 +55,16 @@ public class CvTermLoggingListener
         buffer = "";
     }
 
-    protected void writeSuccess() throws IOException {
+
+
+
+
+    private void writeSuccess() throws IOException {
         successWriter.write(buffer + NEW_LINE);
         buffer = "";
     }
 
-    protected void writeFailure() throws IOException {
+    private void writeFailure() throws IOException {
         failureWriter.write(buffer+NEW_LINE);
         buffer = "";
     }
@@ -73,7 +88,7 @@ public class CvTermLoggingListener
                 break;
             case FAILED:
                 try {
-                    writeSuccess();
+                    writeFailure();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

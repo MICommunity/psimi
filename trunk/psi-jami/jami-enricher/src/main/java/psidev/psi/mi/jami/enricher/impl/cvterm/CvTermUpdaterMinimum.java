@@ -45,7 +45,7 @@ public class CvTermUpdaterMinimum
         //Identifiers
         if(! cvTermFetched.getIdentifiers().isEmpty()) {
             XrefUpdateMerger merger = new XrefUpdateMerger();
-            merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers());
+            merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers() , false);
 
             for(Xref xref: merger.getToRemove()){
                 cvTermToEnrich.getIdentifiers().remove(xref);

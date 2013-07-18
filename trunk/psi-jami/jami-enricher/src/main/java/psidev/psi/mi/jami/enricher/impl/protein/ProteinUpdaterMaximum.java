@@ -28,7 +28,7 @@ public class ProteinUpdaterMaximum
 
         if(! proteinFetched.getXrefs().isEmpty()) {
             XrefUpdateMerger merger = new XrefUpdateMerger();
-            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs());
+            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , false);
             for(Xref xref: merger.getToRemove()){
                 proteinToEnrich.getXrefs().remove(xref);
                 if(listener != null) listener.onRemovedXref(proteinToEnrich , xref);
