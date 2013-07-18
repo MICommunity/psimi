@@ -1,13 +1,15 @@
-package psidev.psi.mi.jami.xml254;
+package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 
 /**
- * Xml 2.5.4 implementation of an Alias
+ * Xml implementation of an Alias
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,25 +19,31 @@ import javax.xml.bind.annotation.*;
 @XmlType(name = "alias", propOrder = {
         "name"
 })
-public class XmlAlias implements Alias{
+public class XmlAlias implements Alias, Serializable {
 
     private String name;
     private CvTerm type;
-    public static final String UNSPECIFIED = "unspecified";
+
+    public XmlAlias() {
+    }
+
+    public XmlAlias(String name, CvTerm type) {
+        if (name == null){
+            throw new IllegalArgumentException("The alias name cannot be null.");
+        }
+        this.name = name;
+        this.type = type;
+    }
 
     @XmlTransient
     public CvTerm getType() {
         return null;
     }
 
-    public void setType(CvTerm type) {
-        this.type = type;
-    }
-
     @XmlValue
     public String getName() {
         if (name == null){
-            name = UNSPECIFIED;
+            name = PsiXmlUtils.UNSPECIFIED;
         }
         return name;
     }
@@ -67,10 +75,15 @@ public class XmlAlias implements Alias{
      */
     public void setTypeAc(String value) {
         if (this.type == null && value != null){
-            this.type = new DefaultCvTerm(UNSPECIFIED, value);
+            this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
         }
         else if (this.type != null){
-            this.type.setMIIdentifier(value);
+            if (PsiXmlUtils.UNSPECIFIED.equals(this.type.getShortName()) && value == null){
+                this.type = null;
+            }
+            else {
+                this.type.setMIIdentifier(value);
+            }
         }
     }
 
@@ -100,8 +113,36 @@ public class XmlAlias implements Alias{
             this.type = new DefaultCvTerm(value);
         }
         else if (this.type != null){
-            this.type.setShortName(value != null ? value : UNSPECIFIED);
+            if (this.type.getMIIdentifier() == null && value == null){
+                this.type = null;
+            }
+            else {
+                this.type.setShortName(value!= null ? value : PsiXmlUtils.UNSPECIFIED);
+            }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof Alias)){
+            return false;
+        }
+
+        return UnambiguousAliasComparator.areEquals(this, (Alias) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return UnambiguousAliasComparator.hashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return getName() + (type != null ? "("+type.toString()+")" : "");
     }
 }
 
