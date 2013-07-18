@@ -7,9 +7,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Template fetcher for OBO files
@@ -50,7 +48,7 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
     }
 
     public T getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
-        if (ontologyDatabaseName != null && !ontologyDatabaseName.equalsIgnoreCase(ontologyDatabaseName)){
+        if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
             return null;
         }
         return id2Term.get(termIdentifier);
@@ -64,7 +62,7 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
     }
 
     public T getCvTermByExactName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
-        if (ontologyDatabaseName != null && !ontologyDatabaseName.equalsIgnoreCase(ontologyDatabaseName)){
+        if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
             return null;
         }
         return name2Term.get(searchName);
@@ -75,27 +73,68 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
     }
 
     public Collection<T> getCvTermByInexactName(String searchName, String databaseName) throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.singleton(getCvTermByExactName(searchName, databaseName));
     }
 
     public Collection<T> getCvTermByInexactName(String searchName, CvTerm database) throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.singleton(getCvTermByExactName(searchName, database != null ? database.getShortName():null));
     }
 
     public Collection<T> getCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<T> terms = new ArrayList<T>(termIdentifiers.size());
+
+        for (String id : termIdentifiers){
+            if (id2Term.containsKey(id)){
+                terms.add(id2Term.get(id));
+            }
+        }
+
+        return terms;
     }
 
     public Collection<T> getCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (ontologyDatabase != null && !DefaultCvTermComparator.areEquals(ontologyDatabase, this.ontologyDatabase)){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<T> terms = new ArrayList<T>(termIdentifiers.size());
+
+        for (String id : termIdentifiers){
+            if (id2Term.containsKey(id)){
+                terms.add(id2Term.get(id));
+            }
+        }
+
+        return terms;
     }
 
     public Collection<T> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<T> terms = new ArrayList<T>(searchNames.size());
+
+        for (String name : searchNames){
+            if (name2Term.containsKey(name)){
+                terms.add(name2Term.get(name));
+            }
+        }
+
+        return terms;
     }
 
     public Collection<T> getCvTermsByExactNames(Collection<String> searchNames) throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Collection<T> terms = new ArrayList<T>(searchNames.size());
+
+        for (String name : searchNames){
+            if (name2Term.containsKey(name)){
+                terms.add(name2Term.get(name));
+            }
+        }
+
+        return terms;
     }
 
     protected void initialiseLocalMaps(){
