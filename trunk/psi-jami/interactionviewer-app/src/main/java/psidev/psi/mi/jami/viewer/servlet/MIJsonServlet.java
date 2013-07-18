@@ -8,8 +8,12 @@ import org.apache.commons.io.FilenameUtils;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.OntologyTermCompositeFetcher;
+import psidev.psi.mi.jami.bridges.obo.OntologyOboFetcher;
+import psidev.psi.mi.jami.bridges.ols.CachedOntologyOLSFetcher;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
@@ -21,7 +25,9 @@ import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.json.MIJsonBinaryWriter;
 import psidev.psi.mi.jami.json.MIJsonWriter;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,25 +54,46 @@ import java.util.logging.Logger;
 
 public class MIJsonServlet extends HttpServlet{
 
-    private OntologyTermFetcher fetcher;
-    private ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod;
     public final static String URL_PARAM="url";
     public final static String FILE_PARAM="file";
+    public final static String MI_FILE_PATH_PROPERTY="psi.mi.obo.path";
     private MIFileAnalyzer fileAnalyzer;
     private static final Logger logger = Logger.getLogger("MIJsonServlet");
     private int timeOut = 30000;
+    private OntologyTermFetcher fetcher;
+    private ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod;
 
     public void init() throws ServletException
     {
         PsiJami.initialiseInteractionEvidenceSources();
         fileAnalyzer = new MIFileAnalyzer();
         expansionMethod = new InteractionEvidenceSpokeExpansion();
-        /*try {
-            this.fetcher = new CachedOntologyOLSFetcher();
-        } catch (BridgeFailedException e) {
-            logger.log(Level.SEVERE, "cannot load the cached ontology manager.");
-        }*/
-        this.fetcher = null;
+
+        Properties prop = new Properties();
+        String path = null;
+        //load a properties file
+        try {
+            prop.load(MIJsonServlet.class.getResourceAsStream("/viewer.properties"));
+            path = prop.getProperty(MI_FILE_PATH_PROPERTY);
+            if (path == null || (path != null && path.length() == 0)){
+                OntologyTermCompositeFetcher compositeFetcher = new OntologyTermCompositeFetcher();
+                this.fetcher = compositeFetcher;
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OntologyOboFetcher(CvTermUtils.getPsimi(), MIJsonServlet.class.getResource("/psi-mi25.obo").getFile()));
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOLSFetcher());
+            }
+            else {
+                OntologyTermCompositeFetcher compositeFetcher = new OntologyTermCompositeFetcher();
+                this.fetcher = compositeFetcher;
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OntologyOboFetcher(CvTermUtils.getPsimi(), path));
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOLSFetcher());
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "cannot load the property file /viewer.properties where we can find the psi-mi OBO file path. The ontology fetcher will be null.");
+        }catch (BridgeFailedException e) {
+            logger.log(Level.SEVERE, "cannot load the cached ontology manager for PSI-MOD.");
+        }catch (IllegalArgumentException e) {
+            logger.log(Level.SEVERE, "cannot load the psi-mi ontology from the file "+path);
+        }
     }
 
     @Override
