@@ -6,7 +6,7 @@
 //
 
 
-package psidev.psi.mi.jami.xml;
+package psidev.psi.mi.jami.xml254;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -333,8 +333,8 @@ public class XmlXref
      * 
      * @return
      *     possible object is
-     *     {@link XmlAnnotation }
-     *     
+     *     {@link psidev.psi.mi.jami.xml.XmlAnnotation }
+     *
      */
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute")
@@ -344,10 +344,10 @@ public class XmlXref
 
     /**
      * Sets the value of the attributeList property.
-     * 
+     *
      * @param value
      *     allowed object is
-     *     {@link XmlAnnotation }
+     *     {@link psidev.psi.mi.jami.xml.XmlAnnotation }
      *     
      */
     public void setAnnotations(Collection<XmlAnnotation> value) {
