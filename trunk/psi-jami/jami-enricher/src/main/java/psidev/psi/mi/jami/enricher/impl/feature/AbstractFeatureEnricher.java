@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.feature;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ProteinListeningFeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
@@ -26,14 +27,14 @@ import java.util.List;
  * @since   13/06/13
  */
 public abstract class AbstractFeatureEnricher <F extends Feature>
-        implements FeatureEnricher<F> , ProteinEnricherListener {
+        implements ProteinListeningFeatureEnricher<F> {
 
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
 
-    protected Polymer oldSequencePolymer;
-    protected String oldSequence;
-    protected Polymer lastEnrichedPolymer;
+    // protected Polymer oldSequencePolymer;
+    // protected String oldSequence;
+    // protected Polymer lastEnrichedPolymer;
     Collection<F> featuresToEnrich;
 
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
@@ -53,97 +54,22 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
         if(getCvTermEnricher() != null) {
             getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionDependency() ); //todo max
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );     // Todo max
         }
 
-        // The last enriched polymer is participant of this feature
-        if(featureToEnrich.getParticipant() == lastEnrichedPolymer){
-            String firstSequence = null;
-            String secondSequence = null;
-            List<Diff> sequenceChanges = Collections.EMPTY_LIST;
-
-            // The sequence was changed - set first and second sequence
-            if(featureToEnrich.getParticipant() == oldSequencePolymer){
-                if( oldSequence == null || ! oldSequence.equals("") ){
-                    if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.FAILED ,
-                            "The original sequence is null which invalidates all features.");
-                    return; //TODO
-                } else {
-                    firstSequence = oldSequence;
-                    // Second sequence can never be null/empty
-                    secondSequence = lastEnrichedPolymer.getSequence();
-                    // Find all the differences between the sequences
-                    sequenceChanges  = DiffUtils.diff(firstSequence, secondSequence);
-                }
-            }
-            // The sequence had not changed, set only the second sequence
-            else {
-                if( lastEnrichedPolymer.getSequence() == null || ! lastEnrichedPolymer.getSequence().equals("") ){
-                    if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.FAILED ,
-                            "The original sequence is null which invalidates all features.");
-                    return; //TODO
-                } else {
-                    firstSequence = lastEnrichedPolymer.getSequence();
-                }
-            }
-
-
-            for(Object object : featureToEnrich.getRanges()) {
-                Range range = (Range)object;
-
-                RangeUtils.validateRange(range, oldSequence);
-
-                // If the start and end are undetermined and invalid
-                if( range.getStart().isPositionUndetermined()
-                        || range.getEnd().isPositionUndetermined()
-                        || ! PositionUtils.areRangePositionsValid( range.getStart().getStart(), range.getEnd().getEnd())
-                        || PositionUtils.areRangePositionsOutOfBounds( range.getStart().getStart(), range.getEnd().getEnd(),firstSequence.length())) {
-
-                    // if(listener != null) ;//listener. note that the feature has invalid range
-                    // range.getStart().getStatus().getAnnotations().add(
-                    featureToEnrich.getAnnotations().add(
-                            AnnotationUtils.createCaution("Invalid range: " +
-                                            range.getStart().getStart() + "," +
-                                            range.getEnd().getEnd()));  //todo
-                    // range.getStart().PositionUtils.createUndeterminedPosition());  // TODO ONLY IN UPDATE
-                    range.setPositions(PositionUtils.createUndeterminedPosition(), PositionUtils.createUndeterminedPosition());
-                }
-            }
-
-
-            // Run an update on all the ranges if the sequence has changed
-            if(secondSequence != null && ! sequenceChanges.isEmpty()){
-                for(Object object : featureToEnrich.getRanges()) {
-                    Range range = (Range)object;
-
-                    // Try and remap the valid sequences.
-                    String oldValue = firstSequence.substring(
-                            (int)range.getStart().getStart() , (int)range.getEnd().getEnd());
-
-                    range.setPositions(
-                            PositionUtils.createCertainPosition(
-                                    DiffUtils.calculateIndexShift(sequenceChanges, (int) range.getStart().getStart())),
-                            PositionUtils.createCertainPosition(
-                                    DiffUtils.calculateIndexShift(sequenceChanges ,(int)range.getEnd().getEnd())));
-
-                    String newValue = secondSequence.substring((int) range.getStart().getStart(), (int) range.getEnd().getEnd());
-
-                    if( ! oldValue.equalsIgnoreCase(newValue)){ //TODO
-                        //log.warn("Sub sequence: " + oldValue +
-                        //        " is not equal to new sub sequence: " + newValue);
-                    }
-
-
-                }
-            }
-
-        }
 
         if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
 
     }
 
+    protected void processInvalidRange(Feature feature, Range range , List<String> messages){
+
+        //if(listener != null) ;//listener. note that the feature has invalid range
+        Annotation annotation = AnnotationUtils.createCaution("Invalid range: " +messages );
+
+        feature.getAnnotations().add(annotation);
+        if(getFeatureEnricherListener() != null)
+            getFeatureEnricherListener().onAddedAnnotation(feature , annotation);
+    }
 
     public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener) {
         this.listener = featureEnricherListener;
@@ -157,17 +83,55 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         this.cvTermEnricher = cvTermEnricher;
     }
 
+    public void setFeaturesToEnrich(Participant participant){
+        featuresToEnrich = participant.getFeatures();
+
+        if(participant.getInteractor() instanceof Polymer){
+            String sequence = ((Polymer)participant.getInteractor()).getSequence();
+
+            for(Feature feature : featuresToEnrich){
+                for(Object object : feature.getRanges()) {
+                    Range range = (Range)object;
+
+                    List<String> rangeValidationMsg = RangeUtils.validateRange(range, sequence);
+
+                    if( ! rangeValidationMsg.isEmpty()){
+                        processInvalidRange(feature , range , rangeValidationMsg);
+                    }
+                }
+            }
+        }
+
+    }
+
     public void onSequenceUpdate(Protein protein, String oldSequence) {
-        this.oldSequence = oldSequence;
-        this.oldSequencePolymer = protein;
+
+        List<Diff> sequenceChanges;
+        sequenceChanges  = DiffUtils.diff(oldSequence, protein.getSequence());
+
         for (F feature : featuresToEnrich){
+            for(Object obj : feature.getRanges()){
+                Range range = (Range)obj;
+                String oldFeatureSeq =
+                        RangeUtils.extractRangeSequence( range, oldSequence);
+                String newFeatureSeq =
+                        RangeUtils.extractRangeSequence( range, protein.getSequence());
+
+                if(oldFeatureSeq.equals(newFeatureSeq)){
+
+                    range.setPositions(
+                            PositionUtils.createCertainPosition(
+                                    DiffUtils.calculateIndexShift(sequenceChanges, (int) range.getStart().getStart())),
+                            PositionUtils.createCertainPosition(
+                                    DiffUtils.calculateIndexShift(sequenceChanges ,(int)range.getEnd().getEnd())));
+                }
+            }
+
             // shift range where protein.getSequence is new sequence and oldSequence is previous sequence
         }
     }
 
-    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
-        this.lastEnrichedPolymer = protein;
-    }
+    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {}
 
     public void onProteinRemapped(Protein protein, String oldUniprot) {}
     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {}

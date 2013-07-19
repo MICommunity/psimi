@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.interaction.listener;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.model.Interaction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,4 +11,7 @@ import psidev.psi.mi.jami.enricher.listener.EnricherListener;
  * @since 28/06/13
  */
 public interface InteractionEnricherListener extends EnricherListener {
+
+    public void onInteractionEnriched(Interaction interaction , EnrichmentStatus status, String message);
+
 }

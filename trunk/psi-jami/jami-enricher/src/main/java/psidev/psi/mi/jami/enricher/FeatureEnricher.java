@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Participant;
 
 import java.util.Collection;
 
@@ -19,11 +19,11 @@ public interface FeatureEnricher <F extends Feature>{
     public void enrichFeature(F featureToEnrich) throws EnricherException;
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException;
 
-
-
     public void setFeatureEnricherListener(FeatureEnricherListener listener);
     public FeatureEnricherListener getFeatureEnricherListener();
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
     public CvTermEnricher getCvTermEnricher();
+
+    public void setFeaturesToEnrich(Participant participant);
 }

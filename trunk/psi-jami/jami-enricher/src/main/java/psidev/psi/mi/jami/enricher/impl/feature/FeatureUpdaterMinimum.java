@@ -5,6 +5,10 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.utils.PositionUtils;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +23,7 @@ public class FeatureUpdaterMinimum<F extends Feature>
 
     @Override
     public void processFeature(F featureToEnrich) throws EnricherException {
+        super.processFeature(featureToEnrich);
 
         /*if(featureFetched.getType() != null
                 && ! featureFetched.getType().getShortName().equalsIgnoreCase(
@@ -26,8 +31,15 @@ public class FeatureUpdaterMinimum<F extends Feature>
             //if(listener != null) listener.on(featureToEnrich , featureToEnrich.getType());
             featureToEnrich.setType(featureFetched.getType());
         }   */
+
         //update feature type
         return;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+    protected void processInvalidRange(Feature feature, Range range , List<String> messages){
+        super.processInvalidRange(feature, range , messages);
+        range.setPositions(PositionUtils.createUndeterminedPosition(), PositionUtils.createUndeterminedPosition());
     }
 
 

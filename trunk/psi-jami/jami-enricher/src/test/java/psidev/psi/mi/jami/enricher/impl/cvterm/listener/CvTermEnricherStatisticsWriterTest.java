@@ -23,11 +23,11 @@ import static junit.framework.Assert.assertTrue;
  * Time: 13:32
  * To change this template use File | Settings | File Templates.
  */
-public class CvTermEnricherStatistcsWriterTest {
+public class CvTermEnricherStatisticsWriterTest {
 
     CvTermEnricherMinimum cvTermEnricherMinimum;
     MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
-    CvTermEnricherStatistcsWriter logWriter;
+    CvTermEnricherStatisticsWriter logWriter;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -39,7 +39,7 @@ public class CvTermEnricherStatistcsWriterTest {
         cvTermEnricherMinimum = new CvTermEnricherMinimum();
         cvTermEnricherMinimum.setCvTermFetcher(mockCvTermFetcher);
 
-        logWriter = new CvTermEnricherStatistcsWriter(new File("success.txt"),new File("fail.txt"));
+        logWriter = new CvTermEnricherStatisticsWriter(new File("success.txt"),new File("fail.txt"));
         CvTermEnricherListenerManager manager = new CvTermEnricherListenerManager();
 
         manager.addEnricherListener(logWriter);

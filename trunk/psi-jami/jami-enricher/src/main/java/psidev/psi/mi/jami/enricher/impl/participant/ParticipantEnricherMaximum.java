@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.EnricherUtil;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum;
@@ -32,7 +33,10 @@ public class ParticipantEnricherMaximum<P extends Participant, F extends Feature
 
     @Override
     public FeatureEnricher<F> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new FeatureEnricherMaximum<F>();
+        if(featureEnricher == null) {
+            featureEnricher = new FeatureEnricherMaximum<F>();
+            EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
+        }
         return featureEnricher;
     }
 }
