@@ -1,15 +1,14 @@
 package psidev.psi.mi.jami.xml;
 
 /**
- * Utility class for psixml
+ * Xml implementation of CvTerm.
+ *
+ * Does write annotations
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
 
-public class PsiXmlUtils {
-
-    public static final String UNSPECIFIED = "unspecified";
-
+public class XmlOpenCvTerm {
 }
