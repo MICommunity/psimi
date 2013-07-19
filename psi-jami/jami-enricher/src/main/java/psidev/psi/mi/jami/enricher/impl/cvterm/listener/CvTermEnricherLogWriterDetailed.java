@@ -15,6 +15,7 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
+@Deprecated
 public class CvTermEnricherLogWriterDetailed
         //extends LogWritingListener
         implements CvTermEnricherListener {

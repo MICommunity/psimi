@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -31,8 +28,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
     public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException {
 
         for(Participant participant : participantsToEnrich){
-            this.featureEnricher.setFeaturesToEnrich(participant.getFeatures());
-            enrichParticipant((P)participant);
+            enrichParticipant((P) participant);
         }
     }
 
@@ -40,6 +36,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
     public void enrichParticipant(P participantToEnrich) throws EnricherException {
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
+
+        this.featureEnricher.setFeaturesToEnrich(participantToEnrich);
 
         processParticipant(participantToEnrich);
 
@@ -70,7 +68,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         }
 
         if( getFeatureEnricher() != null )
-            getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
+                getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
 
         if(listener != null) listener.onParticipantEnriched(participantToEnrich , EnrichmentStatus.SUCCESS , null);
 
@@ -92,9 +90,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     public void setProteinEnricher(ProteinEnricher proteinEnricher) {
         this.proteinEnricher = proteinEnricher;
-        if (this.featureEnricher != null){
-            this.proteinEnricher.setProteinEnricherListener(this.featureEnricher);
-        }
+        if (this.getFeatureEnricher() != null)
+            EnricherUtil.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), getProteinEnricher());
     }
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
@@ -104,8 +101,6 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
-        if (this.proteinEnricher != null){
-            this.proteinEnricher.setProteinEnricherListener(this.featureEnricher);
-        }
+        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
     }
 }

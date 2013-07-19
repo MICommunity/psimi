@@ -1,10 +1,8 @@
-package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
+package psidev.psi.mi.jami.enricher.impl.interaction.listener;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.*;
 
@@ -13,10 +11,10 @@ import java.io.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class CvTermEnricherStatistcsWriter
-        implements CvTermEnricherListener {
+public class InteractionEnricherStatisticsWriter
+        implements InteractionEnricherListener {
 
-    private CvTerm lastObject = null;
+    private Interaction lastObject = null;
     private Writer successWriter , failureWriter;
 
     public static final String NEW_LINE = "\n";
@@ -24,7 +22,7 @@ public class CvTermEnricherStatistcsWriter
 
     private int updateCount = 0, removedCount = 0, additionCount = 0;
 
-    public CvTermEnricherStatistcsWriter(File successFile, File failureFile) throws IOException {
+    public InteractionEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         if(successFile == null || failureFile == null)
             throw new IllegalArgumentException("Provided a null file to write to.");
 
@@ -32,13 +30,13 @@ public class CvTermEnricherStatistcsWriter
         failureWriter = new BufferedWriter( new FileWriter(failureFile) );
 
 
-        successWriter.write("CvTerm"); successWriter.write(NEW_EVENT);
+        successWriter.write("Feature"); successWriter.write(NEW_EVENT);
         successWriter.write("Updated"); successWriter.write(NEW_EVENT);
         successWriter.write("Removed"); successWriter.write(NEW_EVENT);
         successWriter.write("Added"); successWriter.write(NEW_EVENT);
         successWriter.write("File Source");
 
-        failureWriter.write("CvTerm"); failureWriter.write(NEW_EVENT);
+        failureWriter.write("Feature"); failureWriter.write(NEW_EVENT);
         failureWriter.write("File Source"); failureWriter.write(NEW_EVENT);
         failureWriter.write("Message");
     }
@@ -52,24 +50,23 @@ public class CvTermEnricherStatistcsWriter
        }
     }
 
-    private void checkObject(CvTerm cvTerm){
-        if(lastObject == null) lastObject = cvTerm;
-        else if(lastObject != cvTerm){
+    private void checkObject(Interaction interaction){
+        if(lastObject == null) lastObject = interaction;
+        else if(lastObject != interaction){
             updateCount = 0;
             removedCount = 0;
             additionCount = 0;
-            lastObject = cvTerm;
-            //onCvTermEnriched(lastObject , EnrichmentStatus.FAILED , "New CvTerm started before last finished without an exit status");
+            lastObject = interaction;
         }
     }
 
 
-    public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message){
+    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message){
         try{
             switch(status){
                 case SUCCESS:
                     successWriter.write(NEW_LINE);
-                    successWriter.write(cvTerm.toString());
+                    successWriter.write(interaction.toString());
                     successWriter.write(NEW_EVENT);
                     successWriter.write(updateCount);
                     successWriter.write(NEW_EVENT);
@@ -77,8 +74,8 @@ public class CvTermEnricherStatistcsWriter
                     successWriter.write(NEW_EVENT);
                     successWriter.write(additionCount);
                     successWriter.write(NEW_EVENT);
-                    if (cvTerm instanceof FileSourceContext){
-                        FileSourceContext context = (FileSourceContext) cvTerm;
+                    if (interaction instanceof FileSourceContext){
+                        FileSourceContext context = (FileSourceContext) interaction;
                         if (context.getSourceLocator() != null)
                             successWriter.write(context.getSourceLocator().toString());
                     }
@@ -86,10 +83,10 @@ public class CvTermEnricherStatistcsWriter
 
                 case FAILED:
                     failureWriter.write(NEW_LINE);
-                    failureWriter.write(cvTerm.toString());
+                    failureWriter.write(interaction.toString());
                     failureWriter.write(NEW_EVENT);
-                    if (cvTerm instanceof FileSourceContext){
-                        FileSourceContext context = (FileSourceContext) cvTerm;
+                    if (interaction instanceof FileSourceContext){
+                        FileSourceContext context = (FileSourceContext) interaction;
                         if (context.getSourceLocator() != null)
                             failureWriter.write(context.getSourceLocator().toString());
                     }
@@ -102,66 +99,9 @@ public class CvTermEnricherStatistcsWriter
         } catch (IOException e) {
             e.printStackTrace(); //TODO LOG this
         }
-
         updateCount = 0;
         removedCount = 0;
         additionCount = 0;
         lastObject = null;
-    }
-
-
-    public void onShortNameUpdate(CvTerm cv, String oldShortName) {
-        checkObject(cv);
-        updateCount ++;
-    }
-
-    public void onFullNameUpdate(CvTerm cv, String oldFullName) {
-        checkObject(cv);
-        updateCount ++;
-    }
-
-    public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {
-        checkObject(cv);
-        updateCount ++;
-    }
-
-    public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {
-        checkObject(cv);
-        updateCount ++;
-    }
-
-    public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {
-        checkObject(cv);
-        updateCount ++;
-    }
-
-    public void onAddedIdentifier(CvTerm cv, Xref added) {
-        checkObject(cv);
-        additionCount ++;
-    }
-
-    public void onRemovedIdentifier(CvTerm cv, Xref removed) {
-        checkObject(cv);
-        removedCount ++;
-    }
-
-    public void onAddedXref(CvTerm cv, Xref added) {
-        checkObject(cv);
-        additionCount ++;
-    }
-
-    public void onRemovedXref(CvTerm cv, Xref removed) {
-        checkObject(cv);
-        removedCount ++;
-    }
-
-    public void onAddedSynonym(CvTerm cv, Alias added) {
-        checkObject(cv);
-        additionCount ++;
-    }
-
-    public void onRemovedSynonym(CvTerm cv, Alias removed) {
-        checkObject(cv);
-        removedCount ++;
     }
 }

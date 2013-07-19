@@ -18,13 +18,7 @@ public interface FeatureChangeListener extends EventListener{
 
     public void onInterproUpdate(Feature feature, String oldInterpro);
 
-    public void onTypeUpdate(Feature feature , CvTerm oldType);
-
-    public void onInteractionEffectUpdate(Feature feature , CvTerm oldInteractionEffect);
-
-    public void onInteractionDependencyUpdate(Feature feature , CvTerm oldInteractionDependency);
-
-    public void onParticipantUpdate(Feature feature , Participant participant);
+    public void onTypeAdded(Feature feature , CvTerm oldType);
 
     public void onAddedIdentifier(Feature feature, Xref added);
 

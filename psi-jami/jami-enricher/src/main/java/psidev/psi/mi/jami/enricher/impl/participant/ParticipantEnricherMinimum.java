@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participant;
 
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.EnricherUtil;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -39,7 +40,10 @@ public class ParticipantEnricherMinimum<P extends Participant , F extends Featur
 
 
     public FeatureEnricher<F> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new FeatureEnricherMinimum<F>();
+        if(featureEnricher == null){
+            featureEnricher = new FeatureEnricherMinimum<F>();
+            EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
+        }
         return featureEnricher;
     }
 }

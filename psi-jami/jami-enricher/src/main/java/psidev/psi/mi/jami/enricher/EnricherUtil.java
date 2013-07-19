@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
  */
-public class EnricherFactory {
+public class EnricherUtil {
 
     /**
      * Sets up the
@@ -45,19 +45,32 @@ public class EnricherFactory {
     public static void linkFeatureEnricherToProteinEnricher(InteractionEnricher enricher){
 
         FeatureEnricher featureEnricher = enricher.getParticipantEnricher().getFeatureEnricher();
-        ProteinEnricherListener listener = enricher.getParticipantEnricher().getProteinEnricher().getProteinEnricherListener();
-        if(listener != null && listener != featureEnricher) {
-            if(listener instanceof ProteinEnricherListenerManager){
-                ProteinEnricherListenerManager manager = (ProteinEnricherListenerManager) listener;
-                manager.addEnricherListener(featureEnricher);
+        ProteinEnricher proteinEnricher = enricher.getParticipantEnricher().getProteinEnricher();
+        linkFeatureEnricherToProteinEnricher(featureEnricher , proteinEnricher);
+
+    }
+
+    public static void linkFeatureEnricherToProteinEnricher(
+            FeatureEnricher featureEnricher , ProteinEnricher proteinEnricher ){
+
+        if(featureEnricher instanceof ProteinListeningFeatureEnricher){
+            ProteinListeningFeatureEnricher listeningFeatureEnricher =
+                    (ProteinListeningFeatureEnricher) featureEnricher;
+
+            ProteinEnricherListener listener = proteinEnricher.getProteinEnricherListener();
+            if(listener != null && listener != featureEnricher) {
+                if(listener instanceof ProteinEnricherListenerManager){
+                    ProteinEnricherListenerManager manager = (ProteinEnricherListenerManager) listener;
+                    manager.addEnricherListener(listeningFeatureEnricher);
+                } else {
+                    ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
+                    manager.addEnricherListener(listener);
+                    manager.addEnricherListener(listeningFeatureEnricher);
+                    proteinEnricher.setProteinEnricherListener(manager);
+                }
             } else {
-                ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
-                manager.addEnricherListener(listener);
-                manager.addEnricherListener(featureEnricher);
-                enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(manager);
+                proteinEnricher.setProteinEnricherListener(listeningFeatureEnricher);
             }
-        } else {
-            enricher.getParticipantEnricher().getProteinEnricher().setProteinEnricherListener(featureEnricher);
         }
     }
 
