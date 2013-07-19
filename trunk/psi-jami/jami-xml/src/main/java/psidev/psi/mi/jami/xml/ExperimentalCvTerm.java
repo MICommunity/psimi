@@ -55,6 +55,8 @@ public class ExperimentalCvTerm
      *     {@link Integer }
      *     
      */
+    @XmlElementWrapper(name="experimentRefList")
+    @XmlElement(name="experimentRef")
     public Collection<Integer> getExperimentRefList() {
         return experimentRefList;
     }
@@ -67,8 +69,6 @@ public class ExperimentalCvTerm
      *     {@link Integer }
      *     
      */
-    @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef")
     public void setExperimentRefList(Collection<Integer> value) {
         this.experimentRefList = value;
     }
