@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 
 /**
  * Mitab extension for Xref.
@@ -97,5 +98,30 @@ public class MitabXref implements Xref,FileSourceContext {
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o){
+            return true;
+        }
+
+        // Xrefs are different and it has to be ExternalIdentifier
+        if (!(o instanceof Xref)){
+            return false;
+        }
+
+        return UnambiguousXrefComparator.areEquals(this, (Xref) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return UnambiguousXrefComparator.hashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return database.toString() + ":" + id.toString() + (qualifier != null ? " (" + qualifier.toString() + ")" : "");
     }
 }
