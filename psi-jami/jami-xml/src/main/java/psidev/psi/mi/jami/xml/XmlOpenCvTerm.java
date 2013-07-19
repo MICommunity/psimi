@@ -150,11 +150,19 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
         return getXrefContainer().getAllXrefs();
     }
 
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute")
+    @XmlTransient
     public Collection<XmlAnnotation> getAnnotations() {
         if (annotations == null){
             this.annotations = new ArrayList<XmlAnnotation>();
+        }
+        return this.annotations;
+    }
+
+    @XmlElementWrapper(name="attributeList")
+    @XmlElement(name="attribute")
+    public Collection<XmlAnnotation> getJAXBAnnotations() {
+        if (getAnnotations().isEmpty()){
+            return null;
         }
         return this.annotations;
     }
