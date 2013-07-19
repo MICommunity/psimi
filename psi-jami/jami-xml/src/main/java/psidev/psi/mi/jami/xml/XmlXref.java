@@ -12,8 +12,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
-import psidev.psi.mi.jami.xml.PsiXmlUtils;
-import psidev.psi.mi.jami.xml.XmlAnnotation;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
@@ -348,7 +347,7 @@ public class XmlXref
      * @param value
      *     allowed object is
      *     {@link psidev.psi.mi.jami.xml.XmlAnnotation }
-     *     
+     *
      */
     public void setAnnotations(Collection<XmlAnnotation> value) {
         this.annotations = value;
