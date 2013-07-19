@@ -22,9 +22,7 @@ import java.util.Collection;
         "xref"
 })
 @XmlSeeAlso({
-        ExperimentalPreparation.class,
-        ExperimentalRole.class,
-        ParticipantIdentificationMethod.class
+        ExperimentalCvTerm.class
 })
 public class XmlCvTerm extends AbstractXmlCvTerm{
 

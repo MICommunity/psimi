@@ -14,16 +14,16 @@ import java.util.Collection;
 
 
 /**
- * This element is controlled by the PSI-MI controlled vocabulary "experimentalRole",
- *                 root term id MI:0495.
+ * This element is controlled by the PSI-MI controlled vocabulary
+ *                 "experimentalPreparation", root term id MI:0346.
  *             
  * 
- * <p>Java class for experimentalRole complex type.
+ * <p>Java class for experimentalPreparation complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="experimentalRole">
+ * &lt;complexType name="experimentalPreparation">
  *   &lt;complexContent>
  *     &lt;extension base="{http://psi.hupo.org/mi/mif}cvType">
  *       &lt;sequence minOccurs="0">
@@ -36,11 +36,11 @@ import java.util.Collection;
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "experimentalRole", propOrder = {
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlType(name = "experimentalPreparation", propOrder = {
     "experimentRefList"
 })
-public class ExperimentalRole
+public class ExperimentalCvTerm
     extends XmlCvTerm
     implements Serializable
 {
@@ -49,11 +49,11 @@ public class ExperimentalRole
 
     /**
      * Gets the value of the experimentRefList property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link Integer }
-     *
+     *     
      */
     public Collection<Integer> getExperimentRefList() {
         return experimentRefList;
@@ -61,11 +61,11 @@ public class ExperimentalRole
 
     /**
      * Sets the value of the experimentRefList property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link Integer }
-     *
+     *     
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef")
