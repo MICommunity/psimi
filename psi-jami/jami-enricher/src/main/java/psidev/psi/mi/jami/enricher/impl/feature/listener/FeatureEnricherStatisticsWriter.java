@@ -24,6 +24,15 @@ public class FeatureEnricherStatisticsWriter
         onObjectEnriched(feature, status, message);
     }
 
+    public void onUpdatedRange(Feature feature, Range updated, String message) {
+        checkObject(feature);
+        updateCount++;
+    }
+
+    public void onInvalidRange(Feature feature, Range invalid, String message) {
+        // No changes have been made
+    }
+
     public void onShortNameUpdate(Feature feature, String oldShortName) {
         checkObject(feature);
         updateCount++;

@@ -37,9 +37,11 @@ public class FeatureUpdaterMinimum<F extends Feature>
     }
 
 
-    protected void processInvalidRange(Feature feature, Range range , List<String> messages){
-        super.processInvalidRange(feature, range , messages);
+    protected void processInvalidRange(Feature feature, Range range , String message){
+        super.processInvalidRange(feature, range , message);
         range.setPositions(PositionUtils.createUndeterminedPosition(), PositionUtils.createUndeterminedPosition());
+        if( getFeatureEnricherListener() != null)
+            getFeatureEnricherListener().onUpdatedRange(feature , range , "Marked invalid range as undetermined");
     }
 
 

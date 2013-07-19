@@ -26,7 +26,7 @@ public class CvTermEnricherLogger implements CvTermEnricherListener {
     }
 
     public void onFullNameUpdate(CvTerm cv, String oldFullName) {
-        log.info(cv+" has old full name "+oldFullName+" new ful name "+cv.getFullName());
+        log.info(cv+" has old full name "+oldFullName+" new full name "+cv.getFullName());
     }
 
     public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {

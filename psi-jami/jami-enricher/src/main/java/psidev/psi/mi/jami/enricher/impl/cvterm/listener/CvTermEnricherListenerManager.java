@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
-import psidev.psi.mi.jami.enricher.listener.AbstractEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @since 08/07/13
  */
 public class CvTermEnricherListenerManager
-    extends AbstractEnricherListenerManager<CvTermEnricherListener>
+    extends EnricherListenerManager<CvTermEnricherListener>
     implements CvTermEnricherListener{
 
 

@@ -16,6 +16,7 @@ import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             throws EnricherException{
 
         if(getCvTermEnricher() != null) {
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
+            if(featureToEnrich.getType() != null) getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
         }
 
 
@@ -61,10 +62,8 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
     }
 
-    protected void processInvalidRange(Feature feature, Range range , List<String> messages){
-
-        //if(listener != null) ;//listener. note that the feature has invalid range
-        Annotation annotation = AnnotationUtils.createCaution("Invalid range: " +messages );
+    protected void processInvalidRange(Feature feature, Range range , String message){
+        Annotation annotation = AnnotationUtils.createCaution("Invalid range: " +message );
 
         feature.getAnnotations().add(annotation);
         if(getFeatureEnricherListener() != null)
@@ -96,7 +95,9 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
                     List<String> rangeValidationMsg = RangeUtils.validateRange(range, sequence);
 
                     if( ! rangeValidationMsg.isEmpty()){
-                        processInvalidRange(feature , range , rangeValidationMsg);
+                        if(getFeatureEnricherListener() != null)
+                            getFeatureEnricherListener().onInvalidRange(feature , range , rangeValidationMsg.toString());
+                        processInvalidRange(feature , range , rangeValidationMsg.toString());
                     }
                 }
             }
@@ -118,12 +119,19 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
                         RangeUtils.extractRangeSequence( range, protein.getSequence());
 
                 if(oldFeatureSeq.equals(newFeatureSeq)){
-
                     range.setPositions(
                             PositionUtils.createCertainPosition(
                                     DiffUtils.calculateIndexShift(sequenceChanges, (int) range.getStart().getStart())),
                             PositionUtils.createCertainPosition(
                                     DiffUtils.calculateIndexShift(sequenceChanges ,(int)range.getEnd().getEnd())));
+                    if(getFeatureEnricherListener() != null)
+                        getFeatureEnricherListener().onUpdatedRange(feature , range , "Shifted range to match sequence update");
+                }
+                else {
+                    String failMessage = "New sequence invalidates feature range";
+                    if(getFeatureEnricherListener() != null)
+                        getFeatureEnricherListener().onInvalidRange(feature , range , failMessage);
+                    processInvalidRange(feature, range , failMessage);
                 }
             }
 

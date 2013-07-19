@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.interaction.listener;
 
-import psidev.psi.mi.jami.enricher.listener.AbstractEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Interaction;
 
@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Interaction;
  * @since 09/07/13
  */
 public class InteractionEnricherListenerManager
-        extends AbstractEnricherListenerManager<InteractionEnricherListener>
+        extends EnricherListenerManager<InteractionEnricherListener>
         implements InteractionEnricherListener{
 
 
