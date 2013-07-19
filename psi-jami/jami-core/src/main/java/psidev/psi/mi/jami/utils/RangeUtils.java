@@ -333,7 +333,55 @@ public class RangeUtils {
         return new DefaultRange(PositionUtils.createPosition(statusName, statusMi, start), PositionUtils.createPosition(statusName, statusMi, end), true);
     }
 
+    /**
+     * Extract a sub-sequence from the sequence given a Range object
+     * @param range
+     * @param sequence
+     * @return the sub-sequence, null if the range or sequence is null
+     */
     public static String extractRangeSequence(Range range, String sequence){
+        if (range == null || sequence == null || (sequence != null && sequence.length() == 0)){
+           return null;
+        }
+        // when the range is valid
+        if (validateRange(range, sequence).isEmpty()){
+            Position pos1 = range.getStart();
+            Position pos2 = range.getEnd();
+
+            // both the start position and the end position have a status
+            // if both positions are undetermined, or of type 'n-?','n-n', 'c-c' or '?-c', no feature sequence can be extracted
+            if (pos1.isPositionUndetermined() && pos2.isPositionUndetermined()){
+                return null;
+            }
+            // a feature sequence can be extracted
+            else {
+                // the start position is the start position of the start interval
+                long startSequence = pos1.getStart();
+                // the end position is the end position of the end interval
+                long endSequence = pos2.getEnd();
+
+                // in case of undetermined, the start position is starting from 1
+                if (pos1.isPositionUndetermined() || PositionUtils.isLessThan(pos1)){
+                    startSequence = 1;
+                }
+                // in case of greater than, the start position is starting from fromIntervalStart + 1
+                else if (PositionUtils.isGreaterThan(pos1)){
+                    startSequence ++;
+                }
+
+                // in case of undetermined, the end position is at the end of the sequence
+                if (pos2.isPositionUndetermined() || PositionUtils.isGreaterThan(pos2)){
+                    endSequence = sequence.length();
+                }
+                // in case of less than, the end position is at 'toIntervalEnd' - 1
+                else if (PositionUtils.isLessThan(pos2)){
+                    endSequence --;
+                }
+
+                return sequence.substring( (int)Math.max( 0, startSequence - 1 ), (int)endSequence ); // we make sure that we don't request index < 0.
+            }
+        }
+
         return null;
     }
 }
