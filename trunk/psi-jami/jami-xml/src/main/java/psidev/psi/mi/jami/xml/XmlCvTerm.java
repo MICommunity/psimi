@@ -21,6 +21,11 @@ import java.util.Collection;
         "names",
         "xref"
 })
+@XmlSeeAlso({
+        ExperimentalPreparation.class,
+        ExperimentalRole.class,
+        ParticipantIdentificationMethod.class
+})
 public class XmlCvTerm extends AbstractXmlCvTerm{
 
     private NamesContainer names;
