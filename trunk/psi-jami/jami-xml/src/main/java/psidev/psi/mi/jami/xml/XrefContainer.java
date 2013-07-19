@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
         "primaryRef",
         "secondaryRefs"
 })
-public class XmlXrefContainer {
+public class XrefContainer implements Serializable{
 
     private XmlXref primaryRef;
     private Collection<XmlXref> secondaryRefs;
@@ -47,8 +48,14 @@ public class XmlXrefContainer {
      *
      */
     public void setPrimaryRef(XmlXref value) {
-        this.primaryRef = null;
-        ((FullXrefList)allXrefs).addOnly(0, value);
+        if (this.primaryRef != null){
+            ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);
+        }
+
+        this.primaryRef = value;
+        if (value != null){
+            ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
+        }
     }
 
     /**
@@ -149,7 +156,12 @@ public class XmlXrefContainer {
 
         @Override
         protected void clearProperties() {
-            ((FullXrefList)getAllXrefs()).retainAllOnly(Collections.singleton(primaryRef));
+            if (primaryRef != null){
+                ((FullXrefList)getAllXrefs()).retainAllOnly(Collections.singleton(primaryRef));
+            }
+            else{
+                ((FullXrefList)getAllXrefs()).clearOnly();
+            }
         }
     }
 }
