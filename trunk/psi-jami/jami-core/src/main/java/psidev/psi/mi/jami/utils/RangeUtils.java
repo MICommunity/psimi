@@ -332,4 +332,8 @@ public class RangeUtils {
     public static Range createLinkedRange(String statusName, String statusMi, int start, int end){
         return new DefaultRange(PositionUtils.createPosition(statusName, statusMi, start), PositionUtils.createPosition(statusName, statusMi, end), true);
     }
+
+    public static String extractRangeSequence(Range range, String sequence){
+        return null;
+    }
 }
