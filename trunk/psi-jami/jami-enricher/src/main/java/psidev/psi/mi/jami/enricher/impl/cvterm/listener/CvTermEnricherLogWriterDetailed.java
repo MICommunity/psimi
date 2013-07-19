@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Deprecated
 public class CvTermEnricherLogWriterDetailed
-        //extends LogWritingListener
+        //extends StatisticsWriter
         implements CvTermEnricherListener {
 
     private String buffer;

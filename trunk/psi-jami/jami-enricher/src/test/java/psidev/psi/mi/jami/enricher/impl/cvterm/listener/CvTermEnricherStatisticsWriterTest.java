@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -15,6 +17,7 @@ import java.io.IOException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +28,10 @@ import static junit.framework.Assert.assertTrue;
  */
 public class CvTermEnricherStatisticsWriterTest {
 
+
+    protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherLogger.class.getName());
+
+
     CvTermEnricherMinimum cvTermEnricherMinimum;
     MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
     CvTermEnricherStatisticsWriter logWriter;
@@ -34,12 +41,24 @@ public class CvTermEnricherStatisticsWriterTest {
     private String MI_ID = "MI:1234";
     private String SYNONYM_NAME = "SynonymName";
 
+    private File successFile , failFile;
+
     @Before
     public void setup() throws BridgeFailedException, IOException {
         cvTermEnricherMinimum = new CvTermEnricherMinimum();
         cvTermEnricherMinimum.setCvTermFetcher(mockCvTermFetcher);
 
-        logWriter = new CvTermEnricherStatisticsWriter(new File("success.txt"),new File("fail.txt"));
+        successFile = new File("success.txt");
+        failFile = new File("failed.txt");
+
+        if(successFile.exists()) successFile.delete();
+        if(failFile.exists()) failFile.delete();
+
+        assertTrue( ! successFile.exists());
+        assertTrue( ! failFile.exists());
+
+
+        logWriter = new CvTermEnricherStatisticsWriter(successFile , failFile);
         CvTermEnricherListenerManager manager = new CvTermEnricherListenerManager();
 
         manager.addEnricherListener(logWriter);
@@ -62,12 +81,13 @@ public class CvTermEnricherStatisticsWriterTest {
         cvTermEnricherMinimum.enrichCvTerm(term);
         term.setMIIdentifier("FOO");
         cvTermEnricherMinimum.enrichCvTerm(term);
-
         CvTerm test = new DefaultCvTerm("FOOOO", "BAHHH");
-
         cvTermEnricherMinimum.enrichCvTerm(test);
 
         logWriter.close();
+
+        assertTrue(successFile.exists());
+        assertTrue(failFile.exists());
     }
 
 }
