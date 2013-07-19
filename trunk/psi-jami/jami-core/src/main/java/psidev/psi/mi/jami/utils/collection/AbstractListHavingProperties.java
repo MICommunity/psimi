@@ -157,6 +157,10 @@ public abstract class AbstractListHavingProperties<T> extends ArrayList<T> {
         return removed;
     }
 
+    public void addOnly(int i, T object) {
+        super.add(i, object);
+    }
+
     public boolean addOnly(T object) {
         return super.add(object);
     }
