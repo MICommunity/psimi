@@ -31,6 +31,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
     public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException {
 
         for(Participant participant : participantsToEnrich){
+            this.featureEnricher.setFeaturesToEnrich(participant.getFeatures());
             enrichParticipant((P)participant);
         }
     }
@@ -91,6 +92,9 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     public void setProteinEnricher(ProteinEnricher proteinEnricher) {
         this.proteinEnricher = proteinEnricher;
+        if (this.featureEnricher != null){
+            this.proteinEnricher.setProteinEnricherListener(this.featureEnricher);
+        }
     }
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
@@ -100,5 +104,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
+        if (this.proteinEnricher != null){
+            this.proteinEnricher.setProteinEnricherListener(this.featureEnricher);
+        }
     }
 }

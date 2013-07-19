@@ -23,11 +23,11 @@ import static junit.framework.Assert.assertTrue;
  * Time: 13:32
  * To change this template use File | Settings | File Templates.
  */
-public class CvTermEnricherLogWriterBasicTest {
+public class CvTermEnricherStatistcsWriterTest {
 
     CvTermEnricherMinimum cvTermEnricherMinimum;
     MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
-    CvTermEnricherLogWriterBasic logWriter;
+    CvTermEnricherStatistcsWriter logWriter;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -39,7 +39,7 @@ public class CvTermEnricherLogWriterBasicTest {
         cvTermEnricherMinimum = new CvTermEnricherMinimum();
         cvTermEnricherMinimum.setCvTermFetcher(mockCvTermFetcher);
 
-        logWriter = new CvTermEnricherLogWriterBasic(new File("success.txt"),new File("fail.txt"));
+        logWriter = new CvTermEnricherStatistcsWriter(new File("success.txt"),new File("fail.txt"));
         CvTermEnricherListenerManager manager = new CvTermEnricherListenerManager();
 
         manager.addEnricherListener(logWriter);
@@ -57,8 +57,6 @@ public class CvTermEnricherLogWriterBasicTest {
     @Test
     public void test_log_is_written() throws EnricherException, IOException {
         CvTerm term = new DefaultCvTerm(SHORT_NAME,MI_ID);
-
-
 
         cvTermEnricherMinimum.enrichCvTerm(term);
         cvTermEnricherMinimum.enrichCvTerm(term);

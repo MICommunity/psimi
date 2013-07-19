@@ -14,8 +14,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  */
-public interface FeatureEnricher <F extends Feature>
-        extends ProteinEnricherListener{
+public interface FeatureEnricher <F extends Feature>{
 
     public void enrichFeature(F featureToEnrich) throws EnricherException;
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException;

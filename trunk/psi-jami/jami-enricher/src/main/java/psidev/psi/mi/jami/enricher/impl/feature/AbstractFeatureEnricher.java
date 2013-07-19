@@ -4,11 +4,13 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
 import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
 
@@ -24,7 +26,7 @@ import java.util.List;
  * @since   13/06/13
  */
 public abstract class AbstractFeatureEnricher <F extends Feature>
-        implements FeatureEnricher<F>{
+        implements FeatureEnricher<F> , ProteinEnricherListener {
 
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
@@ -32,7 +34,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     protected Polymer oldSequencePolymer;
     protected String oldSequence;
     protected Polymer lastEnrichedPolymer;
-
+    Collection<F> featuresToEnrich;
 
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
         for(F featureToEnrich : featuresToEnrich){
@@ -51,8 +53,8 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
         if(getCvTermEnricher() != null) {
             getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionDependency() );
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );
+            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionDependency() ); //todo max
+            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );     // Todo max
         }
 
         // The last enriched polymer is participant of this feature
@@ -69,7 +71,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
                     return; //TODO
                 } else {
                     firstSequence = oldSequence;
-                    // Second sequence is never null/empty
+                    // Second sequence can never be null/empty
                     secondSequence = lastEnrichedPolymer.getSequence();
                     // Find all the differences between the sequences
                     sequenceChanges  = DiffUtils.diff(firstSequence, secondSequence);
@@ -90,6 +92,8 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             for(Object object : featureToEnrich.getRanges()) {
                 Range range = (Range)object;
 
+                RangeUtils.validateRange(range, oldSequence);
+
                 // If the start and end are undetermined and invalid
                 if( range.getStart().isPositionUndetermined()
                         || range.getEnd().isPositionUndetermined()
@@ -102,7 +106,8 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
                             AnnotationUtils.createCaution("Invalid range: " +
                                             range.getStart().getStart() + "," +
                                             range.getEnd().getEnd()));  //todo
-                    // range.getStart().PositionUtils.createUndeterminedPosition());
+                    // range.getStart().PositionUtils.createUndeterminedPosition());  // TODO ONLY IN UPDATE
+                    range.setPositions(PositionUtils.createUndeterminedPosition(), PositionUtils.createUndeterminedPosition());
                 }
             }
 
@@ -155,6 +160,9 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         this.oldSequence = oldSequence;
         this.oldSequencePolymer = protein;
+        for (F feature : featuresToEnrich){
+            // shift range where protein.getSequence is new sequence and oldSequence is previous sequence
+        }
     }
 
     public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
