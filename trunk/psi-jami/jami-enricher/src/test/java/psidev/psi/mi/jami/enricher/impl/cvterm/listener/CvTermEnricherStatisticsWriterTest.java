@@ -15,16 +15,12 @@ import psidev.psi.mi.jami.utils.AliasUtils;
 import java.io.File;
 import java.io.IOException;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: gabe
- * Date: 18/07/13
- * Time: 13:32
- * To change this template use File | Settings | File Templates.
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since 18/07/13
  */
 public class CvTermEnricherStatisticsWriterTest {
 

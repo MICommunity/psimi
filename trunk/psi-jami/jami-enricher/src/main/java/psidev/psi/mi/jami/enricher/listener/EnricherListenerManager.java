@@ -10,7 +10,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public abstract class AbstractEnricherListenerManager <T extends EnricherListener> {
+public abstract class EnricherListenerManager<T extends EnricherListener> {
     protected ArrayList<T> listenersList = new ArrayList<T>();
 
     /**
@@ -21,10 +21,6 @@ public abstract class AbstractEnricherListenerManager <T extends EnricherListene
         if( ! listenersList.contains(listener) )
             listenersList.add(listener);
     }
-
-    /*public boolean containsEnricherListener(T listener){
-        return listenersList.contains(listener);
-    } */
 
     /**
      * Removes the listener from the list

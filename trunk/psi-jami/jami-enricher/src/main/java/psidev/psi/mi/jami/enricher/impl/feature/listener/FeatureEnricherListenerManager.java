@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.feature.listener;
 
 
-import psidev.psi.mi.jami.enricher.listener.AbstractEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 
@@ -12,13 +12,25 @@ import psidev.psi.mi.jami.model.*;
  * @since 10/07/13
  */
 public class FeatureEnricherListenerManager
-        extends AbstractEnricherListenerManager<FeatureEnricherListener>
+        extends EnricherListenerManager<FeatureEnricherListener>
         implements FeatureEnricherListener{
 
 
     public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
         for(FeatureEnricherListener listener : listenersList){
             listener.onFeatureEnriched(feature, status, message);
+        }
+    }
+
+    public void onUpdatedRange(Feature feature, Range updated, String message) {
+        for(FeatureEnricherListener listener : listenersList){
+            listener.onUpdatedRange(feature, updated, message);
+        }
+    }
+
+    public void onInvalidRange(Feature feature, Range invalid, String message) {
+        for(FeatureEnricherListener listener : listenersList){
+            listener.onInvalidRange(feature, invalid, message);
         }
     }
 

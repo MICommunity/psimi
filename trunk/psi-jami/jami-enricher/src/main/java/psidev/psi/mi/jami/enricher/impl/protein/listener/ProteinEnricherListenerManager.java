@@ -1,13 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
-import psidev.psi.mi.jami.enricher.listener.AbstractEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +14,7 @@ import java.util.ArrayList;
  * @since  12/06/13
  */
 public class ProteinEnricherListenerManager
-        extends AbstractEnricherListenerManager<ProteinEnricherListener>
+        extends EnricherListenerManager<ProteinEnricherListener>
         implements ProteinEnricherListener {
 
 

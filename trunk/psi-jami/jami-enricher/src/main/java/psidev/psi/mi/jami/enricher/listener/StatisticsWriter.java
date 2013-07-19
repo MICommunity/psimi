@@ -7,7 +7,13 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import java.io.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * Listens to the enrichment, making two lists of elements:
+ * those which have been successfully enriched and those which have failed.
+ * <p>
+ * For the successfully enriched elements, only those where changes were made are featured.
+ * Statistics are also given for the number of updates and added or removed fields.
+ *
+ * In both cases, if the object has a fileContext,this will be included for easier identification.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/07/13
@@ -24,6 +30,14 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
 
     protected int updateCount = 0, removedCount = 0, additionCount = 0;
 
+    /**
+     * Opens the files for successful enrichments and failed enrichments.
+     *
+     * @param successFile   The file to record successful enrichments.
+     * @param failureFile   The file to record failed enrichments.
+     * @param jamiObject    The name of the objectType being enriched
+     * @throws IOException
+     */
     public StatisticsWriter(File successFile, File failureFile, String jamiObject) throws IOException {
         if(successFile == null || failureFile == null)
             throw new IllegalArgumentException("Provided a null file to write to.");
@@ -42,6 +56,10 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
         failureWriter.write("Message");
     }
 
+    /**
+     * Close both files.
+     * @throws IOException
+     */
     public void close() throws IOException {
         try{
             if(successWriter != null) successWriter.close();
@@ -51,6 +69,11 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
         }
     }
 
+    /**
+     * Compares the object to the last object enriched.
+     * If they are different, the new object is taken and all stats reset.
+     * @param obj
+     */
     protected void checkObject(T obj){
         if(lastObject == null) lastObject = obj;
         else if(lastObject != obj){
@@ -61,6 +84,12 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
         }
     }
 
+    /**
+     * Writes to the appropriate file when the enrichment is complete.
+     * @param obj       The object which has finished enriching.
+     * @param status    The exit status of the finished enrichment.
+     * @param message   The message given to accompany the last enrichment.
+     */
     protected void onObjectEnriched(T obj, EnrichmentStatus status, String message){
         try{
             switch(status){
@@ -110,5 +139,4 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
         additionCount = 0;
         lastObject = null;
     }
-
 }

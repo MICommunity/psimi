@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participant.listener;
 
-import psidev.psi.mi.jami.enricher.listener.AbstractEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Participant;
 
@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @since 10/07/13
  */
 public class ParticipantEnricherListenerManager
-        extends AbstractEnricherListenerManager <ParticipantEnricherListener>
+        extends EnricherListenerManager<ParticipantEnricherListener>
         implements ParticipantEnricherListener{
 
 

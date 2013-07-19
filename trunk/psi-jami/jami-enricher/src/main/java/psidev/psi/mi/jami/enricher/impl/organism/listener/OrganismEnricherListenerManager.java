@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.organism.listener;
 
 
-import psidev.psi.mi.jami.enricher.listener.AbstractEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.Organism;
  * @since 08/07/13
  */
 public class OrganismEnricherListenerManager
-        extends AbstractEnricherListenerManager <OrganismEnricherListener>
+        extends EnricherListenerManager<OrganismEnricherListener>
         implements OrganismEnricherListener{
 
 
