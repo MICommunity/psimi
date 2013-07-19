@@ -40,29 +40,12 @@ public class FeatureEnricherListenerManager
         }
     }
 
-    public void onTypeUpdate(Feature feature, CvTerm oldType) {
+    public void onTypeAdded(Feature feature, CvTerm oldType) {
         for(FeatureEnricherListener listener : listenersList){
-            listener.onTypeUpdate(feature, oldType);
+            listener.onTypeAdded(feature, oldType);
         }
     }
 
-    public void onInteractionEffectUpdate(Feature feature, CvTerm oldInteractionEffect) {
-        for(FeatureEnricherListener listener : listenersList){
-            listener. onInteractionEffectUpdate(feature, oldInteractionEffect) ;
-        }
-    }
-
-    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldInteractionDependency) {
-        for(FeatureEnricherListener listener : listenersList){
-            listener.onInteractionDependencyUpdate(feature, oldInteractionDependency);
-        }
-    }
-
-    public void onParticipantUpdate(Feature feature, Participant participant) {
-        for(FeatureEnricherListener listener : listenersList){
-            listener.onParticipantUpdate(feature, participant) ;
-        }
-    }
 
     public void onAddedIdentifier(Feature feature, Xref added) {
         for(FeatureEnricherListener listener : listenersList){
