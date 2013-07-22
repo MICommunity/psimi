@@ -46,8 +46,10 @@ public abstract class AbstractInteractionEnricher<I extends Interaction, P exten
     }
 
     public void processInteraction(I interactionToEnrich) throws EnricherException {
-        if( getCvTermEnricher() != null )
-            getCvTermEnricher().enrichCvTerm(interactionToEnrich.getInteractionType());
+        if( getCvTermEnricher() != null ){
+            if( interactionToEnrich.getInteractionType() != null)
+                getCvTermEnricher().enrichCvTerm(interactionToEnrich.getInteractionType());
+        }
     }
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){

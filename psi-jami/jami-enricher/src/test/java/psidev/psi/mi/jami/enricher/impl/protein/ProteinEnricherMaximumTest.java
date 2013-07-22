@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum;
+import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
@@ -74,7 +75,7 @@ public class ProteinEnricherMaximumTest {
      * Confirm that the default organism enricher matches the protein enricher.
      */
     @Test
-    public void test_organism_enricher_is_of_matching_type(){
+    public void test_default_enricher_is_of_matching_type(){
         assertTrue(proteinEnricher.getOrganismEnricher() instanceof OrganismEnricherMaximum);
     }
 

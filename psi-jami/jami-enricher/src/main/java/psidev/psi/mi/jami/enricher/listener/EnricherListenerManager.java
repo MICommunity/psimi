@@ -11,7 +11,14 @@ import java.util.Collection;
  * @since 08/07/13
  */
 public abstract class EnricherListenerManager<T extends EnricherListener> {
-    protected ArrayList<T> listenersList = new ArrayList<T>();
+
+    protected Collection<T> listenersList = new ArrayList<T>();
+
+    protected EnricherListenerManager(T... listeners){
+        for(T listener : listeners){
+            addEnricherListener(listener);
+        }
+    }
 
     /**
      * Adds the listener to the list of listeners, if the list does not already contain it.

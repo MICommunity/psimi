@@ -48,8 +48,8 @@ public class ProteinEnricherMinimumTest {
 
     @Before
     public void initialiseFetcherAndEnricher(){
-        this.fetcher = new MockProteinFetcher();
-        this.proteinEnricher = new ProteinEnricherMinimum();
+        fetcher = new MockProteinFetcher();
+        proteinEnricher = new ProteinEnricherMinimum();
         proteinEnricher.setProteinFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
@@ -71,6 +71,15 @@ public class ProteinEnricherMinimumTest {
         //proteinEnricher.setProteinEnricherListener(manager);
         //proteinEnricher.getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
     }
+
+    /**
+     * Confirm that the default organism enricher matches the protein enricher.
+     */
+    @Test
+    public void test_default_enricher_is_of_matching_type(){
+        assertTrue(proteinEnricher.getOrganismEnricher() instanceof OrganismEnricherMinimum);
+    }
+
 
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
@@ -117,13 +126,7 @@ public class ProteinEnricherMinimumTest {
         this.proteinEnricher.enrichProtein(null_protein);
     }
 
-    /**
-     * Confirm that the default organism enricher matches the protein enricher.
-     */
-    @Test
-    public void test_organism_enricher_is_of_matching_type(){
-        assertTrue(proteinEnricher.getOrganismEnricher() instanceof OrganismEnricherMinimum);
-    }
+
 
     /**
      * Check that when a protein has no identifier, and the remapper is not provided,

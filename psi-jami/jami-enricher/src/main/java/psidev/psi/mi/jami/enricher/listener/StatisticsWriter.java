@@ -22,7 +22,7 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
 
     protected static final Logger log = LoggerFactory.getLogger(StatisticsWriter.class.getName());
 
-    private T lastObject = null;
+    protected T lastObject = null;
     private Writer successWriter , failureWriter;
 
     public static final String NEW_LINE = "\n";
@@ -50,10 +50,12 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
         successWriter.write("Removed"); successWriter.write(NEW_EVENT);
         successWriter.write("Added"); successWriter.write(NEW_EVENT);
         successWriter.write("File Source");
+        successWriter.flush();
 
         failureWriter.write(jamiObject); failureWriter.write(NEW_EVENT);
         failureWriter.write("File Source"); failureWriter.write(NEW_EVENT);
         failureWriter.write("Message");
+        failureWriter.flush();
     }
 
     /**
@@ -75,6 +77,7 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
      * @param obj
      */
     protected void checkObject(T obj){
+
         if(lastObject == null) lastObject = obj;
         else if(lastObject != obj){
             updateCount = 0;
@@ -91,6 +94,8 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
      * @param message   The message given to accompany the last enrichment.
      */
     protected void onObjectEnriched(T obj, EnrichmentStatus status, String message){
+        checkObject(obj);
+
         try{
             switch(status){
                 case SUCCESS:
