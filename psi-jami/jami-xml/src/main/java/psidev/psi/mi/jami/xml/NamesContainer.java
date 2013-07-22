@@ -123,11 +123,17 @@ public class NamesContainer implements FileSourceContext, Serializable{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
+    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+    }
+
+    @XmlTransient
+    public boolean isEmpty(){
+        return (shortLabel == null && fullName == null && getAliases().isEmpty());
     }
 }

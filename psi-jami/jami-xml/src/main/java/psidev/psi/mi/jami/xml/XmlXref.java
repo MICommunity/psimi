@@ -95,7 +95,7 @@ import java.util.Collection;
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "dbReference", propOrder = {
-    "attributes"
+    "annotations"
 })
 public class XmlXref
     implements Xref, FileSourceContext, Serializable
@@ -377,6 +377,7 @@ public class XmlXref
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
+    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
