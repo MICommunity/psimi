@@ -23,7 +23,7 @@ public class OrganismUpdaterMinimum
             // TaxID
             if(organismToEnrich.getTaxId() != organismFetched.getTaxId() ){
 
-                String oldValue = ""+organismToEnrich.getTaxId();
+                String oldValue = Integer.toString(organismToEnrich.getTaxId());
                 organismToEnrich.setTaxId(organismFetched.getTaxId());
                 if (listener != null)
                     listener.onTaxidUpdate(organismToEnrich, oldValue );

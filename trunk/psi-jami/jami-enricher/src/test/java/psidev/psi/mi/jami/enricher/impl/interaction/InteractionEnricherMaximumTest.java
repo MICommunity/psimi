@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum;
 import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherLogger;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherLogger;
@@ -79,8 +80,8 @@ public class InteractionEnricherMaximumTest {
     public void setUp() throws IOException {
         interactionEnricher = new InteractionEnricherMaximum<DefaultInteraction, DefaultParticipant, DefaultFeature>();
         interactionStatisticsWriter = new InteractionEnricherStatisticsWriter(
-                new File("Success_features.txt"),
-                new File("Fail_Features.txt") );
+                new File("Success_Interaction.txt"),
+                new File("Fail_Interaction.txt") );
         interactionEnricher.setInteractionEnricherListener(
                 new InteractionEnricherListenerManager(
                         new InteractionEnricherLogger(),
@@ -90,13 +91,16 @@ public class InteractionEnricherMaximumTest {
         cvTermEnricher = interactionEnricher.getCvTermEnricher();
         cvTermFetcher = new MockCvTermFetcher();
         cvTermEnricher.setCvTermFetcher(cvTermFetcher);
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherLogger());
+        cvTermEnricher.setCvTermEnricherListener(
+                new CvTermEnricherListenerManager(
+                        new CvTermEnricherLogger()
+                ));
 
         participantEnricher = interactionEnricher.getParticipantEnricher();
         participantEnricher.setCvTermEnricher(cvTermEnricher);
         participantStatisticsWriter = new ParticipantEnricherStatisticsWriter(
-                new File("participant_success"),
-                new File("participant_fail") );
+                new File("Success_Participant.txt"),
+                new File("Fail_Participant.txt") );
         participantEnricher.setParticipantListener(
                 new ParticipantEnricherListenerManager(
                         new ParticipantEnricherLogger(),
@@ -122,8 +126,8 @@ public class InteractionEnricherMaximumTest {
 
 
         proteinStatisticsWriter = new ProteinEnricherStatisticsWriter(
-                new File("Success_protein.txt"),
-                new File("Fail_protein.txt") );
+                new File("Success_Protein.txt"),
+                new File("Fail_Protein.txt") );
         proteinEnricher.setProteinEnricherListener(
                 new ProteinEnricherListenerManager(
                         proteinStatisticsWriter,
