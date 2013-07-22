@@ -24,7 +24,7 @@ import java.util.Collection;
 @XmlType(name = "openCvType", propOrder = {
         "names",
         "xref",
-        "annotations"
+        "attributes"
 })
 @XmlSeeAlso({
         XmlSource.class
@@ -159,11 +159,22 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
         return getXrefContainer().getAllXrefs();
     }
 
+    @XmlTransient
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute")
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
+    @Override
+    public Collection<Annotation> getAttributes() {
+        return super.getAttributes();
+    }
+
+    @Override
+    public void setAttributes(Collection<Annotation> annot){
+        super.setAttributes(annot);
     }
 
     @XmlTransient

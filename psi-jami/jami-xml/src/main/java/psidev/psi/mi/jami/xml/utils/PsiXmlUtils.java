@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.xml.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * Utility class for psixml
  *
@@ -11,5 +14,6 @@ package psidev.psi.mi.jami.xml.utils;
 public class PsiXmlUtils {
 
     public static final String UNSPECIFIED = "unspecified";
+    public final static DateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy");
 
 }
