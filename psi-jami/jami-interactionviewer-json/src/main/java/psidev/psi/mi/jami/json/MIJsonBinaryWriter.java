@@ -605,20 +605,20 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         writer.write(MIJsonUtils.CLOSE);
     }
 
-    protected void writeAnnotation(String name, String text) throws IOException {
-        writer.write(MIJsonUtils.OPEN);
-        writerProperty(name, text != null ? text : "");
-        writer.write(MIJsonUtils.CLOSE);
+    protected void writeAnnotation(String text) throws IOException {
+        writer.write(MIJsonUtils.PROPERTY_DELIMITER);
+        writer.write(text != null ? text : "");
+        writer.write(MIJsonUtils.PROPERTY_DELIMITER);
 
     }
 
-    protected void writeAllAnnotations(String name, Collection<Annotation> figures) throws IOException {
+    protected void writeAllAnnotations(Collection<Annotation> figures) throws IOException {
         writer.write(MIJsonUtils.OPEN_ARRAY);
 
         Iterator<Annotation> annotIterator = figures.iterator();
         while (annotIterator.hasNext()){
             Annotation annot = annotIterator.next();
-            writeAnnotation(name, annot != null ? JSONValue.escape(annot.getValue()):"");
+            writeAnnotation(annot != null ? JSONValue.escape(annot.getValue()):"");
             if (annotIterator.hasNext()){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             }
@@ -779,7 +779,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 writeNextPropertySeparatorAndIndent();
                 writer.write(MIJsonUtils.INDENT);
                 writeStartObject("experimentModifications");
-                writeAllAnnotations("modification", expModifications);
+                writeAllAnnotations(expModifications);
             }
 
             if (!figures.isEmpty()){
@@ -787,7 +787,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 writeNextPropertySeparatorAndIndent();
                 writer.write(MIJsonUtils.INDENT);
                 writeStartObject("figures");
-                writeAllAnnotations("figure", figures);
+                writeAllAnnotations(figures);
             }
 
             writeNextPropertySeparatorAndIndent();
@@ -804,7 +804,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
             // write figures
             writeStartObject("figures");
-            writeAllAnnotations("figure", figures);
+            writeAllAnnotations(figures);
 
             writeNextPropertySeparatorAndIndent();
             writer.write(MIJsonUtils.CLOSE);
