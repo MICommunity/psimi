@@ -70,7 +70,7 @@ implements ProteinEnricher {
         if (getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
             getOrganismEnricher().getMockFetcher().clearOrganisms();
             getOrganismEnricher().getMockFetcher().addNewOrganism(
-                    "" + proteinToEnrich.getOrganism().getTaxId(),
+                    Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
                     proteinFetched.getOrganism());
         }
 
@@ -101,34 +101,38 @@ implements ProteinEnricher {
      */
     protected boolean isProteinConflictFree(Protein proteinToEnrich){
         boolean exitStatus = true;
+        String existMsg = "";
+
 
         //InteractorType
         if(! CvTermUtils.isCvTerm(proteinToEnrich.getInteractorType() , Protein.PROTEIN_MI , null)
                 && ! CvTermUtils.isCvTerm(
                         proteinToEnrich.getInteractorType() , Interactor.UNKNOWN_INTERACTOR_MI , null)){
 
-            if(listener != null)
-                listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
-                        "Conflict in interactorType. " +
+            existMsg = "Conflict in interactorType. " +
                         "Found " + proteinToEnrich.getInteractorType().getShortName() + " " +
-                        "(psi-mi id:" + proteinToEnrich.getInteractorType().getMIIdentifier() + ").");
+                        "(psi-mi id:" + proteinToEnrich.getInteractorType().getMIIdentifier() + "). ";
             exitStatus = false;
         }
 
-        // TODO - consider the fine tuning of this failure
         //Organism
         if(proteinFetched.getOrganism() == null) proteinFetched.setOrganism(new DefaultOrganism(-3));
         if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
 
         if(proteinToEnrich.getOrganism().getTaxId() > 0
                 && proteinToEnrich.getOrganism().getTaxId() != proteinFetched.getOrganism().getTaxId()){
-            if(listener != null)
-                listener.onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+            existMsg = existMsg +
                         "Conflict in organism. " +
-                        "Found taxid " + proteinToEnrich.getOrganism().getTaxId() + " " +
-                        "but was enriching taxid " + proteinFetched.getOrganism().getTaxId() + ".");
+                        "Fetched taxid " + proteinFetched.getOrganism().getTaxId() + " " +
+                        "but was enriching taxid " + proteinToEnrich.getOrganism().getTaxId() + ".";
             exitStatus = false;
         }
+
+        if(! exitStatus)
+            if(getProteinEnricherListener() != null) listener.onProteinEnriched(
+                    proteinToEnrich ,
+                    EnrichmentStatus.FAILED ,
+                    existMsg);
 
         return exitStatus;
     }

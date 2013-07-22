@@ -1,11 +1,15 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherLogger;
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
@@ -34,12 +38,15 @@ public class CvTermEnricherMinimumTest {
         cvTermEnricherMinimum = new CvTermEnricherMinimum();
         cvTermEnricherMinimum.setCvTermFetcher(mockCvTermFetcher);
 
+
         CvTerm cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", SYNONYM_NAME));
         mockCvTermFetcher.addCvTerm(MI_ID , cvTermFull);
 
     }
+    @After
+    public void closedown(){}
 
     /**
      * Creates a scenario where the fetcher always throws a bridge failure exception.

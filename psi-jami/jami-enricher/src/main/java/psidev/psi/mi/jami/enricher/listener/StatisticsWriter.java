@@ -105,11 +105,11 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
                     successWriter.write(NEW_LINE);
                     successWriter.write(obj.toString());
                     successWriter.write(NEW_EVENT);
-                    successWriter.write(""+updateCount);
+                    successWriter.write(Integer.toString(updateCount));
                     successWriter.write(NEW_EVENT);
-                    successWriter.write(""+removedCount);
+                    successWriter.write(Integer.toString(removedCount));
                     successWriter.write(NEW_EVENT);
-                    successWriter.write(""+additionCount);
+                    successWriter.write(Integer.toString(additionCount));
                     successWriter.write(NEW_EVENT);
                     if (obj instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) obj;

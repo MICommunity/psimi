@@ -30,7 +30,7 @@ public class CvTermEnricherStatisticsWriterTest {
 
     CvTermEnricherMinimum cvTermEnricherMinimum;
     MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
-    CvTermEnricherStatisticsWriter logWriter;
+    CvTermEnricherStatisticsWriter cvTermStatisticsWriter;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -54,10 +54,10 @@ public class CvTermEnricherStatisticsWriterTest {
         assertTrue( ! failFile.exists());
 
 
-        logWriter = new CvTermEnricherStatisticsWriter(successFile , failFile);
+        cvTermStatisticsWriter = new CvTermEnricherStatisticsWriter(successFile , failFile);
         CvTermEnricherListenerManager manager = new CvTermEnricherListenerManager();
 
-        manager.addEnricherListener(logWriter);
+        manager.addEnricherListener(cvTermStatisticsWriter);
         manager.addEnricherListener(new CvTermEnricherLogger());
         cvTermEnricherMinimum.setCvTermEnricherListener(manager);
 
@@ -80,7 +80,7 @@ public class CvTermEnricherStatisticsWriterTest {
         CvTerm test = new DefaultCvTerm("FOOOO", "BAHHH");
         cvTermEnricherMinimum.enrichCvTerm(test);
 
-        logWriter.close();
+        cvTermStatisticsWriter.close();
 
         assertTrue(successFile.exists());
         assertTrue(failFile.exists());

@@ -49,7 +49,7 @@ public class InteractionEnricherMinimumTest {
     private MockCvTermFetcher cvTermFetcher;
 
     private ParticipantEnricher participantEnricher;
-    private ParticipantEnricherStatisticsWriter participantStatisticsWriter ;
+    private ParticipantEnricherStatisticsWriter participantStatisticsWriter;
 
     private FeatureEnricher featureEnricher;
     private FeatureEnricherStatisticsWriter featureStatisticsWriter;
@@ -126,8 +126,6 @@ public class InteractionEnricherMinimumTest {
                         new ProteinEnricherLogger(),
                         (ProteinListeningFeatureEnricher) featureEnricher
                 ));
-
-
 
         //=================
 
