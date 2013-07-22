@@ -26,6 +26,9 @@ import java.util.Collection;
         "xref",
         "annotations"
 })
+@XmlSeeAlso({
+        XmlSource.class
+})
 public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
     public XmlOpenCvTerm() {
@@ -170,12 +173,12 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
     @XmlLocation
     @XmlTransient
-    public Locator sourceLocation() {
-        return super.getLocator();
+    public Locator getSaxLocator() {
+        return super.getSaxLocator();
     }
 
-    public void setSourceLocation(Locator newLocator) {
-        super.setLocator(newLocator);
+    public void setSaxLocator(Locator sourceLocator) {
+        super.setSaxLocator(sourceLocator);
     }
 
     @Override

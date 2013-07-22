@@ -12,10 +12,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Container for both xrefs and identifiers  in a CvTerm
@@ -39,8 +36,7 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
     private List<Xref> allXrefs;
     private List<Xref> allIdentifiers;
 
-    private org.xml.sax.Locator locator;
-    private FileSourceLocator sourceLocator;
+    private PsiXmLocator sourceLocator;
 
     /**
      * Gets the value of the primaryRef property.
@@ -233,13 +229,12 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
 
     @XmlLocation
     @XmlTransient
-    public Locator sourceLocation() {
-        return locator;
+    public Locator getSaxLocator() {
+        return sourceLocator;
     }
 
-    public void setSourceLocation(Locator newLocator) {
-        locator = newLocator;
-        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -247,7 +242,7 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = sourceLocator;
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     protected void processAddedIdentifierEvent(Xref added) {
@@ -358,14 +353,9 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
         @Override
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                XmlXref newXref = null;
                 if (added instanceof XmlXref){
-                   newXref = (XmlXref) added;
+                   processAddedPrimaryAndSecondaryRefs((XmlXref) added);
                 }
-                else {
-                    newXref = new XmlXref(added.getDatabase(), added.getId(), added.getVersion(), added.getQualifier());
-                }
-                processAddedPrimaryAndSecondaryRefs(newXref);
                 processAddedIdentifierEvent(added);
             }
         }
@@ -373,7 +363,9 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null){
-                processRemovedPrimaryAndSecondaryRefs(removed);
+                if (removed instanceof XmlXref){
+                    processRemovedPrimaryAndSecondaryRefs(removed);
+                }
                 processRemovedIdentifierEvent(removed);
             }
         }
@@ -386,16 +378,16 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
             }
             // the primary ref is in identifiers, we reset it to the first xref
             else if (!getAllXrefs().isEmpty()){
-                Xref ref = allXrefs.iterator().next();
-                XmlXref newRef = null;
+                Iterator<Xref> refsIterator = allXrefs.iterator();
+                Xref ref = refsIterator.next();
+
+                while(refsIterator.hasNext() && !(ref instanceof XmlXref)){
+                    ref = refsIterator.next();
+                }
                 if (ref instanceof XmlXref){
-                    newRef = (XmlXref) ref;
+                    primaryRef = (XmlXref) ref;
+                    ((FullXrefList)allXrefs).removeOnly(ref);
                 }
-                else {
-                    newRef = new XmlXref(newRef.getDatabase(), newRef.getId(), newRef.getVersion(), newRef.getQualifier());
-                }
-                primaryRef = newRef;
-                ((FullXrefList)allXrefs).removeOnly(ref);
             }
             else{
                 primaryRef = null;
@@ -413,20 +405,15 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
         @Override
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                XmlXref newXref = null;
                 if (added instanceof XmlXref){
-                    newXref = (XmlXref) added;
+                    processAddedPrimaryAndSecondaryRefs((XmlXref)added);
                 }
-                else {
-                    newXref = new XmlXref(added.getDatabase(), added.getId(), added.getVersion(), added.getQualifier());
-                }
-                processAddedPrimaryAndSecondaryRefs(newXref);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (removed != null){
+            if (removed != null && removed instanceof XmlXref){
                 processRemovedPrimaryAndSecondaryRefs(removed);
             }
         }
@@ -439,17 +426,17 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
             }
             // the primary ref is in xrefs, we reset it to the first identifier
             else if (!getAllIdentifiers().isEmpty()){
-                Xref ref = allIdentifiers.iterator().next();
-                XmlXref newRef = null;
+                Iterator<Xref> refsIterator = allIdentifiers.iterator();
+                Xref ref = refsIterator.next();
+
+                while(refsIterator.hasNext() && !(ref instanceof XmlXref)){
+                    ref = refsIterator.next();
+                }
                 if (ref instanceof XmlXref){
-                    newRef = (XmlXref) ref;
+                    primaryRef = (XmlXref) ref;
+                    ((FullIdentifierList)allIdentifiers).removeOnly(ref);
+                    processRemovedObjectEvent(primaryRef);
                 }
-                else {
-                    newRef = new XmlXref(newRef.getDatabase(), newRef.getId(), newRef.getVersion(), newRef.getQualifier());
-                }
-                primaryRef = newRef;
-                ((FullIdentifierList)allIdentifiers).removeOnly(ref);
-                processRemovedObjectEvent(primaryRef);
             }
             else{
                 primaryRef = null;

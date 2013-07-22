@@ -31,8 +31,7 @@ public class XrefContainer implements FileSourceContext, Serializable{
     private Collection<XmlXref> secondaryRefs;
     private List<Xref> allXrefs;
 
-    private org.xml.sax.Locator locator;
-    private FileSourceLocator sourceLocator;
+    private PsiXmLocator sourceLocator;
 
     /**
      * Gets the value of the primaryRef property.
@@ -106,13 +105,12 @@ public class XrefContainer implements FileSourceContext, Serializable{
 
     @XmlLocation
     @XmlTransient
-    public Locator sourceLocation() {
-        return locator;
+    public Locator getSaxLocator() {
+        return sourceLocator;
     }
 
-    public void setSourceLocation(Locator newLocator) {
-        locator = newLocator;
-        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -120,7 +118,7 @@ public class XrefContainer implements FileSourceContext, Serializable{
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = sourceLocator;
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     private class FullXrefList extends AbstractListHavingProperties<Xref> {
@@ -131,14 +129,9 @@ public class XrefContainer implements FileSourceContext, Serializable{
         @Override
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                // it is a XML instance
+                // it is a XML instance so it can be converted with jaxb
                 if (added instanceof XmlXref){
                     processAddedXref((XmlXref) added);
-                }
-                // it is not an xml instance, we create one
-                else {
-                    XmlXref newRef = new XmlXref(added.getDatabase(), added.getId(), added.getVersion(), added.getQualifier());
-                    processAddedXref(newRef);
                 }
             }
         }
@@ -154,7 +147,7 @@ public class XrefContainer implements FileSourceContext, Serializable{
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (removed != null){
+            if (removed != null && removed instanceof XmlXref){
                 if (primaryRef != null && removed.equals(primaryRef)){
                     if (!getSecondaryRefs().isEmpty()){
                         primaryRef = secondaryRefs.iterator().next();

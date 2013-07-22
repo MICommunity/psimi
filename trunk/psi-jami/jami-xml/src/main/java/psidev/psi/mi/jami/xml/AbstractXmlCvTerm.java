@@ -25,8 +25,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
     private NamesContainer namesContainer;
     private Collection<Annotation> annotations;
 
-    private org.xml.sax.Locator locator;
-    private FileSourceLocator sourceLocator;
+    private PsiXmLocator sourceLocator;
 
     public AbstractXmlCvTerm(){
 
@@ -103,13 +102,12 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
         return this.annotations;
     }
 
-    public Locator getLocator() {
-        return locator;
+    public Locator getSaxLocator() {
+        return sourceLocator;
     }
 
-    public void setLocator(Locator locator) {
-        this.locator = locator;
-        this.sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -117,7 +115,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = sourceLocator;
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     @Override

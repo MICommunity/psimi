@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
  * @since <pre>22/07/13</pre>
  */
 
-public class PsiXmLocator extends FileSourceLocator {
+public class PsiXmLocator extends FileSourceLocator implements org.xml.sax.Locator {
 
     private Integer objectId;
 
@@ -20,6 +20,18 @@ public class PsiXmLocator extends FileSourceLocator {
 
     public Integer getObjectId() {
         return objectId;
+    }
+
+    public String getPublicId() {
+        return null;
+    }
+
+    public String getSystemId() {
+        return null;
+    }
+
+    public int getColumnNumber() {
+        return getCharNumber();
     }
 
     public String toString() {
