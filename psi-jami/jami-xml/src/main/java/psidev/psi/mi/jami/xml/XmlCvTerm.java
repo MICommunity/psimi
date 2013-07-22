@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
@@ -163,5 +166,21 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
     @XmlTransient
     public Collection<Alias> getSynonyms() {
         return getNames().getAliases();
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return super.getLocator();
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        super.setLocator(newLocator);
+    }
+
+    @Override
+    @XmlTransient
+    public FileSourceLocator getSourceLocator() {
+        return super.getSourceLocator();
     }
 }

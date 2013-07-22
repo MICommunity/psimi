@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.xml;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -17,10 +20,13 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-public abstract class AbstractXmlCvTerm implements CvTerm, Serializable{
+public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Serializable{
     private CvTermXrefAndIdentifierContainer xrefContainer;
     private NamesContainer namesContainer;
     private Collection<Annotation> annotations;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     public AbstractXmlCvTerm(){
 
@@ -95,6 +101,23 @@ public abstract class AbstractXmlCvTerm implements CvTerm, Serializable{
             this.annotations = new ArrayList<Annotation>();
         }
         return this.annotations;
+    }
+
+    public Locator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(Locator locator) {
+        this.locator = locator;
+        this.sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override

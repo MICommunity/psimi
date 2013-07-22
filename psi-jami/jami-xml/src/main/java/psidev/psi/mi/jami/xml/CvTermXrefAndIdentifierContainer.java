@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -25,7 +29,7 @@ import java.util.List;
         "primaryRef",
         "secondaryRefs"
 })
-public class CvTermXrefAndIdentifierContainer implements Serializable{
+public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Serializable{
 
     private Xref miIdentifier;
     private Xref modIdentifier;
@@ -34,6 +38,9 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
     private Collection<XmlXref> secondaryRefs;
     private List<Xref> allXrefs;
     private List<Xref> allIdentifiers;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     /**
      * Gets the value of the primaryRef property.
@@ -223,6 +230,25 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
        }
         return false;
    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
 
     protected void processAddedIdentifierEvent(Xref added) {
 
