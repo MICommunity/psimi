@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
 
@@ -78,5 +82,21 @@ public class XmlPosition extends AbstractXmlPosition{
      */
     public void setPosition(BigInteger value) {
         this.pos = value;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return super.getLocator();
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        super.setLocator(newLocator);
+    }
+
+    @Override
+    @XmlTransient
+    public FileSourceLocator getSourceLocator() {
+        return super.getSourceLocator();
     }
 }

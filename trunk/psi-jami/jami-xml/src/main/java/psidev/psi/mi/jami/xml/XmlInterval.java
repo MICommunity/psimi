@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
 
@@ -66,7 +70,7 @@ public class XmlInterval extends AbstractXmlPosition{
      *
      */
     @XmlAttribute(name = "begin", required = true)
-    public BigInteger getBegin() {
+    public BigInteger getBeginPosition() {
         return start;
     }
 
@@ -78,7 +82,7 @@ public class XmlInterval extends AbstractXmlPosition{
      *     {@link BigInteger }
      *
      */
-    public void setBegin(BigInteger value) {
+    public void setBeginPosition(BigInteger value) {
         this.start = value;
     }
 
@@ -91,7 +95,7 @@ public class XmlInterval extends AbstractXmlPosition{
      *
      */
     @XmlAttribute(name = "end", required = true)
-    public BigInteger getJAXBEnd() {
+    public BigInteger getEndPosition() {
         return end;
     }
 
@@ -103,7 +107,23 @@ public class XmlInterval extends AbstractXmlPosition{
      *     {@link BigInteger }
      *
      */
-    public void setJAXBEnd(BigInteger value) {
+    public void setEndPosition(BigInteger value) {
         this.end = value;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return super.getLocator();
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        super.setLocator(newLocator);
+    }
+
+    @Override
+    @XmlTransient
+    public FileSourceLocator getSourceLocator() {
+        return super.getSourceLocator();
     }
 }

@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
@@ -27,13 +31,16 @@ import java.io.Serializable;
         "endPosition",
         "link"
 })
-public class XmlRange implements Range, Serializable{
+public class XmlRange implements Range, FileSourceContext, Serializable{
     private AbstractXmlPosition start;
     private AbstractXmlPosition end;
     private boolean isLink;
 
     private ResultingSequence resultingSequence;
     private Participant participant;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     public XmlRange(){
 
@@ -315,6 +322,25 @@ public class XmlRange implements Range, Serializable{
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override

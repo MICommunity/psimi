@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -20,10 +24,12 @@ import java.io.Serializable;
 @XmlType(name = "attribute", propOrder = {
         "value"
 })
-public class XmlAnnotation implements Annotation, Serializable {
+public class XmlAnnotation implements Annotation, FileSourceContext, Serializable {
 
     private CvTerm topic;
     private String value;
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     public XmlAnnotation() {
     }
@@ -118,6 +124,25 @@ public class XmlAnnotation implements Annotation, Serializable {
         else if (this.topic != null){
             this.topic.setMIIdentifier(value);
         }
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override

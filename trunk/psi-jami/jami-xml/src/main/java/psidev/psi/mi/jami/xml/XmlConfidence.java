@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
@@ -23,12 +27,15 @@ import java.util.Collection;
         "type",
         "value"
 })
-public class XmlConfidence implements Confidence, ModelledConfidence, Serializable{
+public class XmlConfidence implements Confidence, ModelledConfidence, FileSourceContext, Serializable{
 
     private XmlOpenCvTerm type;
     private String value;
     private Collection<Integer> experimentRefList;
     private Collection<Publication> publications;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     public XmlConfidence() {
     }
@@ -124,6 +131,25 @@ public class XmlConfidence implements Confidence, ModelledConfidence, Serializab
      */
     public void setExperimentRefList(Collection<Integer> value) {
         this.experimentRefList = value;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override

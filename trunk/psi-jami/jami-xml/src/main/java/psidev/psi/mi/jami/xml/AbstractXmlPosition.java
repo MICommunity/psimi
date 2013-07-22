@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.xml;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -14,10 +17,13 @@ import java.io.Serializable;
  * @since <pre>19/07/13</pre>
  */
 
-public abstract class AbstractXmlPosition implements Position, Serializable {
+public abstract class AbstractXmlPosition implements Position, FileSourceContext, Serializable {
 
     private XmlCvTerm status;
     private boolean isPositionUndetermined;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     protected AbstractXmlPosition() {
     }
@@ -40,6 +46,23 @@ public abstract class AbstractXmlPosition implements Position, Serializable {
 
     public boolean isPositionUndetermined() {
         return this.isPositionUndetermined;
+    }
+
+    public Locator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(Locator locator) {
+        this.locator = locator;
+        this.sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override

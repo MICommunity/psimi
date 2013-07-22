@@ -8,6 +8,10 @@
 
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -94,7 +98,7 @@ import java.util.Collection;
     "annotations"
 })
 public class XmlXref
-    implements Xref, Serializable
+    implements Xref, FileSourceContext, Serializable
 {
 
     private CvTerm database;
@@ -104,6 +108,9 @@ public class XmlXref
 
     private String secondary;
     private Collection<XmlAnnotation> annotations;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     public XmlXref() {
     }
@@ -367,6 +374,25 @@ public class XmlXref
      */
     public void setAnnotations(Collection<XmlAnnotation> value) {
         this.annotations = value;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override

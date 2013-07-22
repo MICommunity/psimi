@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 
 import javax.xml.bind.annotation.*;
@@ -20,11 +24,14 @@ import java.util.Collection;
         "fullName",
         "aliases"
 })
-public class NamesContainer implements Serializable{
+public class NamesContainer implements FileSourceContext, Serializable{
 
     private String shortLabel;
     private String fullName;
     private Collection<Alias> aliases;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     /**
      * Gets the value of the shortLabel property.
@@ -105,5 +112,24 @@ public class NamesContainer implements Serializable{
             aliases = new ArrayList<Alias>();
         }
         return this.aliases;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }

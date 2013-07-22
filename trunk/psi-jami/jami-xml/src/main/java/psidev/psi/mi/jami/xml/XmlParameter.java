@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
@@ -21,7 +25,7 @@ import java.util.Collection;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "parameterType", propOrder = {
         "experimentRefList"})
-public class XmlParameter implements Parameter, ModelledParameter, Serializable{
+public class XmlParameter implements Parameter, ModelledParameter, FileSourceContext, Serializable{
 
     private Collection<Publication> publications;
     private Collection<Integer> experimentRefList;
@@ -29,6 +33,9 @@ public class XmlParameter implements Parameter, ModelledParameter, Serializable{
     private BigDecimal uncertainty;
     private CvTerm unit;
     private ParameterValue value;
+
+    private org.xml.sax.Locator locator;
+    private FileSourceLocator sourceLocator;
 
     public XmlParameter() {
     }
@@ -315,6 +322,25 @@ public class XmlParameter implements Parameter, ModelledParameter, Serializable{
      */
     public void setExperimentRefList(Collection<Integer> value) {
         this.experimentRefList = value;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator sourceLocation() {
+        return locator;
+    }
+
+    public void setSourceLocation(Locator newLocator) {
+        locator = newLocator;
+        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 
     @Override
