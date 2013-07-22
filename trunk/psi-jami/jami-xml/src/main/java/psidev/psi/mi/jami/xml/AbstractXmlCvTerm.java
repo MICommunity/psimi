@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Abstract cv term
@@ -97,9 +98,22 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
 
     public Collection<Annotation> getAnnotations() {
         if (annotations == null){
-            this.annotations = new ArrayList<Annotation>();
+            initialiseAnnotations();
         }
         return this.annotations;
+    }
+
+    public Collection<Annotation> getAttributes() {
+        if (getAnnotations().isEmpty()){
+            return null;
+        }
+        return this.annotations;
+    }
+
+    public void setAttributes(Collection<Annotation> annot){
+        if (annot != null && !annot.isEmpty()){
+            getAnnotations().addAll(annot);
+        }
     }
 
     public Locator getSaxLocator() {
@@ -144,5 +158,18 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
         else {
             return (xrefContainer.getMIIdentifier() != null ? xrefContainer.getMIIdentifier() : (xrefContainer.getMODIdentifier() != null ? xrefContainer.getMODIdentifier() : (xrefContainer.getPARIdentifier() != null ? xrefContainer.getPARIdentifier() : "-"))) + " ("+getShortName()+")";
         }
+    }
+
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initialiseAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
     }
 }

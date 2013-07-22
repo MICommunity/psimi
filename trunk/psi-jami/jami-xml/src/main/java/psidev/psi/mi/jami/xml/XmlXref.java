@@ -95,7 +95,7 @@ import java.util.Collection;
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "dbReference", propOrder = {
-    "annotations"
+    "attributes"
 })
 public class XmlXref
     implements Xref, FileSourceContext, Serializable
@@ -363,16 +363,8 @@ public class XmlXref
         return this.annotations;
     }
 
-    /**
-     * Sets the value of the attributeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link psidev.psi.mi.jami.xml.XmlAnnotation }
-     *
-     */
-    public void setAnnotations(Collection<XmlAnnotation> value) {
-        this.annotations = value;
+    public void setAnnotations(Collection<XmlAnnotation> annotations) {
+        this.annotations = annotations;
     }
 
     @XmlLocation

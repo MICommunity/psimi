@@ -164,6 +164,17 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlTransient
+    public Collection<Annotation> getAttributes() {
+        return super.getAttributes();
+    }
+
+    public void setAttributes(Collection<Annotation> annot){
+        if (annot != null && !annot.isEmpty()){
+            getAnnotations().addAll(annot);
+        }
+    }
+
+    @XmlTransient
     public Collection<Alias> getSynonyms() {
         return getNames().getAliases();
     }
