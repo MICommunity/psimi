@@ -36,6 +36,13 @@ public class XmlAlias implements Alias, Serializable {
         this.type = type;
     }
 
+    public XmlAlias(String name) {
+        if (name == null){
+            throw new IllegalArgumentException("The alias name cannot be null.");
+        }
+        this.name = name;
+    }
+
     @XmlTransient
     public CvTerm getType() {
         return null;

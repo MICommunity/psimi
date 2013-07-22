@@ -27,13 +27,13 @@ import java.util.List;
 })
 public class CvTermXrefAndIdentifierContainer implements Serializable{
 
-    private XmlXref miIdentifier;
-    private XmlXref modIdentifier;
-    private XmlXref parIdentifier;
+    private Xref miIdentifier;
+    private Xref modIdentifier;
+    private Xref parIdentifier;
     private XmlXref primaryRef;
     private Collection<XmlXref> secondaryRefs;
-    private List<XmlXref> allXrefs;
-    private List<XmlXref> allIdentifiers;
+    private List<Xref> allXrefs;
+    private List<Xref> allIdentifiers;
 
     /**
      * Gets the value of the primaryRef property.
@@ -115,7 +115,7 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
     }
 
     @XmlTransient
-    public Collection<XmlXref> getAllXrefs() {
+    public Collection<Xref> getAllXrefs() {
         if (allXrefs == null){
             allXrefs = new FullXrefList();
         }
@@ -123,7 +123,7 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
     }
 
     @XmlTransient
-    public List<XmlXref> getAllIdentifiers() {
+    public Collection<Xref> getAllIdentifiers() {
         if (allIdentifiers == null){
             allIdentifiers = new FullIdentifierList();
         }
@@ -224,7 +224,7 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
         return false;
    }
 
-    protected void processAddedIdentifierEvent(XmlXref added) {
+    protected void processAddedIdentifierEvent(Xref added) {
 
         // the added identifier is psi-mi and it is not the current mi identifier
         if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
@@ -282,7 +282,7 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
         }
     }
 
-    protected void processRemovedIdentifierEvent(XmlXref removed) {
+    protected void processRemovedIdentifierEvent(Xref removed) {
         // the removed identifier is psi-mi
         if (miIdentifier != null && miIdentifier.equals(removed)){
             miIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
@@ -312,7 +312,7 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
         }
     }
 
-    private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
+    private void processRemovedPrimaryAndSecondaryRefs(Xref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
             if (!getSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
@@ -324,21 +324,28 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
         }
     }
 
-    private class FullIdentifierList extends AbstractListHavingProperties<XmlXref> {
+    private class FullIdentifierList extends AbstractListHavingProperties<Xref> {
         public FullIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedObjectEvent(XmlXref added) {
+        protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                processAddedPrimaryAndSecondaryRefs(added);
+                XmlXref newXref = null;
+                if (added instanceof XmlXref){
+                   newXref = (XmlXref) added;
+                }
+                else {
+                    newXref = new XmlXref(added.getDatabase(), added.getId(), added.getVersion(), added.getQualifier());
+                }
+                processAddedPrimaryAndSecondaryRefs(newXref);
                 processAddedIdentifierEvent(added);
             }
         }
 
         @Override
-        protected void processRemovedObjectEvent(XmlXref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null){
                 processRemovedPrimaryAndSecondaryRefs(removed);
                 processRemovedIdentifierEvent(removed);
@@ -353,8 +360,16 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
             }
             // the primary ref is in identifiers, we reset it to the first xref
             else if (!getAllXrefs().isEmpty()){
-                primaryRef = allXrefs.iterator().next();
-                ((FullXrefList)allXrefs).removeOnly(primaryRef);
+                Xref ref = allXrefs.iterator().next();
+                XmlXref newRef = null;
+                if (ref instanceof XmlXref){
+                    newRef = (XmlXref) ref;
+                }
+                else {
+                    newRef = new XmlXref(newRef.getDatabase(), newRef.getId(), newRef.getVersion(), newRef.getQualifier());
+                }
+                primaryRef = newRef;
+                ((FullXrefList)allXrefs).removeOnly(ref);
             }
             else{
                 primaryRef = null;
@@ -364,20 +379,27 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
         }
     }
 
-    private class FullXrefList extends AbstractListHavingProperties<XmlXref> {
+    private class FullXrefList extends AbstractListHavingProperties<Xref> {
         public FullXrefList(){
             super();
         }
 
         @Override
-        protected void processAddedObjectEvent(XmlXref added) {
+        protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                processAddedPrimaryAndSecondaryRefs(added);
+                XmlXref newXref = null;
+                if (added instanceof XmlXref){
+                    newXref = (XmlXref) added;
+                }
+                else {
+                    newXref = new XmlXref(added.getDatabase(), added.getId(), added.getVersion(), added.getQualifier());
+                }
+                processAddedPrimaryAndSecondaryRefs(newXref);
             }
         }
 
         @Override
-        protected void processRemovedObjectEvent(XmlXref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null){
                 processRemovedPrimaryAndSecondaryRefs(removed);
             }
@@ -391,8 +413,16 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
             }
             // the primary ref is in xrefs, we reset it to the first identifier
             else if (!getAllIdentifiers().isEmpty()){
-                primaryRef = allIdentifiers.iterator().next();
-                ((FullIdentifierList)allIdentifiers).removeOnly(primaryRef);
+                Xref ref = allIdentifiers.iterator().next();
+                XmlXref newRef = null;
+                if (ref instanceof XmlXref){
+                    newRef = (XmlXref) ref;
+                }
+                else {
+                    newRef = new XmlXref(newRef.getDatabase(), newRef.getId(), newRef.getVersion(), newRef.getQualifier());
+                }
+                primaryRef = newRef;
+                ((FullIdentifierList)allIdentifiers).removeOnly(ref);
                 processRemovedObjectEvent(primaryRef);
             }
             else{
@@ -441,9 +471,9 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
         protected void clearProperties() {
             if (primaryRef != null){
                 Collection<XmlXref> primary = Collections.singleton(primaryRef);
-                List<XmlXref> identifiersToBeDeleted = new ArrayList<XmlXref>(getAllIdentifiers());
+                List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
                 identifiersToBeDeleted.remove(primaryRef);
-                for (XmlXref ref : identifiersToBeDeleted){
+                for (Xref ref : identifiersToBeDeleted){
                     ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
                     processRemovedIdentifierEvent(ref);
                 }
@@ -457,8 +487,8 @@ public class CvTermXrefAndIdentifierContainer implements Serializable{
             }
             else{
                 ((FullXrefList)getAllXrefs()).clearOnly();
-                List<XmlXref> identifiersToBeDeleted = new ArrayList<XmlXref>(getAllIdentifiers());
-                for (XmlXref ref : identifiersToBeDeleted){
+                List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
+                for (Xref ref : identifiersToBeDeleted){
                     ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
                     processRemovedIdentifierEvent(ref);
                 }

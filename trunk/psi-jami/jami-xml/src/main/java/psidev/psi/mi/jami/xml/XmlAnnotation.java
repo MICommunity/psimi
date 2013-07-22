@@ -36,6 +36,13 @@ public class XmlAnnotation implements Annotation, Serializable {
         this.value = value;
     }
 
+    public XmlAnnotation(CvTerm topic) {
+        if (topic == null){
+            throw new IllegalArgumentException("The annotation topic cannot be null.");
+        }
+        this.topic = topic;
+    }
+
     @XmlTransient
     public CvTerm getTopic() {
         if (topic == null){
