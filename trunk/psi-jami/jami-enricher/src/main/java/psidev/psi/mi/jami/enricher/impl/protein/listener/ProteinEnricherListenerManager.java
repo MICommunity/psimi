@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
+
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
@@ -16,6 +17,13 @@ import psidev.psi.mi.jami.model.Xref;
 public class ProteinEnricherListenerManager
         extends EnricherListenerManager<ProteinEnricherListener>
         implements ProteinEnricherListener {
+
+
+    public ProteinEnricherListenerManager(ProteinEnricherListener... listeners){
+        super(listeners);
+    }
+
+    //==============
 
 
     public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {

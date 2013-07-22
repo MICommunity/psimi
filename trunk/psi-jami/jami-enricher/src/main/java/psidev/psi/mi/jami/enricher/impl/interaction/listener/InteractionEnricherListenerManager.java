@@ -14,6 +14,9 @@ public class InteractionEnricherListenerManager
         extends EnricherListenerManager<InteractionEnricherListener>
         implements InteractionEnricherListener{
 
+    public InteractionEnricherListenerManager(InteractionEnricherListener... listeners){
+        super(listeners);
+    }
 
     public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message) {
         for(InteractionEnricherListener listener : listenersList){

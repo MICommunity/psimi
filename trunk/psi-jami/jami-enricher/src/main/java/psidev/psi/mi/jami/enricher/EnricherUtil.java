@@ -63,10 +63,10 @@ public class EnricherUtil {
                     ProteinEnricherListenerManager manager = (ProteinEnricherListenerManager) listener;
                     manager.addEnricherListener(listeningFeatureEnricher);
                 } else {
-                    ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
-                    manager.addEnricherListener(listener);
-                    manager.addEnricherListener(listeningFeatureEnricher);
-                    proteinEnricher.setProteinEnricherListener(manager);
+                    proteinEnricher.setProteinEnricherListener(
+                            new ProteinEnricherListenerManager(
+                                    listener,
+                                    listeningFeatureEnricher ));
                 }
             } else {
                 proteinEnricher.setProteinEnricherListener(listeningFeatureEnricher);

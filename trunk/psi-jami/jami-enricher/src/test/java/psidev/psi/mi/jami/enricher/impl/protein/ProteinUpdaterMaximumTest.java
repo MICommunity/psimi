@@ -85,58 +85,6 @@ public class ProteinUpdaterMaximumTest {
     }
 
 
-    /**
-     * Enrich an already completed protein with a less complete protein
-     * Count additions, should be 0
-     * Count mismatches, should be 1 (shortname)
-     * Check the id, should be the same as the enriched protein.
-     * Run enrichment on another protein of different id
-     * Check the id, should be the same as new protein
-     */
-    @Test
-    public void test_enricher_event_is_cleared() throws EnricherException {
-
-        Protein protein_test_one = new DefaultProtein("testpart1 shortName", "testpart1 fullName");
-        protein_test_one.setUniprotkb(TEST_AC_HALF_PROT);
-        protein_test_one.setSequence("TAGTAG");
-
-        Protein protein_test_two = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
-        protein_test_two.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_test_two.setSequence(TEST_SEQUENCE);
-
-        proteinUpdaterMaximum.enrichProtein(protein_test_one);
-
-        //assertEquals(event.getQueryID(), TEST_AC_HALF_PROT);
-        //assertTrue(event.getAdditions().size() == 0);
-        //assertTrue(event.getMismatches().size() == 0);
-        //assertTrue(event.getOverwrites().size() == 1);
-
-        proteinUpdaterMaximum.enrichProtein(protein_test_two);
-
-        //assertEquals(event.getQueryID(), TEST_AC_FULL_PROT);
-        //assertTrue(event.getAdditions().size() == 0);
-        //assertTrue(event.getMismatches().size() == 0);
-        //assertTrue(event.getOverwrites().size() == 0);
-    }
 
 
-
-    @Test
-    public void test_enricher_event_is_fired_and_has_correct_content() throws EnricherException {
-
-        Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
-        protein_to_enrich.setUniprotkb(TEST_AC_FULL_PROT);
-
-
-
-        proteinUpdaterMaximum.enrichProtein(protein_to_enrich);
-
-       // assertNotNull(event);
-        //assertTrue(event.getObjectType().equals("Protein"));
-        //assertTrue(event.getQueryID().equals(TEST_AC_FULL_PROT));
-        //assertTrue(event.getQueryIDType().equals("UniprotKB AC"));
-        //assertTrue(event.getAdditions().size() > 0);
-        //assertTrue(event.getMismatches().size() == 0);
-       // assertTrue(event.getOverwrites().size() > 0);
-    }
 }

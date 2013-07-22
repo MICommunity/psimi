@@ -17,6 +17,7 @@ public class InteractionEnricherStatisticsWriter
         implements InteractionEnricherListener {
 
 
+
     public InteractionEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile, "Interaction");
     }

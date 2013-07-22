@@ -78,7 +78,7 @@ public class ProteinEnricherMinimum
         if(proteinToEnrich.getFullName() == null
                 && proteinFetched.getFullName() != null){
             proteinToEnrich.setFullName( proteinFetched.getFullName() );
-            if(listener != null) listener.onFullNameUpdate(proteinFetched, null);
+            if(listener != null) listener.onFullNameUpdate(proteinToEnrich, null);
         }
 
 
@@ -86,14 +86,14 @@ public class ProteinEnricherMinimum
         if(proteinToEnrich.getUniprotkb() == null
                 && proteinFetched.getUniprotkb() != null) {
             proteinToEnrich.setUniprotkb(proteinFetched.getUniprotkb());
-            if(listener != null) listener.onUniprotKbUpdate(proteinFetched, null);
+            if(listener != null) listener.onUniprotKbUpdate(proteinToEnrich, null);
         }
 
         //Sequence
         if(proteinToEnrich.getSequence() == null
                 && proteinFetched.getSequence() != null){
             proteinToEnrich.setSequence(proteinFetched.getSequence());
-            if(listener != null) listener.onSequenceUpdate(proteinFetched, null);
+            if(listener != null) listener.onSequenceUpdate(proteinToEnrich, null);
 
         }
 
@@ -189,10 +189,7 @@ public class ProteinEnricherMinimum
 
     @Override
     public OrganismEnricher getOrganismEnricher() {
-        if( organismEnricher == null ){
-            organismEnricher = new OrganismEnricherMinimum();
-        }
-
+        if( organismEnricher == null ) organismEnricher = new OrganismEnricherMinimum();
         return organismEnricher;
     }
 }

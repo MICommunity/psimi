@@ -21,8 +21,10 @@ public class FeatureEnricherMaximum<F extends Feature>
         super.processFeature(featureToEnrich);
 
         if(getCvTermEnricher() != null) {
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionDependency() );
-            getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );
+            if( featureToEnrich.getInteractionDependency() != null)
+                getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionDependency() );
+            if( featureToEnrich.getInteractionEffect() != null)
+                getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );
         }
     }
 

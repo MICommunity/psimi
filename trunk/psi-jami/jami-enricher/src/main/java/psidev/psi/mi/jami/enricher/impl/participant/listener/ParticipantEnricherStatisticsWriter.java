@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participant.listener;
 
-import psidev.psi.mi.jami.datasource.FileSourceContext;
+
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
 import psidev.psi.mi.jami.model.*;

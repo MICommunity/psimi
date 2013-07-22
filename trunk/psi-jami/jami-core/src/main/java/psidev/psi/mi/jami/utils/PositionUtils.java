@@ -430,7 +430,6 @@ public class PositionUtils {
      * @return true if the positions are valid, false otherwise
      */
     public static boolean areRangePositionsValid(long start, long end){
-
         if (start > end){
             return false;
         }

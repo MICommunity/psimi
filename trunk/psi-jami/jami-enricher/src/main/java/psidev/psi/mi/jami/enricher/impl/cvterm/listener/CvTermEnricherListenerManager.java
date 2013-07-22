@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
+
+
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
@@ -18,6 +20,11 @@ public class CvTermEnricherListenerManager
     extends EnricherListenerManager<CvTermEnricherListener>
     implements CvTermEnricherListener{
 
+
+
+    public CvTermEnricherListenerManager(CvTermEnricherListener... listeners){
+        super(listeners);
+    }
 
     public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
         for(CvTermEnricherListener listener : listenersList){

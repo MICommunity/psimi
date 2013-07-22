@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ProteinListeningFeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Range;
@@ -30,12 +30,11 @@ import java.util.List;
 public abstract class AbstractFeatureEnricher <F extends Feature>
         implements ProteinListeningFeatureEnricher<F> {
 
+    protected static final Logger log = LoggerFactory.getLogger(AbstractFeatureEnricher.class.getName());
+
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
 
-    // protected Polymer oldSequencePolymer;
-    // protected String oldSequence;
-    // protected Polymer lastEnrichedPolymer;
     Collection<F> featuresToEnrich;
 
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
@@ -83,58 +82,76 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     }
 
     public void setFeaturesToEnrich(Participant participant){
+
+        log.trace("Setting the features");
+
         featuresToEnrich = participant.getFeatures();
 
         if(participant.getInteractor() instanceof Polymer){
             String sequence = ((Polymer)participant.getInteractor()).getSequence();
 
-            for(Feature feature : featuresToEnrich){
-                for(Object object : feature.getRanges()) {
-                    Range range = (Range)object;
 
-                    List<String> rangeValidationMsg = RangeUtils.validateRange(range, sequence);
+            if(sequence != null && sequence.length() > 0)
+                for(Feature feature : featuresToEnrich){
+                    for(Object object : feature.getRanges()) {
+                        Range range = (Range)object;
+                        //log.info("seq "+sequence+" , range "+range);
 
-                    if( ! rangeValidationMsg.isEmpty()){
-                        if(getFeatureEnricherListener() != null)
-                            getFeatureEnricherListener().onInvalidRange(feature , range , rangeValidationMsg.toString());
-                        processInvalidRange(feature , range , rangeValidationMsg.toString());
+                        List<String> rangeValidationMsg = RangeUtils.validateRange(range, sequence);
+                        //log.info("invalid message: "+rangeValidationMsg);
+
+                        if( ! rangeValidationMsg.isEmpty()){
+                            if(getFeatureEnricherListener() != null)
+                                getFeatureEnricherListener().onInvalidRange(feature , range , rangeValidationMsg.toString());
+                            processInvalidRange(feature , range , rangeValidationMsg.toString());
+                        }
                     }
                 }
-            }
+            else
+                for(Feature feature : featuresToEnrich){
+                    for(Object object : feature.getRanges()) {
+                        Range range = (Range)object;
+                        String rangeValidationMsg = "Sequence is null making ranges invalid.";
+                        if(getFeatureEnricherListener() != null)
+                            getFeatureEnricherListener().onInvalidRange(feature , range , rangeValidationMsg);
+                        processInvalidRange(feature , range , rangeValidationMsg);
+                    }
+                }
         }
 
     }
 
     public void onSequenceUpdate(Protein protein, String oldSequence) {
+        if( oldSequence != null){
+            List<Diff> sequenceChanges;
 
-        List<Diff> sequenceChanges;
-        sequenceChanges  = DiffUtils.diff(oldSequence, protein.getSequence());
+            sequenceChanges  = DiffUtils.diff(oldSequence, protein.getSequence());
 
-        for (F feature : featuresToEnrich){
-            for(Object obj : feature.getRanges()){
-                Range range = (Range)obj;
-                String oldFeatureSeq =
-                        RangeUtils.extractRangeSequence( range, oldSequence);
-                String newFeatureSeq =
-                        RangeUtils.extractRangeSequence( range, protein.getSequence());
+            for (F feature : featuresToEnrich){
+                for(Object obj : feature.getRanges()){
+                    Range range = (Range)obj;
+                    String oldFeatureSeq =
+                            RangeUtils.extractRangeSequence( range, oldSequence);
+                    String newFeatureSeq =
+                            RangeUtils.extractRangeSequence( range, protein.getSequence());
 
-                if(oldFeatureSeq.equals(newFeatureSeq)){
-                    range.setPositions(
-                            PositionUtils.createCertainPosition(
-                                    DiffUtils.calculateIndexShift(sequenceChanges, (int) range.getStart().getStart())),
-                            PositionUtils.createCertainPosition(
-                                    DiffUtils.calculateIndexShift(sequenceChanges ,(int)range.getEnd().getEnd())));
-                    if(getFeatureEnricherListener() != null)
-                        getFeatureEnricherListener().onUpdatedRange(feature , range , "Shifted range to match sequence update");
-                }
-                else {
-                    String failMessage = "New sequence invalidates feature range";
-                    if(getFeatureEnricherListener() != null)
-                        getFeatureEnricherListener().onInvalidRange(feature , range , failMessage);
-                    processInvalidRange(feature, range , failMessage);
+                    if(oldFeatureSeq.equals(newFeatureSeq)){
+                        range.setPositions(
+                                PositionUtils.createCertainPosition(
+                                        DiffUtils.calculateIndexShift(sequenceChanges, (int) range.getStart().getStart())),
+                                PositionUtils.createCertainPosition(
+                                        DiffUtils.calculateIndexShift(sequenceChanges ,(int)range.getEnd().getEnd())));
+                        if(getFeatureEnricherListener() != null)
+                            getFeatureEnricherListener().onUpdatedRange(feature , range , "Shifted range to match sequence update");
+                    }
+                    else {
+                        String failMessage = "New sequence invalidates feature range";
+                        if(getFeatureEnricherListener() != null)
+                            getFeatureEnricherListener().onInvalidRange(feature , range , failMessage);
+                        processInvalidRange(feature, range , failMessage);
+                    }
                 }
             }
-
             // shift range where protein.getSequence is new sequence and oldSequence is previous sequence
         }
     }
