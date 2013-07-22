@@ -28,8 +28,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Serializabl
 
     private CvTerm topic;
     private String value;
-    private org.xml.sax.Locator locator;
-    private FileSourceLocator sourceLocator;
+    private PsiXmLocator sourceLocator;
 
     public XmlAnnotation() {
     }
@@ -128,13 +127,12 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Serializabl
 
     @XmlLocation
     @XmlTransient
-    public Locator sourceLocation() {
-        return locator;
+    public Locator getSaxLocator() {
+        return sourceLocator;
     }
 
-    public void setSourceLocation(Locator newLocator) {
-        locator = newLocator;
-        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -142,7 +140,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Serializabl
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = sourceLocator;
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     @Override

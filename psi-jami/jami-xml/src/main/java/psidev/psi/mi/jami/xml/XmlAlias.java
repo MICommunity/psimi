@@ -28,8 +28,7 @@ public class XmlAlias implements Alias, FileSourceContext, Serializable {
 
     private String name;
     private CvTerm type;
-    private org.xml.sax.Locator locator;
-    private FileSourceLocator sourceLocator;
+    private PsiXmLocator sourceLocator;
 
     public XmlAlias() {
     }
@@ -138,13 +137,12 @@ public class XmlAlias implements Alias, FileSourceContext, Serializable {
 
     @XmlLocation
     @XmlTransient
-    public Locator sourceLocation() {
-        return locator;
+    public Locator getSaxLocator() {
+        return sourceLocator;
     }
 
-    public void setSourceLocation(Locator newLocator) {
-        locator = newLocator;
-        this.sourceLocator = new PsiXmLocator(newLocator.getLineNumber(), newLocator.getColumnNumber(), null);
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -152,7 +150,7 @@ public class XmlAlias implements Alias, FileSourceContext, Serializable {
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = sourceLocator;
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     @Override

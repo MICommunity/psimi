@@ -170,12 +170,12 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
 
     @XmlLocation
     @XmlTransient
-    public Locator sourceLocation() {
-        return super.getLocator();
+    public Locator getSaxLocator() {
+        return super.getSaxLocator();
     }
 
-    public void setSourceLocation(Locator newLocator) {
-        super.setLocator(newLocator);
+    public void setSaxLocator(Locator sourceLocator) {
+        super.setSaxLocator(sourceLocator);
     }
 
     @Override

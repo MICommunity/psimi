@@ -22,8 +22,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
     private XmlCvTerm status;
     private boolean isPositionUndetermined;
 
-    private org.xml.sax.Locator locator;
-    private FileSourceLocator sourceLocator;
+    private PsiXmLocator sourceLocator;
 
     protected AbstractXmlPosition() {
     }
@@ -48,13 +47,12 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
         return this.isPositionUndetermined;
     }
 
-    public Locator getLocator() {
-        return locator;
+    public Locator getSaxLocator() {
+        return sourceLocator;
     }
 
-    public void setLocator(Locator locator) {
-        this.locator = locator;
-        this.sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -62,7 +60,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = sourceLocator;
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     @Override
