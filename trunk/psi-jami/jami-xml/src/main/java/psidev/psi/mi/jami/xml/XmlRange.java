@@ -4,11 +4,8 @@ import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.model.Range;
-import psidev.psi.mi.jami.model.ResultingSequence;
-import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 
 import javax.xml.bind.annotation.*;
@@ -32,8 +29,8 @@ import java.io.Serializable;
         "link"
 })
 public class XmlRange implements Range, FileSourceContext, Serializable{
-    private AbstractXmlPosition start;
-    private AbstractXmlPosition end;
+    private Position start;
+    private Position end;
     private boolean isLink;
 
     private ResultingSequence resultingSequence;
@@ -82,8 +79,8 @@ public class XmlRange implements Range, FileSourceContext, Serializable{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "startStatus", required = true)
-    public XmlCvTerm getStartStatus() {
+    @XmlElement(name = "startStatus", required = true, type = XmlCvTerm.class)
+    public CvTerm getStartStatus() {
         return getStart().getStatus();
     }
 
@@ -96,11 +93,27 @@ public class XmlRange implements Range, FileSourceContext, Serializable{
      *
      */
     public void setStartStatus(XmlCvTerm value) {
-        getStart().setStatus(value);
+        if (getStart() instanceof AbstractXmlPosition){
+            AbstractXmlPosition pos = (AbstractXmlPosition) start;
+            pos.setStatus(value);
+        }
+        else {
+            this.start = createXmlPositionWithStatus(this.start, value);
+        }
+    }
+
+    protected AbstractXmlPosition createXmlPositionWithStatus(Position pos, XmlCvTerm status){
+        if (pos.getEnd() != pos.getStart() || CvTermUtils.isCvTerm(status, Position.RANGE_MI, Position.RANGE)){
+            return new XmlInterval(status, pos.getStart(), pos.getEnd(), pos.isPositionUndetermined());
+        }
+        // we have xml position
+        else{
+            return  new XmlPosition(status, pos.getStart(), pos.isPositionUndetermined());
+        }
     }
 
     @XmlTransient
-    public AbstractXmlPosition getStart() {
+    public Position getStart() {
         if (start == null){
            start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
         }
@@ -171,8 +184,8 @@ public class XmlRange implements Range, FileSourceContext, Serializable{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "endStatus", required = true)
-    public XmlCvTerm getEndStatus() {
+    @XmlElement(name = "endStatus", required = true, type = XmlCvTerm.class)
+    public CvTerm getEndStatus() {
         return getEnd().getStatus();
     }
 
@@ -185,7 +198,13 @@ public class XmlRange implements Range, FileSourceContext, Serializable{
      *
      */
     public void setEndStatus(XmlCvTerm value) {
-        getEnd().setStatus(value);
+        if (getEnd() instanceof AbstractXmlPosition){
+            AbstractXmlPosition pos = (AbstractXmlPosition) end;
+            pos.setStatus(value);
+        }
+        else {
+            this.end = createXmlPositionWithStatus(this.end, value);
+        }
     }
 
     /**
@@ -245,7 +264,7 @@ public class XmlRange implements Range, FileSourceContext, Serializable{
     }
 
     @XmlTransient
-    public AbstractXmlPosition getEnd() {
+    public Position getEnd() {
         if (end == null){
             end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
         }
@@ -280,29 +299,9 @@ public class XmlRange implements Range, FileSourceContext, Serializable{
         if (start.getEnd() != 0 && end.getStart() != 0 && start.getEnd() > end.getStart()){
             throw new IllegalArgumentException("The start position cannot be ending before the end position");
         }
-        if (start instanceof AbstractXmlPosition){
-            this.start = (AbstractXmlPosition) start;
-        }
-        // we have xml interval
-        else if (start.getEnd() != start.getStart() || PositionUtils.isFuzzyRange(start)){
-            this.start = new XmlInterval(new XmlCvTerm(start.getStatus().getShortName(), start.getStatus().getMIIdentifier()), start.getStart(), start.getEnd(), start.isPositionUndetermined());
-        }
-        // we have xml position
-        else{
-            this.start = new XmlPosition(new XmlCvTerm(start.getStatus().getShortName(), start.getStatus().getMIIdentifier()), start.getStart(), start.isPositionUndetermined());
-        }
 
-        if (end instanceof AbstractXmlPosition){
-            this.end = (AbstractXmlPosition) end;
-        }
-        // we have xml interval
-        else if (end.getEnd() != end.getStart() || PositionUtils.isFuzzyRange(end)){
-            this.end = new XmlInterval(new XmlCvTerm(end.getStatus().getShortName(), end.getStatus().getMIIdentifier()), end.getStart(), end.getEnd(), end.isPositionUndetermined());
-        }
-        // we have xml position
-        else {
-            this.end = new XmlPosition(new XmlCvTerm(end.getStatus().getShortName(), end.getStatus().getMIIdentifier()), end.getStart(), end.isPositionUndetermined());
-        }
+        this.start = start;
+        this.end = end;
     }
 
     @XmlTransient
