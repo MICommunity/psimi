@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml;
 
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
@@ -24,7 +25,7 @@ public class XrefContainer implements Serializable{
 
     private XmlXref primaryRef;
     private Collection<XmlXref> secondaryRefs;
-    private List<XmlXref> allXrefs;
+    private List<Xref> allXrefs;
 
     /**
      * Gets the value of the primaryRef property.
@@ -89,32 +90,44 @@ public class XrefContainer implements Serializable{
     }
 
     @XmlTransient
-    public Collection<XmlXref> getAllXrefs() {
+    public Collection<Xref> getAllXrefs() {
         if (allXrefs == null){
             allXrefs = new FullXrefList();
         }
         return allXrefs;
     }
 
-    private class FullXrefList extends AbstractListHavingProperties<XmlXref> {
+    private class FullXrefList extends AbstractListHavingProperties<Xref> {
         public FullXrefList(){
             super();
         }
 
         @Override
-        protected void processAddedObjectEvent(XmlXref added) {
+        protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                if (primaryRef == null){
-                    primaryRef = added;
+                // it is a XML instance
+                if (added instanceof XmlXref){
+                    processAddedXref((XmlXref) added);
                 }
-                else{
-                    ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+                // it is not an xml instance, we create one
+                else {
+                    XmlXref newRef = new XmlXref(added.getDatabase(), added.getId(), added.getVersion(), added.getQualifier());
+                    processAddedXref(newRef);
                 }
             }
         }
 
+        private void processAddedXref(XmlXref added) {
+            if (primaryRef == null){
+                primaryRef = added;
+            }
+            else{
+                ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+            }
+        }
+
         @Override
-        protected void processRemovedObjectEvent(XmlXref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null){
                 if (primaryRef != null && removed.equals(primaryRef)){
                     if (!getSecondaryRefs().isEmpty()){

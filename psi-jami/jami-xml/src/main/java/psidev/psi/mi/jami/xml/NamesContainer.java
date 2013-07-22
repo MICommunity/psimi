@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
+import psidev.psi.mi.jami.model.Alias;
+
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class NamesContainer implements Serializable{
 
     private String shortLabel;
     private String fullName;
-    private Collection<XmlAlias> aliases;
+    private Collection<Alias> aliases;
 
     /**
      * Gets the value of the shortLabel property.
@@ -97,9 +99,10 @@ public class NamesContainer implements Serializable{
      *
      */
     @XmlElement(name = "alias")
-    public Collection<XmlAlias> getAliases() {
+    @XmlElementRefs({ @XmlElementRef(type=XmlAlias.class)})
+    public Collection<Alias> getAliases() {
         if (aliases == null) {
-            aliases = new ArrayList<XmlAlias>();
+            aliases = new ArrayList<Alias>();
         }
         return this.aliases;
     }

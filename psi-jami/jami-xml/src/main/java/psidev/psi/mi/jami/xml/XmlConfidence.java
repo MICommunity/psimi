@@ -34,7 +34,13 @@ public class XmlConfidence implements Confidence, ModelledConfidence, Serializab
     }
 
     public XmlConfidence(XmlOpenCvTerm type, String value) {
+        if (type == null){
+            throw new IllegalArgumentException("The confidence type is required and cannot be null");
+        }
         this.type = type;
+        if (value == null){
+            throw new IllegalArgumentException("The confidence value is required and cannot be null");
+        }
         this.value = value;
     }
 

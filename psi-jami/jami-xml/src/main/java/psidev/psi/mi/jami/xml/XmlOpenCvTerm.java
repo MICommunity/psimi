@@ -1,9 +1,11 @@
 package psidev.psi.mi.jami.xml;
 
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -15,7 +17,7 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "openCvType", propOrder = {
         "names",
         "xref",
@@ -23,9 +25,28 @@ import java.util.Collection;
 })
 public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
-    private NamesContainer names;
-    private CvTermXrefAndIdentifierContainer xref;
-    private Collection<XmlAnnotation> annotations;
+    public XmlOpenCvTerm() {
+    }
+
+    public XmlOpenCvTerm(String shortName) {
+        super(shortName);
+    }
+
+    public XmlOpenCvTerm(String shortName, String miIdentifier) {
+        super(shortName, miIdentifier);
+    }
+
+    public XmlOpenCvTerm(String shortName, String fullName, String miIdentifier) {
+        super(shortName, fullName, miIdentifier);
+    }
+
+    public XmlOpenCvTerm(String shortName, Xref ontologyId) {
+        super(shortName, ontologyId);
+    }
+
+    public XmlOpenCvTerm(String shortName, String fullName, Xref ontologyId) {
+        super(shortName, fullName, ontologyId);
+    }
 
     /**
      * Gets the value of the names property.
@@ -35,13 +56,9 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *     {@link NamesContainer }
      *
      */
-    @XmlElement(required = true)
+    @XmlElement(name = "names", required = true)
     public NamesContainer getNames() {
-        if (names == null){
-            names = new NamesContainer();
-            names.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        return names;
+        return super.getNamesContainer();
     }
 
     /**
@@ -53,16 +70,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *
      */
     public void setNames(NamesContainer value) {
-        if (value == null){
-            names = new NamesContainer();
-            names.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        else {
-            this.names = value;
-            if (this.names.getShortLabel() == null){
-                names.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-            }
-        }
+        super.setNamesContainer(value);
     }
 
     /**
@@ -73,14 +81,9 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *     {@link XrefContainer }
      *
      */
-    @XmlElement(required = true)
+    @XmlElement(name = "xref", required = true)
     public CvTermXrefAndIdentifierContainer getXref() {
-        if (xref != null){
-            if (xref.isEmpty()){
-                return null;
-            }
-        }
-        return xref;
+        return super.getXrefContainer();
     }
 
     /**
@@ -92,7 +95,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *
      */
     public void setXref(CvTermXrefAndIdentifierContainer value) {
-        this.xref = value;
+        super.setXrefContainer(value);
     }
 
     @XmlTransient
@@ -114,7 +117,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlTransient
-    public Collection<XmlXref> getIdentifiers() {
+    public Collection<Xref> getIdentifiers() {
         return getXrefContainer().getAllIdentifiers();
     }
 
@@ -146,29 +149,19 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlTransient
-    public Collection<XmlXref> getXrefs() {
+    public Collection<Xref> getXrefs() {
         return getXrefContainer().getAllXrefs();
-    }
-
-    @XmlTransient
-    public Collection<XmlAnnotation> getAnnotations() {
-        if (annotations == null){
-            this.annotations = new ArrayList<XmlAnnotation>();
-        }
-        return this.annotations;
     }
 
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute")
-    public Collection<XmlAnnotation> getJAXBAnnotations() {
-        if (getAnnotations().isEmpty()){
-            return null;
-        }
-        return this.annotations;
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
     }
 
     @XmlTransient
-    public Collection<XmlAlias> getSynonyms() {
+    public Collection<Alias> getSynonyms() {
         return getNames().getAliases();
     }
 }

@@ -109,16 +109,32 @@ public class XmlXref
     }
 
     public XmlXref(CvTerm database, String id, CvTerm qualifier) {
+        this(database, id);
+        this.qualifier = qualifier;
+    }
+
+    public XmlXref(CvTerm database, String id, String version, CvTerm qualifier){
+        this(database, id, version);
+        this.qualifier = qualifier;
+    }
+
+    public XmlXref(CvTerm database, String id, String version){
+        this(database, id);
+        this.version = version;
+    }
+
+    public XmlXref(CvTerm database, String id){
         if (database == null){
-            throw new IllegalArgumentException("The database cannot be null.");
-        }
-        if (id == null || (id != null && id.length() == 0)){
-            throw new IllegalArgumentException("The id cannot be null or empty.");
+            throw new IllegalArgumentException("The database is required and cannot be null");
         }
         this.database = database;
-        this.qualifier = qualifier;
+
+        if (id == null || (id != null && id.length() == 0)){
+            throw new IllegalArgumentException("The id is required and cannot be null or empty");
+        }
         this.id = id;
     }
+
 
     @XmlTransient
     public CvTerm getDatabase() {

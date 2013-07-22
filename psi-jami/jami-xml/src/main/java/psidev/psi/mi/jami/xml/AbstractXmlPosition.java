@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.xml;
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -18,22 +16,26 @@ import java.io.Serializable;
 
 public abstract class AbstractXmlPosition implements Position, Serializable {
 
-    private CvTerm status;
+    private XmlCvTerm status;
     private boolean isPositionUndetermined;
 
     protected AbstractXmlPosition() {
     }
 
-    protected AbstractXmlPosition(CvTerm status, boolean positionUndetermined) {
+    protected AbstractXmlPosition(XmlCvTerm status, boolean positionUndetermined) {
         this.status = status;
         isPositionUndetermined = positionUndetermined;
     }
 
-    public CvTerm getStatus() {
+    public XmlCvTerm getStatus() {
         if (status == null){
-            this.status = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
+            this.status = new XmlCvTerm(PsiXmlUtils.UNSPECIFIED);
         }
         return this.status;
+    }
+
+    public void setStatus(XmlCvTerm status) {
+        this.status = status;
     }
 
     public boolean isPositionUndetermined() {
