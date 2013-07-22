@@ -526,9 +526,9 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
     }
 
     protected void writeRange(Range range) throws IOException {
-        writer.write(MIJsonUtils.OPEN);
-        writerProperty("range", RangeUtils.convertRangeToString(range));
-        writer.write(MIJsonUtils.CLOSE);
+        writer.write(MIJsonUtils.PROPERTY_DELIMITER);
+        writer.write(RangeUtils.convertRangeToString(range));
+        writer.write(MIJsonUtils.PROPERTY_DELIMITER);
     }
 
     protected void writeParticipant(ParticipantEvidence participant, String name) throws IOException {

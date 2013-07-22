@@ -145,7 +145,7 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\t\t{\n" +
                 "\t\t\t\t\"id\":\""+testFeature.hashCode()+"\",\n" +
                 "\t\t\t\t\"type\":{\"name\":\"binding site region\"},\n" +
-                "\t\t\t\t\"sequenceData\":[{\"range\":\"1..3-6..7\"},{\"range\":\">9->9\"}],\n" +
+                "\t\t\t\t\"sequenceData\":[\"1..3-6..7\",\">9->9\"],\n" +
                 "\t\t\t\t\"InterPro\":\"interpro:xxxx\"\n" +
                 "\t\t\t\t}]\n" +
                 "\t\t},\n" +
@@ -199,7 +199,7 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\t\t{\n" +
                 "\t\t\t\t\"id\":\""+testFeature.hashCode()+"\",\n" +
                 "\t\t\t\t\"type\":{\"name\":\"binding site region\"},\n" +
-                "\t\t\t\t\"sequenceData\":[{\"range\":\"1..3-6..7\"},{\"range\":\">9->9\"}],\n" +
+                "\t\t\t\t\"sequenceData\":[\"1..3-6..7\",\">9->9\"],\n" +
                 "\t\t\t\t\"InterPro\":\"interpro:xxxx\"\n" +
                 "\t\t\t\t}]\n" +
                 "\t\t},\n" +
@@ -232,7 +232,7 @@ public class MIJsonBinaryWriterTest {
                 "\t\t\t\t{\n" +
                 "\t\t\t\t\"id\":\""+testFeature.hashCode()+"\",\n" +
                 "\t\t\t\t\"type\":{\"name\":\"binding site region\"},\n" +
-                "\t\t\t\t\"sequenceData\":[{\"range\":\"1..3-6..7\"},{\"range\":\">9->9\"}],\n" +
+                "\t\t\t\t\"sequenceData\":[\"1..3-6..7\",\">9->9\"],\n" +
                 "\t\t\t\t\"InterPro\":\"interpro:xxxx\"\n" +
                 "\t\t\t\t}]\n" +
                 "\t\t},\n" +
