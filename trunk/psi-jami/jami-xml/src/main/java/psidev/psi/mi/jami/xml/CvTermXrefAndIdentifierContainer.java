@@ -236,6 +236,7 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
+    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

@@ -280,6 +280,7 @@ public class XmlSource extends XmlOpenCvTerm
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
+    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

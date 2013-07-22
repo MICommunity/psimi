@@ -135,6 +135,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Serializabl
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
+    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
