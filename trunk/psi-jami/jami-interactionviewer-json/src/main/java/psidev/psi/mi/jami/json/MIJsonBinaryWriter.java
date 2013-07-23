@@ -501,7 +501,9 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             Iterator<FeatureEvidence> featureIterator = feature.getLinkedFeatures().iterator();
             while (featureIterator.hasNext()){
                 FeatureEvidence f = featureIterator.next();
-                writerProperty("id", Integer.toString(f.hashCode()));
+                writer.write(MIJsonUtils.PROPERTY_DELIMITER);
+                writer.write(Integer.toString(f.hashCode()));
+                writer.write(MIJsonUtils.PROPERTY_DELIMITER);
                 if (featureIterator.hasNext()){
                     writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
                 }
