@@ -152,13 +152,12 @@ public abstract class AbstractMitabWriter<T extends Interaction<? extends Partic
         this.binaryWriter.write(getExpansionMethod().expand(interaction));
     }
 
-    public void write(Collection<T> interactions) throws MIIOException {
-        for (T interaction : interactions){
-            write(interaction);
-        }
+    public void write(Collection<? extends T> interactions) throws MIIOException {
+        Iterator<? extends T> binaryIterator = interactions.iterator();
+        write(binaryIterator);
     }
 
-    public void write(Iterator<T> interactions) throws MIIOException {
+    public void write(Iterator<? extends T> interactions) throws MIIOException {
         while (interactions.hasNext()){
             write(interactions.next());
         }
