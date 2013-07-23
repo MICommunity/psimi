@@ -22,7 +22,7 @@ public class InteractionUpdaterMaximum<I extends Interaction, P extends Particip
         super.processInteraction(interactionToEnrich);
     }
 
-
+    /*
     @Override
     public ParticipantEnricher<P, F> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ParticipantUpdaterMaximum<P,F>();
@@ -33,5 +33,5 @@ public class InteractionUpdaterMaximum<I extends Interaction, P extends Particip
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMaximum();
         return cvTermEnricher;
-    }
+    } */
 }

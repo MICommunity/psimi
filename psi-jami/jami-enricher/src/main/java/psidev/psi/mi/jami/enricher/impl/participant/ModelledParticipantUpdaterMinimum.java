@@ -16,10 +16,10 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
 public class ModelledParticipantUpdaterMinimum
     extends ParticipantUpdaterMinimum<ModelledParticipant , ModelledFeature> {
 
-
+    /*
     @Override
     public FeatureEnricher<ModelledFeature> getFeatureEnricher(){
         if(featureEnricher == null) featureEnricher = new ModelledFeatureUpdaterMinimum();
         return featureEnricher;
-    }
+    } */
 }

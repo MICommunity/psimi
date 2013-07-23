@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.LoggingRemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import uk.ac.ebi.intact.model.BioSource;
@@ -28,7 +27,7 @@ public class UniprotProteinRemapper
 
     public static final Log log = LogFactory.getLog(UniprotProteinRemapper.class);
 
-    private static ProteinRemapperListener listener = new LoggingRemapListener();
+    private static ProteinRemapperListener listener = null;
 
     private static boolean checkingEnabled = true;
     private static boolean priorityIdentifiers = true;

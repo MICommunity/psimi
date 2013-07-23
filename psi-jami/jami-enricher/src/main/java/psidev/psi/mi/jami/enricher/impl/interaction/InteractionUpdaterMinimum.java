@@ -22,6 +22,7 @@ public class InteractionUpdaterMinimum<I extends Interaction, P extends Particip
         super.processInteraction(interactionToEnrich);
     }
 
+    /*
     public ParticipantEnricher<P, F> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ParticipantUpdaterMinimum<P,F>();
         return participantEnricher;
@@ -31,5 +32,5 @@ public class InteractionUpdaterMinimum<I extends Interaction, P extends Particip
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMinimum();
         return cvTermEnricher;
-    }
+    }  */
 }

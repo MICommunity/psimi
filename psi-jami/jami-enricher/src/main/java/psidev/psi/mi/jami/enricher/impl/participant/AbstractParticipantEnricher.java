@@ -48,10 +48,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
                 || interactorType.getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)
                 || interactorType.getShortName().equalsIgnoreCase(Protein.PROTEIN)){
 
-            if(getProteinEnricher() == null){
-                throw new IllegalStateException("ProteinEnricher has not been provided.");
-            }
-            else {
+            if(getProteinEnricher() != null){
                 //Todo is there a more elegant solution to this?
                 if(participantToEnrich.getInteractor() instanceof Protein){
                     getProteinEnricher().enrichProtein( (Protein) participantToEnrich.getInteractor() );
@@ -70,7 +67,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         if( getFeatureEnricher() != null )
                 getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
 
-        if(listener != null) listener.onParticipantEnriched(participantToEnrich , EnrichmentStatus.SUCCESS , null);
+        if( listener != null )
+            listener.onParticipantEnriched(participantToEnrich , EnrichmentStatus.SUCCESS , null);
 
     }
 
@@ -94,13 +92,24 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
             EnricherUtil.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), getProteinEnricher());
     }
 
+    public ProteinEnricher getProteinEnricher(){
+        return proteinEnricher;
+    }
+
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
         this.cvTermEnricher = cvTermEnricher;
     }
 
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
+    }
 
     public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
         EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
+    }
+
+    public FeatureEnricher<F> getFeatureEnricher(){
+        return featureEnricher;
     }
 }

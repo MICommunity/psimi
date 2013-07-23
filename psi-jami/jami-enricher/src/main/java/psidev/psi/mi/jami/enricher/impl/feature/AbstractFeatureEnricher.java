@@ -56,7 +56,6 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             if(featureToEnrich.getType() != null) getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
         }
 
-
         if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
 
     }
@@ -79,6 +78,10 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
         this.cvTermEnricher = cvTermEnricher;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
     }
 
     public void setFeaturesToEnrich(Participant participant){

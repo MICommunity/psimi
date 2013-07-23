@@ -15,11 +15,10 @@ import psidev.psi.mi.jami.model.*;
 public class ModelledInteractionUpdaterMinimum
         extends InteractionUpdaterMinimum<ModelledInteraction, ModelledParticipant, ModelledFeature> {
 
-
-
+    /*
     @Override
     public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ModelledParticipantUpdaterMinimum();
         return participantEnricher;
-    }
+    } */
 }

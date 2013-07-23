@@ -26,7 +26,7 @@ public class ParticipantEnricherMinimum<P extends Participant , F extends Featur
 
 
 
-
+    /*
     public ProteinEnricher getProteinEnricher(){
         if(proteinEnricher == null) proteinEnricher = new ProteinEnricherMinimum();
         return proteinEnricher;
@@ -45,5 +45,5 @@ public class ParticipantEnricherMinimum<P extends Participant , F extends Featur
             EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
         }
         return featureEnricher;
-    }
+    } */
 }

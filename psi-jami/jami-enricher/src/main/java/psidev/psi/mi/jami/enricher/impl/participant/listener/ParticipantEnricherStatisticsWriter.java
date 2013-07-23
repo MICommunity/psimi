@@ -17,9 +17,20 @@ public class ParticipantEnricherStatisticsWriter
         implements ParticipantEnricherListener {
 
 
-    public ParticipantEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, "Participant");
+    private static final String OBJECT = "Participant";
+
+    public ParticipantEnricherStatisticsWriter(String fileName) throws IOException {
+        super(fileName, OBJECT);
     }
+
+    public ParticipantEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+        super(successFileName, failureFileName, OBJECT);
+    }
+
+    public ParticipantEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+        super(successFile, failureFile, OBJECT);
+    }
+
 
     public void onParticipantEnriched(Participant participant, EnrichmentStatus status, String message){
         onObjectEnriched(participant , status , message);

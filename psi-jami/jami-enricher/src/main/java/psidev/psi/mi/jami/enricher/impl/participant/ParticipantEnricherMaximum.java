@@ -19,6 +19,7 @@ import psidev.psi.mi.jami.model.Participant;
 public class ParticipantEnricherMaximum<P extends Participant, F extends Feature>
         extends ParticipantEnricherMinimum<P , F> {
 
+    /*
     @Override
     public ProteinEnricher getProteinEnricher(){
         if(proteinEnricher == null) proteinEnricher = new ProteinEnricherMaximum();
@@ -38,5 +39,5 @@ public class ParticipantEnricherMaximum<P extends Participant, F extends Feature
             EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
         }
         return featureEnricher;
-    }
+    } */
 }

@@ -15,10 +15,10 @@ import psidev.psi.mi.jami.model.*;
 public class ModelledInteractionEnricherMaximum
         extends InteractionEnricherMaximum<ModelledInteraction, ModelledParticipant, ModelledFeature> {
 
-
+    /*
     @Override
     public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ModelledParticipantEnricherMaximum();
         return participantEnricher;
-    }
+    } */
 }

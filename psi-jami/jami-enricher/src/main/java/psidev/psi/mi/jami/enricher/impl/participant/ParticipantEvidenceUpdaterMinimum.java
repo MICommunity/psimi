@@ -40,9 +40,10 @@ public class ParticipantEvidenceUpdaterMinimum
         }
     }
 
+    /*
     @Override
     public FeatureEnricher<FeatureEvidence> getFeatureEnricher(){
         if(featureEnricher == null) featureEnricher = new FeatureEvidenceUpdaterMinimum();
         return featureEnricher;
-    }
+    } */
 }

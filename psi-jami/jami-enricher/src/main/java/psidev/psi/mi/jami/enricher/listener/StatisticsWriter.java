@@ -30,6 +30,15 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
 
     protected int updateCount = 0, removedCount = 0, additionCount = 0;
 
+
+    public StatisticsWriter(String successFileName, String failureFileName, String jamiObject) throws IOException {
+        this(new File(successFileName), new File(failureFileName), jamiObject);
+    }
+
+    public StatisticsWriter(String fileName, String jamiObject) throws IOException {
+        this(new File("success_"+fileName), new File("failed_"+fileName), jamiObject);
+    }
+
     /**
      * Opens the files for successful enrichments and failed enrichments.
      *

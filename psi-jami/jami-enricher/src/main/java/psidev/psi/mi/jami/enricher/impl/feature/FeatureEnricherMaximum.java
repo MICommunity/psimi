@@ -28,9 +28,10 @@ public class FeatureEnricherMaximum<F extends Feature>
         }
     }
 
+    /*
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMaximum();
         return cvTermEnricher;
-    }
+    }*/
 
 }

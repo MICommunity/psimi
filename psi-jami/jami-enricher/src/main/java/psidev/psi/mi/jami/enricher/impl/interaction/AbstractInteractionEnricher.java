@@ -56,8 +56,15 @@ public abstract class AbstractInteractionEnricher<I extends Interaction, P exten
         this.cvTermEnricher = cvTermEnricher;
     }
 
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
+    }
+
     public void setParticipantEnricher(ParticipantEnricher<P , F> participantEnricher){
         this.participantEnricher = participantEnricher;
+    }
+    public ParticipantEnricher<P , F> getParticipantEnricher(){
+        return this.participantEnricher;
     }
 
     public InteractionEnricherListener getInteractionEnricherListener() {
