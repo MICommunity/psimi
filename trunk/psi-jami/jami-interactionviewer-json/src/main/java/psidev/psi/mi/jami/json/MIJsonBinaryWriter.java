@@ -196,12 +196,12 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         }
     }
 
-    public void write(Collection<BinaryInteractionEvidence> interactions) throws MIIOException {
-        Iterator<BinaryInteractionEvidence> binaryIterator = interactions.iterator();
+    public void write(Collection<? extends BinaryInteractionEvidence> interactions) throws MIIOException {
+        Iterator<? extends BinaryInteractionEvidence> binaryIterator = interactions.iterator();
         write(binaryIterator);
     }
 
-    public void write(Iterator<BinaryInteractionEvidence> interactions) throws MIIOException {
+    public void write(Iterator<? extends BinaryInteractionEvidence> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }

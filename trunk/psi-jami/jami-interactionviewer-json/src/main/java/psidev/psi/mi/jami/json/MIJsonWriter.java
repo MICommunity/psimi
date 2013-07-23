@@ -139,12 +139,12 @@ public class MIJsonWriter implements InteractionWriter<InteractionEvidence> {
         this.binaryWriter.write(binaryInteractions);
     }
 
-    public void write(Collection<InteractionEvidence> interactions) throws MIIOException {
-        Iterator<InteractionEvidence> iterator = interactions.iterator();
+    public void write(Collection<? extends InteractionEvidence> interactions) throws MIIOException {
+        Iterator<? extends InteractionEvidence> iterator = interactions.iterator();
         write(iterator);
     }
 
-    public void write(Iterator<InteractionEvidence> interactions) throws MIIOException {
+    public void write(Iterator<? extends InteractionEvidence> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }
