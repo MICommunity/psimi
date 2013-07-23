@@ -3,9 +3,7 @@ package psidev.psi.mi.jami.enricher.integrationtest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
-import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.UniprotProteinRemapper;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
 import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum;
@@ -30,20 +28,20 @@ public class ProteinTest {
 
     ParticipantEnricher participantEnricher;
     ProteinFetcher fetcher;
-    ProteinRemapper remapper = new UniprotProteinRemapper();
+    //ProteinRemapper remapper = new UniprotProteinRemapper();
 
     ProteinEnricherListener listener = new ProteinEnricherLogger();
 
 
     public ProteinTest(){
-        fetcher = new UniprotFetcher();
+        fetcher = new MockProteinFetcher();
     }
 
 
     public void min(){
         participantEnricher = new ParticipantEnricherMinimum();
         participantEnricher.getProteinEnricher().setProteinFetcher(fetcher);
-        participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
+        //participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
         participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
     }
@@ -51,7 +49,7 @@ public class ProteinTest {
     public void max(){
         participantEnricher = new ParticipantEnricherMaximum();
         participantEnricher.getProteinEnricher().setProteinFetcher(fetcher);
-        participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
+        //participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
         participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
     }
