@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.enricher;
 
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.ols.OlsFetcher;
-import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 
@@ -20,12 +20,12 @@ public class EnricherUtil {
      * @param enricher
      * @throws BridgeFailedException
      */
-    public static void setAllFetchersToCurrentOptions(InteractionEnricher enricher)
+    public static void setAllFetchersToCurrentOptions(InteractionEnricher enricher, CvTermFetcher cvTermfetcher, ProteinFetcher proteinFetcher)
             throws BridgeFailedException {
 
-        enricher.getCvTermEnricher().setCvTermFetcher(new OlsFetcher());
+        enricher.getCvTermEnricher().setCvTermFetcher(cvTermfetcher);
         unifyCvTermEnrichers(enricher);
-        enricher.getParticipantEnricher().getProteinEnricher().setProteinFetcher(new UniprotFetcher());
+        enricher.getParticipantEnricher().getProteinEnricher().setProteinFetcher(proteinFetcher);
         linkFeatureEnricherToProteinEnricher(enricher);
 
     }
