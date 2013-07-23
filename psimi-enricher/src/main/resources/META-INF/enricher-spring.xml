@@ -57,6 +57,12 @@
         <property name="jobLauncher" ref="batchJobLauncher" />
     </bean>
 
-    <!-- Steps -->
+    <!-- reader -->
+    <bean id="miFileResource" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg value="${interaction.file}"/>
+    </bean>
+    <bean id="interactionEvidenceReader" class="psidev.psi.mi.enricher.batch.reader.PsiInteractionEvidenceFileReader">
+        <property name="resource" ref="miFileResource"/>
+    </bean>
 
 </beans>
