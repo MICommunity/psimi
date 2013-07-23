@@ -35,24 +35,6 @@ public abstract class AbstractCvTermEnricher
     public AbstractCvTermEnricher() {
     }
 
-    public void setCvTermFetcher(CvTermFetcher fetcher) {
-        this.fetcher = fetcher;
-    }
-
-    public CvTermFetcher getCvTermFetcher() {
-        return fetcher;
-    }
-
-    public void setCvTermEnricherListener(CvTermEnricherListener cvTermEnricherListener) {
-        listener = cvTermEnricherListener;
-    }
-
-    public CvTermEnricherListener getCvTermEnricherListener() {
-        return listener;
-    }
-
-
-
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException {
         for(CvTerm cvTermToEnrich : cvTermsToEnrich){
             enrichCvTerm(cvTermToEnrich);
@@ -208,9 +190,27 @@ public abstract class AbstractCvTermEnricher
                 throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
             }
         }
-
         return cvTermFetched;
     }
+
+
+
+    public void setCvTermFetcher(CvTermFetcher fetcher) {
+        this.fetcher = fetcher;
+    }
+
+    public CvTermFetcher getCvTermFetcher() {
+        return fetcher;
+    }
+
+    public void setCvTermEnricherListener(CvTermEnricherListener cvTermEnricherListener) {
+        listener = cvTermEnricherListener;
+    }
+
+    public CvTermEnricherListener getCvTermEnricherListener() {
+        return listener;
+    }
+
 
 
 }

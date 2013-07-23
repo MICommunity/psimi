@@ -14,9 +14,9 @@ import psidev.psi.mi.jami.model.Feature;
 public class FeatureUpdaterMaximum<F extends Feature>
         extends FeatureUpdaterMinimum<F>
         implements FeatureEnricher <F> {
-
+    /*
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMaximum();
         return cvTermEnricher;
-    }
+    }  */
 }

@@ -16,10 +16,10 @@ public class InteractionEvidenceEnricherMinimum
     extends InteractionEnricherMinimum<InteractionEvidence, ParticipantEvidence, FeatureEvidence> {
 
 
-
+    /*
     @Override
     public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getParticipantEnricher(){
         if(participantEnricher == null) participantEnricher = new ParticipantEvidenceEnricherMinimum();
         return participantEnricher;
-    }
+    } */
 }

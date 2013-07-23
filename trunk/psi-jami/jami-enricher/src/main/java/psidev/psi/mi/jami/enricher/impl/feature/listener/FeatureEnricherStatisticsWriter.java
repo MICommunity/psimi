@@ -16,9 +16,21 @@ public class FeatureEnricherStatisticsWriter
         implements FeatureEnricherListener {
 
 
-    public FeatureEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, "Feature");
+    private static final String OBJECT = "Feature";
+
+    public FeatureEnricherStatisticsWriter(String fileName) throws IOException {
+        super(fileName, OBJECT);
     }
+
+    public FeatureEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+        super(successFileName, failureFileName, OBJECT);
+    }
+
+    public FeatureEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+        super(successFile, failureFile, OBJECT);
+    }
+
+    //====
 
     public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
         onObjectEnriched(feature, status, message);

@@ -15,10 +15,10 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
 public class ModelledParticipantEnricherMaximum
     extends ParticipantEnricherMaximum<ModelledParticipant , ModelledFeature> {
 
-
+    /*
     @Override
     public FeatureEnricher<ModelledFeature> getFeatureEnricher(){
         if(featureEnricher == null) featureEnricher = new ModelledFeatureEnricherMaximum();
         return featureEnricher;
-    }
+    } */
 }

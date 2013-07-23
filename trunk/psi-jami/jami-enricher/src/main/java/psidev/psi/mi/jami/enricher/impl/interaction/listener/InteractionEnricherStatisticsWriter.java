@@ -17,9 +17,18 @@ public class InteractionEnricherStatisticsWriter
         implements InteractionEnricherListener {
 
 
+    private static final String OBJECT = "Interaction";
+
+    public InteractionEnricherStatisticsWriter(String fileName) throws IOException {
+        super(fileName, OBJECT);
+    }
+
+    public InteractionEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+        super(successFileName, failureFileName, OBJECT);
+    }
 
     public InteractionEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, "Interaction");
+        super(successFile, failureFile, OBJECT);
     }
 
     public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message){

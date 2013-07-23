@@ -17,9 +17,21 @@ public class ProteinEnricherStatisticsWriter
         implements ProteinEnricherListener {
 
 
-    public ProteinEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, "Protein");
+    private static final String OBJECT = "Protein";
+
+    public ProteinEnricherStatisticsWriter(String fileName) throws IOException {
+        super(fileName, OBJECT);
     }
+
+    public ProteinEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+        super(successFileName, failureFileName, OBJECT);
+    }
+
+    public ProteinEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+        super(successFile, failureFile, OBJECT);
+    }
+
+
 
     public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message){
         onObjectEnriched(protein , status , message);

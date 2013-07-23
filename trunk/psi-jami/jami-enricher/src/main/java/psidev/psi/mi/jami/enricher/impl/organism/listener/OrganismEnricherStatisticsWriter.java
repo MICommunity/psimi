@@ -17,9 +17,20 @@ public class OrganismEnricherStatisticsWriter
         implements OrganismEnricherListener {
 
 
-    public OrganismEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, "Organism");
+    private static final String OBJECT = "Organism";
+
+    public OrganismEnricherStatisticsWriter(String fileName) throws IOException {
+        super(fileName, OBJECT);
     }
+
+    public OrganismEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+        super(successFileName, failureFileName, OBJECT);
+    }
+
+    public OrganismEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+        super(successFile, failureFile, OBJECT);
+    }
+
 
     public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message){
         onObjectEnriched(organism , status , message);

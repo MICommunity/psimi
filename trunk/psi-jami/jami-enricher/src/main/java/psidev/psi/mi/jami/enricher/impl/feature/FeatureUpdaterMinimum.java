@@ -44,9 +44,9 @@ public class FeatureUpdaterMinimum<F extends Feature>
             getFeatureEnricherListener().onUpdatedRange(feature , range , "Marked invalid range as undetermined");
     }
 
-
+    /*
     public CvTermEnricher getCvTermEnricher(){
         if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMinimum();
         return cvTermEnricher;
-    }
+    } */
 }

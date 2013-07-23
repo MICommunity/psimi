@@ -37,10 +37,11 @@ public class ParticipantEvidenceEnricherMaximum
         }
     }
 
+    /*
     @Override
     public FeatureEnricher<FeatureEvidence> getFeatureEnricher(){
         if(featureEnricher == null) featureEnricher = new FeatureEvidenceEnricherMaximum();
         return featureEnricher;
-    }
+    } */
 
 }
