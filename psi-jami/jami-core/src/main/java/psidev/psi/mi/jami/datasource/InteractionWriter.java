@@ -47,14 +47,14 @@ public interface InteractionWriter<T extends Interaction> {
      * @param interactions
      * @throws MIIOException
      */
-    public void write(Collection<T> interactions) throws MIIOException;
+    public void write(Collection<? extends T> interactions) throws MIIOException;
 
     /**
      * Writes Interaction objects using iterator
      * @param interactions
      * @throws MIIOException
      */
-    public void write(Iterator<T> interactions) throws MIIOException;
+    public void write(Iterator<? extends T> interactions) throws MIIOException;
 
     /**
      * Flushes the writer (commit or write on disk)
