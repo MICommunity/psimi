@@ -61,8 +61,29 @@
     <bean id="miFileResource" class="org.springframework.core.io.FileSystemResource">
         <constructor-arg value="${interaction.file}"/>
     </bean>
-    <bean id="interactionEvidenceReader" class="psidev.psi.mi.enricher.batch.reader.PsiInteractionEvidenceFileReader">
+    <bean id="interactionEvidenceReader" class="psidev.psi.mi.enricher.batch.reader.PsiInteractionEvidenceReader">
         <property name="resource" ref="miFileResource"/>
+    </bean>
+
+    <!-- processor -->
+    <bean id="interactionEvidenceProcessor" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
+        <property name="interactionEnricher" ref="interactionEnricher"/>
+    </bean>
+
+   <!-- interaction writer -->
+    <bean id="interactionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
+        <property name="writerOptions">
+            <map>
+                <entry key="Key 1" value="zeroPoint" />
+                <entry key="Key 2" value-ref="point2" />
+                <entry key="Key 3">
+                    <bean class="com.example4.Point">
+                        <property name="x" value="0" />
+                        <property name="y" value="0" />
+                    </bean>
+                </entry>
+            </map>
+        </property>
     </bean>
 
 </beans>

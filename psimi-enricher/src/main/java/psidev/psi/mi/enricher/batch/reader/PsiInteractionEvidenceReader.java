@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.item.*;
 import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionSource;
@@ -24,13 +25,13 @@ import java.util.Iterator;
  * @since <pre>23/07/13</pre>
  */
 
-public class PsiInteractionEvidenceFileReader implements ItemReader<InteractionEvidence>, ItemStream{
+public class PsiInteractionEvidenceReader implements ItemReader<InteractionEvidence>, ItemStream{
 
     private InteractionSource interactionDataSource;
     private int interactionCount = 0;
     private static final String COUNT_OPTION = "interaction_count";
     private Resource resource;
-    private static final Log logger = LogFactory.getLog(PsiInteractionEvidenceFileReader.class);
+    private static final Log logger = LogFactory.getLog(PsiInteractionEvidenceReader.class);
     private Iterator<InteractionEvidence> interactionIterator;
 
     public InteractionEvidence read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
@@ -43,11 +44,13 @@ public class PsiInteractionEvidenceFileReader implements ItemReader<InteractionE
     }
 
     public void open(ExecutionContext executionContext) throws ItemStreamException {
-        if (executionContext == null){
-            throw new IllegalStateException("The spring execution context cannot be null.");
-        }
+        Assert.notNull(executionContext, "ExecutionContext must not be null");
 
         PsiJami.initialiseInteractionEvidenceSources();
+
+        if (resource == null){
+            throw new IllegalStateException("Input resource must be provided. ");
+        }
 
         if (!resource.exists()) {
             logger.warn("Input resource does not exist " + resource.getDescription());
@@ -110,9 +113,7 @@ public class PsiInteractionEvidenceFileReader implements ItemReader<InteractionE
     }
 
     public void update(ExecutionContext executionContext) throws ItemStreamException {
-        if (executionContext == null){
-            throw new IllegalStateException("The spring execution context cannot be null.");
-        }
+        Assert.notNull(executionContext, "ExecutionContext must not be null");
         executionContext.put(COUNT_OPTION, interactionCount);
     }
 
@@ -120,6 +121,9 @@ public class PsiInteractionEvidenceFileReader implements ItemReader<InteractionE
         if (this.interactionDataSource != null){
             this.interactionDataSource.close();
         }
+        this.interactionCount = 0;
+        this.interactionDataSource = null;
+        this.interactionIterator = null;
     }
 
     public Resource getResource() {
