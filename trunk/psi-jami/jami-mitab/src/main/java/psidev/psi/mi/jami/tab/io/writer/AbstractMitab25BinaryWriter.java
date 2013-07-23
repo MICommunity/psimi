@@ -167,12 +167,12 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
      * @param interactions
      * @throws MIIOException
      */
-    public void write(Collection<T> interactions) throws MIIOException {
-        Iterator<T> binaryIterator = interactions.iterator();
+    public void write(Collection<? extends T> interactions) throws MIIOException {
+        Iterator<? extends T> binaryIterator = interactions.iterator();
         write(binaryIterator);
     }
 
-    public void write(Iterator<T> interactions) throws MIIOException {
+    public void write(Iterator<? extends T> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }
