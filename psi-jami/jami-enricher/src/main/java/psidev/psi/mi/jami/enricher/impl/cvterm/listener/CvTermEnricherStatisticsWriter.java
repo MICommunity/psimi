@@ -1,8 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
+import psidev.psi.mi.jami.enricher.listener.*;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;

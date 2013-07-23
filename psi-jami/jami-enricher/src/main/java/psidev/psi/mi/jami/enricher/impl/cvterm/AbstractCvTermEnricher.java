@@ -139,8 +139,6 @@ public abstract class AbstractCvTermEnricher
                 }
                 throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
             }
-
-
         }
 
 
@@ -166,7 +164,6 @@ public abstract class AbstractCvTermEnricher
                 }
                 throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
             }
-
         }
 
 
