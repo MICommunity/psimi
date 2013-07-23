@@ -1,12 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.EnricherUtil;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum;
-import psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum;
-import psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMinimum;
+
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
 
