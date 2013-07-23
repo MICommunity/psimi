@@ -2,27 +2,26 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.ExceptionThrowingMockProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Unit tester for ProteinEnricherMinimum
@@ -35,7 +34,7 @@ import java.util.Collection;
 public class ProteinEnricherMinimumTest {
 
     private ProteinEnricherMinimum proteinEnricher;
-    private MockProteinFetcher fetcher;
+    private MockProteinFetcher mockProteinFetcher;
 
     private static final String TEST_SHORTNAME = "test shortName";
     private static final String TEST_FULLNAME = "test fullName";
@@ -48,71 +47,55 @@ public class ProteinEnricherMinimumTest {
 
     @Before
     public void initialiseFetcherAndEnricher(){
-        fetcher = new MockProteinFetcher();
+        mockProteinFetcher = new MockProteinFetcher();
         proteinEnricher = new ProteinEnricherMinimum();
-        proteinEnricher.setProteinFetcher(fetcher);
+        proteinEnricher.setProteinFetcher(mockProteinFetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
         fullProtein.setSequence(TEST_SEQUENCE);
         fullProtein.setOrganism(new DefaultOrganism(TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC));
-        fetcher.addNewProtein(TEST_AC_FULL_PROT, fullProtein);
+        mockProteinFetcher.addNewProtein(TEST_AC_FULL_PROT, fullProtein);
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
-        halfProtein.setOrganism(new DefaultOrganism(-3));
-        fetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
-
-        //ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
-        //counter = new ProteinEnricherCounter();
-
-        //manager.addProteinEnricherListener(new ProteinEnricherLogger());
-        //manager.addProteinEnricherListener(counter);
-        //proteinEnricher.setProteinEnricherListener(manager);
-        //proteinEnricher.getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
-    }
-
-    /**
-     * Confirm that the default organism enricher matches the protein enricher.
-     */
-    @Test
-    public void test_default_enricher_is_of_matching_type(){
-        assertTrue(proteinEnricher.getOrganismEnricher() instanceof OrganismEnricherMinimum);
+        // halfProtein.setOrganism(new DefaultOrganism(-3));
+        mockProteinFetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
     }
 
 
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
-        String IDENT = "P1234";
-        ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(-1);
-        Protein proteinToEnrich = new DefaultProtein("Short");
-        proteinToEnrich.setUniprotkb(IDENT);
 
-        Protein proteinFetched = new DefaultProtein("Short","Full");
-        proteinFetched.setUniprotkb(IDENT);
-        fetcher.addNewProtein(IDENT , proteinFetched);
+        ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(-1);
+        Protein proteinToEnrich = new DefaultProtein(TEST_SHORTNAME);
+        proteinToEnrich.setUniprotkb(TEST_AC_HALF_PROT);
+
+        Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
+        fetcher.addNewProtein(TEST_AC_HALF_PROT , proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
         proteinEnricher.enrichProtein(proteinToEnrich);
+        fail("Exception should be thrown before this point");
     }
 
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         int timesToTry = 3;
-
         Assert.assertTrue(timesToTry < ProteinEnricherMinimum.RETRY_COUNT);
 
-        String IDENT = "P1234";
         ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(timesToTry);
-        Protein proteinToEnrich = new DefaultProtein("Short");
-        proteinToEnrich.setUniprotkb(IDENT);
 
-        Protein proteinFetched = new DefaultProtein("Short","Full");
-        proteinFetched.setUniprotkb(IDENT);
-        fetcher.addNewProtein(IDENT , proteinFetched);
+        Protein proteinToEnrich = new DefaultProtein(TEST_SHORTNAME);
+        proteinToEnrich.setUniprotkb(TEST_AC_HALF_PROT);
+
+        Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
+        fetcher.addNewProtein(TEST_AC_HALF_PROT, proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
         proteinEnricher.enrichProtein(proteinToEnrich);
 
-        assertEquals("Full" , proteinToEnrich.getFullName() );
+        assertEquals(TEST_FULLNAME , proteinToEnrich.getFullName() );
     }
 
 
@@ -121,13 +104,12 @@ public class ProteinEnricherMinimumTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_exception_when_fetching_on_null_protein() throws EnricherException {
-
         Protein null_protein = null;
         this.proteinEnricher.enrichProtein(null_protein);
     }
 
 
-
+    Protein null_identifier_protein_for_null_remapper = new DefaultProtein("Identifier free protein");
     /**
      * Check that when a protein has no identifier, and the remapper is not provided,
      * the protein is not enriched and that a "failed" note is sent to the listener.
@@ -136,15 +118,90 @@ public class ProteinEnricherMinimumTest {
     public void test_no_fetching_on_protein_with_null_identifier_when_remapping_is_unavailable()
             throws EnricherException {
 
-        Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
-        assertNull(null_identifier_protein.getUniprotkb());
+        assertNotNull(null_identifier_protein_for_null_remapper);
+        assertNull(null_identifier_protein_for_null_remapper.getUniprotkb());
+        assertNull(proteinEnricher.getProteinRemapper());
 
-        //proteinEnricher.setProteinEnricherListener();
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListener() {
+            public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                assertTrue(protein == null_identifier_protein_for_null_remapper);
+                assertEquals(EnrichmentStatus.FAILED , status);
+            }
 
+            public void onProteinRemapped(Protein protein, String oldUniprot) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRefseqUpdate(Protein protein, String oldRefseq) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onGeneNameUpdate(Protein protein, String oldGeneName) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRogidUpdate(Protein protein, String oldRogid) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onSequenceUpdate(Protein protein, String oldSequence) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onShortNameUpdate(Protein protein, String oldShortName) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onFullNameUpdate(Protein protein, String oldFullName) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedInteractorType(Protein protein) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedOrganism(Protein protein) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedIdentifier(Protein protein, Xref added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedIdentifier(Protein protein, Xref removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedXref(Protein protein, Xref added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedXref(Protein protein, Xref removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedAlias(Protein protein, Alias added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedAlias(Protein protein, Alias removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedChecksum(Protein protein, Checksum added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedChecksum(Protein protein, Checksum removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+        });
         this.proteinEnricher.enrichProtein(null_identifier_protein);
-
         assertNull(null_identifier_protein.getUniprotkb());
-        //assertTrue(counter.getStatus().contains("Failed"));
     }
 
 
@@ -259,7 +316,7 @@ public class ProteinEnricherMinimumTest {
 
 
 
-        /*for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        /*for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.setOrganism(new DefaultOrganism(11111,"Common","Scientific"));
         }*/
         // TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC)
@@ -347,7 +404,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_no_rogid.setSequence(TEST_SEQUENCE);
         protein_with_no_rogid.setOrganism(new DefaultOrganism(55555));
 
-            for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+            for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
                 protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
             }
 
@@ -377,7 +434,7 @@ public class ProteinEnricherMinimumTest {
         String rogid = rogidGenerator.calculateRogid(TEST_SEQUENCE,"55555");
         protein_with_a_rogid.setRogid(rogid);
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
         }
 
@@ -404,7 +461,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
         protein_with_a_rogid.setRogid("This is a bad ROGID");
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
                 protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
         }
 
@@ -441,7 +498,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_a_rogid.setOrganism(new DefaultOrganism(-3));
         protein_with_a_rogid.setRogid("This is a bad ROGID");
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.setOrganism(new DefaultOrganism(-3));
         }
 
@@ -464,7 +521,7 @@ public class ProteinEnricherMinimumTest {
         protein_with_a_rogid.setRogid("This is a bad ROGID");
 
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
             protein.setSequence("");
         }
@@ -481,7 +538,7 @@ public class ProteinEnricherMinimumTest {
     @Test
     public void test_set_CRC64_if_none_in_proteinToEnrich() throws EnricherException, BridgeFailedException {
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
                     ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
         }
@@ -501,7 +558,7 @@ public class ProteinEnricherMinimumTest {
     /*@Test
     public void test_identical_CRC64_is_not_added() throws EnricherException, BridgeFailedException {
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_HALF_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_HALF_PROT)){
             protein.getChecksums().add(
                     ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
         }
@@ -543,7 +600,7 @@ public class ProteinEnricherMinimumTest {
         String upperCRC =  "AbCdEfG";
         String lowerCRC = "abcdefg";
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
                 ChecksumUtils.createChecksum(METHOD, null, upperCRC));
         }
@@ -572,7 +629,7 @@ public class ProteinEnricherMinimumTest {
     @Test
     public void test_no_multiple_CRC64_checksums_in_fetched_proteins() throws EnricherException, BridgeFailedException {
 
-        for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
                     ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
             protein.getChecksums().add(
@@ -581,7 +638,7 @@ public class ProteinEnricherMinimumTest {
 
         Protein protein_with_mismatched_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
         protein_with_mismatched_checksum.setUniprotkb(TEST_AC_FULL_PROT);
-        for(Protein protein : fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
+        for(Protein protein : mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             assertTrue(protein.getChecksums().size() == 2);
         }
 
