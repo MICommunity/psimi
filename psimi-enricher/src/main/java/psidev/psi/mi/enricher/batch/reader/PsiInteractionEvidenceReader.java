@@ -126,10 +126,6 @@ public class PsiInteractionEvidenceReader implements ItemReader<InteractionEvide
         this.interactionIterator = null;
     }
 
-    public Resource getResource() {
-        return resource;
-    }
-
     public void setResource(Resource source) {
         this.resource = source;
     }
