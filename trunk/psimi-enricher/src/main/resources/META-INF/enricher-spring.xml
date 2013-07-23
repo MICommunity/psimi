@@ -65,6 +65,43 @@
         <property name="resource" ref="miFileResource"/>
     </bean>
 
+    <!-- lsiteners -->
+    <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${cvTerm.sucess.logFile}"/>
+        <constructor-arg index="1" value="${cvTerm.failure.logFile}"/>
+    </bean>
+    <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${protein.sucess.logFile}"/>
+        <constructor-arg index="1" value="${protein.failure.logFile}"/>
+    </bean>
+    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${organism.sucess.logFile}"/>
+        <constructor-arg index="1" value="${organism.failure.logFile}"/>
+    </bean>
+    <!--<bean id="proteinRemapperListener" class="ProteinRe"/>-->
+    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${feature.sucess.logFile}"/>
+        <constructor-arg index="1" value="${feature.failure.logFile}"/>
+    </bean>
+
+    <!-- remapper -->
+    <bean id="proteinRemapper" class="psidev.psi.mi.jami.bridges.uniprot.remapping.UniprotProteinRemapper">
+        <property name="checkingEnabled" value="true"/>
+        <property name="priorityIdentifiers" value="false"/>
+        <property name="prioritySequence" value="true"/>
+        <!--<property name="remapListener" ref="proteinRemapperListener"/> -->
+     </bean>
+
+    <!-- fetchers -->
+    <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.OlsFetcher"/>
+    <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+
+    <!-- enrichers -->
+    <bean id="cvTermEnricher" class=""/>
+    <bean id="proteinEnricher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+    <bean id="" class="psidev.psi.mi.jami.bridges.ols.OlsFetcher"/>
+    <bean id="proteinEnricher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+
     <!-- processor -->
     <bean id="interactionEvidenceProcessor" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
         <property name="interactionEnricher" ref="interactionEnricher"/>
