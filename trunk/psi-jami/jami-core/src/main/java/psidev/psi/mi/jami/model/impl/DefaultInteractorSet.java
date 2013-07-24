@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import java.util.*;
 
@@ -24,42 +25,42 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
     private Set<Molecule> interactors;
 
     public DefaultInteractorSet(String name, CvTerm type) {
-        super(name, type);
+        super(name, type != null ? type : CvTermUtils.createMoleculeSetType());
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType());
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+        super(name, type != null ? type : CvTermUtils.createMoleculeSetType(), organism);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType(), organism);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createMoleculeSetType(), uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType(), uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createMoleculeSetType(), organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType(), organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
@@ -113,6 +114,20 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
         }
         else {
             this.interactors = interactorCandidates;
+        }
+    }
+
+    @Override
+    /**
+     * Sets the interactor type.
+     * Sets the type to molecule set (MI:1304) if the given type is null
+     */
+    public void setInteractorType(CvTerm type) {
+        if (type == null){
+            super.setInteractorType(CvTermUtils.createMoleculeSetType());
+        }
+        else {
+            super.setInteractorType(type);
         }
     }
 

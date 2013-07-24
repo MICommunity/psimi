@@ -12,4 +12,12 @@ import java.util.Set;
 
 public interface InteractorSet extends Interactor,Set<Molecule>{
 
+    public static final String MOLECULE_SET="molecule set";
+    public static final String MOLECULE_SET_MI="MI:1304";
+    public static final String CANDIDATE_SET="candidate set";
+    public static final String CANDIDATE_SET_MI="MI:1305";
+    public static final String DEFINED_SET="defined set";
+    public static final String DEFINED_SET_MI="MI:1307";
+    public static final String OPEN_SET="open set";
+    public static final String OPEN_SET_MI="MI:1306";
 }

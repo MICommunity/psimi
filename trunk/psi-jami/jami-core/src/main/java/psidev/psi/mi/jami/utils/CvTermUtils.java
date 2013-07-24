@@ -366,6 +366,10 @@ public class CvTermUtils {
         return createMICvTerm(BioactiveEntity.BIOACTIVE_ENTITY, BioactiveEntity.BIOACTIVE_ENTITY_MI);
     }
 
+    public static CvTerm createMoleculeSetType(){
+        return createMICvTerm(InteractorSet.MOLECULE_SET, InteractorSet.MOLECULE_SET_MI);
+    }
+
     public static CvTerm createGeneNameAliasType(){
         return createMICvTerm(Alias.GENE_NAME, Alias.GENE_NAME_MI);
     }
