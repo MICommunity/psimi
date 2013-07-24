@@ -43,7 +43,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
 
     private PsiXmLocator sourceLocator;
 
-    private NamesContainer namesContainer;
+    NamesContainer namesContainer;
     InteractorXrefContainer xrefContainer;
     private String xmlSequence;
     private int id;

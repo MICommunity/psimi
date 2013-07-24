@@ -5,9 +5,11 @@ import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
@@ -113,6 +115,31 @@ public class XmlProtein extends XmlPolymer implements Protein{
         this.xrefContainer = new ProteinXrefContainer();
     }
 
+    @Override
+    public void setNames(NamesContainer value) {
+        if (value == null){
+            namesContainer = new NamesContainer();
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+        }
+        else if (this.namesContainer == null){
+            this.namesContainer = new ProteinNamesContainer();
+            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
+            this.namesContainer.setFullName(value.getFullName());
+            this.namesContainer.getAliases().addAll(value.getAliases());
+        }
+        else {
+            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
+            this.namesContainer.setFullName(value.getFullName());
+            this.namesContainer.getAliases().addAll(value.getAliases());
+        }
+    }
+
+    @Override
+    protected void initialiseNamesContainer() {
+        this.namesContainer = new ProteinNamesContainer();
+    }
+
+    @XmlTransient
     public String getUniprotkb() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -127,6 +154,7 @@ public class XmlProtein extends XmlPolymer implements Protein{
         ((ProteinXrefContainer)xrefContainer).setUniprotkb(ac);
     }
 
+    @XmlTransient
     public String getRefseq() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -141,14 +169,22 @@ public class XmlProtein extends XmlPolymer implements Protein{
         ((ProteinXrefContainer)xrefContainer).setRefseq(ac);
     }
 
+    @XmlTransient
     public String getGeneName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (namesContainer == null){
+            initialiseNamesContainer();
+        }
+        return ((ProteinNamesContainer)namesContainer).getGeneName();
     }
 
     public void setGeneName(String name) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (namesContainer == null){
+            initialiseNamesContainer();
+        }
+        ((ProteinNamesContainer)namesContainer).setGeneName(name);
     }
 
+    @XmlTransient
     public String getRogid() {
         return this.rogid != null ? this.rogid.getValue() : null;
     }
