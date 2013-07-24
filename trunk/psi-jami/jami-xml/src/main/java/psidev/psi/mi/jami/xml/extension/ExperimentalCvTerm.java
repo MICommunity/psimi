@@ -6,7 +6,7 @@
 //
 
 
-package psidev.psi.mi.jami.xml;
+package psidev.psi.mi.jami.xml.extension;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;

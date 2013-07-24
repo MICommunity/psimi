@@ -6,7 +6,7 @@
 //
 
 
-package psidev.psi.mi.jami.xml;
+package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
