@@ -40,7 +40,7 @@ public class ProteinUpdaterMaximum
         }
     }
 
-
+    /*
     @Override
     public OrganismEnricher getOrganismEnricher() {
         if( organismEnricher == null ){
@@ -48,5 +48,5 @@ public class ProteinUpdaterMaximum
         }
 
         return organismEnricher;
-    }
+    }*/
 }
