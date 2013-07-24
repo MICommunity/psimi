@@ -25,11 +25,14 @@ import java.util.List;
         "primaryRef",
         "secondaryRefs"
 })
+@XmlSeeAlso({
+        CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class
+})
 public class XrefContainer implements FileSourceContext, Serializable{
 
-    private XmlXref primaryRef;
-    private Collection<XmlXref> secondaryRefs;
-    private List<Xref> allXrefs;
+    XmlXref primaryRef;
+    Collection<XmlXref> secondaryRefs;
+    List<Xref> allXrefs;
 
     private PsiXmLocator sourceLocator;
 
@@ -56,12 +59,12 @@ public class XrefContainer implements FileSourceContext, Serializable{
      */
     public void setPrimaryRef(XmlXref value) {
         if (this.primaryRef != null){
-            ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);
+            processRemovedPrimaryRef(this.primaryRef);
         }
 
         this.primaryRef = value;
         if (value != null){
-            ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
+            processAddedPrimaryRef();
         }
     }
 
@@ -98,9 +101,17 @@ public class XrefContainer implements FileSourceContext, Serializable{
     @XmlTransient
     public Collection<Xref> getAllXrefs() {
         if (allXrefs == null){
-            allXrefs = new FullXrefList();
+            initialiseXrefs();
         }
         return allXrefs;
+    }
+
+    @XmlTransient
+    public boolean isEmpty(){
+        if (primaryRef == null && getSecondaryRefs().isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     @XmlLocation
@@ -122,7 +133,67 @@ public class XrefContainer implements FileSourceContext, Serializable{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
-    private class FullXrefList extends AbstractListHavingProperties<Xref> {
+    protected void initialiseXrefs(){
+        this.allXrefs = new FullXrefList();
+    }
+
+    protected void processAddedPrimaryRef() {
+        ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
+    }
+
+    protected void processRemovedPrimaryRef(XmlXref removed) {
+        ((FullXrefList)getAllXrefs()).removeOnly(removed);
+    }
+
+    protected void processAddedSecondaryXref(XmlXref added) {
+        ((FullXrefList)getAllXrefs()).addOnly(added);
+    }
+
+    protected void processRemovedSecondaryXref(XmlXref removed) {
+        ((FullXrefList)getAllXrefs()).removeOnly(removed);
+    }
+
+    protected void clearSecondaryXrefProperties() {
+        if (primaryRef != null){
+            ((FullXrefList)getAllXrefs()).retainAllOnly(Collections.singleton(primaryRef));
+        }
+        else{
+            ((FullXrefList)getAllXrefs()).clearOnly();
+        }
+    }
+
+    protected void processAddedXref(Xref added) {
+        // it is a XML instance so it can be converted with jaxb
+        if (added instanceof XmlXref){
+            if (primaryRef == null){
+                primaryRef = (XmlXref)added;
+            }
+            else{
+                ((SecondaryXrefList)getSecondaryRefs()).addOnly((XmlXref)added);
+            }
+        }
+    }
+
+    protected void processRemovedXref(Xref removed) {
+        if (removed instanceof XmlXref){
+            if (primaryRef != null && removed.equals(primaryRef)){
+                if (!getSecondaryRefs().isEmpty()){
+                    primaryRef = secondaryRefs.iterator().next();
+                    ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
+                }
+                else{
+                    primaryRef = null;
+                }
+            }
+        }
+    }
+
+    protected void clearFullXrefProperties() {
+        primaryRef = null;
+        ((SecondaryXrefList)getSecondaryRefs()).clearOnly();
+    }
+
+    class FullXrefList extends AbstractListHavingProperties<Xref> {
         public FullXrefList(){
             super();
         }
@@ -130,45 +201,25 @@ public class XrefContainer implements FileSourceContext, Serializable{
         @Override
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                // it is a XML instance so it can be converted with jaxb
-                if (added instanceof XmlXref){
-                    processAddedXref((XmlXref) added);
-                }
-            }
-        }
+                processAddedXref(added);
 
-        private void processAddedXref(XmlXref added) {
-            if (primaryRef == null){
-                primaryRef = added;
-            }
-            else{
-                ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (removed != null && removed instanceof XmlXref){
-                if (primaryRef != null && removed.equals(primaryRef)){
-                    if (!getSecondaryRefs().isEmpty()){
-                        primaryRef = secondaryRefs.iterator().next();
-                        ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
-                    }
-                    else{
-                        primaryRef = null;
-                    }
-                }
+            if (removed != null){
+                processRemovedXref(removed);
             }
         }
 
         @Override
         protected void clearProperties() {
-            primaryRef = null;
-            ((SecondaryXrefList)getSecondaryRefs()).clearOnly();
+            clearFullXrefProperties();
         }
     }
 
-    private class SecondaryXrefList extends AbstractListHavingProperties<XmlXref> {
+    class SecondaryXrefList extends AbstractListHavingProperties<XmlXref> {
         public SecondaryXrefList(){
             super();
         }
@@ -176,25 +227,20 @@ public class XrefContainer implements FileSourceContext, Serializable{
         @Override
         protected void processAddedObjectEvent(XmlXref added) {
             if (added != null){
-                ((FullXrefList)getAllXrefs()).addOnly(added);
+                processAddedSecondaryXref(added);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(XmlXref removed) {
             if (removed != null){
-                ((FullXrefList)getAllXrefs()).removeOnly(removed);
+                processRemovedSecondaryXref(removed);
             }
         }
 
         @Override
         protected void clearProperties() {
-            if (primaryRef != null){
-                ((FullXrefList)getAllXrefs()).retainAllOnly(Collections.singleton(primaryRef));
-            }
-            else{
-                ((FullXrefList)getAllXrefs()).clearOnly();
-            }
+            clearSecondaryXrefProperties();
         }
     }
 }
