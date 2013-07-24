@@ -4,9 +4,7 @@ import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
@@ -15,22 +13,19 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Container for both xrefs and identifiers  in a CvTerm
+ * Xref container for interactors
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>19/07/13</pre>
+ * @since <pre>23/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-@XmlType(name = "xref", propOrder = {
+@XmlType(name = "xrefContainer", propOrder = {
         "primaryRef",
         "secondaryRefs"
 })
-public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Serializable{
+public class InteractorXrefContainer implements FileSourceContext,Serializable {
 
-    private Xref miIdentifier;
-    private Xref modIdentifier;
-    private Xref parIdentifier;
     private XmlXref primaryRef;
     private Collection<XmlXref> secondaryRefs;
     private List<Xref> allXrefs;
@@ -65,15 +60,11 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                 // if it is not an identifier
                 ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);
             }
-            else {
-                processRemovedIdentifierEvent(this.primaryRef);
-            }
         }
 
         this.primaryRef = value;
         if (XrefUtils.isXrefAnIdentifier(this.primaryRef)){
             ((FullIdentifierList)getAllIdentifiers()).addOnly(0, this.primaryRef);
-            processAddedIdentifierEvent(this.primaryRef);
         }
         else {
             ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
@@ -113,7 +104,7 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
     @XmlTransient
     public Collection<Xref> getAllXrefs() {
         if (allXrefs == null){
-            allXrefs = new FullXrefList();
+            initialiseXrefs();
         }
         return allXrefs;
     }
@@ -121,110 +112,23 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
     @XmlTransient
     public Collection<Xref> getAllIdentifiers() {
         if (allIdentifiers == null){
-            allIdentifiers = new FullIdentifierList();
+            initialiseIdentifiers();
         }
         return allIdentifiers;
     }
 
     @XmlTransient
-    public String getMIIdentifier() {
-        return this.miIdentifier != null ? this.miIdentifier.getId() : null;
+    public Xref getPreferredIdentifier() {
+        return !getAllIdentifiers().isEmpty() ? allIdentifiers.iterator().next() : null;
     }
 
     @XmlTransient
-    public String getMODIdentifier() {
-        return this.modIdentifier != null ? this.modIdentifier.getId() : null;
-    }
-
-    @XmlTransient
-    public String getPARIdentifier() {
-        return this.parIdentifier != null ? this.parIdentifier.getId() : null;
-    }
-
-    public void setMIIdentifier(String mi) {
-        FullIdentifierList cvTermIdentifiers = (FullIdentifierList)getAllIdentifiers();
-
-        // add new mi if not null
-        if (mi != null){
-            CvTerm psiMiDatabase = CvTermUtils.createPsiMiDatabase();
-            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
-            // first remove old psi mi if not null
-            if (this.miIdentifier != null){
-                cvTermIdentifiers.removeOnly(this.miIdentifier);
-                if (this.miIdentifier instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.miIdentifier);
-                }
-            }
-            this.miIdentifier = new XmlXref(psiMiDatabase, mi, identityQualifier);
-            cvTermIdentifiers.addOnly(this.miIdentifier);
-            processAddedIdentifierEvent(this.miIdentifier);
+    public boolean isEmpty(){
+        if (primaryRef == null && getSecondaryRefs().isEmpty()){
+            return true;
         }
-        // remove all mi if the collection is not empty
-        else if (!getAllIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getAllIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-            this.miIdentifier = null;
-        }
-    }
-
-    public void setMODIdentifier(String mod) {
-        FullIdentifierList cvTermIdentifiers = (FullIdentifierList)getAllIdentifiers();
-
-        // add new mod if not null
-        if (mod != null){
-
-            CvTerm psiModDatabase = CvTermUtils.createPsiModDatabase();
-            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
-            // first remove old psi mod if not null
-            if (this.modIdentifier != null){
-                cvTermIdentifiers.removeOnly(this.modIdentifier);
-                if (this.modIdentifier instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.modIdentifier);
-                }
-            }
-            this.modIdentifier = new XmlXref(psiModDatabase, mod, identityQualifier);
-            cvTermIdentifiers.addOnly(this.parIdentifier);
-            processAddedIdentifierEvent(this.parIdentifier);
-        }
-        // remove all mod if the collection is not empty
-        else if (!getAllIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getAllIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-            this.modIdentifier = null;
-        }
-    }
-
-    public void setPARIdentifier(String par) {
-        FullIdentifierList cvTermIdentifiers = (FullIdentifierList)getAllIdentifiers();
-
-        // add new mod if not null
-        if (par != null){
-
-            CvTerm psiModDatabase = CvTermUtils.createPsiParDatabase();
-            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
-            // first remove old psi mod if not null
-            if (this.parIdentifier != null){
-                cvTermIdentifiers.removeOnly(this.parIdentifier);
-                if (this.parIdentifier instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.parIdentifier);
-                }
-            }
-            this.parIdentifier = new XmlXref(psiModDatabase, par, identityQualifier);
-            cvTermIdentifiers.addOnly(this.parIdentifier);
-            processAddedIdentifierEvent(this.parIdentifier);
-        }
-        // remove all mod if the collection is not empty
-        else if (!getAllIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getAllIdentifiers(), null, CvTerm.PSI_PAR);
-            this.parIdentifier = null;
-        }
-    }
-
-    @XmlTransient
-   public boolean isEmpty(){
-       if (primaryRef == null && getSecondaryRefs().isEmpty()){
-           return true;
-       }
         return false;
-   }
+    }
 
     @XmlLocation
     @XmlTransient
@@ -245,83 +149,30 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
-    protected void processAddedIdentifierEvent(Xref added) {
+    protected void initialiseXrefs(){
+        this.allXrefs = new ArrayList<Xref>();
+    }
 
-        // the added identifier is psi-mi and it is not the current mi identifier
-        if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
-            // the current psi-mi identifier is not identity, we may want to set miIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                // the miidentifier is not set, we can set the miidentifier
-                if (miIdentifier == null){
-                    miIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    miIdentifier = added;
-                }
-                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    miIdentifier = added;
-                }
-            }
+    protected void initialiseIdentifiers(){
+        this.allIdentifiers = new ArrayList<Xref>();
+    }
+
+    protected void initialiseXrefsWith(List<Xref> xrefs){
+        if (xrefs == null){
+            this.allXrefs = Collections.EMPTY_LIST;
         }
-        // the added identifier is psi-mod and it is not the current mod identifier
-        else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
-            // the current psi-mod identifier is not identity, we may want to set modIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                // the modIdentifier is not set, we can set the modIdentifier
-                if (modIdentifier == null){
-                    modIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    modIdentifier = added;
-                }
-                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    modIdentifier = added;
-                }
-            }
-        }
-        // the added identifier is psi-par and it is not the current par identifier
-        else if (parIdentifier != added && XrefUtils.isXrefFromDatabase(added, null, CvTerm.PSI_PAR)){
-            // the current psi-par identifier is not identity, we may want to set parIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(parIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                // the parIdentifier is not set, we can set the parIdentifier
-                if (parIdentifier == null){
-                    parIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    parIdentifier = added;
-                }
-                // the added xref is secondary object and the current par is not a secondary object, we reset paridentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(parIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    parIdentifier = added;
-                }
-            }
+        else {
+            this.allXrefs = xrefs;
         }
     }
 
-    protected void processRemovedIdentifierEvent(Xref removed) {
-        // the removed identifier is psi-mi
-        if (miIdentifier != null && miIdentifier.equals(removed)){
-            miIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+    protected void initialiseIdentifiersWith(List<Xref> identifiers){
+        if (identifiers == null){
+            this.allIdentifiers = Collections.EMPTY_LIST;
         }
-        // the removed identifier is psi-mod
-        else if (modIdentifier != null && modIdentifier.equals(removed)){
-            modIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+        else {
+            this.allIdentifiers = identifiers;
         }
-        // the removed identifier is psi-par
-        else if (parIdentifier != null && parIdentifier.equals(removed)){
-            parIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), null, CvTerm.PSI_PAR);
-        }
-    }
-
-    protected void clearPropertiesLinkedToIdentifiers() {
-        miIdentifier = null;
-        modIdentifier = null;
-        parIdentifier = null;
     }
 
     private void processAddedPrimaryAndSecondaryRefs(XmlXref added) {
@@ -354,9 +205,8 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
                 if (added instanceof XmlXref){
-                   processAddedPrimaryAndSecondaryRefs((XmlXref) added);
+                    processAddedPrimaryAndSecondaryRefs((XmlXref) added);
                 }
-                processAddedIdentifierEvent(added);
             }
         }
 
@@ -366,7 +216,6 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                 if (removed instanceof XmlXref){
                     processRemovedPrimaryAndSecondaryRefs((XmlXref)removed);
                 }
-                processRemovedIdentifierEvent(removed);
             }
         }
 
@@ -376,7 +225,7 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
             if (getAllXrefs().contains(primaryRef)){
                 // do nothing
             }
-            // the primary ref is in identifiers, we reset it to the first xref
+            // the primary ref is in identifiers, we reset it to the first xrefContainer
             else if (!getAllXrefs().isEmpty()){
                 Iterator<Xref> refsIterator = allXrefs.iterator();
                 Xref ref = refsIterator.next();
@@ -393,7 +242,6 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                 primaryRef = null;
             }
             ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
-            clearPropertiesLinkedToIdentifiers();
         }
     }
 
@@ -456,7 +304,6 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                 // it is an identifier
                 if (XrefUtils.isXrefAnIdentifier(added)){
                     ((FullIdentifierList)getAllIdentifiers()).addOnly(added);
-                    processAddedIdentifierEvent(added);
                 }
                 // it is not an identifier
                 else {
@@ -473,9 +320,6 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                     // if it is not an identifier
                     ((FullXrefList)getAllXrefs()).removeOnly(removed);
                 }
-                else {
-                    processRemovedIdentifierEvent(removed);
-                }
             }
         }
 
@@ -487,7 +331,6 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                 identifiersToBeDeleted.remove(primaryRef);
                 for (Xref ref : identifiersToBeDeleted){
                     ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
-                    processRemovedIdentifierEvent(ref);
                 }
                 if (!((FullIdentifierList)getAllIdentifiers()).retainAllOnly(primary)){
                     // if it is not an identifier
@@ -502,7 +345,6 @@ public class CvTermXrefAndIdentifierContainer implements FileSourceContext,Seria
                 List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
                 for (Xref ref : identifiersToBeDeleted){
                     ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
-                    processRemovedIdentifierEvent(ref);
                 }
             }
 

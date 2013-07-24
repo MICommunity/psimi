@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * A container for aliases, shortname and fullname
@@ -108,7 +109,7 @@ public class NamesContainer implements FileSourceContext, Serializable{
     @XmlElementRefs({ @XmlElementRef(type=XmlAlias.class)})
     public Collection<Alias> getAliases() {
         if (aliases == null) {
-            aliases = new ArrayList<Alias>();
+            initialiseAliases();
         }
         return this.aliases;
     }
@@ -135,5 +136,18 @@ public class NamesContainer implements FileSourceContext, Serializable{
     @XmlTransient
     public boolean isEmpty(){
         return (shortLabel == null && fullName == null && getAliases().isEmpty());
+    }
+
+    protected void initialiseAliases(){
+        this.aliases = new ArrayList<Alias>();
+    }
+
+    protected void initialiseAliasesWith(Collection<Alias> aliases){
+        if (aliases == null){
+            this.aliases = Collections.EMPTY_LIST;
+        }
+        else {
+            this.aliases = aliases;
+        }
     }
 }

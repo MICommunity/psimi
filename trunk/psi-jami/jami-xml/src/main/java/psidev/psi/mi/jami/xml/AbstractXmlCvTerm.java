@@ -22,7 +22,7 @@ import java.util.Collections;
  * @since <pre>19/07/13</pre>
  */
 public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Serializable{
-    private CvTermXrefAndIdentifierContainer xrefContainer;
+    private CvTermXrefContainer xrefContainer;
     private NamesContainer namesContainer;
     private Collection<Annotation> annotations;
 
@@ -62,16 +62,14 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
     }
 
 
-    protected CvTermXrefAndIdentifierContainer getXrefContainer() {
+    protected CvTermXrefContainer getXrefContainer() {
         if (xrefContainer != null){
-            if (xrefContainer.isEmpty()){
-                return null;
-            }
+            xrefContainer = new CvTermXrefContainer();
         }
         return xrefContainer;
     }
 
-    protected void setXrefContainer(CvTermXrefAndIdentifierContainer value) {
+    protected void setXrefContainer(CvTermXrefContainer value) {
         this.xrefContainer = value;
     }
 
@@ -103,14 +101,14 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
         return this.annotations;
     }
 
-    public Collection<Annotation> getAttributes() {
+    public ArrayList<Annotation> getAttributes() {
         if (getAnnotations().isEmpty()){
             return null;
         }
-        return this.annotations;
+        return new ArrayList<Annotation>(this.annotations);
     }
 
-    public void setAttributes(Collection<Annotation> annot){
+    public void setAttributes(ArrayList<Annotation> annot){
         if (annot != null && !annot.isEmpty()){
             getAnnotations().addAll(annot);
         }

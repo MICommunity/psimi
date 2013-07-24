@@ -15,22 +15,22 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Xref container for a Publication
+ * Container for both xrefs and identifiers  in a CvTerm
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>22/07/13</pre>
+ * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "xrefContainer", propOrder = {
         "primaryRef",
         "secondaryRefs"
 })
-public class PublicationXrefContainer implements FileSourceContext,Serializable {
+public class CvTermXrefContainer implements FileSourceContext,Serializable{
 
-    private Xref pubmedId;
-    private Xref doi;
-    private Xref imexId;
+    private Xref miIdentifier;
+    private Xref modIdentifier;
+    private Xref parIdentifier;
     private XmlXref primaryRef;
     private Collection<XmlXref> secondaryRefs;
     private List<Xref> allXrefs;
@@ -63,9 +63,7 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
         if (this.primaryRef != null){
             if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
                 // if it is not an identifier
-                if (((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef)){
-                    processRemovedXrefEvent(this.primaryRef);
-                }
+                ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);
             }
             else {
                 processRemovedIdentifierEvent(this.primaryRef);
@@ -79,7 +77,6 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
         }
         else {
             ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
-            processAddedXrefEvent(this.primaryRef);
         }
     }
 
@@ -130,95 +127,104 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
     }
 
     @XmlTransient
-    public String getPubmedId() {
-        return this.pubmedId != null ? this.pubmedId.getId() : null;
+    public String getMIIdentifier() {
+        return this.miIdentifier != null ? this.miIdentifier.getId() : null;
     }
 
-    public void setPubmedId(String pubmedId) {
-        FullIdentifierList identifiers = (FullIdentifierList) getAllIdentifiers();
+    @XmlTransient
+    public String getMODIdentifier() {
+        return this.modIdentifier != null ? this.modIdentifier.getId() : null;
+    }
 
-        // add new pubmed if not null
-        if (pubmedId != null){
-            CvTerm pubmedDatabase = CvTermUtils.createPubmedDatabase();
+    @XmlTransient
+    public String getPARIdentifier() {
+        return this.parIdentifier != null ? this.parIdentifier.getId() : null;
+    }
+
+    public void setMIIdentifier(String mi) {
+        FullIdentifierList cvTermIdentifiers = (FullIdentifierList)getAllIdentifiers();
+
+        // add new mi if not null
+        if (mi != null){
+            CvTerm psiMiDatabase = CvTermUtils.createPsiMiDatabase();
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
-            // first remove old pubmed if not null
-            if (this.pubmedId != null){
-                identifiers.removeOnly(this.pubmedId);
-                if (this.pubmedId instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.pubmedId);
+            // first remove old psi mi if not null
+            if (this.miIdentifier != null){
+                cvTermIdentifiers.removeOnly(this.miIdentifier);
+                if (this.miIdentifier instanceof XmlXref){
+                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.miIdentifier);
                 }
             }
-            this.pubmedId = new XmlXref(pubmedDatabase, pubmedId, identityQualifier);
-            identifiers.addOnly(this.pubmedId);
+            this.miIdentifier = new XmlXref(psiMiDatabase, mi, identityQualifier);
+            cvTermIdentifiers.addOnly(this.miIdentifier);
+            processAddedIdentifierEvent(this.miIdentifier);
         }
-        // remove all pubmed if the collection is not empty
-        else if (!identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.PUBMED_MI, Xref.PUBMED);
-            this.pubmedId = null;
+        // remove all mi if the collection is not empty
+        else if (!getAllIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getAllIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+            this.miIdentifier = null;
         }
     }
 
-    @XmlTransient
-    public String getDoi() {
-        return this.doi != null ? this.doi.getId() : null;
-    }
+    public void setMODIdentifier(String mod) {
+        FullIdentifierList cvTermIdentifiers = (FullIdentifierList)getAllIdentifiers();
 
-    public void setDoi(String doi) {
-        FullIdentifierList identifiers = (FullIdentifierList) getAllIdentifiers();
-        // add new doi if not null
-        if (doi != null){
-            CvTerm doiDatabase = CvTermUtils.createDoiDatabase();
+        // add new mod if not null
+        if (mod != null){
+
+            CvTerm psiModDatabase = CvTermUtils.createPsiModDatabase();
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
-            // first remove old doi if not null
-            if (this.doi != null){
-                identifiers.removeOnly(this.doi);
-                if (this.doi instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.doi);
+            // first remove old psi mod if not null
+            if (this.modIdentifier != null){
+                cvTermIdentifiers.removeOnly(this.modIdentifier);
+                if (this.modIdentifier instanceof XmlXref){
+                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.modIdentifier);
                 }
             }
-            this.doi = new XmlXref(doiDatabase, doi, identityQualifier);
-            identifiers.addOnly(this.doi);
+            this.modIdentifier = new XmlXref(psiModDatabase, mod, identityQualifier);
+            cvTermIdentifiers.addOnly(this.parIdentifier);
+            processAddedIdentifierEvent(this.parIdentifier);
         }
-        // remove all doi if the collection is not empty
-        else if (!identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.DOI_MI, Xref.DOI);
-            this.doi = null;
+        // remove all mod if the collection is not empty
+        else if (!getAllIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getAllIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+            this.modIdentifier = null;
+        }
+    }
+
+    public void setPARIdentifier(String par) {
+        FullIdentifierList cvTermIdentifiers = (FullIdentifierList)getAllIdentifiers();
+
+        // add new mod if not null
+        if (par != null){
+
+            CvTerm psiModDatabase = CvTermUtils.createPsiParDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
+            // first remove old psi mod if not null
+            if (this.parIdentifier != null){
+                cvTermIdentifiers.removeOnly(this.parIdentifier);
+                if (this.parIdentifier instanceof XmlXref){
+                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.parIdentifier);
+                }
+            }
+            this.parIdentifier = new XmlXref(psiModDatabase, par, identityQualifier);
+            cvTermIdentifiers.addOnly(this.parIdentifier);
+            processAddedIdentifierEvent(this.parIdentifier);
+        }
+        // remove all mod if the collection is not empty
+        else if (!getAllIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getAllIdentifiers(), null, CvTerm.PSI_PAR);
+            this.parIdentifier = null;
         }
     }
 
     @XmlTransient
-    public String getImexId() {
-        return this.imexId != null ? this.imexId.getId() : null;
-    }
-
-    public void assignImexId(String identifier) {
-        FullXrefList xrefs = (FullXrefList) getAllXrefs();
-        // add new imex if not null
-        if (identifier != null){
-            CvTerm imexDatabase = CvTermUtils.createImexDatabase();
-            CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
-            // first remove old imex if not null
-            if (this.imexId != null){
-                xrefs.removeOnly(this.imexId);
-                if (this.imexId instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.imexId);
-                }
-            }
-            this.imexId = new XmlXref(imexDatabase, identifier, imexPrimaryQualifier);
-            xrefs.addOnly(this.imexId);
-        }
-        else if (this.imexId != null){
-            throw new IllegalArgumentException("The imex id has to be non null.");
-        }
-    }
-
-    @XmlTransient
-    public boolean isEmpty(){
-        if (primaryRef == null && getSecondaryRefs().isEmpty()){
-            return true;
-        }
+   public boolean isEmpty(){
+       if (primaryRef == null && getSecondaryRefs().isEmpty()){
+           return true;
+       }
         return false;
-    }
+   }
 
     @XmlLocation
     @XmlTransient
@@ -241,80 +247,81 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
 
     protected void processAddedIdentifierEvent(Xref added) {
 
-        // the added identifier is pubmed and it is not the current pubmed identifier
-        if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
-            // the current pubmed identifier is not identity, we may want to set pubmed Identifier
-            if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.IDENTITY_MI, Xref.IDENTITY) && !XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.PRIMARY_MI, Xref.PRIMARY)){
-                // the pubmed identifier is not set, we can set the pubmed
-                if (pubmedId == null){
-                    pubmedId = added;
+        // the added identifier is psi-mi and it is not the current mi identifier
+        if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
+            // the current psi-mi identifier is not identity, we may want to set miIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the miidentifier is not set, we can set the miidentifier
+                if (miIdentifier == null){
+                    miIdentifier = added;
                 }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY) || XrefUtils.doesXrefHaveQualifier(added, Xref.PRIMARY_MI, Xref.PRIMARY)){
-                    pubmedId = added;
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    miIdentifier = added;
                 }
-                // the added xrefContainer is secondary object and the current pubmed is not a secondary object, we reset pubmed identifier
-                else if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.SECONDARY_MI, Xref.SECONDARY)
+                // the added xrefContainer is secondary object and the current mi is not a secondary object, we reset miidentifier
+                else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
                         && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    pubmedId = added;
+                    miIdentifier = added;
                 }
             }
         }
-        // the added identifier is doi and it is not the current doi identifier
-        else if (doi != added && XrefUtils.isXrefFromDatabase(added, Xref.DOI_MI, Xref.DOI)){
-            // the current doi identifier is not identity, we may want to set doi
-            if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.IDENTITY_MI, Xref.IDENTITY) && !XrefUtils.doesXrefHaveQualifier(doi, Xref.PRIMARY_MI, Xref.PRIMARY)){
-                // the doi is not set, we can set the doi
-                if (doi == null){
-                    doi = added;
+        // the added identifier is psi-mod and it is not the current mod identifier
+        else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
+            // the current psi-mod identifier is not identity, we may want to set modIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the modIdentifier is not set, we can set the modIdentifier
+                if (modIdentifier == null){
+                    modIdentifier = added;
                 }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY) || XrefUtils.doesXrefHaveQualifier(added, Xref.PRIMARY_MI, Xref.PRIMARY)){
-                    doi = added;
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    modIdentifier = added;
                 }
-                // the added xrefContainer is secondary object and the current doi is not a secondary object, we reset doi
-                else if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.SECONDARY_MI, Xref.SECONDARY)
+                // the added xrefContainer is secondary object and the current mi is not a secondary object, we reset miidentifier
+                else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
                         && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    doi = added;
+                    modIdentifier = added;
+                }
+            }
+        }
+        // the added identifier is psi-par and it is not the current par identifier
+        else if (parIdentifier != added && XrefUtils.isXrefFromDatabase(added, null, CvTerm.PSI_PAR)){
+            // the current psi-par identifier is not identity, we may want to set parIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(parIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the parIdentifier is not set, we can set the parIdentifier
+                if (parIdentifier == null){
+                    parIdentifier = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    parIdentifier = added;
+                }
+                // the added xrefContainer is secondary object and the current par is not a secondary object, we reset paridentifier
+                else if (!XrefUtils.doesXrefHaveQualifier(parIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    parIdentifier = added;
                 }
             }
         }
     }
 
     protected void processRemovedIdentifierEvent(Xref removed) {
-        // the removed identifier is pubmed
-        if (pubmedId != null && pubmedId.equals(removed)){
-            pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), Xref.PUBMED_MI, Xref.PUBMED);
+        // the removed identifier is psi-mi
+        if (miIdentifier != null && miIdentifier.equals(removed)){
+            miIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
         }
-        // the removed identifier is doi
-        else if (doi != null && doi.equals(removed)){
-            doi = XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), Xref.DOI_MI, Xref.DOI);
+        // the removed identifier is psi-mod
+        else if (modIdentifier != null && modIdentifier.equals(removed)){
+            modIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+        }
+        // the removed identifier is psi-par
+        else if (parIdentifier != null && parIdentifier.equals(removed)){
+            parIdentifier = (XmlXref)XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), null, CvTerm.PSI_PAR);
         }
     }
 
     protected void clearPropertiesLinkedToIdentifiers() {
-        pubmedId = null;
-        doi = null;
-    }
-
-    protected void processAddedXrefEvent(Xref added) {
-
-        // the added identifier is imex and the current imex is not set
-        if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
-            // the added xrefContainer is imex-primary
-            if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
-                imexId = added;
-            }
-        }
-    }
-
-    protected void processRemovedXrefEvent(Xref removed) {
-        // the removed identifier is pubmed
-        if (imexId != null && imexId.equals(removed)){
-            imexId = null;
-        }
-    }
-
-    protected void clearPropertiesLinkedToXrefs() {
-        imexId = null;
+        miIdentifier = null;
+        modIdentifier = null;
+        parIdentifier = null;
     }
 
     private void processAddedPrimaryAndSecondaryRefs(XmlXref added) {
@@ -347,7 +354,7 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
                 if (added instanceof XmlXref){
-                    processAddedPrimaryAndSecondaryRefs((XmlXref)added);
+                   processAddedPrimaryAndSecondaryRefs((XmlXref) added);
                 }
                 processAddedIdentifierEvent(added);
             }
@@ -399,7 +406,7 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
                 if (added instanceof XmlXref){
-                    processAddedPrimaryAndSecondaryRefs((XmlXref) added);
+                    processAddedPrimaryAndSecondaryRefs((XmlXref)added);
                 }
             }
         }
@@ -407,7 +414,7 @@ public class PublicationXrefContainer implements FileSourceContext,Serializable 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null && removed instanceof XmlXref){
-                processRemovedPrimaryAndSecondaryRefs((XmlXref) removed);
+                processRemovedPrimaryAndSecondaryRefs((XmlXref)removed);
             }
         }
 

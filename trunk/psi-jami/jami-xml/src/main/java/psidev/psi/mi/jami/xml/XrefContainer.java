@@ -21,7 +21,7 @@ import java.util.List;
  * @since <pre>18/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-@XmlType(name = "xref", propOrder = {
+@XmlType(name = "xrefContainer", propOrder = {
         "primaryRef",
         "secondaryRefs"
 })
