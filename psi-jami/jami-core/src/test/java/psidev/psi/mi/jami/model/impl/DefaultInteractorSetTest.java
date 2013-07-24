@@ -32,7 +32,7 @@ public class DefaultInteractorSetTest {
         Assert.assertEquals(0, interactor.size());
 
         interactor = new DefaultInteractorSet("test", (CvTerm) null);
-        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), interactor.getInteractorType());
+        Assert.assertEquals(CvTermUtils.createMoleculeSetType(), interactor.getInteractorType());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class DefaultInteractorSetTest {
         Assert.assertEquals(CvTermUtils.createNucleicAcidInteractorType(), interactor.getInteractorType());
 
         interactor.setInteractorType(null);
-        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), interactor.getInteractorType());
+        Assert.assertEquals(CvTermUtils.createMoleculeSetType(), interactor.getInteractorType());
 
         interactor.setInteractorType(CvTermUtils.createGeneInteractorType());
         Assert.assertEquals(CvTermUtils.createGeneInteractorType(), interactor.getInteractorType());
