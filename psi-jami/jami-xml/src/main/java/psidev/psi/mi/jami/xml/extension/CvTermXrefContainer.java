@@ -89,7 +89,7 @@ public class CvTermXrefContainer extends XrefContainer{
             }
             this.miIdentifier = new XmlXref(psiMiDatabase, mi, identityQualifier);
             cvTermIdentifiers.addOnly(this.miIdentifier);
-            processAddedIdentifierEvent(this.miIdentifier);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.miIdentifier);
         }
         // remove all mi if the collection is not empty
         else if (!getAllIdentifiers().isEmpty()) {
@@ -114,8 +114,8 @@ public class CvTermXrefContainer extends XrefContainer{
                 }
             }
             this.modIdentifier = new XmlXref(psiModDatabase, mod, identityQualifier);
-            cvTermIdentifiers.addOnly(this.parIdentifier);
-            processAddedIdentifierEvent(this.parIdentifier);
+            cvTermIdentifiers.addOnly(this.modIdentifier);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.modIdentifier);
         }
         // remove all mod if the collection is not empty
         else if (!getAllIdentifiers().isEmpty()) {
@@ -141,7 +141,7 @@ public class CvTermXrefContainer extends XrefContainer{
             }
             this.parIdentifier = new XmlXref(psiModDatabase, par, identityQualifier);
             cvTermIdentifiers.addOnly(this.parIdentifier);
-            processAddedIdentifierEvent(this.parIdentifier);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.parIdentifier);
         }
         // remove all mod if the collection is not empty
         else if (!getAllIdentifiers().isEmpty()) {

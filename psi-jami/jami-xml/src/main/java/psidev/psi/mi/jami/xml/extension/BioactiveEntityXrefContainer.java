@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
@@ -47,9 +46,13 @@ public class BioactiveEntityXrefContainer extends InteractorXrefContainer{
             // first remove old chebi if not null
             if (this.chebi != null){
                 bioactiveEntityIdentifiers.removeOnly(this.chebi);
+                if (this.chebi instanceof XmlXref){
+                    processRemovedPrimaryAndSecondaryRefs((XmlXref)this.chebi);
+                }
             }
-            this.chebi = new DefaultXref(chebiDatabase, id, identityQualifier);
+            this.chebi = new XmlXref(chebiDatabase, id, identityQualifier);
             bioactiveEntityIdentifiers.addOnly(this.chebi);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.chebi);
         }
         // remove all chebi if the collection is not empty
         else if (!bioactiveEntityIdentifiers.isEmpty()) {
@@ -105,7 +108,7 @@ public class BioactiveEntityXrefContainer extends InteractorXrefContainer{
     protected void processAddedPrimaryRef() {
         if (XrefUtils.isXrefAnIdentifier(this.primaryRef)){
             ((FullIdentifierList)getAllIdentifiers()).addOnly(0, this.primaryRef);
-            processRemovedPotentialChebi(this.primaryRef);
+            processAddedPotentialChebi(this.primaryRef);
         }
         else {
             ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);

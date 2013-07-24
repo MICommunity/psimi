@@ -17,7 +17,7 @@ import java.util.*;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "")
 @XmlSeeAlso({
-        BioactiveEntityXrefContainer.class
+        BioactiveEntityXrefContainer.class, GeneXrefContainer.class
 })
 public class InteractorXrefContainer extends XrefContainer {
 
@@ -62,7 +62,7 @@ public class InteractorXrefContainer extends XrefContainer {
         this.allIdentifiers = new FullIdentifierList();
     }
 
-    private void processAddedPrimaryAndSecondaryRefs(XmlXref added) {
+    protected void processAddedPrimaryAndSecondaryRefs(XmlXref added) {
         if (primaryRef == null){
             primaryRef = added;
         }
@@ -71,7 +71,7 @@ public class InteractorXrefContainer extends XrefContainer {
         }
     }
 
-    private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
+    protected void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
             if (!getSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
