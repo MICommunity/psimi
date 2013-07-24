@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml;
+package psidev.psi.mi.jami.xml.extension;
 
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
