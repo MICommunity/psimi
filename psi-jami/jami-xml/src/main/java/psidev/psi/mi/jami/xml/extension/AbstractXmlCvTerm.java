@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import java.util.Collections;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
+@XmlTransient
 public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Serializable{
     private CvTermXrefContainer xrefContainer;
     private NamesContainer namesContainer;

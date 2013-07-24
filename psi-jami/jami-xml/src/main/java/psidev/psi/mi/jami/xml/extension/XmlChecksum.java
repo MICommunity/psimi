@@ -5,6 +5,8 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Xml implementation of a checksum
  *
@@ -12,7 +14,7 @@ import psidev.psi.mi.jami.model.impl.DefaultChecksum;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-
+@XmlTransient
 public class XmlChecksum extends DefaultChecksum implements FileSourceContext{
     private PsiXmLocator sourceLocator;
 
