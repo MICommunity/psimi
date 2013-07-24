@@ -4,6 +4,8 @@ import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Xml implementation of a Gene
  *
@@ -71,36 +73,83 @@ public class XmlGene extends XmlInteractor implements Gene{
         }
     }
 
+    @Override
+    public void setXref(InteractorXrefContainer value) {
+        if (value == null){
+            this.xrefContainer = null;
+        }
+        else if (this.xrefContainer == null){
+            this.xrefContainer = new GeneXrefContainer();
+            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
+            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
+        }
+        else {
+            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
+            this.xrefContainer.getSecondaryRefs().clear();
+            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
+        }
+    }
+
+    @Override
+    public void initialiseXrefContainer() {
+        this.xrefContainer = new GeneXrefContainer();
+    }
+
+    @XmlTransient
     public String getEnsembl() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        return ((GeneXrefContainer)xrefContainer).getEnsembl();
     }
 
     public void setEnsembl(String ac) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        ((GeneXrefContainer)xrefContainer).setEnsembl(ac);
     }
 
+    @XmlTransient
     public String getEnsembleGenome() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        return ((GeneXrefContainer)xrefContainer).getEnsembleGenome();
     }
 
     public void setEnsemblGenome(String ac) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        ((GeneXrefContainer)xrefContainer).setEnsemblGenome(ac);
     }
 
+    @XmlTransient
     public String getEntrezGeneId() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        return ((GeneXrefContainer)xrefContainer).getEntrezGeneId();
     }
 
     public void setEntrezGeneId(String id) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        ((GeneXrefContainer)xrefContainer).setEntrezGeneId(id);
     }
 
+    @XmlTransient
     public String getRefseq() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        return ((GeneXrefContainer)xrefContainer).getRefseq();
     }
 
     public void setRefseq(String ac) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (xrefContainer == null){
+            initialiseXrefContainer();
+        }
+        ((GeneXrefContainer)xrefContainer).setRefseq(ac);
     }
 
     @Override
