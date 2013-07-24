@@ -31,6 +31,9 @@ import java.util.Collections;
         "sequence",
         "attributes"
 })
+@XmlSeeAlso({
+        XmlBioactiveEntity.class
+})
 public class XmlInteractor implements Interactor, FileSourceContext, Serializable{
 
     private Collection<Checksum> checksums;
@@ -40,7 +43,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
     private PsiXmLocator sourceLocator;
 
     private NamesContainer namesContainer;
-    private InteractorXrefContainer xrefContainer;
+    InteractorXrefContainer xrefContainer;
     private String xmlSequence;
     private int id;
     private Collection<Annotation> annotations;
@@ -55,7 +58,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
         }
         setShortName(name);
         if (type == null){
-            this.interactorType = CvTermUtils.createUnknownInteractorType();
+            createDefaultInteractorType();
         }
         else {
             this.interactorType = type;
@@ -188,7 +191,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
      *
      * @return
      *     possible object is
-     *     {@link Xref }
+     *     {@link InteractorXrefContainer }
      *
      */
     @XmlElement(name = "xref")
@@ -206,7 +209,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
      *
      * @param value
      *     allowed object is
-     *     {@link Xref }
+     *     {@link InteractorXrefContainer }
      *
      */
     public void setXref(InteractorXrefContainer value) {
@@ -221,18 +224,21 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "interactorType", required = true)
+    @XmlElement(name = "interactorType", required = true, type = XmlCvTerm.class)
     public CvTerm getInteractorType() {
+        if (this.interactorType == null){
+            createDefaultInteractorType();
+        }
+
         return this.interactorType;
     }
 
+    protected void createDefaultInteractorType() {
+        this.interactorType = new XmlCvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
+    }
+
     public void setInteractorType(CvTerm interactorType) {
-        if (interactorType == null){
-            this.interactorType = CvTermUtils.createUnknownInteractorType();
-        }
-        else {
-            this.interactorType = interactorType;
-        }
+        this.interactorType = interactorType;
     }
 
     @XmlElement(name = "organism", type = XmlOrganism.class)

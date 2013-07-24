@@ -4,10 +4,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.util.*;
 
 /**
@@ -19,10 +16,12 @@ import java.util.*;
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "")
+@XmlSeeAlso({
+        BioactiveEntityXrefContainer.class
+})
 public class InteractorXrefContainer extends XrefContainer {
 
-    private List<Xref> allIdentifiers;
-
+    List<Xref> allIdentifiers;
 
     @Override
     protected void processRemovedPrimaryRef(XmlXref removed) {
@@ -133,9 +132,7 @@ public class InteractorXrefContainer extends XrefContainer {
 
     @Override
     protected void processAddedXref(Xref added) {
-        if (added instanceof XmlXref){
-            processAddedPrimaryAndSecondaryRefs((XmlXref)added);
-        }
+        processAddedIdentifier(added);
     }
 
     @Override
@@ -171,7 +168,43 @@ public class InteractorXrefContainer extends XrefContainer {
         ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
     }
 
-    private class FullIdentifierList extends AbstractListHavingProperties<Xref> {
+    protected void processAddedIdentifier(Xref added) {
+        if (added instanceof XmlXref){
+            processAddedPrimaryAndSecondaryRefs((XmlXref) added);
+        }
+    }
+
+    protected void processRemovedIdentifier(Xref removed) {
+        if (removed instanceof XmlXref){
+            processRemovedPrimaryAndSecondaryRefs((XmlXref)removed);
+        }
+    }
+
+    protected void clearFullIdentifiers() {
+        // the primary ref is in xrefs
+        if (getAllXrefs().contains(primaryRef)){
+            // do nothing
+        }
+        // the primary ref is in identifiers, we reset it to the first xrefContainer
+        else if (!getAllXrefs().isEmpty()){
+            Iterator<Xref> refsIterator = allXrefs.iterator();
+            Xref ref = refsIterator.next();
+
+            while(refsIterator.hasNext() && !(ref instanceof XmlXref)){
+                ref = refsIterator.next();
+            }
+            if (ref instanceof XmlXref){
+                primaryRef = (XmlXref) ref;
+                ((FullXrefList)allXrefs).removeOnly(ref);
+            }
+        }
+        else{
+            primaryRef = null;
+        }
+        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+    }
+
+    class FullIdentifierList extends AbstractListHavingProperties<Xref> {
         public FullIdentifierList(){
             super();
         }
@@ -179,44 +212,20 @@ public class InteractorXrefContainer extends XrefContainer {
         @Override
         protected void processAddedObjectEvent(Xref added) {
             if (added != null){
-                if (added instanceof XmlXref){
-                    processAddedPrimaryAndSecondaryRefs((XmlXref) added);
-                }
+                processAddedIdentifier(added);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null){
-                if (removed instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)removed);
-                }
+                processRemovedIdentifier(removed);
             }
         }
 
         @Override
         protected void clearProperties() {
-            // the primary ref is in xrefs
-            if (getAllXrefs().contains(primaryRef)){
-                // do nothing
-            }
-            // the primary ref is in identifiers, we reset it to the first xrefContainer
-            else if (!getAllXrefs().isEmpty()){
-                Iterator<Xref> refsIterator = allXrefs.iterator();
-                Xref ref = refsIterator.next();
-
-                while(refsIterator.hasNext() && !(ref instanceof XmlXref)){
-                    ref = refsIterator.next();
-                }
-                if (ref instanceof XmlXref){
-                    primaryRef = (XmlXref) ref;
-                    ((FullXrefList)allXrefs).removeOnly(ref);
-                }
-            }
-            else{
-                primaryRef = null;
-            }
-            ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+            clearFullIdentifiers();
         }
     }
 }

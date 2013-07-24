@@ -33,7 +33,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
             // if it is not an identifier
             if (((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef)){
-                processRemovedXrefEvent(this.primaryRef);
+                processPotentialRemovedImex(this.primaryRef);
             }
         }
         else {
@@ -49,7 +49,7 @@ public class PublicationXrefContainer extends XrefContainer {
         }
         else {
             ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
-            processAddedXrefEvent(this.primaryRef);
+            processPotentialAddedImex(this.primaryRef);
         }
     }
 
@@ -200,7 +200,7 @@ public class PublicationXrefContainer extends XrefContainer {
         doi = null;
     }
 
-    protected void processAddedXrefEvent(Xref added) {
+    protected void processPotentialAddedImex(Xref added) {
 
         // the added identifier is imex and the current imex is not set
         if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
@@ -211,14 +211,14 @@ public class PublicationXrefContainer extends XrefContainer {
         }
     }
 
-    protected void processRemovedXrefEvent(Xref removed) {
+    protected void processPotentialRemovedImex(Xref removed) {
         // the removed identifier is pubmed
         if (imexId != null && imexId.equals(removed)){
             imexId = null;
         }
     }
 
-    protected void clearPropertiesLinkedToXrefs() {
+    protected void clearImexId() {
         imexId = null;
     }
 
@@ -303,7 +303,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (added instanceof XmlXref){
             processAddedPrimaryAndSecondaryRefs((XmlXref) added);
         }
-        processAddedXrefEvent(added);
+        processPotentialAddedImex(added);
     }
 
     @Override
@@ -311,7 +311,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (removed instanceof XmlXref){
             processRemovedPrimaryAndSecondaryRefs((XmlXref) removed);
         }
-        processRemovedXrefEvent(removed);
+        processPotentialRemovedImex(removed);
     }
 
     @Override
@@ -338,7 +338,7 @@ public class PublicationXrefContainer extends XrefContainer {
         }
 
         ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
-        clearPropertiesLinkedToXrefs();
+        clearImexId();
     }
 
     private class FullIdentifierList extends AbstractListHavingProperties<Xref> {
