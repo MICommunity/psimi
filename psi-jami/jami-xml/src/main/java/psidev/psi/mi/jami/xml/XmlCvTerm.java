@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -79,7 +80,7 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
     }
 
     /**
-     * Gets the value of the xref property.
+     * Gets the value of the xrefContainer property.
      *
      * @return
      *     possible object is
@@ -87,19 +88,22 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
      *
      */
     @XmlElement(name = "xref", required = true)
-    public CvTermXrefAndIdentifierContainer getXref() {
+    public CvTermXrefContainer getXref() {
+        if (super.getXrefContainer().isEmpty()){
+            return null;
+        }
         return super.getXrefContainer();
     }
 
     /**
-     * Sets the value of the xref property.
+     * Sets the value of the xrefContainer property.
      *
      * @param value
      *     allowed object is
      *     {@link XrefContainer }
      *
      */
-    public void setXref(CvTermXrefAndIdentifierContainer value) {
+    public void setXref(CvTermXrefContainer value) {
         super.setXrefContainer(value);
     }
 
@@ -164,14 +168,9 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlTransient
-    public Collection<Annotation> getAttributes() {
+    @Override
+    public ArrayList<Annotation> getAttributes() {
         return super.getAttributes();
-    }
-
-    public void setAttributes(Collection<Annotation> annot){
-        if (annot != null && !annot.isEmpty()){
-            getAnnotations().addAll(annot);
-        }
     }
 
     @XmlTransient

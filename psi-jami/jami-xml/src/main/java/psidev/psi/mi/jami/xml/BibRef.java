@@ -26,7 +26,7 @@ import java.util.*;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "bibref", propOrder = {
         "attributes",
-        "xrefContainer"
+        "xref"
 })
 public class BibRef
         implements Publication, FileSourceContext, Serializable
@@ -151,7 +151,7 @@ public class BibRef
     }
 
     @XmlElement(name = "xref")
-    public PublicationXrefContainer getXrefContainer() {
+    public PublicationXrefContainer getXref() {
         if (xrefContainer != null && xrefContainer.isEmpty()){
             return null;
         }
@@ -261,8 +261,8 @@ public class BibRef
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute")
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
-    public Collection<Annotation> getAttributes() {
-        // return null if we have Xref because schema does not allow attributes and xref
+    public ArrayList<Annotation> getAttributes() {
+        // return null if we have Xref because schema does not allow attributes and xrefContainer
         if (xrefContainer != null && !xrefContainer.isEmpty()){
             return null;
         }
@@ -271,7 +271,7 @@ public class BibRef
             return  null;
         }
         else {
-            Collection<Annotation> annots = new ArrayList<Annotation>(getAnnotations().size());
+            ArrayList<Annotation> annots = new ArrayList<Annotation>(getAnnotations().size());
             annots.addAll(getAnnotations());
 
             if (this.title != null){
@@ -306,56 +306,54 @@ public class BibRef
         }
     }
 
-    public void setAttributes(Collection<Annotation> annotations) {
-        if (annotations == null){
-            initialiseAnnotations();
-        }
-
-        // we have a bibref. Some annotations can be processed
-        for (Annotation annot : annotations){
-             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                 this.title = annot.getValue();
-             }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                 this.journal = annot.getValue();
-             }
-             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                 if (annot.getValue() == null){
-                     this.publicationDate = null;
-                 }
-                 else {
-                     try {
-                         this.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                         this.publicationDate = null;
-                         this.annotations.add(annot);
-                     }
-                 }
-             }
-             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                 this.curationDepth = CurationDepth.IMEx;
-             }
-             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                 this.curationDepth = CurationDepth.MIMIx;
-             }
-             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                 this.curationDepth = CurationDepth.rapid_curation;
-             }
-             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                 if (annot.getValue() == null){
-                     getAuthors().clear();
-                 }
-                 else if (annot.getValue().contains(",")){
-                     getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
-                 }
-                 else {
-                     getAuthors().add(annot.getValue());
-                 }
-             }
-            else {
-                 this.annotations.add(annot); 
-             }
+    public void setAttributes(ArrayList<Annotation> annotations) {
+        if (annotations != null && !annotations.isEmpty()){
+            // we have a bibref. Some annotations can be processed
+            for (Annotation annot : annotations){
+                if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+                    this.title = annot.getValue();
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+                    this.journal = annot.getValue();
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+                    if (annot.getValue() == null){
+                        this.publicationDate = null;
+                    }
+                    else {
+                        try {
+                            this.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            this.publicationDate = null;
+                            getAnnotations().add(annot);
+                        }
+                    }
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
+                    this.curationDepth = CurationDepth.IMEx;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
+                    this.curationDepth = CurationDepth.MIMIx;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
+                    this.curationDepth = CurationDepth.rapid_curation;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    if (annot.getValue() == null){
+                        getAuthors().clear();
+                    }
+                    else if (annot.getValue().contains(",")){
+                        getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
+                    }
+                    else {
+                        getAuthors().add(annot.getValue());
+                    }
+                }
+                else {
+                    getAnnotations().add(annot);
+                }
+            }
         }
     }
 

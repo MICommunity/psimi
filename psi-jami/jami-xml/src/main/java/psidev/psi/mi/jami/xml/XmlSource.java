@@ -41,7 +41,7 @@ import java.util.Collection;
  *       &lt;sequence>
  *         &lt;element name="names" type="{http://psi.hupo.org/mi/mif}names" minOccurs="0"/>
  *         &lt;element name="bibref" type="{http://psi.hupo.org/mi/mif}bibref" minOccurs="0"/>
- *         &lt;element name="xref" type="{http://psi.hupo.org/mi/mif}xref" minOccurs="0"/>
+ *         &lt;element name="xrefContainer" type="{http://psi.hupo.org/mi/mif}xrefContainer" minOccurs="0"/>
  *         &lt;element name="attributeList" type="{http://psi.hupo.org/mi/mif}attributeList" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="release">
@@ -240,7 +240,7 @@ public class XmlSource extends XmlOpenCvTerm
     @XmlElement(name="attribute")
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
     @Override
-    public Collection<Annotation> getAttributes() {
+    public ArrayList<Annotation> getAttributes() {
         if (getAnnotations().isEmpty() && this.postalAddress == null){
             return  null;
         }
@@ -252,20 +252,21 @@ public class XmlSource extends XmlOpenCvTerm
                 annots.add(new XmlAnnotation(new DefaultCvTerm("postaladdress"), this.postalAddress));
             }
 
-            return annots;
+            return new ArrayList<Annotation>(annots);
         }
     }
 
     @Override
-    public void setAttributes(Collection<Annotation> annotations){
-
-        // we have a bibref. Some annotations can be processed
-        for (Annotation annot : annotations){
-            if (AnnotationUtils.doesAnnotationHaveTopic(annot, null, "postaladdress")){
-                this.postalAddress = annot.getValue();
-            }
-            else {
-                getAnnotations().add(annot);
+    public void setAttributes(ArrayList<Annotation> annotations){
+        if (annotations != null){
+            // we have a bibref. Some annotations can be processed
+            for (Annotation annot : annotations){
+                if (AnnotationUtils.doesAnnotationHaveTopic(annot, null, "postaladdress")){
+                    this.postalAddress = annot.getValue();
+                }
+                else {
+                    getAnnotations().add(annot);
+                }
             }
         }
     }

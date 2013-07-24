@@ -34,6 +34,10 @@ public class PsiXmLocator extends FileSourceLocator implements org.xml.sax.Locat
         return getCharNumber();
     }
 
+    public void setObjectId(Integer objectId) {
+        this.objectId = objectId;
+    }
+
     public String toString() {
         return super.toString() + (objectId != null ? " Id: "+objectId : "");
     }
