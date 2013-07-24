@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
+import psidev.psi.mi.jami.enricher.FeatureEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -11,7 +12,8 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @since 08/07/13
  */
 public class FeatureEvidenceEnricherMinimum
-        extends FeatureEnricherMinimum<FeatureEvidence> {
+        extends FeatureEnricherMinimum<FeatureEvidence>
+        implements FeatureEvidenceEnricher {
 
     @Override
     public void processFeature(FeatureEvidence featureToEnrich)

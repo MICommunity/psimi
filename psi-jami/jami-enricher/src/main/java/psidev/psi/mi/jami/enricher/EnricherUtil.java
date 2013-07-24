@@ -15,20 +15,6 @@ import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener
  */
 public class EnricherUtil {
 
-    /**
-     * Sets up the
-     * @param enricher
-     * @throws BridgeFailedException
-     */
-    public static void setAllFetchersToCurrentOptions(InteractionEnricher enricher, CvTermFetcher cvTermfetcher, ProteinFetcher proteinFetcher)
-            throws BridgeFailedException {
-
-        enricher.getCvTermEnricher().setCvTermFetcher(cvTermfetcher);
-        unifyCvTermEnrichers(enricher);
-        enricher.getParticipantEnricher().getProteinEnricher().setProteinFetcher(proteinFetcher);
-        linkFeatureEnricherToProteinEnricher(enricher);
-
-    }
 
 
     /**
@@ -52,6 +38,8 @@ public class EnricherUtil {
 
     public static void linkFeatureEnricherToProteinEnricher(
             FeatureEnricher featureEnricher , ProteinEnricher proteinEnricher ){
+
+        if(featureEnricher == null || proteinEnricher == null ) return;
 
         if(featureEnricher instanceof ProteinListeningFeatureEnricher){
             ProteinListeningFeatureEnricher listeningFeatureEnricher =

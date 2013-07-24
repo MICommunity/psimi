@@ -88,8 +88,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     public void setProteinEnricher(ProteinEnricher proteinEnricher) {
         this.proteinEnricher = proteinEnricher;
-        if (this.getFeatureEnricher() != null)
-            EnricherUtil.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), getProteinEnricher());
+        EnricherUtil.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), proteinEnricher);
     }
 
     public ProteinEnricher getProteinEnricher(){

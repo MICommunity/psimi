@@ -1,8 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
 
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum;
+import psidev.psi.mi.jami.enricher.ModelledInteractionEnricher;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -13,7 +12,8 @@ import psidev.psi.mi.jami.model.*;
  * @since 09/07/13
  */
 public class ModelledInteractionUpdaterMaximum
-        extends InteractionUpdaterMaximum<ModelledInteraction, ModelledParticipant, ModelledFeature> {
+        extends InteractionUpdaterMaximum<ModelledInteraction, ModelledParticipant, ModelledFeature>
+        implements ModelledInteractionEnricher {
 
     /*
     @Override
