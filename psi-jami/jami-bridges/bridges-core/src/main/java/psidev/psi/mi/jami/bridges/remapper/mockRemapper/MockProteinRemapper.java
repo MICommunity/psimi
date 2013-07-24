@@ -50,18 +50,28 @@ public class MockProteinRemapper implements ProteinRemapper {
     public void remapProtein(Protein p) throws BridgeFailedException {
         String newID = null;
 
-        if(p.getUniprotkb() != null) {
-            newID = localRemap.get(p.getUniprotkb());
+        if(p.getSequence() != null) {
+            newID = localRemap.get(p.getSequence());
             if(newID != null){
                 p.setUniprotkb(newID);
                 if( listener != null )
                     listener.onRemappingSuccessful(p, Collections.<String>emptyList());
             }
+            return;
         }
-        else{
-            if( listener != null )
-                listener.onRemappingFailed(p, Collections.<String>emptyList());
+        if(! p.getXrefs().isEmpty()) {
+            newID = localRemap.get(p.getXrefs().iterator().next().getId());
+            if(newID != null){
+                p.setUniprotkb(newID);
+                if( listener != null )
+                    listener.onRemappingSuccessful(p, Collections.<String>emptyList());
+            }
+            return;
         }
+
+        if( listener != null )
+            listener.onRemappingFailed(p, Collections.<String>emptyList());
+
     }
 
     public boolean isCheckingEnabled() {

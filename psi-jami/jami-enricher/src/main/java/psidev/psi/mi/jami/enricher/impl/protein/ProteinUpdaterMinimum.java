@@ -136,6 +136,7 @@ public class ProteinUpdaterMinimum
         }
     }
 
+    /*
     @Override
     public OrganismEnricher getOrganismEnricher() {
         if( organismEnricher == null ){
@@ -143,5 +144,5 @@ public class ProteinUpdaterMinimum
         }
 
         return organismEnricher;
-    }
+    }*/
 }

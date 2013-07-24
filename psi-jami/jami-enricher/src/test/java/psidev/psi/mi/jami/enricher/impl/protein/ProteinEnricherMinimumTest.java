@@ -2,24 +2,24 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.ExceptionThrowingMockProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.bridges.remapper.mockRemapper.MockProteinRemapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
@@ -35,6 +35,18 @@ public class ProteinEnricherMinimumTest {
 
     private ProteinEnricherMinimum proteinEnricher;
     private MockProteinFetcher mockProteinFetcher;
+
+    Protein persistentProtein;
+    int persistentInt;
+
+    private static final String TEST_OLD_SHORTNAME = "test old shortName";
+    private static final String TEST_OLD_FULLNAME = "test old fullName";
+    private static final String TEST_OLD_SEQUENCE = "CATCATCAT";
+    private static final String TEST_ORGANISM_OLD_COMMON = "Old Common";
+    private static final String TEST_ORGANISM_OLD_SCIENTIFIC = "Old Scientific";
+    private static final String TEST_AC_DEAD_PROT = "X000000";
+
+    private static final String TEST_AC_CUSTOM_PROT = "C098765";
 
     private static final String TEST_SHORTNAME = "test shortName";
     private static final String TEST_FULLNAME = "test fullName";
@@ -61,6 +73,9 @@ public class ProteinEnricherMinimumTest {
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         // halfProtein.setOrganism(new DefaultOrganism(-3));
         mockProteinFetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
+
+        persistentProtein = null;
+        persistentInt = 0;
     }
 
 
@@ -82,7 +97,7 @@ public class ProteinEnricherMinimumTest {
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         int timesToTry = 3;
-        Assert.assertTrue(timesToTry < ProteinEnricherMinimum.RETRY_COUNT);
+        assertTrue(timesToTry < ProteinEnricherMinimum.RETRY_COUNT);
 
         ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(timesToTry);
 
@@ -100,7 +115,7 @@ public class ProteinEnricherMinimumTest {
 
 
     /**
-     * Confirm that when a null protein is provided, an exception is thrown
+     * Assert that when a null protein is provided, an exception is thrown
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_exception_when_fetching_on_null_protein() throws EnricherException {
@@ -108,24 +123,50 @@ public class ProteinEnricherMinimumTest {
         this.proteinEnricher.enrichProtein(null_protein);
     }
 
+    // =====================================================
+    // REMAPPER CASES BEGIN
 
-    Protein null_identifier_protein_for_null_remapper = new DefaultProtein("Identifier free protein");
+    @Test
+    public void test_default_has_no_remapper(){
+        assertNull(proteinEnricher.getProteinRemapper());
+    }
+
+    @Test
+    public void test_set_remapper_is_returned(){
+        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
+        assertNull(proteinEnricher.getProteinRemapper());
+        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+        assertTrue(mockProteinRemapper == proteinEnricher.getProteinRemapper());
+    }
+
+    // == NULL REMAPPER CASES =======================================================================================
+
     /**
-     * Check that when a protein has no identifier, and the remapper is not provided,
-     * the protein is not enriched and that a "failed" note is sent to the listener.
+     * Assert that when a protein has no identifier, and the remapper is not provided,
+     * the protein is not enriched and that a "failed" status is sent to the listener.
      */
     @Test
-    public void test_no_fetching_on_protein_with_null_identifier_when_remapping_is_unavailable()
+    public void test_no_fetching_on_protein_with_null_identifier_when_remapper_is_null()
             throws EnricherException {
 
-        assertNotNull(null_identifier_protein_for_null_remapper);
-        assertNull(null_identifier_protein_for_null_remapper.getUniprotkb());
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherLogger());
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentInt = 0;
+
+        assertNotNull(persistentProtein);
+        assertNull(persistentProtein.getUniprotkb());
         assertNull(proteinEnricher.getProteinRemapper());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListener() {
+
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() ,   //Comment this line to silence logging
+                new ProteinEnricherListener() {
             public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
-                assertTrue(protein == null_identifier_protein_for_null_remapper);
+                assertTrue(protein == persistentProtein);
                 assertEquals(EnrichmentStatus.FAILED , status);
+                persistentInt++;
             }
 
             public void onProteinRemapped(Protein protein, String oldUniprot) {
@@ -199,521 +240,1398 @@ public class ProteinEnricherMinimumTest {
             public void onRemovedChecksum(Protein protein, Checksum removed) {
                 fail("Should not reach this point if remapper is not available for a protein without an identifier");
             }
-        });
-        this.proteinEnricher.enrichProtein(null_identifier_protein);
-        assertNull(null_identifier_protein.getUniprotkb());
+        }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_SHORTNAME, persistentProtein.getShortName());
+        assertNull(persistentProtein.getUniprotkb());
+        assertEquals(1, persistentInt);
+    }
+
+    /**
+     * Assert that when a protein has a dead identifier, and the remapper is not provided,
+     * the protein is not enriched and that a "failed" status is sent to the listener.
+     */
+    @Test
+    public void test_no_fetching_on_protein_with_dead_identifier_when_remapper_is_null()
+            throws EnricherException {
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentInt = 0;
+
+        assertNotNull(persistentProtein);
+        persistentProtein.setUniprotkb(TEST_AC_DEAD_PROT);
+        assertNotNull(persistentProtein.getUniprotkb());
+        assertNull(proteinEnricher.getProteinRemapper());
+
+
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+            public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                assertTrue(protein == persistentProtein);
+                assertEquals(EnrichmentStatus.FAILED , status);
+                persistentInt++;
+            }
+
+            public void onProteinRemapped(Protein protein, String oldUniprot) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRefseqUpdate(Protein protein, String oldRefseq) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onGeneNameUpdate(Protein protein, String oldGeneName) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRogidUpdate(Protein protein, String oldRogid) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onSequenceUpdate(Protein protein, String oldSequence) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onShortNameUpdate(Protein protein, String oldShortName) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onFullNameUpdate(Protein protein, String oldFullName) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedInteractorType(Protein protein) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedOrganism(Protein protein) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedIdentifier(Protein protein, Xref added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedIdentifier(Protein protein, Xref removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedXref(Protein protein, Xref added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedXref(Protein protein, Xref removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedAlias(Protein protein, Alias added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedAlias(Protein protein, Alias removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onAddedChecksum(Protein protein, Checksum added) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+
+            public void onRemovedChecksum(Protein protein, Checksum removed) {
+                fail("Should not reach this point if remapper is not available for a protein without an identifier");
+            }
+        }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_SHORTNAME, persistentProtein.getShortName());
+        assertNull(persistentProtein.getUniprotkb());
+        assertEquals(1, persistentInt);
+    }
+
+    // == PROVIDED REMAPPER CASES WHERE ENTRY IS NOT REMAPPED =======================================================
+
+    /**
+     * Check that when a protein has no identifier, and the remapper is provided but finds no entry,
+     * the protein is not enriched and that a "failed" note is sent to the listener.
+     */
+    @Test
+    public void test_fetching_on_protein_with_null_identifier_when_remapper_is_not_null_and_no_remap_is_found()
+            throws EnricherException {
+
+
+        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
+        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentInt = 0;
+
+        assertNotNull(persistentProtein);
+        assertNull(persistentProtein.getUniprotkb());
+        assertNotNull(proteinEnricher.getProteinRemapper());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+              //  new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.FAILED , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRogidUpdate(Protein protein, String oldRogid) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onShortNameUpdate(Protein protein, String oldShortName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedInteractorType(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedOrganism(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedIdentifier(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedXref(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedXref(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedAlias(Protein protein, Alias added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedAlias(Protein protein, Alias removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedChecksum(Protein protein, Checksum added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+
+        assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
+        assertNull(persistentProtein.getUniprotkb());
+        assertEquals(1, persistentInt);
     }
 
 
+    /**
+     * Check that when a protein has a dead identifier, and the remapper is provided but finds no entry,
+     * the protein is not enriched and that a "failed" note is sent to the listener.
+     */
     @Test
-    public void test_ignore_if_interactorType_is_already_protein() throws EnricherException {
+    public void test_fetching_on_protein_with_dead_identifier_when_remapper_is_not_null_and_no_remap_is_found()
+            throws EnricherException {
 
-        Protein protein_with_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
+        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
+        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentInt = 0;
+
+        assertNotNull(persistentProtein);
+        persistentProtein.setUniprotkb(TEST_AC_DEAD_PROT);
+        assertNotNull(persistentProtein.getUniprotkb());
+        assertNotNull(proteinEnricher.getProteinRemapper());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.FAILED , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRogidUpdate(Protein protein, String oldRogid) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onShortNameUpdate(Protein protein, String oldShortName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedInteractorType(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedOrganism(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedIdentifier(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedXref(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedXref(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedAlias(Protein protein, Alias added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedAlias(Protein protein, Alias removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedChecksum(Protein protein, Checksum added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_SHORTNAME, persistentProtein.getShortName());
+        assertNull(persistentProtein.getUniprotkb());
+        assertEquals(1, persistentInt);
+    }
+
+    // == PROVIDED REMAPPER CASES WHERE AN ENTRY IS REMAPPED AND FETCHED =============================================
+
+    /**
+     * Check that when a protein has no identifier, and the remapper is provided and finds an entry,
+     * the protein is enriched and a "success" status is sent to the listener.
+     */
+    @Test
+    public void test_fetching_on_protein_with_null_identifier_when_remapper_is_not_null_and_remap_is_found()
+            throws EnricherException {
+
+
+        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
+        mockProteinRemapper.addRemap(TEST_SEQUENCE , TEST_AC_HALF_PROT);
+        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setSequence(TEST_SEQUENCE);
+
+        assertNotNull(persistentProtein);
+        assertNull(persistentProtein.getUniprotkb());
+        assertNotNull(proteinEnricher.getProteinRemapper());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() , //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot) {
+                        assertTrue(protein == persistentProtein);
+                        assertNull(oldUniprot);
+                        assertEquals(TEST_AC_HALF_PROT , protein.getUniprotkb());
+                    }
+
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
+                        assertTrue(protein == persistentProtein);
+                        assertNull(oldUniprot);
+                        assertEquals(TEST_AC_HALF_PROT , protein.getUniprotkb());
+                    }
+
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRogidUpdate(Protein protein, String oldRogid) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onShortNameUpdate(Protein protein, String oldShortName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedInteractorType(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedOrganism(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedIdentifier(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedXref(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedXref(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedAlias(Protein protein, Alias added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedAlias(Protein protein, Alias removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedChecksum(Protein protein, Checksum added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
+        assertNotNull(persistentProtein.getUniprotkb());
+        assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
+        assertEquals(TEST_AC_HALF_PROT , persistentProtein.getUniprotkb());
+        assertEquals(1, persistentInt);
+    }
+
+    /**
+     * Check that when a protein has a dead identifier, and the remapper is provided and finds an entry,
+     * the protein is enriched and a "success" status is sent to the listener.
+     */
+    @Test
+    public void test_fetching_on_protein_with_dead_identifier_when_remapper_is_not_null_and_remap_is_found()
+            throws EnricherException {
+
+        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
+        mockProteinRemapper.addRemap(TEST_SEQUENCE , TEST_AC_HALF_PROT);
+        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_DEAD_PROT);
+        persistentProtein.setSequence(TEST_SEQUENCE);
+
+        assertNotNull(persistentProtein);
+        assertNotNull(persistentProtein.getUniprotkb());
+        assertNotNull(proteinEnricher.getProteinRemapper());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot) {
+                        assertTrue(protein == persistentProtein);
+                        assertNotNull(oldUniprot);
+                        assertEquals(TEST_AC_DEAD_PROT , oldUniprot);
+                        assertEquals(TEST_AC_HALF_PROT , protein.getUniprotkb());
+                    }
+
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
+                        assertTrue(protein == persistentProtein);
+                        assertNotNull(oldUniprot);
+                        assertEquals(TEST_AC_DEAD_PROT, oldUniprot);
+                        assertEquals(TEST_AC_HALF_PROT, protein.getUniprotkb());
+                    }
+
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRogidUpdate(Protein protein, String oldRogid) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onShortNameUpdate(Protein protein, String oldShortName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedInteractorType(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedOrganism(Protein protein) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedIdentifier(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedXref(Protein protein, Xref added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedXref(Protein protein, Xref removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedAlias(Protein protein, Alias added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedAlias(Protein protein, Alias removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onAddedChecksum(Protein protein, Checksum added) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {
+                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
+                    }
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+        assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
+        assertNotNull(persistentProtein.getUniprotkb());
+        assertEquals(TEST_AC_HALF_PROT , persistentProtein.getUniprotkb());
+        assertEquals(1, persistentInt);
+    }
+
+    // =====================================================
+    // ENRICHING CASES BEGIN
+
+    /**
+     * Assert that when a protein has a known interactor type other than protein,
+     * the enrichment fails and no changes are made.
+     */
+    @Test
+    public void test_interactorType_conflict_stops_enrichment() throws EnricherException {
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME );
+        persistentProtein.setUniprotkb(TEST_AC_HALF_PROT);
+        persistentProtein.setInteractorType(CvTermUtils.createGeneInteractorType());
+
+        assertEquals(Gene.GENE,
+                persistentProtein.getInteractorType().getShortName());
+        assertEquals(Gene.GENE_MI,
+                persistentProtein.getInteractorType().getMIIdentifier());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.FAILED, status);
+                        assertTrue(message.toUpperCase().contains("INTERACTOR"));
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        proteinEnricher.enrichProtein(persistentProtein);
+        assertEquals(Gene.GENE,
+                persistentProtein.getInteractorType().getShortName());
+        assertEquals(Gene.GENE_MI,
+                persistentProtein.getInteractorType().getMIIdentifier());
+        assertEquals(1 , persistentInt);
+    }
+
+    /**
+     * Assert that when a protein has a known interactor type other than protein,
+     * the enrichment fails and no changes are made.
+     */
+    @Test
+    public void test_organism_conflict_between_organism_TAXIDs_stops_enrichment() throws EnricherException {
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        customProtein.setOrganism(new DefaultOrganism(9898));
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , customProtein);
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        persistentProtein.setInteractorType(CvTermUtils.createGeneInteractorType());
+        persistentProtein.setOrganism(new DefaultOrganism(1010));
+        persistentProtein.setInteractorType(CvTermUtils.createGeneInteractorType());
+        assertEquals(Gene.GENE,
+                persistentProtein.getInteractorType().getShortName());
+        assertEquals(Gene.GENE_MI,
+                persistentProtein.getInteractorType().getMIIdentifier());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.FAILED, status);
+                        assertTrue(message.toUpperCase().contains("ORGANISM"));
+                        assertTrue(message.toUpperCase().contains("INTERACTOR"));
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(1 , persistentInt);
+    }
+
+    /**
+     * Assert that when a protein has a known interactor type other than protein,
+     * the enrichment fails and no changes are made.
+     */
+    @Test
+    public void test_organism_and_interactorType_conflicts_both_reported() throws EnricherException {
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        customProtein.setOrganism(new DefaultOrganism(9898));
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , customProtein);
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        persistentProtein.setInteractorType(CvTermUtils.createGeneInteractorType());
+        persistentProtein.setOrganism(new DefaultOrganism(1010));
+
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.FAILED , status);
+                        assertTrue(message.toUpperCase().contains("ORGANISM"));
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(1 , persistentInt);
+    }
+
+    // == INTERACTOR TYPE =======================================================================
+
+    /**
+     * Assert that when a protein already has a protein interactor type,
+     * no changes are made and enrichment is successful.
+     */
+    @Test
+    public void test_interactorType_ignored_if_is_already_protein() throws EnricherException {
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME );
+        persistentProtein.setUniprotkb(TEST_AC_HALF_PROT);
 
         CvTerm value = CvTermUtils.createProteinInteractorType();
+        persistentProtein.setInteractorType(value);
+        assertEquals(Protein.PROTEIN,
+                persistentProtein.getInteractorType().getShortName());
+        assertEquals(Protein.PROTEIN_MI,
+                persistentProtein.getInteractorType().getMIIdentifier());
 
-        protein_with_interactor_type.setInteractorType(value);
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
 
-        proteinEnricher.enrichProtein(protein_with_interactor_type);
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
 
-        //assertEquals(0, counter.getAdded());
-        assertTrue(protein_with_interactor_type.getInteractorType() == value); //Show they are the same instance
+
+        proteinEnricher.enrichProtein(persistentProtein);
+
+        assertTrue(persistentProtein.getInteractorType() == value); //Show they are the same instance
+        assertEquals(Protein.PROTEIN,
+                persistentProtein.getInteractorType().getShortName());
+        assertEquals(Protein.PROTEIN_MI,
+                persistentProtein.getInteractorType().getMIIdentifier());
+
+        assertEquals(1 , persistentInt);
     }
 
 
-
+    /**
+     * Assert that when a protein has an unknown interactor type,
+     * the type is updated to protein and the enrichment is successful.
+     */
     @Test
     public void test_interactorType_updated_if_unknown() throws EnricherException {
 
-        Protein protein_with_no_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_no_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
-        protein_with_no_interactor_type.setInteractorType(CvTermUtils.createUnknownInteractorType());
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME );
+        persistentProtein.setUniprotkb(TEST_AC_HALF_PROT);
+        persistentProtein.setInteractorType(CvTermUtils.createUnknownInteractorType());
 
         assertEquals(Protein.UNKNOWN_INTERACTOR_MI,
-                protein_with_no_interactor_type.getInteractorType().getMIIdentifier());
+                persistentProtein.getInteractorType().getMIIdentifier());
         assertEquals(Protein.UNKNOWN_INTERACTOR,
-                protein_with_no_interactor_type.getInteractorType().getShortName());
+                persistentProtein.getInteractorType().getShortName());
 
-        proteinEnricher.enrichProtein(protein_with_no_interactor_type);
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+
+                    public void onAddedInteractorType(Protein protein)  {
+                        assertTrue(protein == persistentProtein);
+                    }
+
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        proteinEnricher.enrichProtein(persistentProtein);
 
         assertEquals(Protein.PROTEIN,
-                protein_with_no_interactor_type.getInteractorType().getShortName());
+                persistentProtein.getInteractorType().getShortName());
         assertEquals(Protein.PROTEIN_MI,
-                protein_with_no_interactor_type.getInteractorType().getMIIdentifier());
-
-        // 1 addition (the protein interactor type)
-        //assertEquals(1, counter.getAdded());
+                persistentProtein.getInteractorType().getMIIdentifier());
+        assertEquals(1 , persistentInt);
     }
 
+    // == SHORT NAME ===================================================================================
 
+    /**
+     * Enrich a protein that has a full name.
+     * Check the full name has not been added
+     */
     @Test
-    public void test_interactorType_conflict_stops_enrichment() throws EnricherException {
+    public void test_shortName_not_enriched_if_not_null() throws EnricherException {
+        persistentInt = 0;
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        Protein protein_with_bad_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_bad_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
-        protein_with_bad_interactor_type.setInteractorType(CvTermUtils.createGeneInteractorType());
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        proteinEnricher.enrichProtein(protein_with_bad_interactor_type);
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
 
-        //assertEquals(0, counter.getAdded());
-        //assertEquals(0, counter.getRemoved());
-        //assertEquals(0, counter.getUpdated());
-        //assertTrue(counter.getStatus().contains("Failed"));
+        assertNotNull(persistentProtein.getShortName());
+        assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
+        assertEquals(1 , persistentInt);
     }
+
+    // == FULL NAME ===================================================================================
 
     /**
      * Enrich a protein that has no full name.
      * Check the full name has been added
      */
     @Test
-    public void test_set_fullName_if_null() throws EnricherException {
+    public void test_fullName_enriched_if_null() throws EnricherException {
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        Protein protein_without_fullName = new DefaultProtein("test2 shortName");
-        protein_without_fullName.setUniprotkb(TEST_AC_FULL_PROT);
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        this.proteinEnricher.enrichProtein(protein_without_fullName);
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
 
-        assertNotNull(protein_without_fullName.getFullName());
-        assertEquals(TEST_FULLNAME, protein_without_fullName.getFullName());
+        assertNull(persistentProtein.getFullName());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+               // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {
+                        assertTrue(protein == persistentProtein);
+                        assertNull(oldFullName);
+                        assertEquals(TEST_FULLNAME , protein.getFullName());
+                    }
+
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_FULLNAME , persistentProtein.getFullName());
+        assertEquals(1 , persistentInt);
     }
-
-    //TEST CAN NOT BE IMPLEMENTED WITH CURRENT MOCK.
-    //@Test
-    //public void test_set_primaryAC_if_null() throws EnrichmentException {
-    //
-    //    Protein protein_without_AC = new DefaultProtein("test2 shortName");
-    //
-    //    this.proteinEnricher.enrichProtein(protein_without_AC);
-    //
-    //    Assert.assertNotNull(protein_without_fullName.getFullName());
-    //    Assert.assertEquals("test1 fullName", protein_without_fullName.getFullName());
-    //    Assert.assertEquals("test2 shortName", protein_without_fullName.getShortName());
-    //}
 
     /**
-     * Enrich a protein with no sequence.
-     * Check that the sequence has been added
+     * Enrich a protein that has a full name.
+     * Check the full name has not been added
      */
     @Test
-    public void test_set_sequence_if_null() throws EnricherException {
+    public void test_fullName_not_enriched_if_not_null() throws EnricherException {
+        persistentInt = 0;
 
-        Protein protein_without_sequence = new DefaultProtein("test2 shortName");
-        protein_without_sequence.setUniprotkb(TEST_AC_FULL_PROT);
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME , TEST_OLD_FULLNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        this.proteinEnricher.enrichProtein(protein_without_sequence);
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        assertNotNull(protein_without_sequence.getSequence());
-        assertEquals(TEST_SEQUENCE, protein_without_sequence.getSequence());
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+
+        assertNotNull(persistentProtein.getFullName());
+        assertEquals(TEST_OLD_FULLNAME , persistentProtein.getFullName());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_FULLNAME , persistentProtein.getFullName());
+        assertEquals(1 , persistentInt);
     }
+
+    // == SEQUENCE ===================================================================================
+
+    /**
+     * Enrich a protein that has no sequence.
+     * Check the sequence has been added
+     */
+    @Test
+    public void test_sequence_enriched_if_null() throws EnricherException {
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
+        fetchProtein.setSequence(TEST_SEQUENCE);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+
+        assertEquals(TEST_SEQUENCE , fetchProtein.getSequence());
+        assertNull(persistentProtein.getSequence());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {
+                        assertTrue(protein == persistentProtein);
+                        assertNull(oldSequence);
+                        assertEquals(TEST_SEQUENCE , protein.getSequence());
+                    }
+
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_SEQUENCE , persistentProtein.getSequence());
+        assertEquals(1 , persistentInt);
+    }
+
+    /**
+     * Enrich a protein that has a sequence
+     * Check the sequence has not been added
+     */
+    @Test
+    public void test_sequence_not_enriched_if_not_null() throws EnricherException {
+        persistentInt = 0;
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        persistentProtein.setSequence(TEST_OLD_SEQUENCE);
+
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
+        fetchProtein.setSequence(TEST_SEQUENCE);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+
+        assertEquals(TEST_SEQUENCE , fetchProtein.getSequence());
+        assertNotNull(persistentProtein.getSequence());
+        assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added) {fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
+        assertEquals(1 , persistentInt);
+    }
+
+    // == IDENTIFIERS ===================================================================================
+
+    /**
+     * Enrich a protein that has no sequence.
+     * Check the sequence has been added
+     */
+    @Test
+    public void test_identifiers_enriched() throws EnricherException {
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        persistentProtein.getIdentifiers().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN000"));
+
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        fetchProtein.getIdentifiers().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
+
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+
+        assertEquals(2 , persistentProtein.getIdentifiers().size());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid) {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+
+                    public void onAddedIdentifier(Protein protein, Xref added) {
+                        assertTrue(protein == persistentProtein);
+                        assertNotNull(added);
+                        assertNotNull(added.getId());
+                        assertEquals( "EN999" , added.getId());
+                    }
+
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added){fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(3 , persistentProtein.getIdentifiers().size());
+
+        boolean originalXref = false;
+        boolean newXref = false;
+        boolean idXref = false;
+        for(Xref xref : persistentProtein.getIdentifiers()){
+            if(xref.getId().equals("EN000"))
+                if(originalXref) fail("multiples of the original id");
+                else originalXref=true;
+            else if(xref.getId().equals("EN999"))
+                if(newXref) fail("multiples of the new id");
+                else newXref=true;
+            else if(xref.getId().equals(TEST_AC_CUSTOM_PROT))
+                if(idXref) fail("multiples of the uniprot id");
+                else idXref=true;
+            else
+                fail(xref+"unrecognised alias");
+        }
+
+        assertTrue(originalXref);
+        assertTrue(newXref);
+        assertTrue(idXref);
+
+        assertEquals(1 , persistentInt);
+    }
+
+    // == ALIASES ===================================================================================
+
+    /**
+     * Enrich a protein that has no sequence.
+     * Check the sequence has been added
+     */
+    @Test
+    public void test_aliases_enriched() throws EnricherException {
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        persistentProtein.getAliases().add(new DefaultAlias(CvTermUtils.createEnsemblDatabase() , "EN000"));
+
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        fetchProtein.getAliases().add(new DefaultAlias(CvTermUtils.createEnsemblDatabase() , "EN999"));
+
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+
+        assertEquals(1 , persistentProtein.getAliases().size());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid) {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+
+                    public void onAddedAlias(Protein protein, Alias added){
+                        assertTrue(protein == persistentProtein);
+                        assertNotNull(added);
+                        assertNotNull(added.getName());
+                        assertEquals( "EN999" , added.getName());
+                    }
+
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(2 , persistentProtein.getAliases().size());
+
+        boolean originalAlias = false;
+        boolean newAlias = false;
+        for(Alias alias : persistentProtein.getAliases()){
+            if(alias.getName().equals("EN000"))
+                if(originalAlias) fail("multiples of the original alias");
+                else originalAlias=true;
+            else if(alias.getName().equals("EN999"))
+                if(newAlias) fail("multiples of the new alias");
+                else newAlias=true;
+            else
+                fail("unrecognised alias");
+        }
+
+        assertTrue(originalAlias);
+        assertTrue(newAlias);
+
+        assertEquals(1 , persistentInt);
+    }
+
+    // == CHECKSUMS ===================================================================================
+    //TODO - checksums logic is still lacking, check logic carefully before testing!!
+
+
+    // == XREFS ===================================================================================
+
+    /**
+     * Enrich a protein that has no sequence.
+     * Check the sequence has been added
+     */
+    @Test
+    public void test_xrefs_enriched() throws EnricherException {
+
+        persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
+        persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        persistentProtein.getXrefs().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN000"));
+
+        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
+        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        fetchProtein.getXrefs().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
+
+        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+
+        assertEquals(1 , persistentProtein.getXrefs().size());
+
+        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
+                new ProteinEnricherListener() {
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt++;
+                    }
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
+                    public void onRogidUpdate(Protein protein, String oldRogid) {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
+                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
+                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail("Should not reach this point");}
+                    public void onAddedAlias(Protein protein, Alias added){fail("Should not reach this point");}
+                    public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
+                    public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
+                    public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                }));
+
+        this.proteinEnricher.enrichProtein(persistentProtein);
+
+        assertEquals(1 , persistentProtein.getXrefs().size());
+
+        boolean originalXref = false;
+        for(Xref xref : persistentProtein.getXrefs()){
+            if(xref.getId().equals("EN000"))
+                if(originalXref) fail("multiples of the original xref");
+                else originalXref=true;
+            else
+                fail(xref+"unrecognised alias");
+        }
+
+        assertTrue(originalXref);
+
+        assertEquals(1 , persistentInt);
+    }
+
+
+
+
+    // == ORGANISM ===================================================================================
 
     @Test
     public void test_set_organism_if_null() throws EnricherException {
-
-        Protein protein_without_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_without_organism.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_without_organism.setSequence(TEST_SEQUENCE);
-
-
-
-        /*for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.setOrganism(new DefaultOrganism(11111,"Common","Scientific"));
-        }*/
-        // TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC)
-
+        Protein protein_without_organism = new DefaultProtein(TEST_SHORTNAME);
+        protein_without_organism.setUniprotkb(TEST_AC_HALF_PROT);
         assertNull(protein_without_organism.getOrganism());
 
         this.proteinEnricher.enrichProtein(protein_without_organism);
 
         assertNotNull(protein_without_organism.getOrganism());
-        assertEquals(TEST_ORGANISM_ID , protein_without_organism.getOrganism().getTaxId());
-        assertEquals(TEST_ORGANISM_COMMON , protein_without_organism.getOrganism().getCommonName());
-        assertEquals(TEST_ORGANISM_SCIENTIFIC , protein_without_organism.getOrganism().getScientificName());
-    }
-    /*
-    @Test
-    public void test_organism_conflict() throws EnricherException {
-
-        Protein protein_with_wrong_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_wrong_organism.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_wrong_organism.setSequence(TEST_SEQUENCE);
-        protein_with_wrong_organism.setOrganism(new DefaultOrganism(55555));
-
-        assertNotNull(protein_with_wrong_organism.getOrganism());
-
-        this.proteinEnricher.enrichProtein(protein_with_wrong_organism);
-        assertEquals(0, counter.getAdded());
-        assertEquals(0, counter.getRemoved());
-        assertEquals(0, counter.getUpdated());
-        assertTrue(counter.getStatus().contains("Failed"));
+        assertEquals(-3 , protein_without_organism.getOrganism().getTaxId());
     }
 
-    /**
-     * Enrich an already complete protein with a different but complete protein.
-     * This should not change any fields of the original protein.
-     */
-    @Test
-    public void test_no_overwrite_on_not_null_fields() throws EnricherException {
+    // TODO  onRefseqUpdate, onGeneNameUpdate
 
-        Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
-        protein_with_all_fields.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_all_fields.setSequence("TAGTAG");
 
-        assertNotNull(protein_with_all_fields.getShortName());
-        assertNotNull(protein_with_all_fields.getFullName());
-        assertNotNull(protein_with_all_fields.getUniprotkb());
-        assertNotNull(protein_with_all_fields.getSequence());
-
-        this.proteinEnricher.enrichProtein(protein_with_all_fields);
-
-        assertEquals( protein_with_all_fields.getShortName(), "test2 shortName");
-        assertEquals( protein_with_all_fields.getFullName(), "test2 fullName");
-        assertEquals( protein_with_all_fields.getSequence(), "TAGTAG");
-    }
-
-    /**
-     * Enrich an already complete protein with one which is only half complete.
-     * This should not have any additions, nor throw any exceptions.
-     */
-    @Test
-    public void test_mismatch_does_not_happen_on_a_null_enrichedProtein() throws EnricherException {
-
-        Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
-        protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
-        protein_with_all_fields.setSequence("TAGTAG");
-
-        //If this is failing, you may wish to use a logging listener to read the log.
-        //this.proteinEnricher.addEnricherListener(new LoggingEnricherListener());
-
-        this.proteinEnricher.enrichProtein(protein_with_all_fields);
-
-        //assertTrue(event.getMismatches().size() == 1);
-    }
-
-    //TODO Consider further tests for the passing of an organism to the enricher
-
-    /**
-     * If there is no Rogid, add it.
-     * @throws SeguidException
-     */
-    /*@Test
-    public void test_set_rogid_if_null() throws EnricherException {
-
-        Protein protein_with_no_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_no_rogid.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_no_rogid.setSequence(TEST_SEQUENCE);
-        protein_with_no_rogid.setOrganism(new DefaultOrganism(55555));
-
-            for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-                protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
-            }
-
-
-        assertTrue(protein_with_no_rogid.getRogid() == null);
-        proteinEnricher.enrichProtein(protein_with_no_rogid);
-        assertTrue(protein_with_no_rogid.getRogid() != null);
-
-        RogidGenerator rogidGenerator = new RogidGenerator();
-        String rogid = rogidGenerator.calculateRogid(TEST_SEQUENCE,"55555");
-
-        assertEquals(rogid, protein_with_no_rogid.getRogid());
-    }   */
-
-    /**
-     * If the supplied rogid matches, ignore it.
-     * @throws SeguidException
-     */
-   /* @Test
-    public void test_ignore_rogid_if_the_same() throws EnricherException {
-
-        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
-        protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
-        RogidGenerator rogidGenerator = new RogidGenerator();
-        String rogid = rogidGenerator.calculateRogid(TEST_SEQUENCE,"55555");
-        protein_with_a_rogid.setRogid(rogid);
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
-        }
-
-
-        assertEquals(rogid, protein_with_a_rogid.getRogid());
-
-        proteinEnricher.enrichProtein(protein_with_a_rogid);
-
-        assertEquals(rogid, protein_with_a_rogid.getRogid());
-    }  */
-
-
-    //TODO
-    /**
-     * If the supplied rogid mismatches, throw a conflict.
-     * @throws SeguidException
-     */
-    /*@Test
-    public void test_conflict_if_rogid_is_different() throws EnricherException {
-
-        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
-        protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
-        protein_with_a_rogid.setRogid("This is a bad ROGID");
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-                protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
-        }
-
-
-        proteinEnricher.enrichProtein(protein_with_a_rogid);
-    }  */
-
-
-    //TODO
-    /**
-     * If there is no taxId but a rogid is present, it can not be confirmed so throw a conflict.
-     */
-    @Test
-    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_organism() throws EnricherException {
-
-        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
-        protein_with_a_rogid.setRogid("This is a bad ROGID");
-
-        proteinEnricher.enrichProtein(protein_with_a_rogid);
-    }
-
-    //TODO
-    /**
-     * If there is no taxId but a rogid is present, it can not be confirmed so throw a conflict.
-     */
-    /*@Test
-    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_taxid() throws EnricherException {
-
-        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
-        protein_with_a_rogid.setOrganism(new DefaultOrganism(-3));
-        protein_with_a_rogid.setRogid("This is a bad ROGID");
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.setOrganism(new DefaultOrganism(-3));
-        }
-
-        proteinEnricher.enrichProtein(protein_with_a_rogid);
-    }
-
-
-    //TODO
-    /**
-     * If there is not sequence but a rogid is present, it cannot be confirmed so throw a conflict.
-
-     */
-    @Test
-    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_sequence()
-            throws EnricherException , BridgeFailedException {
-
-        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
-        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
-        protein_with_a_rogid.setRogid("This is a bad ROGID");
-
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
-            protein.setSequence("");
-        }
-
-        proteinEnricher.enrichProtein(protein_with_a_rogid);
-    }
-
-
-    /**
-     * Tests that when the proteinToEnrich contains no CRC64 checksum,
-     * it is added.
-
-     */
-    @Test
-    public void test_set_CRC64_if_none_in_proteinToEnrich() throws EnricherException, BridgeFailedException {
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.getChecksums().add(
-                    ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
-        }
-
-        Protein protein_with_no_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
-        protein_with_no_checksum.setUniprotkb(TEST_AC_FULL_PROT);
-
-        assertTrue(protein_with_no_checksum.getChecksums().size() == 0);
-        proteinEnricher.enrichProtein(protein_with_no_checksum);
-        assertTrue(protein_with_no_checksum.getChecksums().size() > 0);
-    }
-
-    /**
-     * Tests that when the proteinToEnrich contains an identical CRC64 checksum,
-     * it is not added.
-     */
-    /*@Test
-    public void test_identical_CRC64_is_not_added() throws EnricherException, BridgeFailedException {
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_HALF_PROT)){
-            protein.getChecksums().add(
-                    ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
-        }
-
-        Protein protein_with_matching_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
-        protein_with_matching_checksum.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_matching_checksum.setSequence(TEST_SEQUENCE);
-        protein_with_matching_checksum.getChecksums().add(
-                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
-        protein_with_matching_checksum.setRogid("ROGID");
-
-        int crc64ChecksumCount = 0;
-        for(Checksum checksum : protein_with_matching_checksum.getChecksums()){
-            if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")) crc64ChecksumCount++;
-        }
-        assertTrue(crc64ChecksumCount == 1);
-
-        proteinEnricher.enrichProtein(protein_with_matching_checksum);
-
-        crc64ChecksumCount = 0;
-        for(Checksum checksum : protein_with_matching_checksum.getChecksums()){
-            if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")) crc64ChecksumCount++;
-        }
-
-        assertTrue(crc64ChecksumCount == 1);
-        assertTrue(counter.getAdded() == 0);
-        assertTrue(counter.getRemoved() == 0);
-        assertTrue(counter.getUpdated() == 0);
-    }
-
-    //TODO
-    /**
-     *
-     * The checksum comparison should also be case sensitive.
-     */
-    @Test
-    public void test_case_sensitive_not_overwrite_CRC64() throws EnricherException, BridgeFailedException {
-        String METHOD = "CRC64";
-        String upperCRC =  "AbCdEfG";
-        String lowerCRC = "abcdefg";
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.getChecksums().add(
-                ChecksumUtils.createChecksum(METHOD, null, upperCRC));
-        }
-
-        Protein protein_with_mismatched_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
-        protein_with_mismatched_checksum.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_with_mismatched_checksum.getChecksums().add(
-                ChecksumUtils.createChecksum(METHOD, null, lowerCRC));
-
-        assertEquals(1 , protein_with_mismatched_checksum.getChecksums().size());
-
-        proteinEnricher.enrichProtein(protein_with_mismatched_checksum);
-
-        assertEquals(1 , protein_with_mismatched_checksum.getChecksums().size());
-        Checksum checksum = protein_with_mismatched_checksum.getChecksums().iterator().next();
-        assertEquals(METHOD , checksum.getMethod().getShortName());
-        assertEquals(lowerCRC , checksum.getValue());
-    }
-
-
-
-    /**
-     * Tests that when the fetched protein contains multiple checksums, a fetchingException is thrown.
-     * This shows that the fetched protein contains errors.
-     */
-    @Test
-    public void test_no_multiple_CRC64_checksums_in_fetched_proteins() throws EnricherException, BridgeFailedException {
-
-        for(Protein protein: mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            protein.getChecksums().add(
-                    ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
-            protein.getChecksums().add(
-                ChecksumUtils.createChecksum("CRC64", null, "HiJkLmN"));
-        }
-
-        Protein protein_with_mismatched_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
-        protein_with_mismatched_checksum.setUniprotkb(TEST_AC_FULL_PROT);
-        for(Protein protein : mockProteinFetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
-            assertTrue(protein.getChecksums().size() == 2);
-        }
-
-        proteinEnricher.enrichProtein(protein_with_mismatched_checksum);
-    }
-
-
-    /**
-     * Enrich an already completed protein with a less complete protein
-     * Count additions, should be 0
-     * Count mismatches, should be at least 1 (shortname)
-     * Check the id, should be the same as the enriched protein.
-     * Run enrichment on another protein of different id
-     * Check the id, should be the same as new protein
-     * Check the mismatches.
-     *
-     */
-    /*@Test
-    public void test_enricher_event_is_cleared()
-            throws MissingServiceException,
-            BadResultException,
-            SeguidException,
-            BadToEnrichFormException,
-            BadSearchTermException,
-            BridgeFailedException {
-
-        Protein protein_test_one = new DefaultProtein("testpart1 shortName", "testpart1 fullName");
-        protein_test_one.setUniprotkb(TEST_AC_FULL_PROT);
-        protein_test_one.setSequence("TAGTAG");
-
-        Protein protein_test_two = new DefaultProtein("testpart2 shortName", "testpart2 fullName");
-        protein_test_two.setUniprotkb(TEST_AC_HALF_PROT);
-        protein_test_two.setSequence("TAGTAG");
-
-        //If this is failing, you may wish to use a logging listener to read the log.
-        //this.proteinEnricher.addEnricherListener(new LoggingEnricherListener());
-
-        proteinEnricher.enrichProtein(protein_test_one);
-
-        assertEquals(event.getQueryID(), TEST_AC_FULL_PROT);
-
-        assertTrue(event.getAdditions().size() == 0);
-        assertTrue(event.getMismatches().size() > 0);
-        assertTrue(event.getOverwrites().size() == 0);
-
-        proteinEnricher.enrichProtein(protein_test_two);
-
-        assertEquals(event.getQueryID(), TEST_AC_HALF_PROT);
-        assertTrue(event.getAdditions().size() == 0);
-        assertTrue(event.getMismatches().size() == 1);
-        assertTrue(event.getOverwrites().size() == 0);
-
-    } */
-
-    /**
-     * Enrich a half completed protein.
-     * Check that this fires an enrichmentEvent.
-     * Check this event has recorded some additions
-     * check this event has recorded some mismatches
-     * check this event has not recorded some overwrites
-     */
-    @Test
-    public void test_enricher_event_is_fired_and_has_correct_content() throws EnricherException {
-
-
-        Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
-        protein_to_enrich.setUniprotkb(TEST_AC_FULL_PROT);
-
-        proteinEnricher.enrichProtein(protein_to_enrich);
-
-        //assertNotNull(event);
-        //assertEquals(event.getObjectType(), "Protein");
-        //assertEquals(event.getQueryID(), TEST_AC_FULL_PROT);
-        //assertEquals(event.getQueryIDType(), "UniprotKB AC");
-        //assertTrue(counter.getAdded() > 0);
-        //assertTrue(counter.getRemoved() == 0);
-    }
 }

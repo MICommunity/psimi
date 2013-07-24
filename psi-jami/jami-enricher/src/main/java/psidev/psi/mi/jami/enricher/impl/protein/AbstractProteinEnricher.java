@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
@@ -8,8 +10,6 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.util.RetryStrategy;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -24,7 +24,11 @@ import java.util.Collection;
  * @since  14/06/13
  */
 public abstract class AbstractProteinEnricher
-implements ProteinEnricher {
+        implements ProteinEnricher {
+
+    protected static final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
+
+
     public static final int RETRY_COUNT = 5;
 
     protected ProteinFetcher fetcher = null;
@@ -62,19 +66,22 @@ implements ProteinEnricher {
 
         proteinFetched = fetchProtein(proteinToEnrich);
         if(proteinFetched == null){
+            if( log.isTraceEnabled() ) log.trace("No protein has been fetched");
             return ;
         }
 
         if (! isProteinConflictFree(proteinToEnrich) ) return;
 
-        if (getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
-            getOrganismEnricher().getMockFetcher().clearOrganisms();
-            getOrganismEnricher().getMockFetcher().addNewOrganism(
-                    Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
-                    proteinFetched.getOrganism());
-        }
+        if(getOrganismEnricher() != null ){
+            if (getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
+                getOrganismEnricher().getMockFetcher().clearOrganisms();
+                getOrganismEnricher().getMockFetcher().addNewOrganism(
+                        Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
+                        proteinFetched.getOrganism());
+            }
 
-        getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
+            getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
+        }
 
         processProtein(proteinToEnrich);
 
@@ -100,7 +107,7 @@ implements ProteinEnricher {
      * @return                  Whether there were any conflicts which would halt enrichment
      */
     protected boolean isProteinConflictFree(Protein proteinToEnrich){
-        boolean exitStatus = true;
+        boolean conflictFree = true;
         String existMsg = "";
 
 
@@ -112,7 +119,7 @@ implements ProteinEnricher {
             existMsg = "Conflict in interactorType. " +
                         "Found " + proteinToEnrich.getInteractorType().getShortName() + " " +
                         "(psi-mi id:" + proteinToEnrich.getInteractorType().getMIIdentifier() + "). ";
-            exitStatus = false;
+            conflictFree = false;
         }
 
         //Organism
@@ -125,16 +132,16 @@ implements ProteinEnricher {
                         "Conflict in organism. " +
                         "Fetched taxid " + proteinFetched.getOrganism().getTaxId() + " " +
                         "but was enriching taxid " + proteinToEnrich.getOrganism().getTaxId() + ".";
-            exitStatus = false;
+            conflictFree = false;
         }
 
-        if(! exitStatus)
+        if(! conflictFree)
             if(getProteinEnricherListener() != null) listener.onProteinEnriched(
                     proteinToEnrich ,
                     EnrichmentStatus.FAILED ,
                     existMsg);
 
-        return exitStatus;
+        return conflictFree;
     }
 
 
@@ -153,14 +160,9 @@ implements ProteinEnricher {
 
         // If there is no uniprotID - try and remap.
         if(proteinToEnrich.getUniprotkb() == null) {
-            if(getProteinRemapper() == null){
-                if(! remapProtein(proteinToEnrich , "proteinToEnrich has no UniprotKB ID.")){
-                    if(listener != null) {
-                        listener.onProteinRemapped(proteinToEnrich , null);
-                        listener.onUniprotKbUpdate(proteinToEnrich , null);
-                    }
-                    return null;
-                }
+            if( log.isTraceEnabled() ) log.trace("Remapping protein without uniprotkb");
+            if(! remapProtein(proteinToEnrich , "proteinToEnrich has no UniprotKB ID.")){
+                return null;
             }
         }
 
@@ -279,8 +281,6 @@ implements ProteinEnricher {
             return false;
         }
 
-
-
         // Attempt the remapping
         try {
             getProteinRemapper().remapProtein(proteinToEnrich);
@@ -351,5 +351,7 @@ implements ProteinEnricher {
         this.organismEnricher = organismEnricher;
     }
 
-    public abstract OrganismEnricher getOrganismEnricher();
+    public OrganismEnricher getOrganismEnricher(){
+        return organismEnricher;
+    }
 }

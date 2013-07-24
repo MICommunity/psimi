@@ -182,14 +182,13 @@ public class ProteinEnricherMinimum
                 if(listener != null) listener.onAddedAlias(proteinToEnrich, alias);
             }
         }
-
     }
 
 
-
+    /*
     @Override
     public OrganismEnricher getOrganismEnricher() {
         if( organismEnricher == null ) organismEnricher = new OrganismEnricherMinimum();
         return organismEnricher;
-    }
+    } */
 }
