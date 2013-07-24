@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participant;
 
 
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ModelledParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMaximum;
 import psidev.psi.mi.jami.model.ModelledFeature;
@@ -14,7 +15,8 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @since 01/07/13
  */
 public class ModelledParticipantUpdaterMaximum
-    extends ParticipantUpdaterMaximum<ModelledParticipant , ModelledFeature> {
+    extends ParticipantUpdaterMaximum<ModelledParticipant , ModelledFeature>
+        implements ModelledParticipantEnricher {
 
     /*
     @Override

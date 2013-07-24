@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
 
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMaximum;
+
+import psidev.psi.mi.jami.enricher.ModelledParticipantEnricher;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 
@@ -13,7 +13,8 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @since 01/07/13
  */
 public class ModelledParticipantEnricherMaximum
-    extends ParticipantEnricherMaximum<ModelledParticipant , ModelledFeature> {
+    extends ParticipantEnricherMaximum<ModelledParticipant , ModelledFeature>
+    implements  ModelledParticipantEnricher
 
     /*
     @Override

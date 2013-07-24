@@ -1,8 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
 
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMaximum;
+import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -13,7 +12,8 @@ import psidev.psi.mi.jami.model.*;
  * @since 09/07/13
  */
 public class InteractionEvidenceUpdaterMaximum
-        extends InteractionUpdaterMaximum<InteractionEvidence, ParticipantEvidence, FeatureEvidence> {
+        extends InteractionUpdaterMaximum<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
+        implements InteractionEvidenceEnricher {
 
     /*
     @Override

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participant;
 
 
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMaximum;
@@ -16,7 +17,8 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 28/06/13
  */
 public class ParticipantEvidenceUpdaterMaximum
-        extends ParticipantUpdaterMaximum<ParticipantEvidence , FeatureEvidence> {
+        extends ParticipantUpdaterMaximum<ParticipantEvidence , FeatureEvidence>
+        implements ParticipantEvidenceEnricher {
 
     @Override
     protected void processParticipant(ParticipantEvidence participantEvidenceToEnrich)

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.participant;
 
 
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ModelledParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMinimum;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -16,7 +17,8 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 01/07/13
  */
 public class ModelledParticipantEnricherMinimum
-    extends ParticipantEnricherMinimum<ModelledParticipant , ModelledFeature> {
+    extends ParticipantEnricherMinimum<ModelledParticipant , ModelledFeature>
+        implements ModelledParticipantEnricher {
 
     /*
     @Override

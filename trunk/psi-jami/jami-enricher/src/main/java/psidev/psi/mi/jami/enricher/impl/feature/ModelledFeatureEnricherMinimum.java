@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
 
+import psidev.psi.mi.jami.enricher.ModelledFeatureEnricher;
 import psidev.psi.mi.jami.model.ModelledFeature;
 
 /**
@@ -10,7 +11,8 @@ import psidev.psi.mi.jami.model.ModelledFeature;
  * @since 08/07/13
  */
 public class ModelledFeatureEnricherMinimum
-        extends FeatureEnricherMinimum<ModelledFeature> {
+        extends FeatureEnricherMinimum<ModelledFeature>
+        implements ModelledFeatureEnricher {
 
 
 }
