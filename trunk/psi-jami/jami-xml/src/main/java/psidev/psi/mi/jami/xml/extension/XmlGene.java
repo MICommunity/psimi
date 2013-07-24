@@ -4,7 +4,10 @@ import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Xml implementation of a Gene
@@ -13,7 +16,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlType(name = "")
 public class XmlGene extends XmlInteractor implements Gene{
 
     public XmlGene() {

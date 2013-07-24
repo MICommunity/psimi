@@ -32,7 +32,8 @@ import java.util.Collections;
         "attributes"
 })
 @XmlSeeAlso({
-        XmlBioactiveEntity.class, XmlGene.class
+        XmlBioactiveEntity.class, XmlGene.class, XmlInteractorSet.class, XmlMolecule.class,
+        XmlPolymer.class, XmlNucleciAcid.class, XmlProtein.class
 })
 public class XmlInteractor implements Interactor, FileSourceContext, Serializable{
 

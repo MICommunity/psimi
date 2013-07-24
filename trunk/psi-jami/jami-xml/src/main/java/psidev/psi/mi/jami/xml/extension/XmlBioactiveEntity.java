@@ -6,7 +6,10 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
@@ -16,7 +19,8 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlType(name = "")
 public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity{
 
     private Checksum smile;
