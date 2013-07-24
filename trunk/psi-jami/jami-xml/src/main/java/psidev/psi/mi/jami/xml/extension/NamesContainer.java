@@ -25,6 +25,9 @@ import java.util.Collections;
         "fullName",
         "aliases"
 })
+@XmlSeeAlso({
+        ProteinNamesContainer.class
+})
 public class NamesContainer implements FileSourceContext, Serializable{
 
     private String shortLabel;
