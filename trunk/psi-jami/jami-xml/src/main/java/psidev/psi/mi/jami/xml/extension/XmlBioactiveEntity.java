@@ -23,55 +23,58 @@ public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity
     private Checksum standardInchi;
     private Checksum standardInchiKey;
 
+    public XmlBioactiveEntity() {
+    }
+
     public XmlBioactiveEntity(String name, CvTerm type) {
-        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType());
+        super(name, type);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type) {
-        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType());
+        super(name, fullName, type);
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Organism organism) {
-        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, type, organism);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, fullName, type, organism);
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Xref uniqueId) {
-        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), uniqueId);
+        super(name, type, uniqueId);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), uniqueId);
+        super(name, fullName, type, uniqueId);
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
+        super(name, type, organism, uniqueId);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
+        super(name, fullName, type, organism, uniqueId);
 
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, String uniqueChebi) {
-        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType());
+        super(name, fullName, type);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Organism organism, String uniqueChebi) {
-        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, type, organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, String uniqueChebi) {
-        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, fullName, type, organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }

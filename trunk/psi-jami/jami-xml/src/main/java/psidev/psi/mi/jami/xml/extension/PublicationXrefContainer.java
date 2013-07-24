@@ -82,6 +82,7 @@ public class PublicationXrefContainer extends XrefContainer {
             }
             this.pubmedId = new XmlXref(pubmedDatabase, pubmedId, identityQualifier);
             identifiers.addOnly(this.pubmedId);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.pubmedId);
         }
         // remove all pubmed if the collection is not empty
         else if (!identifiers.isEmpty()) {
@@ -110,6 +111,7 @@ public class PublicationXrefContainer extends XrefContainer {
             }
             this.doi = new XmlXref(doiDatabase, doi, identityQualifier);
             identifiers.addOnly(this.doi);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.doi);
         }
         // remove all doi if the collection is not empty
         else if (!identifiers.isEmpty()) {
@@ -138,6 +140,7 @@ public class PublicationXrefContainer extends XrefContainer {
             }
             this.imexId = new XmlXref(imexDatabase, identifier, imexPrimaryQualifier);
             xrefs.addOnly(this.imexId);
+            processAddedPrimaryAndSecondaryRefs((XmlXref)this.imexId);
         }
         else if (this.imexId != null){
             throw new IllegalArgumentException("The imex id has to be non null.");
