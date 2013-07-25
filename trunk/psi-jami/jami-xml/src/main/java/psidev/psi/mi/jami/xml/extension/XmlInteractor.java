@@ -306,7 +306,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute")
+    @XmlElement(name="attribute", required = true)
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
     public ArrayList<Annotation> getAttributes() {
         if (getAnnotations().isEmpty() && getChecksums().isEmpty()){
