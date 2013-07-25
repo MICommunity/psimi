@@ -26,7 +26,7 @@ import java.util.List;
         "secondaryRefs"
 })
 @XmlSeeAlso({
-        CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class
+        CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class
 })
 public class XrefContainer implements FileSourceContext, Serializable{
 

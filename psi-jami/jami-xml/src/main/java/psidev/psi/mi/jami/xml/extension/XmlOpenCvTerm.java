@@ -169,7 +169,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute")
+    @XmlElement(name="attribute", required = true)
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
     @Override
     public ArrayList<Annotation> getAttributes() {
