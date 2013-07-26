@@ -32,7 +32,8 @@ public abstract class AbstractCvTermEnricher
 
     protected CvTerm cvTermFetched = null;
 
-    public AbstractCvTermEnricher() {
+    public AbstractCvTermEnricher(CvTermFetcher cvTermFetcher) {
+        setCvTermFetcher(cvTermFetcher);
     }
 
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException {

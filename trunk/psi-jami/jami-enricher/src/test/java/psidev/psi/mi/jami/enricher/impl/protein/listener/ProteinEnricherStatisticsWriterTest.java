@@ -48,8 +48,7 @@ public class ProteinEnricherStatisticsWriterTest {
     @Before
     public void initialiseFetcherAndEnricher() throws IOException {
         this.fetcher = new MockProteinFetcher();
-        this.proteinEnricher = new ProteinEnricherMinimum();
-        proteinEnricher.setProteinFetcher(fetcher);
+        this.proteinEnricher = new ProteinEnricherMinimum(fetcher);
 
 
         successFile = new File("success.txt");

@@ -39,6 +39,9 @@ public abstract class AbstractProteinEnricher
 
     protected Protein proteinFetched = null;
 
+    public AbstractProteinEnricher(ProteinFetcher proteinFetcher){
+        setProteinFetcher(proteinFetcher);
+    }
 
     /**
      * Enriches a collection of proteins.

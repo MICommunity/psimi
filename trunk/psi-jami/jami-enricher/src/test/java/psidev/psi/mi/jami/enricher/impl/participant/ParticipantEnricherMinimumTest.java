@@ -67,8 +67,7 @@ public class ParticipantEnricherMinimumTest {
     @Test
     public void test_enrichment_with_cvTermEnricher_but_no_cvTerms() throws EnricherException {
 
-        participantEnricher.setCvTermEnricher(new CvTermEnricherMinimum());
-        participantEnricher.getCvTermEnricher().setCvTermFetcher(new MockCvTermFetcher());
+        participantEnricher.setCvTermEnricher(new CvTermEnricherMinimum(new MockCvTermFetcher()));
 
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
@@ -88,9 +87,8 @@ public class ParticipantEnricherMinimumTest {
 
     @Test
     public void test_enrichment_with_CvTermEnricher_enriches_CvTerms() throws EnricherException {
-
-        participantEnricher.setCvTermEnricher(new CvTermEnricherMinimum());
         MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
+        participantEnricher.setCvTermEnricher(new CvTermEnricherMinimum(mockCvTermFetcher));
         mockCvTermFetcher.addCvTerm("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
         participantEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
 
@@ -119,7 +117,7 @@ public class ParticipantEnricherMinimumTest {
 
     @Test
     public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_first(){
-        ProteinEnricher proteinEnricher = new ProteinEnricherMinimum();
+        ProteinEnricher proteinEnricher = new ProteinEnricherMinimum(null);
 
         participantEnricher.setProteinEnricher(proteinEnricher);
         assertNull(proteinEnricher.getProteinEnricherListener());
@@ -133,7 +131,7 @@ public class ParticipantEnricherMinimumTest {
 
     @Test
     public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_second(){
-        ProteinEnricher proteinEnricher = new ProteinEnricherMinimum();
+        ProteinEnricher proteinEnricher = new ProteinEnricherMinimum(null);
         FeatureEnricher featureEnricher = new FeatureEnricherMinimum();
 
         assertNull(participantEnricher.getProteinEnricher());

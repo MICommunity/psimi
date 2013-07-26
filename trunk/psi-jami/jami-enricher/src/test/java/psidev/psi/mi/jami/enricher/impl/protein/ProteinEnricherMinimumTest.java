@@ -60,8 +60,7 @@ public class ProteinEnricherMinimumTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         mockProteinFetcher = new MockProteinFetcher();
-        proteinEnricher = new ProteinEnricherMinimum();
-        proteinEnricher.setProteinFetcher(mockProteinFetcher);
+        proteinEnricher = new ProteinEnricherMinimum(mockProteinFetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);

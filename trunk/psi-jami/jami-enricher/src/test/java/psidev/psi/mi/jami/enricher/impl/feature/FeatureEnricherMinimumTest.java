@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
-import org.junit.After;
+
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -9,25 +10,25 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
+import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum;
+import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherStatisticsWriter;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherStatisticsWriter;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,25 +40,26 @@ public class FeatureEnricherMinimumTest {
 
     protected static final Logger log = LoggerFactory.getLogger(FeatureEnricherMinimumTest.class.getName());
 
-
     private ParticipantEnricher participantEnricher;
-    private ParticipantEnricherStatisticsWriter participantStatisticsWriter;
     private ProteinEnricher proteinEnricher;
     private MockProteinFetcher proteinFetcher;
     private FeatureEnricher featureEnricher;
-    private FeatureEnricherStatisticsWriter featureStatisticsWriter;
     private CvTermEnricher cvTermEnricher;
     private MockCvTermFetcher cvTermFetcher;
 
-    private ProteinEnricherStatisticsWriter proteinStatisticsWriter;
+    private Participant persistentParticipant;
+    private Feature persistentFeature;
 
 
+    private static final String TEST_OLD_SHORTNAME = "test old shortName";
+    private static final String TEST_OLD_FULLNAME = "test old fullName";
     private static final String TEST_SHORTNAME = "test shortName";
     private static final String TEST_FULLNAME = "test fullName";
     private static final String TEST_AC_FULL_PROT = "P12345";
     private static final String TEST_AC_HALF_PROT = "P11111";
+    private static final String TEST_AC_CUSTOM_PROT = "P99999";
 
-    private static final String TEST_SEQUENCE_OLD = "AAAAAAAAAAAAAAAAAAAAAcatAAAAAAAAAAAAAAAAAAA";
+    private static final String TEST_OLD_SEQUENCE = "AAAAAAAAAAAAAAAAAAAAAcatAAAAAAAAAAAAAAAAAAA";
     private static final String TEST_SEQUENCE_NEW = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAcatAAAAAAAAAAAAAAAAAAAAA";
     private static final int TEST_ORGANISM_ID = 1234;
     private static final String TEST_ORGANISM_COMMON = "Common";
@@ -66,45 +68,20 @@ public class FeatureEnricherMinimumTest {
 
     @Before
     public void setup() throws IOException {
-        participantEnricher = new ParticipantEnricherMinimum<DefaultParticipant , DefaultFeature>();
-        participantStatisticsWriter = new ParticipantEnricherStatisticsWriter(
-                new File("participant_success"),
-                new File("participant_fail") );
-        participantEnricher.setParticipantListener(
-                new ParticipantEnricherListenerManager(
-                        new ParticipantEnricherLogger(),
-                        participantStatisticsWriter
-                ) );
-
-
-        cvTermEnricher = participantEnricher.getCvTermEnricher();
         cvTermFetcher = new MockCvTermFetcher();
-        cvTermEnricher.setCvTermFetcher(cvTermFetcher);
-        //cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherLogger());
+        cvTermEnricher = new CvTermEnricherMinimum(cvTermFetcher);
 
-        featureEnricher = participantEnricher.getFeatureEnricher();
-        featureStatisticsWriter = new FeatureEnricherStatisticsWriter(
-                new File("Success_features.txt"),
-                new File("Fail_Features.txt") );
-        featureEnricher.setFeatureEnricherListener(
-                new FeatureEnricherListenerManager(
-                        featureStatisticsWriter,
-                        new FeatureEnricherLogger()
-                ));
 
-        proteinEnricher = participantEnricher.getProteinEnricher();
+        featureEnricher = new FeatureEnricherMinimum();
+
         proteinFetcher = new MockProteinFetcher();
-        proteinEnricher.setProteinFetcher(proteinFetcher);
+        proteinEnricher = new ProteinEnricherMinimum(proteinFetcher);
 
-        proteinStatisticsWriter = new ProteinEnricherStatisticsWriter(
-                new File("Success_protein.txt"),
-                new File("Fail_protein.txt") );
-        proteinEnricher.setProteinEnricherListener(
-                new ProteinEnricherListenerManager(
-                        proteinStatisticsWriter,
-                        new ProteinEnricherLogger(),
-                        (ProteinListeningFeatureEnricher) featureEnricher
-                ));
+        participantEnricher = new ParticipantEnricherMinimum();
+        participantEnricher.setFeatureEnricher(featureEnricher);
+        participantEnricher.setProteinEnricher(proteinEnricher);
+        assertNotNull(proteinEnricher.getProteinEnricherListener());
+        assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -116,18 +93,242 @@ public class FeatureEnricherMinimumTest {
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         halfProtein.setOrganism(new DefaultOrganism(-3));
         proteinFetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
+
+        persistentParticipant = null;
+        persistentFeature = null;
     }
 
-    @After
-    public void closeDown() throws IOException {
-        featureStatisticsWriter.close();
-        proteinStatisticsWriter.close();
-        participantStatisticsWriter.close();
+    // == FEATURE ONLY =============================================================================
+
+    @Test
+    public void test_that_non_sequence_reliant_feature_data_is_successful_without_CvTermEnricher() throws EnricherException, IOException {
+
+        persistentFeature = new DefaultFeature("Featurea","featurea");
+
+        persistentFeature.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
+        assertNull(persistentFeature.getType());
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
+
+        featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
+                new FeatureEnricherLogger() ,
+                new FeatureEnricherListener() {
+                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                        assertTrue(feature == persistentFeature);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onUpdatedRange(Feature feature, Range updated, String message) {fail();}
+                    public void onInvalidRange(Feature feature, Range invalid, String message)  {fail();}
+                    public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
+                    public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
+                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
+                    public void onAddedXref(Feature feature, Xref added) {fail();}
+                    public void onRemovedXref(Feature feature, Xref removed) {fail();}
+                    public void onAddedAnnotation(Feature feature, Annotation added)  {fail();}
+                    public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
+                    public void onAddedRange(Feature feature, Range added)  {fail();}
+                    public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                }
+        ));
+
+        featureEnricher.enrichFeature(persistentFeature);
+
+        assertNull(persistentFeature.getType());
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
     }
+
+
+    //TODO
+    @Test
+    public void test_that_non_sequence_reliant_feature_data_is_successful_with_CvTermEnricher() throws EnricherException, IOException {
+        featureEnricher.setCvTermEnricher(cvTermEnricher);
+        cvTermFetcher.addCvTerm(TEST_AC_CUSTOM_PROT , new DefaultCvTerm(TEST_SHORTNAME , TEST_FULLNAME, TEST_AC_CUSTOM_PROT));
+
+        persistentFeature = new DefaultFeature("Featurea","featurea");
+
+        persistentFeature.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
+        persistentFeature.setType(new DefaultCvTerm(TEST_SHORTNAME, TEST_AC_CUSTOM_PROT));
+        assertNotNull(persistentFeature.getType());
+        assertNull(persistentFeature.getType().getFullName());
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
+
+        featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
+                new FeatureEnricherLogger() ,
+                new FeatureEnricherListener() {
+                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                        assertTrue(feature == persistentFeature);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onUpdatedRange(Feature feature, Range updated, String message) {fail();}
+                    public void onInvalidRange(Feature feature, Range invalid, String message)  {fail();}
+                    public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
+                    public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
+                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
+                    public void onAddedXref(Feature feature, Xref added) {fail();}
+                    public void onRemovedXref(Feature feature, Xref removed) {fail();}
+                    public void onAddedAnnotation(Feature feature, Annotation added)  {fail();}
+                    public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
+                    public void onAddedRange(Feature feature, Range added)  {fail();}
+                    public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                }
+        ));
+
+        featureEnricher.enrichFeature(persistentFeature);
+
+
+        assertNotNull(persistentFeature.getType().getFullName());
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
+    }
+
+
+
+    // == Complete PARTICIPANT =================================================================================
 
 
 
     @Test
+    public void test_annotations_added_for_featureEnricher_where_protein_has_no_sequence() throws EnricherException, IOException {
+        Protein protein = new DefaultProtein(TEST_SHORTNAME);
+        protein.setUniprotkb(TEST_AC_FULL_PROT);
+        Participant participant = new DefaultParticipant(protein);
+
+        persistentFeature = new DefaultFeature("Featurea","featurea");
+        persistentFeature.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
+        participant.addFeature(persistentFeature);
+
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
+
+        featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
+                new FeatureEnricherLogger() ,
+                new FeatureEnricherListener() {
+                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                        assertTrue(feature == persistentFeature);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onUpdatedRange(Feature feature, Range updated, String message) {fail();}
+                    public void onInvalidRange(Feature feature, Range invalid, String message)  {
+                        assertTrue(feature == persistentFeature);
+                        assertNotNull(invalid);
+
+                    }
+                    public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
+                    public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
+                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
+                    public void onAddedXref(Feature feature, Xref added) {fail();}
+                    public void onRemovedXref(Feature feature, Xref removed) {fail();}
+                    public void onAddedAnnotation(Feature feature, Annotation added)  {
+                        assertTrue(feature == persistentFeature);
+                        assertTrue(added.getTopic().getFullName().toLowerCase().contains("caution"));
+                    }
+                    public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
+                    public void onAddedRange(Feature feature, Range added)  {fail();}
+                    public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                }
+        ));
+
+        participantEnricher.enrichParticipant(participant);
+
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(1 , persistentFeature.getAnnotations().size());
+    }
+
+    @Test
+    public void test_annotations_added_for_featureEnricher_where_protein_has_too_short_a_sequence() throws EnricherException, IOException {
+        Protein protein = new DefaultProtein(TEST_SHORTNAME);
+        protein.setUniprotkb(TEST_AC_FULL_PROT);
+        protein.setSequence("ACGACTA");
+        Participant participant = new DefaultParticipant(protein);
+
+        persistentFeature = new DefaultFeature("Featurea","featurea");
+        persistentFeature.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
+        participant.addFeature(persistentFeature);
+
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
+
+        featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
+                new FeatureEnricherLogger() ,
+                new FeatureEnricherListener() {
+                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                        assertTrue(feature == persistentFeature);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onUpdatedRange(Feature feature, Range updated, String message) {fail();}
+                    public void onInvalidRange(Feature feature, Range invalid, String message)  {
+                        assertTrue(feature == persistentFeature);
+                        assertNotNull(invalid);
+
+                    }
+                    public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
+                    public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
+                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
+                    public void onAddedXref(Feature feature, Xref added) {fail();}
+                    public void onRemovedXref(Feature feature, Xref removed) {fail();}
+                    public void onAddedAnnotation(Feature feature, Annotation added)  {
+                        assertTrue(feature == persistentFeature);
+                        assertTrue(added.getTopic().getShortName().toLowerCase().contains("caution"));
+                    }
+                    public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
+                    public void onAddedRange(Feature feature, Range added)  {fail();}
+                    public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                }
+        ));
+        participantEnricher.enrichParticipant(participant);
+
+        assertEquals(1 , persistentFeature.getRanges().size());
+        assertEquals(1 , persistentFeature.getAnnotations().size());
+    }
+
+
+
+
+
+
+    public void test_b() throws EnricherException, IOException {
+        Protein protein = new DefaultProtein(TEST_SHORTNAME);
+        protein.setUniprotkb(TEST_AC_FULL_PROT);
+        //protein.setSequence(TEST_SEQUENCE_OLD);
+
+        Participant participant = new DefaultParticipant(protein);
+
+        Feature featureB = new DefaultFeature("Featureb","featureb");
+        featureB.getRanges().add( new DefaultRange( new DefaultPosition(7), new DefaultPosition(15) ));
+        participant.addFeature(featureB);
+
+        Feature featureA = new DefaultFeature("Featurea","featurea");
+        featureA.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
+        participant.addFeature(featureA);
+
+
+        log.info(participant.getFeatures().toString() );
+
+
+    }
+
+
+
+
+
     public void test() throws EnricherException, IOException {
         Protein protein = new DefaultProtein(TEST_SHORTNAME);
         protein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -146,12 +347,9 @@ public class FeatureEnricherMinimumTest {
 
         log.info(participant.getFeatures().toString() );
 
-        participantEnricher.enrichParticipant(participant);
 
-
-        featureStatisticsWriter.close();
-        proteinStatisticsWriter.close();
     }
+
 
 
 

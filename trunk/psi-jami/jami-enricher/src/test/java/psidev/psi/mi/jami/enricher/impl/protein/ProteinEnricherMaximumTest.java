@@ -55,8 +55,7 @@ public class ProteinEnricherMaximumTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         mockProteinFetcher = new MockProteinFetcher();
-        proteinEnricher = new ProteinEnricherMaximum();
-        proteinEnricher.setProteinFetcher(mockProteinFetcher);
+        proteinEnricher = new ProteinEnricherMaximum(mockProteinFetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);

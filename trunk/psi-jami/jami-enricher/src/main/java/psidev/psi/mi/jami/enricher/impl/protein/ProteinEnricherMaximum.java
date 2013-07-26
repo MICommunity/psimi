@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
+import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum;
@@ -19,6 +20,9 @@ public class ProteinEnricherMaximum
         implements ProteinEnricher {
 
 
+    public ProteinEnricherMaximum(ProteinFetcher proteinFetcher) {
+        super(proteinFetcher);
+    }
 
     @Override
     protected void processProtein(Protein proteinToEnrich) {

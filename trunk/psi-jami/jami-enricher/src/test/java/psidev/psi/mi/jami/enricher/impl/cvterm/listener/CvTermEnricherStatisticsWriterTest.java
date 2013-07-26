@@ -31,7 +31,7 @@ public class CvTermEnricherStatisticsWriterTest {
 
 
     CvTermEnricherMinimum cvTermEnricherMinimum;
-    MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
+    MockCvTermFetcher mockCvTermFetcher;
     CvTermEnricherStatisticsWriter cvTermStatisticsWriter;
 
     private String SHORT_NAME = "ShortName";
@@ -43,8 +43,8 @@ public class CvTermEnricherStatisticsWriterTest {
 
     @Before
     public void setup() throws BridgeFailedException, IOException {
-        cvTermEnricherMinimum = new CvTermEnricherMinimum();
-        cvTermEnricherMinimum.setCvTermFetcher(mockCvTermFetcher);
+        mockCvTermFetcher = new MockCvTermFetcher();
+        cvTermEnricherMinimum = new CvTermEnricherMinimum(mockCvTermFetcher);
 
         successFile = new File("success.txt");
         failFile = new File("failed.txt");

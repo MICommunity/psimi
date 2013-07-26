@@ -22,7 +22,7 @@ import static junit.framework.Assert.*;
 public class CvTermEnricherMaximumTest {
 
     private CvTermEnricher cvTermEnricher;
-    private MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
+    private MockCvTermFetcher mockCvTermFetcher;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -32,8 +32,8 @@ public class CvTermEnricherMaximumTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        cvTermEnricher = new CvTermEnricherMaximum();
-        cvTermEnricher.setCvTermFetcher(mockCvTermFetcher);
+        mockCvTermFetcher = new MockCvTermFetcher();
+        cvTermEnricher = new CvTermEnricherMaximum(mockCvTermFetcher);
 
 
         cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);

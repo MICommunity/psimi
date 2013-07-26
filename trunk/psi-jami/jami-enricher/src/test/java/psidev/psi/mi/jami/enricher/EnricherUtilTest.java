@@ -31,7 +31,7 @@ public class EnricherUtilTest {
 
     @Before
     public void setup(){
-        proteinEnricher = new ProteinEnricherMinimum();
+        proteinEnricher = new ProteinEnricherMinimum(null);
         featureEnricher = new FeatureEnricherMinimum();
         proteinEnricherListener = new ProteinEnricherLogger();
         proteinEnricherListenerManager = new ProteinEnricherListenerManager();
