@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
 
+import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -23,6 +24,10 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 public class ProteinEnricherMinimum
         extends AbstractProteinEnricher
         implements ProteinEnricher {
+
+    public ProteinEnricherMinimum(ProteinFetcher proteinFetcher) {
+        super(proteinFetcher);
+    }
 
     /**
      * Prepares a protein with a dead identifier to be remapped.

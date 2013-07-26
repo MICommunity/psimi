@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 
+import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 
 import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
@@ -20,6 +21,10 @@ import psidev.psi.mi.jami.model.CvTerm;
 public class CvTermUpdaterMaximum
         extends CvTermUpdaterMinimum
         implements CvTermEnricher {
+
+    public CvTermUpdaterMaximum(CvTermFetcher cvTermFetcher) {
+        super(cvTermFetcher);
+    }
 
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){

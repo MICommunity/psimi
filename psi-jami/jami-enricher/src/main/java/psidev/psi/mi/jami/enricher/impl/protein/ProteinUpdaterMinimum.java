@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
 
+import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -26,6 +27,10 @@ public class ProteinUpdaterMinimum
         implements ProteinEnricher {
 
     protected boolean isRemapped = false;
+
+    public ProteinUpdaterMinimum(ProteinFetcher proteinFetcher) {
+        super(proteinFetcher);
+    }
 
     @Override
     public void enrichProtein(Protein proteinToEnrich) throws EnricherException {

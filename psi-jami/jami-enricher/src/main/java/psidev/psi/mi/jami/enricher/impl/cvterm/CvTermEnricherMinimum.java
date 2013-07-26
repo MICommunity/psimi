@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -21,6 +22,10 @@ public class CvTermEnricherMinimum
         implements CvTermEnricher {
 
     protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherMinimum.class.getName());
+
+    public CvTermEnricherMinimum(CvTermFetcher cvTermFetcher) {
+        super(cvTermFetcher);
+    }
 
     protected void processCvTerm(CvTerm cvTermToEnrich){
 

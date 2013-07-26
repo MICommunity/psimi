@@ -35,7 +35,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     protected FeatureEnricherListener listener;
     protected CvTermEnricher cvTermEnricher;
 
-    Collection<F> featuresToEnrich;
+    protected Collection<F> featuresToEnrich;
 
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
         for(F featureToEnrich : featuresToEnrich){

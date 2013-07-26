@@ -31,7 +31,7 @@ import static junit.framework.Assert.*;
 public class CvTermEnricherMinimumTest {
 
     private CvTermEnricher cvTermEnricher;
-    private MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
+    private MockCvTermFetcher mockCvTermFetcher;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -49,8 +49,8 @@ public class CvTermEnricherMinimumTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        cvTermEnricher = new CvTermEnricherMinimum();
-        cvTermEnricher.setCvTermFetcher(mockCvTermFetcher);
+        mockCvTermFetcher = new MockCvTermFetcher();
+        cvTermEnricher = new CvTermEnricherMinimum(mockCvTermFetcher);
 
 
         cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);

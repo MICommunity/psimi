@@ -30,7 +30,7 @@ public class CvTermUpdaterMaximumTest {
 
 
     private CvTermUpdaterMaximum cvTermEnricher;
-    private MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
+    private MockCvTermFetcher mockCvTermFetcher;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -51,8 +51,8 @@ public class CvTermUpdaterMaximumTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        cvTermEnricher = new CvTermUpdaterMaximum();
-        cvTermEnricher.setCvTermFetcher(mockCvTermFetcher);
+        mockCvTermFetcher = new MockCvTermFetcher();
+        cvTermEnricher = new CvTermUpdaterMaximum(mockCvTermFetcher);
 
         cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(

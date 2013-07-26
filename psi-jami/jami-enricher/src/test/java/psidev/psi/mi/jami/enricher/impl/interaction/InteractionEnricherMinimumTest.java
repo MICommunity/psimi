@@ -31,7 +31,7 @@ import static junit.framework.Assert.*;
 public class InteractionEnricherMinimumTest {
 
     private InteractionEnricher interactionEnricher;
-
+    MockCvTermFetcher mockCvTermFetcher;
     private  Interaction persistentInteraction;
     private int persistentInt = 0;
 
@@ -71,8 +71,7 @@ public class InteractionEnricherMinimumTest {
     @Test
     public void test_enrichment_with_cvTermEnricher_but_no_cvTerms() throws EnricherException {
 
-        interactionEnricher.setCvTermEnricher(new CvTermEnricherMinimum());
-        interactionEnricher.getCvTermEnricher().setCvTermFetcher(new MockCvTermFetcher());
+        interactionEnricher.setCvTermEnricher(new CvTermEnricherMinimum(new MockCvTermFetcher()));
 
         assertNull(persistentInteraction.getInteractionType());
 
@@ -94,9 +93,9 @@ public class InteractionEnricherMinimumTest {
 
     @Test
     public void test_enrichment_with_CvTermEnricher_with_CvTerm() throws EnricherException {
+        mockCvTermFetcher = new MockCvTermFetcher();
+        interactionEnricher.setCvTermEnricher(new CvTermEnricherMinimum(mockCvTermFetcher));
 
-        interactionEnricher.setCvTermEnricher(new CvTermEnricherMinimum());
-        MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
         mockCvTermFetcher.addCvTerm("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
         interactionEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
 
