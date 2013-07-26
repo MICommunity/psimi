@@ -36,7 +36,7 @@ public class AliasUpdateMerger {
 
         // For each entry, add its CvTerm to the representatives list, if it hasn't been so already.
         for(Alias alias : fetchedToAdd){
-            if(! identifierCvTerms.contains(alias.getType())) identifierCvTerms.add(alias.getType());
+            if(! identifierCvTerms.contains(alias.getType()) && alias.getType() != null) identifierCvTerms.add(alias.getType());
         }
 
         toRemove.clear();

@@ -121,7 +121,6 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
                     }
                 }
         }
-
     }
 
     public void onSequenceUpdate(Protein protein, String oldSequence) {

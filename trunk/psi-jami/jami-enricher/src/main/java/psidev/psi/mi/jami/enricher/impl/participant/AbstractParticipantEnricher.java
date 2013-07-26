@@ -37,7 +37,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 
-        this.featureEnricher.setFeaturesToEnrich(participantToEnrich);
+        if( getFeatureEnricher() != null )
+            getFeatureEnricher().setFeaturesToEnrich(participantToEnrich);
 
         processParticipant(participantToEnrich);
 
@@ -86,6 +87,12 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         return listener;
     }
 
+    /**
+     *
+     * Will attempt to add the featureEnricher as a proteinListener if this is valid.
+     * If the proteinEnricher already has a listener, this will be preserved using a listener manager.
+     * @param proteinEnricher
+     */
     public void setProteinEnricher(ProteinEnricher proteinEnricher) {
         this.proteinEnricher = proteinEnricher;
         EnricherUtil.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), proteinEnricher);
@@ -103,6 +110,12 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         return cvTermEnricher;
     }
 
+    /**
+     *
+     * Will attempt to add the featureEnricher as a proteinListener if this is valid.
+     * If the proteinEnricher already has a listener, this will be preserved using a listener manager.
+     * @param featureEnricher
+     */
     public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
         EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());

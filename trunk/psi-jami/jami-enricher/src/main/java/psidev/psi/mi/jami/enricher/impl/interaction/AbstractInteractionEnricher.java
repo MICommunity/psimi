@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.interaction.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
@@ -43,9 +44,13 @@ public abstract class AbstractInteractionEnricher<I extends Interaction, P exten
 
         if( getParticipantEnricher() != null )
             getParticipantEnricher().enrichParticipants(interactionToEnrich.getParticipants());
+
+        if(listener != null)
+            listener.onInteractionEnriched(interactionToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
     public void processInteraction(I interactionToEnrich) throws EnricherException {
+        // Enrich CvTerms
         if( getCvTermEnricher() != null ){
             if( interactionToEnrich.getInteractionType() != null)
                 getCvTermEnricher().enrichCvTerm(interactionToEnrich.getInteractionType());

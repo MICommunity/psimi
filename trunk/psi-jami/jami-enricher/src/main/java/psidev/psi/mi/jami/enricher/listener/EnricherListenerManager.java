@@ -25,7 +25,7 @@ public abstract class EnricherListenerManager<T extends EnricherListener> {
      * @param listener
      */
     public void addEnricherListener(T listener){
-        if( ! listenersList.contains(listener) )
+       // if( ! listenersList.contains(listener) )
             listenersList.add(listener);
     }
 
@@ -35,5 +35,13 @@ public abstract class EnricherListenerManager<T extends EnricherListener> {
      */
     public void removeEnricherListener(T listener){
         listenersList.remove(listener);
+    }
+
+    /**
+     * Adds the listener to the list of listeners, if the list does not already contain it.
+     * @param listener
+     */
+    public boolean containsEnricherListener(T listener){
+        return listenersList.contains(listener);
     }
 }

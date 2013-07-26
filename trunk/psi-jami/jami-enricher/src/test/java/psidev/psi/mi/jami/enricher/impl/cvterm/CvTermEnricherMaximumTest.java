@@ -126,5 +126,6 @@ public class CvTermEnricherMaximumTest {
         assertEquals(FULL_NAME, cvTermToEnrich.getFullName());
         assertEquals(1 , cvTermToEnrich.getIdentifiers().size());
         assertEquals(1 , cvTermToEnrich.getSynonyms().size());
+        assertEquals(SYNONYM_NAME , cvTermToEnrich.getSynonyms().iterator().next().getName() );
     }
 }

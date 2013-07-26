@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  */
 public class ModelledParticipantEnricherMaximum
     extends ParticipantEnricherMaximum<ModelledParticipant , ModelledFeature>
-    implements  ModelledParticipantEnricher
+    implements  ModelledParticipantEnricher {
 
     /*
     @Override

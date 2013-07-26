@@ -1,10 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum;
-import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum;
+
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -18,10 +14,10 @@ public class InteractionEnricherMaximum<I extends Interaction, P extends Partici
         extends InteractionEnricherMinimum<I , P , F> {
 
 
-    @Override
+    /*@Override
     public void processInteraction(I interactionToEnrich) throws EnricherException {
         super.processInteraction(interactionToEnrich);
-    }
+    } */
 
     /*
     @Override
