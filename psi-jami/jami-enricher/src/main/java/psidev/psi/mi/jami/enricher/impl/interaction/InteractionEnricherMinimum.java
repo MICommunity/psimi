@@ -17,11 +17,11 @@ import psidev.psi.mi.jami.model.*;
 public class InteractionEnricherMinimum<I extends Interaction, P extends Participant, F extends Feature>
         extends AbstractInteractionEnricher <I , P , F>{
 
-
+    /*
     @Override
     public void processInteraction(I interactionToEnrich) throws EnricherException {
         super.processInteraction(interactionToEnrich);
-    }
+    }*/
 
     /*
     public ParticipantEnricher<P, F> getParticipantEnricher(){

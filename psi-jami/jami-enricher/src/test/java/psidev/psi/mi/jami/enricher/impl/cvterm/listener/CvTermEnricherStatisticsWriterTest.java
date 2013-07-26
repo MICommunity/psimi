@@ -12,7 +12,9 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import static junit.framework.Assert.*;
@@ -77,6 +79,7 @@ public class CvTermEnricherStatisticsWriterTest {
         cvTermEnricherMinimum.enrichCvTerm(term);
         term.setMIIdentifier("FOO");
         cvTermEnricherMinimum.enrichCvTerm(term);
+
         CvTerm test = new DefaultCvTerm("FOOOO", "BAHHH");
         cvTermEnricherMinimum.enrichCvTerm(test);
 
@@ -84,6 +87,20 @@ public class CvTermEnricherStatisticsWriterTest {
 
         assertTrue(successFile.exists());
         assertTrue(failFile.exists());
+
+        BufferedReader successReader = new BufferedReader(new FileReader(successFile));
+        successReader.readLine();
+        int count = 0;
+        String line = successReader.readLine();
+        while( line != null){
+            //String [] entry = line.split("\t");
+            //assertEquals(term.toString() , entry[0]);
+            count ++;
+            line = successReader.readLine();
+        }
+        //assertEquals(2 , count);
+
+
     }
 
 }
