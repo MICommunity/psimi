@@ -9,8 +9,8 @@ import psidev.psi.mi.jami.model.Feature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  19/06/13
  */
-public class FeatureUpdaterMaximum<F extends Feature>
-        extends FeatureUpdaterMinimum<F>
+public class MaximumFeatureUpdater<F extends Feature>
+        extends MinimumFeatureUpdater<F>
         implements FeatureEnricher <F> {
     /*
     public CvTermEnricher getCvTermEnricher(){

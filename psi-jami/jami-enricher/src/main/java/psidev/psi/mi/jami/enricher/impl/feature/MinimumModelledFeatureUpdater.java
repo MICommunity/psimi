@@ -10,8 +10,8 @@ import psidev.psi.mi.jami.model.ModelledFeature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public class ModelledFeatureUpdaterMaximum
-        extends FeatureUpdaterMaximum<ModelledFeature>
+public class MinimumModelledFeatureUpdater
+        extends MinimumFeatureUpdater<ModelledFeature>
         implements ModelledFeatureEnricher {
 
 

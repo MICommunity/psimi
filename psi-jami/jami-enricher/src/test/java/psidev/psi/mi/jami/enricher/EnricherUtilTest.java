@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum;
+import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
@@ -25,14 +25,14 @@ import static junit.framework.Assert.*;
 public class EnricherUtilTest {
 
     private ProteinEnricher proteinEnricher;
-    private FeatureEnricherMinimum featureEnricher;
+    private MinimumFeatureEnricher featureEnricher;
     private ProteinEnricherListener proteinEnricherListener;
     private ProteinEnricherListenerManager proteinEnricherListenerManager;
 
     @Before
     public void setup(){
         proteinEnricher = new ProteinEnricherMinimum(null);
-        featureEnricher = new FeatureEnricherMinimum();
+        featureEnricher = new MinimumFeatureEnricher();
         proteinEnricherListener = new ProteinEnricherLogger();
         proteinEnricherListenerManager = new ProteinEnricherListenerManager();
 

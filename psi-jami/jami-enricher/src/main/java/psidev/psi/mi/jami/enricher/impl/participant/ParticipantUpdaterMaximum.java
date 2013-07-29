@@ -29,7 +29,7 @@ public class ParticipantUpdaterMaximum<P extends Participant, F extends Feature>
     @Override
     public FeatureEnricher<F> getFeatureEnricher(){
         if(featureEnricher == null){
-            featureEnricher = new FeatureUpdaterMaximum<F>();
+            featureEnricher = new MaximumFeatureUpdater<F>();
             EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
         }
         return featureEnricher;

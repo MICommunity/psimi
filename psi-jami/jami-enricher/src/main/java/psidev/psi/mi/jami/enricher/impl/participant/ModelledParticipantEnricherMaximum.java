@@ -19,7 +19,7 @@ public class ModelledParticipantEnricherMaximum
     /*
     @Override
     public FeatureEnricher<ModelledFeature> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new ModelledFeatureEnricherMaximum();
+        if(featureEnricher == null) featureEnricher = new MaximumModelledFeatureEnricher();
         return featureEnricher;
     } */
 }

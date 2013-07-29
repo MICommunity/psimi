@@ -29,7 +29,7 @@ public class ParticipantUpdaterMinimum<P extends Participant , F extends Feature
 
     public FeatureEnricher<F> getFeatureEnricher(){
         if(featureEnricher == null){
-            featureEnricher = new FeatureUpdaterMinimum<F>();
+            featureEnricher = new MinimumFeatureUpdater<F>();
             EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
         }
         return featureEnricher;

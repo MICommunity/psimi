@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.PositionUtils;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  19/06/13
  */
-public class FeatureUpdaterMinimum<F extends Feature>
+public class MinimumFeatureUpdater<F extends Feature>
         extends AbstractFeatureEnricher <F>
         implements FeatureEnricher <F> {
 
