@@ -19,7 +19,7 @@ import static junit.framework.Assert.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
-public class CvTermEnricherMaximumTest {
+public class MaximumCvTermEnricherTest {
 
     private CvTermEnricher cvTermEnricher;
     private MockCvTermFetcher mockCvTermFetcher;
@@ -33,7 +33,7 @@ public class CvTermEnricherMaximumTest {
     @Before
     public void setup() throws BridgeFailedException {
         mockCvTermFetcher = new MockCvTermFetcher();
-        cvTermEnricher = new CvTermEnricherMaximum(mockCvTermFetcher);
+        cvTermEnricher = new MaximumCvTermEnricher(mockCvTermFetcher);
 
 
         cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
@@ -72,7 +72,7 @@ public class CvTermEnricherMaximumTest {
 
         assertTrue("The test can not be applied as the conditions do not invoke the requires response. " +
                 "Change the timesToTry." ,
-                timesToTry < CvTermEnricherMinimum.RETRY_COUNT);
+                timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
 
         ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
         CvTerm cvTermToEnrich = new DefaultCvTerm(SHORT_NAME);

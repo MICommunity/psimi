@@ -1,18 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.EnricherUtil;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
-
-import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +23,7 @@ public class ParticipantEnricherMinimum<P extends Participant , F extends Featur
 
 
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMinimum();
+        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermEnricher();
         return cvTermEnricher;
     }
 

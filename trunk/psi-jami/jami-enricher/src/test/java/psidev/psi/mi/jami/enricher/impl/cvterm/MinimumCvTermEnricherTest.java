@@ -1,10 +1,12 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
+
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -14,23 +16,22 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 22/07/13
+ * @since 01/07/13
  */
-public class CvTermUpdaterMinimumTest {
+public class MinimumCvTermEnricherTest {
 
-    private CvTermUpdaterMinimum cvTermEnricher;
-    private MockCvTermFetcher mockCvTermFetcher ;
+    private CvTermEnricher cvTermEnricher;
+    private MockCvTermFetcher mockCvTermFetcher;
 
     private String SHORT_NAME = "ShortName";
     private String FULL_NAME = "FullName";
@@ -44,16 +45,13 @@ public class CvTermUpdaterMinimumTest {
 
     private Collection<String> reportForEnrichment= new ArrayList<String>();
     private String fullNameUpdateKey = "FullNameUpdate";
-    private String shortNameUpdateKey = "ShortNameUpdate";
-    private String synonymAddedKey = "SynonymAdded";
-    private String synonymRemovedKey = "SynonymRemoved";
 
 
     @Before
     public void setup() throws BridgeFailedException {
         mockCvTermFetcher = new MockCvTermFetcher();
+        cvTermEnricher = new MinimumCvTermEnricher(mockCvTermFetcher);
 
-        cvTermEnricher = new CvTermUpdaterMinimum(mockCvTermFetcher);
 
         cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
@@ -65,7 +63,7 @@ public class CvTermUpdaterMinimumTest {
     /**
      * Creates a scenario where the fetcher always throws a bridge failure exception.
      * Shows that the query does not repeat infinitely.
-     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
+     * @throws EnricherException
      */
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
@@ -89,9 +87,9 @@ public class CvTermUpdaterMinimumTest {
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         int timesToTry = 3;
 
-        assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
+        assertTrue("The test can not be applied as the conditions do not invoke the requires response. " +
                 "Change the timesToTry." ,
-                timesToTry < CvTermEnricherMinimum.RETRY_COUNT);
+                timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
 
         ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
         CvTerm cvTermToEnrich = new DefaultCvTerm(SHORT_NAME);
@@ -151,13 +149,12 @@ public class CvTermUpdaterMinimumTest {
 
         cvTermEnricher.enrichCvTerm(cvTermToEnrichWithCompleteFields);
 
-        assertEquals(SHORT_NAME , cvTermToEnrichWithCompleteFields.getShortName());
+        assertEquals(other_short_name , cvTermToEnrichWithCompleteFields.getShortName());
         assertNotNull(cvTermToEnrichWithCompleteFields.getFullName());
-        assertEquals(FULL_NAME, cvTermToEnrichWithCompleteFields.getFullName());
+        assertEquals(other_full_name, cvTermToEnrichWithCompleteFields.getFullName());
         assertEquals(1 , cvTermToEnrichWithCompleteFields.getIdentifiers().size());
         assertEquals(1 , cvTermToEnrichWithCompleteFields.getSynonyms().size());
         assertEquals(other_synonym , cvTermToEnrichWithCompleteFields.getSynonyms().iterator().next().getName());
-
     }
 
     private CvTerm cvTermToEnrichWithCompleteFields = new DefaultCvTerm(other_short_name, MI_ID);
@@ -177,16 +174,12 @@ public class CvTermUpdaterMinimumTest {
 
             public void onShortNameUpdate(CvTerm cv, String oldShortName) {
                 assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                assertEquals(other_short_name , oldShortName);
-                assertEquals(SHORT_NAME , cv.getShortName());
-                reportForEnrichment.add(shortNameUpdateKey);
+                fail("Short name should never update for enrichment");
             }
 
             public void onFullNameUpdate(CvTerm cv, String oldFullName) {
                 assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                assertEquals(other_full_name , oldFullName);
-                assertEquals(FULL_NAME , cv.getFullName());
-                reportForEnrichment.add(fullNameUpdateKey);
+                fail("Full name should already be set");
             }
 
             public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {
@@ -226,27 +219,24 @@ public class CvTermUpdaterMinimumTest {
 
             public void onAddedSynonym(CvTerm cv, Alias added) {
                 assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No synonyms should be changed at minimum level");
+                fail("No synonyms should be added for enrichment");
             }
 
             public void onRemovedSynonym(CvTerm cv, Alias removed) {
                 assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No synonyms should be changed at minimum level");
+                fail("No synonyms should be removed for enrichment");
             }
         });
 
         cvTermEnricher.enrichCvTerm(cvTermToEnrichWithCompleteFields);
-
-        assertTrue(reportForEnrichment.contains(shortNameUpdateKey));
-        assertTrue(reportForEnrichment.contains(fullNameUpdateKey));
     }
 
 
-    /**
-     * Enrich a CvTerm
-     * Show that the full name is set and the synonyms are not.
-     * @throws EnricherException
-     */
+        /**
+         * Enrich a CvTerm
+         * Show that the full name is set and the synonyms are not.
+         * @throws EnricherException
+         */
     @Test
     public void test_enriching_CvTerm_by_MI_identifier_with_incomplete_fields() throws EnricherException {
         String other_short_name = "other short name";
@@ -261,12 +251,11 @@ public class CvTermUpdaterMinimumTest {
 
         cvTermEnricher.enrichCvTerm(cvTermToEnrich);
 
-        assertEquals(SHORT_NAME , cvTermToEnrich.getShortName());
+        assertEquals(other_short_name , cvTermToEnrich.getShortName());
         assertNotNull(cvTermToEnrich.getFullName());
         assertEquals(FULL_NAME, cvTermToEnrich.getFullName());
         assertEquals(1 , cvTermToEnrich.getIdentifiers().size());
         assertEquals(0 , cvTermToEnrich.getSynonyms().size());
-       // assertEquals(other_synonym , cvTermToEnrich.getSynonyms().iterator().next().getName());
     }
 
 
@@ -275,7 +264,7 @@ public class CvTermUpdaterMinimumTest {
     @Test
     public void test_enriching_CvTerm_by_MI_identifier_with_incomplete_fields_and_listener() throws EnricherException {
         reportForEnrichment.clear();
-
+        //cvTermToEnrichWithCompleteFields.setFullName(other_full_name);
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
             public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
@@ -285,15 +274,12 @@ public class CvTermUpdaterMinimumTest {
 
             public void onShortNameUpdate(CvTerm cv, String oldShortName) {
                 assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                assertEquals(other_short_name , oldShortName);
-                assertEquals(SHORT_NAME , cv.getShortName());
-                reportForEnrichment.add(shortNameUpdateKey);
+                fail("Short name should never update for enrichment");
             }
 
             public void onFullNameUpdate(CvTerm cv, String oldFullName) {
                 assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
                 assertNull(oldFullName);
-                assertEquals(FULL_NAME , cv.getFullName());
                 reportForEnrichment.add(fullNameUpdateKey);
             }
 
@@ -334,20 +320,18 @@ public class CvTermUpdaterMinimumTest {
 
             public void onAddedSynonym(CvTerm cv, Alias added) {
                 assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No synonyms added at minimum level");
+                fail("No synonyms should be added for enrichment");
             }
 
             public void onRemovedSynonym(CvTerm cv, Alias removed) {
                 assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No synonyms should be present to remove");
+                fail("No synonyms should be removed for enrichment");
             }
         });
 
         cvTermEnricher.enrichCvTerm(cvTermToEnrichWithoutCompleteFields);
 
-        assertTrue(reportForEnrichment.contains(shortNameUpdateKey));
         assertTrue(reportForEnrichment.contains(fullNameUpdateKey));
-        //assertTrue(reportForEnrichment.contains(synonymAddedKey));
     }
-}
 
+}
