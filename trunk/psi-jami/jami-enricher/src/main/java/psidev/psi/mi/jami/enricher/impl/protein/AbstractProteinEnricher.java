@@ -76,8 +76,10 @@ public abstract class AbstractProteinEnricher
         if (! isProteinConflictFree(proteinToEnrich) ) return;
 
         if(getOrganismEnricher() != null ){
-            if (getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
+            if (getOrganismEnricher().getFetcher() == null ||
+                    getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
                 getOrganismEnricher().getMockFetcher().clearOrganisms();
+
                 getOrganismEnricher().getMockFetcher().addNewOrganism(
                         Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
                         proteinFetched.getOrganism());

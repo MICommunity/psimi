@@ -1,13 +1,9 @@
 package psidev.psi.mi.jami.bridges.ols;
 
-import org.junit.Before;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.OntologyTerm;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,11 +15,11 @@ public class CachedOntologyOLSFetcherSpeedTest {
 
     protected static  final Logger log = LoggerFactory.getLogger(CachedOntologyOLSFetcherSpeedTest.class.getName());
 
-    private CachedOntologyOLSFetcher ontologyOLSFetcher;
+    private CachedOntologyOlsFetcher ontologyOLSFetcher;
 
 
     public CachedOntologyOLSFetcherSpeedTest() throws BridgeFailedException {
-        ontologyOLSFetcher = new CachedOntologyOLSFetcher();
+        ontologyOLSFetcher = new CachedOntologyOlsFetcher();
     }
 
 

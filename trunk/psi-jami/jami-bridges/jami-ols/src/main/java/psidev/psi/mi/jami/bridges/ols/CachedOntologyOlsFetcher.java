@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,8 +27,8 @@ import psidev.psi.mi.jami.model.Xref;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class CachedOntologyOLSFetcher
-        extends OntologyOLSFetcher
+public class CachedOntologyOlsFetcher
+        extends OntologyOlsFetcher
         implements CachedFetcher{
 
     private Cache cache;
@@ -37,7 +38,7 @@ public class CachedOntologyOLSFetcher
     //public static final String CACHE_NAME = "service-cache";
 
 
-    public CachedOntologyOLSFetcher() throws BridgeFailedException {
+    public CachedOntologyOlsFetcher() throws BridgeFailedException {
         super();
         initialiseCache();
     }
@@ -165,17 +166,11 @@ public class CachedOntologyOLSFetcher
 
 
     public void initialiseCache() {
-        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
-        cacheManager = new CacheManager( url );
-        if(cacheManager.getCacheNames().length>0){
-            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
-        }
-        if( cache == null ) throw new IllegalStateException( "Could not load cache" );
+        initialiseCache( EHCACHE_CONFIG_FILE );
     }
 
     public void initialiseCache(File settingsFile) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new IllegalStateException("File is not yet implemented") ;
     }
 
     public void initialiseCache(String settingsFile) {

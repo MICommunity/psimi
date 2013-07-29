@@ -26,16 +26,16 @@ import java.util.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class OntologyOLSFetcher
+public class OntologyOlsFetcher
         implements CvTermFetcher<OntologyTerm> , OntologyTermFetcher{
 
-    protected static final Logger log = LoggerFactory.getLogger(OntologyOLSFetcher.class.getName());
+    protected static final Logger log = LoggerFactory.getLogger(OntologyOlsFetcher.class.getName());
     private OlsFetcher olsFetcher;
     protected Query queryService;
 
     private Collection<String> loopProtection = new ArrayList<String>();
 
-    public OntologyOLSFetcher() throws BridgeFailedException {
+    public OntologyOlsFetcher() throws BridgeFailedException {
         try{
             queryService = new QueryServiceLocator().getOntologyQuery();
         }catch (ServiceException e) {
