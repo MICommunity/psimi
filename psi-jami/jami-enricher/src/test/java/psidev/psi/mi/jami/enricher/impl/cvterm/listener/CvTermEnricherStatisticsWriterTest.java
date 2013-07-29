@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
+import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
@@ -30,7 +30,7 @@ public class CvTermEnricherStatisticsWriterTest {
     protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherLogger.class.getName());
 
 
-    CvTermEnricherMinimum cvTermEnricherMinimum;
+    MinimumCvTermEnricher minimumCvTermEnricher;
     MockCvTermFetcher mockCvTermFetcher;
     CvTermEnricherStatisticsWriter cvTermStatisticsWriter;
 
@@ -44,7 +44,7 @@ public class CvTermEnricherStatisticsWriterTest {
     @Before
     public void setup() throws BridgeFailedException, IOException {
         mockCvTermFetcher = new MockCvTermFetcher();
-        cvTermEnricherMinimum = new CvTermEnricherMinimum(mockCvTermFetcher);
+        minimumCvTermEnricher = new MinimumCvTermEnricher(mockCvTermFetcher);
 
         successFile = new File("success.txt");
         failFile = new File("failed.txt");
@@ -61,7 +61,7 @@ public class CvTermEnricherStatisticsWriterTest {
 
         manager.addEnricherListener(cvTermStatisticsWriter);
         manager.addEnricherListener(new CvTermEnricherLogger());
-        cvTermEnricherMinimum.setCvTermEnricherListener(manager);
+        minimumCvTermEnricher.setCvTermEnricherListener(manager);
 
         CvTerm cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
@@ -75,13 +75,13 @@ public class CvTermEnricherStatisticsWriterTest {
     public void test_log_is_written() throws EnricherException, IOException {
         CvTerm term = new DefaultCvTerm(SHORT_NAME,MI_ID);
 
-        cvTermEnricherMinimum.enrichCvTerm(term);
-        cvTermEnricherMinimum.enrichCvTerm(term);
+        minimumCvTermEnricher.enrichCvTerm(term);
+        minimumCvTermEnricher.enrichCvTerm(term);
         term.setMIIdentifier("FOO");
-        cvTermEnricherMinimum.enrichCvTerm(term);
+        minimumCvTermEnricher.enrichCvTerm(term);
 
         CvTerm test = new DefaultCvTerm("FOOOO", "BAHHH");
-        cvTermEnricherMinimum.enrichCvTerm(test);
+        minimumCvTermEnricher.enrichCvTerm(test);
 
         cvTermStatisticsWriter.close();
 

@@ -1,35 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.ProteinListeningFeatureEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum;
-import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherStatisticsWriter;
-import psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum;
-import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherStatisticsWriter;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherStatisticsWriter;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.impl.*;
-
-import java.io.File;
-import java.io.IOException;
-
 /**
  * Created with IntelliJ IDEA.
  *
@@ -76,7 +46,7 @@ public class FeatureUpdaterMaximumTest {
 
         cvTermFetcher = new MockCvTermFetcher();
 
-        participantEnricher.setCvTermEnricher(new CvTermUpdaterMaximum(cvTermFetcher));
+        participantEnricher.setCvTermEnricher(new MaximumCvTermUpdater(cvTermFetcher));
         participantEnricher.getCvTermEnricher().setCvTermEnricherListener(new CvTermEnricherLogger());
 
         featureEnricher = participantEnricher.getFeatureEnricher();

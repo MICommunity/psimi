@@ -27,7 +27,7 @@ public class InteractionUpdaterMaximum<I extends Interaction, P extends Particip
 
     @Override
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMaximum();
+        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermUpdater();
         return cvTermEnricher;
     } */
 }

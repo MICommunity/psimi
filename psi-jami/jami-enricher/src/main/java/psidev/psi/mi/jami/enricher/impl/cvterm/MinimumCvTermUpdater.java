@@ -16,11 +16,11 @@ import psidev.psi.mi.jami.model.Xref;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/06/13
  */
-public class CvTermUpdaterMinimum
+public class MinimumCvTermUpdater
         extends AbstractCvTermEnricher
         implements CvTermEnricher{
 
-    public CvTermUpdaterMinimum(CvTermFetcher cvTermFetcher) {
+    public MinimumCvTermUpdater(CvTermFetcher cvTermFetcher) {
         super(cvTermFetcher);
     }
 

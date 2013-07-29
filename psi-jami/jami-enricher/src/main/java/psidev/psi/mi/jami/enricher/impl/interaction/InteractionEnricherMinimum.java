@@ -1,10 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -31,7 +26,7 @@ public class InteractionEnricherMinimum<I extends Interaction, P extends Partici
 
 
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMinimum();
+        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermEnricher();
         return cvTermEnricher;
     } */
 }

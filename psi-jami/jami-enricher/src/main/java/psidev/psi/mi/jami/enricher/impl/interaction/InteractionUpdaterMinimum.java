@@ -26,7 +26,7 @@ public class InteractionUpdaterMinimum<I extends Interaction, P extends Particip
 
 
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMinimum();
+        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermUpdater();
         return cvTermEnricher;
     }  */
 }

@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum;
 import psidev.psi.mi.jami.model.Feature;
 
 /**
@@ -16,7 +14,7 @@ public class FeatureUpdaterMaximum<F extends Feature>
         implements FeatureEnricher <F> {
     /*
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMaximum();
+        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermUpdater();
         return cvTermEnricher;
     }  */
 }

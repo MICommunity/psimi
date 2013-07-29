@@ -17,13 +17,13 @@ import psidev.psi.mi.jami.model.Xref;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/05/13
  */
-public class CvTermEnricherMinimum
+public class MinimumCvTermEnricher
         extends AbstractCvTermEnricher
         implements CvTermEnricher {
 
-    protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherMinimum.class.getName());
+    protected static final Logger log = LoggerFactory.getLogger(MinimumCvTermEnricher.class.getName());
 
-    public CvTermEnricherMinimum(CvTermFetcher cvTermFetcher) {
+    public MinimumCvTermEnricher(CvTermFetcher cvTermFetcher) {
         super(cvTermFetcher);
     }
 

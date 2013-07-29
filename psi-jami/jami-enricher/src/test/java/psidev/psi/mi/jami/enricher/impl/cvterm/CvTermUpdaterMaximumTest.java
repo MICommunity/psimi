@@ -29,7 +29,7 @@ import static junit.framework.Assert.assertEquals;
 public class CvTermUpdaterMaximumTest {
 
 
-    private CvTermUpdaterMaximum cvTermEnricher;
+    private MaximumCvTermUpdater cvTermEnricher;
     private MockCvTermFetcher mockCvTermFetcher;
 
     private String SHORT_NAME = "ShortName";
@@ -52,7 +52,7 @@ public class CvTermUpdaterMaximumTest {
     @Before
     public void setup() throws BridgeFailedException {
         mockCvTermFetcher = new MockCvTermFetcher();
-        cvTermEnricher = new CvTermUpdaterMaximum(mockCvTermFetcher);
+        cvTermEnricher = new MaximumCvTermUpdater(mockCvTermFetcher);
 
         cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
@@ -90,7 +90,7 @@ public class CvTermUpdaterMaximumTest {
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < CvTermEnricherMinimum.RETRY_COUNT);
+                timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
 
         ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
         CvTerm cvTermToEnrich = new DefaultCvTerm(SHORT_NAME);

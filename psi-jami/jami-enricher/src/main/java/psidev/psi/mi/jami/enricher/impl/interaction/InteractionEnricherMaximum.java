@@ -28,7 +28,7 @@ public class InteractionEnricherMaximum<I extends Interaction, P extends Partici
 
     @Override
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermEnricherMaximum();
+        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermEnricher();
         return cvTermEnricher;
     }   */
 }

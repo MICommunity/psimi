@@ -1,12 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.EnricherUtil;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum;
-import psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum;
-import psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMaximum;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
 
@@ -29,7 +22,7 @@ public class ParticipantUpdaterMaximum<P extends Participant, F extends Feature>
 
     @Override
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMaximum();
+        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermUpdater();
         return cvTermEnricher;
     }
 

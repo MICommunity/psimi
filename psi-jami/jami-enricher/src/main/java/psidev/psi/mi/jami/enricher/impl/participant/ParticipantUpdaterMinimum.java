@@ -22,7 +22,7 @@ public class ParticipantUpdaterMinimum<P extends Participant , F extends Feature
 
 
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMinimum();
+        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermUpdater();
         return cvTermEnricher;
     }
 

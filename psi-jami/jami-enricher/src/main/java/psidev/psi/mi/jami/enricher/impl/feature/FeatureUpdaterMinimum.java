@@ -1,14 +1,10 @@
 package psidev.psi.mi.jami.enricher.impl.feature;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.PositionUtils;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,7 +42,7 @@ public class FeatureUpdaterMinimum<F extends Feature>
 
     /*
     public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new CvTermUpdaterMinimum();
+        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermUpdater();
         return cvTermEnricher;
     } */
 }
