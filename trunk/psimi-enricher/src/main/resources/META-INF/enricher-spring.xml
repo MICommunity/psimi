@@ -116,7 +116,7 @@
      </bean>
 
     <!-- fetchers -->
-    <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.OlsFetcher"/>
+    <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsFetcher"/>
     <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
 
 
@@ -126,8 +126,13 @@
         <property name="cvTermEnricherListener" ref="cvTermListener"/>
     </bean>
 
+    <bean id="organismEnricher" class="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum">
+        <property name="organismEnricherListener" ref="organismListener" />
+    </bean>
+
     <bean id="proteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum">
         <constructor-arg ref="proteinFetcher"/>
+        <property name="organismEnricher" ref="organismEnricher"/>
         <property name="proteinRemapper" ref="proteinRemapper"/>
         <property name="proteinEnricherListener" ref="proteinListenerManager"/>
     </bean>
