@@ -18,6 +18,7 @@ public class ProteinEnricherListenerManager
         extends EnricherListenerManager<ProteinEnricherListener>
         implements ProteinEnricherListener {
 
+    public ProteinEnricherListenerManager(){ }
 
     public ProteinEnricherListenerManager(ProteinEnricherListener... listeners){
         super(listeners);

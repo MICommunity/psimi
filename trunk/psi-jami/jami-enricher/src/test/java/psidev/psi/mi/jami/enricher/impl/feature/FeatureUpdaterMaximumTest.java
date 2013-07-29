@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.ProteinListeningFeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherLogger;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherLogger;
@@ -36,7 +37,7 @@ import java.io.IOException;
  * @since 19/07/13
  */
 public class FeatureUpdaterMaximumTest {
-
+    /*
 
     private ParticipantEnricher participantEnricher;
     private ParticipantEnricherStatisticsWriter participantStatisticsWriter;
@@ -75,7 +76,7 @@ public class FeatureUpdaterMaximumTest {
 
         cvTermFetcher = new MockCvTermFetcher();
 
-        participantEnricher.getCvTermEnricher().setCvTermFetcher(cvTermFetcher);
+        participantEnricher.setCvTermEnricher(new CvTermUpdaterMaximum(cvTermFetcher));
         participantEnricher.getCvTermEnricher().setCvTermEnricherListener(new CvTermEnricherLogger());
 
         featureEnricher = participantEnricher.getFeatureEnricher();
@@ -143,7 +144,7 @@ public class FeatureUpdaterMaximumTest {
     }
 
 
-
+         */
 
 
 

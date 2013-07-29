@@ -14,6 +14,8 @@ public class InteractionEnricherListenerManager
         extends EnricherListenerManager<InteractionEnricherListener>
         implements InteractionEnricherListener{
 
+    public InteractionEnricherListenerManager(){ }
+
     public InteractionEnricherListenerManager(InteractionEnricherListener... listeners){
         super(listeners);
     }

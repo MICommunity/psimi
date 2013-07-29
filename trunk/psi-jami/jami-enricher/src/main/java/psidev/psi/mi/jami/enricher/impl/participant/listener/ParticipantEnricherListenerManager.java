@@ -15,6 +15,7 @@ public class ParticipantEnricherListenerManager
         extends EnricherListenerManager<ParticipantEnricherListener>
         implements ParticipantEnricherListener{
 
+    public ParticipantEnricherListenerManager(){ }
 
     public ParticipantEnricherListenerManager(ParticipantEnricherListener... listeners){
         super(listeners);

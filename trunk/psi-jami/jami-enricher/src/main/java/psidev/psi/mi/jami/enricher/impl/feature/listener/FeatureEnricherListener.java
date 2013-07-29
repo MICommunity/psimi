@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.FeatureChangeListener;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 
 /**

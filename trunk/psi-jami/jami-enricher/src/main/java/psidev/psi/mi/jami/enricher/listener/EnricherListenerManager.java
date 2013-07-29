@@ -14,6 +14,7 @@ public abstract class EnricherListenerManager<T extends EnricherListener> {
 
     protected Collection<T> listenersList = new ArrayList<T>();
 
+    protected EnricherListenerManager(){}
     protected EnricherListenerManager(T... listeners){
         for(T listener : listeners){
             addEnricherListener(listener);
