@@ -78,8 +78,8 @@
     <bean id="proteinListenerManager" class="psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager">
         <constructor-arg>
             <list>
-                <value>ref="proteinListener"</value>
-                <value>ref="featureEnricher"</value>
+                <ref bean="proteinListener"/>
+                <ref bean="featureEnricher"/>
             </list>
         </constructor-arg>
     </bean>
