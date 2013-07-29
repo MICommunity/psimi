@@ -17,6 +17,8 @@ public class FeatureEnricherListenerManager
         implements FeatureEnricherListener{
 
 
+    public FeatureEnricherListenerManager(){
+    }
 
     public FeatureEnricherListenerManager(FeatureEnricherListener... listeners){
         super(listeners);

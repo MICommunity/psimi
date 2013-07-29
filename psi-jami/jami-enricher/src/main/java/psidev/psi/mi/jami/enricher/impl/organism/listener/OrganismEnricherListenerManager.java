@@ -20,6 +20,7 @@ public class OrganismEnricherListenerManager
         implements OrganismEnricherListener{
 
 
+    public OrganismEnricherListenerManager(){}
 
     public OrganismEnricherListenerManager(OrganismEnricherListener... listeners){
         super(listeners);

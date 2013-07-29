@@ -21,6 +21,7 @@ public class CvTermEnricherListenerManager
     implements CvTermEnricherListener{
 
 
+    public CvTermEnricherListenerManager(){}
 
     public CvTermEnricherListenerManager(CvTermEnricherListener... listeners){
         super(listeners);
