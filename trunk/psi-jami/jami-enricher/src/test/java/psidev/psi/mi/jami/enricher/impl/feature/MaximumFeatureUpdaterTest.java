@@ -34,7 +34,7 @@ public class MaximumFeatureUpdaterTest {
 
     @Before
     public void setup() throws IOException {
-        participantEnricher = new ParticipantUpdaterMaximum<DefaultParticipant , DefaultFeature>();
+        participantEnricher = new MaximumParticipantUpdater<DefaultParticipant , DefaultFeature>();
         participantStatisticsWriter = new ParticipantEnricherStatisticsWriter(
                 new File("participant_success"),
                 new File("participant_fail") );
