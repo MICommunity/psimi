@@ -60,5 +60,6 @@
         <module>jami-ols</module>
         <module>uniprot-remapping</module>
     <module>jami-uniprot-taxonomy</module>
+    <module>jami-obo</module>
   </modules>
 </project>
