@@ -20,11 +20,11 @@ import static junit.framework.Assert.assertTrue;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class CachedOntologyOLSFetcherTest {
+public class CachedOntologyOlsFetcherTest {
 
-    protected final Logger log = LoggerFactory.getLogger(CachedOntologyOLSFetcherTest.class.getName());
+    protected final Logger log = LoggerFactory.getLogger(CachedOntologyOlsFetcherTest.class.getName());
 
-    private CachedOntologyOLSFetcher ontologyOLSFetcher;
+    private CachedOntologyOlsFetcher ontologyOLSFetcher;
 
     public static final String TEST_TERM_A_IDENTIFIER = "MI:0113";
     public static final String TEST_TERM_A_DBNAME = "psi-mi";
@@ -36,7 +36,7 @@ public class CachedOntologyOLSFetcherTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        ontologyOLSFetcher = new CachedOntologyOLSFetcher();
+        ontologyOLSFetcher = new CachedOntologyOlsFetcher();
     }
 
     @After

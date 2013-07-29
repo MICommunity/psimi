@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.OntologyTerm;
-import psidev.psi.mi.jami.model.Xref;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -18,11 +17,11 @@ import static junit.framework.Assert.assertTrue;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class OntologyOLSFetcherTest {
+public class OntologyOlsFetcherTest {
 
-    protected static final Logger log = LoggerFactory.getLogger(OntologyOLSFetcherTest.class.getName());
+    protected static final Logger log = LoggerFactory.getLogger(OntologyOlsFetcherTest.class.getName());
 
-    private OntologyOLSFetcher ontologyOLSFetcher;
+    private OntologyOlsFetcher ontologyOLSFetcher;
 
     public static final String TEST_TERM_A_IDENTIFIER = "MI:0113";
     public static final String TEST_TERM_A_DBNAME = "psi-mi";
@@ -35,7 +34,7 @@ public class OntologyOLSFetcherTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        ontologyOLSFetcher = new OntologyOLSFetcher();
+        ontologyOLSFetcher = new OntologyOlsFetcher();
     }
 
 

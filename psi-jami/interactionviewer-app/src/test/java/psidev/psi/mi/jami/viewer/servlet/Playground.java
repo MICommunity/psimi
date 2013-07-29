@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.OntologyTermCompositeFetcher;
 import psidev.psi.mi.jami.bridges.obo.OntologyOboFetcher;
-import psidev.psi.mi.jami.bridges.ols.CachedOntologyOLSFetcher;
+import psidev.psi.mi.jami.bridges.ols.CachedOntologyOlsFetcher;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
@@ -59,13 +59,13 @@ public class Playground {
                 OntologyTermCompositeFetcher compositeFetcher = new OntologyTermCompositeFetcher();
                 this.fetcher = compositeFetcher;
                 compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OntologyOboFetcher(CvTermUtils.getPsimi(), MIJsonServlet.class.getResource("/psi-mi25.obo").getFile()));
-                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOLSFetcher());
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOlsFetcher());
             }
             else {
                 OntologyTermCompositeFetcher compositeFetcher = new OntologyTermCompositeFetcher();
                 this.fetcher = compositeFetcher;
                 compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OntologyOboFetcher(CvTermUtils.getPsimi(), path));
-                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOLSFetcher());
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOlsFetcher());
             }
         } catch (IOException e) {
             System.out.println("cannot load the property file /viewer.properties where we can find the psi-mi OBO file path. The ontology fetcher will be null.");

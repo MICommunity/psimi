@@ -89,7 +89,6 @@ public abstract class AbstractOrganismEnricher
      * @return  An organism fetcher if one has been set or a mock organism fetcher if it is has not.
      */
     public OrganismFetcher getFetcher() {
-        if(fetcher == null) getMockFetcher();
         return fetcher;
     }
 
@@ -99,12 +98,14 @@ public abstract class AbstractOrganismEnricher
      * @return  The mockOrganismFetcher if the fetcher was null
      */
     public MockOrganismFetcher getMockFetcher(){
-        if( fetcher == null && mockFetcher == null) {
+        if( mockFetcher == null) {
             mockFetcher = new MockOrganismFetcher();
-            fetcher = mockFetcher;
         }
         return mockFetcher;
     }
+    /*public void useMockFetcher(){
+        fetcher = getMockFetcher();
+    } */
 
     public void setOrganismEnricherListener(OrganismEnricherListener organismEnricherListener) {
         this.listener = organismEnricherListener;
