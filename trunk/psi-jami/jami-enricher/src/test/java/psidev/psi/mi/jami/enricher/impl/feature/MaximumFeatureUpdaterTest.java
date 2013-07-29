@@ -6,7 +6,7 @@ package psidev.psi.mi.jami.enricher.impl.feature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public class FeatureUpdaterMaximumTest {
+public class MaximumFeatureUpdaterTest {
     /*
 
     private ParticipantEnricher participantEnricher;

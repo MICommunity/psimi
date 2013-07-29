@@ -10,8 +10,8 @@ import psidev.psi.mi.jami.model.ModelledFeature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public class ModelledFeatureEnricherMaximum
-        extends FeatureEnricherMaximum<ModelledFeature>
+public class MaximumModelledFeatureEnricher
+        extends MaximumFeatureEnricher<ModelledFeature>
         implements ModelledFeatureEnricher {
 
 }

@@ -11,8 +11,8 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public class FeatureEvidenceUpdaterMinimum
-        extends FeatureUpdaterMinimum<FeatureEvidence>
+public class MinimumFeatureEvidenceUpdater
+        extends MinimumFeatureUpdater<FeatureEvidence>
         implements FeatureEvidenceEnricher {
 
     @Override

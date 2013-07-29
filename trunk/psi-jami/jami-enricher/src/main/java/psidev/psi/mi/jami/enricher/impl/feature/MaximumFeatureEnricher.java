@@ -10,8 +10,8 @@ import psidev.psi.mi.jami.model.Feature;
  * @author  Gabriel Aldam (galdam@ebi.ac.uk)
  * @since   19/06/13
  */
-public class FeatureEnricherMaximum<F extends Feature>
-        extends FeatureEnricherMinimum<F>
+public class MaximumFeatureEnricher<F extends Feature>
+        extends MinimumFeatureEnricher<F>
         implements FeatureEnricher <F> {
 
 

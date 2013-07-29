@@ -11,8 +11,8 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public class FeatureEvidenceUpdaterMaximum
-        extends FeatureUpdaterMaximum<FeatureEvidence>
+public class MaximumFeatureEvidenceEnricher
+        extends MaximumFeatureEnricher<FeatureEvidence>
         implements FeatureEvidenceEnricher {
 
     @Override
@@ -27,5 +27,4 @@ public class FeatureEvidenceUpdaterMaximum
             }
         }
     }
-
 }

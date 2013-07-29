@@ -1,11 +1,9 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
 
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMinimum;
-import psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMaximum;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -43,7 +41,7 @@ public class ParticipantEvidenceUpdaterMaximum
     /*
     @Override
     public FeatureEnricher<FeatureEvidence> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new FeatureEvidenceUpdaterMaximum();
+        if(featureEnricher == null) featureEnricher = new MaximumFeatureEvidenceUpdater();
         return featureEnricher;
     } */
 }

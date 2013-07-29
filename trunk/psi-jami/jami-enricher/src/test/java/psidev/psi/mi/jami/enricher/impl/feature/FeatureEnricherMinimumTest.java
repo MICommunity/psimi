@@ -68,7 +68,7 @@ public class FeatureEnricherMinimumTest {
         cvTermEnricher = new MinimumCvTermEnricher(cvTermFetcher);
 
 
-        featureEnricher = new FeatureEnricherMinimum();
+        featureEnricher = new MinimumFeatureEnricher();
 
         proteinFetcher = new MockProteinFetcher();
         proteinEnricher = new ProteinEnricherMinimum(proteinFetcher);
