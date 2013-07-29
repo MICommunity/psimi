@@ -65,7 +65,7 @@
         <property name="resource" ref="miFileResource"/>
     </bean>
 
-    <!-- lsiteners -->
+    <!-- listeners -->
     <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherStatisticsWriter">
         <constructor-arg index="0" value="${cvTerm.sucess.logFile}"/>
         <constructor-arg index="1" value="${cvTerm.failure.logFile}"/>
@@ -74,14 +74,37 @@
         <constructor-arg index="0" value="${protein.sucess.logFile}"/>
         <constructor-arg index="1" value="${protein.failure.logFile}"/>
     </bean>
+
+    <bean id="proteinListenerManager" class="psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager">
+        <constructor-arg>
+            <list>
+                <value>ref="proteinListener"</value>
+                <value>ref="featureEnricher"</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
     <bean id="organismListener" class="psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherStatisticsWriter">
         <constructor-arg index="0" value="${organism.sucess.logFile}"/>
         <constructor-arg index="1" value="${organism.failure.logFile}"/>
     </bean>
-    <!--<bean id="proteinRemapperListener" class="ProteinRe"/>-->
+    <bean id="proteinRemapperListener" class="psidev.psi.mi.jami.bridges.remapper.listener.ProteinRemapperStatisticsWriter">
+        <constructor-arg value="${remap.sucess.logFile}"/>
+    </bean>
+
     <bean id="featureListener" class="psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherStatisticsWriter">
         <constructor-arg index="0" value="${feature.sucess.logFile}"/>
         <constructor-arg index="1" value="${feature.failure.logFile}"/>
+    </bean>
+
+    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participant.sucess.logFile}"/>
+        <constructor-arg index="1" value="${participant.failure.logFile}"/>
+    </bean>
+
+    <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.impl.interaction.listener.InteractionEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${interaction.sucess.logFile}"/>
+        <constructor-arg index="1" value="${interaction.failure.logFile}"/>
     </bean>
 
     <!-- remapper -->
@@ -89,18 +112,44 @@
         <property name="checkingEnabled" value="true"/>
         <property name="priorityIdentifiers" value="false"/>
         <property name="prioritySequence" value="true"/>
-        <!--<property name="remapListener" ref="proteinRemapperListener"/> -->
+        <property name="remapListener" ref="proteinRemapperListener"/>
      </bean>
 
     <!-- fetchers -->
     <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.OlsFetcher"/>
     <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
 
+
     <!-- enrichers -->
-    <bean id="cvTermEnricher" class=""/>
-    <bean id="proteinEnricher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
-    <bean id="" class="psidev.psi.mi.jami.bridges.ols.OlsFetcher"/>
-    <bean id="proteinEnricher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+    <bean id="cvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum">
+        <constructor-arg ref="cvTermFetcher"/>
+        <property name="cvTermEnricherListener" ref="cvTermListener"/>
+    </bean>
+
+    <bean id="proteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum">
+        <constructor-arg ref="proteinFetcher"/>
+        <property name="proteinRemapper" ref="proteinRemapper"/>
+        <property name="proteinEnricherListener" ref="proteinListenerManager"/>
+    </bean>
+
+    <bean id="featureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMaximum">
+        <property name="featureEnricherListener" ref="featureListener"/>
+    </bean>
+
+    <bean id="participantEnricher" class="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMaximum">
+        <property name="cvTermEnricher" ref="cvTermEnricher"/>
+        <property name="featureEnricher" ref="featureEnricher"/>
+        <property name="proteinEnricher" ref="proteinEnricher"/>
+        <property name="participantListener" ref="participantListener"/>
+    </bean>
+
+    <bean id="interactionEnricher" class="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMaximum">
+        <property name="cvTermEnricher" ref="cvTermEnricher"/>
+        <property name="participantEnricher" ref="participantEnricher"/>
+        <property name="interactionEnricherListener" ref="interactionListener"/>
+    </bean>
+
+
 
     <!-- processor -->
     <bean id="interactionEvidenceProcessor" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
