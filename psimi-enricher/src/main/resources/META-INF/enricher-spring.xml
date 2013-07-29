@@ -121,34 +121,34 @@
 
 
     <!-- enrichers -->
-    <bean id="cvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum">
+    <bean id="cvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermEnricher">
         <constructor-arg ref="cvTermFetcher"/>
         <property name="cvTermEnricherListener" ref="cvTermListener"/>
     </bean>
 
-    <bean id="organismEnricher" class="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum">
+    <bean id="organismEnricher" class="psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismEnricher">
         <property name="organismEnricherListener" ref="organismListener" />
     </bean>
 
-    <bean id="proteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum">
+    <bean id="proteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher">
         <constructor-arg ref="proteinFetcher"/>
         <property name="organismEnricher" ref="organismEnricher"/>
         <property name="proteinRemapper" ref="proteinRemapper"/>
         <property name="proteinEnricherListener" ref="proteinListenerManager"/>
     </bean>
 
-    <bean id="featureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMaximum">
+    <bean id="featureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureEvidenceEnricher">
         <property name="featureEnricherListener" ref="featureListener"/>
     </bean>
 
-    <bean id="participantEnricher" class="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMaximum">
+    <bean id="participantEnricher" class="psidev.psi.mi.jami.enricher.impl.participant.MaximumParticipantEvidenceEnricher">
         <property name="cvTermEnricher" ref="cvTermEnricher"/>
         <property name="featureEnricher" ref="featureEnricher"/>
         <property name="proteinEnricher" ref="proteinEnricher"/>
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
-    <bean id="interactionEnricher" class="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMaximum">
+    <bean id="interactionEnricher" class="psidev.psi.mi.jami.enricher.impl.interaction.MaximumInteractionEvidenceEnricher">
         <property name="cvTermEnricher" ref="cvTermEnricher"/>
         <property name="participantEnricher" ref="participantEnricher"/>
         <property name="interactionEnricherListener" ref="interactionListener"/>
