@@ -5,6 +5,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Confidence;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceComparator;
@@ -14,6 +15,7 @@ import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Xml implementation of confidence
@@ -31,7 +33,9 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
 
     private XmlOpenCvTerm type;
     private String value;
+    private Map<Integer, Object> mapOfReferencedObjects;
     private Collection<Integer> experimentRefList;
+    private Collection<Experiment> experiments;
     private Collection<Publication> publications;
 
     private PsiXmLocator sourceLocator;
@@ -130,6 +134,28 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      */
     public void setExperimentRefList(Collection<Integer> value) {
         this.experimentRefList = value;
+    }
+
+    @XmlTransient
+    public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            experiments = new ArrayList<Experiment>();
+        }
+        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
+            resolveExperimentReferences();
+        }
+        return experiments;
+    }
+
+    private void resolveExperimentReferences() {
+        for (Integer id : this.experimentRefList){
+            if (this.mapOfReferencedObjects.containsKey(id)){
+                Object o = this.mapOfReferencedObjects.get(id);
+                if (o instanceof Experiment){
+                    this.experiments.add((Experiment)o);
+                }
+            }
+        }
     }
 
     @XmlLocation
