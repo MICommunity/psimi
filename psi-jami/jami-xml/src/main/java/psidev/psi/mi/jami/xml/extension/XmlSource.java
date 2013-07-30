@@ -258,6 +258,7 @@ public class XmlSource extends XmlOpenCvTerm
 
     @Override
     public void setAttributes(ArrayList<Annotation> annotations){
+        getAnnotations().clear();
         if (annotations != null){
             // we have a bibref. Some annotations can be processed
             for (Annotation annot : annotations){

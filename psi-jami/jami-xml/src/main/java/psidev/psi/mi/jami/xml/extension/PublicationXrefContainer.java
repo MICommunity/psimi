@@ -43,7 +43,8 @@ public class PublicationXrefContainer extends XrefContainer {
 
     @Override
     protected void processAddedPrimaryRef() {
-        if (XrefUtils.isXrefAnIdentifier(this.primaryRef)){
+        // identity or primary ref
+        if (XrefUtils.isXrefAnIdentifier(this.primaryRef) || XrefUtils.doesXrefHaveQualifier(this.primaryRef, Xref.PRIMARY_MI, Xref.PRIMARY)){
             ((FullIdentifierList)getAllIdentifiers()).addOnly(0, this.primaryRef);
             processAddedIdentifierEvent(this.primaryRef);
         }
@@ -251,7 +252,7 @@ public class PublicationXrefContainer extends XrefContainer {
     @Override
     protected void processAddedSecondaryXref(XmlXref added) {
         // it is an identifier
-        if (XrefUtils.isXrefAnIdentifier(added)){
+        if (XrefUtils.isXrefAnIdentifier(added) || XrefUtils.doesXrefHaveQualifier(this.primaryRef, Xref.PRIMARY_MI, Xref.PRIMARY)){
             ((FullIdentifierList)getAllIdentifiers()).addOnly(added);
             processAddedIdentifierEvent(added);
         }

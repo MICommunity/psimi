@@ -8,9 +8,15 @@
 
 package psidev.psi.mi.jami.xml.extension;
 
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -45,7 +51,38 @@ public class ExperimentalCvTerm
     implements Serializable
 {
 
+    private Map<Integer, Object> mapOfReferencedObjects;
     private Collection<Integer> experimentRefList;
+    private Collection<Experiment> experiments;
+
+    public ExperimentalCvTerm() {
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
+
+    public ExperimentalCvTerm(String shortName, String miIdentifier) {
+        super(shortName, miIdentifier);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
+
+    public ExperimentalCvTerm(String shortName) {
+        super(shortName);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
+
+    public ExperimentalCvTerm(String shortName, String fullName, String miIdentifier) {
+        super(shortName, fullName, miIdentifier);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
+
+    public ExperimentalCvTerm(String shortName, Xref ontologyId) {
+        super(shortName, ontologyId);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
+
+    public ExperimentalCvTerm(String shortName, String fullName, Xref ontologyId) {
+        super(shortName, fullName, ontologyId);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
 
     /**
      * Gets the value of the experimentRefList property.
@@ -73,4 +110,25 @@ public class ExperimentalCvTerm
         this.experimentRefList = value;
     }
 
+    @XmlTransient
+    public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            experiments = new ArrayList<Experiment>();
+        }
+        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
+            resolveExperimentReferences();
+        }
+        return experiments;
+    }
+
+    private void resolveExperimentReferences() {
+        for (Integer id : this.experimentRefList){
+            if (this.mapOfReferencedObjects.containsKey(id)){
+                Object o = this.mapOfReferencedObjects.get(id);
+                if (o instanceof Experiment){
+                    this.experiments.add((Experiment)o);
+                }
+            }
+        }
+    }
 }

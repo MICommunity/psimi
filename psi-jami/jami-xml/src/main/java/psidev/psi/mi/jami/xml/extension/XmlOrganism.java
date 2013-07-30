@@ -11,9 +11,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparato
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Xml implementation of an organism
@@ -36,7 +34,6 @@ public class XmlOrganism implements Organism, FileSourceContext, Serializable{
 
     private NamesContainer namesContainer;
     private int taxId;
-    private Collection<Alias> aliases;
     private CvTerm cellType;
     private CvTerm compartment;
     private CvTerm tissue;
@@ -154,19 +151,6 @@ public class XmlOrganism implements Organism, FileSourceContext, Serializable{
         }
         else {
             throw new IllegalArgumentException("The taxId "+id+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
-        }
-    }
-
-    protected void initialiseAliases(){
-        this.aliases = new ArrayList<Alias>();
-    }
-
-    protected void initialiseAliasesWith(Collection<Alias> aliases){
-        if (aliases == null){
-            this.aliases = Collections.EMPTY_LIST;
-        }
-        else {
-            this.aliases = aliases;
         }
     }
 

@@ -111,6 +111,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Se
     }
 
     public void setAttributes(ArrayList<Annotation> annot){
+        getAnnotations().clear();
         if (annot != null && !annot.isEmpty()){
             getAnnotations().addAll(annot);
         }
