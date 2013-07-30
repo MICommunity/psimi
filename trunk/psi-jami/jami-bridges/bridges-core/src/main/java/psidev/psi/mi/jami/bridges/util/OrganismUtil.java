@@ -11,6 +11,20 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
  */
 public class OrganismUtil {
 
+    /**
+     * If the TaxId is one of the reserved numbers (-5 to -1), it denotes a non-real organism.
+     * An organism with these names will be produced if there is match.
+     * Otherwise null is returned.
+     *
+     * -1 = In Vitro
+     * -2 = Chemical synthesis
+     * -3 = Unknown
+     * -4 = In vivo
+     * -5 = In Silico
+     *
+     * @param taxID
+     * @return
+     */
     public static Organism createSpecialistOrganism(int taxID){
         Organism organism;
         if ( taxID == -1 ) {
