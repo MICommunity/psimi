@@ -32,8 +32,6 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
     }
 
 
-
-
     public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
 
         /*if ( !TaxonomyUtils.isSupportedTaxid( taxid ) ) {

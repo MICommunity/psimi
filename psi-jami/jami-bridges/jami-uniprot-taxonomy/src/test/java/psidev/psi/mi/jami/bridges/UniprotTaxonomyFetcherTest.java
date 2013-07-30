@@ -8,6 +8,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
+import static org.junit.Assert.*;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -27,14 +29,36 @@ public class UniprotTaxonomyFetcherTest {
     }
 
     @Test
-    public void test() throws BridgeFailedException {
+    public void test_fetching_known_organism_A() throws BridgeFailedException {
         Organism organism = taxonomyFetcher.getOrganismByTaxID(9615);
-        log.info("TaxID: "+organism.getTaxId());
-        log.info("CommonName: "+organism.getCommonName());
-        log.info("ScientificName: "+organism.getScientificName());
+        assertEquals(9615 , organism.getTaxId());
+        assertEquals("Dog" , organism.getCommonName());
+        assertEquals("Canis familiaris" , organism.getScientificName());
         for(Alias syno : organism.getAliases()){
-            log.info("Synonym: "+syno.toString());
+            assertEquals("Canis lupus familiaris" , syno.getName());
         }
-
     }
+
+    @Test
+    public void test_fetching_known_organism_B() throws BridgeFailedException {
+        Organism organism = taxonomyFetcher.getOrganismByTaxID(9258);
+        assertEquals(9258 , organism.getTaxId());
+        assertEquals("Duckbill platypus" , organism.getCommonName());
+        assertEquals("Ornithorhynchus anatinus" , organism.getScientificName());
+        for(Alias syno : organism.getAliases()){
+            fail(); // Has no synonyms
+        }
+    }
+
+    @Test
+    public void test_fetching_known_organism_c() throws BridgeFailedException {
+        Organism organism = taxonomyFetcher.getOrganismByTaxID(436495);
+        assertEquals(436495 , organism.getTaxId());
+        assertEquals("Tyrant lizard king" , organism.getCommonName());
+        assertEquals("Tyrannosaurus rex" , organism.getScientificName());
+        for(Alias syno : organism.getAliases()){
+            fail(); // Has no synonyms
+        }
+    }
+
 }

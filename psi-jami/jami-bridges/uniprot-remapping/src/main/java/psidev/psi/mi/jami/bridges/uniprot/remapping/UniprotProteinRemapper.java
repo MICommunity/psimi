@@ -284,7 +284,10 @@ public class UniprotProteinRemapper
             IdentificationResults result = getMappingForXref( xref, context);
             identifierMappingResults.put(xref , result);
 
+            if(result != null) log.info(xref+" ID="+result.getFinalUniprotId());
+            else    log.info("Dead xref? "+xref);
             if(result != null && result.hasUniqueUniprotId()){
+
                 if (remappedUniprot != null){
                     if(! remappedUniprot.getFinalUniprotId().equalsIgnoreCase(result.getFinalUniprotId())){
                         report.push("Identifier mappings have conflict: ["+ remappedUniprot.getFinalUniprotId()+"] and ["+result.getFinalUniprotId()+"].");
