@@ -331,6 +331,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
      *
      */
     public void setAttributes(ArrayList<Annotation> value) {
+        getAnnotations().clear();
         if (value != null && !value.isEmpty()){
             for (Annotation a : value){
                 if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)

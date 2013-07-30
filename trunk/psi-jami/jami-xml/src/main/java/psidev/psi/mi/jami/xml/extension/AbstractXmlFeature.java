@@ -212,6 +212,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     }
 
     public void setAttributes(ArrayList<Annotation> attributes) {
+        getAnnotations().clear();
         if (attributes != null){
             getAnnotations().addAll(attributes);
         }
@@ -240,6 +241,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     }
 
     public void setFeatureRanges(ArrayList<Range> ranges) {
+        getRanges().clear();
         if (ranges != null){
             getRanges().addAll(ranges);
         }
