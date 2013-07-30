@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Xml implementation of Parameter
@@ -28,7 +29,9 @@ import java.util.Collection;
 public class XmlParameter implements Parameter, ModelledParameter, FileSourceContext, Serializable{
 
     private Collection<Publication> publications;
+    private Map<Integer, Object> mapOfReferencedObjects;
     private Collection<Integer> experimentRefList;
+    private Collection<Experiment> experiments;
     private CvTerm type;
     private BigDecimal uncertainty;
     private CvTerm unit;
@@ -321,6 +324,28 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      */
     public void setExperimentRefList(Collection<Integer> value) {
         this.experimentRefList = value;
+    }
+
+    @XmlTransient
+    public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            experiments = new ArrayList<Experiment>();
+        }
+        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
+            resolveExperimentReferences();
+        }
+        return experiments;
+    }
+
+    private void resolveExperimentReferences() {
+        for (Integer id : this.experimentRefList){
+            if (this.mapOfReferencedObjects.containsKey(id)){
+                Object o = this.mapOfReferencedObjects.get(id);
+                if (o instanceof Experiment){
+                    this.experiments.add((Experiment)o);
+                }
+            }
+        }
     }
 
     @XmlLocation
