@@ -33,7 +33,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
             // if it is not an identifier
             if (((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef)){
-                processPotentialRemovedImex(this.primaryRef);
+                processRemovedPotentialImex(this.primaryRef);
             }
         }
         else {
@@ -50,7 +50,7 @@ public class PublicationXrefContainer extends XrefContainer {
         }
         else {
             ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
-            processPotentialAddedImex(this.primaryRef);
+            processAddedPotentialImex(this.primaryRef);
         }
     }
 
@@ -204,7 +204,7 @@ public class PublicationXrefContainer extends XrefContainer {
         doi = null;
     }
 
-    protected void processPotentialAddedImex(Xref added) {
+    protected void processAddedPotentialImex(Xref added) {
 
         // the added identifier is imex and the current imex is not set
         if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
@@ -215,7 +215,7 @@ public class PublicationXrefContainer extends XrefContainer {
         }
     }
 
-    protected void processPotentialRemovedImex(Xref removed) {
+    protected void processRemovedPotentialImex(Xref removed) {
         // the removed identifier is pubmed
         if (imexId != null && imexId.equals(removed)){
             imexId = null;
@@ -259,6 +259,7 @@ public class PublicationXrefContainer extends XrefContainer {
         // it is not an identifier
         else {
             ((FullXrefList)getAllXrefs()).addOnly(added);
+            processAddedPotentialImex(added);
         }
     }
 
@@ -268,6 +269,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(removed)){
             // if it is not an identifier
             ((FullXrefList)getAllXrefs()).removeOnly(removed);
+            processRemovedPotentialImex(removed);
         }
         else {
             processRemovedIdentifierEvent(removed);
@@ -277,27 +279,33 @@ public class PublicationXrefContainer extends XrefContainer {
     @Override
     protected void clearSecondaryXrefProperties() {
         if (primaryRef != null){
-            Collection<XmlXref> primary = Collections.singleton(primaryRef);
             List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
             identifiersToBeDeleted.remove(primaryRef);
             for (Xref ref : identifiersToBeDeleted){
                 ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
                 processRemovedIdentifierEvent(ref);
             }
-            if (!((FullIdentifierList)getAllIdentifiers()).retainAllOnly(primary)){
-                // if it is not an identifier
-                ((FullXrefList)getAllXrefs()).retainAllOnly(primary);
-            }
-            else {
-                ((FullXrefList)getAllXrefs()).clearOnly();
+
+            identifiersToBeDeleted.clear();
+            identifiersToBeDeleted.addAll(getAllXrefs());
+            identifiersToBeDeleted.remove(primaryRef);
+            for (Xref ref : identifiersToBeDeleted){
+                ((FullXrefList)getAllXrefs()).removeOnly(ref);
+                processRemovedPotentialImex(ref);
             }
         }
         else{
-            ((FullXrefList)getAllXrefs()).clearOnly();
             List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
             for (Xref ref : identifiersToBeDeleted){
                 ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
                 processRemovedIdentifierEvent(ref);
+            }
+
+            identifiersToBeDeleted.clear();
+            identifiersToBeDeleted.addAll(getAllXrefs());
+            for (Xref ref : identifiersToBeDeleted){
+                ((FullXrefList)getAllXrefs()).removeOnly(ref);
+                processRemovedPotentialImex(ref);
             }
         }
     }
@@ -307,7 +315,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (added instanceof XmlXref){
             processAddedPrimaryAndSecondaryRefs((XmlXref) added);
         }
-        processPotentialAddedImex(added);
+        processAddedPotentialImex(added);
     }
 
     @Override
@@ -315,7 +323,7 @@ public class PublicationXrefContainer extends XrefContainer {
         if (removed instanceof XmlXref){
             processRemovedPrimaryAndSecondaryRefs((XmlXref) removed);
         }
-        processPotentialRemovedImex(removed);
+        processRemovedPotentialImex(removed);
     }
 
     @Override

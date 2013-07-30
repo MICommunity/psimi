@@ -170,17 +170,14 @@ public class FeatureXrefContainer extends XrefContainer{
             Collection<XmlXref> primary = Collections.singleton(primaryRef);
             List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
             identifiersToBeDeleted.remove(primaryRef);
+
             for (Xref ref : identifiersToBeDeleted){
                 ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
                 processRemovedIdentifierEvent(ref);
             }
-            if (!((FullIdentifierList)getAllIdentifiers()).retainAllOnly(primary)){
-                // if it is not an identifier
-                ((FullXrefList)getAllXrefs()).retainAllOnly(primary);
-            }
-            else {
-                ((FullXrefList)getAllXrefs()).clearOnly();
-            }
+
+            // if it is not an identifier
+            ((FullXrefList)getAllXrefs()).retainAllOnly(primary);
         }
         else{
             ((FullXrefList)getAllXrefs()).clearOnly();

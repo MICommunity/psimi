@@ -108,11 +108,7 @@ public class InteractorXrefContainer extends XrefContainer {
     protected void clearSecondaryXrefProperties() {
         if (primaryRef != null){
             Collection<XmlXref> primary = Collections.singleton(primaryRef);
-            List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
-            identifiersToBeDeleted.remove(primaryRef);
-            for (Xref ref : identifiersToBeDeleted){
-                ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
-            }
+
             if (!((FullIdentifierList)getAllIdentifiers()).retainAllOnly(primary)){
                 // if it is not an identifier
                 ((FullXrefList)getAllXrefs()).retainAllOnly(primary);
