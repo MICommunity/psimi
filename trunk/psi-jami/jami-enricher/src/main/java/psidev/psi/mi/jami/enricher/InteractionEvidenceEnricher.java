@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.enricher.InteractionEnricher;
+
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -13,4 +13,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  */
 public interface InteractionEvidenceEnricher
         extends InteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> {
+
+    public PublicationEnricher getPublicationEnricher();
+    public void setPublicationEnricher(PublicationEnricher publicationEnricher);
 }

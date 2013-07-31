@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
 
+import psidev.psi.mi.jami.enricher.PublicationEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.*;
 
 /**
