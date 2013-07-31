@@ -31,17 +31,17 @@ public class CachedEuroPubMedCentralFetcher
     public static final String EHCACHE_CONFIG_FILE = "/europubmedcentral-service.ehcache.xml";
     public static final String CACHE_NAME = "europubmedcentral-service-cache";
 
-    public CachedEuroPubMedCentralFetcher(){
+    public CachedEuroPubMedCentralFetcher() throws BridgeFailedException {
         super();
         initialiseCache();
     }
 
 
-    public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException {
-        final String key = "getPublicationByPubmedID#"+pubmedID;
+    public Publication getPublicationByPubmedID(String id) throws BridgeFailedException {
+        final String key = "getPublicationByPubmedID#"+ id;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getPublicationByPubmedID(pubmedID);
+            data = super.getPublicationByPubmedID(id);
             storeInCache(key , data);
         }
         return (Publication)data;
