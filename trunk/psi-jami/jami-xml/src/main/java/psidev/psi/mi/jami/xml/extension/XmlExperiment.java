@@ -36,7 +36,7 @@ import java.util.Collections;
 public class XmlExperiment implements Experiment, FileSourceContext, Serializable{
 
     private NamesContainer namesContainer;
-    private XrefContainer xrefContainer;
+    private ExperimentXrefContainer xrefContainer;
     @Generated(value = "com.sun.tools.xjc.Driver", date = "2013-04-03T12:49:45+01:00", comments = "JAXB RI vhudson-jaxb-ri-2.1-2")
     protected ExperimentType.HostOrganismList hostOrganismList;
     @XmlElement(required = true)
@@ -199,6 +199,9 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
 
     public void setBibRef(Publication publication) {
         setPublicationAndAddExperiment(publication);
+        if (this.xrefContainer != null){
+           this.xrefContainer.setPublication(this.publication);
+        }
     }
 
     public void setPublicationAndAddExperiment(Publication publication) {
@@ -208,6 +211,10 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
 
         if (publication != null){
             publication.addExperiment(this);
+        }
+
+        if (this.xrefContainer != null){
+            this.xrefContainer.setPublication(this.publication);
         }
     }
 
@@ -220,7 +227,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
      *
      */
     @XmlElement(name = "xref")
-    public XrefContainer getXref() {
+    public ExperimentXrefContainer getXref() {
         if (xrefContainer != null && xrefContainer.isEmpty()){
            return null;
         }
@@ -235,7 +242,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
      *     {@link XrefContainer }
      *
      */
-    public void setXref(XrefContainer value) {
+    public void setXref(ExperimentXrefContainer value) {
         this.xrefContainer = value;
     }
 

@@ -4,12 +4,14 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Abstract class for Xml features
@@ -36,7 +38,10 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     private CvTerm type;
     private int id;
 
+    private Map<Integer, Object> mapOfReferencedObjects;
+
     public AbstractXmlFeature(){
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName){
@@ -44,31 +49,37 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         this.namesContainer = new NamesContainer();
         this.namesContainer.setShortLabel(shortName);
         this.namesContainer.setFullName(fullName);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(CvTerm type){
         this();
         this.type = type;
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName, CvTerm type){
         this(shortName, fullName);
         this.type =type;
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName, String interpro){
         this(shortName, fullName);
         setInterpro(interpro);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(CvTerm type, String interpro){
         this(type);
         setInterpro(interpro);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName, CvTerm type, String interpro){
         this(shortName, fullName, type);
         setInterpro(interpro);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     protected void initialiseAnnotations(){
@@ -319,9 +330,11 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
 
     /**
      * Sets the value of the id property.
+     * Adds this object in the mapOfReferencedObjects of this entry
      *
      */
     public void setId(int value) {
         this.id = value;
+        this.mapOfReferencedObjects.put(this.id, this);
     }
 }
