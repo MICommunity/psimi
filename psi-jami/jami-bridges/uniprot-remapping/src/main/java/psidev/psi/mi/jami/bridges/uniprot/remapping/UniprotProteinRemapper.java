@@ -43,7 +43,7 @@ public class UniprotProteinRemapper
     public void remapProtein(Protein proteinToRemap) throws BridgeFailedException {
 
         IdentificationContext context = new IdentificationContext();
-        if(proteinToRemap.getOrganism() != null)
+        if( proteinToRemap.getOrganism() != null )
             context.setOrganism(new BioSource("ShortName", ""+proteinToRemap.getOrganism().getTaxId()));
 
         if(priorityIdentifiers && prioritySequence) priorityRemapping(proteinToRemap, context);

@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.util.EnricherUtil;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
