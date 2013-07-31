@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.xml;
 
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +19,11 @@ public class XmlEntryContext {
 
     private Map<Integer, Object> mapOfReferencedObjects;
 
+    private Map<Xref, Publication> mapOfPublications;
+
     private XmlEntryContext(){
         this.mapOfReferencedObjects = new HashMap<Integer, Object>();
+        this.mapOfPublications = new HashMap<Xref, Publication>();
     }
 
     public static XmlEntryContext getInstance() {
@@ -34,6 +40,10 @@ public class XmlEntryContext {
 
     public Map<Integer, Object> getMapOfReferencedObjects() {
         return mapOfReferencedObjects;
+    }
+
+    public Map<Xref, Publication> getMapOfPublications() {
+        return mapOfPublications;
     }
 
     public static void remove(){

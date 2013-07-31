@@ -5,10 +5,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.util.*;
 
 /**
@@ -25,6 +22,11 @@ public class ExperimentXrefContainer extends XrefContainer{
     private Xref imexId;
     private Publication publication;
     private List<Xref> allIdentifiers;
+
+    @Override
+    public XmlXref getPrimaryRef() {
+        return primaryRef;
+    }
 
     @XmlTransient
     public Publication getPublication() {
