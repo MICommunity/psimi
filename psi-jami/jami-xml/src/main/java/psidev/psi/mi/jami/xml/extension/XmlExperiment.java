@@ -640,6 +640,9 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
     public void setId(int value) {
         this.id = value;
         this.mapOfReferencedObjects.put(this.id, this);
+        if (sourceLocator != null){
+            sourceLocator.setObjectId(this.id);
+        }
     }
 
     @XmlTransient
