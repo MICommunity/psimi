@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.cdb.ebi.ac.uk/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://webservice.cdb.ebi.ac.uk/" name="WSCitationImplService">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://www.ebi.ac.uk:80/webservices/citexplore/v3.0.1/service?xsd=1" namespace="http://webservice.cdb.ebi.ac.uk/"></xsd:import>
+    </xsd:schema>
+  </types>
+  <message name="searchPublications">
+    <part element="tns:searchPublications" name="parameters"></part>
+  </message>
+  <message name="searchPublicationsResponse">
+    <part element="tns:searchPublicationsResponse" name="parameters"></part>
+  </message>
+  <message name="QueryException">
+    <part element="tns:QueryException" name="fault"></part>
+  </message>
+  <message name="profilePublications">
+    <part element="tns:profilePublications" name="parameters"></part>
+  </message>
+  <message name="profilePublicationsResponse">
+    <part element="tns:profilePublicationsResponse" name="parameters"></part>
+  </message>
+  <message name="getCitations">
+    <part element="tns:getCitations" name="parameters"></part>
+  </message>
+  <message name="getCitationsResponse">
+    <part element="tns:getCitationsResponse" name="parameters"></part>
+  </message>
+  <message name="getReferences">
+    <part element="tns:getReferences" name="parameters"></part>
+  </message>
+  <message name="getReferencesResponse">
+    <part element="tns:getReferencesResponse" name="parameters"></part>
+  </message>
+  <message name="getTextMinedTerms">
+    <part element="tns:getTextMinedTerms" name="parameters"></part>
+  </message>
+  <message name="getTextMinedTermsResponse">
+    <part element="tns:getTextMinedTermsResponse" name="parameters"></part>
+  </message>
+  <message name="getDatabaseLinks">
+    <part element="tns:getDatabaseLinks" name="parameters"></part>
+  </message>
+  <message name="getDatabaseLinksResponse">
+    <part element="tns:getDatabaseLinksResponse" name="parameters"></part>
+  </message>
+  <message name="getSupplementaryFiles">
+    <part element="tns:getSupplementaryFiles" name="parameters"></part>
+  </message>
+  <message name="getSupplementaryFilesResponse">
+    <part element="tns:getSupplementaryFilesResponse" name="parameters"></part>
+  </message>
+  <message name="getFulltextXML">
+    <part element="tns:getFulltextXML" name="parameters"></part>
+  </message>
+  <message name="getFulltextXMLResponse">
+    <part element="tns:getFulltextXMLResponse" name="parameters"></part>
+  </message>
+  <message name="listSearchFields">
+    <part element="tns:listSearchFields" name="parameters"></part>
+  </message>
+  <message name="listSearchFieldsResponse">
+    <part element="tns:listSearchFieldsResponse" name="parameters"></part>
+  </message>
+  <message name="getLabsLinks">
+    <part element="tns:getLabsLinks" name="parameters"></part>
+  </message>
+  <message name="getLabsLinksResponse">
+    <part element="tns:getLabsLinksResponse" name="parameters"></part>
+  </message>
+  <portType name="WSCitationImpl">
+    <operation name="searchPublications">
+      <input message="tns:searchPublications"></input>
+      <output message="tns:searchPublicationsResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="profilePublications">
+      <input message="tns:profilePublications"></input>
+      <output message="tns:profilePublicationsResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getCitations">
+      <input message="tns:getCitations"></input>
+      <output message="tns:getCitationsResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getReferences">
+      <input message="tns:getReferences"></input>
+      <output message="tns:getReferencesResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getTextMinedTerms">
+      <input message="tns:getTextMinedTerms"></input>
+      <output message="tns:getTextMinedTermsResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getDatabaseLinks">
+      <input message="tns:getDatabaseLinks"></input>
+      <output message="tns:getDatabaseLinksResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getSupplementaryFiles">
+      <input message="tns:getSupplementaryFiles"></input>
+      <output message="tns:getSupplementaryFilesResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getFulltextXML">
+      <input message="tns:getFulltextXML"></input>
+      <output message="tns:getFulltextXMLResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="listSearchFields">
+      <input message="tns:listSearchFields"></input>
+      <output message="tns:listSearchFieldsResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+    <operation name="getLabsLinks">
+      <input message="tns:getLabsLinks"></input>
+      <output message="tns:getLabsLinksResponse"></output>
+      <fault message="tns:QueryException" name="QueryException"></fault>
+    </operation>
+  </portType>
+  <binding name="WSCitationImplPortBinding" type="tns:WSCitationImpl">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <operation name="searchPublications">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="profilePublications">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getCitations">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getReferences">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getTextMinedTerms">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getDatabaseLinks">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getSupplementaryFiles">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getFulltextXML">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="listSearchFields">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+    <operation name="getLabsLinks">
+      <soap:operation soapAction=""></soap:operation>
+      <input>
+        <soap:body use="literal"></soap:body>
+      </input>
+      <output>
+        <soap:body use="literal"></soap:body>
+      </output>
+      <fault name="QueryException">
+        <soap:fault name="QueryException" use="literal"></soap:fault>
+      </fault>
+    </operation>
+  </binding>
+  <service name="WSCitationImplService">
+    <port name="WSCitationImplPort" binding="tns:WSCitationImplPortBinding">
+      <soap:address location="http://www.ebi.ac.uk:80/webservices/citexplore/v3.0.1/service"></soap:address>
+    </port>
+  </service>
+</definitions>

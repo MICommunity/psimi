@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.Collection;
@@ -12,6 +13,6 @@ import java.util.Collection;
  */
 public interface PublicationFetcher {
 
-    public Collection<Publication> getPublicationByPubmedID(String pubmedID);
+    public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException;
 
 }

@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.util.EnricherUtil;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
 
@@ -40,7 +41,7 @@ public class EnricherUtilTest {
 
     @Test
     public void test_link_linkFeatureEnricherToProteinEnricher_with_null_protein(){
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher , null);
+        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, null);
     }
     @Test
     public void test_link_linkFeatureEnricherToProteinEnricher_with_null_feature(){
