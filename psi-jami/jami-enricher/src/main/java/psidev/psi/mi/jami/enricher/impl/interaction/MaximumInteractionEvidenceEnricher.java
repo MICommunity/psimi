@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
+import psidev.psi.mi.jami.enricher.PublicationEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -13,6 +15,30 @@ import psidev.psi.mi.jami.model.*;
 public class MaximumInteractionEvidenceEnricher
         extends MaximumInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
         implements InteractionEvidenceEnricher {
+
+
+
+
+    private PublicationEnricher publicationEnricher = null;
+
+    @Override
+    public void processInteraction(InteractionEvidence interactionToEnrich) throws EnricherException {
+        super.processInteraction(interactionToEnrich);
+
+        if( getPublicationEnricher() != null )
+            if( interactionToEnrich.getExperiment() != null
+                    && interactionToEnrich.getExperiment().getPublication() != null )
+                getPublicationEnricher().enrichPublication(
+                        interactionToEnrich.getExperiment().getPublication());
+    }
+
+    public PublicationEnricher getPublicationEnricher() {
+        return publicationEnricher;
+    }
+
+    public void setPublicationEnricher(PublicationEnricher publicationEnricher) {
+        this.publicationEnricher = publicationEnricher;
+    }
 
     /*
     @Override
