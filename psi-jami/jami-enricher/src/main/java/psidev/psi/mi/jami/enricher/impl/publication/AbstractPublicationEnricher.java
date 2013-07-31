@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher.impl.publication;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationListener;
+import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.util.Collection;
 public abstract class AbstractPublicationEnricher
         implements PublicationEnricher{
 
-    private PublicationListener listener = null;
+    private PublicationEnricherListener listener = null;
     private PublicationFetcher fetcher = null;
 
     public AbstractPublicationEnricher(PublicationFetcher fetcher){
@@ -44,10 +44,10 @@ public abstract class AbstractPublicationEnricher
         return fetcher;
     }
 
-    public void setPublicationListener(PublicationListener listener){
+    public void setPublicationListener(PublicationEnricherListener listener){
         this.listener = listener;
     }
-    public PublicationListener getPublicationListener(){
+    public PublicationEnricherListener getPublicationListener(){
         return listener;
     }
 }

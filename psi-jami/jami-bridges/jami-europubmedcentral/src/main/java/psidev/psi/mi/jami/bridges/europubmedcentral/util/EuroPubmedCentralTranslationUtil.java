@@ -32,25 +32,6 @@ public class EuroPubmedCentralTranslationUtil {
         publication.setDoi(result.getDOI());
         log.info("publication.setDoi: "+result.getDOI());
 
-        /*
-        log.info("DB xrefs "+result.getHasDbCrossReferences());
-        if(result.getHasDbCrossReferences().equals("Y"))
-            //publication.getIdentifiers
-            if( result.getDbCrossReferenceList() != null
-                    && result.getDbCrossReferenceList().getDbName()  != null )
-                for( String ac : result.getDbCrossReferenceList().getDbName() ){
-                    log.info("Xref types"+ac);
-                }
-
-        log.info("Ac Numbers "+result.getHasTMAccessionNumbers());
-        if(result.getHasTMAccessionNumbers().equals("Y"))
-            //publication.getIdentifiers
-            if( result.getTmAccessionTypeList() != null
-                    && result.getTmAccessionTypeList().getAccessionType()  != null )
-                for( String ac : result.getTmAccessionTypeList().getAccessionType() ){
-                    log.info("AC types"+ac);
-                } */
-
         //assignImexId
 
         // Publication Title

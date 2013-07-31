@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +15,6 @@ import static org.junit.Assert.fail;
  * @since 31/07/13
  */
 public class EuroPubmedCentralFetcherTest {
-
 
     protected static final Logger log = LoggerFactory.getLogger(EuroPubmedCentralFetcherTest.class.getName());
 
@@ -29,14 +28,9 @@ public class EuroPubmedCentralFetcherTest {
     @Test
     public void test() throws BridgeFailedException {
         fetcher.getPublicationByPubmedID("23671334");
-
         log.info("------c-----");
-
         fetcher.getPublicationByPubmedID("13054692");
-
-
         log.info("----c-------");
-
         fetcher.getPublicationByPubmedID("10831611");
     }
 
