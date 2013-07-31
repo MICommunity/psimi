@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * The Xml implementation of Interactor
@@ -49,8 +51,10 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
     private int id;
     private Collection<Annotation> annotations;
 
-    public XmlInteractor(){
+    private Map<Integer, Object> mapOfReferencedObjects;
 
+    public XmlInteractor(){
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, CvTerm type){
@@ -64,41 +68,49 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
         else {
             this.interactorType = type;
         }
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, CvTerm type){
         this(name, type);
         setFullName(fullName);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, CvTerm type, Organism organism){
         this(name, type);
         this.organism = organism;
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, CvTerm type, Organism organism){
         this(name, fullName, type);
         this.organism = organism;
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, CvTerm type, Xref uniqueId){
         this(name, type);
         getIdentifiers().add(uniqueId);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, CvTerm type, Xref uniqueId){
         this(name, fullName, type);
         getIdentifiers().add(uniqueId);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, CvTerm type, Organism organism, Xref uniqueId){
         this(name, type, organism);
         getIdentifiers().add(uniqueId);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId){
         this(name, fullName, type, organism);
         getIdentifiers().add(uniqueId);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name){
@@ -107,46 +119,54 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
         }
         setShortName(name);
         this.interactorType = CvTermUtils.createUnknownInteractorType();
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName){
         this(name);
         setFullName(fullName);
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, Organism organism){
         this(name);
         this.organism = organism;
         this.interactorType = CvTermUtils.createUnknownInteractorType();
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, Organism organism){
         this(name, fullName);
         this.organism = organism;
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, Xref uniqueId){
         this(name);
         getIdentifiers().add(uniqueId);
         this.interactorType = CvTermUtils.createUnknownInteractorType();
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, Xref uniqueId){
         this(name, fullName);
         getIdentifiers().add(uniqueId);
         this.interactorType = CvTermUtils.createUnknownInteractorType();
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, Organism organism, Xref uniqueId){
         this(name, organism);
         getIdentifiers().add(uniqueId);
         this.interactorType = CvTermUtils.createUnknownInteractorType();
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, Organism organism, Xref uniqueId){
         this(name, fullName, organism);
         getIdentifiers().add(uniqueId);
         this.interactorType = CvTermUtils.createUnknownInteractorType();
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     /**
@@ -292,6 +312,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
      */
     public void setId(int value) {
         this.id = value;
+        this.mapOfReferencedObjects.put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }

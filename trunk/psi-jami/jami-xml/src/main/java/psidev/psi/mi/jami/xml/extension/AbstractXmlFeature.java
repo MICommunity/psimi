@@ -336,5 +336,8 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     public void setId(int value) {
         this.id = value;
         this.mapOfReferencedObjects.put(this.id, this);
+        if (sourceLocator != null){
+            sourceLocator.setObjectId(this.id);
+        }
     }
 }
