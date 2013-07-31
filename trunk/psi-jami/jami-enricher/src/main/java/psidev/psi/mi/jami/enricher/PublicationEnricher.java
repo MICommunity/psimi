@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationListener;
+import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.Collection;
@@ -22,6 +22,6 @@ public interface PublicationEnricher {
     public void setPublicationFetcher(PublicationFetcher fetcher);
     public PublicationFetcher getPublicationFetcher();
 
-    public void setPublicationListener(PublicationListener listener);
-    public PublicationListener getPublicationListener();
+    public void setPublicationListener(PublicationEnricherListener listener);
+    public PublicationEnricherListener getPublicationListener();
 }
