@@ -68,6 +68,8 @@ public class EuroPubmedCentralFetcher
 
 
     public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException{
+        if(pubmedID == null || pubmedID.length() < 1)
+            throw new IllegalArgumentException("Can not fetch on an empty identifier");
 
         List<Result> results = searchCitationsByExternalId(pubmedID).getResult();
 

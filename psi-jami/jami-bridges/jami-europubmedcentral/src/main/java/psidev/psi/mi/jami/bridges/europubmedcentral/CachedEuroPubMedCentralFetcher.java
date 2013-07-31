@@ -1,4 +1,5 @@
-package psidev.psi.mi.jami.bridges.uniprot;
+package psidev.psi.mi.jami.bridges.europubmedcentral;
+
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -7,59 +8,45 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
-import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Publication;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 14/05/13
+ * @since 31/07/13
  */
-public class CachedUniprotFetcher
-        extends UniprotFetcher
+public class CachedEuroPubMedCentralFetcher
+        extends EuroPubmedCentralFetcher
         implements CachedFetcher {
 
-    private final Logger log = LoggerFactory.getLogger(CachedUniprotFetcher.class.getName());
+    private final Logger log = LoggerFactory.getLogger(CachedEuroPubMedCentralFetcher.class.getName());
 
     private Cache cache;
     private static CacheManager cacheManager;
 
-    public static final String EHCACHE_CONFIG_FILE = "/uniprot-service.ehcache.xml";
-    public static final String CACHE_NAME = "uniprot-service-cache";
+    public static final String EHCACHE_CONFIG_FILE = "/europubmedcentral-service.ehcache.xml";
+    public static final String CACHE_NAME = "europubmedcentral-service-cache";
 
-
-
-    public CachedUniprotFetcher() {
+    public CachedEuroPubMedCentralFetcher(){
         super();
         initialiseCache();
     }
 
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
 
-        final String key = "getProteinsByIdentifier#"+identifier;
+    public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException {
+        final String key = "getPublicationByPubmedID#"+pubmedID;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getProteinsByIdentifier(identifier);
+            data = super.getPublicationByPubmedID(pubmedID);
             storeInCache(key , data);
         }
-        return (Collection<Protein> )data;
+        return (Publication)data;
     }
 
-    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        Collection<Protein> results = new ArrayList<Protein>();
-        for(String identifier : identifiers){
-            results.addAll(getProteinsByIdentifier(identifier));
-        }
-        return results;
-    }
-
-    /////////////////////////
-    // EH CACHE utilities
 
     public Object getFromCache( String key ) {
         Object data = null;
@@ -76,6 +63,8 @@ public class CachedUniprotFetcher
         cache.put( element );
     }
 
+
+    @Override
     public void initialiseCache() {
         URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
         if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
@@ -84,11 +73,13 @@ public class CachedUniprotFetcher
         if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
     }
 
+    @Override
     public void initialiseCache(File settingsFile) {
         // TODO
         throw new IllegalStateException("Implementation has not been completed");
     }
 
+    @Override
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
         if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
@@ -99,10 +90,12 @@ public class CachedUniprotFetcher
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
 
+    @Override
     public void clearCache() {
-       cacheManager.clearAll();
+        cacheManager.clearAll();
     }
 
+    @Override
     public void shutDownCache() {
         cacheManager.shutdown();
     }
