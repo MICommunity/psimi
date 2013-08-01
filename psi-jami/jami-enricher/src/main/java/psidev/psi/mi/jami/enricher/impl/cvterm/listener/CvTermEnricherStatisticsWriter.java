@@ -17,18 +17,18 @@ public class CvTermEnricherStatisticsWriter
         extends StatisticsWriter<CvTerm>
         implements CvTermEnricherListener {
 
-    private static final String OBJECT = "CvTerm";
+    private static final String jamiObject = "CvTerm";
 
     public CvTermEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, OBJECT);
+        super(fileName, jamiObject);
     }
 
     public CvTermEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, OBJECT);
+        super(successFileName, failureFileName, jamiObject);
     }
 
     public CvTermEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, OBJECT);
+        super(successFile, failureFile, jamiObject);
     }
 
     public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message){
