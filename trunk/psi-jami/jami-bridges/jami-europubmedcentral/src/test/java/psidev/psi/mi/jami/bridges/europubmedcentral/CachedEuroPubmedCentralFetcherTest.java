@@ -7,16 +7,16 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Publication;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 31/07/13
+ * @since 01/08/13
  */
-public class EuroPubmedCentralFetcherTest {
+public class CachedEuroPubmedCentralFetcherTest {
 
     protected static final Logger log = LoggerFactory.getLogger(EuroPubmedCentralFetcherTest.class.getName());
 

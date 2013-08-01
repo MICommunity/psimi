@@ -19,11 +19,11 @@ import java.net.URL;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
  */
-public class CachedEuroPubMedCentralFetcher
+public class CachedEuroPubmedCentralFetcher
         extends EuroPubmedCentralFetcher
         implements CachedFetcher {
 
-    private final Logger log = LoggerFactory.getLogger(CachedEuroPubMedCentralFetcher.class.getName());
+    private final Logger log = LoggerFactory.getLogger(CachedEuroPubmedCentralFetcher.class.getName());
 
     private Cache cache;
     private static CacheManager cacheManager;
@@ -31,7 +31,7 @@ public class CachedEuroPubMedCentralFetcher
     public static final String EHCACHE_CONFIG_FILE = "/europubmedcentral-service.ehcache.xml";
     public static final String CACHE_NAME = "europubmedcentral-service-cache";
 
-    public CachedEuroPubMedCentralFetcher() throws BridgeFailedException {
+    public CachedEuroPubmedCentralFetcher() throws BridgeFailedException {
         super();
         initialiseCache();
     }
