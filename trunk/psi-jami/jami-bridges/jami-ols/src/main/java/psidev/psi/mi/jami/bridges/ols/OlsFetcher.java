@@ -310,7 +310,7 @@ public class OlsFetcher
      * @return The full name of the CvTerm or null if it cannot be found
      * @throws BridgeFailedException
      */
-    private String fetchFullNameByIdentifier(String identifier, String ontology)
+    protected String fetchFullNameByIdentifier(String identifier, String ontology)
             throws BridgeFailedException{
 
         try {
@@ -337,7 +337,7 @@ public class OlsFetcher
      * @return
      * @throws BridgeFailedException
      */
-    private CvTerm completeIdentifiedCvTerm(CvTerm cvTermFetched, String identifier, String databaseName)
+    protected CvTerm completeIdentifiedCvTerm(CvTerm cvTermFetched, String identifier, String databaseName)
             throws BridgeFailedException {
 
         Map metaDataMap = fetchMetaDataByIdentifier(identifier);
@@ -362,7 +362,7 @@ public class OlsFetcher
      * @return          A new CvTerm with any results that were found filled in.
      * @throws BridgeFailedException
      */
-    private Map fetchMetaDataByIdentifier(String identifier)
+    protected Map fetchMetaDataByIdentifier(String identifier)
             throws BridgeFailedException{
 
         try{
@@ -378,7 +378,7 @@ public class OlsFetcher
      * @param database
      * @return
      */
-    private String extractShortNameFromMetaData(
+    protected String extractShortNameFromMetaData(
             Map metaDataMap, String database){
 
         String META_DATA_SEPARATOR = "_";
@@ -404,7 +404,7 @@ public class OlsFetcher
      * @param metaDataMap
      * @return
      */
-    private String extractDescriptionFromMetaData(
+    protected String extractDescriptionFromMetaData(
             Map metaDataMap){
         String DEFINITION_KEY = "definition";
         if (metaDataMap != null) {
@@ -424,7 +424,7 @@ public class OlsFetcher
      * @param database
      * @return
      */
-    private Collection<Alias> extractSynonymsFromMetaData(
+    protected Collection<Alias> extractSynonymsFromMetaData(
             Map metaDataMap, String database){
 
         String META_DATA_SEPARATOR = "_";

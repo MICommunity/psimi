@@ -4,7 +4,9 @@ import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener
 import psidev.psi.mi.jami.model.Feature;
 
 /**
- * Created with IntelliJ IDEA.
+ * An extension to the feature enricher, the protein listening form also updates ranges.
+ *
+ * Updating ranges requires knowledge of the protein's sequence.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13

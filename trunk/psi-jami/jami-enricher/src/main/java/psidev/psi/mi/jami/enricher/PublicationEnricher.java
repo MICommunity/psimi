@@ -15,13 +15,44 @@ import java.util.Collection;
  */
 public interface PublicationEnricher {
 
+    /**
+     * Takes a publication and uses the publication fetcher to add additional details.
+     * If the publication is null an illegal state exception is thrown
+     * @param publicationToEnrich   the publication to be enriched
+     * @throws EnricherException
+     */
     public void enrichPublication(Publication publicationToEnrich) throws EnricherException;
+
+    /**
+     * Takes a collection of publications and enriches each in turn.
+     * @param publicationsToEnrich      the publications to enrich
+     * @throws EnricherException
+     */
     public void enrichPublications(Collection<Publication> publicationsToEnrich) throws EnricherException;
 
-
+    /**
+     * Sets the publication fetcher.
+     * If null, an illegal state exception will be thrown at the next enrichment
+     * @param fetcher   the fetcher to be used to retrieve publication entries
+     */
     public void setPublicationFetcher(PublicationFetcher fetcher);
+
+    /**
+     * Gets the publication fetcher which is currently being used to retrieve entries
+     * @return  the current publication fetcher.
+     */
     public PublicationFetcher getPublicationFetcher();
 
+    /**
+     * Sets the listener to report publication changes to.
+     * Can be null.
+     * @param listener the new publication listener
+     */
     public void setPublicationEnricherListener(PublicationEnricherListener listener);
+
+    /**
+     * Gets the current publication listener
+     * @return  the current publication listener
+     */
     public PublicationEnricherListener getPublicationEnricherListener();
 }
