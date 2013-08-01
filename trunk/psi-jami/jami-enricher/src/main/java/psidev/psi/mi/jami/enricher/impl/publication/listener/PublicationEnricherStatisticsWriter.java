@@ -62,7 +62,7 @@ public class PublicationEnricherStatisticsWriter
         removedCount++;
     }
 
-    public void onImexIdAdded(Publication publication) {
+    public void onImexIdentifierAdded(Publication publication, Xref addedXref) {
         checkObject(publication);
         additionCount++;
     }
