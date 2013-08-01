@@ -24,17 +24,12 @@ public class MaximumParticipantEvidenceEnricher
         super.processParticipant(participantEvidenceToEnrich);
 
         if(getCvTermEnricher() != null){
-            getCvTermEnricher().enrichCvTerm(
-                    participantEvidenceToEnrich.getExperimentalRole());
-
-            for(CvTerm cvTerm : participantEvidenceToEnrich.getIdentificationMethods()){
-                getCvTermEnricher().enrichCvTerm(cvTerm);
-            }
-
-            for(CvTerm cvTerm : participantEvidenceToEnrich.getExperimentalPreparations()){
-                getCvTermEnricher().enrichCvTerm(cvTerm);
-            }
+            getCvTermEnricher().enrichCvTerm(participantEvidenceToEnrich.getExperimentalRole());
+            getCvTermEnricher().enrichCvTerms(participantEvidenceToEnrich.getIdentificationMethods());
+            getCvTermEnricher().enrichCvTerms(participantEvidenceToEnrich.getExperimentalPreparations());
         }
+
+       // participantEvidenceToEnrich.getExpressedInOrganism()
     }
 
     /*

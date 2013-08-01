@@ -19,15 +19,14 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         implements ParticipantEnricher<P , F>  {
 
 
-    protected ParticipantEnricherListener listener;
+    private ParticipantEnricherListener listener;
 
-    protected ProteinEnricher proteinEnricher;
-    protected CvTermEnricher cvTermEnricher;
-    protected FeatureEnricher<F> featureEnricher;
+    private ProteinEnricher proteinEnricher;
+    private CvTermEnricher cvTermEnricher;
+    private FeatureEnricher<F> featureEnricher;
 
 
     public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException {
-
         for(Participant participant : participantsToEnrich){
             enrichParticipant((P) participant);
         }
@@ -69,8 +68,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         if( getFeatureEnricher() != null )
                 getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
 
-        if( listener != null )
-            listener.onParticipantEnriched(participantToEnrich , EnrichmentStatus.SUCCESS , null);
+        if( getParticipantEnricherListener() != null )
+            getParticipantEnricherListener().onParticipantEnriched(participantToEnrich , EnrichmentStatus.SUCCESS , null);
 
     }
 
