@@ -7,11 +7,13 @@ import psidev.psi.mi.jami.model.Publication;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 31/07/13
+ * @since 01/08/13
  */
-public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
+public class MinimumPublicationUpdater
+        extends AbstractPublicationEnricher{
 
-    public MinimumPublicationEnricher(PublicationFetcher fetcher) {
+
+    public MinimumPublicationUpdater(PublicationFetcher fetcher) {
         super(fetcher);
     }
 
@@ -19,6 +21,4 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
     protected void processPublication(Publication publicationToEnrich) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
-
-
 }

@@ -33,8 +33,8 @@ public class MinimumCvTermUpdater
 
             String oldValue = cvTermToEnrich.getShortName();
             cvTermToEnrich.setShortName(cvTermFetched.getShortName());
-            if (listener != null)
-                listener.onShortNameUpdate(cvTermToEnrich, oldValue);
+            if (getCvTermEnricherListener() != null)
+                getCvTermEnricherListener().onShortNameUpdate(cvTermToEnrich, oldValue);
         }
 
         //Full Name
@@ -43,8 +43,8 @@ public class MinimumCvTermUpdater
 
             String oldValue = cvTermToEnrich.getFullName();
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
-            if (listener != null)
-                listener.onFullNameUpdate(cvTermToEnrich, oldValue);
+            if (getCvTermEnricherListener() != null)
+                getCvTermEnricherListener().onFullNameUpdate(cvTermToEnrich, oldValue);
         }
 
         //Identifiers
@@ -54,12 +54,14 @@ public class MinimumCvTermUpdater
 
             for(Xref xref: merger.getToRemove()){
                 cvTermToEnrich.getIdentifiers().remove(xref);
-                if(listener != null) listener.onRemovedIdentifier(cvTermToEnrich , xref);
+                if(getCvTermEnricherListener() != null)
+                    getCvTermEnricherListener().onRemovedIdentifier(cvTermToEnrich , xref);
             }
 
             for(Xref xref: merger.getToAdd()){
                 cvTermToEnrich.getIdentifiers().add(xref);
-                if(listener != null) listener.onAddedIdentifier(cvTermToEnrich, xref);
+                if(getCvTermEnricherListener() != null)
+                    getCvTermEnricherListener().onAddedIdentifier(cvTermToEnrich, xref);
             }
         }
     }

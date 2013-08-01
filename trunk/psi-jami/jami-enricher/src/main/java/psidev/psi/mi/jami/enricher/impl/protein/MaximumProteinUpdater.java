@@ -32,11 +32,13 @@ public class MaximumProteinUpdater
             merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , false);
             for(Xref xref: merger.getToRemove()){
                 proteinToEnrich.getXrefs().remove(xref);
-                if(listener != null) listener.onRemovedXref(proteinToEnrich , xref);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onRemovedXref(proteinToEnrich , xref);
             }
             for(Xref xref: merger.getToAdd()){
                 proteinToEnrich.getXrefs().add(xref);
-                if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onAddedXref(proteinToEnrich, xref);
             }
         }
     }

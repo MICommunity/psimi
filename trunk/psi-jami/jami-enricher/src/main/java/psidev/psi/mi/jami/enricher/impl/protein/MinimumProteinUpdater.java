@@ -63,7 +63,8 @@ public class MinimumProteinUpdater
         if (! proteinToEnrich.getShortName().equalsIgnoreCase(proteinFetched.getShortName() )) {
             String oldValue = proteinToEnrich.getShortName();
             proteinToEnrich.setShortName(proteinFetched.getShortName());
-            if(listener != null) listener.onShortNameUpdate(proteinToEnrich, oldValue);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onShortNameUpdate(proteinToEnrich, oldValue);
         }
 
         //Full name
@@ -71,7 +72,8 @@ public class MinimumProteinUpdater
                 && ! proteinFetched.getFullName().equalsIgnoreCase(proteinToEnrich.getFullName()) ) {
             String oldValue = proteinToEnrich.getFullName();
             proteinToEnrich.setFullName(proteinFetched.getFullName());
-            if(listener != null) listener.onFullNameUpdate(proteinToEnrich, oldValue);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onFullNameUpdate(proteinToEnrich, oldValue);
         }
 
         //PRIMARY Uniprot AC
@@ -79,7 +81,8 @@ public class MinimumProteinUpdater
                 && ! proteinFetched.getUniprotkb().equalsIgnoreCase(proteinToEnrich.getUniprotkb()) ) {
             String oldValue = proteinToEnrich.getUniprotkb();
             proteinToEnrich.setUniprotkb(proteinFetched.getUniprotkb());
-            if(listener != null) listener.onUniprotKbUpdate(proteinToEnrich, oldValue);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onUniprotKbUpdate(proteinToEnrich, oldValue);
         }
 
         //Sequence
@@ -88,7 +91,8 @@ public class MinimumProteinUpdater
                 && ! proteinFetched.getSequence().equalsIgnoreCase(proteinToEnrich.getSequence()) ) {
             String oldValue = proteinToEnrich.getSequence();
             proteinToEnrich.setSequence(proteinFetched.getSequence());
-            if(listener != null) listener.onSequenceUpdate(proteinToEnrich, oldValue);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onSequenceUpdate(proteinToEnrich, oldValue);
         }
 
         ChecksumMerger checksumMerger = new ChecksumMerger();
@@ -109,12 +113,14 @@ public class MinimumProteinUpdater
 
             for(Xref xref: xrefMerger.getToRemove()){
                 proteinToEnrich.getIdentifiers().remove(xref);
-                if(listener != null) listener.onRemovedIdentifier(proteinToEnrich , xref);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onRemovedIdentifier(proteinToEnrich , xref);
             }
 
             for(Xref xref: xrefMerger.getToAdd()){
                 proteinToEnrich.getIdentifiers().add(xref);
-                if(listener != null) listener.onAddedIdentifier(proteinToEnrich, xref);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onAddedIdentifier(proteinToEnrich, xref);
             }
         }
 
@@ -127,12 +133,14 @@ public class MinimumProteinUpdater
 
             for(Alias alias: aliasMerger.getToRemove()){
                 proteinToEnrich.getAliases().remove(alias);
-                if(listener != null) listener.onRemovedAlias(proteinToEnrich , alias);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onRemovedAlias(proteinToEnrich , alias);
             }
 
             for(Alias alias: aliasMerger.getToAdd()){
                 proteinToEnrich.getAliases().add(alias);
-                if(listener != null) listener.onAddedAlias(proteinToEnrich, alias);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onAddedAlias(proteinToEnrich, alias);
             }
         }
     }

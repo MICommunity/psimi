@@ -33,7 +33,8 @@ public class MaximumCvTermEnricher
 
             for(Alias alias: merger.getToAdd()){
                 cvTermToEnrich.getSynonyms().add(alias);
-                if(listener != null) listener.onAddedSynonym(cvTermToEnrich, alias);
+                if(getCvTermEnricherListener() != null)
+                    getCvTermEnricherListener().onAddedSynonym(cvTermToEnrich, alias);
             }
         }
     }

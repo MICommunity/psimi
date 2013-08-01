@@ -39,12 +39,14 @@ public class MaximumCvTermUpdater
 
             for(Alias alias: merger.getToRemove()){
                 cvTermToEnrich.getSynonyms().remove(alias);
-                if(listener != null) listener.onRemovedSynonym(cvTermToEnrich , alias);
+                if(getCvTermEnricherListener() != null)
+                    getCvTermEnricherListener().onRemovedSynonym(cvTermToEnrich , alias);
             }
 
             for(Alias alias: merger.getToAdd()){
                 cvTermToEnrich.getSynonyms().add(alias);
-                if(listener != null) listener.onAddedSynonym(cvTermToEnrich, alias);
+                if(getCvTermEnricherListener() != null)
+                    getCvTermEnricherListener().onAddedSynonym(cvTermToEnrich, alias);
             }
         }
     }
