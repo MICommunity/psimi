@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.publication.listener;
 
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Annotation;
@@ -17,6 +18,13 @@ import java.util.Date;
 public class PublicationEnricherListenerManager
         extends EnricherListenerManager<PublicationEnricherListener>
         implements PublicationEnricherListener{
+
+
+    public PublicationEnricherListenerManager(){}
+
+    public PublicationEnricherListenerManager(PublicationEnricherListener... listeners){
+        super(listeners);
+    }
 
 
     public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
@@ -51,7 +59,7 @@ public class PublicationEnricherListenerManager
 
     public void onImexIdentifierAdded(Publication publication , Xref addedXref) {
         for(PublicationEnricherListener listener : listenersList){
-            listener.onImexIdentifierAdded(publication , addedXref);
+            listener.onImexIdentifierAdded(publication, addedXref);
         }
     }
 
