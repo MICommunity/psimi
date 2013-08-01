@@ -17,9 +17,6 @@ public interface ExperimentEnricher {
     public void enrichExperiment(Experiment experimentToEnrich) throws EnricherException;
     public void enrichExperiments(Collection<Experiment> experimentsToEnrich) throws EnricherException;
 
-    public ExperimentEnricherListener getExperimentListener();
-    public void getExperimentListener(ExperimentEnricherListener listener);
-
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
     public CvTermEnricher getCvTermEnricher();
 
@@ -28,4 +25,7 @@ public interface ExperimentEnricher {
 
     public PublicationEnricher getPublicationEnricher();
     public void setPublicationEnricher(PublicationEnricher publicationEnricher);
+
+    public ExperimentEnricherListener getExperimentEnricherListener();
+    public void setExperimentEnricherListener(ExperimentEnricherListener listener);
 }

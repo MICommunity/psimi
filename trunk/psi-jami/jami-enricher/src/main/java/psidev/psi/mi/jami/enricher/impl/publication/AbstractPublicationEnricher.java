@@ -46,16 +46,16 @@ public abstract class AbstractPublicationEnricher
 
         publicationFetched = fetchPublication(publicationToEnrich);
         if(publicationFetched == null){
-            if(getPublicationListener() != null)
-                getPublicationListener().onPublicationEnriched(
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onPublicationEnriched(
                         publicationToEnrich, EnrichmentStatus.FAILED, "No publication could be found.");
             return;
         }
 
         processPublication(publicationToEnrich);
 
-        if( getPublicationListener() != null)
-            getPublicationListener().onPublicationEnriched(publicationToEnrich , EnrichmentStatus.SUCCESS , null);
+        if( getPublicationEnricherListener() != null)
+            getPublicationEnricherListener().onPublicationEnriched(publicationToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
     protected abstract void processPublication(Publication publicationToEnrich);
@@ -95,10 +95,10 @@ public abstract class AbstractPublicationEnricher
         return fetcher;
     }
 
-    public void setPublicationListener(PublicationEnricherListener listener){
+    public void setPublicationEnricherListener(PublicationEnricherListener listener){
         this.listener = listener;
     }
-    public PublicationEnricherListener getPublicationListener(){
+    public PublicationEnricherListener getPublicationEnricherListener(){
         return listener;
     }
 }

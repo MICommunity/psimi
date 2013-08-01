@@ -51,18 +51,18 @@ public abstract class AbstractExperimentEnricher
 
         processExperiment(experimentToEnrich);
 
-        if( getExperimentListener() != null )
-            getExperimentListener().onExperimentEnriched(experimentToEnrich , EnrichmentStatus.SUCCESS , null);
+        if( getExperimentEnricherListener() != null )
+            getExperimentEnricherListener().onExperimentEnriched(experimentToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
     protected abstract void processExperiment(Experiment experimentToEnrich) throws EnricherException;
 
 
 
-    public ExperimentEnricherListener getExperimentListener() {
+    public ExperimentEnricherListener getExperimentEnricherListener() {
         return listener;
     }
-    public void getExperimentListener(ExperimentEnricherListener listener) {
+    public void setExperimentEnricherListener(ExperimentEnricherListener listener) {
         this.listener = listener;
     }
 
