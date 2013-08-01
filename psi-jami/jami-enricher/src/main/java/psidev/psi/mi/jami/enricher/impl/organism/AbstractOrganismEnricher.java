@@ -22,9 +22,9 @@ public abstract class AbstractOrganismEnricher
 
     public static final int RETRY_COUNT = 5;
 
-    protected OrganismFetcher fetcher = null;
-    protected MockOrganismFetcher mockFetcher = null;
-    protected OrganismEnricherListener listener = null;
+    private OrganismFetcher fetcher = null;
+    private MockOrganismFetcher mockFetcher = null;
+    private OrganismEnricherListener listener = null;
 
     protected Organism organismFetched = null;
 
@@ -35,11 +35,14 @@ public abstract class AbstractOrganismEnricher
      * @throws EnricherException
      */
     public void enrichOrganism(Organism organismToEnrich) throws EnricherException {
+        if( organismToEnrich == null )
+            throw new IllegalArgumentException("Null organism can not be enriched.");
 
         organismFetched = fetchOrganism(organismToEnrich);
+
         if(organismFetched == null){
-            if(listener != null)
-                listener.onOrganismEnriched(organismToEnrich, EnrichmentStatus.FAILED , "No organism could be found.");
+            if(getOrganismEnricherListener() != null)
+                getOrganismEnricherListener().onOrganismEnriched(organismToEnrich, EnrichmentStatus.FAILED , "No organism could be found.");
             return;
         }
 
@@ -67,7 +70,7 @@ public abstract class AbstractOrganismEnricher
                 "Organism fetcher failed on organism with taxID "+organismToEnrich.getTaxId()+". " );
         while(retryStrategy.retry()){
             try {
-                fetchedOrganism = fetcher.getOrganismByTaxID(organismToEnrich.getTaxId());
+                fetchedOrganism = getFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
                 retryStrategy.attemptSucceeded();
             } catch (BridgeFailedException e) {
                 retryStrategy.reportException(e);

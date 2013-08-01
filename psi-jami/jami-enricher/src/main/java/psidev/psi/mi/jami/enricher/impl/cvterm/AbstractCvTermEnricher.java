@@ -27,8 +27,9 @@ public abstract class AbstractCvTermEnricher
         implements CvTermEnricher {
 
     public static final int RETRY_COUNT = 5;
-    protected CvTermFetcher fetcher = null;
-    protected CvTermEnricherListener listener = null;
+
+    private CvTermFetcher fetcher = null;
+    private CvTermEnricherListener listener = null;
 
     protected CvTerm cvTermFetched = null;
 
@@ -48,10 +49,13 @@ public abstract class AbstractCvTermEnricher
      * @param cvTermToEnrich  a CvTerm to enrich
      */
     public void enrichCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
+        if ( cvTermToEnrich == null )
+            throw new IllegalArgumentException("Attempted to enrich null interactor.") ;
 
         cvTermFetched = fetchCvTerm(cvTermToEnrich);
         if(cvTermFetched == null){
-            if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, EnrichmentStatus.FAILED ,"No CvTerm could be found.");
+            if(getCvTermEnricherListener() != null)
+                getCvTermEnricherListener().onCvTermEnriched(cvTermToEnrich, EnrichmentStatus.FAILED ,"No CvTerm could be found.");
             return;
         }
 
@@ -96,7 +100,7 @@ public abstract class AbstractCvTermEnricher
                     }
                     index++;
                 }
-                throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
+                throw new EnricherException("Re-tried "+RETRY_COUNT+" times", e);
             }
         }
 
@@ -117,7 +121,7 @@ public abstract class AbstractCvTermEnricher
                     }
                     index++;
                 }
-                throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
+                throw new EnricherException("Re-tried "+RETRY_COUNT+" times", e);
             }
         }
 
@@ -138,7 +142,7 @@ public abstract class AbstractCvTermEnricher
                     }
                     index++;
                 }
-                throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
+                throw new EnricherException("Re-tried "+RETRY_COUNT+" times", e);
             }
         }
 
@@ -196,7 +200,6 @@ public abstract class AbstractCvTermEnricher
     public void setCvTermFetcher(CvTermFetcher fetcher) {
         this.fetcher = fetcher;
     }
-
     public CvTermFetcher getCvTermFetcher() {
         return fetcher;
     }
@@ -204,7 +207,6 @@ public abstract class AbstractCvTermEnricher
     public void setCvTermEnricherListener(CvTermEnricherListener cvTermEnricherListener) {
         listener = cvTermEnricherListener;
     }
-
     public CvTermEnricherListener getCvTermEnricherListener() {
         return listener;
     }

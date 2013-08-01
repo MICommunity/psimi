@@ -12,4 +12,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  */
 public interface ParticipantEvidenceEnricher
         extends ParticipantEnricher<ParticipantEvidence, FeatureEvidence> {
+
+
+
 }

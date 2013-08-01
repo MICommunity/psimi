@@ -44,21 +44,20 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
     }
 
     public void enrichFeature(F featureToEnrich) throws EnricherException {
-        if(featureToEnrich == null) throw new IllegalArgumentException("Feature enricher was passed a null feature.");
-
-        processFeature(featureToEnrich);
-    }
-
-    protected void processFeature(F featureToEnrich)
-            throws EnricherException{
+        if(featureToEnrich == null)
+            throw new IllegalArgumentException("Feature enricher was passed a null feature.");
 
         if(getCvTermEnricher() != null) {
             if(featureToEnrich.getType() != null) getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
         }
 
-        if(listener != null) listener.onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
+        processFeature(featureToEnrich);
 
+        if(getFeatureEnricherListener() != null)
+            getFeatureEnricherListener().onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
     }
+
+    protected abstract void processFeature(F featureToEnrich) throws EnricherException;
 
     protected void processInvalidRange(Feature feature, Range range , String message){
         Annotation annotation = AnnotationUtils.createCaution("Invalid range: " +message );

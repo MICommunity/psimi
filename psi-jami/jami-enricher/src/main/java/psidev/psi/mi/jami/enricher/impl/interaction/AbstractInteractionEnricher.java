@@ -40,8 +40,6 @@ public abstract class AbstractInteractionEnricher<I extends Interaction, P exten
         if ( interactionToEnrich == null )
             throw new IllegalArgumentException("Attempted to enrich null interactor.") ;
 
-        processInteraction(interactionToEnrich);
-
         // Enrich CvTerms
         if( getCvTermEnricher() != null &&
                 interactionToEnrich.getInteractionType() != null)
@@ -50,11 +48,15 @@ public abstract class AbstractInteractionEnricher<I extends Interaction, P exten
         if( getParticipantEnricher() != null )
             getParticipantEnricher().enrichParticipants(interactionToEnrich.getParticipants());
 
+
+        processInteraction(interactionToEnrich);
+
         if(listener != null)
             listener.onInteractionEnriched(interactionToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
     public void processInteraction(I interactionToEnrich) throws EnricherException {
+
     }
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher){

@@ -23,6 +23,9 @@ public interface ExperimentEnricher {
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
     public CvTermEnricher getCvTermEnricher();
 
+    public void getOrganismEnricher(OrganismEnricher organismEnricher);
+    public OrganismEnricher getOrganismEnricher();
+
     public PublicationEnricher getPublicationEnricher();
     public void setPublicationEnricher(PublicationEnricher publicationEnricher);
 }
