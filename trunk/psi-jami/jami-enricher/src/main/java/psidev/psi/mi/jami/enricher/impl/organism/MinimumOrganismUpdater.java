@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
+import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -14,6 +15,11 @@ public class MinimumOrganismUpdater
         extends AbstractOrganismEnricher
         implements OrganismEnricher {
 
+    public MinimumOrganismUpdater(){}
+
+    public MinimumOrganismUpdater(OrganismFetcher organismFetcher) {
+        super(organismFetcher);
+    }
 
     @Override
     protected void processOrganism(Organism organismToEnrich) {
@@ -25,8 +31,8 @@ public class MinimumOrganismUpdater
 
                 String oldValue = Integer.toString(organismToEnrich.getTaxId());
                 organismToEnrich.setTaxId(organismFetched.getTaxId());
-                if (listener != null)
-                    listener.onTaxidUpdate(organismToEnrich, oldValue );
+                if (getOrganismEnricherListener() != null)
+                    getOrganismEnricherListener().onTaxidUpdate(organismToEnrich, oldValue);
             }
 
             // Scientific name
@@ -36,8 +42,8 @@ public class MinimumOrganismUpdater
 
                 String oldValue = organismToEnrich.getScientificName();
                 organismToEnrich.setScientificName(organismFetched.getScientificName());
-                if (listener != null)
-                    listener.onScientificNameUpdate(organismToEnrich , oldValue);
+                if (getOrganismEnricherListener() != null)
+                    getOrganismEnricherListener().onScientificNameUpdate(organismToEnrich, oldValue);
             }
 
             // Common name
@@ -47,8 +53,8 @@ public class MinimumOrganismUpdater
 
                 String oldValue = organismToEnrich.getCommonName();
                 organismToEnrich.setCommonName(organismFetched.getCommonName());
-                if (listener != null)
-                    listener.onCommonNameUpdate(organismToEnrich , oldValue);
+                if (getOrganismEnricherListener() != null)
+                    getOrganismEnricherListener().onCommonNameUpdate(organismToEnrich, oldValue);
             }
         }
 
