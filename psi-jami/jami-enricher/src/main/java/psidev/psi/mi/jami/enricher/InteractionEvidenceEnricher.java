@@ -14,6 +14,6 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 public interface InteractionEvidenceEnricher
         extends InteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> {
 
-    public PublicationEnricher getPublicationEnricher();
-    public void setPublicationEnricher(PublicationEnricher publicationEnricher);
+    public ExperimentEnricher getExperimentEnricher();
+    public void setExperimentEnricher(ExperimentEnricher experimentEnricher);
 }
