@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.publication.listener;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.listener.PublicationChangeListener;
 import psidev.psi.mi.jami.model.Publication;
 
 /**
@@ -10,7 +11,9 @@ import psidev.psi.mi.jami.model.Publication;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
  */
-public interface PublicationEnricherListener extends EnricherListener {
+public interface PublicationEnricherListener
+        extends EnricherListener, PublicationChangeListener
+{
 
     public void onPublicationEnriched(
             Publication publication ,

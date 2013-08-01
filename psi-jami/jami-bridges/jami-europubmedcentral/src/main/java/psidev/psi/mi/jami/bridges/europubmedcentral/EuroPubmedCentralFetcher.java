@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.bridges.europubmedcentral;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.europubmedcentral.util.EuroPubmedCentralTranslationUtil;
+import psidev.psi.mi.jami.bridges.europubmedcentral.util.*;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
@@ -16,7 +16,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 
 /**

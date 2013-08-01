@@ -24,7 +24,7 @@ public class EuroPubmedCentralTranslationUtil {
     public static void convertDataResultToPublication(Publication publication , Result result){
         if(result == null) throw new IllegalArgumentException("Can not translate null publication result");
 
-        // PubMed ID
+        // PubMed ID   //
         publication.setPubmedId(result.getPmid());
         log.info("publication.setPubmedId: "+result.getPmid());
 

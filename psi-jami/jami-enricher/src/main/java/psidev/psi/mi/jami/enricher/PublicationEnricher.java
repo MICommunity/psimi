@@ -22,6 +22,6 @@ public interface PublicationEnricher {
     public void setPublicationFetcher(PublicationFetcher fetcher);
     public PublicationFetcher getPublicationFetcher();
 
-    public void setPublicationListener(PublicationEnricherListener listener);
-    public PublicationEnricherListener getPublicationListener();
+    public void setPublicationEnricherListener(PublicationEnricherListener listener);
+    public PublicationEnricherListener getPublicationEnricherListener();
 }
