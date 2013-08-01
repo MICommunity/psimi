@@ -57,7 +57,9 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             getFeatureEnricherListener().onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
     }
 
-    protected abstract void processFeature(F featureToEnrich) throws EnricherException;
+    protected void processFeature(F featureToEnrich) throws EnricherException{
+
+    }
 
     protected void processInvalidRange(Feature feature, Range range , String message){
         Annotation annotation = AnnotationUtils.createCaution("Invalid range: " +message );

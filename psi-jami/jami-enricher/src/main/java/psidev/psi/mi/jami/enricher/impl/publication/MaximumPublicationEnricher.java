@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.publication;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.model.Publication;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +13,11 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
 
     public MaximumPublicationEnricher(PublicationFetcher fetcher) {
         super(fetcher);
+    }
+
+    @Override
+    protected void processPublication(Publication publicationToEnrich) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 

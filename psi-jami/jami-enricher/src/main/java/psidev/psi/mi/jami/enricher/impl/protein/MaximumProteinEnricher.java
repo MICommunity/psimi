@@ -31,7 +31,8 @@ public class MaximumProteinEnricher
 
             for(Xref xref: merger.getToAdd()){
                 proteinToEnrich.getXrefs().add(xref);
-                if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onAddedXref(proteinToEnrich, xref);
             }
         }
     }

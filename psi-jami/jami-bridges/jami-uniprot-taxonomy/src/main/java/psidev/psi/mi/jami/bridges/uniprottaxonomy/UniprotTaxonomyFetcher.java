@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges;
+package psidev.psi.mi.jami.bridges.uniprottaxonomy;
 
 import com.hp.hpl.jena.rdf.model.*;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
