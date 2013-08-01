@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
+import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
 import psidev.psi.mi.jami.model.Alias;
@@ -17,6 +18,12 @@ public class MaximumOrganismEnricher
         implements OrganismEnricher {
 
 
+    public MaximumOrganismEnricher(){}
+
+    public MaximumOrganismEnricher(OrganismFetcher organismFetcher) {
+        super(organismFetcher);
+    }
+
     @Override
     protected void processOrganism(Organism organismToEnrich) {
         super.processOrganism(organismToEnrich);
@@ -31,7 +38,8 @@ public class MaximumOrganismEnricher
 
                 for(Alias alias: merger.getToAdd()){
                     organismToEnrich.getAliases().add(alias);
-                    if(listener != null) listener.onAddedAlias(organismToEnrich, alias);
+                    if(getOrganismEnricherListener() != null)
+                        getOrganismEnricherListener().onAddedAlias(organismToEnrich, alias);
                 }
             }
 

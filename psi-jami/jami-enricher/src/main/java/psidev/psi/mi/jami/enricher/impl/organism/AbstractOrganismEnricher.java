@@ -28,6 +28,12 @@ public abstract class AbstractOrganismEnricher
 
     protected Organism organismFetched = null;
 
+    public AbstractOrganismEnricher(){}
+
+    public AbstractOrganismEnricher(OrganismFetcher organismFetcher){
+        setFetcher(organismFetcher);
+    }
+
     /**
      * Takes an Organism, fetches a version with all details filled in and then enriches fields depending on the implementation.
      * Will report to the OrganismEnricherListener any changes made and the status upon finishing the enrichment.
