@@ -5,10 +5,12 @@ import psidev.psi.mi.jami.model.Publication;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
+ * An enricher for publications which can enrich either a single publication or a collection.
+ * The publicationEnricher has no subEnrichers. The publicationEnricher must be initiated with a fetcher.
+ *
+ * At the minimum level, the publication enricher only enriches the pubmedId and authors.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/08/13
@@ -34,7 +36,7 @@ public class MinimumPublicationUpdater
         }
 
 
-        // AUTHORS  // TODO - cases sensitive and alternative ways to display represent a problem
+        // AUTHORS
         if(!publicationFetched.getAuthors().isEmpty()){
             Collection<String> authorsToRemove = new ArrayList<String>();
             authorsToRemove.addAll(publicationToEnrich.getAuthors());

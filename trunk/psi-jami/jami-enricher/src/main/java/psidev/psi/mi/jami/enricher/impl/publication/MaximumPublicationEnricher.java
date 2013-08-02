@@ -6,7 +6,12 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 
 /**
- * Created with IntelliJ IDEA.
+ * An enricher for publications which can enrich either a single publication or a collection.
+ * The publicationEnricher has no subEnrichers. The publicationEnricher must be initiated with a fetcher.
+ *
+ * At the maximum level, the publication enricher enriches the minimum level fields pubmedId and authors.
+ * It also enriches the fields for DOI, Title, Journal, Publication Date, Xrefs and release date.
+ *
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13

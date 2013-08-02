@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Experiment;
 
 /**
- * The experiment enricher has no fetcher and can enrich either a single experiment of a collection.
+ * The experiment updater has no fetcher and can enrich either a single experiment of a collection.
  * It has subEnrichers for CvTerms, Organisms, and publications.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)

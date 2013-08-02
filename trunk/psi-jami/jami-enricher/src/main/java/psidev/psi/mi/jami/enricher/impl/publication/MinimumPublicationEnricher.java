@@ -27,7 +27,7 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
         }
 
 
-        // AUTHORS  // TODO - cases sensitive and alternative ways to display represent a problem
+        // AUTHORS
         if(!publicationFetched.getAuthors().isEmpty()){
             for(String author : publicationFetched.getAuthors()){
                 if(publicationToEnrich.getAuthors().add(author))
@@ -36,6 +36,7 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
                                 publicationToEnrich , author);
             }
         }
+
     }
 
 

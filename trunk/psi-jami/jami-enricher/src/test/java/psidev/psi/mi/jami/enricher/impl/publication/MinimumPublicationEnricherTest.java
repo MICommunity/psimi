@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.publication;
 
+
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicationFetcher;
@@ -9,16 +10,15 @@ import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricher
 import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.*;
 
+
+import java.util.Collections;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -82,7 +82,83 @@ public class MinimumPublicationEnricherTest {
 
 
     @Test
-    public void test() throws EnricherException {
+    public void test_enrichment_of_authors() throws EnricherException {
+
+        Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
+        testPub.getAuthors().add("TEST_A");
+
+
+        fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
+
+        persistentPublication.setPubmedId(TEST_PUBMED_ID);
+
+        publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
+                new PublicationEnricherLogger() ,
+                new PublicationEnricherListener() {
+                    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
+                        assertTrue(publication == persistentPublication);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
+                    public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
+                    public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
+                    public void onIdentifierRemoved(Publication publication, Xref removedXref)      {fail("fail");}
+                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)      {fail("fail");}
+                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
+                    public void onJournalUpdated(Publication publication, String oldJournal)        {fail("fail");}
+                    public void onPublicationDateUpdated(Publication publication, Date oldDate)     {fail("fail");}
+                    public void onAuthorAdded(Publication publication, String addedAuthor)          {
+                        assertTrue(publication == persistentPublication);
+                        assertEquals("TEST_A" , addedAuthor);
+                    }
+                    public void onAuthorRemoved(Publication publication, String removedAuthor)      {fail("fail");}
+                    public void onXrefAdded(Publication publication, Xref addedXref)                {fail("fail");}
+                    public void onXrefRemoved(Publication publication, Xref removedXref)            {fail("fail");}
+                    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {fail("fail");}
+                    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved) {fail("fail");}
+                    public void onReleaseDateUpdated(Publication publication, Date oldDate)         {fail("fail");}
+                }
+        ));
+
+        publicationEnricher.enrichPublication(persistentPublication);
+
+
+        assertEquals(1 , persistentPublication.getAuthors().size());
+
+        assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
+        assertEquals(1 , persistentPublication.getIdentifiers().size());
+        assertNull(persistentPublication.getTitle());
+        assertNull(persistentPublication.getJournal());
+        assertNull(persistentPublication.getDoi());
+        assertNull(persistentPublication.getPublicationDate());
+        //assertEquals(Collections.EMPTY_LIST , persistentPublication.getAuthors());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getXrefs());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getAnnotations());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getExperiments());
+        assertEquals(CurationDepth.undefined , persistentPublication.getCurationDepth());
+        assertNull(persistentPublication.getReleasedDate());
+        assertNull(persistentPublication.getSource());
+    }
+
+
+    @Test
+    public void test_enrichment_doeS_not_apply_to_other_fields() throws EnricherException {
+
+        Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
+        testPub.setTitle("TITLE");
+        testPub.setJournal("JOURNAL");
+        testPub.setPublicationDate(new Date(99));
+        testPub.setDoi("DOI");
+        testPub.getXrefs().add(new DefaultXref(new DefaultCvTerm("Test CvTerm"),"Test xref"));
+        testPub.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test Cvterm") , "value"));
+        testPub.getExperiments().add(new DefaultExperiment(testPub));
+        testPub.setCurationDepth(CurationDepth.IMEx);
+        testPub.setReleasedDate(new Date(99));
+        testPub.setSource(new DefaultSource("SOURCE"));
+
+
+        fetcher.addNewPublication(TEST_PUBMED_ID, testPub);
 
         persistentPublication.setPubmedId(TEST_PUBMED_ID);
 
@@ -113,6 +189,20 @@ public class MinimumPublicationEnricherTest {
         ));
 
         publicationEnricher.enrichPublication(persistentPublication);
-    }
 
+        assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
+        assertEquals(1 , persistentPublication.getIdentifiers().size());
+        assertNull(persistentPublication.getTitle());
+        assertNull(persistentPublication.getJournal());
+        assertNull(persistentPublication.getDoi());
+        assertNull(persistentPublication.getPublicationDate());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getAuthors());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getXrefs());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getAnnotations());
+        assertEquals(Collections.EMPTY_LIST , persistentPublication.getExperiments());
+        assertEquals(CurationDepth.undefined , persistentPublication.getCurationDepth());
+        assertNull(persistentPublication.getReleasedDate());
+        assertNull(persistentPublication.getSource());
+
+    }
 }
