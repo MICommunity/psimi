@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import java.util.Collections;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultInteractor implements Interactor, Serializable {
+public class DefaultInteractor implements Interactor {
 
     private String shortName;
     private String fullName;

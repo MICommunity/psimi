@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 
-import java.io.Serializable;
-
 /**
  * Default implementation of Alias.
  *
@@ -16,7 +14,7 @@ import java.io.Serializable;
  * @since <pre>21/01/13</pre>
  */
 
-public class DefaultAlias implements Alias, Serializable {
+public class DefaultAlias implements Alias {
 
     private CvTerm type;
     private String name;

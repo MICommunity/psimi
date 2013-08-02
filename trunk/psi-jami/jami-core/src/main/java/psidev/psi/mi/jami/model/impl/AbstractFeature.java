@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,7 +17,7 @@ import java.util.Collections;
  * @since <pre>09/07/13</pre>
  */
 
-public abstract class AbstractFeature<P extends Participant, F extends Feature> implements Feature<P,F>, Serializable {
+public abstract class AbstractFeature<P extends Participant, F extends Feature> implements Feature<P,F> {
     private String shortName;
     private String fullName;
     private Xref interpro;

@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 
-import java.io.Serializable;
-
 /**
  * Default implementation for Xref
  *
@@ -16,7 +14,7 @@ import java.io.Serializable;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultXref implements Xref, Serializable {
+public class DefaultXref implements Xref {
 
     private CvTerm database;
     private String id;

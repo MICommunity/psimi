@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.AbstractInteraction;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,7 +17,7 @@ import java.util.Collections;
  * @since <pre>09/07/13</pre>
  */
 
-public abstract class AbstractBinaryInteraction<T extends Participant> extends AbstractInteraction<T> implements BinaryInteraction<T>, Serializable {
+public abstract class AbstractBinaryInteraction<T extends Participant> extends AbstractInteraction<T> implements BinaryInteraction<T> {
     private T participantA;
     private T participantB;
     private CvTerm complexExpansion;

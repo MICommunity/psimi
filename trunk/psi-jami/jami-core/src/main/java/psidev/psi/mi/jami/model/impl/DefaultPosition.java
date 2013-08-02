@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
 
-import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultPosition implements Position, Serializable {
+public class DefaultPosition implements Position {
 
     private CvTerm status;
     private long start;

@@ -24,7 +24,7 @@ import java.util.Collections;
  * @since <pre>21/01/13</pre>
  */
 
-public class DefaultCvTerm implements CvTerm, Serializable {
+public class DefaultCvTerm implements CvTerm {
 
     private String shortName;
     private String fullName;
