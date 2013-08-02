@@ -69,6 +69,7 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- Fetchers -->
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-uniprot</artifactId>
@@ -77,7 +78,20 @@
 
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-uniprot-taxonomy</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>uniprot-remapping</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-europubmedcentral</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 

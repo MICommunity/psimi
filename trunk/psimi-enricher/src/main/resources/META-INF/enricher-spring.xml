@@ -70,6 +70,7 @@
         <constructor-arg index="0" value="${cvTerm.sucess.logFile}"/>
         <constructor-arg index="1" value="${cvTerm.failure.logFile}"/>
     </bean>
+
     <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherStatisticsWriter">
         <constructor-arg index="0" value="${protein.sucess.logFile}"/>
         <constructor-arg index="1" value="${protein.failure.logFile}"/>
@@ -107,6 +108,18 @@
         <constructor-arg index="1" value="${interaction.failure.logFile}"/>
     </bean>
 
+    <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${experiment.sucess.logFile}"/>
+        <constructor-arg index="1" value="${experiment.failure.logFile}"/>
+    </bean>
+
+    <bean id="publicationListener" class="psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${publication.sucess.logFile}"/>
+        <constructor-arg index="1" value="${publication.failure.logFile}"/>
+    </bean>
+
+
+
     <!-- remapper -->
     <bean id="proteinRemapper" class="psidev.psi.mi.jami.bridges.uniprot.remapping.UniprotProteinRemapper">
         <property name="checkingEnabled" value="true"/>
@@ -118,7 +131,8 @@
     <!-- fetchers -->
     <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsFetcher"/>
     <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
-
+    <bean id="publicationFetcher" class="psidev.psi.mi.jami.bridges.europubmedcentral.CachedEuroPubmedCentralFetcher"/>
+    <bean id="organismFetcher" class="psidev.psi.mi.jami.bridges.uniprottaxonomy.UniprotTaxonomyFetcher"/>
 
     <!-- enrichers -->
     <bean id="cvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermEnricher">
@@ -126,16 +140,22 @@
         <property name="cvTermEnricherListener" ref="cvTermListener"/>
     </bean>
 
+    <bean id="mockOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismEnricher">
+        <property name="organismEnricherListener" ref="organismListener" />
+    </bean>
+
     <bean id="organismEnricher" class="psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismEnricher">
+        <constructor-arg ref="organismFetcher"/>
         <property name="organismEnricherListener" ref="organismListener" />
     </bean>
 
     <bean id="proteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher">
         <constructor-arg ref="proteinFetcher"/>
-        <property name="organismEnricher" ref="organismEnricher"/>
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="proteinRemapper" ref="proteinRemapper"/>
         <property name="proteinEnricherListener" ref="proteinListenerManager"/>
     </bean>
+
 
     <bean id="featureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureEvidenceEnricher">
         <property name="featureEnricherListener" ref="featureListener"/>
@@ -148,7 +168,20 @@
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
+    <bean id="publicationEnricher" class="psidev.psi.mi.jami.enricher.impl.publication.MaximumPublicationEnricher">
+        <constructor-arg ref="publicationFetcher"/>
+        <property name="publicationEnricherListener" ref="publicationListener"/>
+    </bean>
+
+
+    <bean id="experimentEnricher" class="psidev.psi.mi.jami.enricher.impl.experiment.MaximumExperimentEnricher">
+        <property name="cvTermEnricher" ref="cvTermEnricher"/>
+        <property name="publicationEnricher" ref="publicationEnricher"/>
+        <property name="experimentEnricherListener" ref="experimentListener"/>
+    </bean>
+
     <bean id="interactionEnricher" class="psidev.psi.mi.jami.enricher.impl.interaction.MaximumInteractionEvidenceEnricher">
+        <property name="experimentEnricher" ref="experimentEnricher"/> -->
         <property name="cvTermEnricher" ref="cvTermEnricher"/>
         <property name="participantEnricher" ref="participantEnricher"/>
         <property name="interactionEnricherListener" ref="interactionListener"/>
