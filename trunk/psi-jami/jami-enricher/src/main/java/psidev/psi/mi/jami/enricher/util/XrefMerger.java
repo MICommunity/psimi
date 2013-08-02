@@ -14,7 +14,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class XrefUpdateMerger {
+public class XrefMerger {
 
     private Collection<Xref> toRemove = new ArrayList<Xref>();
     private Collection<Xref> fetchedToAdd = new ArrayList<Xref>();

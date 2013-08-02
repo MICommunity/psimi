@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -49,7 +49,7 @@ public class MinimumCvTermUpdater
 
         //Identifiers
         if(! cvTermFetched.getIdentifiers().isEmpty()) {
-            XrefUpdateMerger merger = new XrefUpdateMerger();
+            XrefMerger merger = new XrefMerger();
             merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers() , false);
 
             for(Xref xref: merger.getToRemove()){

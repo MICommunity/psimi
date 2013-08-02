@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/07/13
  */
+@Deprecated
 public class RetryStrategy {
 
     private int attemptTotal;

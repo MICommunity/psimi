@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -43,7 +43,7 @@ public class MinimumCvTermEnricher
         //Identifiers
         if(! cvTermFetched.getIdentifiers().isEmpty()) {
 
-            XrefUpdateMerger merger = new XrefUpdateMerger();
+            XrefMerger merger = new XrefMerger();
             merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers(), true);
 
             for(Xref xref: merger.getToAdd()){

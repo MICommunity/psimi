@@ -33,44 +33,6 @@ public class MinimumPublicationUpdater
                 getPublicationEnricherListener().onPubmedIdUpdate(publicationToEnrich , oldValue);
         }
 
-        // DOI
-        if(publicationToEnrich.getDoi().equals(publicationFetched.getDoi())
-                && publicationFetched.getDoi() != null) {
-            String oldValue = publicationToEnrich.getDoi();
-            publicationToEnrich.setPubmedId(publicationFetched.getDoi());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onDoiUpdate(publicationToEnrich , oldValue);
-        }
-
-        //IDS
-        //IMEX
-
-        // TITLE
-        if(publicationToEnrich.getTitle().equals(publicationFetched.getTitle())
-                && publicationFetched.getTitle() != null) {
-            String oldValue = publicationToEnrich.getTitle();
-            publicationToEnrich.setTitle(publicationFetched.getTitle());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
-        }
-
-        // JOURNAL
-        if(publicationToEnrich.getJournal().equals( publicationFetched.getJournal() )
-                && publicationFetched.getJournal() != null) {
-            String oldValue = publicationToEnrich.getJournal();
-            publicationToEnrich.setJournal(publicationFetched.getJournal());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
-        }
-
-        // PUBLICATION DATE
-        if(publicationToEnrich.getPublicationDate().equals( publicationFetched.getPublicationDate() )
-                && publicationFetched.getPublicationDate() != null) {
-            Date oldValue = publicationToEnrich.getPublicationDate();
-            publicationToEnrich.setPublicationDate(publicationFetched.getPublicationDate());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onPublicationDateUpdated(publicationToEnrich , oldValue);
-        }
 
         // AUTHORS  // TODO - cases sensitive and alternative ways to display represent a problem
         if(!publicationFetched.getAuthors().isEmpty()){
@@ -90,24 +52,5 @@ public class MinimumPublicationUpdater
                                 publicationToEnrich , author);
             }
         }
-
-        // XREFS
-
-        // ANNOTATIONS
-
-        // EXPERIMENTS
-
-        // CURATION DEPTH
-
-        // RELEASE DATE
-        if(publicationToEnrich.getReleasedDate().equals(publicationFetched.getReleasedDate())
-                && publicationFetched.getReleasedDate() != null) {
-            Date oldValue = publicationToEnrich.getReleasedDate() ;
-            publicationToEnrich.setReleasedDate(publicationFetched.getReleasedDate());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich , oldValue);
-        }
-
-        // SOURCE
     }
 }

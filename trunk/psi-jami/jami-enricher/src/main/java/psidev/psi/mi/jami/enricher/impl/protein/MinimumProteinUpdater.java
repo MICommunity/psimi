@@ -4,9 +4,9 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.AliasMerger;
 import psidev.psi.mi.jami.enricher.util.ChecksumMerger;
-import psidev.psi.mi.jami.enricher.util.XrefUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -108,7 +108,7 @@ public class MinimumProteinUpdater
 
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
-            XrefUpdateMerger xrefMerger = new XrefUpdateMerger();
+            XrefMerger xrefMerger = new XrefMerger();
             xrefMerger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers() , false);
 
             for(Xref xref: xrefMerger.getToRemove()){
@@ -128,7 +128,7 @@ public class MinimumProteinUpdater
 
         // == Alias ==
         if(! proteinFetched.getAliases().isEmpty()) {
-            AliasUpdateMerger aliasMerger = new AliasUpdateMerger();
+            AliasMerger aliasMerger = new AliasMerger();
             aliasMerger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
 
             for(Alias alias: aliasMerger.getToRemove()){

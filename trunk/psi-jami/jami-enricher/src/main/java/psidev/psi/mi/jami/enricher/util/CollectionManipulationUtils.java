@@ -8,6 +8,7 @@ import java.util.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 14/05/13
  */
+@Deprecated
 public class CollectionManipulationUtils {
 
 

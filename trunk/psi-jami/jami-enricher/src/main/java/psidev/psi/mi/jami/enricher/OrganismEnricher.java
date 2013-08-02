@@ -7,7 +7,8 @@ import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListen
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * An organism enricher for adding varying levels of information to Organism objects.
+ * An organism enricher which can enrich either a single organism or a collection.
+ * The organismEnricher has no subEnrichers.
  *
  * @author  Gabriel Aldam (galdam@ebi.ac.uk)
  * @since   22/05/13
@@ -36,15 +37,14 @@ public interface OrganismEnricher{
     public MockOrganismFetcher getMockFetcher();
 
     /**
-     * Sets the listener to use.
-     * @param listener
+     * Sets the listener to use. Can be null.
+     * @param listener  An organism enrichment listener
      */
     public void setOrganismEnricherListener(OrganismEnricherListener listener);
 
     /**
      * The listener which is currently being used.
-     *
-     * @return  The listener currently in use. Null if it has not been set.
+     * @return  The listener currently in use.
      */
     public OrganismEnricherListener getOrganismEnricherListener();
 }

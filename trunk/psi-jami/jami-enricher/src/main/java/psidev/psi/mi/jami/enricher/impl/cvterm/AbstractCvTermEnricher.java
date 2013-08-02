@@ -196,21 +196,37 @@ public abstract class AbstractCvTermEnricher
     }
 
 
-
+    /**
+     * Sets the cvTerm fetcher to be used for enrichment.
+     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
+     * @param fetcher   The fetcher to be used to gather data for enrichment
+     */
     public void setCvTermFetcher(CvTermFetcher fetcher) {
         this.fetcher = fetcher;
     }
+
+    /**
+     * The fetcher to be used for used for fetcher.
+     * @return  The fetcher which is being used for fetching.
+     */
     public CvTermFetcher getCvTermFetcher() {
         return fetcher;
     }
 
-    public void setCvTermEnricherListener(CvTermEnricherListener cvTermEnricherListener) {
-        listener = cvTermEnricherListener;
+
+    /**
+     * The cvTermEnricherListener to be used.
+     * It will be fired at all points where a change is made to the cvTerm
+     * @param listener  The listener to use. Can be null.
+     */
+    public void setCvTermEnricherListener(CvTermEnricherListener listener) {
+        this.listener = listener;
     }
+    /**
+     * The current CvTermEnricherListener.
+     * @return  the current listener. May be null.
+     */
     public CvTermEnricherListener getCvTermEnricherListener() {
         return listener;
     }
-
-
-
 }

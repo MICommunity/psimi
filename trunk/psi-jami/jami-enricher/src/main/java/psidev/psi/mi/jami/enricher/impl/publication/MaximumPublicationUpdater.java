@@ -1,6 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl.publication;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.enricher.util.XrefMerger;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,4 +20,76 @@ public class MaximumPublicationUpdater
         super(fetcher);
     }
 
+    public void processPublication(Publication publicationToEnrich){
+
+        // DOI
+        if(publicationToEnrich.getDoi().equals(publicationFetched.getDoi())
+                && publicationFetched.getDoi() != null) {
+            String oldValue = publicationToEnrich.getDoi();
+            publicationToEnrich.setPubmedId(publicationFetched.getDoi());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onDoiUpdate(publicationToEnrich , oldValue);
+        }
+
+        //IDS
+        //IMEX
+
+        // TITLE
+        if(publicationToEnrich.getTitle().equals(publicationFetched.getTitle())
+                && publicationFetched.getTitle() != null) {
+            String oldValue = publicationToEnrich.getTitle();
+            publicationToEnrich.setTitle(publicationFetched.getTitle());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
+        }
+
+        // JOURNAL
+        if(publicationToEnrich.getJournal().equals( publicationFetched.getJournal() )
+                && publicationFetched.getJournal() != null) {
+            String oldValue = publicationToEnrich.getJournal();
+            publicationToEnrich.setJournal(publicationFetched.getJournal());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
+        }
+
+        // PUBLICATION DATE
+        if(publicationToEnrich.getPublicationDate().equals( publicationFetched.getPublicationDate() )
+                && publicationFetched.getPublicationDate() != null) {
+            Date oldValue = publicationToEnrich.getPublicationDate();
+            publicationToEnrich.setPublicationDate(publicationFetched.getPublicationDate());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onPublicationDateUpdated(publicationToEnrich , oldValue);
+        }
+
+
+        /**
+         * XREFS
+         */
+        if(!publicationFetched.getXrefs().isEmpty()){
+            XrefMerger xrefMerger = new XrefMerger();
+            xrefMerger.merge(publicationFetched.getXrefs() , publicationToEnrich.getXrefs() , false);
+            for(Xref newXref : xrefMerger.getToAdd()) {
+                publicationToEnrich.getXrefs().add(newXref);
+                if(getPublicationEnricherListener() != null)
+                    getPublicationEnricherListener().onXrefAdded(publicationToEnrich , newXref);
+            }
+        }
+
+        // ANNOTATIONS
+
+        // EXPERIMENTS
+
+        // CURATION DEPTH
+
+        // SOURCE
+
+        // RELEASE DATE
+        if(publicationToEnrich.getReleasedDate().equals(publicationFetched.getReleasedDate())
+                && publicationFetched.getReleasedDate() != null) {
+            Date oldValue = publicationToEnrich.getReleasedDate() ;
+            publicationToEnrich.setReleasedDate(publicationFetched.getReleasedDate());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich , oldValue);
+        }
+    }
 }

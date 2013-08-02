@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import java.util.Collection;
 
 /**
- *
  * Find the CRC64 and ROGID checksums in both lists
  * Find the other checksums so they can be added.
  * Only add CRC64/ROGID is the fetcher sequence is in the enriched protein
@@ -92,7 +91,5 @@ public class ChecksumMerger {
                 }
             }
         }*/
-
-
     }
 }
