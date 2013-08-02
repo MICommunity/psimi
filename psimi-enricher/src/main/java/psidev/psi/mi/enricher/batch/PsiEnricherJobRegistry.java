@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Job registry for PsiEnricher
+ * Job registry for PsiMIEnricher
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
