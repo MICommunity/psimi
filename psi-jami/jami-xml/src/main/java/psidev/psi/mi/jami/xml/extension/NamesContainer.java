@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import java.util.Collections;
 @XmlSeeAlso({
         ProteinNamesContainer.class
 })
-public class NamesContainer implements FileSourceContext, Serializable{
+public class NamesContainer implements FileSourceContext{
 
     private String shortLabel;
     private String fullName;

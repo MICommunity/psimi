@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 
 /**
  * Xml implementation of Range
@@ -28,7 +27,7 @@ import java.io.Serializable;
         "endPosition",
         "link"
 })
-public class XmlRange implements Range, FileSourceContext, Serializable{
+public class XmlRange implements Range, FileSourceContext{
     private Position start;
     private Position end;
     private boolean isLink;

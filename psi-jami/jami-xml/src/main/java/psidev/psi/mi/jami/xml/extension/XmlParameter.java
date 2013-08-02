@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterCompara
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +25,7 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlType(name = "parameterType", propOrder = {
         "experimentRefList"})
-public class XmlParameter implements Parameter, ModelledParameter, FileSourceContext, Serializable{
+public class XmlParameter implements Parameter, ModelledParameter, FileSourceContext{
 
     private Collection<Publication> publications;
     private Map<Integer, Object> mapOfReferencedObjects;

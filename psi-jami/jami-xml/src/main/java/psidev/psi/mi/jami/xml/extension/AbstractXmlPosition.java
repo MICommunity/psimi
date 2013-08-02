@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * Abstract class for XmlPosition
@@ -18,7 +17,7 @@ import java.io.Serializable;
  * @since <pre>19/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlPosition implements Position, FileSourceContext, Serializable {
+public abstract class AbstractXmlPosition implements Position, FileSourceContext {
 
     private XmlCvTerm status;
     private boolean isPositionUndetermined;

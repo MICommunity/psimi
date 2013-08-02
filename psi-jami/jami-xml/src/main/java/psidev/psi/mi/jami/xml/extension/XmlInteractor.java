@@ -6,12 +6,10 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,7 +35,7 @@ import java.util.Map;
         XmlBioactiveEntity.class, XmlGene.class, XmlInteractorSet.class, XmlMolecule.class,
         XmlPolymer.class, XmlNucleciAcid.class, XmlProtein.class
 })
-public class XmlInteractor implements Interactor, FileSourceContext, Serializable{
+public class XmlInteractor implements Interactor, FileSourceContext{
 
     private Collection<Checksum> checksums;
     private psidev.psi.mi.jami.model.Organism organism;
@@ -118,7 +116,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
             throw new IllegalArgumentException("The short name cannot be null or empty.");
         }
         setShortName(name);
-        this.interactorType = CvTermUtils.createUnknownInteractorType();
+        createDefaultInteractorType();
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
@@ -131,7 +129,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
     public XmlInteractor(String name, Organism organism){
         this(name);
         this.organism = organism;
-        this.interactorType = CvTermUtils.createUnknownInteractorType();
+        createDefaultInteractorType();
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
@@ -144,28 +142,28 @@ public class XmlInteractor implements Interactor, FileSourceContext, Serializabl
     public XmlInteractor(String name, Xref uniqueId){
         this(name);
         getIdentifiers().add(uniqueId);
-        this.interactorType = CvTermUtils.createUnknownInteractorType();
+        createDefaultInteractorType();
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, Xref uniqueId){
         this(name, fullName);
         getIdentifiers().add(uniqueId);
-        this.interactorType = CvTermUtils.createUnknownInteractorType();
+        createDefaultInteractorType();
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, Organism organism, Xref uniqueId){
         this(name, organism);
         getIdentifiers().add(uniqueId);
-        this.interactorType = CvTermUtils.createUnknownInteractorType();
+        createDefaultInteractorType();
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlInteractor(String name, String fullName, Organism organism, Xref uniqueId){
         this(name, fullName, organism);
         getIdentifiers().add(uniqueId);
-        this.interactorType = CvTermUtils.createUnknownInteractorType();
+        createDefaultInteractorType();
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
