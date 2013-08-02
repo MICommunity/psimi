@@ -198,15 +198,23 @@
     <bean id="interactionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
         <property name="writerOptions">
             <map>
-                <entry key="Key 1" value="zeroPoint" />
-                <entry key="Key 2" value-ref="point2" />
-                <entry key="Key 3">
-                    <bean class="com.example4.Point">
-                        <property name="x" value="0" />
-                        <property name="y" value="0" />
+                <entry key="mitab_header_key" value="true" />
+                <entry key="mitab_extended_key" value="false" />
+                <entry key="mitab_version_key" >
+                    <bean class="psidev.psi.mi.jami.tab.MitabVersion">
+                        <constructor-arg value="42"/>
                     </bean>
                 </entry>
             </map>
+        </property>
+    </bean>
+    public static final String MITAB_VERSION_OPTION = "mitab_version_key";
+    public static final String MITAB_HEADER_OPTION = "mitab_header_key";
+    public static final String MITAB_EXTENDED_OPTION = "mitab_extended_key";
+
+    <bean id="xmlInteractionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
+        <property name="writerOptions">
+            <map/>
         </property>
     </bean>
 
