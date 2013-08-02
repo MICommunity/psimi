@@ -8,24 +8,25 @@ import psidev.psi.mi.jami.model.Publication;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * An enricher for publications which can enrich either a single publication or a collection.
+ * The publicationEnricher has no subEnrichers. The publicationEnricher must be initiated with a fetcher.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 31/07/13
+ * @since  31/07/13
  */
 public interface PublicationEnricher {
 
     /**
      * Takes a publication and uses the publication fetcher to add additional details.
      * If the publication is null an illegal state exception is thrown
-     * @param publicationToEnrich   the publication to be enriched
+     * @param publicationToEnrich   The publication to be enriched
      * @throws EnricherException
      */
     public void enrichPublication(Publication publicationToEnrich) throws EnricherException;
 
     /**
      * Takes a collection of publications and enriches each in turn.
-     * @param publicationsToEnrich      the publications to enrich
+     * @param publicationsToEnrich      The publications to be enriched
      * @throws EnricherException
      */
     public void enrichPublications(Collection<Publication> publicationsToEnrich) throws EnricherException;

@@ -7,25 +7,75 @@ import psidev.psi.mi.jami.model.Experiment;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The experiment enricher has no fetcher and can enrich either a single experiment of a collection.
+ * It has subEnrichers for CvTerms, Organisms, and publications.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 31/07/13
+ * @since  31/07/13
  */
 public interface ExperimentEnricher {
 
-    public void enrichExperiment(Experiment experimentToEnrich) throws EnricherException;
+    /**
+     * Enriches a collection of experiments.
+     * @param experimentsToEnrich   The experiments which are to be enriched.
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
     public void enrichExperiments(Collection<Experiment> experimentsToEnrich) throws EnricherException;
 
+    /**
+     * Enrichment of a single experiment.
+     * @param experimentToEnrich    The experiment which is to be enriched.
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
+    public void enrichExperiment(Experiment experimentToEnrich) throws EnricherException;
+
+    /**
+     * Sets the subEnricher for CvTerms. Can be null.
+     * @param cvTermEnricher    The CvTerm enricher to be used
+     */
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+
+    /**
+     * Gets the subEnricher for CvTerms. Can be null.
+     * @return  The CvTerm enricher which is being used.
+     */
     public CvTermEnricher getCvTermEnricher();
 
-    public void getOrganismEnricher(OrganismEnricher organismEnricher);
+
+    /**
+     * Sets the subEnricher for organisms. Can be null.
+     * @param organismEnricher The Organism enricher which is to be used.
+     */
+    public void setOrganismEnricher(OrganismEnricher organismEnricher);
+
+    /**
+     * Gets the subEnricher for organisms. Can be null.
+     * @return  The organism enricher currently being used.
+     */
     public OrganismEnricher getOrganismEnricher();
 
-    public PublicationEnricher getPublicationEnricher();
+    /**
+     * Gets the publications for organisms. Can be null.
+     * @param publicationEnricher   The organism enricher is being used.
+     */
     public void setPublicationEnricher(PublicationEnricher publicationEnricher);
 
+    /**
+     * Sets the subEnricher for publications. Can be null.
+     * @return  The publications enricher which is being used.
+     */
+    public PublicationEnricher getPublicationEnricher();
+
+
+    /**
+     * Gets current ExperimentEnricherListener. Can be null.
+     * @return      The listener which is currently beign used.
+     */
     public ExperimentEnricherListener getExperimentEnricherListener();
+
+    /**
+     * Sets the ExperimentEnricherListener. Can be null.
+     * @param listener  The listener to be used.
+     */
     public void setExperimentEnricherListener(ExperimentEnricherListener listener);
 }

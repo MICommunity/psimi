@@ -16,28 +16,67 @@ import java.io.*;
  * In both cases, if the object has a fileContext,this will be included for easier identification.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 09/07/13
+ * @since  09/07/13
  */
 public abstract class StatisticsWriter<T> implements EnricherListener{
 
     protected static final Logger log = LoggerFactory.getLogger(StatisticsWriter.class.getName());
 
+    /**
+     * The last object that was changed
+     */
     protected T lastObject = null;
+    /**
+     * Writers for successes and failures.
+     */
     private Writer successWriter , failureWriter;
 
+    /**
+     * Character to be used to separate lines.
+     */
     public static final String NEW_LINE = "\n";
+    /**
+     * Character to be used to separate fields
+     */
     public static final String NEW_EVENT = "\t";
 
+    /**
+     * Counters for the changes made to the current object.
+     */
     protected int updateCount = 0, removedCount = 0, additionCount = 0;
 
+    /**
+     * A constructor which by default names the files by their object type.
+     * @param jamiObject        The name of the object type to be used in the file
+     *                          and as the seed for the file names.
+     * @throws IOException
+     */
+    public StatisticsWriter(String jamiObject) throws IOException {
+        this(jamiObject, jamiObject);
+    }
 
+    /**
+     * A constructor which takes the given filename and appends success and failed for the two lists.
+     * @param fileName      The seed for name of the files to record enrichments. Can not be null.
+     * @param jamiObject    The name of the object type being enriched to be used in the file.
+     * @throws IOException
+     */
+    public StatisticsWriter(String fileName, String jamiObject) throws IOException {
+        this(new File("success_"+fileName), new File("failed_"+fileName), jamiObject);
+    }
+
+    /**
+     * A constructor setting the file type
+     * @param successFileName   The name of the file to record successful enrichments. Can not be null.
+     * @param failureFileName   The name of file to record failed enrichments. Can not be null.
+     * @param jamiObject        The name of the object type being enriched to be used in the file.
+     * @throws IOException
+     */
     public StatisticsWriter(String successFileName, String failureFileName, String jamiObject) throws IOException {
         this(new File(successFileName), new File(failureFileName), jamiObject);
     }
 
-    public StatisticsWriter(String fileName, String jamiObject) throws IOException {
-        this(new File("success_"+fileName), new File("failed_"+fileName), jamiObject);
-    }
+
 
     /**
      * Opens the files for successful enrichments and failed enrichments.
@@ -52,8 +91,6 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
             throw new IllegalArgumentException("Provided a null file to write to.");
 
         successWriter = new BufferedWriter( new FileWriter(successFile) );
-        failureWriter = new BufferedWriter( new FileWriter(failureFile) );
-
         successWriter.write(jamiObject); successWriter.write(NEW_EVENT);
         successWriter.write("Updated"); successWriter.write(NEW_EVENT);
         successWriter.write("Removed"); successWriter.write(NEW_EVENT);
@@ -61,6 +98,7 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
         successWriter.write("File Source");
         successWriter.flush();
 
+        failureWriter = new BufferedWriter( new FileWriter(failureFile) );
         failureWriter.write(jamiObject); failureWriter.write(NEW_EVENT);
         failureWriter.write("File Source"); failureWriter.write(NEW_EVENT);
         failureWriter.write("Message");
@@ -83,10 +121,9 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
     /**
      * Compares the object to the last object enriched.
      * If they are different, the new object is taken and all stats reset.
-     * @param obj
+     * @param obj   The object to compare to the last object changed.
      */
     protected void checkObject(T obj){
-
         if(lastObject == null) lastObject = obj;
         else if(lastObject != obj){
             updateCount = 0;
@@ -110,6 +147,7 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
                 case SUCCESS:
                     if(updateCount == 0 && removedCount == 0 && additionCount == 0)
                         break;
+                    if(successWriter == null) break;
 
                     successWriter.write(NEW_LINE);
                     successWriter.write(obj.toString());
@@ -129,6 +167,8 @@ public abstract class StatisticsWriter<T> implements EnricherListener{
                     break;
 
                 case FAILED:
+                    if(failureWriter == null) break;
+
                     failureWriter.write(NEW_LINE);
                     failureWriter.write(obj.toString());
                     failureWriter.write(NEW_EVENT);

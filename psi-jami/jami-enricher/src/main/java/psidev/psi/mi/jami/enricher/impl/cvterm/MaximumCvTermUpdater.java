@@ -4,7 +4,7 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 
-import psidev.psi.mi.jami.enricher.util.AliasUpdateMerger;
+import psidev.psi.mi.jami.enricher.util.AliasMerger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 
@@ -34,7 +34,7 @@ public class MaximumCvTermUpdater
 
         // Add synonyms
         if(! cvTermFetched.getSynonyms().isEmpty()) {
-            AliasUpdateMerger merger = new AliasUpdateMerger();
+            AliasMerger merger = new AliasMerger();
             merger.merge(cvTermFetched.getSynonyms() , cvTermToEnrich.getSynonyms());
 
             for(Alias alias: merger.getToRemove()){
