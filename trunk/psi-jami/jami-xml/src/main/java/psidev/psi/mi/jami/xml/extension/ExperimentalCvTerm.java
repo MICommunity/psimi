@@ -13,7 +13,6 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -48,7 +47,6 @@ import java.util.Map;
 })
 public class ExperimentalCvTerm
     extends XmlCvTerm
-    implements Serializable
 {
 
     private Map<Integer, Object> mapOfReferencedObjects;

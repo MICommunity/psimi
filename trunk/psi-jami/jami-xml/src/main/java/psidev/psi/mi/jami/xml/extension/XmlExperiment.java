@@ -13,7 +13,6 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
 
@@ -36,7 +35,7 @@ import java.util.*;
         "confidenceList",
         "attributes"
 })
-public class XmlExperiment implements Experiment, FileSourceContext, Serializable{
+public class XmlExperiment implements Experiment, FileSourceContext{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
@@ -777,7 +776,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
     }
 
     @XmlTransient
@@ -786,6 +785,6 @@ public class XmlExperiment implements Experiment, FileSourceContext, Serializabl
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
     }
 }

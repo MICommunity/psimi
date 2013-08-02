@@ -21,7 +21,6 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -67,7 +66,7 @@ import java.util.Collection;
     "attributes"
 })
 public class XmlSource extends XmlOpenCvTerm
-    implements Source, FileSourceContext, Serializable
+    implements Source, FileSourceContext
 {
 
     private Annotation url;

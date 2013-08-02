@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -30,7 +29,7 @@ import java.util.Collection;
 @XmlSeeAlso({
         HostOrganism.class
 })
-public class XmlOrganism implements Organism, FileSourceContext, Serializable{
+public class XmlOrganism implements Organism, FileSourceContext{
 
     private NamesContainer namesContainer;
     private int taxId;

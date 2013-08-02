@@ -11,7 +11,6 @@ import psidev.psi.mi.jami.utils.comparator.annotation.UnambiguousAnnotationCompa
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 
 /**
  * Xml implementation of an Annotation
@@ -24,7 +23,7 @@ import java.io.Serializable;
 @XmlType(name = "attribute", propOrder = {
         "value"
 })
-public class XmlAnnotation implements Annotation, FileSourceContext, Serializable {
+public class XmlAnnotation implements Annotation, FileSourceContext {
 
     private CvTerm topic;
     private String value;

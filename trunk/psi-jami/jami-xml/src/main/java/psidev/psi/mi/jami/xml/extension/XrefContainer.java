@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.List;
         CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class,
         ExperimentXrefContainer.class
 })
-public class XrefContainer implements FileSourceContext, Serializable{
+public class XrefContainer implements FileSourceContext{
 
     XmlXref primaryRef;
     Collection<XmlXref> secondaryRefs;

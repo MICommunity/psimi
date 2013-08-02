@@ -19,7 +19,6 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.Collection;
 
 
@@ -98,7 +97,7 @@ import java.util.Collection;
     "annotations"
 })
 public class XmlXref
-    implements Xref, FileSourceContext, Serializable
+    implements Xref, FileSourceContext
 {
 
     private CvTerm database;

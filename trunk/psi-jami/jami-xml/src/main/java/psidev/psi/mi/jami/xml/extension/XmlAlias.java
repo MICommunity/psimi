@@ -11,7 +11,6 @@ import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 
 /**
  * Xml implementation of an Alias
@@ -24,7 +23,7 @@ import java.io.Serializable;
 @XmlType(name = "alias", propOrder = {
         "name"
 })
-public class XmlAlias implements Alias, FileSourceContext, Serializable {
+public class XmlAlias implements Alias, FileSourceContext {
 
     private String name;
     private CvTerm type;

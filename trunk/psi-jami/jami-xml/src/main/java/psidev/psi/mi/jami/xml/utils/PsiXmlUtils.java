@@ -15,5 +15,5 @@ public class PsiXmlUtils {
 
     public static final String UNSPECIFIED = "unspecified";
     public final static DateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy");
-
+    public static final String STOICHIOMETRY_PREFIX = "stoichiometry: ";
 }

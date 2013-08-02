@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +20,7 @@ import java.util.Map;
  * @since <pre>25/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlFeature<P extends Participant, F extends Feature> implements Feature<P,F>, FileSourceContext, Serializable{
+public abstract class AbstractXmlFeature<P extends Participant, F extends Feature> implements Feature<P,F>, FileSourceContext{
 
     private Collection<Annotation> annotations;
     private Collection<Range> ranges;
@@ -309,7 +308,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -317,7 +316,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
     }
 
     /**

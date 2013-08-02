@@ -12,7 +12,6 @@ import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceCompa
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -29,7 +28,7 @@ import java.util.Map;
         "type",
         "value"
 })
-public class XmlConfidence implements Confidence, ModelledConfidence, FileSourceContext, Serializable{
+public class XmlConfidence implements Confidence, ModelledConfidence, FileSourceContext{
 
     private XmlOpenCvTerm type;
     private String value;
