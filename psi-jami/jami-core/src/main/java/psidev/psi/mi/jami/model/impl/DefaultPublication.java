@@ -25,7 +25,7 @@ import java.util.*;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultPublication implements Publication, Serializable {
+public class DefaultPublication implements Publication {
 
     private String title;
     private String journal;

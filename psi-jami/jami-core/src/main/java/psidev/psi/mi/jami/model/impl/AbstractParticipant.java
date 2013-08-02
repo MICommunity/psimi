@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +15,7 @@ import java.util.Collections;
  * @since <pre>09/07/13</pre>
  */
 
-public abstract class AbstractParticipant<I extends Interaction, F extends Feature> implements Participant<I,F>, Serializable {
+public abstract class AbstractParticipant<I extends Interaction, F extends Feature> implements Participant<I,F> {
     private Interactor interactor;
     private CvTerm biologicalRole;
     private Collection<Xref> xrefs;

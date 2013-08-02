@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.annotation.UnambiguousAnnotationComparator;
 
-import java.io.Serializable;
-
 /**
  * Default implementation for Annotation.
  *
@@ -16,7 +14,7 @@ import java.io.Serializable;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultAnnotation implements Annotation, Serializable {
+public class DefaultAnnotation implements Annotation {
 
     private CvTerm topic;
     private String value;

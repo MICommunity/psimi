@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.InteractionUtils;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,7 +14,7 @@ import java.util.*;
  * @since <pre>05/06/13</pre>
  */
 
-public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extends Participant> implements BinaryInteraction<T>, Serializable{
+public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extends Participant> implements BinaryInteraction<T>{
 
     private I wrappedInteraction;
     private T participantA;

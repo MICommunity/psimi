@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.model.MoleculeEffector;
  * @since <pre>23/05/13</pre>
  */
 
-public class DefaultMoleculeEffector implements MoleculeEffector{
+public class DefaultMoleculeEffector implements MoleculeEffector {
 
     private ModelledParticipant participant;
 

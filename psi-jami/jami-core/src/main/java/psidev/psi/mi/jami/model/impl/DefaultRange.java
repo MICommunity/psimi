@@ -6,8 +6,6 @@ import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.ResultingSequence;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 
-import java.io.Serializable;
-
 /**
  * Default implementation for Range
  *
@@ -18,7 +16,7 @@ import java.io.Serializable;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultRange implements Range, Serializable {
+public class DefaultRange implements Range {
 
     private Position start;
     private Position end;

@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.StoichiometryComparator;
  * @since <pre>21/05/13</pre>
  */
 
-public class DefaultStoichiometry implements Stoichiometry{
+public class DefaultStoichiometry implements Stoichiometry {
 
     private long minValue;
     private long maxValue;
