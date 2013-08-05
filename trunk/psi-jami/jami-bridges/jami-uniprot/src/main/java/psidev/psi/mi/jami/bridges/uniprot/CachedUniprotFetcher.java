@@ -29,7 +29,7 @@ public class CachedUniprotFetcher
     private Cache cache;
     private static CacheManager cacheManager;
 
-    public static final String EHCACHE_CONFIG_FILE = "/uniprot-service.ehcache.xml";
+    public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
     public static final String CACHE_NAME = "uniprot-service-cache";
 
 
@@ -63,10 +63,9 @@ public class CachedUniprotFetcher
 
     public Object getFromCache( String key ) {
         Object data = null;
-        //if (cacheManager.)
         Element element = cache.get( key );
         if( element != null ){
-            data = element.getValue();
+            data = element.getObjectValue();
         }
         return data;
     }
@@ -77,12 +76,9 @@ public class CachedUniprotFetcher
     }
 
     public void initialiseCache() {
-        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
-        cacheManager = new CacheManager( url );
-        this.cache = cacheManager.getCache( CACHE_NAME );
-        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
+        initialiseCache( EHCACHE_CONFIG_FILE );
     }
+
 
     public void initialiseCache(File settingsFile) {
         // TODO
@@ -91,11 +87,9 @@ public class CachedUniprotFetcher
 
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCache configuration: " + url );
         cacheManager = new CacheManager( url );
-        if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
-            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
-        }
+        this.cache = cacheManager.getCache( CACHE_NAME );
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
 
