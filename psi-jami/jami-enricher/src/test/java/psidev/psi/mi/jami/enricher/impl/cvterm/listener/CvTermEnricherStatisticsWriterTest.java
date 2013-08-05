@@ -99,8 +99,6 @@ public class CvTermEnricherStatisticsWriterTest {
             line = successReader.readLine();
         }
         //assertEquals(2 , count);
-
-
     }
 
 }

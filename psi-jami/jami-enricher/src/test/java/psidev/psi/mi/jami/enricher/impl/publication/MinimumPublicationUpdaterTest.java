@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.publication;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicationFetcher;
@@ -10,13 +9,14 @@ import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricher
 import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.CurationDepth;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.*;
-
 
 import java.util.Collections;
 import java.util.Date;
-
 
 import static org.junit.Assert.*;
 
@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/08/13
  */
-public class MinimumPublicationEnricherTest {
+public class MinimumPublicationUpdaterTest {
 
     private PublicationEnricher publicationEnricher;
     private MockPublicationFetcher fetcher;
@@ -40,7 +40,7 @@ public class MinimumPublicationEnricherTest {
     @Before
     public void setup(){
         fetcher = new MockPublicationFetcher();
-        publicationEnricher = new MinimumPublicationEnricher(fetcher);
+        publicationEnricher = new MinimumPublicationUpdater(fetcher);
 
         persistentPublication = new DefaultPublication();
 
@@ -52,7 +52,6 @@ public class MinimumPublicationEnricherTest {
     @Test (expected = IllegalArgumentException.class)
     public void test_failure_when_query_publication_is_null() throws EnricherException {
         persistentPublication = null;
-
         publicationEnricher.enrichPublication(persistentPublication);
     }
 
@@ -88,7 +87,7 @@ public class MinimumPublicationEnricherTest {
     }
 
 
-    // == AUTHORS ===========================================================
+    // == AUTHORS ======================================
 
     /**
      * Assert that where the authors are empty, they will be added
@@ -96,10 +95,8 @@ public class MinimumPublicationEnricherTest {
      */
     @Test
     public void test_enrichment_of_empty_authors() throws EnricherException {
-
         Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
         testPub.getAuthors().add("TEST_A");
-
 
         fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
 
@@ -153,81 +150,21 @@ public class MinimumPublicationEnricherTest {
         assertNull(persistentPublication.getSource());
     }
 
-    /**
-     * Assert that where the authors are empty, they will be added
-     * @throws EnricherException
-     */
-    /*@Test
-    public void test_enrichment_of_present_authors() throws EnricherException {
 
-        Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
-        testPub.getAuthors().add("TEST_A");
+    @Test
+    public void test_enrichment_of_present_authors(){
 
+    }
 
-        fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
-
-        persistentPublication.setPubmedId(TEST_PUBMED_ID);
-
-        publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
-                new PublicationEnricherLogger() ,
-                new PublicationEnricherListener() {
-                    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
-                        assertTrue(publication == persistentPublication);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
-                    }
-
-                    public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
-                    public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
-                    public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
-                    public void onIdentifierRemoved(Publication publication, Xref removedXref)      {fail("fail");}
-                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)      {fail("fail");}
-                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
-                    public void onJournalUpdated(Publication publication, String oldJournal)        {fail("fail");}
-                    public void onPublicationDateUpdated(Publication publication, Date oldDate)     {fail("fail");}
-                    public void onAuthorAdded(Publication publication, String addedAuthor)          {
-                        assertTrue(publication == persistentPublication);
-                        assertEquals("TEST_A" , addedAuthor);
-                    }
-                    public void onAuthorRemoved(Publication publication, String removedAuthor)      {fail("fail");}
-                    public void onXrefAdded(Publication publication, Xref addedXref)                {fail("fail");}
-                    public void onXrefRemoved(Publication publication, Xref removedXref)            {fail("fail");}
-                    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {fail("fail");}
-                    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved) {fail("fail");}
-                    public void onReleaseDateUpdated(Publication publication, Date oldDate)         {fail("fail");}
-                }
-        ));
-
-        publicationEnricher.enrichPublication(persistentPublication);
-
-
-        assertEquals(1 , persistentPublication.getAuthors().size());
-
-        assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
-        assertEquals(1 , persistentPublication.getIdentifiers().size());
-        assertNull(persistentPublication.getTitle());
-        assertNull(persistentPublication.getJournal());
-        assertNull(persistentPublication.getDoi());
-        assertNull(persistentPublication.getPublicationDate());
-        assertEquals(Collections.EMPTY_LIST , persistentPublication.getXrefs());
-        assertEquals(Collections.EMPTY_LIST , persistentPublication.getAnnotations());
-        assertEquals(Collections.EMPTY_LIST , persistentPublication.getExperiments());
-        assertEquals(CurationDepth.undefined , persistentPublication.getCurationDepth());
-        assertNull(persistentPublication.getReleasedDate());
-        assertNull(persistentPublication.getSource());
-    }  */
-
-
-
-
-    // == NON ENRICHING FIELDS ==================================================
 
     /**
      * Enrich a publication where the fetcher finds all fields.
      * Assert that the fields which are not to be included at the minimum level remain un-enriched
-     * @throws EnricherException
+     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
      */
     @Test
     public void test_enrichment_does_not_apply_to_other_fields() throws EnricherException {
+
         Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
         testPub.setTitle("TITLE");
         testPub.setJournal("JOURNAL");

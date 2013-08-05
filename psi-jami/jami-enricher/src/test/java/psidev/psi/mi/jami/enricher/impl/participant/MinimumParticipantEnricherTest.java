@@ -64,6 +64,13 @@ public class MinimumParticipantEnricherTest {
     }
 
 
+    // == CVTERM ENRICHER TESTS =========================================================================
+
+    /**
+     * Assert that if a CvTerm enricher is included,
+     * but the cvTerms to enrich are null, that no problems are encountered.
+     * @throws EnricherException
+     */
     @Test
     public void test_enrichment_with_cvTermEnricher_but_no_cvTerms() throws EnricherException {
 
@@ -85,6 +92,11 @@ public class MinimumParticipantEnricherTest {
         assertEquals(1 , persistentInt);
     }
 
+    /**
+     * Assert that if a CvTerm enricher is included,
+     * and the cvTerms are present, the CvTerms are enriched.
+     * @throws EnricherException
+     */
     @Test
     public void test_enrichment_with_CvTermEnricher_enriches_CvTerms() throws EnricherException {
         MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
@@ -115,6 +127,13 @@ public class MinimumParticipantEnricherTest {
         assertEquals(1 , persistentInt);
     }
 
+
+    // == FEATURE ENRICHER TO PROTEIN ENRICHER LINK ======================================================
+
+    /**
+     * Show that when the participantEnricher has a protein enricher and an eligible feature enricher,
+     * they become linked.
+     */
     @Test
     public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_first(){
         ProteinEnricher proteinEnricher = new MinimumProteinEnricher(null);
@@ -129,6 +148,10 @@ public class MinimumParticipantEnricherTest {
         assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
     }
 
+    /**
+     * Show that when the participantEnricher has a feature enricher and an eligible protein enricher,
+     * they become linked.
+     */
     @Test
     public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_second(){
         ProteinEnricher proteinEnricher = new MinimumProteinEnricher(null);

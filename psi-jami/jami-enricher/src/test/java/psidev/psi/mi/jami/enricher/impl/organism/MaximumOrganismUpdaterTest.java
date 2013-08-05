@@ -19,11 +19,10 @@ import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Created with IntelliJ IDEA.
+ * Tests for the minimum organism updater
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 24/05/13
- * Time: 14:52
+ * @author  Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  24/05/13
  */
 public class MaximumOrganismUpdaterTest {
 
@@ -97,7 +96,7 @@ public class MaximumOrganismUpdaterTest {
     }
 
     @Test
-    public void test_set_scientificName_if_different() throws EnricherException {
+    public void test_update_scientificName_if_different() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -135,7 +134,7 @@ public class MaximumOrganismUpdaterTest {
     }
 
     @Test
-    public void test_do_not_set_scientificName_if_same() throws EnricherException {
+    public void test_do_not_update_scientificName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -207,7 +206,7 @@ public class MaximumOrganismUpdaterTest {
     }
 
     @Test
-    public void test_set_commonName_if_different() throws EnricherException {
+    public void test_update_commonName_if_different() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
         fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -243,7 +242,7 @@ public class MaximumOrganismUpdaterTest {
     }
 
     @Test
-    public void test_do_not_set_commonName_if_same() throws EnricherException {
+    public void test_do_not_update_commonName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
         fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);

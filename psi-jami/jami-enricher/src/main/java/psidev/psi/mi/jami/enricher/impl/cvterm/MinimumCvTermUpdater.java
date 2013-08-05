@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Xref;
 
 /**
  * Provides minimum updating of the CvTerm.
- * Will update the short name and full name of CvTerm to enrich.
+ * Will update the short name, full name and xrefs of the CvTerm to enrich.
  * As an updater, values from the provided CvTerm to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
@@ -20,10 +20,19 @@ public class MinimumCvTermUpdater
         extends AbstractCvTermEnricher
         implements CvTermEnricher{
 
+    /**
+     * A constructor matching super.
+     * @param cvTermFetcher The fetcher to initiate the enricher with.
+     *                      If null, an illegal state exception will be thrown at the next enrichment.
+     */
     public MinimumCvTermUpdater(CvTermFetcher cvTermFetcher) {
         super(cvTermFetcher);
     }
 
+    /**
+     * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
+     * @param cvTermToEnrich the CvTerm to enrich
+     */
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
 
@@ -65,5 +74,4 @@ public class MinimumCvTermUpdater
             }
         }
     }
-
 }

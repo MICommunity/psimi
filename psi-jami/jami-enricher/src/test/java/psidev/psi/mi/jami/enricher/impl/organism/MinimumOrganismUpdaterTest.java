@@ -18,9 +18,8 @@ import static junit.framework.Assert.*;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 24/05/13
- * Time: 14:04
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  24/05/13
  */
 public class MinimumOrganismUpdaterTest {
 

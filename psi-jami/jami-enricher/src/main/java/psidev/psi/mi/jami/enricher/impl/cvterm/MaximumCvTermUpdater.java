@@ -16,16 +16,25 @@ import psidev.psi.mi.jami.model.CvTerm;
  * As an updater, values from the provided CvTerm to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/05/13
+ * @since  13/05/13
  */
 public class MaximumCvTermUpdater
         extends MinimumCvTermUpdater
         implements CvTermEnricher {
 
+    /**
+     * A constructor matching super.
+     * @param cvTermFetcher The fetcher to initiate the enricher with.
+     *                      If null, an illegal state exception will be thrown at the next enrichment.
+     */
     public MaximumCvTermUpdater(CvTermFetcher cvTermFetcher) {
         super(cvTermFetcher);
     }
 
+    /**
+     * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
+     * @param cvTermToEnrich the CvTerm to enrich
+     */
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
 
