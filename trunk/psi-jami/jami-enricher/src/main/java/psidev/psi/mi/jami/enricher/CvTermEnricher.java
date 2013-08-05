@@ -40,8 +40,8 @@ public interface CvTermEnricher{
     public void setCvTermFetcher(CvTermFetcher fetcher);
 
     /**
-     * The fetcher to be used for used for fetcher.
-     * @return  The fetcher which is being used for fetching.
+     * The fetcher to be used for used to collect data.
+     * @return  The fetcher which is currently being used for fetching.
      */
     public CvTermFetcher getCvTermFetcher();
 

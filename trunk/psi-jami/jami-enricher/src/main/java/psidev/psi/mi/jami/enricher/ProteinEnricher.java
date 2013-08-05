@@ -9,18 +9,27 @@ import psidev.psi.mi.jami.model.Protein;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The Protein enricher is an enricher which can enrich either single protein or a collection.
+ * The Protein enricher has one subEnrichers. A protein enricher must be initiated with a protein fetcher.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 16/05/13
+ * @since  16/05/13
  */
 public interface ProteinEnricher {
 
     /**
-     * Takes the provided protein, finds additional information and includes it in the object.
-     * @param proteinToEnrich
+     * Enrichment of a single Protein.
+     * At the end of the enrichment, the listener will be fired
+     * @param proteinToEnrich       A protein to enrich
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichProtein(Protein proteinToEnrich) throws EnricherException;
+
+    /**
+     * Enrichment of a collection of proteins.
+     * @param proteinsToEnrich      The proteins to be enriched
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
     public void enrichProteins(Collection<Protein> proteinsToEnrich) throws EnricherException;
 
 
@@ -28,54 +37,52 @@ public interface ProteinEnricher {
 
 
     /**
-     *
-     * @param fetcher
+     * Sets the protein fetcher to be used for enrichment.
+     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
+     * @param fetcher   The fetcher to be used to gather data for enrichment
      */
     public void setProteinFetcher(ProteinFetcher fetcher);
-    /**
-     *
-     * @return
-     */
-    public ProteinFetcher getFetcher();
 
     /**
-     *
-     * @param listener
+     * The fetcher to be used for used to collect data.
+     * @return  The fetcher which is currently being used for fetching.
+     */
+    public ProteinFetcher getProteinFetcher();
+
+    /**
+     * The proteinEnricherListener to be used.
+     * It will be fired at all points where a change is made to the protein
+     * @param listener  The listener to use. Can be null.
      */
     public void setProteinEnricherListener(ProteinEnricherListener listener);
     /**
      * The listener which is fired when changes are made to the proteinToEnrich.
-     * @return
+     * @return  The current listener. May be null.
      */
     public ProteinEnricherListener getProteinEnricherListener();
 
 
     /**
-     * Sets the Enricher to use on the protein's organism.
-     *
-     * @param organismEnricher
+     * The organism enricher which will be used to collect data about the organisms.
+     * @param organismEnricher  The organism enricher to be used.
      */
     public void setOrganismEnricher(OrganismEnricher organismEnricher);
 
     /**
      * The Enricher to use on the protein's organism.
-     * If the enricher has not been set, a new organismEnricher will be created
-     * at the same depth as the proteinEnricher which called it.
-     * The default organismEnricher has a mockOrganismFetcher which can be set
-     * with the Organism found in the fetched protein.
-     * @return
+     * @return  The current organism enricher.
      */
     public OrganismEnricher getOrganismEnricher();
 
     /**
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
-     * @param proteinRemapper
+     * @param proteinRemapper   The remapper to use.
      */
     public void setProteinRemapper(ProteinRemapper proteinRemapper);
 
     /**
      * The protein remapper has no default and can be left null
-     * @return
+     * @return  The current remapper.
      */
     public ProteinRemapper getProteinRemapper();
 }

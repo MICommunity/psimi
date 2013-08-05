@@ -13,7 +13,8 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimum updating of the Protein.
+ * As an updater, values from the provided Protein to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
@@ -24,16 +25,34 @@ public class MinimumProteinUpdater
 
     protected boolean isRemapped = false;
 
+    /**
+     * The only constructor which forces the setting of the fetcher
+     * If the cvTerm fetcher is null, an illegal state exception will be thrown at the next enrichment.
+     * @param proteinFetcher    The protein fetcher to use.
+     */
     public MinimumProteinUpdater(ProteinFetcher proteinFetcher) {
         super(proteinFetcher);
     }
 
+    /**
+     * Enrichment of a single Protein.
+     * At the end of the enrichment, the listener will be fired
+     * @param proteinToEnrich       A protein to enrich
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
     @Override
     public void enrichProtein(Protein proteinToEnrich) throws EnricherException {
         isRemapped = false;
         super.enrichProtein(proteinToEnrich);
     }
 
+    /**
+     * Prepares a protein with a dead identifier to be remapped.
+     * Fires a report if the remap was successful.
+     * @param proteinToEnrich   The protein to be enriched
+     * @return                  The status of the enrichment
+     * @throws EnricherException    Thrown if the remapper encounters a problem
+     */
     @Override
     protected boolean remapDeadProtein(Protein proteinToEnrich) throws EnricherException {
 
@@ -56,7 +75,11 @@ public class MinimumProteinUpdater
         }
     }
 
-
+    /**
+     * Strategy for the protein enrichment.
+     * This method can be overwritten to change how the protein is enriched.
+     * @param proteinToEnrich   The protein to be enriched.
+     */
     @Override
     protected void processProtein(Protein proteinToEnrich)  {
         //ShortName - is never null

@@ -2,14 +2,19 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 import org.junit.Before;
 import org.junit.Test;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.ExceptionThrowingMockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 
 import static junit.framework.Assert.*;
@@ -25,7 +30,7 @@ public class MinimumOrganismEnricherTest {
 
     private MinimumOrganismEnricher organismEnricher;
     private MockOrganismFetcher fetcher;
-
+    private Organism mockOrganism;
     public Organism persistentOrganism;
 
     private static final String TEST_SCIENTIFICNAME = "test scientificName";
@@ -41,7 +46,7 @@ public class MinimumOrganismEnricherTest {
         persistentOrganism = null;
         this.fetcher = new MockOrganismFetcher();
         this.organismEnricher = new MinimumOrganismEnricher();
-        organismEnricher.setFetcher(fetcher);
+        organismEnricher.setOrganismFetcher(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fullOrganism.getAliases().add(new DefaultAlias("TestAlias"));
@@ -49,7 +54,87 @@ public class MinimumOrganismEnricherTest {
 
         Organism halfOrganism = new DefaultOrganism(TEST_AC_HALF_ORG);
         fetcher.addNewOrganism("" + TEST_AC_HALF_ORG, halfOrganism);
+
+        mockOrganism = new DefaultOrganism(1234 , "mock" , "mockus mockus");
     }
+
+    // == RETRY ON FAILING FETCHER ============================================================
+
+    /**
+     * Creates a scenario where the fetcher always throws a bridge failure exception.
+     * Shows that the query does not repeat infinitely.
+     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
+     */
+    @Test(expected = EnricherException.class)
+    public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
+        persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+
+        int timesToTry = -1;
+
+        ExceptionThrowingMockOrganismFetcher fetcher = new ExceptionThrowingMockOrganismFetcher(timesToTry);
+        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
+        organismEnricher.setOrganismFetcher(fetcher);
+
+        organismEnricher.enrichOrganism(persistentOrganism);
+
+        fail("Exception should be thrown before this point");
+    }
+
+    /**
+     * Creates a scenario where the fetcher does not retrieve an entry on its first attempt.
+     * If the enricher re-queries the fetcher, it will eventually receive the entry.
+     *
+     * @throws EnricherException
+     */
+    @Test
+    public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
+        persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+
+        int timesToTry = -1;
+
+
+        assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
+                "Change the timesToTry." ,
+                timesToTry < AbstractOrganismEnricher.RETRY_COUNT);
+
+        ExceptionThrowingMockOrganismFetcher fetcher = new ExceptionThrowingMockOrganismFetcher(timesToTry);
+        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
+        organismEnricher.setOrganismFetcher(fetcher);
+
+        organismEnricher.enrichOrganism(persistentOrganism);
+
+        assertEquals("mockus mockus", persistentOrganism.getScientificName() );
+    }
+
+
+    // == FAILURE ON NULL ======================================================================
+
+    /**
+     * Attempts to enrich a null CvTerm.
+     * This should always cause an illegal argument exception
+     * @throws EnricherException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_enriching_with_null_CvTerm() throws EnricherException {
+        Organism organism = null;
+        organismEnricher.enrichOrganism(organism);
+        fail("Exception should be thrown before this point");
+    }
+
+    /**
+     * Attempts to enrich a legal cvTerm but with a null fetcher.
+     * This should throw an illegal state exception.
+     * @throws EnricherException
+     */
+    @Test(expected = IllegalStateException.class)
+    public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
+        persistentOrganism = new DefaultOrganism(1234);
+        organismEnricher.setOrganismFetcher(null);
+        assertNull(organismEnricher.getOrganismFetcher());
+        organismEnricher.enrichOrganism(persistentOrganism);
+        fail("Exception should be thrown before this point");
+    }
+
 
     // == SCIENTIFIC NAME =====================================================================================
 
@@ -124,7 +209,7 @@ public class MinimumOrganismEnricherTest {
     }
 
     @Test
-    public void test_do_not_update_set_scientificName_if_same() throws EnricherException {
+    public void test_do_not_update_scientificName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);

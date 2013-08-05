@@ -36,12 +36,17 @@ public abstract class AbstractCvTermEnricher
     /**
      * The only constructor. It requires a cvTerm fetcher.
      * If the cvTerm fetcher is null, an illegal state exception will be thrown at the next enrichment.
-     * @param cvTermFetcher
+     * @param cvTermFetcher  The CvTermFetcher to use.
      */
     public AbstractCvTermEnricher(CvTermFetcher cvTermFetcher) {
         setCvTermFetcher(cvTermFetcher);
     }
 
+    /**
+     * Enriches a collection of CvTerms.
+     * @param cvTermsToEnrich       The cvTerms to be enriched
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException {
         for(CvTerm cvTermToEnrich : cvTermsToEnrich){
             enrichCvTerm(cvTermToEnrich);
@@ -70,8 +75,9 @@ public abstract class AbstractCvTermEnricher
     }
 
     /**
-     * Uses the fetched CvTerm to enrich or update the CvTermToEnrich
-     * @param cvTermToEnrich the CvTerm to enrich
+     * Strategy for the cvTerm enrichment.
+     * This method can be overwritten to change how the cvTerm is enriched.
+     * @param cvTermToEnrich   The protein to be enriched.
      */
     protected abstract void processCvTerm(CvTerm cvTermToEnrich);
 
