@@ -28,8 +28,8 @@ public class MaximumProteinUpdater
         super.processProtein(proteinToEnrich);
 
         if(! proteinFetched.getXrefs().isEmpty()) {
-            XrefMerger merger = new XrefMerger();
-            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , false);
+            XrefMerger merger = new XrefMerger();               //TODO check that qualifiers should protect xrefs
+            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , true);
             for(Xref xref: merger.getToRemove()){
                 proteinToEnrich.getXrefs().remove(xref);
                 if(getProteinEnricherListener() != null)

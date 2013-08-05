@@ -27,7 +27,7 @@ public class MaximumProteinEnricher
 
         if(! proteinFetched.getXrefs().isEmpty()) {
             XrefMerger merger = new XrefMerger();
-            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , false);
+            merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , true);
 
             for(Xref xref: merger.getToAdd()){
                 proteinToEnrich.getXrefs().add(xref);

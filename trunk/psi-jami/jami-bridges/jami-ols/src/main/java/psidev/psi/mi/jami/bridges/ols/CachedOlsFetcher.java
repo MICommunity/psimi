@@ -24,7 +24,7 @@ public class CachedOlsFetcher
     private static CacheManager cacheManager;
 
     public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
-    public static final String CACHE_NAME = "CvTerm-Cache";
+    public static final String CACHE_NAME = "cvTerm-Cache";
 
 
     public CachedOlsFetcher() throws BridgeFailedException {
@@ -99,7 +99,7 @@ public class CachedOlsFetcher
         Element element = cache.get( key );
         if( element != null ){
             //if( log.isDebugEnabled() ) log.debug("getting key: "+key);
-            data = element.getValue();
+            data = element.getObjectValue();
         }
         return data;
     }
