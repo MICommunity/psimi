@@ -17,7 +17,6 @@ public class ExperimentEnricherLogger
 
     protected static final Logger log = LoggerFactory.getLogger(ExperimentEnricherLogger.class.getName());
 
-
     public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
         log.info(experiment.toString()+" enrichment complete " +
                 "with status ["+status+"], message: "+message);

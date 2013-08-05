@@ -1,8 +1,10 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm;
+package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
 
 import java.util.*;
 
@@ -12,38 +14,36 @@ import java.util.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
-public class ExceptionThrowingMockCvTermFetcher
-        extends MockCvTermFetcher
-        implements CvTermFetcher<CvTerm>{
+public class ExceptionThrowingMockOrganismFetcher
+        extends MockOrganismFetcher
+        implements OrganismFetcher {
 
     String lastQuery = null;
     int count = 0;
     int maxQuery = 0;
 
 
-
-    public ExceptionThrowingMockCvTermFetcher(int maxQuery){
+    public ExceptionThrowingMockOrganismFetcher(int maxQuery){
         super();
         this.maxQuery = maxQuery;
     }
 
     @Override
-    protected CvTerm getMockTermById(String identifier) throws BridgeFailedException {
-        if(! localCvTerms.containsKey(identifier))  return null;
+    public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
+        if(! localOrganisms.containsKey(""+identifier))  return null;
         else {
-            if(! identifier.equals(lastQuery)){
-                lastQuery = identifier;
+            if(! lastQuery.equals(""+identifier)){
+                lastQuery = ""+identifier;
                 count = 0;
 
             }
 
             if(maxQuery != -1 && count >= maxQuery)
-                return localCvTerms.get(identifier);
+                return localOrganisms.get(""+identifier);
             else {
                 count++;
                 throw new BridgeFailedException("Mock fetcher throws because this is the "+(count-1)+" attempt of "+maxQuery);
             }
         }
     }
-
 }
