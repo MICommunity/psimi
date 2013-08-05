@@ -33,8 +33,9 @@ public class MinimumOrganismEnricher
                 getOrganismEnricherListener().onTaxidUpdate(organismToEnrich, "-3");
         }
 
-        //TODO - check that the organism details don't enrich if there is no match on taxID
+       //TODO - check that the organism details don't enrich if there is no match on taxID
         if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){
+
             //Scientific name
             if(organismToEnrich.getScientificName() == null
                     && organismFetched.getScientificName() != null){

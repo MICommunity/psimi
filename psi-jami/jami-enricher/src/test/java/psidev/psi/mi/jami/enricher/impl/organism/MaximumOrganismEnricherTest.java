@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetch
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -53,7 +54,7 @@ public class MaximumOrganismEnricherTest {
         Organism halfOrganism = new DefaultOrganism(TEST_AC_HALF_ORG);
         fetcher.addNewOrganism("" + TEST_AC_HALF_ORG, halfOrganism);
 
-        mockOrganism = new DefaultOrganism(1234 , "mock" , "mockus mockus");
+        mockOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG , "mock" , "mockus mockus");
     }
 
     // == RETRY ON FAILING FETCHER ============================================================
@@ -87,8 +88,9 @@ public class MaximumOrganismEnricherTest {
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+        assertNull(persistentOrganism.getScientificName());
 
-        int timesToTry = -1;
+        int timesToTry = 3;
 
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
@@ -99,8 +101,11 @@ public class MaximumOrganismEnricherTest {
         fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
         organismEnricher.setOrganismFetcher(fetcher);
 
+        organismEnricher.setOrganismEnricherListener(new OrganismEnricherLogger()) ;
+
         organismEnricher.enrichOrganism(persistentOrganism);
 
+        assertEquals("mockus mockus", mockOrganism.getScientificName() );
         assertEquals("mockus mockus", persistentOrganism.getScientificName() );
     }
 
