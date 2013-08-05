@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 /**
- * Provides maximum enrichment of the CvTerm.
+ * Provides minimum enrichment of the CvTerm.
  * Will enrich the full name if it is null and the identifiers.
  * As an enricher, no values from the provided CvTerm to enrich will be changed.
  *

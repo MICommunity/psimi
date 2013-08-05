@@ -8,8 +8,7 @@ import psidev.psi.mi.jami.model.Organism;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
- * Time: 17:05
+ * @since  13/06/13
  */
 public class MinimumOrganismUpdater
         extends AbstractOrganismEnricher
@@ -21,6 +20,11 @@ public class MinimumOrganismUpdater
         super(organismFetcher);
     }
 
+    /**
+     * Strategy for the organism enrichment.
+     * This method can be overwritten to change how the organism is enriched.
+     * @param organismToEnrich   The protein to be enriched.
+     */
     @Override
     protected void processOrganism(Organism organismToEnrich) {
         // Only enrich if an organism was fetched

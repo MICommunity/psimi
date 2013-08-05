@@ -8,11 +8,12 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides maximum updating of the organism.
+ * Will update all aspects covered by the minimum updater as well as updating the Aliases.
+ * As an updater, values from the provided CvTerm to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 24/05/13
- * Time: 13:35
+ * @since  24/05/13
  */
 public class MaximumOrganismUpdater
         extends MinimumOrganismUpdater
@@ -24,6 +25,11 @@ public class MaximumOrganismUpdater
         super(organismFetcher);
     }
 
+    /**
+     * Strategy for the organism enrichment.
+     * This method can be overwritten to change how the organism is enriched.
+     * @param organismToEnrich   The protein to be enriched.
+     */
     @Override
     protected void processOrganism(Organism organismToEnrich)  {
         super.processOrganism(organismToEnrich);
