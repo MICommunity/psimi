@@ -34,22 +34,19 @@ public class MinimumExperimentEnricherTest {
         persistentExperiment = new DefaultExperiment(persistentPublication);
 
         experimentEnricher = new MinimumExperimentEnricher();
-
     }
 
 
-    /**
-     *
-     * @throws EnricherException
-     */
     @Test
     public void test_enriching_an_experiment_without_fields_or_enrichers()
             throws EnricherException {
-
         experimentEnricher.enrichExperiment(persistentExperiment);
     }
 
-
+    /**
+     * Show that even when fields are null but enrichers are present, the enrichment is successful.
+     * @throws EnricherException
+     */
     @Test
     public void test_enriching_an_experiment_without_fields()
             throws EnricherException {

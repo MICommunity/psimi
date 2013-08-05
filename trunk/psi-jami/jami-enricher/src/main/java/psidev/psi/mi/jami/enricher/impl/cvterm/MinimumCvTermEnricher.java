@@ -23,10 +23,19 @@ public class MinimumCvTermEnricher
 
     protected static final Logger log = LoggerFactory.getLogger(MinimumCvTermEnricher.class.getName());
 
+    /**
+     * A constructor matching super.
+     * @param cvTermFetcher The fetcher to initiate the enricher with.
+     *                      If null, an illegal state exception will be thrown at the next enrichment.
+     */
     public MinimumCvTermEnricher(CvTermFetcher cvTermFetcher) {
         super(cvTermFetcher);
     }
 
+    /**
+     * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
+     * @param cvTermToEnrich the CvTerm to enrich
+     */
     protected void processCvTerm(CvTerm cvTermToEnrich){
 
         //ShortName not checked - never null

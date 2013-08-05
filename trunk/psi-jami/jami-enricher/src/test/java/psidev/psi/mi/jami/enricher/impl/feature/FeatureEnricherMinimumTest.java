@@ -197,11 +197,11 @@ public class FeatureEnricherMinimumTest {
     public void test_annotations_added_for_featureEnricher_where_protein_has_no_sequence() throws EnricherException, IOException {
         Protein protein = new DefaultProtein(TEST_SHORTNAME);
         protein.setUniprotkb(TEST_AC_FULL_PROT);
-        Participant participant = new DefaultParticipant(protein);
+        persistentParticipant = new DefaultParticipant(protein);
 
         persistentFeature = new DefaultFeature("Featurea","featurea");
         persistentFeature.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
-        participant.addFeature(persistentFeature);
+        persistentParticipant.addFeature(persistentFeature);
 
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
@@ -238,7 +238,7 @@ public class FeatureEnricherMinimumTest {
                 }
         ));
 
-        participantEnricher.enrichParticipant(participant);
+        participantEnricher.enrichParticipant(persistentParticipant);
 
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(1 , persistentFeature.getAnnotations().size());
@@ -249,11 +249,11 @@ public class FeatureEnricherMinimumTest {
         Protein protein = new DefaultProtein(TEST_SHORTNAME);
         protein.setUniprotkb(TEST_AC_FULL_PROT);
         protein.setSequence("ACGACTA");
-        Participant participant = new DefaultParticipant(protein);
+        persistentParticipant = new DefaultParticipant(protein);
 
         persistentFeature = new DefaultFeature("Featurea","featurea");
         persistentFeature.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
-        participant.addFeature(persistentFeature);
+        persistentParticipant.addFeature(persistentFeature);
 
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
@@ -288,7 +288,7 @@ public class FeatureEnricherMinimumTest {
                     public void onRemovedRange(Feature feature, Range removed)  {fail();}
                 }
         ));
-        participantEnricher.enrichParticipant(participant);
+        participantEnricher.enrichParticipant(persistentParticipant);
 
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(1 , persistentFeature.getAnnotations().size());
@@ -304,18 +304,18 @@ public class FeatureEnricherMinimumTest {
         protein.setUniprotkb(TEST_AC_FULL_PROT);
         //protein.setSequence(TEST_SEQUENCE_OLD);
 
-        Participant participant = new DefaultParticipant(protein);
+        persistentParticipant = new DefaultParticipant(protein);
 
         Feature featureB = new DefaultFeature("Featureb","featureb");
         featureB.getRanges().add( new DefaultRange( new DefaultPosition(7), new DefaultPosition(15) ));
-        participant.addFeature(featureB);
+        persistentParticipant.addFeature(featureB);
 
         Feature featureA = new DefaultFeature("Featurea","featurea");
         featureA.getRanges().add( new DefaultRange(new DefaultPosition(4),new DefaultPosition(10) ));
-        participant.addFeature(featureA);
+        persistentParticipant.addFeature(featureA);
 
 
-        log.info(participant.getFeatures().toString() );
+        log.info(persistentParticipant.getFeatures().toString() );
 
 
     }

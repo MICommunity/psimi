@@ -13,7 +13,9 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AliasUtils;
 
 
@@ -30,21 +32,28 @@ import static junit.framework.Assert.*;
  */
 public class MinimumCvTermEnricherTest {
 
-    private CvTermEnricher cvTermEnricher;
-    private MockCvTermFetcher mockCvTermFetcher;
 
-    private String SHORT_NAME = "ShortName";
-    private String FULL_NAME = "FullName";
+    private MinimumCvTermEnricher cvTermEnricher;
+    private MockCvTermFetcher mockCvTermFetcher ;
+
+    private CvTerm mockCvTerm;
+    private String short_name = "ShortName";
+    private String full_name = "FullName";
     private String MI_ID = "MI:1234";
-    private String SYNONYM_NAME = "SynonymName";
-    private CvTerm cvTermFull;
 
     private String other_short_name = "other short name";
     private String other_full_name = "other full name";
-    private String other_synonym = "other synonym";
 
     private Collection<String> reportForEnrichment= new ArrayList<String>();
     private String fullNameUpdateKey = "FullNameUpdate";
+    private String shortNameUpdateKey = "ShortNameUpdate";
+    private String synonymAddedKey = "SynonymAdded";
+    private String synonymRemovedKey = "SynonymRemoved";
+    private String identifierAddedKey = "IdentifierAdded";
+    private String identifierRemovedKey = "IdentifierRemoved";
+
+    private CvTerm persistentCvTerm;
+
 
 
     @Before
@@ -52,28 +61,43 @@ public class MinimumCvTermEnricherTest {
         mockCvTermFetcher = new MockCvTermFetcher();
         cvTermEnricher = new MinimumCvTermEnricher(mockCvTermFetcher);
 
+        mockCvTerm = new DefaultCvTerm(short_name, full_name, MI_ID);
+        mockCvTerm.getIdentifiers().add(new DefaultXref(
+                new DefaultCvTerm(short_name) , short_name));
+        mockCvTerm.getXrefs().add(new DefaultXref(
+                new DefaultCvTerm(short_name) , short_name));
+        mockCvTerm.getAnnotations().add(new DefaultAnnotation(
+                new DefaultCvTerm(short_name) , short_name ));
+        mockCvTerm.getSynonyms().add(AliasUtils.createAlias(
+                "synonym", "MI:1041", short_name));
 
-        cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
-        cvTermFull.getSynonyms().add(AliasUtils.createAlias(
-                "synonym", "MI:1041", SYNONYM_NAME));
-        mockCvTermFetcher.addCvTerm(MI_ID , cvTermFull);
+        mockCvTermFetcher.addCvTerm(MI_ID , mockCvTerm);
+
+        reportForEnrichment.clear();
+        persistentCvTerm = null;
     }
 
+
+    // == RETRY ON FAILING FETCHER ============================================================
 
     /**
      * Creates a scenario where the fetcher always throws a bridge failure exception.
      * Shows that the query does not repeat infinitely.
-     * @throws EnricherException
+     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
      */
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
-        ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(-1);
-        CvTerm cvTermToEnrich = new DefaultCvTerm(SHORT_NAME);
-        cvTermToEnrich.setMIIdentifier(MI_ID);
-        fetcher.addCvTerm(MI_ID , cvTermFull);
 
+        persistentCvTerm = new DefaultCvTerm(short_name , MI_ID);
+
+        int timesToTry = -1;
+
+        ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
+        fetcher.addCvTerm(MI_ID , mockCvTerm);
         cvTermEnricher.setCvTermFetcher(fetcher);
-        cvTermEnricher.enrichCvTerm(cvTermToEnrich);
+
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+
         fail("Exception should be thrown before this point");
     }
 
@@ -85,22 +109,24 @@ public class MinimumCvTermEnricherTest {
      */
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
+        persistentCvTerm = new DefaultCvTerm(short_name , MI_ID);
+
         int timesToTry = 3;
 
-        assertTrue("The test can not be applied as the conditions do not invoke the requires response. " +
+        assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
                 timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
 
         ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
-        CvTerm cvTermToEnrich = new DefaultCvTerm(SHORT_NAME);
-        cvTermToEnrich.setMIIdentifier(MI_ID);
-        fetcher.addCvTerm(MI_ID , cvTermFull);
-
+        fetcher.addCvTerm(MI_ID , mockCvTerm);
         cvTermEnricher.setCvTermFetcher(fetcher);
-        cvTermEnricher.enrichCvTerm(cvTermToEnrich);
 
-        assertEquals(FULL_NAME, cvTermToEnrich.getFullName() );
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+
+        assertEquals(full_name, persistentCvTerm.getFullName() );
     }
+
+    // == FAILURE ON NULL ======================================================================
 
     /**
      * Attempts to enrich a null CvTerm.
@@ -121,217 +147,252 @@ public class MinimumCvTermEnricherTest {
      */
     @Test(expected = IllegalStateException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
-        CvTerm cvTerm = new DefaultCvTerm(SHORT_NAME , MI_ID);
+        CvTerm cvTerm = new DefaultCvTerm(short_name, MI_ID);
         cvTermEnricher.setCvTermFetcher(null);
         assertNull(cvTermEnricher.getCvTermFetcher());
         cvTermEnricher.enrichCvTerm(cvTerm);
         fail("Exception should be thrown before this point");
     }
 
+    // == TEST ALL FIELDS ==========================
 
     /**
-     * Enrich a CvTerm
-     * Show that the full name is set and the synonyms are not.
+     * Show that when the fields are empty, the updater fills them in.
      * @throws EnricherException
      */
     @Test
-    public void test_enriching_CvTerm_by_MI_identifier_with_completed_fields() throws EnricherException {
-
-        CvTerm cvTermToEnrichWithCompleteFields = new DefaultCvTerm(other_short_name, MI_ID);
-        cvTermToEnrichWithCompleteFields.setFullName(other_full_name);
-        cvTermToEnrichWithCompleteFields.getSynonyms().add(AliasUtils.createAlias(
-                "synonym", "MI:1041", other_synonym));
-
-        assertEquals(other_short_name, cvTermToEnrichWithCompleteFields.getShortName());
-        assertEquals(other_full_name, cvTermToEnrichWithCompleteFields.getFullName());
-        assertEquals(1, cvTermToEnrichWithCompleteFields.getIdentifiers().size());
-        assertEquals(1 , cvTermToEnrichWithCompleteFields.getSynonyms().size());
-
-        cvTermEnricher.enrichCvTerm(cvTermToEnrichWithCompleteFields);
-
-        assertEquals(other_short_name , cvTermToEnrichWithCompleteFields.getShortName());
-        assertNotNull(cvTermToEnrichWithCompleteFields.getFullName());
-        assertEquals(other_full_name, cvTermToEnrichWithCompleteFields.getFullName());
-        assertEquals(1 , cvTermToEnrichWithCompleteFields.getIdentifiers().size());
-        assertEquals(1 , cvTermToEnrichWithCompleteFields.getSynonyms().size());
-        assertEquals(other_synonym , cvTermToEnrichWithCompleteFields.getSynonyms().iterator().next().getName());
-    }
-
-    private CvTerm cvTermToEnrichWithCompleteFields = new DefaultCvTerm(other_short_name, MI_ID);
-
-    @Test
-    public void test_enriching_CvTerm_by_MI_identifier_with_completed_fields_and_listener() throws EnricherException {
+    public void test_enriching_CvTerm_with_empty_fields() throws EnricherException {
+        persistentCvTerm = new DefaultCvTerm(other_short_name , MI_ID);
         reportForEnrichment.clear();
-        cvTermToEnrichWithCompleteFields.setFullName(other_full_name);
-        cvTermToEnrichWithCompleteFields.getSynonyms().add(AliasUtils.createAlias(
-                "synonym", "MI:1041", other_synonym));
+
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
             public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
-                assertTrue(cvTerm == cvTermToEnrichWithCompleteFields);
+                assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
             }
 
-            public void onShortNameUpdate(CvTerm cv, String oldShortName) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("Short name should never update for enrichment");
-            }
+            public void onShortNameUpdate(CvTerm cv, String oldShortName) {fail();}
 
-            public void onFullNameUpdate(CvTerm cv, String oldFullName) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("Full name should already be set");
-            }
-
-            public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No additional MI was supplied");
-            }
-
-            public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No MOD was supplied");
-            }
-
-            public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No PAR was supplied");
-            }
-
-            public void onAddedIdentifier(CvTerm cv, Xref added) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No ID was supplied");
-            }
-
-            public void onRemovedIdentifier(CvTerm cv, Xref removed) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No ID should be removed for enrichment");
-            }
-
-            public void onAddedXref(CvTerm cv, Xref added) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No xref should be added for enrichment");
-            }
-
-            public void onRemovedXref(CvTerm cv, Xref removed) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No xref should be removed for enrichment");
-            }
-
-            public void onAddedSynonym(CvTerm cv, Alias added) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No synonyms should be added for enrichment");
-            }
-
-            public void onRemovedSynonym(CvTerm cv, Alias removed) {
-                assertTrue(cv == cvTermToEnrichWithCompleteFields);
-                fail("No synonyms should be removed for enrichment");
-            }
-        });
-
-        cvTermEnricher.enrichCvTerm(cvTermToEnrichWithCompleteFields);
-    }
-
-
-        /**
-         * Enrich a CvTerm
-         * Show that the full name is set and the synonyms are not.
-         * @throws EnricherException
-         */
-    @Test
-    public void test_enriching_CvTerm_by_MI_identifier_with_incomplete_fields() throws EnricherException {
-        String other_short_name = "other short name";
-
-
-        CvTerm cvTermToEnrich = new DefaultCvTerm(other_short_name , MI_ID);
-
-        assertEquals(other_short_name , cvTermToEnrich.getShortName());
-        assertNull(cvTermToEnrich.getFullName());
-        assertEquals(1, cvTermToEnrich.getIdentifiers().size());
-        assertEquals(0 , cvTermToEnrich.getSynonyms().size());
-
-        cvTermEnricher.enrichCvTerm(cvTermToEnrich);
-
-        assertEquals(other_short_name , cvTermToEnrich.getShortName());
-        assertNotNull(cvTermToEnrich.getFullName());
-        assertEquals(FULL_NAME, cvTermToEnrich.getFullName());
-        assertEquals(1 , cvTermToEnrich.getIdentifiers().size());
-        assertEquals(0 , cvTermToEnrich.getSynonyms().size());
-    }
-
-
-    CvTerm cvTermToEnrichWithoutCompleteFields = new DefaultCvTerm(other_short_name , MI_ID);
-
-    @Test
-    public void test_enriching_CvTerm_by_MI_identifier_with_incomplete_fields_and_listener() throws EnricherException {
-        reportForEnrichment.clear();
-        //cvTermToEnrichWithCompleteFields.setFullName(other_full_name);
-
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
-            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
-                assertTrue(cvTerm == cvTermToEnrichWithoutCompleteFields);
-                assertEquals(EnrichmentStatus.SUCCESS , status);
-            }
-
-            public void onShortNameUpdate(CvTerm cv, String oldShortName) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("Short name should never update for enrichment");
-            }
-
-            public void onFullNameUpdate(CvTerm cv, String oldFullName) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
+            public void onFullNameUpdate(CvTerm cv, String oldFullName)  {
+                assertTrue(cv == persistentCvTerm);
                 assertNull(oldFullName);
+                assertEquals(full_name, cv.getFullName());
                 reportForEnrichment.add(fullNameUpdateKey);
             }
 
-            public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No additional MI was supplied");
+            public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail();}
+            public void onMODIdentifierUpdate(CvTerm cv, String oldMOD)  {fail();}
+            public void onPARIdentifierUpdate(CvTerm cv, String oldPAR)  {fail();}
+            public void onAddedIdentifier(CvTerm cv, Xref added)  {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getId());
+                reportForEnrichment.add(identifierAddedKey);
             }
-
-            public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No MOD was supplied");
-            }
-
-            public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No PAR was supplied");
-            }
-
-            public void onAddedIdentifier(CvTerm cv, Xref added) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No ID was supplied");
-            }
-
-            public void onRemovedIdentifier(CvTerm cv, Xref removed) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No ID should be removed for enrichment");
-            }
-
-            public void onAddedXref(CvTerm cv, Xref added) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No xref should be added for enrichment");
-            }
-
-            public void onRemovedXref(CvTerm cv, Xref removed) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No xref should be removed for enrichment");
-            }
-
-            public void onAddedSynonym(CvTerm cv, Alias added) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No synonyms should be added for enrichment");
-            }
-
-            public void onRemovedSynonym(CvTerm cv, Alias removed) {
-                assertTrue(cv == cvTermToEnrichWithoutCompleteFields);
-                fail("No synonyms should be removed for enrichment");
-            }
+            public void onRemovedIdentifier(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedXref(CvTerm cv, Xref added)  {fail();}
+            public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
         });
 
-        cvTermEnricher.enrichCvTerm(cvTermToEnrichWithoutCompleteFields);
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
 
+        assertEquals(other_short_name, persistentCvTerm.getShortName());
+        assertEquals(full_name, persistentCvTerm.getFullName());
+        assertEquals(2 , persistentCvTerm.getIdentifiers().size());
+
+        // Show no change on maximum fields
+        assertEquals(0 , persistentCvTerm.getSynonyms().size());
+        assertEquals(0, persistentCvTerm.getXrefs().size());
+        assertEquals(0 , persistentCvTerm.getAnnotations().size());
+
+        // Show events were fired
         assertTrue(reportForEnrichment.contains(fullNameUpdateKey));
+        assertTrue(reportForEnrichment.contains(identifierAddedKey));
+    }
+
+
+    /**
+     * Show that if the term to enrich has fields completed, they are replaced with the updated form
+     * @throws EnricherException
+     */
+    @Test
+    public void test_no_updating_of_CvTerm_by_MI_identifier_with_different_fields() throws EnricherException {
+        persistentCvTerm = new DefaultCvTerm(other_short_name, other_full_name, MI_ID);
+        persistentCvTerm.getXrefs().add(new DefaultXref(
+                new DefaultCvTerm(other_short_name) , other_short_name));
+        persistentCvTerm.getAnnotations().add(new DefaultAnnotation(
+                new DefaultCvTerm(other_short_name) , other_short_name ));
+        persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
+                "synonym", "MI:1041", other_short_name));
+
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+                assertTrue(cvTerm == persistentCvTerm);
+                assertEquals(EnrichmentStatus.SUCCESS , status);
+            }
+
+            public void onShortNameUpdate(CvTerm cv, String oldShortName)  {fail();}
+
+            public void onFullNameUpdate(CvTerm cv, String oldFullName){fail();}
+
+            public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail();}
+            public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {fail();}
+            public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {fail();}
+            public void onAddedIdentifier(CvTerm cv, Xref added) {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getId());
+                reportForEnrichment.add(identifierAddedKey);
+            }
+            public void onRemovedIdentifier(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedXref(CvTerm cv, Xref added) {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getId());
+                reportForEnrichment.add(identifierAddedKey);
+            }
+            public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+
+        });
+
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+
+        assertEquals(other_short_name, persistentCvTerm.getShortName());
+        assertEquals(other_full_name, persistentCvTerm.getFullName());
+        assertEquals(2 , persistentCvTerm.getIdentifiers().size());
+
+        // Show no change on maximum fields
+        assertEquals(1 , persistentCvTerm.getSynonyms().size());
+        assertEquals(1 , persistentCvTerm.getXrefs().size());
+        assertEquals(1 , persistentCvTerm.getAnnotations().size());
+        assertEquals(other_short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
+        assertEquals(other_short_name, persistentCvTerm.getXrefs().iterator().next().getId());
+        assertEquals(other_short_name, persistentCvTerm.getAnnotations().iterator().next().getValue() );
+
+        // Show events were fired
+        assertTrue(reportForEnrichment.contains(identifierAddedKey));
+    }
+
+
+    /**
+     * Show that if the fetched fields and fields to enrich are the same, no changes are made
+     */
+    @Test
+    public void test_no_updating_cvTerm_by_MI_identifier_with_same_fields() throws EnricherException {
+        persistentCvTerm = new DefaultCvTerm(short_name, full_name, MI_ID);
+        persistentCvTerm.getXrefs().add(new DefaultXref(
+                new DefaultCvTerm(short_name) , short_name));
+        persistentCvTerm.getAnnotations().add(new DefaultAnnotation(
+                new DefaultCvTerm(short_name) , short_name ));
+        persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
+                "synonym", "MI:1041", short_name));
+
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+                assertTrue(cvTerm == persistentCvTerm);
+                assertEquals(EnrichmentStatus.SUCCESS , status);
+            }
+
+            public void onShortNameUpdate(CvTerm cv, String oldShortName) {fail();}
+
+            public void onFullNameUpdate(CvTerm cv, String oldFullName) {fail();}
+
+            public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail();}
+            public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {fail();}
+            public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {fail();}
+            public void onAddedIdentifier(CvTerm cv, Xref added)  {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getId());
+                reportForEnrichment.add(identifierAddedKey);
+            }
+            public void onRemovedIdentifier(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedXref(CvTerm cv, Xref added)  {fail();}
+            public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+
+        });
+
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+
+        assertEquals(short_name, persistentCvTerm.getShortName());
+        assertEquals(full_name, persistentCvTerm.getFullName());
+        assertEquals(2 , persistentCvTerm.getIdentifiers().size());
+
+        // Show no change on maximum fields
+        assertEquals(1 , persistentCvTerm.getSynonyms().size());
+        assertEquals(1 , persistentCvTerm.getXrefs().size());
+        assertEquals(1 , persistentCvTerm.getAnnotations().size());
+        assertEquals(short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
+        assertEquals(short_name, persistentCvTerm.getXrefs().iterator().next().getId() );
+        assertEquals(short_name, persistentCvTerm.getAnnotations().iterator().next().getValue() );
+
+        // Show events were fired
+        assertTrue(reportForEnrichment.contains(identifierAddedKey));
+    }
+
+    /**
+     * Show that fields are not changed to null if the fetcher does not find fields
+     */
+    @Test
+    public void test_no_updating_cvTerm_by_MI_identifier_when_fetched_fields_are_null() throws EnricherException {
+        mockCvTerm.setShortName(other_short_name);
+        mockCvTerm.setFullName(null);
+        mockCvTerm.getAnnotations().clear();
+        mockCvTerm.getSynonyms().clear();
+        mockCvTerm.getXrefs().clear();
+
+
+        persistentCvTerm = new DefaultCvTerm(other_short_name, other_full_name, MI_ID);
+        persistentCvTerm.getXrefs().add(new DefaultXref(
+                new DefaultCvTerm(other_short_name) , other_short_name));
+        persistentCvTerm.getAnnotations().add(new DefaultAnnotation(
+                new DefaultCvTerm(other_short_name) , other_short_name ));
+        persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
+                "synonym", "MI:1041", other_short_name));
+
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+                assertTrue(cvTerm == persistentCvTerm);
+                assertEquals(EnrichmentStatus.SUCCESS , status);
+            }
+
+            public void onShortNameUpdate(CvTerm cv, String oldShortName) {fail();}
+            public void onFullNameUpdate(CvTerm cv, String oldFullName) {fail();}
+            public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail();}
+            public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {fail();}
+            public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {fail();}
+            public void onAddedIdentifier(CvTerm cv, Xref added) {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getId());
+                reportForEnrichment.add(identifierAddedKey);
+            }
+            public void onRemovedIdentifier(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedXref(CvTerm cv, Xref added)  {fail();}
+            public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+
+        });
+
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+
+        assertEquals(other_short_name, persistentCvTerm.getShortName());
+        assertEquals(other_full_name, persistentCvTerm.getFullName());
+        assertEquals(2 , persistentCvTerm.getIdentifiers().size());
+
+        // Show no change on maximum fields
+        assertEquals(1 , persistentCvTerm.getSynonyms().size());
+        assertEquals(1 , persistentCvTerm.getXrefs().size());
+        assertEquals(1 , persistentCvTerm.getAnnotations().size());
+        assertEquals(other_short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
+        assertEquals(other_short_name, persistentCvTerm.getXrefs().iterator().next().getId());
+        assertEquals(other_short_name, persistentCvTerm.getAnnotations().iterator().next().getValue() );
+
+        // Show events were fired
+        assertTrue(reportForEnrichment.contains(identifierAddedKey));
     }
 
 }

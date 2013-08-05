@@ -18,11 +18,19 @@ public class MaximumCvTermEnricher
         extends MinimumCvTermEnricher
         implements CvTermEnricher {
 
-
+    /**
+     * A constructor matching super.
+     * @param cvTermFetcher The fetcher to initiate the enricher with.
+     *                      If null, an illegal state exception will be thrown at the next enrichment.
+     */
     public MaximumCvTermEnricher(CvTermFetcher cvTermFetcher) {
         super(cvTermFetcher);
     }
 
+    /**
+     * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
+     * @param cvTermToEnrich the CvTerm to enrich
+     */
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
         super.processCvTerm(cvTermToEnrich);
