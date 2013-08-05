@@ -25,14 +25,14 @@ public interface OrganismEnricher{
      * Sets the fetcher service to retrieve the organism by.
      * @param fetcher   the service to use when fetching an enrichedOrganism
      */
-    public void setFetcher(OrganismFetcher fetcher);
+    public void setOrganismFetcher(OrganismFetcher fetcher);
 
     /**
      * The fetcher service to retrieve the organism by.
      * If this has not been set, null will be returned.
      * @return  The service being used when fetching an enrichedOrganism. Null if it has not been set.
      */
-    public OrganismFetcher getFetcher();
+    public OrganismFetcher getOrganismFetcher();
 
     public MockOrganismFetcher getMockFetcher();
 

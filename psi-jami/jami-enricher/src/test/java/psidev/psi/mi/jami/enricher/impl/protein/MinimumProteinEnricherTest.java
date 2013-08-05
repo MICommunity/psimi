@@ -15,18 +15,15 @@ import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultAlias;
-import psidev.psi.mi.jami.model.impl.DefaultOrganism;
-import psidev.psi.mi.jami.model.impl.DefaultProtein;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for MinimumProteinEnricher
  *
- * @author Marine Dumousseau (marine@ebi.ac.uk)
- * @version $Id$
- * @since <pre>23/05/13</pre>
+ *
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  23/05/13
  */
 
 public class MinimumProteinEnricherTest {
@@ -87,7 +84,9 @@ public class MinimumProteinEnricherTest {
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addNewProtein(TEST_AC_HALF_PROT , proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
+
         proteinEnricher.enrichProtein(proteinToEnrich);
+
         fail("Exception should be thrown before this point");
     }
 
@@ -108,6 +107,23 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.enrichProtein(proteinToEnrich);
 
         assertEquals(TEST_FULLNAME , proteinToEnrich.getFullName() );
+    }
+
+
+    // == FAILURE ON NULL ======================================================================
+
+    /**
+     * Attempts to enrich a legal cvTerm but with a null fetcher.
+     * This should throw an illegal state exception.
+     * @throws EnricherException
+     */
+    @Test(expected = IllegalStateException.class)
+    public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
+        persistentProtein = new DefaultProtein("name" , "namename");
+        proteinEnricher.setProteinFetcher(null);
+        assertNull(proteinEnricher.getProteinFetcher());
+        proteinEnricher.enrichProtein(persistentProtein);
+        fail("Exception should be thrown before this point");
     }
 
 
@@ -166,77 +182,24 @@ public class MinimumProteinEnricherTest {
                 persistentInt++;
             }
 
-            public void onProteinRemapped(Protein protein, String oldUniprot) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRefseqUpdate(Protein protein, String oldRefseq) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRogidUpdate(Protein protein, String oldRogid) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onSequenceUpdate(Protein protein, String oldSequence) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onShortNameUpdate(Protein protein, String oldShortName) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onFullNameUpdate(Protein protein, String oldFullName) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedInteractorType(Protein protein) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedOrganism(Protein protein) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedIdentifier(Protein protein, Xref added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedIdentifier(Protein protein, Xref removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedXref(Protein protein, Xref added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedXref(Protein protein, Xref removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedAlias(Protein protein, Alias added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedAlias(Protein protein, Alias removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedChecksum(Protein protein, Checksum added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedChecksum(Protein protein, Checksum removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
+            public void onProteinRemapped(Protein protein, String oldUniprot)  {fail();}
+            public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail();}
+            public void onRefseqUpdate(Protein protein, String oldRefseq) {fail();}
+            public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail();}
+            public void onRogidUpdate(Protein protein, String oldRogid)  {fail();}
+            public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
+            public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
+            public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
+            public void onAddedInteractorType(Protein protein)  {fail();}
+            public void onAddedOrganism(Protein protein)  {fail();}
+            public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
+            public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
+            public void onAddedXref(Protein protein, Xref added)  {fail();}
+            public void onRemovedXref(Protein protein, Xref removed) {fail();}
+            public void onAddedAlias(Protein protein, Alias added)  {fail();}
+            public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
+            public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
+            public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
         }));
 
         this.proteinEnricher.enrichProtein(persistentProtein);
@@ -267,84 +230,32 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-            public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
-                assertTrue(protein == persistentProtein);
-                assertEquals(EnrichmentStatus.FAILED , status);
-                persistentInt++;
-            }
+                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                        assertTrue(protein == persistentProtein);
+                        assertEquals(EnrichmentStatus.FAILED , status);
+                        persistentInt++;
+                    }
 
-            public void onProteinRemapped(Protein protein, String oldUniprot) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRefseqUpdate(Protein protein, String oldRefseq) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRogidUpdate(Protein protein, String oldRogid) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onSequenceUpdate(Protein protein, String oldSequence) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onShortNameUpdate(Protein protein, String oldShortName) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onFullNameUpdate(Protein protein, String oldFullName) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedInteractorType(Protein protein) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedOrganism(Protein protein) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedIdentifier(Protein protein, Xref added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedIdentifier(Protein protein, Xref removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedXref(Protein protein, Xref added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedXref(Protein protein, Xref removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedAlias(Protein protein, Alias added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedAlias(Protein protein, Alias removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onAddedChecksum(Protein protein, Checksum added) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-
-            public void onRemovedChecksum(Protein protein, Checksum removed) {
-                fail("Should not reach this point if remapper is not available for a protein without an identifier");
-            }
-        }));
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail();}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail();}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail();}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail();}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail();}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
+                    public void onAddedInteractorType(Protein protein)  {fail();}
+                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
+                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail();}
+                    public void onAddedAlias(Protein protein, Alias added)  {fail();}
+                    public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
+                    public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
+                    public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                }
+        ));
 
         this.proteinEnricher.enrichProtein(persistentProtein);
 
@@ -383,78 +294,26 @@ public class MinimumProteinEnricherTest {
                         persistentInt++;
                     }
 
-                    public void onProteinRemapped(Protein protein, String oldUniprot) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRogidUpdate(Protein protein, String oldRogid) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onSequenceUpdate(Protein protein, String oldSequence) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onShortNameUpdate(Protein protein, String oldShortName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onFullNameUpdate(Protein protein, String oldFullName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedInteractorType(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedOrganism(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedIdentifier(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedIdentifier(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedXref(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedXref(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedAlias(Protein protein, Alias added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedAlias(Protein protein, Alias removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedChecksum(Protein protein, Checksum added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedChecksum(Protein protein, Checksum removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-                }));
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail();}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail();}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail();}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail();}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail();}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
+                    public void onAddedInteractorType(Protein protein)  {fail();}
+                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
+                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail();}
+                    public void onAddedAlias(Protein protein, Alias added)  {fail();}
+                    public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
+                    public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
+                    public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                }
+        ));
 
         this.proteinEnricher.enrichProtein(persistentProtein);
 
@@ -493,78 +352,26 @@ public class MinimumProteinEnricherTest {
                         persistentInt++;
                     }
 
-                    public void onProteinRemapped(Protein protein, String oldUniprot) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRogidUpdate(Protein protein, String oldRogid) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onSequenceUpdate(Protein protein, String oldSequence) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onShortNameUpdate(Protein protein, String oldShortName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onFullNameUpdate(Protein protein, String oldFullName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedInteractorType(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedOrganism(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedIdentifier(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedIdentifier(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedXref(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedXref(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedAlias(Protein protein, Alias added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedAlias(Protein protein, Alias removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedChecksum(Protein protein, Checksum added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedChecksum(Protein protein, Checksum removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-                }));
+                    public void onProteinRemapped(Protein protein, String oldUniprot)  {fail();}
+                    public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail();}
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail();}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail();}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail();}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
+                    public void onAddedInteractorType(Protein protein)  {fail();}
+                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
+                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail();}
+                    public void onAddedAlias(Protein protein, Alias added)  {fail();}
+                    public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
+                    public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
+                    public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                }
+        ));
 
         this.proteinEnricher.enrichProtein(persistentProtein);
 
@@ -616,70 +423,24 @@ public class MinimumProteinEnricherTest {
                         assertEquals(TEST_AC_HALF_PROT , protein.getUniprotkb());
                     }
 
-                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRogidUpdate(Protein protein, String oldRogid) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onSequenceUpdate(Protein protein, String oldSequence) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onShortNameUpdate(Protein protein, String oldShortName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onFullNameUpdate(Protein protein, String oldFullName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedInteractorType(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedOrganism(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedIdentifier(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedIdentifier(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedXref(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedXref(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedAlias(Protein protein, Alias added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedAlias(Protein protein, Alias removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedChecksum(Protein protein, Checksum added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedChecksum(Protein protein, Checksum removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-                }));
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail();}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail();}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail();}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
+                    public void onAddedInteractorType(Protein protein)  {fail();}
+                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
+                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail();}
+                    public void onAddedAlias(Protein protein, Alias added)  {fail();}
+                    public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
+                    public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
+                    public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                }
+        ));
 
         this.proteinEnricher.enrichProtein(persistentProtein);
 
@@ -733,70 +494,24 @@ public class MinimumProteinEnricherTest {
                         assertEquals(TEST_AC_HALF_PROT, protein.getUniprotkb());
                     }
 
-                    public void onRefseqUpdate(Protein protein, String oldRefseq) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRogidUpdate(Protein protein, String oldRogid) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onSequenceUpdate(Protein protein, String oldSequence) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onShortNameUpdate(Protein protein, String oldShortName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onFullNameUpdate(Protein protein, String oldFullName) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedInteractorType(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedOrganism(Protein protein) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedIdentifier(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedIdentifier(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedXref(Protein protein, Xref added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedXref(Protein protein, Xref removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedAlias(Protein protein, Alias added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedAlias(Protein protein, Alias removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onAddedChecksum(Protein protein, Checksum added) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-
-                    public void onRemovedChecksum(Protein protein, Checksum removed) {
-                        fail("Should not reach this point if remapper is not available for a protein without an identifier");
-                    }
-                }));
+                    public void onRefseqUpdate(Protein protein, String oldRefseq) {fail();}
+                    public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail();}
+                    public void onRogidUpdate(Protein protein, String oldRogid)  {fail();}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
+                    public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
+                    public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
+                    public void onAddedInteractorType(Protein protein)  {fail();}
+                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
+                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedXref(Protein protein, Xref removed) {fail();}
+                    public void onAddedAlias(Protein protein, Alias added)  {fail();}
+                    public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
+                    public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
+                    public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                }
+        ));
 
         this.proteinEnricher.enrichProtein(persistentProtein);
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());

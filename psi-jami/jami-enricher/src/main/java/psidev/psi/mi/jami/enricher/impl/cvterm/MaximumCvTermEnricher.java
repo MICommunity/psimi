@@ -28,8 +28,9 @@ public class MaximumCvTermEnricher
     }
 
     /**
-     * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
-     * @param cvTermToEnrich the CvTerm to enrich
+     * Strategy for the cvTerm enrichment.
+     * This method can be overwritten to change how the cvTerm is enriched.
+     * @param cvTermToEnrich   The protein to be enriched.
      */
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){

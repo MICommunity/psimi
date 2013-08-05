@@ -30,11 +30,11 @@ public class MockOrganismFetcher
 
     public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
 
-        if(! localOrganisms.containsKey(""+identifier)) {
+        if(! localOrganisms.containsKey( Integer.toString(identifier) )) {
             return null;
         }
 
-        else return localOrganisms.get(""+identifier);
+        else return localOrganisms.get( Integer.toString(identifier) );
     }
 
     public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {

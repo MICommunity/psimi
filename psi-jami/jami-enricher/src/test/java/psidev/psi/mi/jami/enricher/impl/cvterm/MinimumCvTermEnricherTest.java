@@ -87,7 +87,6 @@ public class MinimumCvTermEnricherTest {
      */
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
-
         persistentCvTerm = new DefaultCvTerm(short_name , MI_ID);
 
         int timesToTry = -1;

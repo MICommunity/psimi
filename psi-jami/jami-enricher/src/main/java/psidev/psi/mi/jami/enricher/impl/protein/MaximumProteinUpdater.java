@@ -9,7 +9,9 @@ import psidev.psi.mi.jami.model.Xref;
 
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides maximum updating of the Protein.
+ * Will update all aspects covered by the minimum updater as well as updating the xrefs.
+ * As an updater, values from the provided protein to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 20/05/13

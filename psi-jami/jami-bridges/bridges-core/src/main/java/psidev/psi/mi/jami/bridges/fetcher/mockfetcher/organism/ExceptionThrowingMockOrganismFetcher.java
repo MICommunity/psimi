@@ -30,16 +30,16 @@ public class ExceptionThrowingMockOrganismFetcher
 
     @Override
     public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
-        if(! localOrganisms.containsKey(""+identifier))  return null;
+        if(! localOrganisms.containsKey( Integer.toString(identifier) ))  return null;
         else {
-            if(! lastQuery.equals(""+identifier)){
-                lastQuery = ""+identifier;
+            if(! lastQuery.equals( Integer.toString(identifier) )){
+                lastQuery = Integer.toString(identifier) ;
                 count = 0;
 
             }
 
             if(maxQuery != -1 && count >= maxQuery)
-                return localOrganisms.get(""+identifier);
+                return localOrganisms.get( Integer.toString(identifier) );
             else {
                 count++;
                 throw new BridgeFailedException("Mock fetcher throws because this is the "+(count-1)+" attempt of "+maxQuery);

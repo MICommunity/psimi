@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.util.RetryStrategy;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -31,7 +30,7 @@ public abstract class AbstractOrganismEnricher
     public AbstractOrganismEnricher(){}
 
     public AbstractOrganismEnricher(OrganismFetcher organismFetcher){
-        setFetcher(organismFetcher);
+        setOrganismFetcher(organismFetcher);
     }
 
     /**
@@ -76,7 +75,7 @@ public abstract class AbstractOrganismEnricher
                 "Organism fetcher failed on organism with taxID "+organismToEnrich.getTaxId()+". " );
         while(retryStrategy.retry()){
             try {
-                fetchedOrganism = getFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
+                fetchedOrganism = getOrganismFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
                 retryStrategy.attemptSucceeded();
             } catch (BridgeFailedException e) {
                 retryStrategy.reportException(e);
@@ -89,7 +88,7 @@ public abstract class AbstractOrganismEnricher
 
 
 
-    public void setFetcher(OrganismFetcher fetcher) {
+    public void setOrganismFetcher(OrganismFetcher fetcher) {
         this.fetcher = fetcher;
     }
 
@@ -97,7 +96,7 @@ public abstract class AbstractOrganismEnricher
      *
      * @return  An organism fetcher if one has been set or a mock organism fetcher if it is has not.
      */
-    public OrganismFetcher getFetcher() {
+    public OrganismFetcher getOrganismFetcher() {
         return fetcher;
     }
 

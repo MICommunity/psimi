@@ -22,6 +22,11 @@ public class MinimumProteinEnricher
         extends AbstractProteinEnricher
         implements ProteinEnricher {
 
+    /**
+     * The only constructor which forces the setting of the fetcher
+     * If the cvTerm fetcher is null, an illegal state exception will be thrown at the next enrichment.
+     * @param proteinFetcher    The protein fetcher to use.
+     */
     public MinimumProteinEnricher(ProteinFetcher proteinFetcher) {
         super(proteinFetcher);
     }
@@ -31,7 +36,7 @@ public class MinimumProteinEnricher
      * Fires a report if the remap was successful.
      * @param proteinToEnrich   The protein to be enriched
      * @return                  The status of the enrichment
-     * @throws EnricherException
+     * @throws EnricherException    Thrown if the remapper encounters a problem
      */
     @Override
     protected boolean remapDeadProtein(Protein proteinToEnrich) throws EnricherException {
@@ -61,8 +66,9 @@ public class MinimumProteinEnricher
     }
 
     /**
-     *
-     * @param proteinToEnrich
+     * Strategy for the protein enrichment.
+     * This method can be overwritten to change how the protein is enriched.
+     * @param proteinToEnrich   The protein to be enriched.
      */
     @Override
     protected void processProtein(Protein proteinToEnrich) {

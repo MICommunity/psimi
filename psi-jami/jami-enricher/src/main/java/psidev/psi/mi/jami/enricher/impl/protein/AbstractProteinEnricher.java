@@ -18,7 +18,11 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The Protein enricher is an enricher which can enrich either single protein or a collection.
+ * The Protein enricher has one subEnrichers. A protein enricher must be initiated with a protein fetcher.
+ *
+ * If the protein fetcher also fetches an organism, and the organism fetcher is a mockOrganism fetcher,
+ * then the organism from the fetched protein is set in the mock organism fetcher.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  14/06/13
@@ -39,14 +43,19 @@ public abstract class AbstractProteinEnricher
 
     protected Protein proteinFetched = null;
 
+    /**
+     * The only constructor which forces the setting of the fetcher
+     * If the cvTerm fetcher is null, an illegal state exception will be thrown at the next enrichment.
+     * @param proteinFetcher    The protein fetcher to use.
+     */
     public AbstractProteinEnricher(ProteinFetcher proteinFetcher){
         setProteinFetcher(proteinFetcher);
     }
 
     /**
-     * Enriches a collection of proteins.
-     * @param proteinsToEnrich
-     * @throws EnricherException
+     * Enrichment of a collection of proteins.
+     * @param proteinsToEnrich      The proteins to be enriched
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichProteins(Collection<Protein> proteinsToEnrich) throws EnricherException {
         for(Protein proteinToEnrich : proteinsToEnrich){
@@ -56,11 +65,10 @@ public abstract class AbstractProteinEnricher
 
 
     /**
-     * Enriches a single protein.
-     * First it fetches a complete record for a protein
-     * and then uses the processing strategy to integrate the additional data.
-     *
-     * @param proteinToEnrich   the Protein which is being enriched
+     * Enrichment of a single Protein.
+     * At the end of the enrichment, the listener will be fired
+     * @param proteinToEnrich       A protein to enrich
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichProtein(Protein proteinToEnrich) throws EnricherException {
         // If there are several entries, try to find one with the same organism as the proteinToEnrich
@@ -76,8 +84,8 @@ public abstract class AbstractProteinEnricher
         if (! isProteinConflictFree(proteinToEnrich) ) return;
 
         if(getOrganismEnricher() != null ){
-            if (getOrganismEnricher().getFetcher() == null ||
-                    getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getFetcher()){
+            if (getOrganismEnricher().getOrganismFetcher() == null ||
+                    getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getOrganismFetcher()){
                 getOrganismEnricher().getMockFetcher().clearOrganisms();
 
                 getOrganismEnricher().getMockFetcher().addNewOrganism(
@@ -160,7 +168,7 @@ public abstract class AbstractProteinEnricher
      */
     protected Protein fetchProtein(Protein proteinToEnrich) throws EnricherException {
 
-        if(getFetcher() == null) throw new IllegalStateException("ProteinFetcher has not been provided.");
+        if(getProteinFetcher() == null) throw new IllegalStateException("ProteinFetcher has not been provided.");
         if(proteinToEnrich == null) throw new IllegalArgumentException("Attempted to fetch for a null protein.");
 
         // If there is no uniprotID - try and remap.
@@ -320,47 +328,72 @@ public abstract class AbstractProteinEnricher
     protected abstract boolean remapDeadProtein(Protein proteinToEnrich) throws EnricherException;
 
     /**
-     * How to process the protein if an enriched form can be found.
-     *
-     * @param proteinToEnrich
+     * Strategy for the protein enrichment.
+     * This method can be overwritten to change how the protein is enriched.
+     * @param proteinToEnrich   The protein to be enriched.
      */
     protected abstract void processProtein(Protein proteinToEnrich) ;
 
     /**
-     * Sets the protein fetching service which will be used to fetch the enriched form
-     * @param fetcher
+     * Sets the protein fetcher to be used for enrichment.
+     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
+     * @param fetcher   The fetcher to be used to gather data for enrichment
      */
     public void setProteinFetcher(ProteinFetcher fetcher) {
         this.fetcher = fetcher;
     }
 
+
     /**
-     * Gets the protein fetching service which will be used to fetch the enriched form
-     * @return
-     */
-    public ProteinFetcher getFetcher() {
+    * The fetcher to be used for used to collect data.
+    * @return  The fetcher which is currently being used for fetching.
+    */
+    public ProteinFetcher getProteinFetcher() {
         return fetcher;
     }
 
-    public void setProteinEnricherListener(ProteinEnricherListener proteinEnricherListener) {
-        this.listener = proteinEnricherListener;
+    /**
+     * The proteinEnricherListener to be used.
+     * It will be fired at all points where a change is made to the protein
+     * @param listener  The listener to use. Can be null.
+     */
+    public void setProteinEnricherListener(ProteinEnricherListener listener) {
+        this.listener = listener;
     }
-
+    /**
+     * The listener which is fired when changes are made to the proteinToEnrich.
+     * @return  The current listener. May be null.
+     */
     public ProteinEnricherListener getProteinEnricherListener() {
         return listener;
     }
 
+    /**
+     * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
+     * @param proteinRemapper   The remapper to use.
+     */
     public void setProteinRemapper(ProteinRemapper proteinRemapper){
         this.proteinRemapper = proteinRemapper;
     }
+    /**
+     * The protein remapper has no default and can be left null
+     * @return  The current remapper.
+     */
     public ProteinRemapper getProteinRemapper(){
         return proteinRemapper;
     }
 
+    /**
+     * The organism enricher which will be used to collect data about the organisms.
+     * @param organismEnricher  The organism enricher to be used.
+     */
     public void setOrganismEnricher(OrganismEnricher organismEnricher) {
         this.organismEnricher = organismEnricher;
     }
-
+    /**
+     * The Enricher to use on the protein's organism.
+     * @return  The current organism enricher.
+     */
     public OrganismEnricher getOrganismEnricher(){
         return organismEnricher;
     }
