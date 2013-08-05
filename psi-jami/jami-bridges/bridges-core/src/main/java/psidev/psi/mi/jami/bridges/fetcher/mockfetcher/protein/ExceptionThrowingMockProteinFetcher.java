@@ -16,16 +16,16 @@ import java.util.*;
  */
 
 public class ExceptionThrowingMockProteinFetcher
+        extends MockProteinFetcher
         implements ProteinFetcher {
 
     String lastQuery = null;
     int count = 0;
     int maxquery = 0;
 
-    private Map<String, ArrayList<Protein>> localProteins;
 
     public ExceptionThrowingMockProteinFetcher(int maxquery){
-        localProteins = new HashMap<String, ArrayList<Protein>>();
+        super();
         this.maxquery = maxquery;
     }
 
@@ -53,29 +53,5 @@ public class ExceptionThrowingMockProteinFetcher
                 throw new BridgeFailedException("Mock fetcher throws because this is the "+(count-1)+" attempt of "+maxquery);
             }
         }
-    }
-
-    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers)  {
-        return Collections.EMPTY_LIST;
-    }
-
-    /**
-     * Adds the protein to the available return values.
-     * If a protein of the given identifier already exists,
-     * it will be appended and both proteins will be returned in a search for that identifier.
-     * @param identifier
-     * @param protein
-     */
-    public void addNewProtein(String identifier, Protein protein){
-        if(protein == null) return;
-        if(! localProteins.containsKey(identifier)){
-            ArrayList<Protein> array = new ArrayList<Protein>();
-            localProteins.put(identifier, array);
-        }
-        localProteins.get(identifier).add(protein);
-    }
-
-    public void clearProteins(){
-        localProteins.clear();
     }
 }

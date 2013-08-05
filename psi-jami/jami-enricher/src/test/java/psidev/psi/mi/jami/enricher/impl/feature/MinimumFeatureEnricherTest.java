@@ -32,9 +32,9 @@ import static org.junit.Assert.assertNull;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public class FeatureEnricherMinimumTest {
+public class MinimumFeatureEnricherTest {
 
-    protected static final Logger log = LoggerFactory.getLogger(FeatureEnricherMinimumTest.class.getName());
+    protected static final Logger log = LoggerFactory.getLogger(MinimumFeatureEnricherTest.class.getName());
 
     private ParticipantEnricher participantEnricher;
     private ProteinEnricher proteinEnricher;

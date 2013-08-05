@@ -22,13 +22,13 @@ import java.util.Map;
 public class MockOrganismFetcher
         implements OrganismFetcher {
 
-    private Map<String,Organism> localOrganisms;
+    protected Map<String,Organism> localOrganisms;
 
     public MockOrganismFetcher(){
         localOrganisms = new HashMap<String,Organism>();
     }
 
-    public Organism getOrganismByTaxID(int identifier){
+    public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
 
         if(! localOrganisms.containsKey(""+identifier)) {
             return null;

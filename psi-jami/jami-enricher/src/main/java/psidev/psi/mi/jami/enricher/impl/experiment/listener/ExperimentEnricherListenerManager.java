@@ -15,6 +15,10 @@ public class ExperimentEnricherListenerManager
         extends EnricherListenerManager<ExperimentEnricherListener>
         implements ExperimentEnricherListener{
 
+    public ExperimentEnricherListenerManager (ExperimentEnricherListener... experimentEnricherListener){
+        super (experimentEnricherListener);
+    }
+
     /**
      * An event fired when an experiment's enrichment has been completed.
      * @param experiment    The experiment that was enriched. can not be null.

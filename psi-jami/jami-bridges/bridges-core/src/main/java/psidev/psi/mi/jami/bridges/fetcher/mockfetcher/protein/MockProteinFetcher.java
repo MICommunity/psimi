@@ -18,7 +18,7 @@ import java.util.*;
 public class MockProteinFetcher
         implements ProteinFetcher {
 
-    private Map<String, ArrayList<Protein>> localProteins;
+    protected Map<String, ArrayList<Protein>> localProteins;
 
     public MockProteinFetcher(){
         localProteins = new HashMap<String, ArrayList<Protein>>();
@@ -30,7 +30,7 @@ public class MockProteinFetcher
      * @param identifier
      * @return
      */
-    public Collection<Protein> getProteinsByIdentifier(String identifier) {
+    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException(
                 "Attempted to query mock protein fetcher for null identifier.");
 

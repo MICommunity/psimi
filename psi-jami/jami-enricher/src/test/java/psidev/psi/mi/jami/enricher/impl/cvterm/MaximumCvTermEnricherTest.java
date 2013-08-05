@@ -191,7 +191,11 @@ public class MaximumCvTermEnricherTest {
             public void onRemovedIdentifier(CvTerm cv, Xref removed)  {fail();}
             public void onAddedXref(CvTerm cv, Xref added)  {fail();}
             public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
-            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)   {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getName());
+                reportForEnrichment.add(synonymAddedKey);
+            }
             public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
         });
 
@@ -202,13 +206,14 @@ public class MaximumCvTermEnricherTest {
         assertEquals(2 , persistentCvTerm.getIdentifiers().size());
 
         // Show no change on maximum fields
-        assertEquals(0 , persistentCvTerm.getSynonyms().size());
+        assertEquals(1 , persistentCvTerm.getSynonyms().size());
         assertEquals(0, persistentCvTerm.getXrefs().size());
         assertEquals(0 , persistentCvTerm.getAnnotations().size());
 
         // Show events were fired
         assertTrue(reportForEnrichment.contains(fullNameUpdateKey));
         assertTrue(reportForEnrichment.contains(identifierAddedKey));
+        assertTrue(reportForEnrichment.contains(synonymAddedKey));
     }
 
 
@@ -251,7 +256,11 @@ public class MaximumCvTermEnricherTest {
                 reportForEnrichment.add(identifierAddedKey);
             }
             public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
-            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)    {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getName());
+                reportForEnrichment.add(synonymAddedKey);
+            }
             public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
 
         });
@@ -261,17 +270,18 @@ public class MaximumCvTermEnricherTest {
         assertEquals(other_short_name, persistentCvTerm.getShortName());
         assertEquals(other_full_name, persistentCvTerm.getFullName());
         assertEquals(2 , persistentCvTerm.getIdentifiers().size());
+        assertEquals(2 , persistentCvTerm.getSynonyms().size());
+       // assertEquals(short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
 
         // Show no change on maximum fields
-        assertEquals(1 , persistentCvTerm.getSynonyms().size());
         assertEquals(1 , persistentCvTerm.getXrefs().size());
         assertEquals(1 , persistentCvTerm.getAnnotations().size());
-        assertEquals(other_short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
         assertEquals(other_short_name, persistentCvTerm.getXrefs().iterator().next().getId());
         assertEquals(other_short_name, persistentCvTerm.getAnnotations().iterator().next().getValue() );
 
         // Show events were fired
         assertTrue(reportForEnrichment.contains(identifierAddedKey));
+        assertTrue(reportForEnrichment.contains(synonymAddedKey));
     }
 
 

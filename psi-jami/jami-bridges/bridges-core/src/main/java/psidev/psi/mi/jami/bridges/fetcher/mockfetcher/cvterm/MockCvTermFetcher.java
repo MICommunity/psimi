@@ -16,7 +16,7 @@ public class MockCvTermFetcher
         implements CvTermFetcher<CvTerm>{
 
 
-    private Map<String,CvTerm> localCvTerms;
+    protected Map<String,CvTerm> localCvTerms;
 
     public MockCvTermFetcher(){
         localCvTerms = new HashMap<String, CvTerm>();
@@ -27,7 +27,7 @@ public class MockCvTermFetcher
         this.localCvTerms.put(identifier , cvTerm);
     }
 
-    private CvTerm getMockTermById(String identifier){
+    protected CvTerm getMockTermById(String identifier) throws BridgeFailedException {
         if(! localCvTerms.containsKey(identifier))  return null;
         else return localCvTerms.get(identifier);
     }

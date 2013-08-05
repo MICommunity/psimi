@@ -8,12 +8,20 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicatio
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherListener;
+import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherLogger;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.impl.publication.MinimumPublicationEnricher;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +44,10 @@ public class MinimumExperimentEnricherTest {
         experimentEnricher = new MinimumExperimentEnricher();
     }
 
-
+    /**
+     * Show that the experiment enricher does not fail if the enrichers are not present
+     * @throws EnricherException
+     */
     @Test
     public void test_enriching_an_experiment_without_fields_or_enrichers()
             throws EnricherException {
@@ -44,7 +55,7 @@ public class MinimumExperimentEnricherTest {
     }
 
     /**
-     * Show that even when fields are null but enrichers are present, the enrichment is successful.
+     * Show that even when fields are null but enrichers are present, the enrichment is still successful.
      * @throws EnricherException
      */
     @Test
@@ -61,6 +72,16 @@ public class MinimumExperimentEnricherTest {
                 new MinimumPublicationEnricher(
                         new MockPublicationFetcher()));
 
+        experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
+                //new ExperimentEnricherLogger(),
+                new ExperimentEnricherListener(){
+                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                        assertTrue(experiment == persistentExperiment);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+                }
+        ));
+
         experimentEnricher.enrichExperiment(persistentExperiment);
     }
 
@@ -72,7 +93,21 @@ public class MinimumExperimentEnricherTest {
                 new MinimumCvTermEnricher(
                         new MockCvTermFetcher()));
 
+        experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
+                //new ExperimentEnricherLogger(),
+                new ExperimentEnricherListener(){
+                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                        assertTrue(experiment == persistentExperiment);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+                }
+        ));
+
+        persistentExperiment.setInteractionDetectionMethod(new DefaultCvTerm("other short name"));
+
         experimentEnricher.enrichExperiment(persistentExperiment);
+
+
     }
 
 
@@ -84,6 +119,16 @@ public class MinimumExperimentEnricherTest {
                 new MinimumPublicationEnricher(
                         new MockPublicationFetcher()));
 
+        experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
+                //new ExperimentEnricherLogger(),
+                new ExperimentEnricherListener(){
+                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                        assertTrue(experiment == persistentExperiment);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+                }
+        ));
+
         experimentEnricher.enrichExperiment(persistentExperiment);
     }
 
@@ -94,6 +139,16 @@ public class MinimumExperimentEnricherTest {
         experimentEnricher.setOrganismEnricher(
                 new MinimumOrganismEnricher(
                         new MockOrganismFetcher()));
+
+        experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
+                //new ExperimentEnricherLogger(),
+                new ExperimentEnricherListener(){
+                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                        assertTrue(experiment == persistentExperiment);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+                }
+        ));
 
         experimentEnricher.enrichExperiment(persistentExperiment);
     }
