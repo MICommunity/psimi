@@ -13,10 +13,11 @@ import psidev.psi.mi.jami.enricher.util.RetryStrategy;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Created with IntelliJ IDEA.
+ * The general architecture for a organism enricher with methods to fetch an organism and coordinate the enriching.
+ * Has an abstract method 'processOrganism' which can be overridden to determine which parts should be enriched and how.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 14/06/13
+ * @since  14/06/13
  */
 public abstract class AbstractOrganismEnricher
         implements OrganismEnricher {
@@ -63,6 +64,11 @@ public abstract class AbstractOrganismEnricher
             listener.onOrganismEnriched(organismToEnrich, EnrichmentStatus.SUCCESS , "Organism enriched.");
     }
 
+    /**
+     * Strategy for the organism enrichment.
+     * This method can be overwritten to change how the organism is enriched.
+     * @param organismToEnrich   The protein to be enriched.
+     */
     protected abstract void processOrganism(Organism organismToEnrich);
 
     /**

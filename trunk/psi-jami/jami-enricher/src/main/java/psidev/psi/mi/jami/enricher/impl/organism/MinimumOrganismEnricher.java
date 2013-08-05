@@ -6,7 +6,9 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Enriches the organism to its minimum level.
+ * Provides minimum enrichment of the organism.
+ * Will enrich the common name, scientific name and identifier if null.
+ * As an enricher, no values from the provided CvTerm to enrich will be changed.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 22/05/13
@@ -21,6 +23,11 @@ public class MinimumOrganismEnricher
         super(organismFetcher);
     }
 
+    /**
+     * Strategy for the organism enrichment.
+     * This method can be overwritten to change how the organism is enriched.
+     * @param organismToEnrich   The protein to be enriched.
+     */
     @Override
     protected void processOrganism(Organism organismToEnrich)  {
         if(organismFetched == null) throw new IllegalArgumentException(

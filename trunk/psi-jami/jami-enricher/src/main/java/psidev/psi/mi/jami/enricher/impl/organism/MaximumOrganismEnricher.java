@@ -7,11 +7,12 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides maximum enrichment of the organism.
+ * Will enrich all aspects covered by the minimum enricher as well as enriching the Aliases.
+ * As an enricher, no values from the provided organism to enrich will be changed.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
- * Time: 17:05
+ * @since  13/06/13
  */
 public class MaximumOrganismEnricher
         extends MinimumOrganismEnricher
@@ -24,6 +25,11 @@ public class MaximumOrganismEnricher
         super(organismFetcher);
     }
 
+    /**
+     * Strategy for the organism enrichment.
+     * This method can be overwritten to change how the organism is enriched.
+     * @param organismToEnrich   The protein to be enriched.
+     */
     @Override
     protected void processOrganism(Organism organismToEnrich) {
         super.processOrganism(organismToEnrich);
