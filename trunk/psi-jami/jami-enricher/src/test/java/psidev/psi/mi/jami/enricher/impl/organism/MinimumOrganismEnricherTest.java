@@ -55,7 +55,7 @@ public class MinimumOrganismEnricherTest {
         Organism halfOrganism = new DefaultOrganism(TEST_AC_HALF_ORG);
         fetcher.addNewOrganism("" + TEST_AC_HALF_ORG, halfOrganism);
 
-        mockOrganism = new DefaultOrganism(1234 , "mock" , "mockus mockus");
+        mockOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG , "mock" , "mockus mockus");
     }
 
     // == RETRY ON FAILING FETCHER ============================================================
@@ -90,7 +90,7 @@ public class MinimumOrganismEnricherTest {
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
 
-        int timesToTry = -1;
+        int timesToTry = 3;
 
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +

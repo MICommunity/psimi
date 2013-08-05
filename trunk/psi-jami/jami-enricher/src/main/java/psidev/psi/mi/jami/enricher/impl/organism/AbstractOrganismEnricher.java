@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.organism;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
@@ -18,6 +20,10 @@ import psidev.psi.mi.jami.model.Organism;
  */
 public abstract class AbstractOrganismEnricher
         implements OrganismEnricher {
+
+
+    protected static final Logger log = LoggerFactory.getLogger(AbstractOrganismEnricher.class.getName());
+
 
     public static final int RETRY_COUNT = 5;
 
@@ -68,21 +74,29 @@ public abstract class AbstractOrganismEnricher
      */
     private Organism fetchOrganism(Organism organismToEnrich) throws EnricherException {
         if(organismToEnrich == null) throw new IllegalArgumentException("Can not enrich a null organism.");
+        if(getOrganismFetcher() == null) throw new IllegalStateException("Can not enrich with a null fetcher.");
 
-        Organism fetchedOrganism = null;
+        Organism organismFetched = null;
 
-        RetryStrategy retryStrategy = new RetryStrategy(RETRY_COUNT ,
-                "Organism fetcher failed on organism with taxID "+organismToEnrich.getTaxId()+". " );
-        while(retryStrategy.retry()){
-            try {
-                fetchedOrganism = getOrganismFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
-                retryStrategy.attemptSucceeded();
-            } catch (BridgeFailedException e) {
-                retryStrategy.reportException(e);
+
+        try {
+            organismFetched = getOrganismFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
+            if(organismFetched != null) return organismFetched;
+        } catch (BridgeFailedException e) {
+            int index = 0;
+            while(index < RETRY_COUNT){
+                try {
+                    organismFetched = getOrganismFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
+                    if(organismFetched != null) return organismFetched;
+                } catch (BridgeFailedException ee) {
+                    ee.printStackTrace();
+                }
+                index++;
             }
+            throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
         }
 
-        return fetchedOrganism;
+        return organismFetched;
     }
 
 

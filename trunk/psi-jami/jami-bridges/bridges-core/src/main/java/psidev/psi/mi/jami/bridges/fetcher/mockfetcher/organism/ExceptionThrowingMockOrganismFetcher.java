@@ -32,7 +32,7 @@ public class ExceptionThrowingMockOrganismFetcher
     public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
         if(! localOrganisms.containsKey( Integer.toString(identifier) ))  return null;
         else {
-            if(! lastQuery.equals( Integer.toString(identifier) )){
+            if(!  Integer.toString(identifier).equals( lastQuery )){
                 lastQuery = Integer.toString(identifier) ;
                 count = 0;
 

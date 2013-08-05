@@ -88,7 +88,7 @@ public class MinimumOrganismUpdaterTest {
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
 
-        int timesToTry = -1;
+        int timesToTry = 3;
 
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
