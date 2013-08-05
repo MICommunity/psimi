@@ -109,7 +109,8 @@ public class MinimumProteinUpdater
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
             XrefMerger xrefMerger = new XrefMerger();
-            xrefMerger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers() , false);
+            // TODO no identifiers can be removed while the qualifiers are offering protection
+            xrefMerger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers() , true);
 
             for(Xref xref: xrefMerger.getToRemove()){
                 proteinToEnrich.getIdentifiers().remove(xref);

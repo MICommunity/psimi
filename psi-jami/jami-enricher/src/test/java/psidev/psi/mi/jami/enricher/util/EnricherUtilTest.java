@@ -1,7 +1,10 @@
-package psidev.psi.mi.jami.enricher;
+package psidev.psi.mi.jami.enricher.util;
 
 import org.junit.Before;
 import org.junit.Test;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;

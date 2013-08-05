@@ -9,7 +9,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The merger is used to compare two collections of Xrefs.
+ * Those which are fetched will be added unless they already exist.
+ *
+ * It follows the following rules:
+ * - If the current xref do not contain a fetched xref, it will be added.
+ * - If a fetched Xref matches a current Xref, that Xref will not be added or removed.
+ * - Any current xref with a cvTerm that matches a fetched alias will be removed EXCEPT
+ *      - If the Xref has qualifier AND useQualifiers is true, it will not be removed even if the CvTerm matches
+ *      - OR if it matches a previous rule
+ * - Therefore, any current xref which does not have a cvTerm which matches a fetched xref will not be changed.
+ *
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
@@ -35,11 +45,9 @@ public class XrefMerger {
      * Those to remove are all the xrefs on the list being enriched with a cvterm that matches the cvterm of a fetched xref,
      * unless the xref has qualifier when use qualifiers is true.
      *
-     * For merging identifiers, 'do not use
-     *
-     * @param fetchedXrefs
-     * @param toEnrichXrefs
-     * @param useQualifiers
+     * @param fetchedXrefs      The new xrefs to be added.
+     * @param toEnrichXrefs     The current set of Xrefs
+     * @param useQualifiers     If false, Xrefs with qualifiers may be removed if a cvterm is fetched which matches.
      */
     public void merge(Collection<Xref> fetchedXrefs , Collection<Xref> toEnrichXrefs, boolean useQualifiers){
         fetchedToAdd.clear();
@@ -67,9 +75,8 @@ public class XrefMerger {
                 }
             }
 
-            // If it's not in the fetched to add,
-            // check if its CvTerm marks it for removal
-            // (if it has no qualifier or qualifiers are not being used)
+            // If it's not in the fetched list
+            // check if its CvTerm marks it for removal IF it has no qualifier or qualifiers are not being used.
             if(! isInFetchedList && (!useQualifiers || xrefIdentifier.getQualifier() == null)){
                 boolean managedCvTerm = false;
                 for(CvTerm cvTerm : identifierCvTerms){

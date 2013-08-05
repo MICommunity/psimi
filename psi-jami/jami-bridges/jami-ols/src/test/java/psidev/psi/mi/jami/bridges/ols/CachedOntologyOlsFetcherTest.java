@@ -270,7 +270,7 @@ public class CachedOntologyOlsFetcherTest {
 
 
 
-    //@Test
+    @Test
     public void test_cache_is_in_use() throws BridgeFailedException{
 
         String[] tests = {"MI:0100" , "MI:0077" , "MI:0113"};//nuclear magnetic resonance

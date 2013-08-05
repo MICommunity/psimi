@@ -35,7 +35,7 @@ public class CachedOntologyOlsFetcher
     private static CacheManager cacheManager;
 
     public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
-    //public static final String CACHE_NAME = "service-cache";
+    public static final String CACHE_NAME = "ontology-cache";
 
 
     public CachedOntologyOlsFetcher() throws BridgeFailedException {
@@ -177,22 +177,21 @@ public class CachedOntologyOlsFetcher
         URL url = getClass().getResource( settingsFile );
         if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
         cacheManager = new CacheManager( url );
-        if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
-            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
-        }
+        cacheManager.addCache(CACHE_NAME);
+        //if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
+            //this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
+        //}
+        this.cache = cacheManager.getCache( CACHE_NAME );
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
 
 
     public Object getFromCache( String key ) {
         Object data = null;
-        //if (cacheManager.)
-
-
         Element element = cache.get( key );
         if( element != null ){
             if( log.isDebugEnabled() ) log.debug("getting key: "+key);
-            data = element.getValue();
+            data = element.getObjectValue();
         }
         return data;
     }
