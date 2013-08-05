@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
@@ -18,28 +18,25 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <modules>
+    <modules>
         <module>jami-core</module>
         <module>jami-html</module>
-    <module>jami-bridges</module>
-    <module>jami-enricher</module>
-    <module>jami-mitab</module>
-    <module>jami-commons</module>
-    <module>jami-interactionviewer-json</module>
-    <module>interactionviewer-app</module>
-      <module>jami-pubmed</module>
-      <module>jami-pubmedcentral</module>
-  </modules>
+        <module>jami-bridges</module>
+        <module>jami-enricher</module>
+        <module>jami-mitab</module>
+        <module>jami-commons</module>
+        <module>jami-interactionviewer-json</module>
+        <module>interactionviewer-app</module>
+    </modules>
 
-  <dependencies>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <repositories>
         <repository>
