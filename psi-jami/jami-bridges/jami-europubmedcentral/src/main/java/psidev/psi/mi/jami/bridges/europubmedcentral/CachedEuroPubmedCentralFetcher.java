@@ -28,7 +28,7 @@ public class CachedEuroPubmedCentralFetcher
     private Cache cache;
     private static CacheManager cacheManager;
 
-    public static final String EHCACHE_CONFIG_FILE = "/europubmedcentral-service.ehcache.xml";
+    public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
     public static final String CACHE_NAME = "europubmedcentral-service-cache";
 
     public CachedEuroPubmedCentralFetcher() throws BridgeFailedException {
@@ -47,13 +47,11 @@ public class CachedEuroPubmedCentralFetcher
         return (Publication)data;
     }
 
-
     public Object getFromCache( String key ) {
         Object data = null;
-        //if (cacheManager.)
         Element element = cache.get( key );
         if( element != null ){
-            data = element.getValue();
+            data = element.getObjectValue();
         }
         return data;
     }
@@ -63,14 +61,9 @@ public class CachedEuroPubmedCentralFetcher
         cache.put( element );
     }
 
-
     @Override
     public void initialiseCache() {
-        URL url = getClass().getResource( EHCACHE_CONFIG_FILE );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
-        cacheManager = new CacheManager( url );
-        this.cache = cacheManager.getCache( CACHE_NAME );
-        if( cache == null ) throw new IllegalStateException( "Could not load cache: " + CACHE_NAME );
+        initialiseCache( EHCACHE_CONFIG_FILE );
     }
 
     @Override
@@ -82,11 +75,9 @@ public class CachedEuroPubmedCentralFetcher
     @Override
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
+        if( log.isDebugEnabled() ) log.debug( "Loading EHCache configuration: " + url );
         cacheManager = new CacheManager( url );
-        if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
-            this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
-        }
+        this.cache = cacheManager.getCache( CACHE_NAME );
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
 
