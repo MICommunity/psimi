@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.util;
 
+import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -12,12 +13,21 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * Tests to confirm that the AliasMerger behaves as expected.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 02/08/13
  */
 public class AliasMergerTest {
+
+
+    private AliasMerger merger;
+
+
+    @Before
+    public void setup(){
+        merger = new AliasMerger();
+    }
 
     /**
      * Assert that if the current list is empty, all fetched entries are marked to add
@@ -33,15 +43,14 @@ public class AliasMergerTest {
         Alias alias2A = new DefaultAlias(cvTermA , "Alias 2,A");
         newAliases.add(alias2A);
 
-        AliasMerger aliasMerger = new AliasMerger();
-        aliasMerger.merge(newAliases , currentAliases);
+        merger.merge(newAliases, currentAliases);
 
-        assertEquals(newAliases.size() , aliasMerger.getToAdd().size());
+        assertEquals(newAliases.size(), merger.getToAdd().size());
         for(Alias alias : newAliases){
-            assertTrue(aliasMerger.getToAdd().contains(alias));
+            assertTrue(merger.getToAdd().contains(alias));
         }
 
-        assertEquals( 0 , aliasMerger.getToRemove().size());
+        assertEquals( 0 , merger.getToRemove().size());
     }
 
 
@@ -59,20 +68,20 @@ public class AliasMergerTest {
 
         Collection<Alias> newAliases = new ArrayList<Alias>();
 
-        AliasMerger aliasMerger = new AliasMerger();
-        aliasMerger.merge(newAliases , currentAliases);
 
-        assertEquals( 0 , aliasMerger.getToAdd().size());
+        merger.merge(newAliases, currentAliases);
 
-        assertEquals(currentAliases.size() , aliasMerger.getToRemove().size());
+        assertEquals(0, merger.getToAdd().size());
+
+        assertEquals(currentAliases.size() , merger.getToRemove().size());
         for(Alias alias : currentAliases){
-            assertTrue(aliasMerger.getToRemove().contains(alias));
+            assertTrue(merger.getToRemove().contains(alias));
         }
     }
 
 
     /**
-     * Assert that if two entries are effectively identical, no change is made.
+     * Assert that if two lists are effectively identical, no change is made.
      */
     @Test
     public void test_identical_entries_cause_no_change(){
@@ -86,11 +95,10 @@ public class AliasMergerTest {
         Alias alias1A_n = new DefaultAlias(cvTermA_n , "Alias 1,A");
         newAliases.add(alias1A_n);
 
-        AliasMerger aliasMerger = new AliasMerger();
-        aliasMerger.merge(newAliases , currentAliases);
+        merger.merge(newAliases, currentAliases);
 
-        assertEquals( 0 , aliasMerger.getToAdd().size());
-        assertEquals( 0 , aliasMerger.getToRemove().size());
+        assertEquals(0, merger.getToAdd().size());
+        assertEquals( 0 , merger.getToRemove().size());
     }
 
     /**
@@ -113,21 +121,19 @@ public class AliasMergerTest {
         Alias alias2B = new DefaultAlias(cvTermB , "Alias 2,B");
         newAliases.add(alias2B);
 
+        merger.merge(newAliases, currentAliases);
 
-        AliasMerger aliasMerger = new AliasMerger();
-        aliasMerger.merge(newAliases , currentAliases);
+        assertEquals(newAliases.size(), merger.getToAdd().size());
+        assertEquals( 0 , merger.getToRemove().size());
 
-        assertEquals( newAliases.size() , aliasMerger.getToAdd().size());
-        assertEquals( 0 , aliasMerger.getToRemove().size());
-
-        assertEquals(newAliases.size() , aliasMerger.getToAdd().size());
+        assertEquals(newAliases.size(), merger.getToAdd().size());
         for(Alias alias : newAliases){
-            assertTrue(aliasMerger.getToAdd().contains(alias));
+            assertTrue(merger.getToAdd().contains(alias));
         }
     }
 
     /**
-     * Assert that if aliases form the toEnrich share an effectively identical cvterm with the fetched,
+     * Assert that if aliases form the toEnrich share an effectively identical cvTerm with the fetched,
      * the matching toEnrich are removed.
      */
     @Test
@@ -147,22 +153,16 @@ public class AliasMergerTest {
         Alias alias2B = new DefaultAlias(cvTermB , "Alias 2,B");
         newAliases.add(alias2B);
 
+        merger.merge(newAliases, currentAliases);
 
-        AliasMerger aliasMerger = new AliasMerger();
-        aliasMerger.merge(newAliases , currentAliases);
-
-        assertEquals( newAliases.size() , aliasMerger.getToAdd().size());
+        assertEquals(newAliases.size(), merger.getToAdd().size());
         for(Alias alias : newAliases){
-            assertTrue(aliasMerger.getToAdd().contains(alias));
+            assertTrue(merger.getToAdd().contains(alias));
         }
 
-        assertEquals( currentAliases.size() , aliasMerger.getToRemove().size());
+        assertEquals( currentAliases.size() , merger.getToRemove().size());
         for(Alias alias : currentAliases){
-            assertTrue(aliasMerger.getToRemove().contains(alias));
+            assertTrue(merger.getToRemove().contains(alias));
         }
     }
-
-
-
-
 }

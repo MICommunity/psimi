@@ -7,10 +7,8 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.util.RetryStrategy;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.CvTermUtils;
 
 
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public abstract class AbstractCvTermEnricher
     }
 
     /**
-     * Uses the CvTermToEnrich to fetch a more complete term
+     * Uses the cvTermToEnrich to fetch a more complete term
      * and then processes the CvTerm to modify it to a more enriched or updated form.
      * @param cvTermToEnrich  a CvTerm to enrich
      */
@@ -65,19 +63,19 @@ public abstract class AbstractCvTermEnricher
         cvTermFetched = fetchCvTerm(cvTermToEnrich);
         if(cvTermFetched == null){
             if(getCvTermEnricherListener() != null)
-                getCvTermEnricherListener().onCvTermEnriched(cvTermToEnrich, EnrichmentStatus.FAILED ,"No CvTerm could be found.");
+                getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED ,"No CvTerm could be found.");
             return;
         }
 
         processCvTerm(cvTermToEnrich);
 
-        if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, EnrichmentStatus.SUCCESS , "CvTerm minimum enriched.");
+        if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS , "CvTerm minimum enriched.");
     }
 
     /**
      * Strategy for the cvTerm enrichment.
      * This method can be overwritten to change how the cvTerm is enriched.
-     * @param cvTermToEnrich   The protein to be enriched.
+     * @param cvTermToEnrich   The cvTerm to be enriched.
      */
     protected abstract void processCvTerm(CvTerm cvTermToEnrich);
 

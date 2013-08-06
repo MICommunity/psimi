@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created with IntelliJ IDEA.
+ * A logging listener. It will display a message when each event if fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 21/06/13
@@ -22,7 +22,7 @@ public class OrganismEnricherLogger
     private static final Logger organismChangeLogger = Logger.getLogger("ProteinEnricherLogger");
 
 
-    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
         organismChangeLogger.log(Level.INFO, "Organism enriching complete. " +
                 "The status was: "+status+". Additional info: "+message);
     }

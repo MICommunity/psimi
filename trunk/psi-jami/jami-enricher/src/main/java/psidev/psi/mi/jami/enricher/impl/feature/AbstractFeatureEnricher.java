@@ -54,7 +54,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         processFeature(featureToEnrich);
 
         if(getFeatureEnricherListener() != null)
-            getFeatureEnricherListener().onFeatureEnriched(featureToEnrich, EnrichmentStatus.SUCCESS, null);
+            getFeatureEnricherListener().onEnrichmentComplete(featureToEnrich, EnrichmentStatus.SUCCESS, null);
     }
 
     protected void processFeature(F featureToEnrich) throws EnricherException{
@@ -159,7 +159,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         }
     }
 
-    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {}
+    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {}
 
     public void onProteinRemapped(Protein protein, String oldUniprot) {}
     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {}

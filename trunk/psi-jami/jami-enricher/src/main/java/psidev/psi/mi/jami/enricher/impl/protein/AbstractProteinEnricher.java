@@ -99,7 +99,7 @@ public abstract class AbstractProteinEnricher
         processProtein(proteinToEnrich);
 
         if(getProteinEnricherListener() != null)
-            getProteinEnricherListener().onProteinEnriched(proteinToEnrich, EnrichmentStatus.SUCCESS, "Protein enriched.");
+            getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich, EnrichmentStatus.SUCCESS, "Protein enriched.");
     }
 
 
@@ -149,7 +149,7 @@ public abstract class AbstractProteinEnricher
         }
 
         if(! conflictFree)
-            if(getProteinEnricherListener() != null) getProteinEnricherListener().onProteinEnriched(
+            if(getProteinEnricherListener() != null) getProteinEnricherListener().onEnrichmentComplete(
                     proteinToEnrich ,
                     EnrichmentStatus.FAILED ,
                     existMsg);
@@ -196,7 +196,7 @@ public abstract class AbstractProteinEnricher
                 if(proteinsEnriched == null
                         || proteinsEnriched.isEmpty()){
                     if(getProteinEnricherListener() != null)
-                        getProteinEnricherListener().onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                        getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich, EnrichmentStatus.FAILED ,
                             "Protein is dead. " +
                             "Was able to remap but the remapped identifier returned no results.");
                     return null;
@@ -223,7 +223,7 @@ public abstract class AbstractProteinEnricher
         if(proteinToEnrich.getOrganism() == null
                 || proteinToEnrich.getOrganism().getTaxId() == -3){
             if(getProteinEnricherListener() != null)
-                getProteinEnricherListener().onProteinEnriched(proteinToEnrich,  EnrichmentStatus.FAILED ,
+                getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich,  EnrichmentStatus.FAILED ,
                         "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
                         "Cannot choose as proteinToEnrich has no organism.");
             return null;
@@ -239,7 +239,7 @@ public abstract class AbstractProteinEnricher
                 else{
                     // Multiple proteins share this organism - impossible to choose
                     if(getProteinEnricherListener() != null)
-                        getProteinEnricherListener().onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                        getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich, EnrichmentStatus.FAILED ,
                             "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
                             "Cannot choose as multiple entries match organism in proteinToEnrich.");
                     return null;
@@ -250,7 +250,7 @@ public abstract class AbstractProteinEnricher
         if(proteinFetched == null){
             // No proteins share this organism - impossible to choose
             if(getProteinEnricherListener() != null)
-                getProteinEnricherListener().onProteinEnriched(proteinToEnrich, EnrichmentStatus.FAILED ,
+                getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich, EnrichmentStatus.FAILED ,
                     "Protein is demerged. Found " + proteinsEnriched.size() + " entries. " +
                     "Cannot choose as no entries match the organism in proteinToEnrich.");
             return null;
@@ -292,7 +292,7 @@ public abstract class AbstractProteinEnricher
         // If there is no protein remapper, the enrichment fails
         if( getProteinRemapper() == null ){
             if(getProteinEnricherListener() != null)
-                getProteinEnricherListener().onProteinEnriched(proteinToEnrich , EnrichmentStatus.FAILED ,
+                getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
                     "Was unable to complete remap as service was missing.");
             return false;
@@ -308,7 +308,7 @@ public abstract class AbstractProteinEnricher
         //
         if(proteinToEnrich.getUniprotkb() == null){
             if(getProteinEnricherListener() != null)
-                getProteinEnricherListener().onProteinEnriched(proteinToEnrich , EnrichmentStatus.FAILED ,
+                getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
                     "Was unable to find a mapping.");
             return false;

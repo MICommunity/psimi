@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Xref;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
+ * A logging listener. It will display a message when each event if fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
@@ -19,7 +19,7 @@ public class PublicationEnricherLogger implements PublicationEnricherListener{
 
     protected static final Logger log = LoggerFactory.getLogger(PublicationEnricherLogger.class.getName());
 
-    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
         log.info(publication.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
 

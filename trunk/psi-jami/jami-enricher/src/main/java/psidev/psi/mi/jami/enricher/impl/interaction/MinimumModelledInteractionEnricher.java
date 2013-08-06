@@ -15,10 +15,5 @@ public class MinimumModelledInteractionEnricher
         extends MinimumInteractionEnricher<ModelledInteraction, ModelledParticipant , ModelledFeature>
         implements ModelledInteractionEnricher {
 
-    /*
-    @Override
-    public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher(){
-        if(participantEnricher == null) participantEnricher = new MinimumModelledParticipantEnricher();
-        return participantEnricher;
-    }*/
+
 }

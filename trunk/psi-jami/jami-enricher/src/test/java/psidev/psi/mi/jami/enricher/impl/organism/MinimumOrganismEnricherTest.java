@@ -151,7 +151,7 @@ public class MinimumOrganismEnricherTest {
         organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
                 // new OrganismEnricherLogger() ,
                 new OrganismEnricherListener() {
-                    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -188,7 +188,7 @@ public class MinimumOrganismEnricherTest {
         organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
                 // new OrganismEnricherLogger() ,
                 new OrganismEnricherListener() {
-                    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -220,7 +220,7 @@ public class MinimumOrganismEnricherTest {
         organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
                 // new OrganismEnricherLogger() ,
                 new OrganismEnricherListener() {
-                    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -255,7 +255,7 @@ public class MinimumOrganismEnricherTest {
         organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
                 // new OrganismEnricherLogger() ,
                 new OrganismEnricherListener() {
-                    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -293,7 +293,7 @@ public class MinimumOrganismEnricherTest {
         organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
                 // new OrganismEnricherLogger() ,
                 new OrganismEnricherListener() {
-                    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -327,7 +327,7 @@ public class MinimumOrganismEnricherTest {
         organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
                 // new OrganismEnricherLogger() ,
                 new OrganismEnricherListener() {
-                    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }

@@ -18,7 +18,7 @@ import java.io.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  09/07/13
  */
-public abstract class StatisticsWriter<T> implements EnricherListener{
+public abstract class StatisticsWriter<T> implements EnricherListener<T>{
 
     protected static final Logger log = LoggerFactory.getLogger(StatisticsWriter.class.getName());
 

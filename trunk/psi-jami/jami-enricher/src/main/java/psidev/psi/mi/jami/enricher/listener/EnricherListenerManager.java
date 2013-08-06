@@ -1,15 +1,16 @@
 package psidev.psi.mi.jami.enricher.listener;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * An abstract class to manage enricher listeners.
- * It allows enrichers to have multiple listeners.
- * It holds a collection of listeners of a given type and
+ * A manager for listeners which holds a list of listeners.
+ * Listener manager allows enrichers to send events to multiple listeners.
+ * A listener itself, it implements all methods
+ * which will then fire the corresponding method in each entry of the listener list.
+ * No promise can be given to the order in which the listeners are fired.
  *
- * @param <T>   The type of the listeners which are to be fired.
+ * @param <T>   The type of the listeners which are to be used.
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
@@ -53,8 +54,9 @@ public abstract class EnricherListenerManager<T extends EnricherListener> {
     }
 
     /**
-     * Adds the listener to the list of listeners, if the list does not already contain it.
-     * @param listener      The listener to be searched for.
+     * Finds whether the listener manager contains the given listener.
+     * @param listener  The listener to be searched for.
+     * @return          True if the list contains the listener.
      */
     public boolean containsEnricherListener(T listener){
         return listenersList.contains(listener);

@@ -15,10 +15,4 @@ public class MaximumModelledInteractionUpdater
         extends MaximumInteractionUpdater<ModelledInteraction, ModelledParticipant, ModelledFeature>
         implements ModelledInteractionEnricher {
 
-    /*
-    @Override
-    public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher(){
-        if(participantEnricher == null) participantEnricher = new MaximumModelledParticipantUpdater();
-        return participantEnricher;
-    }*/
 }

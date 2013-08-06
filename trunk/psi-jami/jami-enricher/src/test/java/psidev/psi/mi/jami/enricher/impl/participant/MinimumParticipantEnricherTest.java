@@ -52,7 +52,7 @@ public class MinimumParticipantEnricherTest {
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
                 new ParticipantEnricherListener() {
-                    public void onParticipantEnriched(Participant participant, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
                         assertTrue(participant == persistentParticipant);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;
@@ -79,7 +79,7 @@ public class MinimumParticipantEnricherTest {
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
                 new ParticipantEnricherListener() {
-                    public void onParticipantEnriched(Participant participant, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
                         assertTrue(participant == persistentParticipant);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;
@@ -112,7 +112,7 @@ public class MinimumParticipantEnricherTest {
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
                 new ParticipantEnricherListener() {
-                    public void onParticipantEnriched(Participant participant, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
                         assertTrue(participant == persistentParticipant);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;

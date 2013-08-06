@@ -9,7 +9,8 @@ import java.util.Collection;
 
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
- * The publicationEnricher has no subEnrichers. The publicationEnricher must be initiated with a fetcher.
+ * The publicationEnricher has no subEnrichers.
+ * It must be initiated with a fetcher.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13
@@ -20,14 +21,14 @@ public interface PublicationEnricher {
      * Takes a publication and uses the publication fetcher to add additional details.
      * If the publication is null an illegal state exception is thrown
      * @param publicationToEnrich   The publication to be enriched
-     * @throws EnricherException
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichPublication(Publication publicationToEnrich) throws EnricherException;
 
     /**
      * Takes a collection of publications and enriches each in turn.
      * @param publicationsToEnrich      The publications to be enriched
-     * @throws EnricherException
+     * @throws EnricherException        Thrown if problems are encountered in the fetcher
      */
     public void enrichPublications(Collection<Publication> publicationsToEnrich) throws EnricherException;
 

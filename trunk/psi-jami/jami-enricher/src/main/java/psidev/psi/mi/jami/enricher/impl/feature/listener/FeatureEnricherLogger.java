@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * A logging listener. It will display a message when each event if fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
@@ -18,7 +18,7 @@ public class FeatureEnricherLogger
     protected static final Logger log = LoggerFactory.getLogger(FeatureEnricherLogger.class.getName());
 
 
-    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
         log.info(feature.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
 
@@ -39,19 +39,19 @@ public class FeatureEnricherLogger
     }
 
     public void onAddedIdentifier(Feature feature, Xref added) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info(feature+" has added identifier "+added.toString());
     }
 
     public void onRemovedIdentifier(Feature feature, Xref removed) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info(feature+" has removed identifier "+removed.toString());
     }
 
     public void onAddedXref(Feature feature, Xref added) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info(feature+" has added xref "+added.toString());
     }
 
     public void onRemovedXref(Feature feature, Xref removed) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info(feature+" has removed xref "+removed.toString());
     }
 
     public void onAddedAnnotation(Feature feature, Annotation added) {

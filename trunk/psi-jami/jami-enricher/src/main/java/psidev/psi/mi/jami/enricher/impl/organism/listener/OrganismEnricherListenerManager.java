@@ -10,7 +10,11 @@ import psidev.psi.mi.jami.model.Organism;
 
 
 /**
- * Created with IntelliJ IDEA.
+ * A manager for listeners which holds a list of listeners.
+ * Listener manager allows enrichers to send events to multiple listeners.
+ * A listener itself, it implements all methods
+ * which will then fire the corresponding method in each entry of the listener list.
+ * No promise can be given to the order in which the listeners are fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
@@ -19,18 +23,24 @@ public class OrganismEnricherListenerManager
         extends EnricherListenerManager<OrganismEnricherListener>
         implements OrganismEnricherListener{
 
-
+    /**
+     * A constructor to create a listener manager with no listeners.
+     */
     public OrganismEnricherListenerManager(){}
 
+    /**
+     * A constructor to initiate a listener manager with as many listeners as required.
+     * @param listeners     The listeners to add.
+     */
     public OrganismEnricherListenerManager(OrganismEnricherListener... listeners){
         super(listeners);
     }
 
-    //====================
+    //===================================================================================================
 
-    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
         for(OrganismEnricherListener listener : listenersList){
-            listener.onOrganismEnriched(organism, status, message) ;
+            listener.onEnrichmentComplete(organism, status, message) ;
         }
     }
 

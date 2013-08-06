@@ -1,13 +1,15 @@
 package psidev.psi.mi.jami.enricher.impl.feature.listener;
 
-
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * A manager for listeners which holds a list of listeners.
+ * Listener manager allows enrichers to send events to multiple listeners.
+ * A listener itself, it implements all methods
+ * which will then fire the corresponding method in each entry of the listener list.
+ * No promise can be given to the order in which the listeners are fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
@@ -16,20 +18,25 @@ public class FeatureEnricherListenerManager
         extends EnricherListenerManager<FeatureEnricherListener>
         implements FeatureEnricherListener{
 
+    /**
+     * A constructor to create a listener manager with no listeners.
+     */
+    public FeatureEnricherListenerManager(){}
 
-    public FeatureEnricherListenerManager(){
-    }
-
+    /**
+     * A constructor to initiate a listener manager with as many listeners as required.
+     * @param listeners     The listeners to add.
+     */
     public FeatureEnricherListenerManager(FeatureEnricherListener... listeners){
         super(listeners);
     }
 
 
-    //===================
+    //============================================================================================
 
-    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
         for(FeatureEnricherListener listener : listenersList){
-            listener.onFeatureEnriched(feature, status, message);
+            listener.onEnrichmentComplete(feature, status, message);
         }
     }
 

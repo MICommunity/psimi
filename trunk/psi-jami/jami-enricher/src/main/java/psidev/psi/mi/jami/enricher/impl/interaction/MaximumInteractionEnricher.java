@@ -14,21 +14,4 @@ public class MaximumInteractionEnricher<I extends Interaction, P extends Partici
         extends MinimumInteractionEnricher<I , P , F> {
 
 
-    /*@Override
-    public void processInteraction(I interactionToEnrich) throws EnricherException {
-        super.processInteraction(interactionToEnrich);
-    } */
-
-    /*
-    @Override
-    public ParticipantEnricher<P , F> getParticipantEnricher(){
-        if(participantEnricher == null) participantEnricher = new MaximumParticipantEnricher<P , F>();
-        return participantEnricher;
-    }
-
-    @Override
-    public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new MaximumCvTermEnricher();
-        return cvTermEnricher;
-    }   */
 }

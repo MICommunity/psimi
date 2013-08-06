@@ -9,10 +9,9 @@ import psidev.psi.mi.jami.model.Feature;
  * Updating ranges requires knowledge of the protein's sequence.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 19/07/13
+ * @since  19/07/13
  */
 public interface ProteinListeningFeatureEnricher<F extends Feature>
     extends FeatureEnricher<F>, ProteinEnricherListener{
-
 
 }

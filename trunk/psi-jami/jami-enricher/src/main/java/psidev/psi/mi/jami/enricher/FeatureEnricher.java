@@ -8,7 +8,9 @@ import psidev.psi.mi.jami.model.Participant;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The featureEnricher can enrich either a single feature or a collection.
+ * It has no fetcher and only enrich through subEnrichers.
+ * It has a subEnricher for CvTerms.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
@@ -23,11 +25,11 @@ public interface FeatureEnricher <F extends Feature>{
     public void enrichFeature(F featureToEnrich) throws EnricherException;
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException;
 
+    public void setFeaturesToEnrich(Participant participant);
+
     public void setFeatureEnricherListener(FeatureEnricherListener listener);
     public FeatureEnricherListener getFeatureEnricherListener();
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
     public CvTermEnricher getCvTermEnricher();
-
-    public void setFeaturesToEnrich(Participant participant);
 }

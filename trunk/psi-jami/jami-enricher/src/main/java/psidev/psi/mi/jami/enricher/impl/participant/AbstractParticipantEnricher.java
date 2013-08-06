@@ -54,7 +54,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
                 if(participantToEnrich.getInteractor() instanceof Protein){
                     getProteinEnricher().enrichProtein( (Protein) participantToEnrich.getInteractor() );
                 } else {
-                    if(listener != null) listener.onParticipantEnriched(participantToEnrich ,
+                    if(listener != null) listener.onEnrichmentComplete(participantToEnrich ,
                             EnrichmentStatus.FAILED,
                             "Found interactor of type "+interactorType.getShortName()+
                                     " ("+interactorType.getMIIdentifier()+") "+
@@ -69,7 +69,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
                 getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
 
         if( getParticipantEnricherListener() != null )
-            getParticipantEnricherListener().onParticipantEnriched(participantToEnrich , EnrichmentStatus.SUCCESS , null);
+            getParticipantEnricherListener().onEnrichmentComplete(participantToEnrich , EnrichmentStatus.SUCCESS , null);
 
     }
 

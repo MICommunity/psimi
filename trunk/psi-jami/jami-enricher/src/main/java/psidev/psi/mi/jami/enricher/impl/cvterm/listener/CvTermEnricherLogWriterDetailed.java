@@ -76,7 +76,7 @@ public class CvTermEnricherLogWriterDetailed
 
 
 
-    public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message){
         buffer = buffer +cvTerm.toString()+" MESSAGE: "+message;
         switch(status){
             case SUCCESS:
@@ -100,7 +100,7 @@ public class CvTermEnricherLogWriterDetailed
     private void checkObject(CvTerm cvTerm){
         if(lastObject == null) lastObject = cvTerm;
         if(lastObject != cvTerm){ // TODO - check that this makes sense
-            onCvTermEnriched(lastObject , EnrichmentStatus.FAILED , "Object changed without an exit status");
+            onEnrichmentComplete(lastObject , EnrichmentStatus.FAILED , "Object changed without an exit status");
         }
     }
 

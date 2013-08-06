@@ -10,8 +10,9 @@ import psidev.psi.mi.jami.model.Interaction;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public interface InteractionEnricherListener extends EnricherListener {
+public interface InteractionEnricherListener extends EnricherListener<Interaction> {
 
-    public void onInteractionEnriched(Interaction interaction , EnrichmentStatus status, String message);
+    public void onEnrichmentComplete(
+            Interaction interaction , EnrichmentStatus status, String message);
 
 }

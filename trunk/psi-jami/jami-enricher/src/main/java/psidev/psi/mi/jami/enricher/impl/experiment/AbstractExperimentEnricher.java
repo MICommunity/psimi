@@ -63,7 +63,7 @@ public abstract class AbstractExperimentEnricher
         processExperiment(experimentToEnrich);
 
         if( getExperimentEnricherListener() != null )
-            getExperimentEnricherListener().onExperimentEnriched(experimentToEnrich , EnrichmentStatus.SUCCESS , null);
+            getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
     /**

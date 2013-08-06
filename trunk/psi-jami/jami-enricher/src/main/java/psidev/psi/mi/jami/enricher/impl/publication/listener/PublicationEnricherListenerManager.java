@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.publication.listener;
 
-import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
+
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Annotation;
@@ -10,7 +10,11 @@ import psidev.psi.mi.jami.model.Xref;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
+ * A manager for listeners which holds a list of listeners.
+ * Listener manager allows enrichers to send events to multiple listeners.
+ * A listener itself, it implements all methods
+ * which will then fire the corresponding method in each entry of the listener list.
+ * No promise can be given to the order in which the listeners are fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
@@ -19,17 +23,24 @@ public class PublicationEnricherListenerManager
         extends EnricherListenerManager<PublicationEnricherListener>
         implements PublicationEnricherListener{
 
-
+    /**
+     * A constructor to create a listener manager with no listeners.
+     */
     public PublicationEnricherListenerManager(){}
 
+    /**
+     * A constructor to initiate a listener manager with as many listeners as required.
+     * @param listeners     The listeners to add.
+     */
     public PublicationEnricherListenerManager(PublicationEnricherListener... listeners){
         super(listeners);
     }
 
+    //============================================================================================
 
-    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
         for(PublicationEnricherListener listener : listenersList){
-            listener.onPublicationEnriched(publication, status, message);
+            listener.onEnrichmentComplete(publication, status, message);
         }
     }
 

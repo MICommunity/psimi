@@ -9,8 +9,9 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.util.RetryStrategy;
 import psidev.psi.mi.jami.model.Organism;
+
+import java.util.Collection;
 
 /**
  * The general architecture for a organism enricher with methods to fetch an organism and coordinate the enriching.
@@ -40,6 +41,12 @@ public abstract class AbstractOrganismEnricher
         setOrganismFetcher(organismFetcher);
     }
 
+    public void enrichOrganisms(Collection<Organism> organismsToEnrich) throws EnricherException {
+        for(Organism organismToEnrich : organismsToEnrich){
+            enrichOrganism(organismToEnrich);
+        }
+    }
+
     /**
      * Takes an Organism, fetches a version with all details filled in and then enriches fields depending on the implementation.
      * Will report to the OrganismEnricherListener any changes made and the status upon finishing the enrichment.
@@ -54,14 +61,14 @@ public abstract class AbstractOrganismEnricher
 
         if(organismFetched == null){
             if(getOrganismEnricherListener() != null)
-                getOrganismEnricherListener().onOrganismEnriched(organismToEnrich, EnrichmentStatus.FAILED , "No organism could be found.");
+                getOrganismEnricherListener().onEnrichmentComplete(organismToEnrich, EnrichmentStatus.FAILED, "No organism could be found.");
             return;
         }
 
         processOrganism(organismToEnrich);
 
         if(listener != null)
-            listener.onOrganismEnriched(organismToEnrich, EnrichmentStatus.SUCCESS , "Organism enriched.");
+            listener.onEnrichmentComplete(organismToEnrich, EnrichmentStatus.SUCCESS, "Organism enriched.");
     }
 
     /**

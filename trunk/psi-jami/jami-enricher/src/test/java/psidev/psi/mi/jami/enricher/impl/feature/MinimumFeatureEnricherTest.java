@@ -109,7 +109,7 @@ public class MinimumFeatureEnricherTest {
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
                 new FeatureEnricherListener() {
-                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -157,7 +157,7 @@ public class MinimumFeatureEnricherTest {
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
                 new FeatureEnricherListener() {
-                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -209,7 +209,7 @@ public class MinimumFeatureEnricherTest {
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
                 new FeatureEnricherListener() {
-                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -261,7 +261,7 @@ public class MinimumFeatureEnricherTest {
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
                 new FeatureEnricherListener() {
-                    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }

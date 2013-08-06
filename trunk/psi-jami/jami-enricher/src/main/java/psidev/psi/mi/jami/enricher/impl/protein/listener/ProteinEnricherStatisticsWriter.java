@@ -33,7 +33,7 @@ public class ProteinEnricherStatisticsWriter
 
 
 
-    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message){
         onObjectEnriched(protein , status , message);
     }
 

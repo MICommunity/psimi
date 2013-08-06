@@ -31,7 +31,7 @@ public class CvTermEnricherStatisticsWriter
         super(successFile, failureFile, jamiObject);
     }
 
-    public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message){
         onObjectEnriched(cvTerm , status , message);
     }
 

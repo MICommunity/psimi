@@ -31,7 +31,7 @@ public class ExperimentEnricherStatisticsWriter
         super(successFile, failureFile, jamiObject);
     }
 
-    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
         onObjectEnriched(experiment , status , message);
     }
 }

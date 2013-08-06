@@ -163,7 +163,7 @@ public class MinimumCvTermUpdaterTest {
 
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
-            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+            public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
             }
@@ -230,7 +230,7 @@ public class MinimumCvTermUpdaterTest {
                 "synonym", "MI:1041", other_short_name));
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
-            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+            public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
             }
@@ -300,7 +300,7 @@ public class MinimumCvTermUpdaterTest {
                 "synonym", "MI:1041", short_name));
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
-            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+            public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
             }
@@ -364,7 +364,7 @@ public class MinimumCvTermUpdaterTest {
                 "synonym", "MI:1041", other_short_name));
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
-            public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+            public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
             }

@@ -3,7 +3,10 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Organism;
+
+import java.util.Collection;
 
 /**
  * Provides minimum enrichment of the organism.
@@ -60,4 +63,6 @@ public class MinimumOrganismEnricher
             }
         }
     }
+
+
 }
