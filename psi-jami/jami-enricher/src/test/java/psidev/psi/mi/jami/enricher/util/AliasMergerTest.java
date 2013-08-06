@@ -72,11 +72,7 @@ public class AliasMergerTest {
         merger.merge(newAliases, currentAliases);
 
         assertEquals(0, merger.getToAdd().size());
-
-        assertEquals(currentAliases.size() , merger.getToRemove().size());
-        for(Alias alias : currentAliases){
-            assertTrue(merger.getToRemove().contains(alias));
-        }
+        assertEquals(0 , merger.getToRemove().size());
     }
 
 
@@ -97,7 +93,7 @@ public class AliasMergerTest {
 
         merger.merge(newAliases, currentAliases);
 
-        assertEquals(0, merger.getToAdd().size());
+        assertEquals( 0 , merger.getToAdd().size());
         assertEquals( 0 , merger.getToRemove().size());
     }
 
@@ -123,7 +119,7 @@ public class AliasMergerTest {
 
         merger.merge(newAliases, currentAliases);
 
-        assertEquals(newAliases.size(), merger.getToAdd().size());
+
         assertEquals( 0 , merger.getToRemove().size());
 
         assertEquals(newAliases.size(), merger.getToAdd().size());

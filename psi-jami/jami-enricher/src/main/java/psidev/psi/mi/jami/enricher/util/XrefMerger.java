@@ -13,12 +13,12 @@ import java.util.Collection;
  * Those which are fetched will be added unless they already exist.
  *
  * It follows the following rules:
- * - If the current xref do not contain a fetched xref, it will be added.
+ * - If the current xrefs do not contain a fetched xref, it will be added.
  * - If a fetched Xref matches a current Xref, that Xref will not be added or removed.
- * - Any current xref with a cvTerm that matches a fetched alias will be removed EXCEPT
- *      - If the Xref has qualifier AND useQualifiers is true, it will not be removed even if the CvTerm matches
+ * - Any current xref with a cvTerm that matches a fetched alias will be removed UNLESS
+ *      - The Xref has qualifier AND useQualifiers is true, it will not be removed even if the CvTerm matches
  *      - OR if it matches a previous rule
- * - Therefore, any current xref which does not have a cvTerm which matches a fetched xref will not be changed.
+ * - Therefore, any current xref which does not have a cvTerm matching a fetched xref will not be changed.
  *
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
