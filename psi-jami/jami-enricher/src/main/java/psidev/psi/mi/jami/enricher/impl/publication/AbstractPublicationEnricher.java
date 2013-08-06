@@ -12,7 +12,10 @@ import psidev.psi.mi.jami.model.Publication;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The general architecture for a Publication enricher
+ * with methods to fetch a publication and coordinate the enriching.
+ * Has an abstract method 'processPublication' which can be overridden
+ * to determine which parts should be enriched and how.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
@@ -27,10 +30,20 @@ public abstract class AbstractPublicationEnricher
 
     protected Publication publicationFetched = null;
 
+    /**
+     * The only constructor. It requires a publication fetcher.
+     * If the publication fetcher is null, an illegal state exception will be thrown at the next enrichment.
+     * @param fetcher  The PublicationFetcher to use.
+     */
     public AbstractPublicationEnricher(PublicationFetcher fetcher){
         setPublicationFetcher(fetcher);
     }
 
+    /**
+     * Enriches a collection of publications.
+     * @param publicationsToEnrich      The publications to be enriched
+     * @throws EnricherException        Thrown if problems are encountered in the fetcher
+     */
     public void enrichPublications(Collection<Publication> publicationsToEnrich)
             throws EnricherException{
         for(Publication publicationToEnrich : publicationsToEnrich){
@@ -38,6 +51,11 @@ public abstract class AbstractPublicationEnricher
         }
     }
 
+    /**
+     * Enriches the publicationToEnrich using a record found using the fetcher.
+     * @param publicationToEnrich   The publication to be enriched. Can not be null.
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
     public void enrichPublication(Publication publicationToEnrich)
             throws EnricherException{
 
@@ -47,7 +65,7 @@ public abstract class AbstractPublicationEnricher
         publicationFetched = fetchPublication(publicationToEnrich);
         if(publicationFetched == null){
             if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onPublicationEnriched(
+                getPublicationEnricherListener().onEnrichmentComplete(
                         publicationToEnrich, EnrichmentStatus.FAILED, "No publication could be found.");
             return;
         }
@@ -55,11 +73,22 @@ public abstract class AbstractPublicationEnricher
         processPublication(publicationToEnrich);
 
         if( getPublicationEnricherListener() != null)
-            getPublicationEnricherListener().onPublicationEnriched(publicationToEnrich , EnrichmentStatus.SUCCESS , null);
+            getPublicationEnricherListener().onEnrichmentComplete(publicationToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
+    /**
+     * The strategy for the enrichment of the publication.
+     * This methods can be overwritten to change the behaviour of the enrichment.
+     * @param publicationToEnrich   The publication which is being enriched.
+     */
     protected abstract void processPublication(Publication publicationToEnrich);
 
+    /**
+     * Fetches a publication record which matches the publicationToEnrich.
+     * @param publicationToEnrich   The publication to match.
+     * @return                      The fetched publication. Null if no publication is found.
+     * @throws EnricherException    Thrown if the fetcher encounters a problem.
+     */
     private Publication fetchPublication(Publication publicationToEnrich) throws EnricherException{
         if(getPublicationFetcher() == null) throw new IllegalStateException("The PublicationEnricher was null.");
         if(publicationToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null publication.");
@@ -88,16 +117,34 @@ public abstract class AbstractPublicationEnricher
         return publicationFetched;
     }
 
+    /**
+     * Sets the publication fetcher.
+     * If null, an illegal state exception will be thrown at the next enrichment
+     * @param fetcher   the fetcher to be used to retrieve publication entries
+     */
     public void setPublicationFetcher(PublicationFetcher fetcher){
         this.fetcher = fetcher;
     }
+    /**
+     * Gets the publication fetcher which is currently being used to retrieve entries
+     * @return  the current publication fetcher.
+     */
     public PublicationFetcher getPublicationFetcher(){
         return fetcher;
     }
 
+    /**
+     * Sets the listener to report publication changes to.
+     * Can be null.
+     * @param listener the new publication listener
+     */
     public void setPublicationEnricherListener(PublicationEnricherListener listener){
         this.listener = listener;
     }
+    /**
+     * Gets the current publication listener
+     * @return  the current publication listener
+     */
     public PublicationEnricherListener getPublicationEnricherListener(){
         return listener;
     }

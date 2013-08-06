@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created with IntelliJ IDEA.
+ * A logging listener. It will display a message when each event if fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  11/06/13
@@ -20,7 +20,7 @@ public class ProteinEnricherLogger
     private static final Logger proteinChangeLogger = Logger.getLogger("ProteinEnricherLogger");
 
 
-    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
         proteinChangeLogger.log(Level.INFO, "Protein enriching complete. " +
                 "The status was: "+status+". The message reads: "+message);
     }

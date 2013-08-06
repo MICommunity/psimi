@@ -9,14 +9,13 @@ import psidev.psi.mi.jami.model.Protein;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 10/06/13
- * Time: 10:56
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  10/06/13
  */
 public interface ProteinEnricherListener
-        extends ProteinChangeListener , EnricherListener {
+        extends ProteinChangeListener , EnricherListener<Protein> {
 
-    public void onProteinEnriched(Protein protein, EnrichmentStatus status , String message);
+    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status , String message);
 
     public void onProteinRemapped(Protein protein, String oldUniprot);
 

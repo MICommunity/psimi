@@ -5,7 +5,9 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimum updating of the Organism.
+ * Will update the scientific name and the common name. Will also update the taxID if unknown.
+ * As an updater, values from the provided organism to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13

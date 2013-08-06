@@ -75,7 +75,7 @@ public class MinimumExperimentEnricherTest {
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
                 //new ExperimentEnricherLogger(),
                 new ExperimentEnricherListener(){
-                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
                         assertTrue(experiment == persistentExperiment);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -96,7 +96,7 @@ public class MinimumExperimentEnricherTest {
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
                 //new ExperimentEnricherLogger(),
                 new ExperimentEnricherListener(){
-                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
                         assertTrue(experiment == persistentExperiment);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -122,7 +122,7 @@ public class MinimumExperimentEnricherTest {
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
                 //new ExperimentEnricherLogger(),
                 new ExperimentEnricherListener(){
-                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
                         assertTrue(experiment == persistentExperiment);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -143,7 +143,7 @@ public class MinimumExperimentEnricherTest {
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
                 //new ExperimentEnricherLogger(),
                 new ExperimentEnricherListener(){
-                    public void onExperimentEnriched(Experiment experiment, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
                         assertTrue(experiment == persistentExperiment);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }

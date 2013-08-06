@@ -2,7 +2,9 @@ package psidev.psi.mi.jami.enricher.impl.feature;
 
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +27,7 @@ public class MaximumFeatureEnricher<F extends Feature>
                 getCvTermEnricher().enrichCvTerm( featureToEnrich.getInteractionEffect() );
         }
     }
+
 
     /*
     public CvTermEnricher getCvTermEnricher(){

@@ -7,7 +7,8 @@ import psidev.psi.mi.jami.model.Experiment;
 import java.util.Collection;
 
 /**
- * The experiment enricher has no fetcher and can enrich either a single experiment of a collection.
+ * The experimentEnricher can enrich either a single experiment or a collection.
+ * It has no fetcher and only enrich through subEnrichers.
  * It has subEnrichers for CvTerms, Organisms, and publications.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)

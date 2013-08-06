@@ -32,7 +32,7 @@ public class FeatureEnricherStatisticsWriter
 
     //====
 
-    public void onFeatureEnriched(Feature feature, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
         onObjectEnriched(feature, status, message);
     }
 

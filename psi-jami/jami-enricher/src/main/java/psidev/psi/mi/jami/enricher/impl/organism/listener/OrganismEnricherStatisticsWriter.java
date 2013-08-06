@@ -32,7 +32,7 @@ public class OrganismEnricherStatisticsWriter
     }
 
 
-    public void onOrganismEnriched(Organism organism, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message){
         onObjectEnriched(organism , status , message);
     }
 

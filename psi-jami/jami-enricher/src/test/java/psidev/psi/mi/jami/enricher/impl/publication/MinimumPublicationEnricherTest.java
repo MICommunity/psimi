@@ -63,7 +63,7 @@ public class MinimumPublicationEnricherTest {
         publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
                 new PublicationEnricherLogger() ,
                 new PublicationEnricherListener() {
-                    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
                         assertTrue(publication == persistentPublication);
                         assertEquals(EnrichmentStatus.FAILED , status);
                     }
@@ -108,7 +108,7 @@ public class MinimumPublicationEnricherTest {
         publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
                 new PublicationEnricherLogger() ,
                 new PublicationEnricherListener() {
-                    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
                         assertTrue(publication == persistentPublication);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
@@ -248,7 +248,7 @@ public class MinimumPublicationEnricherTest {
         publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
                 new PublicationEnricherLogger() ,
                 new PublicationEnricherListener() {
-                    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
                         assertTrue(publication == persistentPublication);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }

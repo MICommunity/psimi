@@ -34,7 +34,7 @@ public class PublicationEnricherStatisticsWriter
         super(successFile, failureFile, OBJECT);
     }
 
-    public void onPublicationEnriched(Publication publication, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message){
         onObjectEnriched(publication , status , message);
     }
 

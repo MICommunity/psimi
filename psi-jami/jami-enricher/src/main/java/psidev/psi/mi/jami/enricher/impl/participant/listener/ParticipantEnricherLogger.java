@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
- * Created with IntelliJ IDEA.
+ * A logging listener. It will display a message when each event if fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 22/07/13
@@ -16,7 +16,7 @@ public class ParticipantEnricherLogger
 
     protected static final Logger log = LoggerFactory.getLogger(ParticipantEnricherLogger.class.getName());
 
-    public void onParticipantEnriched(Participant participant, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
         log.info(participant.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
 }

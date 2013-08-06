@@ -12,7 +12,7 @@ import java.util.Collection;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
+ * @since  13/06/13
  */
 public interface ParticipantEnricher <P extends Participant , F extends Feature> {
 

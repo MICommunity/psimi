@@ -32,7 +32,7 @@ public class ParticipantEnricherStatisticsWriter
     }
 
 
-    public void onParticipantEnriched(Participant participant, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message){
         onObjectEnriched(participant , status , message);
     }
 }

@@ -8,7 +8,8 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 /**
- * Created with IntelliJ IDEA.
+ * A logging listener. It will display a message when each event if fired.
+ *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
@@ -17,7 +18,7 @@ public class CvTermEnricherLogger implements CvTermEnricherListener {
     protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherLogger.class.getName());
 
 
-    public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
         log.info(cvTerm.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
 

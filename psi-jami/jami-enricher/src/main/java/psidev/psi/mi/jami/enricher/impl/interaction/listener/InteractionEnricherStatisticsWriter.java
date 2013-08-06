@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.interaction.listener;
 
-import psidev.psi.mi.jami.datasource.FileSourceContext;
+
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
 import psidev.psi.mi.jami.model.*;
@@ -31,7 +31,7 @@ public class InteractionEnricherStatisticsWriter
         super(successFile, failureFile, OBJECT);
     }
 
-    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message){
         onObjectEnriched(interaction , status , message);
     }
 }

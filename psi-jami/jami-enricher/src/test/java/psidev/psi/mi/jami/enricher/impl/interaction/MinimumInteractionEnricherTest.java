@@ -57,7 +57,7 @@ public class MinimumInteractionEnricherTest {
         interactionEnricher.setInteractionEnricherListener(new InteractionEnricherListenerManager(
                 //  new InteractionEnricherLogger(),
                 new InteractionEnricherListener() {
-                    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message) {
                         assertTrue(interaction == persistentInteraction);
                         assertEquals(EnrichmentStatus.SUCCESS, status);
                         persistentInt++;
@@ -78,7 +78,7 @@ public class MinimumInteractionEnricherTest {
         interactionEnricher.setInteractionEnricherListener( new InteractionEnricherListenerManager(
                 // new InteractionEnricherLogger() ,
                 new InteractionEnricherListener() {
-                    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message) {
                         assertTrue(interaction == persistentInteraction);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++;
@@ -107,7 +107,7 @@ public class MinimumInteractionEnricherTest {
         interactionEnricher.setInteractionEnricherListener( new InteractionEnricherListenerManager(
                 // new InteractionEnricherLogger() ,
                 new InteractionEnricherListener() {
-                    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message) {
                         assertTrue(interaction == persistentInteraction);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++;
@@ -131,7 +131,7 @@ public class MinimumInteractionEnricherTest {
         interactionEnricher.setInteractionEnricherListener(new InteractionEnricherListenerManager(
                 new InteractionEnricherLogger(),
                 new InteractionEnricherListener() {
-                    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message) {
                         assertTrue(interaction == persistentInteraction);
                         assertEquals(EnrichmentStatus.SUCCESS, status);
                         persistentInt++;
@@ -156,7 +156,7 @@ public class MinimumInteractionEnricherTest {
         interactionEnricher.setInteractionEnricherListener(new InteractionEnricherListenerManager(
                 new InteractionEnricherLogger(),
                 new InteractionEnricherListener() {
-                    public void onInteractionEnriched(Interaction interaction, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message) {
                         assertTrue(interaction == persistentInteraction);
                         assertEquals(EnrichmentStatus.SUCCESS, status);
                         persistentInt++;

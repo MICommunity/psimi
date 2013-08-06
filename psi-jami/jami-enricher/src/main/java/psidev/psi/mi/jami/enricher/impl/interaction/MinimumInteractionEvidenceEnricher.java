@@ -21,6 +21,11 @@ public class MinimumInteractionEvidenceEnricher
 
     private ExperimentEnricher experimentEnricher = null;
 
+    /**
+     * Strategy for the Interaction enrichment.
+     * This method can be overwritten to change how the interaction is enriched.
+     * @param interactionToEnrich   The interaction to be enriched.
+     */
     @Override
     public void processInteraction(InteractionEvidence interactionToEnrich) throws EnricherException {
         super.processInteraction(interactionToEnrich);
@@ -30,10 +35,19 @@ public class MinimumInteractionEvidenceEnricher
             getExperimentEnricher().enrichExperiment( interactionToEnrich.getExperiment() );
     }
 
+
+    /**
+     * The experimentEnricher which is currently being used for the enriching or updating of experiments.
+     * @return The experiment enricher. Can be null.
+     */
     public ExperimentEnricher getExperimentEnricher() {
         return experimentEnricher ;
     }
 
+    /**
+     * Sets the experimentEnricher to be used.
+     * @param experimentEnricher The experiment enricher to be used. Can be null.
+     */
     public void setExperimentEnricher(ExperimentEnricher experimentEnricher) {
         this.experimentEnricher = experimentEnricher;
     }

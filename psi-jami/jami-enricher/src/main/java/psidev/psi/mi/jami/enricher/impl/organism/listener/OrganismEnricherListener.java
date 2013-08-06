@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Organism;
  * @since 13/06/13
  */
 public interface OrganismEnricherListener
-        extends OrganismChangeListener  , EnricherListener {
+        extends OrganismChangeListener  , EnricherListener<Organism> {
 
-    public void onOrganismEnriched(Organism organism , EnrichmentStatus status , String message);
+    public void onEnrichmentComplete(Organism organism , EnrichmentStatus status , String message);
 }

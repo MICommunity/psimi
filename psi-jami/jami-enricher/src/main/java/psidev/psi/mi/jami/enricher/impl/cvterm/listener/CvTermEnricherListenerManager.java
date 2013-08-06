@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
-
-
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
@@ -9,9 +7,11 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 /**
- * An enricher listener manager for CvTerm listeners.
- *
- * Has a list of CvTermListeners and fires their corresponding events when fired in the manager.
+ * A manager for listeners which holds a list of listeners.
+ * Listener manager allows enrichers to send events to multiple listeners.
+ * A listener itself, it implements all methods
+ * which will then fire the corresponding method in each entry of the listener list.
+ * No promise can be given to the order in which the listeners are fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
@@ -20,16 +20,24 @@ public class CvTermEnricherListenerManager
     extends EnricherListenerManager<CvTermEnricherListener>
     implements CvTermEnricherListener{
 
-
+    /**
+     * A constructor to create a listener manager with no listeners.
+     */
     public CvTermEnricherListenerManager(){}
 
+    /**
+     * A constructor to initiate a listener manager with as many listeners as required.
+     * @param listeners     The listeners to add.
+     */
     public CvTermEnricherListenerManager(CvTermEnricherListener... listeners){
         super(listeners);
     }
 
-    public void onCvTermEnriched(CvTerm cvTerm, EnrichmentStatus status, String message) {
+    //=============================================================================================================
+
+    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
         for(CvTermEnricherListener listener : listenersList){
-            listener.onCvTermEnriched(cvTerm, status, message);
+            listener.onEnrichmentComplete(cvTerm, status, message);
         }
     }
 

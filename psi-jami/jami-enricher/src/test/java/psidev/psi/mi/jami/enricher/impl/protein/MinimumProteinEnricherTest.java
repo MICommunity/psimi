@@ -176,7 +176,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,   //Comment this line to silence logging
                 new ProteinEnricherListener() {
-            public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+            public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                 assertTrue(protein == persistentProtein);
                 assertEquals(EnrichmentStatus.FAILED , status);
                 persistentInt++;
@@ -230,7 +230,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
@@ -288,7 +288,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
               //  new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
@@ -346,7 +346,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
@@ -405,7 +405,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() , //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -474,7 +474,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -541,7 +541,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.FAILED, status);
                         assertTrue(message.toUpperCase().contains("INTERACTOR"));
@@ -600,7 +600,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.FAILED, status);
                         assertTrue(message.toUpperCase().contains("ORGANISM"));
@@ -653,7 +653,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.FAILED , status);
                         assertTrue(message.toUpperCase().contains("ORGANISM"));
@@ -707,7 +707,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -765,7 +765,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -827,7 +827,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -880,7 +880,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -940,7 +940,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -997,7 +997,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -1060,7 +1060,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -1116,7 +1116,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -1200,7 +1200,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
@@ -1283,7 +1283,7 @@ public class MinimumProteinEnricherTest {
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
-                    public void onProteinEnriched(Protein protein, EnrichmentStatus status, String message) {
+                    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
