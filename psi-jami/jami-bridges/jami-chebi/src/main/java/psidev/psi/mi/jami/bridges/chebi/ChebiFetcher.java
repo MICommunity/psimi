@@ -33,9 +33,9 @@ public class ChebiFetcher
 
         BioactiveEntity bioactiveEntity = null;
         try {
+            Entity entity = client.getChebiWebServicePort().getCompleteEntity(identifier);
 
-            Entity entity =
-                    client.getChebiWebServicePort().getCompleteEntity("CHEBI:15377");
+            if(entity == null) return null;
 
             bioactiveEntity = new DefaultBioactiveEntity( entity.getChebiAsciiName() );
             log.info("bioactiveEntity.setFullName() : "+entity.getChebiAsciiName() );

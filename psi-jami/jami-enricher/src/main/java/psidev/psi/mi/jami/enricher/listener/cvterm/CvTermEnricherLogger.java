@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 /**
- * A logging listener. It will display a message when each event if fired.
+ * A logging listener. It will display a message when each event is fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13

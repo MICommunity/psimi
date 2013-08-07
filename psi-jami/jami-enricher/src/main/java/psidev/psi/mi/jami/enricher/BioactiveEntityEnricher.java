@@ -21,7 +21,7 @@ public interface BioactiveEntityEnricher{
      * @param bioactiveEntityToEnrich   The entity to be enriched.
      * @throws EnricherException        Thrown if problems are encountered in the fetcher
      */
-    public void enricherBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich)
+    public void enrichBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich)
             throws EnricherException;
 
     /**
