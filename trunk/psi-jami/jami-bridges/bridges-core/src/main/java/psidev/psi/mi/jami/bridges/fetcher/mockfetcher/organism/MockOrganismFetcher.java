@@ -3,51 +3,34 @@ package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Protein;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
- * An organism fetcher which has no external service.
- *
- * Instead, organisms can be loaded into it with a key for retrieval.
- * The normal fetch methods then retrieve the loaded organism as if it had been an external service.
+ * A mock fetcher for testing.
+ * It extends all the methods of the true fetcher, but does not access an external service.
+ * Instead, it holds a map which can be loaded with objects and keys. which are then returned.
+ * It attempts to replicate the responses of the fetcher in most scenarios.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 24/05/13
+ * @since  24/05/13
  */
 public class MockOrganismFetcher
+        extends AbstractMockFetcher<Organism>
         implements OrganismFetcher {
 
-    protected Map<String,Organism> localOrganisms;
-
-    public MockOrganismFetcher(){
-        localOrganisms = new HashMap<String,Organism>();
-    }
-
-    public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
-
-        if(! localOrganisms.containsKey( Integer.toString(identifier) )) {
-            return null;
-        }
-
-        else return localOrganisms.get( Integer.toString(identifier) );
+    public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
+        return getEntry( Integer.toString(taxID) );
     }
 
     public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
-    }
-
-
-    public void addNewOrganism(String taxID, Organism organism){
-        if(organism == null) return;
-        this.localOrganisms.put(taxID, organism);
-    }
-
-    public void clearOrganisms(){
-        localOrganisms.clear();
+        ArrayList<Organism> resultsList= new ArrayList<Organism>();
+        for(Integer identifier : taxIDs){
+            resultsList.add( getEntry(Integer.toString(identifier)) );
+        }
+        return resultsList;
     }
 }

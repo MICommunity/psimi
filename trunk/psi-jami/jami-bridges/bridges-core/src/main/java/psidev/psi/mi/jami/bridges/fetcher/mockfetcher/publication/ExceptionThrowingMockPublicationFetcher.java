@@ -1,45 +1,32 @@
 package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractExceptionThrowingMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
 /**
- * Created with IntelliJ IDEA.
+ * A mock fetcher for testing exceptions.
+ * It extends the functionality of the mock fetcher but can also throw exceptions.
+ * Upon initialisation, an integer is given which sets how many times a query is made before returning the result.
+ * If the current query matches the last query and the counter of the number of times is less than the maxQuery
+ * set at initialisation, then an exception will be thrown.
+ * Additionally, if the maxQuery is set to -1, the fetcher will always throw an exception.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 05/08/13
  */
 public class ExceptionThrowingMockPublicationFetcher
-        extends MockPublicationFetcher{
-
-    String lastQuery = null;
-    int count = 0;
-    int maxQuery = 0;
+        extends AbstractExceptionThrowingMockFetcher<Publication>
+        implements PublicationFetcher {
 
 
-    public ExceptionThrowingMockPublicationFetcher(int maxQuery){
-        super();
-        this.maxQuery = maxQuery;
+    protected ExceptionThrowingMockPublicationFetcher(int maxQuery) {
+        super(maxQuery);
     }
 
     public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException {
-        if(pubmedID == null) throw new IllegalArgumentException(
-                "Attempted to query mock protein fetcher for null identifier.");
-
-        if(! localPublications.containsKey(""+pubmedID))  return null;
-        else {
-            if(! lastQuery.equals(""+pubmedID)){
-                lastQuery = ""+pubmedID;
-                count = 0;
-
-            }
-
-            if(maxQuery != -1 && count >= maxQuery)
-                return localPublications.get(""+pubmedID);
-            else {
-                count++;
-                throw new BridgeFailedException("Mock fetcher throws because this is the "+(count-1)+" attempt of "+maxQuery);
-            }
-        }
+        return getEntry(pubmedID);
     }
 }

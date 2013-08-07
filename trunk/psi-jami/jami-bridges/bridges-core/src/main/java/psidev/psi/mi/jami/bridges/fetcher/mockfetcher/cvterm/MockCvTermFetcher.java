@@ -2,83 +2,82 @@ package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
 
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * A mock fetcher for testing.
+ * It extends all the methods of the true fetcher, but does not access an external service.
+ * Instead, it holds a map which can be loaded with objects and keys. which are then returned.
+ * It attempts to replicate the responses of the fetcher in most scenarios.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
 public class MockCvTermFetcher
+        extends AbstractMockFetcher<CvTerm>
         implements CvTermFetcher<CvTerm>{
 
-
-    protected Map<String,CvTerm> localCvTerms;
-
-    public MockCvTermFetcher(){
-        localCvTerms = new HashMap<String, CvTerm>();
-    }
-
-    public void addCvTerm(String identifier , CvTerm cvTerm){
-        if(cvTerm == null || identifier == null) return;
-        this.localCvTerms.put(identifier , cvTerm);
-    }
-
-    protected CvTerm getMockTermById(String identifier) throws BridgeFailedException {
-        if(! localCvTerms.containsKey(identifier))  return null;
-        else return localCvTerms.get(identifier);
-    }
-
-
-
     public CvTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
-        return getMockTermById(termIdentifier);
+        return getEntry(termIdentifier);
     }
 
     public CvTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
-        return getMockTermById(termIdentifier);
+        return getEntry(termIdentifier);
     }
 
     public CvTerm getCvTermByExactName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
-        return getMockTermById(searchName);
+        return getEntry(searchName);
     }
 
     public CvTerm getCvTermByExactName(String searchName) throws BridgeFailedException {
-        return getMockTermById(searchName);
+        return getEntry(searchName);
     }
 
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
-            throws BridgeFailedException {
-        ArrayList<CvTerm> list = new ArrayList<CvTerm>();
-        list.add(getMockTermById(searchName));
-        return list;
+    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName) throws BridgeFailedException {
+        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
+        resultsList.add( getEntry(searchName) );
+        return resultsList;
     }
 
     public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database) throws BridgeFailedException {
-        ArrayList<CvTerm> list = new ArrayList<CvTerm>();
-        list.add(getMockTermById(searchName));
-        return list;
+        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
+        resultsList.add( getEntry(searchName) );
+        return resultsList;
     }
 
-
-
-    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
+        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
+        for(String identifier : termIdentifiers){
+            resultsList.add( getEntry(identifier) );
+        }
+        return resultsList;
     }
 
-    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
+        for(String identifier : termIdentifiers){
+            resultsList.add( getEntry(identifier) );
+        }
+        return resultsList;
     }
 
     public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
+        for(String identifier : searchNames){
+            resultsList.add( getEntry(identifier) );
+        }
+        return resultsList;
     }
 
     public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
+        for(String identifier : searchNames){
+            resultsList.add( getEntry(identifier) );
+        }
+        return resultsList;
     }
-
 }

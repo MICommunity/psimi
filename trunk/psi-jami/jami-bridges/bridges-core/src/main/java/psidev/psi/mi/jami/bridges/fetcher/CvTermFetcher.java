@@ -8,7 +8,6 @@ import java.util.Collection;
 /**
  * The interface for finding a CvTerm or extension of CvTerm.
  *
- *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/05/13
  */
