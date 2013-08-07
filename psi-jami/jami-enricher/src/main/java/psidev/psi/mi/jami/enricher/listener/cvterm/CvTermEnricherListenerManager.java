@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Xref;
  * Listener manager allows enrichers to send events to multiple listeners.
  * A listener itself, it implements all methods
  * which will then fire the corresponding method in each entry of the listener list.
- * No promise can be given to the order in which the listeners are fired.
+ * No contract is given to the order in which the listeners are fired.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13

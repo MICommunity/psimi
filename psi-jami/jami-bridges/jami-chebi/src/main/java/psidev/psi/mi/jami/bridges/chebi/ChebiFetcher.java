@@ -4,6 +4,7 @@ package psidev.psi.mi.jami.bridges.chebi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 import uk.ac.ebi.webservices.chebi.*;
@@ -16,11 +17,10 @@ import uk.ac.ebi.webservices.chebi.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class ChebiFetcher {
-
+public class ChebiFetcher
+        implements BioactiveEntityFetcher {
 
     protected static final Logger log = LoggerFactory.getLogger(ChebiFetcher.class.getName());
-
 
     ChebiWebServiceService client;
 
@@ -28,9 +28,9 @@ public class ChebiFetcher {
         client = new ChebiWebServiceService();
     }
 
+    public BioactiveEntity getBioactiveEntityByIdentifier (String identifier) throws BridgeFailedException {
+        if(identifier == null) throw new IllegalArgumentException("Can not fetch on null identifier");
 
-
-    public BioactiveEntity getBioactiveEntityByIdentifier (String chebiID) throws BridgeFailedException {
         BioactiveEntity bioactiveEntity = null;
         try {
 
