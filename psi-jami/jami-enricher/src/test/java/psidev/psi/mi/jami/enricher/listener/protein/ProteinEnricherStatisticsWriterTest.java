@@ -70,12 +70,12 @@ public class ProteinEnricherStatisticsWriterTest {
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
         fullProtein.setSequence(TEST_SEQUENCE);
         fullProtein.setOrganism(new DefaultOrganism(TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC));
-        fetcher.addNewProtein(TEST_AC_FULL_PROT, fullProtein);
+        fetcher.addEntry(TEST_AC_FULL_PROT, fullProtein);
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         halfProtein.setOrganism(new DefaultOrganism(-3));
-        fetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
+        fetcher.addEntry(TEST_AC_HALF_PROT, halfProtein);
     }
 
 

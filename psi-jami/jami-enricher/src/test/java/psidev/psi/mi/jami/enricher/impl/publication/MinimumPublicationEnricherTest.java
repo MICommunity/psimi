@@ -46,7 +46,7 @@ public class MinimumPublicationEnricherTest {
 
         testPub = new DefaultPublication(TEST_PUBMED_ID);
 
-        fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
+        fetcher.addEntry(TEST_PUBMED_ID , testPub);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -101,7 +101,7 @@ public class MinimumPublicationEnricherTest {
         testPub.getAuthors().add("TEST_A");
 
 
-        fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
+        fetcher.addEntry(TEST_PUBMED_ID , testPub);
 
         persistentPublication.setPubmedId(TEST_PUBMED_ID);
 
@@ -241,7 +241,7 @@ public class MinimumPublicationEnricherTest {
         testPub.setSource(new DefaultSource("SOURCE"));
 
 
-        fetcher.addNewPublication(TEST_PUBMED_ID, testPub);
+        fetcher.addEntry(TEST_PUBMED_ID, testPub);
 
         persistentPublication.setPubmedId(TEST_PUBMED_ID);
 

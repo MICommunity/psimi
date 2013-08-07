@@ -27,7 +27,7 @@ public class AbstractExceptionThrowingMockFetcher<T>
 
         if(! localMap.containsKey(identifier))  return null;
         else {
-            if(! lastQuery.equals(lastQuery)){
+            if(! identifier.equals(lastQuery)){
                 lastQuery = identifier;
                 count = 0;
             }

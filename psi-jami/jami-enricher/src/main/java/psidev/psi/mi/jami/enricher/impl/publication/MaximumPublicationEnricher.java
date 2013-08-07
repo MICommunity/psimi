@@ -22,6 +22,11 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
         super(fetcher);
     }
 
+    /**
+     * The strategy for the enrichment of the publication.
+     * This methods can be overwritten to change the behaviour of the enrichment.
+     * @param publicationToEnrich   The publication which is being enriched.
+     */
     @Override
     protected void processPublication(Publication publicationToEnrich) {
         super.processPublication(publicationToEnrich);

@@ -27,6 +27,12 @@ public class MaximumPublicationUpdater
         super(fetcher);
     }
 
+    /**
+     * The strategy for the enrichment of the publication.
+     * This methods can be overwritten to change the behaviour of the enrichment.
+     * @param publicationToEnrich   The publication which is being enriched.
+     */
+    @Override
     public void processPublication(Publication publicationToEnrich){
 
         // DOI

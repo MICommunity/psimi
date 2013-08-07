@@ -46,7 +46,7 @@ public class MinimumPublicationUpdaterTest {
 
         testPub = new DefaultPublication(TEST_PUBMED_ID);
 
-        fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
+        fetcher.addEntry(TEST_PUBMED_ID , testPub);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -98,7 +98,7 @@ public class MinimumPublicationUpdaterTest {
         Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
         testPub.getAuthors().add("TEST_A");
 
-        fetcher.addNewPublication(TEST_PUBMED_ID , testPub);
+        fetcher.addEntry(TEST_PUBMED_ID , testPub);
 
         persistentPublication.setPubmedId(TEST_PUBMED_ID);
 
@@ -178,7 +178,7 @@ public class MinimumPublicationUpdaterTest {
         testPub.setSource(new DefaultSource("SOURCE"));
 
 
-        fetcher.addNewPublication(TEST_PUBMED_ID, testPub);
+        fetcher.addEntry(TEST_PUBMED_ID, testPub);
 
         persistentPublication.setPubmedId(TEST_PUBMED_ID);
 

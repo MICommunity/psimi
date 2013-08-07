@@ -22,7 +22,7 @@ public class ExceptionThrowingMockPublicationFetcher
         implements PublicationFetcher {
 
 
-    protected ExceptionThrowingMockPublicationFetcher(int maxQuery) {
+    public ExceptionThrowingMockPublicationFetcher(int maxQuery) {
         super(maxQuery);
     }
 

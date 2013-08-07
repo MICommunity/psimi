@@ -23,7 +23,7 @@ public class ExceptionThrowingMockCvTermFetcher
         extends AbstractExceptionThrowingMockFetcher<CvTerm>
         implements CvTermFetcher<CvTerm>{
 
-    protected ExceptionThrowingMockCvTermFetcher(int maxQuery) {
+    public ExceptionThrowingMockCvTermFetcher(int maxQuery) {
         super(maxQuery);
     }
 

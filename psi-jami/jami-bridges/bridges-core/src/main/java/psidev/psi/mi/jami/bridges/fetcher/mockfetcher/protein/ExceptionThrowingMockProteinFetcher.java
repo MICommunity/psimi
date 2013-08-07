@@ -25,7 +25,7 @@ public class ExceptionThrowingMockProteinFetcher
         extends AbstractExceptionThrowingMockFetcher<ArrayList<Protein>>
         implements ProteinFetcher {
 
-    protected ExceptionThrowingMockProteinFetcher(int maxQuery) {
+    public ExceptionThrowingMockProteinFetcher(int maxQuery) {
         super(maxQuery);
     }
 
@@ -40,7 +40,7 @@ public class ExceptionThrowingMockProteinFetcher
         }
     }
 
-    protected void addEntry(String identifier, Protein protein){
+    public void addEntry(String identifier, Protein protein){
         if(protein == null) return;
         if(! localMap.containsKey(identifier)){
             ArrayList<Protein> array = new ArrayList<Protein>();

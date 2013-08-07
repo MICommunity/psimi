@@ -66,7 +66,7 @@ public class CvTermEnricherStatisticsWriterTest {
         CvTerm cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", SYNONYM_NAME));
-        mockCvTermFetcher.addCvTerm(MI_ID , cvTermFull);
+        mockCvTermFetcher.addEntry(MI_ID , cvTermFull);
 
     }
 
