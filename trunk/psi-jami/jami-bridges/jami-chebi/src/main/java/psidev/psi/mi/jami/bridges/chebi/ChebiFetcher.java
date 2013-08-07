@@ -1,0 +1,76 @@
+package psidev.psi.mi.jami.bridges.chebi;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.model.BioactiveEntity;
+import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
+import uk.ac.ebi.webservices.chebi.*;
+
+
+
+/**
+ * Created with IntelliJ IDEA.
+ *
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since 07/08/13
+ */
+public class ChebiFetcher {
+
+
+    protected static final Logger log = LoggerFactory.getLogger(ChebiFetcher.class.getName());
+
+
+    ChebiWebServiceService client;
+
+    public ChebiFetcher(){
+        client = new ChebiWebServiceService();
+    }
+
+
+
+    public BioactiveEntity getBioactiveEntityByIdentifier (String chebiID) throws BridgeFailedException {
+        BioactiveEntity bioactiveEntity = null;
+        try {
+
+            Entity entity =
+                    client.getChebiWebServicePort().getCompleteEntity("CHEBI:15377");
+
+            bioactiveEntity = new DefaultBioactiveEntity( entity.getChebiAsciiName() );
+            log.info("bioactiveEntity.setFullName() : "+entity.getChebiAsciiName() );
+            bioactiveEntity.setFullName( entity.getChebiAsciiName() );
+
+            log.info("bioactiveEntity.setChebi() : "+entity.getChebiId());
+            bioactiveEntity.setChebi( entity.getChebiId() );
+
+            log.info("bioactiveEntity.setSmile() : "+entity.getSmiles() );
+            bioactiveEntity.setSmile( entity.getSmiles() );
+
+            log.info( "bioactiveEntity.setStandardInchi() : "+entity.getInchi() );
+            bioactiveEntity.setStandardInchi( entity.getInchi() );
+
+            log.info( "bioactiveEntity.setStandardInchiKey() : "+entity.getInchiKey() );
+            bioactiveEntity.setStandardInchiKey( entity.getInchiKey() );
+
+            //entity.getSecondaryChEBIIds()
+
+
+            //log.info( "bioactiveEntity?");
+            //log.info( entity.getSynonyms().toString() );
+
+            /*System.out.println("GetName: " + entity.getChebiAsciiName());
+            List<DataItem> synonyms = entity.getSynonyms();
+            // List all synonyms
+            for ( DataItem dataItem : synonyms ) {
+                System.out.println("synonyms: " + dataItem.getData());
+            }*/
+
+        } catch ( ChebiWebServiceFault_Exception e ) {
+            throw new BridgeFailedException(e);
+        }
+
+        return bioactiveEntity;
+
+    }
+}

@@ -62,5 +62,6 @@
         <module>jami-obo</module>
         <module>jami-europubmedcentral</module>
         <module>uniprot-remapping</module>
+        <module>jami-chebi</module>
     </modules>
 </project>
