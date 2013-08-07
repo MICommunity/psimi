@@ -48,7 +48,6 @@ public abstract class AbstractBioactiveEntityEnricher
         if(bioactiveEntityToEnrich == null)
             throw new IllegalArgumentException("Can not enrich null Bioactive Entity");
 
-
         fetchedBioactiveEntity = fetchBioactiveEntity(bioactiveEntityToEnrich);
 
         if(fetchedBioactiveEntity == null){
