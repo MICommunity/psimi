@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.interaction.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;

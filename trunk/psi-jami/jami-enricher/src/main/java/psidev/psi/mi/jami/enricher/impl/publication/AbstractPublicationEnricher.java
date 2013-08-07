@@ -4,9 +4,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.Collection;

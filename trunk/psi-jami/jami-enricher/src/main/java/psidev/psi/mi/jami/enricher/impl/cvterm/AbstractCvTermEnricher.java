@@ -1,17 +1,18 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -23,6 +24,10 @@ import java.util.Collection;
  */
 public abstract class AbstractCvTermEnricher
         implements CvTermEnricher {
+
+
+    protected static final Logger log = LoggerFactory.getLogger(AbstractCvTermEnricher.class.getName());
+
 
     public static final int RETRY_COUNT = 5;
 
@@ -63,13 +68,13 @@ public abstract class AbstractCvTermEnricher
         cvTermFetched = fetchCvTerm(cvTermToEnrich);
         if(cvTermFetched == null){
             if(getCvTermEnricherListener() != null)
-                getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED ,"No CvTerm could be found.");
+                getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "No CvTerm could be found.");
             return;
         }
 
         processCvTerm(cvTermToEnrich);
 
-        if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS , "CvTerm minimum enriched.");
+        if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "CvTerm minimum enriched.");
     }
 
     /**

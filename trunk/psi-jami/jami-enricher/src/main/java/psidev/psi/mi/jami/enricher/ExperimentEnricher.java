@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.experiment.ExperimentEnricherListener;
 import psidev.psi.mi.jami.model.Experiment;
 
 import java.util.Collection;

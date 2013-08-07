@@ -21,8 +21,6 @@ public class MinimumCvTermEnricher
         extends AbstractCvTermEnricher
         implements CvTermEnricher {
 
-    protected static final Logger log = LoggerFactory.getLogger(MinimumCvTermEnricher.class.getName());
-
     /**
      * A constructor matching super.
      * @param cvTermFetcher The fetcher to initiate the enricher with.

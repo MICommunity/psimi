@@ -10,9 +10,9 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.ExceptionThrowingM
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.mockRemapper.MockProteinRemapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;

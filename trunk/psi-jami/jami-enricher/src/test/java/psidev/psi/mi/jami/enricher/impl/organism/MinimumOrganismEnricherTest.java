@@ -2,19 +2,15 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.ExceptionThrowingMockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
-import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 
 import static junit.framework.Assert.*;

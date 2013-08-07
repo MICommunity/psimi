@@ -43,6 +43,9 @@ public class AliasMergerTest {
         Alias alias2A = new DefaultAlias(cvTermA , "Alias 2,A");
         newAliases.add(alias2A);
 
+        assertEquals( 2 , newAliases.size());
+        assertEquals( 0 , currentAliases.size());
+
         merger.merge(newAliases, currentAliases);
 
         assertEquals(newAliases.size(), merger.getToAdd().size());
@@ -69,6 +72,10 @@ public class AliasMergerTest {
         Collection<Alias> newAliases = new ArrayList<Alias>();
 
 
+        assertEquals( 0 , newAliases.size());
+        assertEquals( 2 , currentAliases.size());
+
+
         merger.merge(newAliases, currentAliases);
 
         assertEquals(0, merger.getToAdd().size());
@@ -90,6 +97,9 @@ public class AliasMergerTest {
         CvTerm cvTermA_n = new DefaultCvTerm("CvTerm A");
         Alias alias1A_n = new DefaultAlias(cvTermA_n , "Alias 1,A");
         newAliases.add(alias1A_n);
+
+        assertEquals( 1 , newAliases.size());
+        assertEquals( 1 , currentAliases.size());
 
         merger.merge(newAliases, currentAliases);
 
@@ -113,9 +123,12 @@ public class AliasMergerTest {
         Collection<Alias> currentAliases = new ArrayList<Alias>();
         CvTerm cvTermB = new DefaultCvTerm("CvTerm B");
         Alias alias1B = new DefaultAlias(cvTermB , "Alias 1,B");
-        newAliases.add(alias1B);
+        currentAliases.add(alias1B);
         Alias alias2B = new DefaultAlias(cvTermB , "Alias 2,B");
-        newAliases.add(alias2B);
+        currentAliases.add(alias2B);
+
+        assertEquals( 2 , newAliases.size());
+        assertEquals( 2 , currentAliases.size());
 
         merger.merge(newAliases, currentAliases);
 
@@ -145,9 +158,12 @@ public class AliasMergerTest {
         Collection<Alias> currentAliases = new ArrayList<Alias>();
         CvTerm cvTermB = new DefaultCvTerm("CvTerm A");
         Alias alias1B = new DefaultAlias(cvTermB , "Alias 1,B");
-        newAliases.add(alias1B);
+        currentAliases.add(alias1B);
         Alias alias2B = new DefaultAlias(cvTermB , "Alias 2,B");
-        newAliases.add(alias2B);
+        currentAliases.add(alias2B);
+
+        assertEquals( 2 , newAliases.size());
+        assertEquals( 2 , currentAliases.size());
 
         merger.merge(newAliases, currentAliases);
 

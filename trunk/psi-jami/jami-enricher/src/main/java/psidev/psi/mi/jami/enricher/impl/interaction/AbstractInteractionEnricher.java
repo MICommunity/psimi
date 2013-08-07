@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.interaction.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
