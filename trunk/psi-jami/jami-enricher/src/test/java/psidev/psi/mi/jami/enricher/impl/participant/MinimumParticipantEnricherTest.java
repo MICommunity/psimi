@@ -101,7 +101,7 @@ public class MinimumParticipantEnricherTest {
     public void test_enrichment_with_CvTermEnricher_enriches_CvTerms() throws EnricherException {
         MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
         participantEnricher.setCvTermEnricher(new MinimumCvTermEnricher(mockCvTermFetcher));
-        mockCvTermFetcher.addCvTerm("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
+        mockCvTermFetcher.addEntry("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
         participantEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
 
 

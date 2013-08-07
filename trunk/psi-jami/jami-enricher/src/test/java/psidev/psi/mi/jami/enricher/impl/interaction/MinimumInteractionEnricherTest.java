@@ -96,7 +96,7 @@ public class MinimumInteractionEnricherTest {
         mockCvTermFetcher = new MockCvTermFetcher();
         interactionEnricher.setCvTermEnricher(new MinimumCvTermEnricher(mockCvTermFetcher));
 
-        mockCvTermFetcher.addCvTerm("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
+        mockCvTermFetcher.addEntry("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
         interactionEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
 
 

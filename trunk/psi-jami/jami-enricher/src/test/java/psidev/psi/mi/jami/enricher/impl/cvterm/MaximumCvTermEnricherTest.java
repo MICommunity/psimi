@@ -69,7 +69,7 @@ public class MaximumCvTermEnricherTest {
         mockCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", short_name));
 
-        mockCvTermFetcher.addCvTerm(MI_ID , mockCvTerm);
+        mockCvTermFetcher.addEntry(MI_ID , mockCvTerm);
 
         reportForEnrichment.clear();
         persistentCvTerm = null;
@@ -91,7 +91,7 @@ public class MaximumCvTermEnricherTest {
         int timesToTry = -1;
 
         ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
-        fetcher.addCvTerm(MI_ID , mockCvTerm);
+        fetcher.addEntry(MI_ID , mockCvTerm);
         cvTermEnricher.setCvTermFetcher(fetcher);
 
         cvTermEnricher.enrichCvTerm(persistentCvTerm);
@@ -116,7 +116,7 @@ public class MaximumCvTermEnricherTest {
                 timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
 
         ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
-        fetcher.addCvTerm(MI_ID , mockCvTerm);
+        fetcher.addEntry(MI_ID , mockCvTerm);
         cvTermEnricher.setCvTermFetcher(fetcher);
 
         cvTermEnricher.enrichCvTerm(persistentCvTerm);

@@ -46,10 +46,10 @@ public class MinimumOrganismEnricherTest {
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fullOrganism.getAliases().add(new DefaultAlias("TestAlias"));
-        fetcher.addNewOrganism("" + TEST_AC_FULL_ORG, fullOrganism);
+        fetcher.addEntry("" + TEST_AC_FULL_ORG, fullOrganism);
 
         Organism halfOrganism = new DefaultOrganism(TEST_AC_HALF_ORG);
-        fetcher.addNewOrganism("" + TEST_AC_HALF_ORG, halfOrganism);
+        fetcher.addEntry("" + TEST_AC_HALF_ORG, halfOrganism);
 
         mockOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG , "mock" , "mockus mockus");
     }
@@ -68,7 +68,7 @@ public class MinimumOrganismEnricherTest {
         int timesToTry = -1;
 
         ExceptionThrowingMockOrganismFetcher fetcher = new ExceptionThrowingMockOrganismFetcher(timesToTry);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
         organismEnricher.setOrganismFetcher(fetcher);
 
         organismEnricher.enrichOrganism(persistentOrganism);
@@ -94,7 +94,7 @@ public class MinimumOrganismEnricherTest {
                 timesToTry < AbstractOrganismEnricher.RETRY_COUNT);
 
         ExceptionThrowingMockOrganismFetcher fetcher = new ExceptionThrowingMockOrganismFetcher(timesToTry);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
         organismEnricher.setOrganismFetcher(fetcher);
 
         organismEnricher.enrichOrganism(persistentOrganism);
@@ -138,7 +138,7 @@ public class MinimumOrganismEnricherTest {
     public void test_set_scientificName_if_null() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
 
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
 
@@ -176,7 +176,7 @@ public class MinimumOrganismEnricherTest {
     public void test_do_not_update_scientificName_if_different() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
 
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         persistentOrganism.setScientificName(TEST_OLD_SCIENTIFICNAME);
@@ -208,7 +208,7 @@ public class MinimumOrganismEnricherTest {
     public void test_do_not_update_scientificName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
 
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         persistentOrganism.setScientificName(TEST_SCIENTIFICNAME);
@@ -242,7 +242,7 @@ public class MinimumOrganismEnricherTest {
     public void test_set_commonName_if_null() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
 
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
 
@@ -281,7 +281,7 @@ public class MinimumOrganismEnricherTest {
     public void test_do_not_update_commonName_if_different() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
 
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         persistentOrganism.setCommonName(TEST_OLD_COMMONNAME);
@@ -313,7 +313,7 @@ public class MinimumOrganismEnricherTest {
     public void test_do_not_update_commonName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
-        fetcher.addNewOrganism(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
 
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         persistentOrganism.setCommonName(TEST_COMMONNAME);

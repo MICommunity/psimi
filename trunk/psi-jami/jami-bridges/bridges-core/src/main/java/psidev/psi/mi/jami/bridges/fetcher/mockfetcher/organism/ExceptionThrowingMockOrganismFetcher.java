@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractExceptionThrowingMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -20,40 +22,22 @@ import java.util.*;
  * @since 01/07/13
  */
 public class ExceptionThrowingMockOrganismFetcher
-        extends MockOrganismFetcher
+        extends AbstractExceptionThrowingMockFetcher<Organism>
         implements OrganismFetcher {
 
-    String lastQuery = null;
-    int count = 0;
-    int maxQuery = 0;
-
-    /**
-     * A constructor which sets the number of times before returning an answer to the query.
-     * Will throw exceptions until the query has been made that number of times.
-     * @param maxQuery  The number of times the fetcher must be queried before returning the entry.
-     *                  If -1, will always throw exceptions.
-     */
-    public ExceptionThrowingMockOrganismFetcher(int maxQuery){
-        super();
-        this.maxQuery = maxQuery;
+    public ExceptionThrowingMockOrganismFetcher(int maxQuery) {
+        super(maxQuery);
     }
 
-    @Override
-    public Organism getOrganismByTaxID(int identifier) throws BridgeFailedException {
-        if(! localOrganisms.containsKey( Integer.toString(identifier) ))  return null;
-        else {
-            if(!  Integer.toString(identifier).equals( lastQuery )){
-                lastQuery = Integer.toString(identifier) ;
-                count = 0;
+    public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
+        return getEntry( Integer.toString(taxID) );
+    }
 
-            }
-
-            if(maxQuery != -1 && count >= maxQuery)
-                return localOrganisms.get( Integer.toString(identifier) );
-            else {
-                count++;
-                throw new BridgeFailedException("Mock fetcher throws because this is the "+(count-1)+" attempt of "+maxQuery);
-            }
+    public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+        ArrayList<Organism> resultsList= new ArrayList<Organism>();
+        for(Integer identifier : taxIDs){
+            resultsList.add( getEntry(Integer.toString(identifier)) );
         }
+        return resultsList;
     }
 }

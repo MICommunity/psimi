@@ -86,9 +86,9 @@ public abstract class AbstractProteinEnricher
         if(getOrganismEnricher() != null ){
             if (getOrganismEnricher().getOrganismFetcher() == null ||
                     getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getOrganismFetcher()){
-                getOrganismEnricher().getMockFetcher().clearOrganisms();
+                getOrganismEnricher().getMockFetcher().clearEntries();
 
-                getOrganismEnricher().getMockFetcher().addNewOrganism(
+                getOrganismEnricher().getMockFetcher().addEntry(
                         Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
                         proteinFetched.getOrganism());
             }

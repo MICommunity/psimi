@@ -83,12 +83,12 @@ public class MinimumFeatureEnricherTest {
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
         fullProtein.setSequence(TEST_SEQUENCE_NEW);
         fullProtein.setOrganism(new DefaultOrganism(TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC));
-        proteinFetcher.addNewProtein(TEST_AC_FULL_PROT, fullProtein);
+        proteinFetcher.addEntry(TEST_AC_FULL_PROT, fullProtein);
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         halfProtein.setOrganism(new DefaultOrganism(-3));
-        proteinFetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
+        proteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProtein);
 
         persistentParticipant = null;
         persistentFeature = null;
@@ -143,7 +143,7 @@ public class MinimumFeatureEnricherTest {
     @Test
     public void test_that_non_sequence_reliant_feature_data_is_successful_with_CvTermEnricher() throws EnricherException, IOException {
         featureEnricher.setCvTermEnricher(cvTermEnricher);
-        cvTermFetcher.addCvTerm(TEST_AC_CUSTOM_PROT , new DefaultCvTerm(TEST_SHORTNAME , TEST_FULLNAME, TEST_AC_CUSTOM_PROT));
+        cvTermFetcher.addEntry(TEST_AC_CUSTOM_PROT , new DefaultCvTerm(TEST_SHORTNAME , TEST_FULLNAME, TEST_AC_CUSTOM_PROT));
 
         persistentFeature = new DefaultFeature("Featurea","featurea");
 

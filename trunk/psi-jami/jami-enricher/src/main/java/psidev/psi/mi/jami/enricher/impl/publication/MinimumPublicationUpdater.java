@@ -23,6 +23,11 @@ public class MinimumPublicationUpdater
         super(fetcher);
     }
 
+    /**
+     * The strategy for the enrichment of the publication.
+     * This methods can be overwritten to change the behaviour of the enrichment.
+     * @param publicationToEnrich   The publication which is being enriched.
+     */
     @Override
     protected void processPublication(Publication publicationToEnrich) {
 
@@ -41,6 +46,7 @@ public class MinimumPublicationUpdater
             Collection<String> authorsToRemove = new ArrayList<String>();
             authorsToRemove.addAll(publicationToEnrich.getAuthors());
             authorsToRemove.removeAll(publicationFetched.getAuthors());
+
             for(String author : authorsToRemove){
                 publicationToEnrich.getAuthors().remove(author);
                 if(getPublicationEnricherListener() != null)

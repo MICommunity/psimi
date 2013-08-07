@@ -4,7 +4,9 @@ import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimum enrichment of the Publication.
+ * Will enrich the pubmedID and the authors.
+ * As an enricher, no values from the provided publication to enrich will be changed.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
@@ -15,6 +17,11 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
         super(fetcher);
     }
 
+    /**
+     * The strategy for the enrichment of the publication.
+     * This methods can be overwritten to change the behaviour of the enrichment.
+     * @param publicationToEnrich   The publication which is being enriched.
+     */
     @Override
     protected void processPublication(Publication publicationToEnrich) {
 

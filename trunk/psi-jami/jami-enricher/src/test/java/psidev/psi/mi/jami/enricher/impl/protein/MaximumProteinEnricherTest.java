@@ -61,12 +61,12 @@ public class MaximumProteinEnricherTest {
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
         fullProtein.setSequence(TEST_SEQUENCE);
         fullProtein.setOrganism(new DefaultOrganism(TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC));
-        mockProteinFetcher.addNewProtein(TEST_AC_FULL_PROT, fullProtein);
+        mockProteinFetcher.addEntry(TEST_AC_FULL_PROT, fullProtein);
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         // halfProtein.setOrganism(new DefaultOrganism(-3));
-        mockProteinFetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
+        mockProteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProtein);
 
         persistentProtein = null;
         persistentInt = 0;
@@ -101,7 +101,7 @@ public class MaximumProteinEnricherTest {
 
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
-        fetcher.addNewProtein(TEST_AC_HALF_PROT , proteinFetched);
+        fetcher.addEntry(TEST_AC_HALF_PROT , proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
         proteinEnricher.enrichProtein(proteinToEnrich);
         fail("Exception should be thrown before this point");
@@ -119,7 +119,7 @@ public class MaximumProteinEnricherTest {
 
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
-        fetcher.addNewProtein(TEST_AC_HALF_PROT, proteinFetched);
+        fetcher.addEntry(TEST_AC_HALF_PROT, proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
         proteinEnricher.enrichProtein(proteinToEnrich);
 
@@ -886,7 +886,7 @@ public class MaximumProteinEnricherTest {
         Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         customProtein.setOrganism(new DefaultOrganism(9898));
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customProtein);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
@@ -943,7 +943,7 @@ public class MaximumProteinEnricherTest {
         Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         customProtein.setOrganism(new DefaultOrganism(9898));
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customProtein);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
@@ -1120,7 +1120,7 @@ public class MaximumProteinEnricherTest {
         Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertNotNull(persistentProtein.getShortName());
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
@@ -1174,7 +1174,7 @@ public class MaximumProteinEnricherTest {
         Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertNull(persistentProtein.getFullName());
 
@@ -1233,7 +1233,7 @@ public class MaximumProteinEnricherTest {
         Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertNotNull(persistentProtein.getFullName());
         assertEquals(TEST_OLD_FULLNAME , persistentProtein.getFullName());
@@ -1290,7 +1290,7 @@ public class MaximumProteinEnricherTest {
         fetchProtein.setSequence(TEST_SEQUENCE);
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertEquals(TEST_SEQUENCE , fetchProtein.getSequence());
         assertNull(persistentProtein.getSequence());
@@ -1352,7 +1352,7 @@ public class MaximumProteinEnricherTest {
         fetchProtein.setSequence(TEST_SEQUENCE);
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertEquals(TEST_SEQUENCE , fetchProtein.getSequence());
         assertNotNull(persistentProtein.getSequence());
@@ -1410,7 +1410,7 @@ public class MaximumProteinEnricherTest {
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         fetchProtein.getIdentifiers().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertEquals(2 , persistentProtein.getIdentifiers().size());
 
@@ -1494,7 +1494,7 @@ public class MaximumProteinEnricherTest {
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         fetchProtein.getAliases().add(new DefaultAlias(CvTermUtils.createEnsemblDatabase() , "EN999"));
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertEquals(1 , persistentProtein.getAliases().size());
 
@@ -1593,7 +1593,7 @@ public class MaximumProteinEnricherTest {
         fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         fetchProtein.getXrefs().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
 
-        mockProteinFetcher.addNewProtein(TEST_AC_CUSTOM_PROT , fetchProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
 
         assertEquals(1 , persistentProtein.getXrefs().size());
 

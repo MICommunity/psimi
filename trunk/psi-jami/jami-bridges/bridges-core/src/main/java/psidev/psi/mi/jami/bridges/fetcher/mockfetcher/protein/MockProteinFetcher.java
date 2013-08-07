@@ -33,7 +33,7 @@ public class MockProteinFetcher
         }
     }
 
-    protected void addEntry(String identifier, Protein protein){
+    public void addEntry(String identifier, Protein protein){
         if(protein == null) return;
         if(! localMap.containsKey(identifier)){
             ArrayList<Protein> array = new ArrayList<Protein>();
