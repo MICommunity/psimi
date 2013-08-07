@@ -56,12 +56,13 @@
 
     <modules>
         <module>bridges-core</module>
+        <module>jami-chebi</module>
         <module>jami-uniprot</module>
         <module>jami-ols</module>
         <module>jami-uniprot-taxonomy</module>
         <module>jami-obo</module>
         <module>jami-europubmedcentral</module>
         <module>uniprot-remapping</module>
-        <module>jami-chebi</module>
+        <!--<module>jami-ensembl</module>-->
     </modules>
 </project>
