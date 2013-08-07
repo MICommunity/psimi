@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;

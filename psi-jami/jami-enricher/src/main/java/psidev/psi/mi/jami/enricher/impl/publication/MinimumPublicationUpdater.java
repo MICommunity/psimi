@@ -56,8 +56,7 @@ public class MinimumPublicationUpdater
             for(String author : publicationFetched.getAuthors()){
                 if(publicationToEnrich.getAuthors().add(author))
                     if(getPublicationEnricherListener() != null)
-                        getPublicationEnricherListener().onAuthorAdded(
-                                publicationToEnrich , author);
+                        getPublicationEnricherListener().onAuthorAdded(publicationToEnrich , author);
             }
         }
     }
