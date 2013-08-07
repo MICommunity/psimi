@@ -7,12 +7,11 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
-import psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
-import psidev.psi.mi.jami.enricher.util.EnricherUtil;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
 

@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.enricher.util;
 
 import psidev.psi.mi.jami.enricher.*;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager;
 
 /**
  * Utilities for enrichers.

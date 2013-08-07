@@ -8,9 +8,8 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicatio
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
-import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.experiment.ExperimentEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.experiment.ExperimentEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.impl.publication.MinimumPublicationEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;

@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
@@ -19,6 +21,7 @@ import java.util.Collection;
  * @since 03/07/13
  */
 public class AliasMerger {
+    //protected static final Logger log = LoggerFactory.getLogger(AliasMerger.class.getName());
 
 
     private Collection<Alias> toRemove = new ArrayList<Alias>();
@@ -45,31 +48,31 @@ public class AliasMerger {
         }
 
         toRemove.clear();
-
         // Check all of the identifiers which are to be enriched
-        for(Alias aliasIdentifier : toEnrichAliases){
+        for(Alias currentAlias : toEnrichAliases){
             
             boolean isInFetchedList = false;
             //If it's in the list to add, mark that it's to add already
             for(Alias aliasToAdd : fetchedToAdd){
-                if(DefaultAliasComparator.areEquals(aliasToAdd, aliasIdentifier)){
+                if(DefaultAliasComparator.areEquals(aliasToAdd, currentAlias)){
                     isInFetchedList = true;
                     //No need to add it as it is already there
                     fetchedToAdd.remove(aliasToAdd);
                     break;
                 }
             }
+
             // If it's not in the fetched ones to add,
             // check if it's CvTerm is managed and add to removals if it is
             if(! isInFetchedList){
                 boolean managedCvTerm = false;
                 for(CvTerm cvTerm : identifierCvTerms){
-                    if(DefaultCvTermComparator.areEquals(cvTerm, aliasIdentifier.getType())){
+                    if(DefaultCvTermComparator.areEquals(cvTerm, currentAlias.getType())){
                         managedCvTerm = true;
                         break;
                     }
                 }
-                if(managedCvTerm) toRemove.add(aliasIdentifier);
+                if(managedCvTerm) toRemove.add(currentAlias);
             }
         }
     }
