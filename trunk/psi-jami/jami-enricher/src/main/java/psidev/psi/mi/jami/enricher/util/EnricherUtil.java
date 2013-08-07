@@ -49,14 +49,4 @@ public class EnricherUtil {
             }
         }
     }
-
-    /**
-     * Takes the interactionEnricher CvTermEnricher and sets it as the enricher for all other cvTerms.
-     * @param enricher
-     */
-    /*public static void unifyCvTermEnrichers(InteractionEnricher enricher){
-        CvTermEnricher cvTermEnricher = enricher.getCvTermEnricher();
-        enricher.getParticipantEnricher().setCvTermEnricher(cvTermEnricher);
-        enricher.getParticipantEnricher().getFeatureEnricher().setCvTermEnricher(cvTermEnricher);
-    }  */
 }
