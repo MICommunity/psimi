@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 
+// NOTE: Run a Maven build to generate the sources for ebi.cdb.webservice
 
 /**
  * Uses the EuroPubmedCentral WSDL service to fetch publication entries.
@@ -96,7 +97,6 @@ public class EuroPubmedCentralFetcher
                 }
             }
         }
-
         return publication;
     }
 }

@@ -9,7 +9,12 @@ import psidev.psi.mi.jami.model.Organism;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * A mock fetcher for testing exceptions.
+ * It extends the functionality of the mock fetcher but can also throw exceptions.
+ * Upon initialisation, an integer is given which sets how many times a query is made before returning the result.
+ * If the current query matches the last query and the counter of the number of times is less than the maxQuery
+ * set at initialisation, then an exception will be thrown.
+ * Additionally, if the maxQuery is set to -1, the fetcher will always throw an exception.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
@@ -22,7 +27,12 @@ public class ExceptionThrowingMockOrganismFetcher
     int count = 0;
     int maxQuery = 0;
 
-
+    /**
+     * A constructor which sets the number of times before returning an answer to the query.
+     * Will throw exceptions until the query has been made that number of times.
+     * @param maxQuery  The number of times the fetcher must be queried before returning the entry.
+     *                  If -1, will always throw exceptions.
+     */
     public ExceptionThrowingMockOrganismFetcher(int maxQuery){
         super();
         this.maxQuery = maxQuery;

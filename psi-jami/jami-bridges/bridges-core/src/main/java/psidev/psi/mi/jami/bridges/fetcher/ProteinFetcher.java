@@ -18,7 +18,7 @@ public interface ProteinFetcher {
      * Returns an empty collection of no entries are returned
      *
      * @param identifier    The identifier to search for.
-     * @return      The proteins which match the search term. Empty if no matches.
+     * @return              The proteins which match the search term. Empty if no matches.
      * @throws BridgeFailedException    A problem has been encountered when contacting the service
      */
     public Collection<Protein> getProteinsByIdentifier(String identifier)
@@ -29,7 +29,7 @@ public interface ProteinFetcher {
      * Returns an empty collection of no entries are returned.
      *
      * @param identifiers   The identifiers to search for.
-     * @return      The proteins which match the search term. Empty if no matches.
+     * @return              The proteins which match the search term. Empty if no matches.
      * @throws BridgeFailedException
      */
     public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers)

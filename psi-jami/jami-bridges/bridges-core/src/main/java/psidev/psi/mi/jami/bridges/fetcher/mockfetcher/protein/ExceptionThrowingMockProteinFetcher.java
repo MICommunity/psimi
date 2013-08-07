@@ -2,13 +2,19 @@ package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractExceptionThrowingMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.*;
 
 /**
- * The mock protein fetcher mimics a normal protein fetcher
- * but can only fetch proteins which have been loaded into it.
+ * A mock fetcher for testing exceptions.
+ * It extends the functionality of the mock fetcher but can also throw exceptions.
+ * Upon initialisation, an integer is given which sets how many times a query is made before returning the result.
+ * If the current query matches the last query and the counter of the number of times is less than the maxQuery
+ * set at initialisation, then an exception will be thrown.
+ * Additionally, if the maxQuery is set to -1, the fetcher will always throw an exception.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -16,42 +22,44 @@ import java.util.*;
  */
 
 public class ExceptionThrowingMockProteinFetcher
-        extends MockProteinFetcher
+        extends AbstractExceptionThrowingMockFetcher<ArrayList<Protein>>
         implements ProteinFetcher {
 
-    String lastQuery = null;
-    int count = 0;
-    int maxquery = 0;
-
-
-    public ExceptionThrowingMockProteinFetcher(int maxquery){
-        super();
-        this.maxquery = maxquery;
+    protected ExceptionThrowingMockProteinFetcher(int maxQuery) {
+        super(maxQuery);
     }
 
-    /**
-     * Will return a collection of proteins if one or more protein has been added with the identifier.
-     * If no proteins can be found, it will throw a fetcherException (as a true fetcher would).
-     * @param identifier
-     * @return
-     */
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
+    protected ArrayList<Protein> getEntry(String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException(
                 "Attempted to query mock protein fetcher for null identifier.");
 
-        if(! localProteins.containsKey(identifier)) return Collections.EMPTY_LIST;
-        else {
-            if(! identifier.equals(lastQuery)){
-                lastQuery = identifier;
-                count = 0;
-            }
-
-            if(maxquery != -1 && count >= maxquery)
-                return localProteins.get(identifier);
-            else {
-                count++;
-                throw new BridgeFailedException("Mock fetcher throws because this is the "+(count-1)+" attempt of "+maxquery);
-            }
+        if(! localMap.containsKey(identifier)) {
+            return new ArrayList<Protein>();
+        }else {
+            return super.getEntry(identifier);
         }
     }
+
+    protected void addEntry(String identifier, Protein protein){
+        if(protein == null) return;
+        if(! localMap.containsKey(identifier)){
+            ArrayList<Protein> array = new ArrayList<Protein>();
+            localMap.put(identifier, array);
+        }
+        localMap.get(identifier).add(protein);
+    }
+
+
+    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
+        return getEntry(identifier);
+    }
+
+    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        ArrayList<Protein> resultsList= new ArrayList<Protein>();
+        for(String identifier : identifiers){
+            resultsList.addAll( getEntry(identifier) );
+        }
+        return resultsList;
+    }
+
 }

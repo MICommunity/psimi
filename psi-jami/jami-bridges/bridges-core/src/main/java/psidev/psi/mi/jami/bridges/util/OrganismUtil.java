@@ -22,8 +22,8 @@ public class OrganismUtil {
      * -4 = In vivo
      * -5 = In Silico
      *
-     * @param taxID
-     * @return
+     * @param taxID     A taxId which might match one of the reserved terms.
+     * @return          A complete organism record if the taxID matches reserved term. Null if it could not be found.
      */
     public static Organism createSpecialistOrganism(int taxID){
         Organism organism;
