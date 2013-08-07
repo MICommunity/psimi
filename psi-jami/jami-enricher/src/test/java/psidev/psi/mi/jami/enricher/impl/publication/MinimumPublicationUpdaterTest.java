@@ -274,7 +274,6 @@ public class MinimumPublicationUpdaterTest {
 
     // == OTHER ========================================================================================
 
-
     /**
      * Enrich a publication where the fetcher finds all fields.
      * Assert that the fields which are not to be included at the minimum level remain un-enriched

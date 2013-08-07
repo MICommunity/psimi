@@ -72,17 +72,6 @@ public class MinimumProteinEnricher
      */
     @Override
     protected void processProtein(Protein proteinToEnrich) {
-        //InteractorType
-        if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
-            if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
-                    Interactor.UNKNOWN_INTERACTOR_MI)){
-
-                proteinToEnrich.setInteractorType(CvTermUtils.createProteinInteractorType());
-                if(getProteinEnricherListener() != null)
-                    getProteinEnricherListener().onAddedInteractorType(proteinToEnrich);
-            }
-        }
-
         //ShortName - is never null
 
         //FullName
@@ -201,12 +190,4 @@ public class MinimumProteinEnricher
             }
         }
     }
-
-
-    /*
-    @Override
-    public OrganismEnricher getOrganismEnricher() {
-        if( organismEnricher == null ) organismEnricher = new MinimumOrganismEnricher();
-        return organismEnricher;
-    } */
 }

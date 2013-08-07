@@ -19,8 +19,7 @@ import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
- * Unit tester for MinimumProteinEnricher
- *
+ * Unit tests for MinimumProteinEnricher
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  23/05/13
@@ -65,7 +64,6 @@ public class MinimumProteinEnricherTest {
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
-        // halfProtein.setOrganism(new DefaultOrganism(-3));
         mockProteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProtein);
 
         persistentProtein = null;
