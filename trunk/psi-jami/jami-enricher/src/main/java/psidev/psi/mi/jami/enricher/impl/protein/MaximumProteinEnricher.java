@@ -48,16 +48,4 @@ public class MaximumProteinEnricher
             }
         }
     }
-
-    /*
-    @Override
-    public OrganismEnricher getOrganismEnricher() {
-        if( organismEnricher == null ){
-            organismEnricher = new MaximumOrganismEnricher();
-        }
-
-        return organismEnricher;
-    }  */
-
-
 }

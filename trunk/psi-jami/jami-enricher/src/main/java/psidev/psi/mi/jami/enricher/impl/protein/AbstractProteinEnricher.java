@@ -96,6 +96,16 @@ public abstract class AbstractProteinEnricher
             getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
         }
 
+        //InteractorType
+        if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
+            if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
+                    Interactor.UNKNOWN_INTERACTOR_MI)){
+                proteinToEnrich.setInteractorType(CvTermUtils.createProteinInteractorType());
+                if(getProteinEnricherListener() != null)
+                    getProteinEnricherListener().onAddedInteractorType(proteinToEnrich);
+            }
+        }
+
         processProtein(proteinToEnrich);
 
         if(getProteinEnricherListener() != null)
