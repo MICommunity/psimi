@@ -28,29 +28,35 @@ public class ChebiFetcher
         client = new ChebiWebServiceService();
     }
 
+    /**
+     *
+     * @param identifier    The identifier of the CHEBI entry to find.
+     * @return              A completed bioactiveEntity for the given identifier. May be null.
+     * @throws BridgeFailedException    Thrown if the fetcher encounters a problem.
+     */
     public BioactiveEntity getBioactiveEntityByIdentifier (String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException("Can not fetch on null identifier");
 
-        BioactiveEntity bioactiveEntity = null;
+        BioactiveEntity bioactiveEntity;
         try {
             Entity entity = client.getChebiWebServicePort().getCompleteEntity(identifier);
 
             if(entity == null) return null;
 
+            //log.info("bioactiveEntity.setFullName() : "+entity.getChebiAsciiName() );
             bioactiveEntity = new DefaultBioactiveEntity( entity.getChebiAsciiName() );
-            log.info("bioactiveEntity.setFullName() : "+entity.getChebiAsciiName() );
             bioactiveEntity.setFullName( entity.getChebiAsciiName() );
 
-            log.info("bioactiveEntity.setChebi() : "+entity.getChebiId());
+            //log.info("bioactiveEntity.setChebi() : "+entity.getChebiId());
             bioactiveEntity.setChebi( entity.getChebiId() );
 
-            log.info("bioactiveEntity.setSmile() : "+entity.getSmiles() );
+            //log.info("bioactiveEntity.setSmile() : "+entity.getSmiles() );
             bioactiveEntity.setSmile( entity.getSmiles() );
 
-            log.info( "bioactiveEntity.setStandardInchi() : "+entity.getInchi() );
+            //log.info( "bioactiveEntity.setStandardInchi() : "+entity.getInchi() );
             bioactiveEntity.setStandardInchi( entity.getInchi() );
 
-            log.info( "bioactiveEntity.setStandardInchiKey() : "+entity.getInchiKey() );
+            //log.info( "bioactiveEntity.setStandardInchiKey() : "+entity.getInchiKey() );
             bioactiveEntity.setStandardInchiKey( entity.getInchiKey() );
 
             //entity.getSecondaryChEBIIds()
@@ -71,6 +77,5 @@ public class ChebiFetcher
         }
 
         return bioactiveEntity;
-
     }
 }
