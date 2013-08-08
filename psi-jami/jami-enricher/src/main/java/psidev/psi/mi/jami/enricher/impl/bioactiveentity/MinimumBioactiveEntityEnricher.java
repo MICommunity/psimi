@@ -24,5 +24,52 @@ public class MinimumBioactiveEntityEnricher
     @Override
     protected void processBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich) {
 
+        // bioactiveEntityToEnrich.getShortName();
+        //bioactiveEntityToEnrich.getInteractorType();
+        //bioactiveEntityToEnrich.getOrganism();
+        //bioactiveEntityToEnrich.getAliases();
+        //bioactiveEntityToEnrich.getXrefs();
+
+        // FULL NAME
+        if(bioactiveEntityToEnrich.getFullName() == null
+                && bioactiveEntityFetched.getFullName() != null){
+            bioactiveEntityToEnrich.setFullName(bioactiveEntityFetched.getFullName());
+            if(getBioactiveEntityEnricherListener() != null)
+                getBioactiveEntityEnricherListener().onFullNameUpdate(bioactiveEntityToEnrich , null);
+        }
+
+        // CHEBI IDENTIFIER
+        if(bioactiveEntityToEnrich.getChebi() == null
+                && bioactiveEntityFetched.getChebi() != null){
+            bioactiveEntityToEnrich.setChebi(bioactiveEntityFetched.getChebi());
+            if(getBioactiveEntityEnricherListener() != null)
+                getBioactiveEntityEnricherListener().onChebiUpdate(bioactiveEntityToEnrich , null);
+        }
+
+        // INCHI Code
+        if(bioactiveEntityToEnrich.getStandardInchi() == null
+                && bioactiveEntityFetched.getStandardInchi() != null){
+            bioactiveEntityToEnrich.setStandardInchi(bioactiveEntityFetched.getStandardInchi());
+            if(getBioactiveEntityEnricherListener() != null)
+                getBioactiveEntityEnricherListener().onStandardInchiUpdate(bioactiveEntityToEnrich , null);
+        }
+
+        // INCHI KEY
+        if(bioactiveEntityToEnrich.getStandardInchiKey() == null
+                && bioactiveEntityFetched.getStandardInchiKey() != null){
+            bioactiveEntityToEnrich.setStandardInchiKey(bioactiveEntityFetched.getStandardInchiKey());
+            if(getBioactiveEntityEnricherListener() != null)
+                getBioactiveEntityEnricherListener().onStandardInchiKeyUpdate(bioactiveEntityToEnrich , null);
+        }
+
+        // SMILE
+        if(bioactiveEntityToEnrich.getSmile() == null
+                && bioactiveEntityFetched.getSmile() != null){
+            bioactiveEntityToEnrich.setSmile(bioactiveEntityFetched.getSmile());
+            if(getBioactiveEntityEnricherListener() != null)
+                getBioactiveEntityEnricherListener().onSmileUpdate(bioactiveEntityToEnrich , null);
+        }
+
+
     }
 }

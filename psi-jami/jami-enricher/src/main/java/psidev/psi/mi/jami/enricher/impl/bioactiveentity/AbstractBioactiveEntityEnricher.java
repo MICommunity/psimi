@@ -22,7 +22,7 @@ public abstract class AbstractBioactiveEntityEnricher
     public final int RETRY_COUNT = 5;
     private BioactiveEntityFetcher fetcher = null;
     private BioactiveEntityEnricherListener listener = null;
-    protected BioactiveEntity fetchedBioactiveEntity = null;
+    protected BioactiveEntity bioactiveEntityFetched = null;
 
     public AbstractBioactiveEntityEnricher(BioactiveEntityFetcher fetcher){
         setBioactiveEntityFetcher(fetcher);
@@ -48,9 +48,9 @@ public abstract class AbstractBioactiveEntityEnricher
         if(bioactiveEntityToEnrich == null)
             throw new IllegalArgumentException("Can not enrich null Bioactive Entity");
 
-        fetchedBioactiveEntity = fetchBioactiveEntity(bioactiveEntityToEnrich);
+        bioactiveEntityFetched = fetchBioactiveEntity(bioactiveEntityToEnrich);
 
-        if(fetchedBioactiveEntity == null){
+        if(bioactiveEntityFetched == null){
             if(getBioactiveEntityEnricherListener() != null)
                 getBioactiveEntityEnricherListener().onEnrichmentComplete(
                         bioactiveEntityToEnrich , EnrichmentStatus.FAILED ,
