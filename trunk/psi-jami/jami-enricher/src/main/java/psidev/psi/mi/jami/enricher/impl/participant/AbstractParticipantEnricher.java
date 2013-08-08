@@ -37,10 +37,15 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 
+        processParticipant(participantToEnrich);
+
+        // Enrich CvTerm BioRole
+        if(getCvTermEnricher() != null)
+            getCvTermEnricher().enrichCvTerm(participantToEnrich.getBiologicalRole());
+
+        // Prepare Features
         if( getFeatureEnricher() != null )
             getFeatureEnricher().setFeaturesToEnrich(participantToEnrich);
-
-        processParticipant(participantToEnrich);
 
         // Enrich Interactor
         CvTerm interactorType = participantToEnrich.getInteractor().getInteractorType();
@@ -65,6 +70,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
             }
         }
 
+        // Enrich Features
         if( getFeatureEnricher() != null )
                 getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
 
@@ -73,11 +79,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     }
 
-    protected void processParticipant(P participantToEnrich) throws EnricherException {
-        // Enrich BioRole
-        if(getCvTermEnricher() != null)
-            getCvTermEnricher().enrichCvTerm(participantToEnrich.getBiologicalRole());
-    }
+    protected abstract void processParticipant(P participantToEnrich) throws EnricherException;
 
     public void setParticipantListener(ParticipantEnricherListener participantEnricherListener) {
         this.listener = participantEnricherListener;

@@ -94,7 +94,6 @@ public abstract class AbstractBioactiveEntityEnricher
             throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
         }
 
-
         return fetchedBioactiveEntity;
     }
 
