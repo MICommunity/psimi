@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public interface BioactiveEntityListener
+public interface BioactiveEntityChangeListener
         extends InteractorListener<BioactiveEntity>{
 
     /**
