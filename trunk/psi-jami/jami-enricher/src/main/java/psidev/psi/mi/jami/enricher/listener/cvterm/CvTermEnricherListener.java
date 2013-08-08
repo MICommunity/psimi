@@ -16,12 +16,4 @@ import psidev.psi.mi.jami.model.CvTerm;
 public interface CvTermEnricherListener
         extends CvTermChangeListener , EnricherListener<CvTerm>{
 
-    /**
-     * Fired upon the completion of a CvTerm enrichment.
-     * @param cvTerm    The CvTerm which was being enriched
-     * @param status    The status of the enrichment
-     * @param message   A message containing additional information if any is provided.
-     */
-    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status , String message);
-
 }
