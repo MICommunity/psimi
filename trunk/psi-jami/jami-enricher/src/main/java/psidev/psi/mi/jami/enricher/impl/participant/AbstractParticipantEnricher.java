@@ -10,7 +10,8 @@ import psidev.psi.mi.jami.model.*;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The participant enricher is an enricher which can enrich either single participant or a collection.
+ * The participant enricher has subEnrichers and no fetchers.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13

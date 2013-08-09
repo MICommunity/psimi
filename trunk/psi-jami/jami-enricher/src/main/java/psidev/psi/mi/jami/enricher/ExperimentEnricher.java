@@ -70,7 +70,7 @@ public interface ExperimentEnricher {
 
     /**
      * Gets current ExperimentEnricherListener. Can be null.
-     * @return      The listener which is currently beign used.
+     * @return      The listener which is currently being used.
      */
     public ExperimentEnricherListener getExperimentEnricherListener();
 

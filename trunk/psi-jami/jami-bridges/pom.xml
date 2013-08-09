@@ -58,6 +58,7 @@
 
     <modules>
         <module>bridges-core</module>
+        <module>jami-ensembl</module>
         <module>jami-chebi</module>
         <module>jami-uniprot</module>
         <module>jami-ols</module>
@@ -65,6 +66,5 @@
         <module>jami-obo</module>
         <module>jami-europubmedcentral</module>
         <module>uniprot-remapping</module>
-        <module>jami-ensembl</module>
     </modules>
 </project>
