@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.bioactiveentity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
@@ -11,7 +13,11 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The general architecture for a BioactiveEntity enricher
+ * with methods to fetch a bioactiveEntity and coordinate the enriching.
+ *
+ * Has an abstract method 'processBioactiveEntity' which can be overridden
+ * to determine which parts should be enriched and how.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  07/08/13
@@ -19,11 +25,18 @@ import java.util.Collection;
 public abstract class AbstractBioactiveEntityEnricher
         implements BioactiveEntityEnricher{
 
+    protected static final Logger log = LoggerFactory.getLogger(AbstractBioactiveEntityEnricher.class.getName());
+
     public final int RETRY_COUNT = 5;
     private BioactiveEntityFetcher fetcher = null;
     private BioactiveEntityEnricherListener listener = null;
     protected BioactiveEntity bioactiveEntityFetched = null;
 
+    /**
+     * The only constructor, fulfilling the requirement of a bioactiveEntity fetcher.
+     * If the bioactiveEntity fetcher is null, an illegal state exception will be thrown at the next enrichment.
+     * @param fetcher   The fetcher used to collect bioactiveEntity records.
+     */
     public AbstractBioactiveEntityEnricher(BioactiveEntityFetcher fetcher){
         setBioactiveEntityFetcher(fetcher);
     }
@@ -60,12 +73,16 @@ public abstract class AbstractBioactiveEntityEnricher
 
         processBioactiveEntity(bioactiveEntityToEnrich);
 
-
         if(getBioactiveEntityEnricherListener() != null)
             getBioactiveEntityEnricherListener().onEnrichmentComplete(
                     bioactiveEntityToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
+    /**
+     * Strategy for the BioactiveEntity enrichment.
+     * This method can be overwritten to change how the BioactiveEntity is enriched.
+     * @param bioactiveEntityToEnrich   The BioactiveEntity to be enriched.
+     */
     protected abstract void processBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich);
 
 
@@ -73,7 +90,7 @@ public abstract class AbstractBioactiveEntityEnricher
         if(getBioactiveEntityFetcher() == null)
             throw new IllegalStateException("Can not fetch with null fetcher");
 
-        BioactiveEntity fetchedBioactiveEntity = null;
+        BioactiveEntity fetchedBioactiveEntity;
 
         try {
             fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
@@ -93,7 +110,6 @@ public abstract class AbstractBioactiveEntityEnricher
             }
             throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
         }
-
         return fetchedBioactiveEntity;
     }
 

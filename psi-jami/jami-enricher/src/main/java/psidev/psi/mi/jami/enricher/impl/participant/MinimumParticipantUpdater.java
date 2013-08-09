@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
 
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
 
@@ -13,25 +14,8 @@ import psidev.psi.mi.jami.model.Participant;
 public class MinimumParticipantUpdater<P extends Participant , F extends Feature>
         extends AbstractParticipantEnricher <P , F>{
 
+    @Override
+    protected void processParticipant(P participantToEnrich) throws EnricherException {
 
-    /*
-    public ProteinEnricher getProteinEnricher(){
-        if(proteinEnricher == null) proteinEnricher = new MinimumProteinUpdater();
-        return proteinEnricher;
     }
-
-
-    public CvTermEnricher getCvTermEnricher(){
-        if(cvTermEnricher == null) cvTermEnricher = new MinimumCvTermUpdater();
-        return cvTermEnricher;
-    }
-
-
-    public FeatureEnricher<F> getFeatureEnricher(){
-        if(featureEnricher == null){
-            featureEnricher = new MinimumFeatureUpdater<F>();
-            EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
-        }
-        return featureEnricher;
-    } */
 }

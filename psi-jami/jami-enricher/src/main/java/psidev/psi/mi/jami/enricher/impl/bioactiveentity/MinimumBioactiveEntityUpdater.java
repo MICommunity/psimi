@@ -4,7 +4,8 @@ import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimum updating of the bioactiveEntity.
+ * As an updater, values from the provided bioactiveEntity to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
@@ -12,19 +13,35 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
 public class MinimumBioactiveEntityUpdater
         extends AbstractBioactiveEntityEnricher{
 
+    /**
+     * A constructor which initiates with a fetcher.
+     * @param fetcher   The fetcher to use to gather bioactive entity records.
+     */
     public MinimumBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
         super(fetcher);
     }
 
+    /**
+     * Strategy for the BioactiveEntity enrichment.
+     * This method can be overwritten to change how the BioactiveEntity is enriched.
+     * @param bioactiveEntityToEnrich   The BioactiveEntity to be enriched.
+     */
     @Override
     protected void processBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich) {
 
+        // bioactiveEntityToEnrich.getInteractorType();
+        // bioactiveEntityToEnrich.getOrganism();
+        // bioactiveEntityToEnrich.getAliases();
+        // bioactiveEntityToEnrich.getXrefs();
 
-        // bioactiveEntityToEnrich.getShortName();
-        //bioactiveEntityToEnrich.getInteractorType();
-        //bioactiveEntityToEnrich.getOrganism();
-        //bioactiveEntityToEnrich.getAliases();
-        //bioactiveEntityToEnrich.getXrefs();
+
+        // FULL NAME
+        if(bioactiveEntityFetched.getShortName() != null
+                && ! bioactiveEntityFetched.getShortName().equalsIgnoreCase(bioactiveEntityToEnrich.getShortName())){
+            bioactiveEntityToEnrich.setShortName(bioactiveEntityFetched.getShortName());
+            if(getBioactiveEntityEnricherListener() != null)
+                getBioactiveEntityEnricherListener().onFullNameUpdate(bioactiveEntityToEnrich , null);
+        }
 
         // FULL NAME
         if(bioactiveEntityFetched.getFullName() != null
@@ -44,7 +61,7 @@ public class MinimumBioactiveEntityUpdater
 
         // INCHI Code
         if( bioactiveEntityFetched.getStandardInchi() != null
-                && bioactiveEntityFetched.getStandardInchi().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchi())){
+                && ! bioactiveEntityFetched.getStandardInchi().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchi())){
 
             bioactiveEntityToEnrich.setStandardInchi(bioactiveEntityFetched.getStandardInchi());
             if(getBioactiveEntityEnricherListener() != null)
@@ -61,7 +78,7 @@ public class MinimumBioactiveEntityUpdater
 
         // SMILE
         if(bioactiveEntityFetched.getSmile() != null
-                && bioactiveEntityFetched.getSmile().equalsIgnoreCase(bioactiveEntityToEnrich.getSmile())){
+                && ! bioactiveEntityFetched.getSmile().equalsIgnoreCase(bioactiveEntityToEnrich.getSmile())){
             bioactiveEntityToEnrich.setSmile(bioactiveEntityFetched.getSmile());
             if(getBioactiveEntityEnricherListener() != null)
                 getBioactiveEntityEnricherListener().onSmileUpdate(bioactiveEntityToEnrich , null);

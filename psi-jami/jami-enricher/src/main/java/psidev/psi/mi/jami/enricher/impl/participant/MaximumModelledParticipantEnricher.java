@@ -16,10 +16,5 @@ public class MaximumModelledParticipantEnricher
     extends MaximumParticipantEnricher<ModelledParticipant , ModelledFeature>
     implements  ModelledParticipantEnricher {
 
-    /*
-    @Override
-    public FeatureEnricher<ModelledFeature> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new MaximumModelledFeatureEnricher();
-        return featureEnricher;
-    } */
+
 }

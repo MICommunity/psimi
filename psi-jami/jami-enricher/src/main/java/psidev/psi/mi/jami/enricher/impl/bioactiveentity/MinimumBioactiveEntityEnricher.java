@@ -4,7 +4,8 @@ import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimum enrichment of the bioactiveEntity.
+ * As an enricher, no values from the provided bioactiveEntity to enrich will be changed.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
@@ -20,7 +21,11 @@ public class MinimumBioactiveEntityEnricher
         super(fetcher);
     }
 
-
+    /**
+     * Strategy for the BioactiveEntity enrichment.
+     * This method can be overwritten to change how the BioactiveEntity is enriched.
+     * @param bioactiveEntityToEnrich   The BioactiveEntity to be enriched.
+     */
     @Override
     protected void processBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich) {
 
