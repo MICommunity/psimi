@@ -20,7 +20,7 @@ import java.util.Collections;
 // NOTE: Run a Maven build to generate the sources for ebi.cdb.webservice
 
 /**
- * Uses the EuroPubmedCentral WSDL service to fetch publication entries.
+ * Uses the EuroPubmedCentral WSDL SOAP service to fetch publication entries.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 30/07/13

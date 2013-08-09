@@ -37,7 +37,7 @@ public abstract class AbstractCvTermEnricher
     protected CvTerm cvTermFetched = null;
 
     /**
-     * The only constructor. It requires a cvTerm fetcher.
+     * The only constructor, fulfilling the requirement of a cvTerm fetcher.
      * If the cvTerm fetcher is null, an illegal state exception will be thrown at the next enrichment.
      * @param cvTermFetcher  The CvTermFetcher to use.
      */

@@ -54,7 +54,6 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
      */
     public CvTermEnricher getCvTermEnricher();
 
-
     /**
      * Sets the new enricher for Features.
      * @param featureEnricher   The enricher to use for features. Can be null.
@@ -67,8 +66,30 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
      */
     public FeatureEnricher getFeatureEnricher();
 
+    /**
+     * Sets the new enricher for BioactiveEntities
+     * @param bioactiveEntityEnricher   The enricher to use for BioactiveEntities. Can be null.
+     */
+    public void setBioactiveEntityEnricher(BioactiveEntityEnricher bioactiveEntityEnricher);
 
+    /**
+     * The current enricher used for BioactiveEntities.
+     * If null, BioactiveEntities are not currently being enriched.
+     * @return  The current enricher. May be null.
+     */
+    public BioactiveEntityEnricher getBioactiveEntityEnricher();
+
+    /**
+     * Sets the listener for Participant events. If null, events will not be reported.
+     * @param listener  The listener to use. Can be null.
+     */
     public void setParticipantListener(ParticipantEnricherListener listener);
+
+    /**
+     * The current listener that participant changes are reported to.
+     * If null, events are not being reported.
+     * @return  TThe current listener. Can be null.
+     */
     public ParticipantEnricherListener getParticipantEnricherListener();
 
 }

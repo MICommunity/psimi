@@ -12,7 +12,7 @@ import uk.ac.ebi.webservices.chebi.*;
 
 
 /**
- * Created with IntelliJ IDEA.
+ * Accesses Chebi entries using the WSDL SOAP service.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
@@ -29,6 +29,10 @@ public class ChebiFetcher
     }
 
     /**
+     * Searches Chebi for an entry matching the identifier.
+     * If it's found, the record is used to create a bioactiveEntity with:
+     * ChebiAsciiName = Full name, Short name
+     * with Inchi, InchiKey, Smile, ChebiId matched to the corresponding fields.
      *
      * @param identifier    The identifier of the CHEBI entry to find.
      * @return              A completed bioactiveEntity for the given identifier. May be null.
@@ -40,42 +44,36 @@ public class ChebiFetcher
         BioactiveEntity bioactiveEntity;
         try {
             Entity entity = client.getChebiWebServicePort().getCompleteEntity(identifier);
-
             if(entity == null) return null;
 
-            //log.info("bioactiveEntity.setFullName() : "+entity.getChebiAsciiName() );
-            bioactiveEntity = new DefaultBioactiveEntity( entity.getChebiAsciiName() );
-            bioactiveEntity.setFullName( entity.getChebiAsciiName() );
-
-            //log.info("bioactiveEntity.setChebi() : "+entity.getChebiId());
+            // Short name / Full name
+            bioactiveEntity = new DefaultBioactiveEntity(
+                    entity.getChebiAsciiName(), entity.getChebiAsciiName() );
+            // Chebi ID
             bioactiveEntity.setChebi( entity.getChebiId() );
-
-            //log.info("bioactiveEntity.setSmile() : "+entity.getSmiles() );
+            // Smile
             bioactiveEntity.setSmile( entity.getSmiles() );
-
-            //log.info( "bioactiveEntity.setStandardInchi() : "+entity.getInchi() );
+            // Inchi code
             bioactiveEntity.setStandardInchi( entity.getInchi() );
-
-            //log.info( "bioactiveEntity.setStandardInchiKey() : "+entity.getInchiKey() );
+            // Inchi Key
             bioactiveEntity.setStandardInchiKey( entity.getInchiKey() );
 
-            //entity.getSecondaryChEBIIds()
 
-
-            //log.info( "bioactiveEntity?");
-            //log.info( entity.getSynonyms().toString() );
-
-            /*System.out.println("GetName: " + entity.getChebiAsciiName());
-            List<DataItem> synonyms = entity.getSynonyms();
-            // List all synonyms
-            for ( DataItem dataItem : synonyms ) {
-                System.out.println("synonyms: " + dataItem.getData());
+            /* //UNUSED FIELDS
+            log.info("stat: "+entity.getStatus());
+            for(DataItem syn : entity.getDatabaseLinks()){
+                log.info("LIN: "+syn.getData());
+            }
+            for(DataItem syn : entity.getSynonyms()){
+                log.info("SYN: "+syn.getData());
+            }
+            for(String sec : entity.getSecondaryChEBIIds()){
+                log.info("SEC: "+sec);
             }*/
 
         } catch ( ChebiWebServiceFault_Exception e ) {
             throw new BridgeFailedException(e);
         }
-
         return bioactiveEntity;
     }
 }
