@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.listener;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.BioactiveEntity;
 
 
 /**

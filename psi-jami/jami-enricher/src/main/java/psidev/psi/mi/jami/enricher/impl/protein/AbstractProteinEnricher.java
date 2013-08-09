@@ -19,7 +19,7 @@ import java.util.Collection;
 
 /**
  * The Protein enricher is an enricher which can enrich either single protein or a collection.
- * The Protein enricher has one subEnrichers. A protein enricher must be initiated with a protein fetcher.
+ * The Protein enricher has one subEnricher. A protein enricher must be initiated with a protein fetcher.
  *
  * If the protein fetcher also fetches an organism, and the organism fetcher is a mockOrganism fetcher,
  * then the organism from the fetched protein is set in the mock organism fetcher.
