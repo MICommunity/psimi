@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.bridges.ensembl;
 
-
-
+import net.sf.json.*;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
@@ -9,14 +9,12 @@ import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.impl.DefaultGene;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.Reader;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,112 +25,115 @@ import java.io.Reader;
 public class EnsemblFetcher
         implements GeneFetcher {
 
-
     protected static final Logger log = LoggerFactory.getLogger(EnsemblFetcher.class.getName());
 
-
-    private final String server = "http://beta.rest.ensembl.org";
-
-    public Gene getGeneByIdentifier(String identifier) throws BridgeFailedException {
-        Gene fetchedGene = new DefaultGene(identifier);
-
-        return null;
+    public Gene getGeneByIdentifierOfUnknownType(String identifier) throws BridgeFailedException {
+        Gene gene = getGeneByEnsemblIdentifier(identifier);
+        if(gene == null)
+            gene = getGeneByEnsemblGenomesIdentifier(identifier);
+        return gene;
     }
 
-
-
-    public void testA(String identifier) throws Exception {
+    public Gene getGeneByEnsemblIdentifier(String identifier) throws BridgeFailedException {
         String server = "http://beta.rest.ensembl.org";
-        String ext = "/xrefs/id/"+identifier+"?";
-        URL url = new URL(server + ext);
-
-        URLConnection connection = url.openConnection();
-        HttpURLConnection httpConnection = (HttpURLConnection)connection;
-        connection.setRequestProperty("Content-Type", "application/json");
-
-        InputStream response = connection.getInputStream();
-        int responseCode = httpConnection.getResponseCode();
-
-        if(responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was "+responseCode);
-        }
-
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        }
-        finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-
-        System.out.println(output);
+        Gene gene = new DefaultGene(identifier);
+        gene.setEnsembl(identifier);
+        gene = fetchID(identifier , gene , server);
+        if(gene == null) return null;
+        gene = fetchXrefs(identifier , gene , server);
+        return gene;
     }
 
-    //ENSG00000157764
-
-    public Gene testB(Gene geneFetched , String identifier) throws Exception {
-        String queryType = "/lookup/id/";
-        URL url = new URL(server + queryType + identifier);
-
-        URLConnection connection = url.openConnection();
-        HttpURLConnection httpConnection = (HttpURLConnection)connection;
-        connection.setRequestProperty("format","full");
-        connection.setRequestProperty("Content-Type", "application/json");
-
-        //log.info(connection.getURL().toString());
-
-        InputStream response = connection.getInputStream();
-        int responseCode = httpConnection.getResponseCode();
-
-        if(responseCode != 200) {
-            String cause;
-            if(responseCode == 400) return null; //Entry could not be found
-            else if(responseCode == 404)    cause = "Malformed Request";
-            else if(responseCode == 429)	cause = "Too Many Requests";
-            else if(responseCode == 503)	cause = "Service Unavailable";
-            else cause = "unknown";
-            throw new RuntimeException("Bad response code "+responseCode+", cause is "+cause+".");
-        }
-
-        String output;
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-
-            log.info(reader.readLine());
-            //output = reader.readLine();
-
-
-
-            /*StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();  */
-        }
-        finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-        return null;
-        //System.out.println(output);
+    public Gene getGeneByEnsemblGenomesIdentifier(String identifier) throws BridgeFailedException {
+        String server = "http://beta.rest.ensemblgenomes.org/";
+        Gene gene = new DefaultGene(identifier);
+        gene.setEnsemblGenome(identifier);
+        gene = fetchID(identifier , gene , server);
+        if(gene == null) return null;
+        gene = fetchXrefs(identifier , gene , server);
+        return gene;
     }
 
+
+    private Gene fetchID(String identifier , Gene geneFetched , String server) throws BridgeFailedException {
+        try{
+            String queryType = "/lookup/id/";
+            URL url = new URL(server + queryType + identifier);
+
+            URLConnection connection = url.openConnection();
+            connection.setRequestProperty("format","full");
+            connection.setRequestProperty("Content-Type", "application/json");
+            HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+            int responseCode = httpConnection.getResponseCode();
+
+            if(responseCode != 200) {
+                String cause;
+                if(responseCode == 400) return null; //Entry could not be found
+                else if(responseCode == 404)    cause = "Malformed Request";
+                else if(responseCode == 429)	cause = "Too Many Requests";
+                else if(responseCode == 503)	cause = "Service Unavailable";
+                else cause = "unknown";
+                throw new BridgeFailedException("Bad response code "+responseCode+", cause is "+cause+".");
+            }
+
+            InputStream inputStream = connection.getInputStream();
+
+            String jsonTxt = IOUtils.toString(inputStream);
+            log.info(jsonTxt);
+            JSONObject jsonObj = (JSONObject) JSONSerializer.toJSON( jsonTxt );
+
+            // System.out.println(jsonObj.getString("dbname"));
+            // System.out.println(jsonObj.getString("primary_id"));
+
+        } catch (MalformedURLException e) {
+            throw new BridgeFailedException(e);
+        } catch (IOException e) {
+            throw new BridgeFailedException(e);
+        }
+        return geneFetched;
+    }
+
+    private Gene fetchXrefs(String identifier , Gene geneFetched , String server) throws BridgeFailedException {
+        try{
+            String queryType = "/xrefs/id/";
+            URL url = new URL(server + queryType + identifier);
+
+            URLConnection connection = url.openConnection();
+            connection.setRequestProperty("Content-Type", "application/json");
+            HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+            int responseCode = httpConnection.getResponseCode();
+
+            if(responseCode != 200) {
+                String cause;
+                if(responseCode == 400) return null; //Entry could not be found
+                else if(responseCode == 404)    cause = "Malformed Request";
+                else if(responseCode == 429)	cause = "Too Many Requests";
+                else if(responseCode == 503)	cause = "Service Unavailable";
+                else cause = "unknown";
+                throw new BridgeFailedException("Bad response code "+responseCode+", cause is "+cause+".");
+            }
+
+            InputStream inputStream = connection.getInputStream();
+
+            String jsonTxt = IOUtils.toString(inputStream);
+            log.info(jsonTxt);
+            JSONArray json = (JSONArray) JSONSerializer.toJSON( jsonTxt );
+
+
+            for(Object obj : json){
+                JSONObject JSONobj = (JSONObject)obj;
+                if(JSONobj.getString("dbname").equalsIgnoreCase("EntrezGene"))
+                    geneFetched.setEntrezGeneId(JSONobj.getString("primary_id"));
+                else if(JSONobj.getString("dbname").equalsIgnoreCase("Refseq"))
+                    geneFetched.setRefseq(JSONobj.getString("primary_id"));
+            }
+        } catch (MalformedURLException e) {
+            throw new BridgeFailedException(e);
+        } catch (IOException e) {
+            throw new BridgeFailedException(e);
+        }
+        return geneFetched;
+    }
 }

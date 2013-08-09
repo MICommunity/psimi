@@ -14,9 +14,11 @@ public class EnsemblFetcherTest {
     @Test
     public void tests() throws Exception {
         EnsemblFetcher fetcher = new EnsemblFetcher();
-                 //ENSG00000157764
-        //fetcher.testA("ENSG00000157764");
-        fetcher.testB(null, "ENSG00000157764");
+
+        fetcher.getGeneByIdentifierOfUnknownType("ENSG00000139618");
+        fetcher.getGeneByIdentifierOfUnknownType("ENSG00000172115");
+        fetcher.getGeneByIdentifierOfUnknownType("ENSG00000157764");
+        fetcher.getGeneByIdentifierOfUnknownType("AT3G52430");
 
     }
 
