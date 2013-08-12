@@ -27,7 +27,7 @@ public abstract class AbstractBioactiveEntityEnricher
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractBioactiveEntityEnricher.class.getName());
 
-    public final int RETRY_COUNT = 5;
+    public static final int RETRY_COUNT = 5;
     private BioactiveEntityFetcher fetcher = null;
     private BioactiveEntityEnricherListener listener = null;
     protected BioactiveEntity bioactiveEntityFetched = null;
