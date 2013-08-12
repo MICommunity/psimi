@@ -16,7 +16,7 @@ public class ExceptionThrowingMockBioactiveEntityFetcher
         implements BioactiveEntityFetcher {
 
 
-    protected ExceptionThrowingMockBioactiveEntityFetcher(int maxQuery) {
+    public ExceptionThrowingMockBioactiveEntityFetcher(int maxQuery) {
         super(maxQuery);
     }
 
