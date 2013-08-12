@@ -38,50 +38,55 @@ public class MinimumBioactiveEntityUpdater
         // SHORT NAME
         if(bioactiveEntityFetched.getShortName() != null
                 && ! bioactiveEntityFetched.getShortName().equalsIgnoreCase(bioactiveEntityToEnrich.getShortName())){
+            String oldValue = bioactiveEntityToEnrich.getShortName();
             bioactiveEntityToEnrich.setShortName(bioactiveEntityFetched.getShortName());
             if(getBioactiveEntityEnricherListener() != null)
-                getBioactiveEntityEnricherListener().onFullNameUpdate(bioactiveEntityToEnrich , null);
+                getBioactiveEntityEnricherListener().onShortNameUpdate(bioactiveEntityToEnrich , oldValue);
         }
 
         // FULL NAME
         if(bioactiveEntityFetched.getFullName() != null
                 && ! bioactiveEntityFetched.getFullName().equalsIgnoreCase(bioactiveEntityToEnrich.getFullName())){
+            String oldValue = bioactiveEntityToEnrich.getFullName();
             bioactiveEntityToEnrich.setFullName(bioactiveEntityFetched.getFullName());
             if(getBioactiveEntityEnricherListener() != null)
-                getBioactiveEntityEnricherListener().onFullNameUpdate(bioactiveEntityToEnrich , null);
+                getBioactiveEntityEnricherListener().onFullNameUpdate(bioactiveEntityToEnrich , oldValue);
         }
 
         // CHEBI IDENTIFIER
         if(bioactiveEntityFetched.getChebi() != null
                 && ! bioactiveEntityFetched.getChebi().equalsIgnoreCase(bioactiveEntityToEnrich.getChebi())){
+            String oldValue = bioactiveEntityToEnrich.getChebi();
             bioactiveEntityToEnrich.setChebi(bioactiveEntityFetched.getChebi());
             if(getBioactiveEntityEnricherListener() != null)
-                getBioactiveEntityEnricherListener().onChebiUpdate(bioactiveEntityToEnrich , null);
+                getBioactiveEntityEnricherListener().onChebiUpdate(bioactiveEntityToEnrich , oldValue);
         }
 
         // INCHI Code
         if( bioactiveEntityFetched.getStandardInchi() != null
                 && ! bioactiveEntityFetched.getStandardInchi().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchi())){
-
+            String oldValue = bioactiveEntityToEnrich.getStandardInchi();
             bioactiveEntityToEnrich.setStandardInchi(bioactiveEntityFetched.getStandardInchi());
             if(getBioactiveEntityEnricherListener() != null)
-                getBioactiveEntityEnricherListener().onStandardInchiUpdate(bioactiveEntityToEnrich , null);
+                getBioactiveEntityEnricherListener().onStandardInchiUpdate(bioactiveEntityToEnrich , oldValue);
         }
 
         // INCHI KEY
         if(bioactiveEntityFetched.getStandardInchiKey() != null
                 && ! bioactiveEntityFetched.getStandardInchiKey().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchiKey())){
+            String oldValue = bioactiveEntityToEnrich.getStandardInchiKey();
             bioactiveEntityToEnrich.setStandardInchiKey(bioactiveEntityFetched.getStandardInchiKey());
             if(getBioactiveEntityEnricherListener() != null)
-                getBioactiveEntityEnricherListener().onStandardInchiKeyUpdate(bioactiveEntityToEnrich , null);
+                getBioactiveEntityEnricherListener().onStandardInchiKeyUpdate(bioactiveEntityToEnrich , oldValue);
         }
 
         // SMILE
         if(bioactiveEntityFetched.getSmile() != null
                 && ! bioactiveEntityFetched.getSmile().equalsIgnoreCase(bioactiveEntityToEnrich.getSmile())){
+            String oldValue = bioactiveEntityToEnrich.getSmile();
             bioactiveEntityToEnrich.setSmile(bioactiveEntityFetched.getSmile());
             if(getBioactiveEntityEnricherListener() != null)
-                getBioactiveEntityEnricherListener().onSmileUpdate(bioactiveEntityToEnrich , null);
+                getBioactiveEntityEnricherListener().onSmileUpdate(bioactiveEntityToEnrich , oldValue);
         }
     }
 }
