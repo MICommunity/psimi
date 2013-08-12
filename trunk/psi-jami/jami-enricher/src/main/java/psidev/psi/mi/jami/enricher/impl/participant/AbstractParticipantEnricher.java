@@ -73,8 +73,8 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
                 }
             }
         }
-        if(interactorType.getMIIdentifier().equalsIgnoreCase(BioactiveEntity.BIOACTIVE_ENTITY_MI)
-                || interactorType.getShortName().equalsIgnoreCase(BioactiveEntity.BIOACTIVE_ENTITY)){
+        if( interactorType.getMIIdentifier().equalsIgnoreCase(BioactiveEntity.BIOACTIVE_ENTITY_MI)
+                || interactorType.getShortName().equalsIgnoreCase(BioactiveEntity.BIOACTIVE_ENTITY )){
             if(getBioactiveEntityEnricher() != null){
                 if(participantToEnrich.getInteractor() instanceof BioactiveEntity){
                     getBioactiveEntityEnricher().enrichBioactiveEntity(
@@ -84,7 +84,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
                             EnrichmentStatus.FAILED,
                             "Found interactor of type "+interactorType.getShortName()+
                                     " ("+interactorType.getMIIdentifier()+") "+
-                                    "but was not an instance of 'Protein', " +
+                                    "but was not an instance of 'BioactiveEntity', " +
                                     "was "+participantToEnrich.getInteractor().getClass()+" instead.");
                     return;
                 }
