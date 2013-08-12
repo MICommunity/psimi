@@ -4,16 +4,20 @@ import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.bioactiveentity.ExceptionThrowingMockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.bioactiveentity.MockBioactiveEntityFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.bioactiveentity.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.bioactiveentity.BioactiveEntityEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.bioactiveentity.BioactiveEntityEnricherLogger;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.BioactiveEntity;
-import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 
 /**
@@ -31,6 +35,7 @@ public class MinimumBioactiveEntityUpdaterTest {
     BioactiveEntityEnricher enricher;
     MockBioactiveEntityFetcher fetcher;
     BioactiveEntity persistentBioactiveEntity;
+    int persistentInt = 0;
 
     @Before
     public void setUp(){
@@ -38,6 +43,7 @@ public class MinimumBioactiveEntityUpdaterTest {
         enricher = new MinimumBioactiveEntityUpdater(fetcher);
 
         persistentBioactiveEntity = null;
+        persistentInt = 0;
     }
 
 
@@ -47,7 +53,7 @@ public class MinimumBioactiveEntityUpdaterTest {
     /**
      * Creates a scenario where the fetcher always throws a bridge failure exception.
      * Shows that the query does not repeat infinitely.
-     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
+     * @throws EnricherException
      */
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
@@ -122,4 +128,46 @@ public class MinimumBioactiveEntityUpdaterTest {
         enricher.enrichBioactiveEntity(bioactiveEntity);
         fail("Exception should be thrown before this point");
     }
+
+
+    @Test
+    public void test_enrichment_completes_as_failed_when_no_entry_fetched() throws EnricherException {
+
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME , TEST_FULLNAME);
+        fetcher.clearEntries();
+
+        enricher.setBioactiveEntityEnricherListener( new BioactiveEntityEnricherListenerManager(
+                new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.FAILED , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(1, persistentInt);
+
+    }
+
+
 }

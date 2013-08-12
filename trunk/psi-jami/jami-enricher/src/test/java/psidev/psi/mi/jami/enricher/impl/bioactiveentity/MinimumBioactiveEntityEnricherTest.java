@@ -30,6 +30,8 @@ public class MinimumBioactiveEntityEnricherTest {
     String CHEBI_ID = "TEST_ID";
     String TEST_FULLNAME = "fullName";
     String TEST_SHORTNAME = "shortName";
+    String TEST_STRING = "A test term";
+    String OTHER_TEST_STRING = "Something else";
 
     BioactiveEntityEnricher enricher;
     MockBioactiveEntityFetcher fetcher;
@@ -53,7 +55,7 @@ public class MinimumBioactiveEntityEnricherTest {
     /**
      * Creates a scenario where the fetcher always throws a bridge failure exception.
      * Shows that the query does not repeat infinitely.
-     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
+     * @throws EnricherException
      */
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
@@ -129,14 +131,11 @@ public class MinimumBioactiveEntityEnricherTest {
         fail("Exception should be thrown before this point");
     }
 
-    // == ENRICHMENT WITHOUT A FETCHED ENTRY ======================================================
 
     @Test
     public void test_enrichment_completes_as_failed_when_no_entry_fetched() throws EnricherException {
-
         persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME , TEST_FULLNAME);
         fetcher.clearEntries();
-
         enricher.setBioactiveEntityEnricherListener( new BioactiveEntityEnricherListenerManager(
                 new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
@@ -163,14 +162,430 @@ public class MinimumBioactiveEntityEnricherTest {
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
                 }
         ));
-
         enricher.enrichBioactiveEntity(persistentBioactiveEntity);
-
         assertEquals(1, persistentInt);
-
     }
 
 
 
+    // == FULL NAME ==============================================================================================
+
+    @Test
+    public void test_enriching_fullName_from_null_with_entry() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setFullName(TEST_STRING);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {
+                        assertTrue(interactor == persistentBioactiveEntity);
+                        assertNull(oldFullName);
+                        persistentInt ++;
+                    }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(TEST_STRING, persistentBioactiveEntity.getFullName());
+        assertEquals(2 , persistentInt);
+    }
+
+    @Test
+    public void test_no_enriching_fullName_from_null_with_null() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setFullName(null);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertNull(persistentBioactiveEntity.getFullName());
+        assertEquals(1 , persistentInt);
+    }
+
+    @Test
+    public void test_no_enriching_of_not_null_fullName() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+        persistentBioactiveEntity.setFullName(OTHER_TEST_STRING);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setFullName(TEST_STRING);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(OTHER_TEST_STRING , persistentBioactiveEntity.getFullName());
+        assertEquals(1 , persistentInt);
+    }
+
+
+    // == INCHI Key ================================================================================================
+    @Test
+    public void test_enriching_inchiKey_from_null_with_entry() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setStandardInchiKey(TEST_STRING);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey){
+                        assertTrue(bioactiveEntity == persistentBioactiveEntity);
+                        assertNull(oldKey);
+                        persistentInt ++;
+                    }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {fail("failed");}
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
+        assertEquals(2 , persistentInt);
+    }
+
+    @Test
+    public void test_no_enriching_inchiKey_from_null_with_null() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setStandardInchiKey(null);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertNull(persistentBioactiveEntity.getStandardInchiKey());
+        assertEquals(1 , persistentInt);
+    }
+
+    @Test
+    public void test_no_enriching_of_not_null_inchiKey() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+        persistentBioactiveEntity.setStandardInchiKey(OTHER_TEST_STRING);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setStandardInchiKey(TEST_STRING);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(OTHER_TEST_STRING , persistentBioactiveEntity.getStandardInchiKey());
+        assertEquals(1 , persistentInt);
+    }
+
+
+    // == INCHI ================================================================================================
+    @Test
+    public void test_enriching_inchi_from_null_with_entry() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setStandardInchi(TEST_STRING);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){
+                        assertTrue(bioactiveEntity == persistentBioactiveEntity);
+                        assertNull(oldInchi);
+                        persistentInt ++;
+                    }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {fail("failed");}
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
+        assertEquals(2 , persistentInt);
+    }
+
+    @Test
+    public void test_no_enriching_inchi_from_null_with_null() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setStandardInchi(null);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertNull(persistentBioactiveEntity.getStandardInchi());
+        assertEquals(1 , persistentInt);
+    }
+
+    @Test
+    public void test_no_enriching_of_not_null_inchi() throws EnricherException {
+        persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        persistentBioactiveEntity.setChebi(CHEBI_ID);
+        persistentBioactiveEntity.setStandardInchi(OTHER_TEST_STRING);
+
+        BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME);
+        mockBioactiveEntity.setChebi(CHEBI_ID);
+        mockBioactiveEntity.setStandardInchi(TEST_STRING);
+
+        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+
+        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+                // new BioactiveEntityEnricherLogger() ,
+                new BioactiveEntityEnricherListener() {
+                    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentBioactiveEntity);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+                    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
+                    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
+                    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
+                    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
+                    public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
+                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
+                    public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
+                    public void onRemovedXref(BioactiveEntity interactor, Xref removed) { fail("failed"); }
+                    public void onAddedAlias(BioactiveEntity interactor, Alias added){ fail("failed"); }
+                    public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
+                    public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
+                    public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                }
+        ));
+
+        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+
+        assertEquals(OTHER_TEST_STRING , persistentBioactiveEntity.getStandardInchi());
+        assertEquals(1 , persistentInt);
+    }
+
+
+    // == SMILE ===================================================================================================
 
 }
