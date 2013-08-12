@@ -35,6 +35,7 @@ public class MinimumPublicationEnricherTest {
     private MockPublicationFetcher fetcher;
 
     private Publication persistentPublication = null;
+    private int persistentInt = 0;
     private Publication testPub = null;
 
     public String TEST_PUBMED_ID = "010101010";
@@ -45,12 +46,12 @@ public class MinimumPublicationEnricherTest {
     public void setup(){
         fetcher = new MockPublicationFetcher();
         publicationEnricher = new MinimumPublicationEnricher(fetcher);
+        testPub = new DefaultPublication(TEST_PUBMED_ID);
+        fetcher.addEntry(TEST_PUBMED_ID, testPub);
 
         persistentPublication = new DefaultPublication();
+        persistentInt = 0;
 
-        testPub = new DefaultPublication(TEST_PUBMED_ID);
-
-        fetcher.addEntry(TEST_PUBMED_ID, testPub);
     }
 
 
@@ -106,38 +107,6 @@ public class MinimumPublicationEnricherTest {
         fail("Exception should be thrown before this point");
     }
 
-    @Test
-    public void test_failure_when_ID_is_missing() throws EnricherException {
-        persistentPublication.setPubmedId(null);
-
-        publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
-                new PublicationEnricherLogger(),
-                new PublicationEnricherListener() {
-                    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
-                        assertTrue(publication == persistentPublication);
-                        assertEquals(EnrichmentStatus.FAILED, status);
-                    }
-
-                    public void onPubmedIdUpdate(Publication publication, String oldPubmedId) {fail("fail");}
-                    public void onDoiUpdate(Publication publication, String oldDoi)  {fail("fail");}
-                    public void onIdentifierAdded(Publication publication, Xref addedXref)  {fail("fail");}
-                    public void onIdentifierRemoved(Publication publication, Xref removedXref)  {fail("fail");}
-                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)  {fail("fail");}
-                    public void onTitleUpdated(Publication publication, String oldTitle)  {fail("fail");}
-                    public void onJournalUpdated(Publication publication, String oldJournal)  {fail("fail");}
-                    public void onPublicationDateUpdated(Publication publication, Date oldDate) {fail("fail");}
-                    public void onAuthorAdded(Publication publication, String addedAuthor)  {fail("fail");}
-                    public void onAuthorRemoved(Publication publication, String removedAuthor) {fail("fail");}
-                    public void onXrefAdded(Publication publication, Xref addedXref)  {fail("fail");}
-                    public void onXrefRemoved(Publication publication, Xref removedXref)  {fail("fail");}
-                    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {fail("fail");}
-                    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved)  {fail("fail");}
-                    public void onReleaseDateUpdated(Publication publication, Date oldDate) {fail("fail");}
-                }
-        ));
-        publicationEnricher.enrichPublication(persistentPublication);
-    }
-
     @Test  (expected = IllegalStateException.class)
     public void test_failure_when_fetcher_is_missing() throws EnricherException {
         persistentPublication = new DefaultPublication(TEST_PUBMED_ID);
@@ -147,8 +116,7 @@ public class MinimumPublicationEnricherTest {
                 new PublicationEnricherLogger() ,
                 new PublicationEnricherListener() {
                     public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
-                        assertTrue(publication == persistentPublication);
-                        assertEquals(EnrichmentStatus.FAILED , status);
+                        fail();
                     }
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
@@ -171,6 +139,41 @@ public class MinimumPublicationEnricherTest {
         publicationEnricher.setPublicationFetcher(null);
 
         publicationEnricher.enrichPublication(persistentPublication);
+    }
+
+    @Test
+    public void test_enrichment_completes_with_failed_when_ID_is_missing() throws EnricherException {
+        persistentPublication.setPubmedId(null);
+
+        publicationEnricher.setPublicationEnricherListener(new PublicationEnricherListenerManager(
+                new PublicationEnricherLogger(),
+                new PublicationEnricherListener() {
+                    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
+                        assertTrue(publication == persistentPublication);
+                        assertEquals(EnrichmentStatus.FAILED, status);
+                        persistentInt ++;
+                    }
+
+                    public void onPubmedIdUpdate(Publication publication, String oldPubmedId) {fail("fail");}
+                    public void onDoiUpdate(Publication publication, String oldDoi)  {fail("fail");}
+                    public void onIdentifierAdded(Publication publication, Xref addedXref)  {fail("fail");}
+                    public void onIdentifierRemoved(Publication publication, Xref removedXref)  {fail("fail");}
+                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)  {fail("fail");}
+                    public void onTitleUpdated(Publication publication, String oldTitle)  {fail("fail");}
+                    public void onJournalUpdated(Publication publication, String oldJournal)  {fail("fail");}
+                    public void onPublicationDateUpdated(Publication publication, Date oldDate) {fail("fail");}
+                    public void onAuthorAdded(Publication publication, String addedAuthor)  {fail("fail");}
+                    public void onAuthorRemoved(Publication publication, String removedAuthor) {fail("fail");}
+                    public void onXrefAdded(Publication publication, Xref addedXref)  {fail("fail");}
+                    public void onXrefRemoved(Publication publication, Xref removedXref)  {fail("fail");}
+                    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {fail("fail");}
+                    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved)  {fail("fail");}
+                    public void onReleaseDateUpdated(Publication publication, Date oldDate) {fail("fail");}
+                }
+        ));
+        publicationEnricher.enrichPublication(persistentPublication);
+
+        assertEquals(1 , persistentInt);
     }
 
 

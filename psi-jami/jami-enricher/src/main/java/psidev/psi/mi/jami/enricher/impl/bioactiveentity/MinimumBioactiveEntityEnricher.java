@@ -29,7 +29,8 @@ public class MinimumBioactiveEntityEnricher
     @Override
     protected void processBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich) {
 
-        // bioactiveEntityToEnrich.getShortName();
+        // SHORT NAME is never null
+
         //bioactiveEntityToEnrich.getInteractorType();
         //bioactiveEntityToEnrich.getOrganism();
         //bioactiveEntityToEnrich.getAliases();

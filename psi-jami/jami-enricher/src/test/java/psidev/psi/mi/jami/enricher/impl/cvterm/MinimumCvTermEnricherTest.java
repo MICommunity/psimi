@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherLogger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +55,7 @@ public class MinimumCvTermEnricherTest {
     private String identifierRemovedKey = "IdentifierRemoved";
 
     private CvTerm persistentCvTerm;
+    private int persistentInt;
 
 
 
@@ -74,6 +78,7 @@ public class MinimumCvTermEnricherTest {
 
         reportForEnrichment.clear();
         persistentCvTerm = null;
+        persistentInt = 0;
     }
 
 
@@ -150,6 +155,38 @@ public class MinimumCvTermEnricherTest {
         assertNull(cvTermEnricher.getCvTermFetcher());
         cvTermEnricher.enrichCvTerm(cvTerm);
         fail("Exception should be thrown before this point");
+    }
+
+
+    @Test
+    public void test_enrichment_completes_as_failed_when_no_entry_fetched() throws EnricherException {
+        persistentCvTerm = new DefaultCvTerm(short_name);
+
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListenerManager(
+                new CvTermEnricherLogger(),
+                new CvTermEnricherListener() {
+                    public void onEnrichmentComplete(CvTerm object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentCvTerm);
+                        assertEquals(EnrichmentStatus.FAILED , status);
+                        persistentInt ++;
+                    }
+                    public void onShortNameUpdate(CvTerm cv, String oldShortName)  {fail("fail");}
+                    public void onFullNameUpdate(CvTerm cv, String oldFullName) {fail("fail");}
+                    public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail("fail");}
+                    public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {fail("fail");}
+                    public void onPARIdentifierUpdate(CvTerm cv, String oldPAR)  {fail("fail");}
+                    public void onAddedIdentifier(CvTerm cv, Xref added)  {fail("fail");}
+                    public void onRemovedIdentifier(CvTerm cv, Xref removed) {fail("fail");}
+                    public void onAddedXref(CvTerm cv, Xref added)  {fail("fail");}
+                    public void onRemovedXref(CvTerm cv, Xref removed)  {fail("fail");}
+                    public void onAddedSynonym(CvTerm cv, Alias added)  {fail("fail");}
+                    public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail("fail");}
+                }
+        ));
+
+        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+
+        assertEquals(1 , persistentInt);
     }
 
     // == TEST ALL FIELDS ==========================
