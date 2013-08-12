@@ -90,26 +90,30 @@ public abstract class AbstractBioactiveEntityEnricher
         if(getBioactiveEntityFetcher() == null)
             throw new IllegalStateException("Can not fetch with null fetcher");
 
-        BioactiveEntity fetchedBioactiveEntity;
+        BioactiveEntity fetchedBioactiveEntity = null;
 
-        try {
-            fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
-                    bioactiveEntityToEnrich.getChebi());
-            if(fetchedBioactiveEntity != null) return fetchedBioactiveEntity;
-        } catch (BridgeFailedException e) {
-            int index = 0;
-            while(index < RETRY_COUNT){
-                try {
-                    fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
-                            bioactiveEntityToEnrich.getChebi());
-                    if(fetchedBioactiveEntity != null) return fetchedBioactiveEntity;
-                } catch (BridgeFailedException ee) {
-                    ee.printStackTrace();
+        if(bioactiveEntityToEnrich.getChebi() != null){
+            try {
+                fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
+                        bioactiveEntityToEnrich.getChebi());
+                if(fetchedBioactiveEntity != null) return fetchedBioactiveEntity;
+            } catch (BridgeFailedException e) {
+                int index = 0;
+                while(index < RETRY_COUNT){
+                    try {
+                        fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
+                                bioactiveEntityToEnrich.getChebi());
+                        if(fetchedBioactiveEntity != null) return fetchedBioactiveEntity;
+                    } catch (BridgeFailedException ee) {
+                        ee.printStackTrace();
+                    }
+                    index++;
                 }
-                index++;
+                throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
             }
-            throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
         }
+
+
         return fetchedBioactiveEntity;
     }
 
