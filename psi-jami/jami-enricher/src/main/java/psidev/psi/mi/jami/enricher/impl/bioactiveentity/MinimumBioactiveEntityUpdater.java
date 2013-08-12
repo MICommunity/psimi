@@ -35,7 +35,7 @@ public class MinimumBioactiveEntityUpdater
         // bioactiveEntityToEnrich.getXrefs();
 
 
-        // FULL NAME
+        // SHORT NAME
         if(bioactiveEntityFetched.getShortName() != null
                 && ! bioactiveEntityFetched.getShortName().equalsIgnoreCase(bioactiveEntityToEnrich.getShortName())){
             bioactiveEntityToEnrich.setShortName(bioactiveEntityFetched.getShortName());

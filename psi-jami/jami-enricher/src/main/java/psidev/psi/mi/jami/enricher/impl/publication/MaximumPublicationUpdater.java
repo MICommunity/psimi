@@ -65,7 +65,7 @@ public class MaximumPublicationUpdater
                 getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
         }
 
-        // PUBLICATION DATE
+        // == PUBLICATION DATE =====================================================
         if(publicationToEnrich.getPublicationDate().equals( publicationFetched.getPublicationDate() )
                 && publicationFetched.getPublicationDate() != null) {
             Date oldValue = publicationToEnrich.getPublicationDate();
@@ -75,9 +75,8 @@ public class MaximumPublicationUpdater
         }
 
 
-        /**
-         * XREFS
-         */
+        // == XREFS =================================================================
+
         if(!publicationFetched.getXrefs().isEmpty()){
             XrefMerger xrefMerger = new XrefMerger();
             xrefMerger.merge(publicationFetched.getXrefs() , publicationToEnrich.getXrefs() , false);

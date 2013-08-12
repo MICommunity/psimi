@@ -124,6 +124,7 @@ public class EnsemblFetcher
 
             for(Object obj : json){
                 JSONObject JSONobj = (JSONObject)obj;
+                // log.info("db: "+JSONobj.getString("dbname"));
                 if(JSONobj.getString("dbname").equalsIgnoreCase("EntrezGene"))
                     geneFetched.setEntrezGeneId(JSONobj.getString("primary_id"));
                 else if(JSONobj.getString("dbname").equalsIgnoreCase("Refseq"))
