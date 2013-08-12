@@ -76,7 +76,8 @@ public class CachedEuroPubmedCentralFetcher
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
         if( log.isDebugEnabled() ) log.debug( "Loading EHCache configuration: " + url );
-        cacheManager = new CacheManager( url );
+        cacheManager =  CacheManager.create( url );
+        cacheManager.addCache( CACHE_NAME );
         this.cache = cacheManager.getCache( CACHE_NAME );
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }

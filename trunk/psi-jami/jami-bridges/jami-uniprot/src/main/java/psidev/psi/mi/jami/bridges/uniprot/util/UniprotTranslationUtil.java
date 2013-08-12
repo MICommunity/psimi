@@ -192,7 +192,7 @@ public class UniprotTranslationUtil {
             //TODO add an MI term if one is created
             Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
             p.getChecksums().add(crc64Checksum);
-
+            /*
             if(p.getOrganism() != null
                     && p.getOrganism().getTaxId() != -3){
                 try {
@@ -205,10 +205,10 @@ public class UniprotTranslationUtil {
 
                 } catch (SeguidException exception) {
                     throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher." ,
-                            exception);
+                            "Error was encountered whilst generating RogID in protein fetcher. "+
+                                    exception.toString());
                 }
-            }
+            }  */
         }
 
         return p;
@@ -293,6 +293,7 @@ public class UniprotTranslationUtil {
             Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
             p.getChecksums().add(crc64Checksum);
 
+            /*
             if(p.getOrganism() != null
                     && p.getOrganism().getTaxId() != -3){
                 try {
@@ -305,10 +306,10 @@ public class UniprotTranslationUtil {
 
                 } catch (SeguidException exception) {
                     throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher." ,
-                            exception);
+                            "Error was encountered whilst generating RogID in protein fetcher. "+
+                                    exception.toString());
                 }
-            }
+            }  */
         }
 
         // ALIASES - gene name, gene name synonyms, orf, locus
@@ -455,7 +456,7 @@ public class UniprotTranslationUtil {
             //TODO add an MI term if one is created
             Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
             p.getChecksums().add(crc64Checksum);
-
+             /*
             if(p.getOrganism() != null
                     && p.getOrganism().getTaxId() != -3){
                 try {
@@ -468,10 +469,10 @@ public class UniprotTranslationUtil {
 
                 } catch (SeguidException exception) {
                     throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher." ,
-                            exception);
+                            "Error was encountered whilst generating RogID in protein fetcher. "
+                                    +exception.toString());
                 }
-            }
+            }  */
         }
 
         // ALIASES - gene name, gene name synonyms, orf, locus
