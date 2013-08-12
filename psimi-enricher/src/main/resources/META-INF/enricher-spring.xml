@@ -11,9 +11,9 @@
 
     <context:component-scan base-package="psidev.psi.mi.enricher" />
 
-    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations" value="classpath*:/enricher.properties"/>
-    </bean>-->
+    </bean>
 
     <!-- Initialize the datasource -->
     <bean id="dataSourceInitializer" class="psidev.psi.mi.enricher.batch.BatchDataSourceInitializer">
@@ -69,17 +69,17 @@
     <!-- listeners -->
     <bean id="chunkLoggerListener" class="psidev.psi.mi.enricher.batch.ChunkLoggerListener"/>
 
-    <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${cvTerm.sucess.logFile}"/>
+    <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${cvTerm.success.logFile}"/>
         <constructor-arg index="1" value="${cvTerm.failure.logFile}"/>
     </bean>
 
-    <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${protein.sucess.logFile}"/>
+    <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${protein.success.logFile}"/>
         <constructor-arg index="1" value="${protein.failure.logFile}"/>
     </bean>
 
-    <bean id="proteinListenerManager" class="psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager">
+    <bean id="proteinListenerManager" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager">
         <constructor-arg>
             <list>
                 <ref bean="proteinListener"/>
@@ -88,36 +88,36 @@
         </constructor-arg>
     </bean>
 
-    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${organism.sucess.logFile}"/>
+    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${organism.success.logFile}"/>
         <constructor-arg index="1" value="${organism.failure.logFile}"/>
     </bean>
     <bean id="proteinRemapperListener" class="psidev.psi.mi.jami.bridges.remapper.listener.ProteinRemapperStatisticsWriter">
-        <constructor-arg value="${remap.sucess.logFile}"/>
+        <constructor-arg value="${remap.success.logFile}"/>
     </bean>
 
-    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.impl.feature.listener.FeatureEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${feature.sucess.logFile}"/>
+    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${feature.success.logFile}"/>
         <constructor-arg index="1" value="${feature.failure.logFile}"/>
     </bean>
 
-    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.impl.participant.listener.ParticipantEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${participant.sucess.logFile}"/>
+    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.listener.participant.ParticipantEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participant.success.logFile}"/>
         <constructor-arg index="1" value="${participant.failure.logFile}"/>
     </bean>
 
-    <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.impl.interaction.listener.InteractionEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${interaction.sucess.logFile}"/>
+    <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${interaction.success.logFile}"/>
         <constructor-arg index="1" value="${interaction.failure.logFile}"/>
     </bean>
 
-    <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.impl.experiment.listener.ExperimentEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${experiment.sucess.logFile}"/>
+    <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.listener.experiment.ExperimentEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${experiment.success.logFile}"/>
         <constructor-arg index="1" value="${experiment.failure.logFile}"/>
     </bean>
 
-    <bean id="publicationListener" class="psidev.psi.mi.jami.enricher.impl.publication.listener.PublicationEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${publication.sucess.logFile}"/>
+    <bean id="publicationListener" class="psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${publication.success.logFile}"/>
         <constructor-arg index="1" value="${publication.failure.logFile}"/>
     </bean>
 
@@ -183,7 +183,7 @@
     </bean>
 
     <bean id="interactionEnricher" class="psidev.psi.mi.jami.enricher.impl.interaction.MaximumInteractionEvidenceEnricher">
-        <property name="experimentEnricher" ref="experimentEnricher"/> -->
+        <property name="experimentEnricher" ref="experimentEnricher"/>
         <property name="cvTermEnricher" ref="cvTermEnricher"/>
         <property name="participantEnricher" ref="participantEnricher"/>
         <property name="interactionEnricherListener" ref="interactionListener"/>
@@ -194,23 +194,29 @@
         <property name="interactionEnricher" ref="interactionEnricher"/>
     </bean>
 
-   <!-- interaction writer -->
+    <!-- interaction writer -->
+
+    <bean id="miFileOutput" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg value="${interaction.output}"/>
+    </bean>
+
     <bean id="interactionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
         <property name="writerOptions">
             <map>
                 <entry key="mitab_header_key" value="true" />
                 <entry key="mitab_extended_key" value="false" />
-                <entry key="mitab_version_key" >
-                    <bean class="psidev.psi.mi.jami.tab.MitabVersion">
+                <entry key="mitab_version_key" value="psidev.psi.mi.jami.tab.MitabVersion.42">
+                    <!--<bean class="psidev.psi.mi.jami.tab.MitabVersion">
                         <constructor-arg value="42"/>
-                    </bean>
+                    </bean> -->
                 </entry>
             </map>
         </property>
+        <property name="output" ref="miFileOutput"/>
     </bean>
-    public static final String MITAB_VERSION_OPTION = "mitab_version_key";
+    <!-- public static final String MITAB_VERSION_OPTION = "mitab_version_key";
     public static final String MITAB_HEADER_OPTION = "mitab_header_key";
-    public static final String MITAB_EXTENDED_OPTION = "mitab_extended_key";
+    public static final String MITAB_EXTENDED_OPTION = "mitab_extended_key";-->
 
     <bean id="xmlInteractionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
         <property name="writerOptions">
@@ -219,16 +225,15 @@
     </bean>
 
     <!-- Basic Step configuration -->
-    <bean id="batchStep"
-          class="org.springframework.batch.core.step.item.SimpleStepFactoryBean"
-          abstract="true">
+    <bean id="batchStep" abstract="true"
+          class="org.springframework.batch.core.step.item.SimpleStepFactoryBean">
         <property name="transactionManager" ref="batchTransactionManager"/>
         <property name="jobRepository" ref="jobRepository"/>
         <property name="startLimit" value="5"/>
         <property name="commitInterval" value="50"/>
     </bean>
 
-    <bean id="batchJob" class="org.springframework.batch.core.job.SimpleJob" abstract="true">
+    <bean id="batchJob" abstract="true" class="org.springframework.batch.core.job.SimpleJob">
         <property name="jobRepository" ref="jobRepository"/>
     </bean>
 
