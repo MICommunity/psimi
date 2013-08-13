@@ -85,4 +85,9 @@ public interface ProteinEnricher {
      * @return  The current remapper.
      */
     public ProteinRemapper getProteinRemapper();
+
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+
+    public CvTermEnricher getCvTermEnricher();
 }

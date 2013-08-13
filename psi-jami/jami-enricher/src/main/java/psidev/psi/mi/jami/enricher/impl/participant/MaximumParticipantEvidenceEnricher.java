@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 28/06/13
  */
 public class MaximumParticipantEvidenceEnricher
-        extends MaximumParticipantEnricher<ParticipantEvidence , FeatureEvidence>
+        extends MinimumParticipantEvidenceEnricher
         implements ParticipantEvidenceEnricher {
 
     @Override
@@ -24,19 +24,9 @@ public class MaximumParticipantEvidenceEnricher
         super.processParticipant(participantEvidenceToEnrich);
 
         if(getCvTermEnricher() != null){
-            getCvTermEnricher().enrichCvTerm(participantEvidenceToEnrich.getExperimentalRole());
-            getCvTermEnricher().enrichCvTerms(participantEvidenceToEnrich.getIdentificationMethods());
             getCvTermEnricher().enrichCvTerms(participantEvidenceToEnrich.getExperimentalPreparations());
         }
 
        // participantEvidenceToEnrich.getExpressedInOrganism()
     }
-
-    /*
-    @Override
-    public FeatureEnricher<FeatureEvidence> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new MaximumFeatureEvidenceEnricher();
-        return featureEnricher;
-    } */
-
 }

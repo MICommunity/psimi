@@ -4,23 +4,20 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Experiment;
 
 /**
- * The experiment updater has no fetcher and can enrich either a single experiment of a collection.
- * It has subEnrichers for CvTerms, Organisms, and publications.
+ * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since  01/08/13
+ * @since 13/08/13
  */
-public class MinimumExperimentUpdater
+public class BasicExperimentEnricher
         extends AbstractExperimentEnricher{
-
     /**
      * Processes the specific details of the experiment which are delegated to a subEnricher.
      * @param experimentToEnrich    The experiment which is to be enriched
      * @throws EnricherException    Thrown if problems are encountered in a fetcher.
      */
     @Override
-    protected void processExperiment(Experiment experimentToEnrich)
-            throws EnricherException {
+    protected void processExperiment(Experiment experimentToEnrich) throws EnricherException {
 
     }
 }

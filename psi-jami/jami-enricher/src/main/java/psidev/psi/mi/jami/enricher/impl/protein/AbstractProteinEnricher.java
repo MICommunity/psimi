@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -43,6 +44,7 @@ public abstract class AbstractProteinEnricher
     private OrganismEnricher organismEnricher = null;
     private MockOrganismFetcher mockFetcher = new MockOrganismFetcher();
     private ProteinRemapper proteinRemapper = null;
+    private CvTermEnricher cvTermEnricher;
 
     protected Protein proteinFetched = null;
 
@@ -86,6 +88,7 @@ public abstract class AbstractProteinEnricher
 
         if (! isProteinConflictFree(proteinToEnrich) ) return;
 
+        // == ORGANISM =================================================================
         if(getOrganismEnricher() != null ){
             if(proteinFetched.getOrganism() != null){
                 OrganismFetcher originalOrganismFetcher = getOrganismEnricher().getOrganismFetcher();
@@ -100,7 +103,9 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-        //InteractorType
+
+
+        // == InteractorType =================================================
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
             if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
                     Interactor.UNKNOWN_INTERACTOR_MI)){
@@ -110,6 +115,11 @@ public abstract class AbstractProteinEnricher
             }
         }
 
+        if(proteinToEnrich.getInteractorType() != null){
+            getCvTermEnricher().enrichCvTerm(proteinToEnrich.getInteractorType());
+        }
+
+        // == ENRICH =========================================================
         processProtein(proteinToEnrich);
 
         if(getProteinEnricherListener() != null)
@@ -410,5 +420,14 @@ public abstract class AbstractProteinEnricher
      */
     public OrganismEnricher getOrganismEnricher(){
         return organismEnricher;
+    }
+
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+        this.cvTermEnricher = cvTermEnricher;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
     }
 }

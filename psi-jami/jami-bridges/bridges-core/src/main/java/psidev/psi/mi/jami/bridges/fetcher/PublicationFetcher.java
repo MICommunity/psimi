@@ -15,10 +15,10 @@ public interface PublicationFetcher {
 
     /**
      * Uses the PubMed identifier to search for a publication and return a completed record.
-     * @param pubmedID      The PubMed identifier of the publication to search for.
+     * @param identifier    The identifier of the publication to search for.
      * @return              A completed record for the publication or null if no publication could be found.
      * @throws BridgeFailedException
      */
-    public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException;
+    public Publication getPublicationByIdentifier(String identifier) throws BridgeFailedException;
 
 }

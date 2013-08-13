@@ -62,7 +62,7 @@ public class EuroPubmedCentralFetcher
      * @return      a completed publication record.
      * @throws BridgeFailedException
      */
-    public Publication getPublicationByPubmedID(String id) throws BridgeFailedException{
+    public Publication getPublicationByIdentifier(String id) throws BridgeFailedException{
         if(id == null || id.length() < 1)
             throw new IllegalArgumentException("Can not fetch on an empty identifier");
 

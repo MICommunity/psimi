@@ -45,6 +45,10 @@ public interface PublicationEnricher {
      */
     public PublicationFetcher getPublicationFetcher();
 
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+
+    public CvTermEnricher getCvTermEnricher();
+
     /**
      * Sets the listener to report publication changes to.
      * Can be null.

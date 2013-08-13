@@ -37,11 +37,11 @@ public class CachedEuroPubmedCentralFetcher
     }
 
 
-    public Publication getPublicationByPubmedID(String id) throws BridgeFailedException {
+    public Publication getPublicationByIdentifier(String id) throws BridgeFailedException {
         final String key = "getPublicationByPubmedID#"+ id;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getPublicationByPubmedID(id);
+            data = super.getPublicationByIdentifier(id);
             storeInCache(key , data);
         }
         return (Publication)data;
