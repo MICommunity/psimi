@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.enricher.impl.bioactiveentity;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.bioactiveentity.ExceptionThrowingMockBioactiveEntityFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.bioactiveentity.MockBioactiveEntityFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockBioactiveEntityFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;

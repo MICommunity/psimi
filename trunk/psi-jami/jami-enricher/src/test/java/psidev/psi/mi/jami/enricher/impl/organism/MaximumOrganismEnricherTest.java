@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.ExceptionThrowingMockOrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListenerManager;

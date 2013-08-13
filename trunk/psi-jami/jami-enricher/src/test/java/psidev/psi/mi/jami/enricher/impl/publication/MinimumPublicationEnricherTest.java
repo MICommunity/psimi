@@ -3,12 +3,10 @@ package psidev.psi.mi.jami.enricher.impl.publication;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.ExceptionThrowingMockCvTermFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.ExceptionThrowingMockPublicationFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockPublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherLogger;

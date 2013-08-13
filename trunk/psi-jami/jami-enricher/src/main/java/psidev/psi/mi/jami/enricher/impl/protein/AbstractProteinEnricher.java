@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
@@ -39,6 +41,7 @@ public abstract class AbstractProteinEnricher
     private ProteinEnricherListener listener = null;
 
     private OrganismEnricher organismEnricher = null;
+    private MockOrganismFetcher mockFetcher = new MockOrganismFetcher();
     private ProteinRemapper proteinRemapper = null;
 
     protected Protein proteinFetched = null;
@@ -84,16 +87,17 @@ public abstract class AbstractProteinEnricher
         if (! isProteinConflictFree(proteinToEnrich) ) return;
 
         if(getOrganismEnricher() != null ){
-            if (getOrganismEnricher().getOrganismFetcher() == null ||
-                    getOrganismEnricher().getMockFetcher() == getOrganismEnricher().getOrganismFetcher()){
-                getOrganismEnricher().getMockFetcher().clearEntries();
-
-                getOrganismEnricher().getMockFetcher().addEntry(
-                        Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
-                        proteinFetched.getOrganism());
+            if(proteinFetched.getOrganism() != null){
+                OrganismFetcher originalOrganismFetcher = getOrganismEnricher().getOrganismFetcher();
+                getOrganismEnricher().setOrganismFetcher(mockFetcher);
+                mockFetcher.addEntry(
+                            Integer.toString(proteinToEnrich.getOrganism().getTaxId()),
+                            proteinFetched.getOrganism());
+                getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
+                getOrganismEnricher().setOrganismFetcher(originalOrganismFetcher);
+            } else {
+                getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
             }
-
-            getOrganismEnricher().enrichOrganism(proteinToEnrich.getOrganism());
         }
 
         //InteractorType
