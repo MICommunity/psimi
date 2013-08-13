@@ -62,7 +62,7 @@
 
     <profiles>
         <profile>
-            <id>exec</id>
+            <id>enrich-file</id>
 
             <build>
                 <plugins>
@@ -86,7 +86,44 @@
                                 <argument>-classpath</argument>
                                 <classpath />
 
-                                <argument>psidev.psi.mi.enricher.batch.PsiMIEnricher</argument>
+                                <argument>psidev.psi.mi.jami.batch.MIBatchJobManager</argument>
+                                <argument>${spring.config}</argument>
+                                <argument>interactionEnricherJob</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>restart-enrichment</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-Xmx2024m</argument>
+                                <argument>-Xms256m</argument>
+
+                                <argument>-classpath</argument>
+                                <classpath />
+
+                                <argument>psidev.psi.mi.jami.batch.MIBatchJobManager</argument>
+                                <argument>${spring.config}</argument>
+                                <argument>interactionEnricherJob</argument>
+                                <argument>${job.id}</argument>
                             </arguments>
                         </configuration>
                     </plugin>
