@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.OntologyTermCompositeFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.OntologyTermCompositeFetcher;
 import psidev.psi.mi.jami.bridges.obo.OntologyOboFetcher;
 import psidev.psi.mi.jami.bridges.ols.CachedOntologyOlsFetcher;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
