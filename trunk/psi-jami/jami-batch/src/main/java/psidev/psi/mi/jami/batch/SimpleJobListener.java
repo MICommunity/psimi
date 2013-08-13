@@ -13,9 +13,9 @@ import org.springframework.batch.core.JobExecutionListener;
  * @since <pre>02/08/13</pre>
  */
 
-public class SimplJobListener implements JobExecutionListener {
+public class SimpleJobListener implements JobExecutionListener {
 
-    private static final Log log = LogFactory.getLog(SimplJobListener.class);
+    private static final Log log = LogFactory.getLog(SimpleJobListener.class);
 
     public void beforeJob(JobExecution jobExecution) {
         log.info("\nJOB STARTED: " + jobExecution + "\n");

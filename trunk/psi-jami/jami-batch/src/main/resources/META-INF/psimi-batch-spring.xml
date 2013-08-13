@@ -67,6 +67,7 @@
 
     <!-- listeners -->
     <bean id="basicChunkLoggerListener" class="psidev.psi.mi.jami.batch.BasicChunkLoggerListener"/>
+    <bean id="basicJobLoggerListener" class="psidev.psi.mi.jami.batch.SimpleJobListener"/>
 
     <!-- Basic Step configuration -->
     <bean id="basicBatchStep" abstract="true"
