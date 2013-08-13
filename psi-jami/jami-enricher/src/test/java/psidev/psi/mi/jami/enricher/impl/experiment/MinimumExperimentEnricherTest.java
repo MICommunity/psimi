@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.enricher.impl.experiment;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm.MockCvTermFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;

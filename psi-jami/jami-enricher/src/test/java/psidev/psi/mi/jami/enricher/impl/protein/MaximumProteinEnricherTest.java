@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.ExceptionThrowingMockProteinFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockProteinFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.mockRemapper.MockProteinRemapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;

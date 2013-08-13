@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher.impl.publication;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication.MockPublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListener;

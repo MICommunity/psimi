@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.model.Protein;

@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListener;
 import psidev.psi.mi.jami.model.Organism;
@@ -43,8 +43,6 @@ public interface OrganismEnricher{
      * @return  The service being used when fetching an enrichedOrganism. Null if it has not been set.
      */
     public OrganismFetcher getOrganismFetcher();
-
-    public MockOrganismFetcher getMockFetcher();
 
     /**
      * Sets the listener to use. Can be null.

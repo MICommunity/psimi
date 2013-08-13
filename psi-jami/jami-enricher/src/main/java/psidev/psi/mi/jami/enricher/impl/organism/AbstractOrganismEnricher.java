@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListener;
@@ -30,7 +30,6 @@ public abstract class AbstractOrganismEnricher
     public static final int RETRY_COUNT = 5;
 
     private OrganismFetcher fetcher = null;
-    private MockOrganismFetcher mockFetcher = null;
     private OrganismEnricherListener listener = null;
 
     protected Organism organismFetched = null;
@@ -112,9 +111,6 @@ public abstract class AbstractOrganismEnricher
         return organismFetched;
     }
 
-
-
-
     public void setOrganismFetcher(OrganismFetcher fetcher) {
         this.fetcher = fetcher;
     }
@@ -127,20 +123,6 @@ public abstract class AbstractOrganismEnricher
         return fetcher;
     }
 
-    /**
-     * If the fetcher has been set, the mockOrganismFetcher will remain null.
-     * If the fetcher has not been set it will be set to the mock organism fetcher
-     * @return  The mockOrganismFetcher if the fetcher was null
-     */
-    public MockOrganismFetcher getMockFetcher(){
-        if( mockFetcher == null) {
-            mockFetcher = new MockOrganismFetcher();
-        }
-        return mockFetcher;
-    }
-    /*public void useMockFetcher(){
-        fetcher = getMockFetcher();
-    } */
 
     public void setOrganismEnricherListener(OrganismEnricherListener organismEnricherListener) {
         this.listener = organismEnricherListener;
