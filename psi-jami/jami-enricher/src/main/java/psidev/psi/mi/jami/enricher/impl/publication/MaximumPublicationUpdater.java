@@ -35,49 +35,37 @@ public class MaximumPublicationUpdater
     @Override
     public void processPublication(Publication publicationToEnrich){
 
-        // DOI
-        if(publicationToEnrich.getDoi().equals(publicationFetched.getDoi())
-                && publicationFetched.getDoi() != null) {
+        // == DOI ============================================================================================
+        if(publicationFetched.getDoi() != null
+                && ! publicationFetched.getDoi().equals( publicationToEnrich.getDoi() )){
             String oldValue = publicationToEnrich.getDoi();
             publicationToEnrich.setPubmedId(publicationFetched.getDoi());
             if(getPublicationEnricherListener() != null)
                 getPublicationEnricherListener().onDoiUpdate(publicationToEnrich , oldValue);
         }
 
-        //IDS
-        //IMEX
 
-        // TITLE
-        if(publicationToEnrich.getTitle().equals(publicationFetched.getTitle())
-                && publicationFetched.getTitle() != null) {
+        // == TITLE ========================================================================================
+        if(publicationFetched.getTitle() != null
+                && ! publicationFetched.getTitle().equals( publicationToEnrich.getTitle() )) {
             String oldValue = publicationToEnrich.getTitle();
             publicationToEnrich.setTitle(publicationFetched.getTitle());
             if(getPublicationEnricherListener() != null)
                 getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
         }
 
-        // JOURNAL
-        if(publicationToEnrich.getJournal().equals( publicationFetched.getJournal() )
-                && publicationFetched.getJournal() != null) {
+        // == JOURNAL =======================================================================================
+        if(publicationFetched.getJournal() != null
+                && ! publicationFetched.getJournal().equals( publicationToEnrich.getJournal() )) {
             String oldValue = publicationToEnrich.getJournal();
             publicationToEnrich.setJournal(publicationFetched.getJournal());
             if(getPublicationEnricherListener() != null)
                 getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldValue);
         }
 
-        // == PUBLICATION DATE =====================================================
-        if(publicationToEnrich.getPublicationDate().equals( publicationFetched.getPublicationDate() )
-                && publicationFetched.getPublicationDate() != null) {
-            Date oldValue = publicationToEnrich.getPublicationDate();
-            publicationToEnrich.setPublicationDate(publicationFetched.getPublicationDate());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onPublicationDateUpdated(publicationToEnrich , oldValue);
-        }
+        // == XREFS ========================================================================================
 
-
-        // == XREFS =================================================================
-
-        if(!publicationFetched.getXrefs().isEmpty()){
+        if( ! publicationFetched.getXrefs().isEmpty() ){
             XrefMerger xrefMerger = new XrefMerger();
             xrefMerger.merge(publicationFetched.getXrefs() , publicationToEnrich.getXrefs() , false);
             for(Xref newXref : xrefMerger.getToAdd()) {
@@ -87,21 +75,17 @@ public class MaximumPublicationUpdater
             }
         }
 
-        // ANNOTATIONS
 
-        // EXPERIMENTS
+        // == IDS ===========================================================================================
 
-        // CURATION DEPTH
+        // == IMEX ==========================================================================================
 
-        // SOURCE
+        // == ANNOTATIONS ===================================================================================
 
-        // RELEASE DATE
-        if(publicationToEnrich.getReleasedDate().equals(publicationFetched.getReleasedDate())
-                && publicationFetched.getReleasedDate() != null) {
-            Date oldValue = publicationToEnrich.getReleasedDate() ;
-            publicationToEnrich.setReleasedDate(publicationFetched.getReleasedDate());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich , oldValue);
-        }
+        // == EXPERIMENTS ===================================================================================
+
+        // == CURATION DEPTH ================================================================================
+
+        // == SOURCE ========================================================================================
     }
 }
