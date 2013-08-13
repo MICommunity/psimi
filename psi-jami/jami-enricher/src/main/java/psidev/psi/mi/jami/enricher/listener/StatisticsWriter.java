@@ -15,34 +15,28 @@ import java.io.*;
  *
  * In both cases, if the object has a fileContext,this will be included for easier identification.
  *
+ * A statistics logger which records changes made by the enricher.
+ * Each addition, removal or update is counted and, upon the completion of the enrichment of the object,
+ * is logged in either a file of successes or failures depending on the enrichmentStatus.
+ *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  09/07/13
+ * @param <T>   The type of JAMI object that is being enriched.
  */
 public abstract class StatisticsWriter<T> implements EnricherListener<T>{
 
     protected static final Logger log = LoggerFactory.getLogger(StatisticsWriter.class.getName());
 
-    /**
-     * The last object that was changed
-     */
+    /* The last object that was changed */
     protected T lastObject = null;
-    /**
-     * Writers for successes and failures.
-     */
+
+    /* Writers for successes and failures.  */
     private Writer successWriter , failureWriter;
 
-    /**
-     * Character to be used to separate lines.
-     */
-    public static final String NEW_LINE = "\n";
-    /**
-     * Character to be used to separate fields
-     */
-    public static final String NEW_EVENT = "\t";
+    /* Characters to be used for new rows, new columns, blank cells */
+    public static final String NEW_LINE = "\n" , NEW_EVENT = "\t" , BLANK_SPACE = "-";
 
-    /**
-     * Counters for the changes made to the current object.
-     */
+    /* Counters for the changes made to the current object. */
     protected int updateCount = 0, removedCount = 0, additionCount = 0;
 
     /**
@@ -143,6 +137,7 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
         checkObject(obj);
 
         try{
+            String fileSource = BLANK_SPACE;
             switch(status){
                 case SUCCESS:
                     if(updateCount == 0 && removedCount == 0 && additionCount == 0)
@@ -161,8 +156,9 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
                     if (obj instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) obj;
                         if (context.getSourceLocator() != null)
-                            successWriter.write(context.getSourceLocator().toString());
+                            fileSource = context.getSourceLocator().toString();
                     }
+                    successWriter.write(fileSource);
                     successWriter.flush();
                     break;
 
@@ -175,11 +171,14 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
                     if (obj instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) obj;
                         if (context.getSourceLocator() != null)
-                            failureWriter.write(context.getSourceLocator().toString());
+                            fileSource = context.getSourceLocator().toString();
                     }
+                    failureWriter.write(fileSource);
                     failureWriter.write(NEW_EVENT);
                     if(message != null)
                         failureWriter.write(message);
+                    else
+                        failureWriter.write(BLANK_SPACE);
                     failureWriter.flush();
                     break;
             }

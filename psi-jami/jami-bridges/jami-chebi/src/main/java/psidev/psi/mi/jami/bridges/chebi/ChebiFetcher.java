@@ -47,8 +47,9 @@ public class ChebiFetcher
             if(entity == null) return null;
 
             // Short name / Full name
-            bioactiveEntity = new DefaultBioactiveEntity(
-                    entity.getChebiAsciiName(), entity.getChebiAsciiName() );
+            bioactiveEntity = new DefaultBioactiveEntity(entity.getChebiAsciiName());
+            // bioactiveEntity.setFullName( entity.getChebiAsciiName() );
+
             // Chebi ID
             bioactiveEntity.setChebi( entity.getChebiId() );
             // Smile
@@ -58,13 +59,11 @@ public class ChebiFetcher
             // Inchi Key
             bioactiveEntity.setStandardInchiKey( entity.getInchiKey() );
 
-
-            /* //UNUSED FIELDS
-            log.info("stat: "+entity.getStatus());
+            //UNUSED FIELDS
             for(DataItem syn : entity.getDatabaseLinks()){
-                log.info("LIN: "+syn.getData());
+                log.info("LIN: ["+syn.getData()+"] ty ["+syn.getType()+"]");
             }
-            for(DataItem syn : entity.getSynonyms()){
+           /* for(DataItem syn : entity.getSynonyms()){
                 log.info("SYN: "+syn.getData());
             }
             for(String sec : entity.getSecondaryChEBIIds()){
