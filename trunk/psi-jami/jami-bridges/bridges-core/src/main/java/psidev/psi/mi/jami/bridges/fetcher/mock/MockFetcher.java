@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 
 /**

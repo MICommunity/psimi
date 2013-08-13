@@ -1,11 +1,8 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractExceptionThrowingMockFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
-import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.Organism;
 
 import java.util.*;

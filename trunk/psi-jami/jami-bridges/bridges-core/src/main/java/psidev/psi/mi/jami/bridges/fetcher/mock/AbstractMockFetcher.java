@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class AbstractMockFetcher <T>
+public abstract class AbstractMockFetcher <T>
         implements MockFetcher<T>{
 
     protected Map<String, T> localMap;
