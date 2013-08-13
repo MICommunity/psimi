@@ -44,6 +44,15 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
             }
         }
 
+
+        // RELEASE DATE
+        if(publicationToEnrich.getReleasedDate() == null
+                && publicationFetched.getReleasedDate() != null) {
+            publicationToEnrich.setReleasedDate(publicationFetched.getReleasedDate());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich , null);
+        }
+
     }
 
 

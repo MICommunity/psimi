@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.Publication;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
@@ -31,9 +32,9 @@ public class MinimumPublicationUpdater
     @Override
     protected void processPublication(Publication publicationToEnrich) {
 
-        // PUBMED ID
-        if(! publicationToEnrich.getPubmedId().equals(publicationFetched.getPubmedId())
-                && publicationFetched.getPubmedId() != null) {
+        // == PUBMED ID =========================================================================================
+        if(publicationFetched.getPubmedId() != null
+               && ! publicationFetched.getPubmedId().equals( publicationToEnrich.getPubmedId() )) {
             String oldValue = publicationToEnrich.getPubmedId();
             publicationToEnrich.setPubmedId(publicationFetched.getPubmedId());
             if(getPublicationEnricherListener() != null)
@@ -41,7 +42,7 @@ public class MinimumPublicationUpdater
         }
 
 
-        // AUTHORS
+        // == AUTHORS ===========================================================================================
         if(!publicationFetched.getAuthors().isEmpty()){
             Collection<String> authorsToRemove = new ArrayList<String>();
             authorsToRemove.addAll(publicationToEnrich.getAuthors());
@@ -58,6 +59,24 @@ public class MinimumPublicationUpdater
                     if(getPublicationEnricherListener() != null)
                         getPublicationEnricherListener().onAuthorAdded(publicationToEnrich , author);
             }
+        }
+
+        // == PUBLICATION DATE =================================================================================
+        if(publicationFetched.getPublicationDate() != null
+                && ! publicationFetched.getPublicationDate().equals( publicationToEnrich.getPublicationDate() )) {
+            Date oldValue = publicationToEnrich.getPublicationDate();
+            publicationToEnrich.setPublicationDate(publicationFetched.getPublicationDate());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onPublicationDateUpdated(publicationToEnrich , oldValue);
+        }
+
+        // == RELEASE DATE ======================================================================================
+        if(publicationFetched.getReleasedDate() != null
+                && ! publicationFetched.getReleasedDate().equals( publicationToEnrich.getReleasedDate() )) {
+            Date oldValue = publicationToEnrich.getReleasedDate() ;
+            publicationToEnrich.setReleasedDate(publicationFetched.getReleasedDate());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich , oldValue);
         }
     }
 }

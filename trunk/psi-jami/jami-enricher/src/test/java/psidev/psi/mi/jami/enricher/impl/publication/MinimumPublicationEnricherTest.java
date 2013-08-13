@@ -320,13 +320,13 @@ public class MinimumPublicationEnricherTest {
         Publication testPub = new DefaultPublication(TEST_PUBMED_ID);
         testPub.setTitle("TITLE");
         testPub.setJournal("JOURNAL");
-        testPub.setPublicationDate(new Date(99));
+        //testPub.setPublicationDate(new Date(99));
         testPub.setDoi("DOI");
         testPub.getXrefs().add(new DefaultXref(new DefaultCvTerm("Test CvTerm"),"Test xref"));
         testPub.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test Cvterm") , "value"));
         testPub.getExperiments().add(new DefaultExperiment(testPub));
         testPub.setCurationDepth(CurationDepth.IMEx);
-        testPub.setReleasedDate(new Date(99));
+        //testPub.setReleasedDate(new Date(99));
         testPub.setSource(new DefaultSource("SOURCE"));
 
 
