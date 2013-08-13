@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class BasicFeatureEvidenceUpdater
+public class MaximumFeatureEvidenceUpdater
         extends BasicFeatureUpdater<FeatureEvidence>{
 
     @Override
