@@ -84,6 +84,6 @@
     <!-- interaction writer -->
 
     <bean id="miFileOutput" class="org.springframework.core.io.FileSystemResource">
-        <constructor-arg value="${interaction.output}"/>
+        <constructor-arg value="${mi.output}"/>
     </bean>
 </beans>
