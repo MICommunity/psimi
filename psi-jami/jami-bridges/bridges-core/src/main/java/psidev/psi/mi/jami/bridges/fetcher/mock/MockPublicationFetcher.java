@@ -1,11 +1,9 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.publication;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
-
-import java.util.*;
 
 /**
  * A mock fetcher for testing.

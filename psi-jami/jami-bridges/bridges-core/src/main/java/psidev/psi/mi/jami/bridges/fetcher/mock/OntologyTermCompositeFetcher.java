@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;

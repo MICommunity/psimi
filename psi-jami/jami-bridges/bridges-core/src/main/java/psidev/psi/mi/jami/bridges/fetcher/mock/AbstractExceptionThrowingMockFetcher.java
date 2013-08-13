@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class AbstractExceptionThrowingMockFetcher<T>
+public abstract class AbstractExceptionThrowingMockFetcher<T>
         extends AbstractMockFetcher<T>{
 
 

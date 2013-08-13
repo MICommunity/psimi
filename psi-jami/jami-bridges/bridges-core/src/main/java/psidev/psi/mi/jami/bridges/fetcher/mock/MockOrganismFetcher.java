@@ -1,11 +1,10 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.organism;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Protein;
 
 import java.util.*;
 

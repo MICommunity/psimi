@@ -1,9 +1,8 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.cvterm;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractExceptionThrowingMockFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.*;

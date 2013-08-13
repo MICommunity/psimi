@@ -1,8 +1,8 @@
-package psidev.psi.mi.jami.bridges.fetcher.mockfetcher.bioactiveentity;
+package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mockfetcher.AbstractExceptionThrowingMockFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
