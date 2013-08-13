@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+           http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+    <context:component-scan base-package="psidev.psi.mi.enricher" />
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath*:/enricher.properties"/>
+    </bean>
+
+    <!-- reader -->
+    <bean id="miFileResource" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg value="${mi.file}"/>
+    </bean>
+    <bean id="interactionEvidenceReader" class="psidev.psi.mi.enricher.batch.reader.PsiInteractionEvidenceReader">
+        <property name="resource" ref="miFileResource"/>
+    </bean>
+
+    <!-- listeners -->
+    <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${cvTerm.success.logFile}"/>
+        <constructor-arg index="1" value="${cvTerm.failure.logFile}"/>
+    </bean>
+
+    <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${protein.success.logFile}"/>
+        <constructor-arg index="1" value="${protein.failure.logFile}"/>
+    </bean>
+
+    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${organism.success.logFile}"/>
+        <constructor-arg index="1" value="${organism.failure.logFile}"/>
+    </bean>
+    <bean id="proteinRemapperListener" class="psidev.psi.mi.jami.bridges.remapper.listener.ProteinRemapperStatisticsWriter">
+        <constructor-arg value="${remap.success.logFile}"/>
+    </bean>
+
+    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${feature.success.logFile}"/>
+        <constructor-arg index="1" value="${feature.failure.logFile}"/>
+    </bean>
+
+    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.listener.participant.ParticipantEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participant.success.logFile}"/>
+        <constructor-arg index="1" value="${participant.failure.logFile}"/>
+    </bean>
+
+    <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${interaction.success.logFile}"/>
+        <constructor-arg index="1" value="${interaction.failure.logFile}"/>
+    </bean>
+
+    <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.listener.experiment.ExperimentEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${experiment.success.logFile}"/>
+        <constructor-arg index="1" value="${experiment.failure.logFile}"/>
+    </bean>
+
+    <bean id="publicationListener" class="psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${publication.success.logFile}"/>
+        <constructor-arg index="1" value="${publication.failure.logFile}"/>
+    </bean>
+
+    <!-- remapper -->
+    <bean id="proteinRemapper" class="psidev.psi.mi.jami.bridges.uniprot.remapping.UniprotProteinRemapper">
+        <property name="checkingEnabled" value="true"/>
+        <property name="priorityIdentifiers" value="false"/>
+        <property name="prioritySequence" value="true"/>
+        <property name="remapListener" ref="proteinRemapperListener"/>
+     </bean>
+
+    <!-- fetchers -->
+    <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsFetcher"/>
+    <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+    <bean id="publicationFetcher" class="psidev.psi.mi.jami.bridges.europubmedcentral.CachedEuroPubmedCentralFetcher"/>
+    <bean id="organismFetcher" class="psidev.psi.mi.jami.bridges.uniprottaxonomy.CachedUniprotTaxonomyFetcher"/>
+
+    <!-- interaction writer -->
+
+    <bean id="miFileOutput" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg value="${interaction.output}"/>
+    </bean>
+</beans>
