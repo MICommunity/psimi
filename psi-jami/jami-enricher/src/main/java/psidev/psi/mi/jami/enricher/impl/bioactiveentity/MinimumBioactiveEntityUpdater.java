@@ -62,19 +62,18 @@ public class MinimumBioactiveEntityUpdater
                 getBioactiveEntityEnricherListener().onChebiUpdate(bioactiveEntityToEnrich , oldValue);
         }
 
-        // INCHI Code
+        // INCHI Code & KEY
         if( bioactiveEntityFetched.getStandardInchi() != null
-                && ! bioactiveEntityFetched.getStandardInchi().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchi())){
+                && ! bioactiveEntityFetched.getStandardInchi().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchi())
+                && bioactiveEntityFetched.getStandardInchiKey() != null
+                && ! bioactiveEntityFetched.getStandardInchiKey().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchiKey())){
+
             String oldValue = bioactiveEntityToEnrich.getStandardInchi();
             bioactiveEntityToEnrich.setStandardInchi(bioactiveEntityFetched.getStandardInchi());
             if(getBioactiveEntityEnricherListener() != null)
                 getBioactiveEntityEnricherListener().onStandardInchiUpdate(bioactiveEntityToEnrich , oldValue);
-        }
 
-        // INCHI KEY
-        if(bioactiveEntityFetched.getStandardInchiKey() != null
-                && ! bioactiveEntityFetched.getStandardInchiKey().equalsIgnoreCase(bioactiveEntityToEnrich.getStandardInchiKey())){
-            String oldValue = bioactiveEntityToEnrich.getStandardInchiKey();
+            oldValue = bioactiveEntityToEnrich.getStandardInchiKey();
             bioactiveEntityToEnrich.setStandardInchiKey(bioactiveEntityFetched.getStandardInchiKey());
             if(getBioactiveEntityEnricherListener() != null)
                 getBioactiveEntityEnricherListener().onStandardInchiKeyUpdate(bioactiveEntityToEnrich , oldValue);

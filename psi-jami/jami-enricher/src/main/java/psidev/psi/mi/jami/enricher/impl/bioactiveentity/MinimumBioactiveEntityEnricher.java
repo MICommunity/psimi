@@ -52,17 +52,17 @@ public class MinimumBioactiveEntityEnricher
                 getBioactiveEntityEnricherListener().onChebiUpdate(bioactiveEntityToEnrich , null);
         }
 
-        // INCHI Code
+
+        // INCHI Code & Key
         if(bioactiveEntityToEnrich.getStandardInchi() == null
-                && bioactiveEntityFetched.getStandardInchi() != null){
+                && bioactiveEntityFetched.getStandardInchi() != null
+                && bioactiveEntityToEnrich.getStandardInchiKey() == null
+                && bioactiveEntityFetched.getStandardInchiKey() != null){
+
             bioactiveEntityToEnrich.setStandardInchi(bioactiveEntityFetched.getStandardInchi());
             if(getBioactiveEntityEnricherListener() != null)
                 getBioactiveEntityEnricherListener().onStandardInchiUpdate(bioactiveEntityToEnrich , null);
-        }
 
-        // INCHI KEY
-        if(bioactiveEntityToEnrich.getStandardInchiKey() == null
-                && bioactiveEntityFetched.getStandardInchiKey() != null){
             bioactiveEntityToEnrich.setStandardInchiKey(bioactiveEntityFetched.getStandardInchiKey());
             if(getBioactiveEntityEnricherListener() != null)
                 getBioactiveEntityEnricherListener().onStandardInchiKeyUpdate(bioactiveEntityToEnrich , null);
