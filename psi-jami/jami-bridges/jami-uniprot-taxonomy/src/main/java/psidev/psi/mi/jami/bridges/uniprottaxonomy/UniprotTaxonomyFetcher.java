@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.bridges.uniprottaxonomy;
 
 import com.hp.hpl.jena.rdf.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.bridges.util.OrganismUtil;
@@ -21,6 +23,8 @@ import java.util.Collections;
  * @since 28/06/13
  */
 public class UniprotTaxonomyFetcher implements OrganismFetcher {
+
+    private final Logger log = LoggerFactory.getLogger(UniprotTaxonomyFetcher.class.getName());
 
     private static final String UNIPROT_NS = "http://purl.uniprot.org/core/";
     private static final String UNIPROT_TAXONOMY_NS = "http://purl.uniprot.org/taxonomy/";
@@ -73,19 +77,22 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
             boolean isReplaced = model.contains(taxonomyResource, replacedByProperty);
 
             if (isReplaced) {
-                /*Statement replacedStatement = model.getProperty(taxonomyResource, replacedByProperty);
+                Statement replacedStatement = model.getProperty(taxonomyResource, replacedByProperty);
                 String replacedUri = replacedStatement.getObject().asResource().getURI();
 
                 String replacedByTaxidStr = replacedUri.replaceAll(UNIPROT_TAXONOMY_NS, "");
                 int replacledByTaxid = Integer.parseInt(replacedByTaxidStr);
 
-                // if( log.isInfoEnabled() )
-                //     log.info( "WARNING - the taxid replacement for " + taxid + " is " + replacledByTaxid );
 
+                 /*
 
                 organism = getOrganismFromStream(replacledByTaxid);
                 organism.oldTax(taxid); */
-                organism = getOrganismFromStream(taxID);
+                if( log.isInfoEnabled() )
+                     log.info( "WARNING - the taxid replacement for " + taxID + " is " + replacledByTaxid );
+                return null;
+                //organism = getOrganismFromStream(taxID);
+
 
             } else {
                 organism = new DefaultOrganism( taxID );
@@ -110,9 +117,8 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            return organism;
         }
+        return organism;
     }
 
     public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
