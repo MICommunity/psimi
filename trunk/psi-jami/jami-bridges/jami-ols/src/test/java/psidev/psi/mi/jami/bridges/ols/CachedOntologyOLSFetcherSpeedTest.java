@@ -33,7 +33,7 @@ public class CachedOntologyOLSFetcherSpeedTest {
         log.warn("TEST");
 
         String[] featureTests = {"binding-associated region","sufficient binding region",
-                "mutation disrupting interaction rate","necessary binding region","sufficient binding region",
+                //"mutation disrupting interaction rate","necessary binding region","sufficient binding region",
                 "polyprotein fragment","amino-acid variant"};
         //ArrayList<Long> times = new ArrayList<Long>();
 
@@ -64,14 +64,14 @@ public class CachedOntologyOLSFetcherSpeedTest {
             log.info((end-start) + " was time for "+name);
         }
 
-        String[] additionalTests = {"cytolysis by host of symbiont cells" , "actin cortical patch localization" };
+        /*String[] additionalTests = {"cytolysis by host of symbiont cells" , "actin cortical patch localization" };
 
         for(String name : additionalTests){
             long start =  System.currentTimeMillis();
             OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name , -1 , -1);
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
-        }
+        }  */
 
          /*
         for(int i = 0 ; i<times.size()-1 ; i++){

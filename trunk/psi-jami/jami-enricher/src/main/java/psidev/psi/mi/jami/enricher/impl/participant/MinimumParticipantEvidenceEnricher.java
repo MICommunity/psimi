@@ -13,34 +13,16 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 28/06/13
  */
 public class MinimumParticipantEvidenceEnricher
-        extends MinimumParticipantEnricher<ParticipantEvidence , FeatureEvidence>
+        extends AbstractParticipantEnricher<ParticipantEvidence , FeatureEvidence>
         implements ParticipantEvidenceEnricher {
 
     @Override
     protected void processParticipant(ParticipantEvidence participantEvidenceToEnrich)
             throws EnricherException {
 
-        super.processParticipant(participantEvidenceToEnrich);
-
         if(getCvTermEnricher() != null){
-            getCvTermEnricher().enrichCvTerm(
-                    participantEvidenceToEnrich.getExperimentalRole());
-
-            for(CvTerm cvTerm : participantEvidenceToEnrich.getIdentificationMethods()){
-                getCvTermEnricher().enrichCvTerm(cvTerm);
-            }
-
-            for(CvTerm cvTerm : participantEvidenceToEnrich.getExperimentalPreparations()){
-                getCvTermEnricher().enrichCvTerm(cvTerm);
-            }
+            getCvTermEnricher().enrichCvTerm(participantEvidenceToEnrich.getExperimentalRole());
+            getCvTermEnricher().enrichCvTerms(participantEvidenceToEnrich.getIdentificationMethods());
         }
     }
-
-    /*
-    @Override
-    public FeatureEnricher<FeatureEvidence> getFeatureEnricher(){
-        if(featureEnricher == null) featureEnricher = new FeatureEvidenceEnricherMinimum();
-        return featureEnricher;
-    } */
-
 }

@@ -22,7 +22,7 @@ public class MockPublicationFetcher
         super();
     }
 
-    public Publication getPublicationByPubmedID(String pubmedID) throws BridgeFailedException {
+    public Publication getPublicationByIdentifier(String pubmedID) throws BridgeFailedException {
         return getEntry(pubmedID);
     }
 }

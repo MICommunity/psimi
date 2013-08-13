@@ -45,10 +45,12 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
         if(featureToEnrich == null)
             throw new IllegalArgumentException("Feature enricher was passed a null feature.");
 
+        // == TYPE ==================================================================
         if(getCvTermEnricher() != null) {
             if(featureToEnrich.getType() != null) getCvTermEnricher().enrichCvTerm( featureToEnrich.getType() );
         }
 
+        // == ENRICH ================================================================
         processFeature(featureToEnrich);
 
         if(getFeatureEnricherListener() != null)

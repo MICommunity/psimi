@@ -2,11 +2,13 @@ package psidev.psi.mi.jami.enricher.impl.publication;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Source;
 
 import java.util.Collection;
 
@@ -26,6 +28,8 @@ public abstract class AbstractPublicationEnricher
 
     private PublicationEnricherListener listener = null;
     private PublicationFetcher fetcher = null;
+
+    private CvTermEnricher cvTermEnricher;
 
     protected Publication publicationFetched = null;
 
@@ -61,6 +65,7 @@ public abstract class AbstractPublicationEnricher
         if( publicationToEnrich == null )
             throw new IllegalArgumentException("Attempted to enrich a null publication.");
 
+        // == FETCH ============================================================
         publicationFetched = fetchPublication(publicationToEnrich);
         if(publicationFetched == null){
             if(getPublicationEnricherListener() != null)
@@ -69,6 +74,10 @@ public abstract class AbstractPublicationEnricher
             return;
         }
 
+        // == SOURCE ==========================================================
+        getCvTermEnricher().enrichCvTerm(publicationToEnrich.getSource());
+
+        // == ENRICH ==========================================================
         processPublication(publicationToEnrich);
 
         if( getPublicationEnricherListener() != null)
@@ -96,13 +105,13 @@ public abstract class AbstractPublicationEnricher
 
         if(publicationToEnrich.getPubmedId() != null && publicationToEnrich.getPubmedId().length() > 0){
             try {
-                publicationFetched = getPublicationFetcher().getPublicationByPubmedID(publicationToEnrich.getPubmedId());
+                publicationFetched = getPublicationFetcher().getPublicationByIdentifier(publicationToEnrich.getPubmedId());
                 if(publicationFetched != null) return publicationFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        publicationFetched = getPublicationFetcher().getPublicationByPubmedID(publicationToEnrich.getPubmedId());
+                        publicationFetched = getPublicationFetcher().getPublicationByIdentifier(publicationToEnrich.getPubmedId());
                         if(publicationFetched != null) return publicationFetched;
                     } catch (BridgeFailedException ee) {
                         ee.printStackTrace();
@@ -130,6 +139,15 @@ public abstract class AbstractPublicationEnricher
      */
     public PublicationFetcher getPublicationFetcher(){
         return fetcher;
+    }
+
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+        this.cvTermEnricher = cvTermEnricher;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
     }
 
     /**

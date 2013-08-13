@@ -1,21 +1,20 @@
 package psidev.psi.mi.jami.enricher.impl.interaction;
 
-
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
-import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
- * An extension of the interaction enricher which only accepts InteractionEvidence
- * Overrides the default ParticipantEnricher to the evidence only form.
+ * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 09/07/13
+ * @since 13/08/13
  */
-public class MaximumInteractionEvidenceUpdater
-        extends MaximumInteractionUpdater<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
+public class BasicInteractionEvidenceEnricher
+        extends BasicInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
         implements InteractionEvidenceEnricher {
 
     private ExperimentEnricher experimentEnricher = null;
@@ -34,6 +33,7 @@ public class MaximumInteractionEvidenceUpdater
             getExperimentEnricher().enrichExperiment( interactionToEnrich.getExperiment() );
     }
 
+
     /**
      * The experimentEnricher which is currently being used for the enriching or updating of experiments.
      * @return The experiment enricher. Can be null.
@@ -49,4 +49,6 @@ public class MaximumInteractionEvidenceUpdater
     public void setExperimentEnricher(ExperimentEnricher experimentEnricher) {
         this.experimentEnricher = experimentEnricher;
     }
+
 }
+
