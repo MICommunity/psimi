@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+           http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+    <context:component-scan base-package="psidev.psi.mi.enricher" />
+
+    <import resource="base-enricher-spring.xml"/>
+
+    <!-- listeners-->
+    <bean id="mitabProteinListenerManager" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager">
+        <constructor-arg>
+            <list>
+                <ref bean="proteinListener"/>
+                <ref bean="mitabFeatureEnricher"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- enrichers -->
+    <bean id="mitabCvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher">
+        <constructor-arg ref="cvTermFetcher"/>
+        <property name="cvTermEnricherListener" ref="cvTermListener"/>
+    </bean>
+
+    <bean id="mitabOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher">
+        <constructor-arg ref="organismFetcher"/>
+        <property name="organismEnricherListener" ref="organismListener" />
+    </bean>
+
+    <bean id="mitabProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher">
+        <constructor-arg ref="proteinFetcher"/>
+        <property name="organismEnricher" ref="mitabOrganismEnricher"/>
+        <property name="proteinRemapper" ref="proteinRemapper"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="proteinEnricherListener" ref="mitabProteinListenerManager"/>
+    </bean>
+
+    <bean id="mitabFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEvidenceEnricher">
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="featureEnricherListener" ref="featureListener"/>
+    </bean>
+
+    <bean id="mitabParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEvidenceEnricher">
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="featureEnricher" ref="mitabFeatureEnricher"/>
+        <property name="proteinEnricher" ref="mitabProteinEnricher"/>
+        <property name="participantListener" ref="participantListener"/>
+    </bean>
+
+    <bean id="mitabPublicationEnricher" class="psidev.psi.mi.jami.enricher.impl.publication.MinimumPublicationEnricher">
+        <constructor-arg ref="publicationFetcher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="publicationEnricherListener" ref="publicationListener"/>
+    </bean>
+
+
+    <bean id="mitabExperimentEnricher" class="psidev.psi.mi.jami.enricher.impl.experiment.BasicExperimentEnricher">
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="publicationEnricher" ref="mitabPublicationEnricher"/>
+        <property name="experimentEnricherListener" ref="experimentListener"/>
+    </bean>
+
+    <bean id="mitabInteractionEnricher" class="psidev.psi.mi.jami.enricher.impl.interaction.BasicInteractionEvidenceEnricher">
+        <property name="experimentEnricher" ref="mitabExperimentEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="participantEnricher" ref="mitabParticipantEnricher"/>
+        <property name="interactionEnricherListener" ref="interactionListener"/>
+    </bean>
+
+    <!-- processor -->
+    <bean id="mitabInteractionEvidenceEnricher" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
+        <property name="interactionEnricher" ref="mitabInteractionEnricher"/>
+    </bean>
+
+    <!-- interaction writer -->
+
+    <bean id="mitabInteractionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
+        <property name="writerOptions">
+            <map>
+                <entry key="mitab_header_key" value="${mitab.header}" />
+                <entry key="mitab_extended_key" value="${mitab.extended}" />
+                <entry key="mitab_version_key" value="${mitab.version}"/>
+            </map>
+        </property>
+        <property name="output" ref="miFileOutput"/>
+    </bean>
+
+    <!-- Basic Step configuration -->
+
+    <!-- Enricher Steps -->
+    <batch:step id="interactionEnricherStep" parent="basicBatchStep">
+        <batch:tasklet transaction-manager="basicBatchTransactionManager">
+            <batch:listeners>
+                <batch:listener ref="basicChunkLoggerListener" />
+            </batch:listeners>
+
+            <batch:chunk reader="interactionEvidenceReader"
+                         processor="mitabInteractionEvidenceEnricher"
+                         writer="mitabInteractionEvidenceWriter"
+                         commit-interval="50">
+                <batch:streams>
+                    <batch:stream ref="interactionEvidenceReader"/>
+                    <batch:stream ref="mitabInteractionEvidenceWriter"/>
+                </batch:streams>
+            </batch:chunk>
+        </batch:tasklet>
+    </batch:step>
+
+    <!-- enricher job -->
+    <batch:job id="interactionEnricherJob" job-repository="basicBatchJobRegistry" parent="basicBatchJob">
+
+        <batch:listeners>
+            <batch:listener ref="basicJobLoggerListener"/>
+        </batch:listeners>
+
+        <batch:step id="enrichStep" parent="interactionEnricherStep"/>
+    </batch:job>
+</beans>
