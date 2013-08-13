@@ -27,7 +27,8 @@
         <module>jami-commons</module>
         <module>jami-interactionviewer-json</module>
         <module>interactionviewer-app</module>
-    </modules>
+    <module>jami-batch</module>
+  </modules>
 
     <dependencies>
         <!-- Testing -->
