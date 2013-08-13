@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.cvterm;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,9 +27,7 @@ import static junit.framework.Assert.*;
  */
 public class CvTermEnricherStatisticsWriterTest {
 
-
     protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherLogger.class.getName());
-
 
     MinimumCvTermEnricher minimumCvTermEnricher;
     MockCvTermFetcher mockCvTermFetcher;
@@ -67,7 +66,33 @@ public class CvTermEnricherStatisticsWriterTest {
         cvTermFull.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", SYNONYM_NAME));
         mockCvTermFetcher.addEntry(MI_ID , cvTermFull);
+    }
 
+    @After
+    public void tearDown() throws IOException {
+        cvTermStatisticsWriter.close();
+
+        log.info("******* success file ******");
+        BufferedReader successReader = new BufferedReader(new FileReader(successFile));
+        String line = successReader.readLine();
+        while( line != null){
+            log.info(line);
+            line = successReader.readLine();
+        }
+        successReader.close();
+
+        log.info("******* fail file ******");
+        BufferedReader failReader = new BufferedReader(new FileReader(failFile));
+        line = failReader.readLine();
+        while( line != null){
+            log.info(line);
+            line = failReader.readLine();
+        }
+        failReader.close();
+
+
+        if(successFile.exists()) successFile.delete();
+        if(failFile.exists()) failFile.delete();
     }
 
 
@@ -88,17 +113,6 @@ public class CvTermEnricherStatisticsWriterTest {
         assertTrue(successFile.exists());
         assertTrue(failFile.exists());
 
-        BufferedReader successReader = new BufferedReader(new FileReader(successFile));
-        successReader.readLine();
-        int count = 0;
-        String line = successReader.readLine();
-        while( line != null){
-            //String [] entry = line.split("\t");
-            //assertEquals(term.toString() , entry[0]);
-            count ++;
-            line = successReader.readLine();
-        }
         //assertEquals(2 , count);
     }
-
 }
