@@ -6,10 +6,10 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.participant.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.interaction.InteractionEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -38,7 +38,7 @@ public class MinimumInteractionEnricherTest {
     @Before
     public void setup(){
         persistentInt = 0;
-        interactionEnricher = new MinimumInteractionEnricher();
+        interactionEnricher = new BasicInteractionEnricher();
         persistentInteraction = new DefaultInteraction("shortName");
     }
 
@@ -124,7 +124,7 @@ public class MinimumInteractionEnricherTest {
     @Test
     public void test_enrichment_with_participantEnricher_but_no_participant() throws EnricherException {
 
-        interactionEnricher.setParticipantEnricher(new MinimumParticipantEnricher());
+        interactionEnricher.setParticipantEnricher(new BasicParticipantEnricher());
 
         assertEquals(Collections.EMPTY_LIST, persistentInteraction.getParticipants());
 
@@ -149,7 +149,7 @@ public class MinimumInteractionEnricherTest {
 
         persistentInteraction.addParticipant(new DefaultParticipant(new DefaultInteractor("InteractorName")));
 
-        interactionEnricher.setParticipantEnricher(new MinimumParticipantEnricher());
+        interactionEnricher.setParticipantEnricher(new BasicParticipantEnricher());
 
         //TODO assertEquals(Collections.EMPTY_LIST, persistentInteraction.getParticipants());
 

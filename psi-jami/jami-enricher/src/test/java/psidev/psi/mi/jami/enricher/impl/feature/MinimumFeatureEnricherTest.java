@@ -11,10 +11,10 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.participant.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
@@ -68,12 +68,12 @@ public class MinimumFeatureEnricherTest {
         cvTermEnricher = new MinimumCvTermEnricher(cvTermFetcher);
 
 
-        featureEnricher = new MinimumFeatureEnricher();
+        featureEnricher = new BasicFeatureEnricher();
 
         proteinFetcher = new MockProteinFetcher();
         proteinEnricher = new MinimumProteinEnricher(proteinFetcher);
 
-        participantEnricher = new MinimumParticipantEnricher();
+        participantEnricher = new BasicParticipantEnricher();
         participantEnricher.setFeatureEnricher(featureEnricher);
         participantEnricher.setProteinEnricher(proteinEnricher);
         assertNotNull(proteinEnricher.getProteinEnricherListener());

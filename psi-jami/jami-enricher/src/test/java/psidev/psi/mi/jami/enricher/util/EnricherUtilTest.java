@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEnricher;
+import psidev.psi.mi.jami.enricher.impl.feature.BasicFeatureEnricher;
 import psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
@@ -28,14 +28,14 @@ import static junit.framework.Assert.*;
 public class EnricherUtilTest {
 
     private ProteinEnricher proteinEnricher;
-    private MinimumFeatureEnricher featureEnricher;
+    private BasicFeatureEnricher featureEnricher;
     private ProteinEnricherListener proteinEnricherListener;
     private ProteinEnricherListenerManager proteinEnricherListenerManager;
 
     @Before
     public void setup(){
         proteinEnricher = new MinimumProteinEnricher(null);
-        featureEnricher = new MinimumFeatureEnricher();
+        featureEnricher = new BasicFeatureEnricher();
         proteinEnricherListener = new ProteinEnricherLogger();
         proteinEnricherListenerManager = new ProteinEnricherListenerManager();
 

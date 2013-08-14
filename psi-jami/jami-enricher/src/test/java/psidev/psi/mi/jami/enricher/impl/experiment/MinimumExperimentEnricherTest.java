@@ -40,7 +40,7 @@ public class MinimumExperimentEnricherTest {
         persistentPublication = new DefaultPublication();
         persistentExperiment = new DefaultExperiment(persistentPublication);
 
-        experimentEnricher = new MinimumExperimentEnricher();
+        experimentEnricher = new BasicExperimentEnricher();
     }
 
     /**
