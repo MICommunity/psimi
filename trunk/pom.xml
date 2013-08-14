@@ -28,7 +28,7 @@
     <scm>
         <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
         <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk</url>
+        <url>http://code.google.com/p/psimi/source/browse/trunk/</url>
     </scm>
 
     <properties>
