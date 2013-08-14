@@ -4,7 +4,7 @@
   <parent>
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
-    <version>1.8.4-SNAPSHOT</version>
+    <version>1.8.5-SNAPSHOT</version>
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
@@ -20,14 +20,14 @@
 
     <modules>
         <module>jami-core</module>
-        <module>jami-html</module>
+        <!--<module>jami-html</module>-->
         <module>jami-bridges</module>
         <module>jami-enricher</module>
         <module>jami-mitab</module>
         <module>jami-commons</module>
         <module>jami-interactionviewer-json</module>
         <module>interactionviewer-app</module>
-    <module>jami-batch</module>
+        <module>jami-batch</module>
   </modules>
 
     <dependencies>
