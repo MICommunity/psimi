@@ -137,8 +137,8 @@
             <version>0.11</version>
         </dependency>
         <dependency>
-            <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
+            <artifactId>psi25-xml</artifactId>
             <version>${pom.parent.version}</version>
         </dependency>
 
