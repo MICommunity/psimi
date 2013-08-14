@@ -23,9 +23,6 @@
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
-        <!--<module>psimi-enricher</module>-->
-        <!--<module>assembly</module>-->
-    <!--<module>psi-jami</module>-->
   </modules>
 
     <scm>
@@ -37,9 +34,6 @@
     <properties>
         <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
         <psimi.version>${pom.version}</psimi.version>
-        <!--<jami.version>1.0.0-SNAPSHOT</jami.version>
-        <calimocho.version>2.5.1-SNAPSHOT</calimocho.version>
-        <validator.version>2.0.6-SNAPSHOT</validator.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -115,14 +109,6 @@
         <defaultGoal>clean install</defaultGoal>
         <pluginManagement>
             <plugins>
-                <!--<plugin>-->
-                    <!--<artifactId>maven-assembly-plugin</artifactId>-->
-                    <!--<version>2.2</version>-->
-                    <!--<configuration>-->
-                        <!--<finalName>${artifactId}-${version}</finalName>-->
-                        <!--<outputDirectory>${assembly.outputDirectory}</outputDirectory>-->
-                    <!--</configuration>-->
-                <!--</plugin>-->
                 <plugin>
                     <groupId>org.ops4j</groupId>
                     <artifactId>maven-pax-plugin</artifactId>
@@ -201,15 +187,5 @@
             <id>ebi-repo-snapshots</id>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots</url>
         </snapshotRepository>
-
-        <!--
-                <site>
-                    <id>psimilib-site</id>
-                    <name>PSI MI lib site</name>
-                    <url>${site.remote.basedir}/${artifactId}</url>
-                </site>
-          -->
     </distributionManagement>
-
-
 </project>
