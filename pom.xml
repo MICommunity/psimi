@@ -201,6 +201,14 @@
             <id>ebi-repo-snapshots</id>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots</url>
         </snapshotRepository>
+
+        <!--
+                <site>
+                    <id>psimilib-site</id>
+                    <name>PSI MI lib site</name>
+                    <url>${site.remote.basedir}/${artifactId}</url>
+                </site>
+          -->
     </distributionManagement>
 
 
