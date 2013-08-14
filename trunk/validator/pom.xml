@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>psidev.psi.mi</groupId>
     <artifactId>validator</artifactId>
+    <version>1.8.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>PSI :: Schema Validator</name>
