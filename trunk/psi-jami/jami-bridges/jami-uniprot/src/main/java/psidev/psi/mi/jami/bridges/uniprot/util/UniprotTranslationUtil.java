@@ -186,13 +186,20 @@ public class UniprotTranslationUtil {
         // ORGANISM
         p.setOrganism(getOrganismFromEntry(e));
 
+        generateChecksums(p);
+
+        return p;
+    }
+
+
+
+    private static void generateChecksums(Protein p) throws BridgeFailedException {
         // CHECKSUMS
         if(p.getSequence() != null){
-
             //TODO add an MI term if one is created
             Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
             p.getChecksums().add(crc64Checksum);
-            /*
+
             if(p.getOrganism() != null
                     && p.getOrganism().getTaxId() != -3){
                 try {
@@ -208,10 +215,8 @@ public class UniprotTranslationUtil {
                             "Error was encountered whilst generating RogID in protein fetcher. "+
                                     exception.toString());
                 }
-            }  */
+            }
         }
-
-        return p;
     }
 
 
@@ -288,29 +293,7 @@ public class UniprotTranslationUtil {
         }
 
         //CHECKSUMS
-        if(p.getSequence() != null){
-            //TODO add an MI term if one is created
-            Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
-            p.getChecksums().add(crc64Checksum);
-
-            /*
-            if(p.getOrganism() != null
-                    && p.getOrganism().getTaxId() != -3){
-                try {
-                    RogidGenerator rogidGenerator = new RogidGenerator();
-                    String rogidValue = null;
-                    rogidValue = rogidGenerator.calculateRogid(
-                            p.getSequence(),""+p.getOrganism().getTaxId());
-                    Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
-                    p.getChecksums().add(rogidChecksum);
-
-                } catch (SeguidException exception) {
-                    throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher. "+
-                                    exception.toString());
-                }
-            }  */
-        }
+        generateChecksums(p);
 
         // ALIASES - gene name, gene name synonyms, orf, locus
         if(entry.getGenes() != null && entry.getGenes().size() > 0){
@@ -451,29 +434,7 @@ public class UniprotTranslationUtil {
         p.setOrganism(getOrganismFromEntry(entry));
 
         //CHECKSUMS
-        if(p.getSequence() != null){
-
-            //TODO add an MI term if one is created
-            Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
-            p.getChecksums().add(crc64Checksum);
-             /*
-            if(p.getOrganism() != null
-                    && p.getOrganism().getTaxId() != -3){
-                try {
-                    RogidGenerator rogidGenerator = new RogidGenerator();
-                    String rogidValue = null;
-                    rogidValue = rogidGenerator.calculateRogid(
-                            p.getSequence(),""+p.getOrganism().getTaxId());
-                    Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
-                    p.getChecksums().add(rogidChecksum);
-
-                } catch (SeguidException exception) {
-                    throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher. "
-                                    +exception.toString());
-                }
-            }  */
-        }
+        generateChecksums(p);
 
         // ALIASES - gene name, gene name synonyms, orf, locus
         if(entry.getGenes() != null && entry.getGenes().size() > 0){
