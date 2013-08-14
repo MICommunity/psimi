@@ -22,7 +22,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
         <!-- Logging -->
