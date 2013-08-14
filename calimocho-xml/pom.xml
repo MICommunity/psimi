@@ -29,7 +29,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psi25-xml</artifactId>
-            <version>1.8.5-SNAPSHOT</version>
+            <version>${pom.parent.version}</version>
         </dependency>
 
     </dependencies>
