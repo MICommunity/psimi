@@ -18,7 +18,7 @@
 
     <modules>
         <module>psi25-xml</module>
-        <!--<module>psi25-xml-rdf</module>
+        <module>psi25-xml-rdf</module>
         <module>psimitab-parser</module>
         <module>psimitab-search</module>
         <module>psimitab-organism</module>
@@ -28,7 +28,7 @@
         <module>calimocho-tab</module>
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
-        <module>calimocho-solr</module>-->
+        <module>calimocho-solr</module>
   </modules>
 
     <properties>
