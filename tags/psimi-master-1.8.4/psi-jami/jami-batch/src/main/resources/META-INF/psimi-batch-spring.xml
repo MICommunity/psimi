@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+           http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+    <context:component-scan base-package="psidev.psi.mi.jami.batch" />
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath*:/spring-batch.properties"/>
+    </bean>
+
+    <!-- The basic data source for spring batch-->
+    <bean id="basicBatchDataSource" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="true">
+        <property name="driverClassName" value="${batch.db.driver}"/>
+        <property name="url" value="${batch.db.url}"/>
+        <property name="username" value="${batch.db.user}"/>
+        <property name="password" value="${batch.db.password}"/>
+    </bean>
+
+    <!-- Initialize the baisc datasource for spring batch -->
+    <bean id="batchDataSourceInitializer" class="psidev.psi.mi.jami.batch.BatchDataSourceInitializer" lazy-init="true">
+        <property name="dataSource" ref="basicBatchDataSource"/>
+        <property name="initScripts" value="${batch.db.initScripts}"/>
+    </bean>
+
+    <!-- Standard job config for basic transaction manager -->
+    <bean id="basicBatchTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          lazy-init="true">
+        <property name="dataSource" ref="basicBatchDataSource"/>
+    </bean>
+
+    <!-- basic job repository -->
+    <bean id="basicBatchJobRepository"
+          class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean"
+          p:dataSource-ref="basicBatchDataSource" p:transactionManager-ref="basicBatchTransactionManager" />
+
+    <!-- basic batch job launcher -->
+    <bean id="basicBatchJobLauncher"
+          class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="basicBatchJobRepository" />
+        <property name="taskExecutor" ref="syncTaskExecutor" />
+    </bean>
+
+    <!-- syncTaskExecutor -->
+    <bean id="syncTaskExecutor" class="org.springframework.core.task.SyncTaskExecutor"/>
+
+    <!-- Basic job explorer -->
+    <bean id="basicBatchJobExplorer" class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean"
+          p:dataSource-ref="basicBatchDataSource" />
+
+    <!-- Simple job registry -->
+    <bean id="basicBatchJobRegistry" class="psidev.psi.mi.jami.batch.SimpleJobRegistry"/>
+
+    <!-- basic batch job operator -->
+    <bean id="basicBatchJobOperator" class="org.springframework.batch.core.launch.support.SimpleJobOperator">
+        <property name="jobExplorer" ref="basicBatchJobExplorer"/>
+        <property name="jobRepository" ref="basicBatchJobRepository" />
+        <property name="jobRegistry" ref="basicBatchJobRegistry" />
+        <property name="jobLauncher" ref="basicBatchJobLauncher" />
+    </bean>
+
+    <!-- listeners -->
+    <bean id="basicChunkLoggerListener" class="psidev.psi.mi.jami.batch.BasicChunkLoggerListener"/>
+    <bean id="basicJobLoggerListener" class="psidev.psi.mi.jami.batch.SimpleJobListener"/>
+
+    <!-- Basic Step configuration -->
+    <bean id="basicBatchStep" abstract="true"
+          class="org.springframework.batch.core.step.factory.SimpleStepFactoryBean" lazy-init="true">
+        <property name="transactionManager" ref="basicBatchTransactionManager"/>
+        <property name="jobRepository" ref="basicBatchJobRepository"/>
+        <property name="startLimit" value="${batch.step.startLimit}"/>
+        <property name="commitInterval" value="${batch.step.commitInterval}"/>
+    </bean>
+
+    <!-- Basic Job configuration -->
+    <bean id="basicBatchJob" abstract="true" class="org.springframework.batch.core.job.SimpleJob">
+        <property name="jobRepository" ref="basicBatchJobRepository"/>
+    </bean>
+
+    <!-- Basic job manager configuration -->
+    <bean id="psiMIJobManager" class="psidev.psi.mi.jami.batch.MIBatchJobManager">
+        <property name="jobRepository" ref="basicBatchJobRepository"/>
+        <property name="jobOperator" ref="basicBatchJobOperator"/>
+    </bean>
+
+</beans>

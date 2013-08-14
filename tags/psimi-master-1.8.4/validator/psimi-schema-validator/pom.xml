@@ -1,0 +1,212 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>psidev.psi.mi</groupId>
+        <artifactId>validator</artifactId>
+        <version>1.8.4</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>psidev.psi.mi</groupId>
+    <artifactId>psimi-schema-validator</artifactId>
+    <packaging>jar</packaging>
+    <version>2.0.6</version>
+
+    <name>PSI :: Schema Validator :: PSI-MI Extension</name>
+    <description>
+        The library intends to provide a framework for validating
+        PSI-MI XML Schema both at the syntactic and semantic level.
+    </description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
+<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-source</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Additions Noe -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- PSI libs -->
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>validator</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>ontology-manager</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>xxindex</artifactId>
+            <version>0.11</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>psi25-xml</artifactId>
+            <version>1.8.4</version>
+        </dependency>
+
+        <!-- OBO -->
+
+        <dependency>
+            <groupId>obo</groupId>
+            <artifactId>obo</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>obo</groupId>
+            <artifactId>bbop</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <!-- 3rd party -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>com.springsource.antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+
+        <!-- jaxb -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.6</version>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+</project>

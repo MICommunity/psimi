@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>psidev.psi.mi</groupId>
+        <artifactId>psimi-master</artifactId>
+        <version>1.8.4-SNAPSHOT</version>
+    </parent>
+    <groupId>psidev.psi.mi</groupId>
+    <artifactId>psimi-enricher</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>PSI :: Enricher</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--assembly-->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>enrich-file</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-Xmx2024m</argument>
+                                <argument>-Xms256m</argument>
+
+                                <argument>-classpath</argument>
+                                <classpath />
+
+                                <argument>psidev.psi.mi.jami.batch.MIBatchJobManager</argument>
+                                <argument>${spring.config}</argument>
+                                <argument>interactionEnricherJob</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>restart-enrichment</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-Xmx2024m</argument>
+                                <argument>-Xms256m</argument>
+
+                                <argument>-classpath</argument>
+                                <classpath />
+
+                                <argument>psidev.psi.mi.jami.batch.MIBatchJobManager</argument>
+                                <argument>${spring.config}</argument>
+                                <argument>interactionEnricherJob</argument>
+                                <argument>${job.id}</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+
+        <!-- JAMI dependencies -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-enricher</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Fetchers -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-uniprot</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-uniprot-taxonomy</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>uniprot-remapping</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-expression</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-orm</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aspects</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-europubmedcentral</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-ols</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-commons</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-batch</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>

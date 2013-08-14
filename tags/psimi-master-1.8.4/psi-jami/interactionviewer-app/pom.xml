@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>psidev.psi.mi.jami</groupId>
+    <artifactId>psi-jami</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>psidev.psi.mi.jami</groupId>
+  <artifactId>interactionviewer-app</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+    <name>PSI :: JAMI - molecular interaction viewer json application</name>
+    <description>JAMI-molecular interaction viewer application</description>
+    <packaging>war</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jetty.port>9095</jetty.port>
+    <jetty.stopPort>9999</jetty.stopPort>
+    <jetty.stopKey>stopJetty</jetty.stopKey>
+    <jetty.contextPath>/jami</jetty.contextPath>
+  </properties>
+
+    <build>
+        <finalName>${artifactId}-${version}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.0.RC5</version>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>${jetty.port}</port>
+                            <maxIdleTime>600000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                    <webAppConfig>
+                        <contextPath>${jetty.contextPath}</contextPath>
+                    </webAppConfig>
+                    <!-- configure the container                 -->
+                    <stopKey>${jetty.stopKey}</stopKey>
+                    <stopPort>${jetty.stopPort}</stopPort>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <dependencies>
+        <!-- JAMI commons-->
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-commons</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JAMI json-->
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-interactionviewer-json</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JAMI OLS-->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-ols</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JAMI OBO-->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-obo</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- java servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- apache commons fileupload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3</version>
+        </dependency>
+
+        <!-- unit test-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>

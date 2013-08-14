@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>psidev.psi.mi.jami</groupId>
+    <artifactId>psi-jami</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>psidev.psi.mi.jami</groupId>
+  <artifactId>jami-interactionviewer-json</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+    <name>PSI :: JAMI - JSON</name>
+    <description>JAMI - simple JSON writer</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+      <!--JAMI core -->
+      <dependency>
+          <groupId>psidev.psi.mi.jami</groupId>
+          <artifactId>jami-core</artifactId>
+          <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+
+      <!--JAMI ols -->
+      <dependency>
+          <groupId>psidev.psi.mi.jami.bridges</groupId>
+          <artifactId>bridges-core</artifactId>
+          <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+
+      <!-- Simple java library to work with json -->
+      <dependency>
+          <groupId>com.googlecode.json-simple</groupId>
+          <artifactId>json-simple</artifactId>
+          <version>1.1.1</version>
+      </dependency>
+
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.10</version>
+          <scope>test</scope>
+      </dependency>
+  </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>
