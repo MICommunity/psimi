@@ -3,23 +3,23 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.4-SNAPSHOT</version>
+        <version>1.8.4</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.4-SNAPSHOT</version>
+    <version>1.8.4</version>
 
     <name>PSI :: PSI-MI TABular format tools</name>
     <url>http://psidev.sf.net</url>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.4/psimitab-parser</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.4/psimitab-parser
         </developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psimitab-search</url>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/tags/psimi-master-1.8.4/psimitab-search</url>
     </scm>
 
     <properties>
