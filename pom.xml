@@ -16,7 +16,7 @@
         <url>http://code.google.com/p/psimi/source/browse/trunk/</url>
     </scm>
 
-    <modules>
+    <!--<modules>
         <module>psi25-xml</module>
         <module>psi25-xml-rdf</module>
         <module>psimitab-parser</module>
@@ -29,7 +29,7 @@
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
-  </modules>
+  </modules> -->
 
     <properties>
         <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
