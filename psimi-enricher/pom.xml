@@ -5,7 +5,7 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.4-SNAPSHOT</version>
+        <version>1.8.5-SNAPSHOT</version>
     </parent>
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-enricher</artifactId>
@@ -138,14 +138,14 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-enricher</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
         <!-- Fetchers -->
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-uniprot</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -157,14 +157,14 @@
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-uniprot-taxonomy</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>uniprot-remapping</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -184,19 +184,19 @@
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-europubmedcentral</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-ols</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
         <!-- slf4j -->
@@ -214,7 +214,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-batch</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jami.version}</version>
         </dependency>
 
     </dependencies>
