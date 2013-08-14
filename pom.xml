@@ -10,6 +10,12 @@
     <name>PSI</name>
     <description>Base build file</description>
 
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/trunk/</url>
+    </scm>
+
     <modules>
         <module>psi25-xml</module>
         <module>psi25-xml-rdf</module>
@@ -24,12 +30,6 @@
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
   </modules>
-
-    <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/trunk/</url>
-    </scm>
 
     <properties>
         <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
