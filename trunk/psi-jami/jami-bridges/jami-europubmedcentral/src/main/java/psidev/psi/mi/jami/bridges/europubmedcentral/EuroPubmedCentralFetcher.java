@@ -66,7 +66,6 @@ public class EuroPubmedCentralFetcher
         if(id == null || id.length() < 1)
             throw new IllegalArgumentException("Can not fetch on an empty identifier");
 
-
         Collection<Result> results = Collections.EMPTY_LIST;
 
         final String query = "EXT_ID:" + id + " SRC:"+IDENTIFIER_TYPE;

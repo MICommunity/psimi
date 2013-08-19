@@ -80,13 +80,8 @@ public class CachedOlsFetcher
         initialiseCache( EHCACHE_CONFIG_FILE );
     }
 
-    public void initialiseCache(File settingsFile) {
-        throw new IllegalStateException("loading by File is not yet implemented") ;
-    }
-
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
-        //if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
         cacheManager =  CacheManager.create( url );
         cacheManager.addCache(CACHE_NAME);
         this.cache = cacheManager.getCache( CACHE_NAME );

@@ -103,8 +103,6 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-
-
         // == InteractorType =================================================
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
             if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -18,6 +19,13 @@
     </properties>
 
     <dependencies>
+        <!-- Bridges Core -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>bridges-core</artifactId>
+            <version>${jami.version}</version>
+        </dependency>
+
         <!-- Caching Service-->
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -32,20 +40,7 @@
             <version>1.18</version>
         </dependency>
 
-        <dependency>
-            <groupId>psidev.psi.mi.jami.bridges</groupId>
-            <artifactId>bridges-core</artifactId>
-            <version>${jami.version}</version>
-        </dependency>
 
-        <!-- Testing -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <optional>true</optional>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <repositories>

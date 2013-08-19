@@ -67,7 +67,7 @@ public abstract class AbstractExperimentEnricher
     }
 
     /**
-     * Processes the specific details of the experiment which are delegated to a subEnricher.
+     * Processes the specific details of the experiment which are not delegated to a subEnricher.
      * @param experimentToEnrich    The experiment which is to be enriched
      * @throws EnricherException    Thrown if problems are encountered in a fetcher.
      */

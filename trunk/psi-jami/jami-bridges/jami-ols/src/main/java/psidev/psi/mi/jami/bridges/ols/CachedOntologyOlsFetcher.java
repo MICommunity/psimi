@@ -169,18 +169,11 @@ public class CachedOntologyOlsFetcher
         initialiseCache( EHCACHE_CONFIG_FILE );
     }
 
-    public void initialiseCache(File settingsFile) {
-        throw new IllegalStateException("File is not yet implemented") ;
-    }
 
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCACHE configuration: " + url );
-        cacheManager = new CacheManager( url );
+        cacheManager =  CacheManager.create( url );
         cacheManager.addCache(CACHE_NAME);
-        //if(cacheManager.getCacheNames().length>0){  //TODO see if there's a better way to validate this
-            //this.cache = cacheManager.getCache( cacheManager.getCacheNames()[0] );
-        //}
         this.cache = cacheManager.getCache( CACHE_NAME );
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }

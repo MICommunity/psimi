@@ -26,7 +26,6 @@ public abstract class AbstractOrganismEnricher
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractOrganismEnricher.class.getName());
 
-
     public static final int RETRY_COUNT = 5;
 
     private OrganismFetcher fetcher = null;
@@ -117,7 +116,7 @@ public abstract class AbstractOrganismEnricher
 
     /**
      *
-     * @return  An organism fetcher if one has been set or a mock organism fetcher if it is has not.
+     * @return  The current organism fetcher
      */
     public OrganismFetcher getOrganismFetcher() {
         return fetcher;

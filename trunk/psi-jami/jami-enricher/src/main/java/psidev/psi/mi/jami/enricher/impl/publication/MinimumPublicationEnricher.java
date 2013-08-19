@@ -25,7 +25,7 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
     @Override
     protected void processPublication(Publication publicationToEnrich) {
 
-        // PUBMED ID
+        // == PUBMED ID ======================================================================
         if(publicationToEnrich.getPubmedId() == null
                 && publicationFetched.getPubmedId() != null) {
             publicationToEnrich.setPubmedId(publicationFetched.getPubmedId());
@@ -34,7 +34,7 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
         }
 
 
-        // AUTHORS
+        // == AUTHORS =======================================================================
         if(!publicationFetched.getAuthors().isEmpty()){
             for(String author : publicationFetched.getAuthors()){
                 if(publicationToEnrich.getAuthors().add(author))
@@ -45,7 +45,15 @@ public class MinimumPublicationEnricher extends AbstractPublicationEnricher {
         }
 
 
-        // RELEASE DATE
+        // == PUBLICATION DATE ============================================================
+        if(publicationToEnrich.getPublicationDate() == null
+                && publicationFetched.getPublicationDate() != null) {
+            publicationToEnrich.setPublicationDate(publicationFetched.getPublicationDate());
+            if(getPublicationEnricherListener() != null)
+                getPublicationEnricherListener().onPublicationDateUpdated(publicationToEnrich , null);
+        }
+
+        // == RELEASE DATE =================================================================
         if(publicationToEnrich.getReleasedDate() == null
                 && publicationFetched.getReleasedDate() != null) {
             publicationToEnrich.setReleasedDate(publicationFetched.getReleasedDate());

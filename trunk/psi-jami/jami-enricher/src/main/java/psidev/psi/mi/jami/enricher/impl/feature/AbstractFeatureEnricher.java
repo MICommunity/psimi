@@ -35,12 +35,22 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
 
     protected Collection<F> featuresToEnrich;
 
+    /**
+     * Enriches a collection of features.
+     * @param featuresToEnrich   The features which are to be enriched.
+     * @throws EnricherException    Thrown if problems are encountered in a fetcher
+     */
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException {
         for(F featureToEnrich : featuresToEnrich){
             enrichFeature(featureToEnrich);
         }
     }
 
+    /**
+     * Enrichment of a single feature.
+     * @param featureToEnrich       The feature which is to be enriched.
+     * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     */
     public void enrichFeature(F featureToEnrich) throws EnricherException {
         if(featureToEnrich == null)
             throw new IllegalArgumentException("Feature enricher was passed a null feature.");
@@ -57,10 +67,21 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             getFeatureEnricherListener().onEnrichmentComplete(featureToEnrich, EnrichmentStatus.SUCCESS, null);
     }
 
+    /**
+     * Processes the specific details of the feature which are not delegated to a subEnricher.
+     * @param featureToEnrich       The feature being enriched.
+     * @throws EnricherException    Thrown if problems are encountered in a fetcher.
+     */
     protected void processFeature(F featureToEnrich) throws EnricherException{
-
     }
 
+    /**
+     * The way in which an invalid range in processed.
+     * Adds the invalid range as an annotation to the feature.
+     * @param feature   The feature being enriched.
+     * @param range     The range which is invalid.
+     * @param message   The reason the range is invalid.
+     */
     protected void processInvalidRange(Feature feature, Range range , String message){
         Annotation annotation = AnnotationUtils.createCaution("Invalid range: " +message );
 
@@ -69,21 +90,39 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
             getFeatureEnricherListener().onAddedAnnotation(feature , annotation);
     }
 
+    /**
+     * Sets the listener of feature changes. Can be null.
+     * @param featureEnricherListener   The listener of feature changes.
+     */
     public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener) {
         this.listener = featureEnricherListener;
     }
 
+    /**
+     * Retrieves the listener of feature changes.
+     * May be null if changes are not being listened to.
+     * @return  The current listener of feature changes.
+     */
     public FeatureEnricherListener getFeatureEnricherListener() {
         return listener;
     }
 
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+    /**
+     * Sets the subEnricher for CvTerms. Can be null.
+     * @param cvTermEnricher    The CvTerm enricher to be used
+     */
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher) {
         this.cvTermEnricher = cvTermEnricher;
     }
 
-    public CvTermEnricher getCvTermEnricher(){
+    /**
+     * Gets the subEnricher for CvTerms. Can be null.
+     * @return  The CvTerm enricher which is being used.
+     */
+    public CvTermEnricher getCvTermEnricher() {
         return cvTermEnricher;
     }
+
 
     public void setFeaturesToEnrich(Participant participant){
 

@@ -13,6 +13,11 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 public class MaximumFeatureEvidenceEnricher
         extends AbstractFeatureEnricher<FeatureEvidence>{
 
+    /**
+     * Processes the specific details of the feature which are not delegated to a subEnricher.
+     * @param featureToEnrich       The feature being enriched.
+     * @throws EnricherException    Thrown if problems are encountered in a fetcher.
+     */
     @Override
     public void processFeature(FeatureEvidence featureToEnrich)
             throws EnricherException {
