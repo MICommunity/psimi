@@ -6,7 +6,7 @@ then
       OUTPUT_FILE=$2;
       echo "Input file: ${INPUT_FILE}"
       echo "Output file: ${OUTPUT_FILE}"
-      mvn clean install -Penrich-file -DmiFile=${INPUT_FILE} -DmiOutput=${OUPUT_FILE} -DspringConfig=classpath:META-INF/mitab-enricher-spring.xml -Dmaven.test.skip
+      mvn clean install -Penrich-file -DmiFile=${INPUT_FILE} -DmiOutput=${OUPUT_FILE} -Dspring.config=classpath:META-INF/mitab-enricher-spring.xml -Dmaven.test.skip
 else
       echo ""
       echo "ERROR: wrong number of parameters ($#)."
