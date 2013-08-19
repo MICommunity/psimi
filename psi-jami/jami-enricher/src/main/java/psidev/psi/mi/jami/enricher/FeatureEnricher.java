@@ -23,13 +23,36 @@ public interface FeatureEnricher <F extends Feature>{
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichFeature(F featureToEnrich) throws EnricherException;
+    /**
+     * Enriches a collection of features.
+     * @param featuresToEnrich   The features which are to be enriched.
+     * @throws EnricherException    Thrown if problems are encountered in a fetcher
+     */
     public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException;
 
     public void setFeaturesToEnrich(Participant participant);
 
-    public void setFeatureEnricherListener(FeatureEnricherListener listener);
+    /**
+     * Sets the listener of feature changes. Can be null.
+     * @param featureEnricherListener   The listener of feature changes.
+     */
+    public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener);
+    /**
+     * Retrieves the listener of feature changes.
+     * May be null if changes are not being listened to.
+     * @return  The current listener of feature changes.
+     */
     public FeatureEnricherListener getFeatureEnricherListener();
 
+    /**
+     * Sets the subEnricher for CvTerms. Can be null.
+     * @param cvTermEnricher    The CvTerm enricher to be used
+     */
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+    /**
+     * Gets the subEnricher for CvTerms. Can be null.
+     * @return  The CvTerm enricher which is being used.
+     */
     public CvTermEnricher getCvTermEnricher();
+
 }

@@ -219,85 +219,92 @@ public class OlsFetcher
 
 
 
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
+    public Collection<CvTerm> getCvTermByInexactName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException {
+        /*
+        if(searchName == null){
+            throw new IllegalArgumentException("The search term provided for CvTermFetcher was null.");
+        }else if (ontologyDatabaseName == null) {
+            throw new IllegalArgumentException("The database provided for CvTermFetcher was null. "+
+                    "The search term was ["+searchName+"].");
+        }
+
+        CvTerm ontologyDatabase;
+        if(ontologyDatabaseName.equalsIgnoreCase("psi-mi")) ontologyDatabase = CvTermUtils.createPsiMiDatabase();
+        else if (ontologyDatabaseName.equalsIgnoreCase("psi-mod")) ontologyDatabase = CvTermUtils.createPsiModDatabase();
+        else ontologyDatabase = new DefaultCvTerm(ontologyDatabaseName);
+
+        String databaseIdentifier = dbMap.get(ontologyDatabaseName);
+
+
+        HashMap<String,String> termNamesMap;
+
+        try{
+            termNamesMap = queryService.getTermsByName(searchName, databaseIdentifier , false);
+        }catch (RemoteException e) {
+            throw new BridgeFailedException(e);
+        }
+
+        if(termNamesMap.isEmpty()) return null;
+        else if(termNamesMap.size() == 1){
+            Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
+            if(entry.getValue() == null || entry.getKey() == null){
+                throw new IllegalArgumentException("OLS service returned null values in an exact name search.");
+            }
+            // Key is the Identifier, value is the full name
+
+
+            Xref identifierXref = new DefaultXref(ontologyDatabase, entry.getKey());
+            CvTerm cvTermEnriched = new DefaultCvTerm(entry.getValue(), entry.getValue(), identifierXref);
+
+            return completeIdentifiedCvTerm(cvTermEnriched, entry.getKey(), ontologyDatabaseName);
+        }        */
         return null;
     }
 
     public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database)
             throws BridgeFailedException {
-        /*
-        if(searchName == null){
-            throw new BadSearchTermException("The provided search term was null.");
-        } else if (database == null) {
-            throw new BadSearchTermException("The provided database was null. " +
-                    "Search term was ["+searchName+"].");
-        }
 
-        HashMap<String,String> identifierMap = null;
-
-        String databaseIdentifier = dbMap.get(database.getShortName());
-
-        if(useFuzzySearch){
-            identifierMap = bridge.fetchIDByBestGuessTerm(searchName, databaseIdentifier);
-        }else{
-            identifierMap = bridge.fetchIDByExactTerm(searchName, databaseIdentifier);
-        }
-
-        if(identifierMap == null || identifierMap.size() < 1) return null;
-
-        else if(identifierMap.size() > 1){
-            if(log.isDebugEnabled()){
-                log.debug("The searchName ["+searchName+"] gave "+identifierMap.size()+" IDs. " +
-                        "Search was fuzzy: "+useFuzzySearch);
-                for(Object key : identifierMap.keySet()){
-                    log.debug("Term ["+searchName+"] got the ID: "+key.toString()+" with name "+identifierMap.get(key));
-                }
-            }
-            return null;
-        }
-
-        String resultIdentifier = null;
-        String resultTerm = null;
-
-        for(Object key : identifierMap.keySet()){
-            resultIdentifier = key.toString();
-            resultTerm = identifierMap.get(resultIdentifier);
-        }
-
-        if(resultIdentifier == null || resultTerm == null){
-            throw new BadResultException(
-                    "The searchName ["+searchName+"] gave unexpected null results. "
-                            +"ID is ["+resultIdentifier+"] and term is ["+resultTerm+"].");
-        }
-
-        //Todo Check these fields are used correctly
-        Xref identifierXref = new DefaultXref(database, resultIdentifier);
-        CvTerm cvTermEnriched = new DefaultCvTerm(resultTerm,resultTerm,identifierXref);
-
-        return completeIdentifiedCvTerm(cvTermEnriched, resultIdentifier, database.getShortName()); */
         return null;
     }
 
     public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Collection<CvTerm> results = new ArrayList<CvTerm>();
+        for(String identifier : identifiers){
+            results.add(getCvTermByIdentifier(identifier, ontologyDatabaseName));
+        }
+        return results;
     }
 
     public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Collection<CvTerm> results = new ArrayList<CvTerm>();
+        for(String identifier : identifiers){
+            results.add(getCvTermByIdentifier(identifier, ontologyDatabase));
+        }
+        return results;
     }
 
     public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName)
             throws BridgeFailedException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        Collection<CvTerm> results = new ArrayList<CvTerm>();
+        for(String name : searchNames){
+            results.add(getCvTermByExactName(name, ontologyDatabaseName));
+        }
+        return results;
     }
 
 
     public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames)
             throws BridgeFailedException {
-        return null;
+
+        Collection<CvTerm> results = new ArrayList<CvTerm>();
+        for(String name : searchNames){
+            results.add(getCvTermByExactName(name));
+        }
+        return results;
     }
 
 

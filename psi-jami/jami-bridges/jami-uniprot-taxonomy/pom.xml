@@ -20,33 +20,25 @@
     </properties>
 
     <dependencies>
-
-        <!-- Caching Service-->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.7.2</version>
-        </dependency>
-
+        <!-- Bridges Core -->
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>bridges-core</artifactId>
             <version>${jami.version}</version>
         </dependency>
 
-        <!-- Testing -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <optional>true</optional>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.hp.hpl.jena</groupId>
             <artifactId>jena</artifactId>
             <version>2.6.4</version>
+        </dependency>
+
+
+        <!-- Caching Service-->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.7.2</version>
         </dependency>
 
     </dependencies>

@@ -120,16 +120,13 @@ public class OntologyOlsFetcher
         if(! loopProtection.contains(identity.getId())){
             loopProtection.add(identity.getId());
             try{
-                HashMap<String, String> parents = queryService.getTermParents(
-                        identity.getId() , null);
+                HashMap<String, String> parents = queryService.getTermParents(identity.getId() , null);
                 for(Map.Entry<String,String> entry: parents.entrySet()){
 
                         OntologyTerm parent = getCvTermByIdentifier(entry.getKey() , identity.getDatabase() , 0 , depth);
                         if(parent == null) throw new IllegalArgumentException("Null parent from known identifier.");
                         ontologyTermNeedingParents.getParents().add(parent);
-
                     }
-
             } catch (RemoteException e) {
                 loopProtection.clear();
                 throw new BridgeFailedException(e);

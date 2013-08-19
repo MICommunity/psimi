@@ -14,6 +14,13 @@ import psidev.psi.mi.jami.utils.PositionUtils;
 public class BasicFeatureUpdater<F extends  Feature>
         extends BasicFeatureEnricher <F>{
 
+    /**
+     * The way in which an invalid range in processed.
+     * Sets the limits on the range to undefined
+     * @param feature   The feature being enriched.
+     * @param range     The range which is invalid.
+     * @param message   The reason the range is invalid.
+     */
     @Override
     protected void processInvalidRange(Feature feature, Range range , String message){
         super.processInvalidRange(feature, range , message);

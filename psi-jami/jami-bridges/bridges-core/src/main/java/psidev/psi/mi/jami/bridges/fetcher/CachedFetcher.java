@@ -16,13 +16,6 @@ public interface CachedFetcher {
     public void initialiseCache();
 
     /**
-     * Initialises the cache with the settings in the provided file.
-     *
-     * @param settingsFile  A file with the settings for an EHCache
-     */
-    public void initialiseCache(File settingsFile);
-
-    /**
      * Initialises the cache with the settings in the file at the location.
      *
      * @param settingsFile  The path of a file with the settings for an EHCache

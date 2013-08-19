@@ -25,24 +25,17 @@ import java.util.regex.Pattern;
 public class UniprotFetcher
         implements ProteinFetcher {
 
-    private UniprotTranslationUtil uniprotTranslationUtil = new UniprotTranslationUtil();
-
-    UniProtQueryService uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
+    private UniprotTranslationUtil uniprotTranslationUtil;
+    private UniProtQueryService uniProtQueryService;
     private final Logger log = LoggerFactory.getLogger(UniprotFetcher.class.getName());
 
-    //private UniprotBridge bridge;
-
     public UniprotFetcher() {
-        // log.debug("Starting uniprot bridge");
+        uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
+        uniprotTranslationUtil = new UniprotTranslationUtil();
     }
-
-
 
     public static final Pattern UNIPROT_PRO_REGEX = Pattern.compile("PRO[_|-][0-9]+");
     public static final Pattern UNIPROT_ISOFORM_REGEX = Pattern.compile("-[0-9]");
-    // public static final Pattern UNIPROT_MASTER_REGEX = Pattern.compile(
-    //         "[A-NR-Z][0-9][A-Z][A-Z0-9][A-Z0-9][0-9]|"+
-    //         "[OPQ][0-9][A-Z0-9][A-Z0-9][A-Z0-9][0-9]");
 
     /**
      *
@@ -59,29 +52,25 @@ public class UniprotFetcher
 
         if(UNIPROT_PRO_REGEX.matcher(identifier).find()){
             String proIdentifier = identifier.substring(identifier.indexOf("PRO") + 4, identifier.length());
-            //log.debug("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
             proteins = fetchFeatureByIdentifier(proIdentifier);
-        } else if (UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){ //UNIPROT_MASTER_REGEX.matcher(identifier).find()
-                proteins = fetchIsoformsByIdentifier(identifier);
+        } else if (UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){
+            proteins = fetchIsoformsByIdentifier(identifier);
         } else {
-            proteins = fetchMastersByIdentifier(identifier);
+            proteins = fetchMasterProteinsByIdentifier(identifier);
         }
 
-        if(proteins == null || proteins.isEmpty()){
+        if(proteins == null || proteins.isEmpty())
             return Collections.EMPTY_LIST;
-        }
-
-        return proteins;
+        else
+            return proteins;
     }
 
     public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         Collection<Protein> proteinResults = new ArrayList<Protein>();
-
         for(String identifier : identifiers){
             proteinResults.addAll(getProteinsByIdentifier(identifier));
         }
-
-        return proteinResults;//Collections.EMPTY_LIST;
+        return proteinResults;
     }
 
 
@@ -93,10 +82,9 @@ public class UniprotFetcher
      * @return
      * @throws BridgeFailedException
      */
-    public Collection<Protein> fetchMastersByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Protein> fetchMasterProteinsByIdentifier(String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException(
                 "Attempted to search for protein on a null identifier.");
-
         Collection<Protein> proteins = new ArrayList<Protein>();
 
         try{
@@ -130,14 +118,14 @@ public class UniprotFetcher
                 "Attempted to search for protein isoform on a null identifier.");
         Collection<Protein> proteins = new ArrayList<Protein>();
 
-        try{                                                       //TODO UPPERCASE?
+        try{
             Query query = UniProtQueryBuilder.buildExactMatchIdentifierQuery(identifier);
             EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
 
             while(entries.hasNext()){
                 UniProtEntry entry = entries.next();
                 AlternativeProductsIsoform isoform = UniprotTranslationUtil.findIsoformInEntry(entry, identifier);
-                if(isoform == null) log.warn("No isoform in entry "+entry.getUniProtId());// TODO should this be more serious?
+                if(isoform == null) log.warn("No isoform in entry "+entry.getUniProtId());
                 else{
                     proteins.add(UniprotTranslationUtil.getProteinIsoformFromEntry(entry, isoform, identifier));
                 }

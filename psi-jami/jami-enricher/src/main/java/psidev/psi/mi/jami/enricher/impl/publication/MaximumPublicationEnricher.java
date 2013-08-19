@@ -31,9 +31,7 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
     protected void processPublication(Publication publicationToEnrich) {
         super.processPublication(publicationToEnrich);
 
-        /**
-         * DOI
-         */
+        // == DOI ===================================================================
         if(publicationToEnrich.getDoi() == null
                 && publicationFetched.getDoi() != null) {
             publicationToEnrich.setDoi(publicationFetched.getDoi());
@@ -41,10 +39,7 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
                 getPublicationEnricherListener().onDoiUpdate(publicationToEnrich , null);
         }
 
-        //IDS
-        //IMEX
-
-        // TITLE
+        // == TITLE ==================================================================
         if(publicationToEnrich.getTitle() == null
                 && publicationFetched.getTitle() != null) {
             publicationToEnrich.setTitle(publicationFetched.getTitle());
@@ -52,7 +47,7 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
                 getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , null);
         }
 
-        // JOURNAL
+        // == JOURNAL ===================================================================
         if(publicationToEnrich.getJournal() == null
                 && publicationFetched.getJournal() != null) {
             publicationToEnrich.setJournal(publicationFetched.getJournal());
@@ -60,19 +55,9 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
                 getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , null);
         }
 
-        /**
-         * PUBLICATION DATE
-         */
-        if(publicationToEnrich.getPublicationDate() == null
-                && publicationFetched.getPublicationDate() != null) {
-            publicationToEnrich.setPublicationDate(publicationFetched.getPublicationDate());
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onPublicationDateUpdated(publicationToEnrich , null);
-        }
 
-        /**
-         * XREFS
-         */
+
+        // == XREFS ===========================================================================
         if(!publicationFetched.getXrefs().isEmpty()){
             XrefMerger xrefMerger = new XrefMerger();
             xrefMerger.merge(publicationFetched.getXrefs() , publicationToEnrich.getXrefs() , false);
@@ -83,13 +68,15 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
             }
         }
 
-        // ANNOTATIONS
+        // == IDS ===========================================================================================
 
-        // EXPERIMENTS
+        // == IMEX ==========================================================================================
 
-        // CURATION DEPTH
+        // == ANNOTATIONS ===================================================================================
 
-        // SOURCE
+        // == EXPERIMENTS ===================================================================================
+
+        // == CURATION DEPTH ================================================================================
 
     }
 

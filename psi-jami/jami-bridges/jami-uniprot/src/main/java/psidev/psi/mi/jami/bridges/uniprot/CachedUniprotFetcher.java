@@ -79,15 +79,8 @@ public class CachedUniprotFetcher
         initialiseCache( EHCACHE_CONFIG_FILE );
     }
 
-
-    public void initialiseCache(File settingsFile) {
-        // TODO
-        throw new IllegalStateException("Implementation has not been completed");
-    }
-
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
-        if( log.isDebugEnabled() ) log.debug( "Loading EHCache configuration: " + url );
         cacheManager =  CacheManager.create( url );
         cacheManager.addCache( CACHE_NAME );
         this.cache = cacheManager.getCache( CACHE_NAME );

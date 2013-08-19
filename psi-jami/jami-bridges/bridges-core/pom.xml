@@ -18,16 +18,16 @@
 
     <dependencies>
 
-        <!-- Testing -->
+        <!-- Testing
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <optional>true</optional>
             <scope>test</scope>
-        </dependency>
+        </dependency>  -->
 
-        <!-- Logging -->
+        <!-- Logging
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -37,7 +37,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.1</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <repositories>

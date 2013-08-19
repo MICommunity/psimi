@@ -19,6 +19,7 @@
     </properties>
 
     <dependencies>
+        <!-- JAMI Core -->
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-core</artifactId>
