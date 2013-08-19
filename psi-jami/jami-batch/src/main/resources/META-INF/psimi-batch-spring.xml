@@ -20,7 +20,7 @@
     </bean>
 
     <!-- Initialize the baisc datasource for spring batch -->
-    <bean id="batchDataSourceInitializer" class="psidev.psi.mi.jami.batch.BatchDataSourceInitializer" lazy-init="true">
+    <bean id="batchDataSourceInitializer" class="psidev.psi.mi.jami.batch.BatchDataSourceInitializer">
         <property name="dataSource" ref="basicBatchDataSource"/>
         <property name="initScripts" value="${batch.db.initScripts}"/>
     </bean>
