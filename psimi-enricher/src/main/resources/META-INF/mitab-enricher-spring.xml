@@ -11,6 +11,15 @@
 
     <context:component-scan base-package="psidev.psi.mi.enricher" />
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:/enricher.properties</value>
+            </list>
+        </property>
+    </bean>
+
     <import resource="base-enricher-spring.xml"/>
 
     <!-- listeners-->
@@ -114,7 +123,7 @@
     </batch:step>
 
     <!-- enricher job -->
-    <batch:job id="interactionEnricherJob" job-repository="basicBatchJobRegistry" parent="basicBatchJob">
+    <batch:job id="interactionEnricherJob" job-repository="basicBatchJobRepository" parent="basicBatchJob">
 
         <batch:listeners>
             <batch:listener ref="basicJobLoggerListener"/>
