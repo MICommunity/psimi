@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
+import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 
 import java.io.*;
@@ -135,7 +136,7 @@ public class PsiInteractionEvidenceWriter implements ItemWriter<InteractionEvide
         PsiJami.initialiseInteractionEvidenceWriters();
         // add mandatory options
         this.writerOptions.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, this.outputBufferedWriter);
-        this.writerOptions.put(InteractionWriterFactory.OUTPUT_FORMAT_OPTION_KEY, InteractionObjectCategory.evidence);
+        this.writerOptions.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, InteractionObjectCategory.evidence);
 
         InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
         this.interactionWriter = writerFactory.getInteractionWriterWith(this.writerOptions);
