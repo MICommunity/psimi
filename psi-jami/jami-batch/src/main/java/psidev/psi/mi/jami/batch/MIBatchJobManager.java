@@ -57,7 +57,7 @@ public class MIBatchJobManager {
 
         // loads the spring context defining beans and jobs
         ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[] {"/META-INF/psimi-batch-spring.xml", springApplicationContext});
+                new String[] {springApplicationContext});
 
         MIBatchJobManager rm = (MIBatchJobManager)
                 context.getBean("psiMIJobManager");
