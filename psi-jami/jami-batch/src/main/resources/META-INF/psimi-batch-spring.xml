@@ -11,10 +11,6 @@
 
     <context:component-scan base-package="psidev.psi.mi.jami.batch" />
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath*:/spring-batch.properties"/>
-    </bean>
-
     <!-- The basic data source for spring batch-->
     <bean id="basicBatchDataSource" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="true">
         <property name="driverClassName" value="${batch.db.driver}"/>
