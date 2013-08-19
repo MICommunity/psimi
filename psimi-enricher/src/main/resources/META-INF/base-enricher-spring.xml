@@ -12,7 +12,7 @@
     <context:component-scan base-package="psidev.psi.mi.enricher" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath*:/enricher.properties"/>
+        <property name="locations" value="classpath*:/spring-batch.properties,classpath*:/enricher.properties"/>
     </bean>
 
     <!-- reader -->
