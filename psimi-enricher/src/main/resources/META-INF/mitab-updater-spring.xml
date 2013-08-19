@@ -114,7 +114,7 @@
     </batch:step>
 
     <!-- enricher job -->
-    <batch:job id="interactionEnricherJob" job-repository="basicBatchJobRegistry" parent="basicBatchJob">
+    <batch:job id="interactionEnricherJob" job-repository="basicBatchJobRepository" parent="basicBatchJob">
 
         <batch:listeners>
             <batch:listener ref="basicJobLoggerListener"/>
