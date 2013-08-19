@@ -81,12 +81,13 @@
 
     <!-- interaction writer -->
     <bean id="spokeExpansion" class="psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion"/>
+
     <bean id="mitabInteractionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
         <property name="writerOptions">
             <map>
                 <entry key="mitab_header_key" value="${mitab.header}" />
                 <entry key="mitab_extended_key" value="${mitab.extended}" />
-                <entry key="mitab_version_key" value="${mitab.version}"/>
+                <entry key="mitab_version_key" value-type="psidev.psi.mi.jami.tab.MitabVersion" value="${mitab.version}"/>
                 <entry key="complex_expansion_key" value-ref="spokeExpansion"/>
             </map>
         </property>
