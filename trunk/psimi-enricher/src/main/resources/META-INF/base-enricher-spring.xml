@@ -11,9 +11,7 @@
 
     <context:component-scan base-package="psidev.psi.mi.enricher" />
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath*:/spring-batch.properties,classpath*:/enricher.properties"/>
-    </bean>
+    <import resource="classpath*:/META-INF/psimi-batch-spring.xml"/>
 
     <!-- reader -->
     <bean id="miFileResource" class="org.springframework.core.io.FileSystemResource">

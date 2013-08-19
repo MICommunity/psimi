@@ -12,10 +12,10 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>PSI :: Enricher</name>
 
-    <!--<properties>
+    <properties>
         <mi.file>${miFile}</mi.file>
-        <output.file>${miOutput}</output.file>
-    </properties> -->
+        <mi.output>${miOutput}</mi.output>
+    </properties>
 
     <build>
         <plugins>
