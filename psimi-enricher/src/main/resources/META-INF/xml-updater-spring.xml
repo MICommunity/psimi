@@ -83,7 +83,9 @@
 
     <bean id="xmlInteractionEvidenceWriter" class="psidev.psi.mi.enricher.batch.writer.PsiInteractionEvidenceWriter">
         <property name="writerOptions">
-            <map/>
+            <map>
+                <entry key="output_format_key" value="psi25_xml"/>
+            </map>
         </property>
     </bean>
 
