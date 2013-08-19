@@ -11,6 +11,15 @@
 
     <context:component-scan base-package="psidev.psi.mi.enricher" />
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:/enricher.properties</value>
+            </list>
+        </property>
+    </bean>
+
     <import resource="classpath*:/META-INF/psimi-batch-spring.xml"/>
 
     <!-- reader -->

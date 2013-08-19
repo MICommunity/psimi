@@ -4,6 +4,8 @@ if [ $# == 2 ];
 then
       INPUT_FILE=$1;
       OUTPUT_FILE=$2;
+      MAVEN_OPTS="$MAVEN_OPTS -DmiFile=${INPUT_FILE} -DmiOutput=${OUTPUT_FILE}"
+      export MAVEN_OPTS
       echo "Input file: ${INPUT_FILE}"
       echo "Output file: ${OUTPUT_FILE}"
       mvn clean install -Penrich-file -DmiFile=${INPUT_FILE} -DmiOutput=${OUTPUT_FILE} -Dspring.config=classpath:META-INF/mitab-enricher-spring.xml -Dmaven.test.skip
