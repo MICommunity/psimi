@@ -16,6 +16,13 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <batch.db.driver></batch.db.driver>
+    <batch.db.url></batch.db.url>
+    <batch.db.user></batch.db.user>
+    <batch.db.password></batch.db.password>
+    <batch.db.initScripts></batch.db.initScripts>
+    <batch.step.startLimit></batch.step.startLimit>
+    <batch.step.commitInterval></batch.step.commitInterval>
   </properties>
 
   <dependencies>
