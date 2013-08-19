@@ -8,7 +8,7 @@ then
       export MAVEN_OPTS
       echo "Input file: ${INPUT_FILE}"
       echo "Output file: ${OUTPUT_FILE}"
-      mvn clean install -Penrich-file -DmiFile=${INPUT_FILE} -DmiOutput=${OUTPUT_FILE} -Dspring.config=classpath:META-INF/mitab-enricher-spring.xml -Dmaven.test.skip
+      mvn clean install -Penrich-file -Dspring.config=classpath:META-INF/mitab-enricher-spring.xml -Dmaven.test.skip
 else
       echo ""
       echo "ERROR: wrong number of parameters ($#)."
