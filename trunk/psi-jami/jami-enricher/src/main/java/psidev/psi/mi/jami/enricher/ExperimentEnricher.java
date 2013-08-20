@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * The experimentEnricher can enrich either a single experiment or a collection.
  * It has no fetcher and only enrich through subEnrichers.
- * It has subEnrichers for CvTerms, Organisms, and publications.
+ * Sub enrichers: CvTerm, Organism, Publication.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13

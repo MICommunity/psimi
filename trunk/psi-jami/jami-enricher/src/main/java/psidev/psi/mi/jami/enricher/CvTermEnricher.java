@@ -9,7 +9,8 @@ import java.util.Collection;
 
 /**
  * The CvTerm enricher is an enricher which can enrich either single cvTerm or a collection.
- * The CvTerm enricher has no subEnrichers. A cvTerm enricher must be initiated with a fetcher.
+ * A cvTerm enricher must be initiated with a fetcher.
+ * Sub enrichers: none.
  *
  * @author  Gabriel Aldam (galdam@ebi.ac.uk)
  * @since   13/05/13

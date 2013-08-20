@@ -26,7 +26,7 @@
   </properties>
 
   <dependencies>
-      <!-- commons  for jdbc data sources and batch data source initializer-->
+      <!-- commons for jdbc data sources and batch data source initializer-->
       <dependency>
           <groupId>commons-dbcp</groupId>
           <artifactId>commons-dbcp</artifactId>

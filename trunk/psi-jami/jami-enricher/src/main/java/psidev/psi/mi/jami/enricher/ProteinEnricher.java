@@ -10,7 +10,10 @@ import java.util.Collection;
 
 /**
  * The Protein enricher is an enricher which can enrich either single protein or a collection.
- * The Protein enricher has one subEnrichers. A protein enricher must be initiated with a protein fetcher.
+ * A protein enricher must be initiated with a protein fetcher.
+ * Sub enrichers: CvTerm, Organism.
+ * Additionally, the protein enricher has a protein remapper for finding dead or demerged proteins.
+ *
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  16/05/13

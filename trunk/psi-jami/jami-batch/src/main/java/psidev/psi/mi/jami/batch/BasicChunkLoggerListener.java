@@ -24,7 +24,7 @@ public class BasicChunkLoggerListener implements StepExecutionListener, ChunkLis
     private long startTime;
 
     public ExitStatus afterStep(StepExecution stepExecution) {
-        log.info("Steap finished after " + startTime + " milliseconds");
+        log.info("Step finished after " + startTime + " milliseconds");
 
         return null;
     }

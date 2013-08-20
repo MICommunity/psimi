@@ -9,8 +9,8 @@ import java.util.Collection;
 
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
- * The publicationEnricher has no subEnrichers.
  * It must be initiated with a fetcher.
+ * Sub enriches: CvTerm.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13

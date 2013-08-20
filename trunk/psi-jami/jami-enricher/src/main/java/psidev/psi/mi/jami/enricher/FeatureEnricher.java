@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * The featureEnricher can enrich either a single feature or a collection.
  * It has no fetcher and only enrich through subEnrichers.
- * It has a subEnricher for CvTerms.
+ * Sub enricher: CvTerm.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
