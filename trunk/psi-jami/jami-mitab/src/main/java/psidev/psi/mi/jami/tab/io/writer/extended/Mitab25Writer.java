@@ -118,8 +118,6 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Par
     @Override
     public void start() throws MIIOException {
         super.start();
-        this.modelledInteractionWriter.start();
-        this.interactionEvidenceWriter.start();
     }
 
     @Override
@@ -128,25 +126,24 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Par
             throw new IllegalStateException("The Mitab writer has not been initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
+        boolean hasJustStarted = !hasStarted();
+        if (!hasStarted()){
+           start();
+        }
+
         if (interaction instanceof InteractionEvidence){
             this.interactionEvidenceWriter.write((InteractionEvidence) interaction);
-            if (!hasStarted()){
-                this.modelledInteractionWriter.start();
-                setStarted(true);
+            if (hasJustStarted){
+               this.modelledInteractionWriter.start();
             }
         }
         else if (interaction instanceof ModelledInteraction){
             this.modelledInteractionWriter.write((ModelledInteraction) interaction);
-            if (!hasStarted()){
+            if (hasJustStarted){
                 this.interactionEvidenceWriter.start();
-                setStarted(true);
             }
         }
         else {
-            if (!hasStarted()){
-                this.modelledInteractionWriter.start();
-                this.interactionEvidenceWriter.start();
-            }
             super.write(interaction);
         }
     }
