@@ -64,6 +64,7 @@
     <bean id="mitabExperimentUpdater" class="psidev.psi.mi.jami.enricher.impl.experiment.BasicExperimentEnricher">
         <property name="cvTermEnricher" ref="mitabCvTermUpdater"/>
         <property name="publicationEnricher" ref="mitabPublicationUpdater"/>
+        <property name="organismEnricher" ref="mitabOrganismUpdater" />
         <property name="experimentEnricherListener" ref="experimentListener"/>
     </bean>
 

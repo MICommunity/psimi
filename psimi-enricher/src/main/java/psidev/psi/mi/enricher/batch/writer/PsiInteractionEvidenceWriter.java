@@ -61,7 +61,7 @@ public class PsiInteractionEvidenceWriter implements ItemWriter<InteractionEvide
         try {
             File outputFile = output.getFile();
 
-            if (!outputFile.getParentFile().canWrite()) {
+            if (!outputFile.getCanonicalFile().getParentFile().canWrite()) {
                 logger.warn("Cannot write to the output file " + output.getDescription());
                 throw new IllegalStateException("Needs to write in output file: " + output);
             }
