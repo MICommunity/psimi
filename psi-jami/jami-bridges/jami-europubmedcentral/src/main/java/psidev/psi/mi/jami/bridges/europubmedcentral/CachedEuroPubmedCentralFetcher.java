@@ -70,7 +70,8 @@ public class CachedEuroPubmedCentralFetcher
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
         cacheManager =  CacheManager.create( url );
-        cacheManager.addCache( CACHE_NAME );
+        if(! cacheManager.cacheExists(CACHE_NAME))
+            cacheManager.addCache(CACHE_NAME);
         this.cache = cacheManager.getCache( CACHE_NAME );
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
