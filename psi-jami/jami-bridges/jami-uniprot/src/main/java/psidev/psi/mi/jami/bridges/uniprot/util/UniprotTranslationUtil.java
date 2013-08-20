@@ -58,6 +58,10 @@ public class UniprotTranslationUtil {
 
     private final static Logger log = LoggerFactory.getLogger(UniprotTranslationUtil.class.getName());
 
+    public UniprotTranslationUtil(){
+
+    }
+
     /**
      * SHORTNAME = recommended short name // full name // identifier
      * FULLNAME = recommended  full name
@@ -196,7 +200,7 @@ public class UniprotTranslationUtil {
     private static void generateChecksums(Protein p) throws BridgeFailedException {
         // CHECKSUMS
         if(p.getSequence() != null){
-            //TODO add an MI term if one is created
+           /* //TODO add an MI term if one is created
             Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
             p.getChecksums().add(crc64Checksum);
 
@@ -215,7 +219,7 @@ public class UniprotTranslationUtil {
                             "Error was encountered whilst generating RogID in protein fetcher. "+
                                     exception.toString());
                 }
-            }
+            } */
         }
     }
 

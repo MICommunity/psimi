@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /**
  * The enricher for Interactions which can enrich a single interaction or a collection.
- * The interaction enricher has subEnrichers for participants and cvTerms.
- * It has no fetcher.
+ * The interaction enricher has no fetcher.
+ * Sub enrichers: Participant, CvTerm.
  *
  * @param <I>   The type of interaction to be enriched
  * @param <P>   The type of participants in the interaction

@@ -9,7 +9,8 @@ import java.util.Collection;
 
 /**
  * An enricher for bioactive entities which can either enrich a single entity or a collection.
- * This enricher has no sub enrichers. The enricher must be initiated with a fetcher.
+ * The enricher must be initiated with a fetcher.
+ * Sub enrichers: None.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  07/08/13

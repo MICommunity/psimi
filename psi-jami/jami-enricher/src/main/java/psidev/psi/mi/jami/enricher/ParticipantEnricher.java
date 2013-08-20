@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.Participant;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * Sub enrichers: Protein, CvTerm, Feature, Bioactive3Entity
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13

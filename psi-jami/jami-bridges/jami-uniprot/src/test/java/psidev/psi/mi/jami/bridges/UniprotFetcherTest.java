@@ -21,13 +21,28 @@ import static org.junit.Assert.*;
  */
 public class UniprotFetcherTest {
 
-    private final Logger log = LoggerFactory.getLogger(UniprotFetcherTest.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(UniprotFetcherTest.class.getName());
     private UniprotFetcher fetcher;
 
     @Before
     public void initialiseFetcher() {
         fetcher = new UniprotFetcher();
     }
+
+
+    String[] testterms = {"O95487","P53992","P53992","Q15436"};
+
+    @Test
+    public void test_featured_terms_normal() throws BridgeFailedException {
+
+        //"Q15436","Q15436",,"Q15436"
+        for(String term : testterms){
+
+            log.info("Term is "+term);
+            fetcher.getProteinsByIdentifier(term);
+        }
+    }
+
 
 
     @Test

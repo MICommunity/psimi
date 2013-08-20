@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -37,25 +38,12 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
 
 
     public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
-
-        /*if ( !TaxonomyUtils.isSupportedTaxid( taxid ) ) {
-            throw new TaxonomyServiceException( "You must give a positive taxid or one of the exception supported " +
-                    "by PSI-MI (-1, -2, -3, -4, -5): " + taxid );
-        }  */
-
         Organism organism = OrganismUtil.createSpecialistOrganism(taxID);
-
         if ( organism == null ) {
             organism = getOrganismFromStream( taxID );
         }
-
         return organism;
     }
-
-
-
-
-
 
     private Organism getOrganismFromStream(int taxID) throws BridgeFailedException {
         final InputStream stream;
@@ -69,47 +57,40 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
         try{
             Model model = ModelFactory.createDefaultModel();
             model.read(stream, null);
-
-            // check first if it has been replaced by another record (would contain the replacedBy property)
             Resource taxonomyResource = model.getResource(UNIPROT_TAXONOMY_NS + taxID);
-            Property replacedByProperty = model.getProperty(UNIPROT_NS, "replacedBy");
 
-            boolean isReplaced = model.contains(taxonomyResource, replacedByProperty);
+            if(log.isWarnEnabled()){
+                // check first if it has been replaced by another record (would contain the replacedBy property)
+                Property replacedByProperty = model.getProperty(UNIPROT_NS, "replacedBy");
+                boolean isReplaced = model.contains(taxonomyResource, replacedByProperty);
 
-            if (isReplaced) {
-                Statement replacedStatement = model.getProperty(taxonomyResource, replacedByProperty);
-                String replacedUri = replacedStatement.getObject().asResource().getURI();
+                if (isReplaced) {
+                    Statement replacedStatement = model.getProperty(taxonomyResource, replacedByProperty);
+                    String replacedUri = replacedStatement.getObject().asResource().getURI();
+                    String replacedByTaxidStr = replacedUri.replaceAll(UNIPROT_TAXONOMY_NS, "");
+                    int replacedByTaxid = Integer.parseInt(replacedByTaxidStr);
 
-                String replacedByTaxidStr = replacedUri.replaceAll(UNIPROT_TAXONOMY_NS, "");
-                int replacledByTaxid = Integer.parseInt(replacedByTaxidStr);
-
-
-                 /*
-
-                organism = getOrganismFromStream(replacledByTaxid);
-                organism.oldTax(taxid); */
-                if( log.isInfoEnabled() )
-                     log.info( "WARNING - the taxid replacement for " + taxID + " is " + replacledByTaxid );
-                return null;
-                //organism = getOrganismFromStream(taxID);
-
-
-            } else {
-                organism = new DefaultOrganism( taxID );
+                    log.info( "WARNING - the taxid replacement for " + taxID + " is " + replacedByTaxid );
+                }
             }
+
+            organism = new DefaultOrganism( taxID );
 
             // standard properties
             /*String mnemonic = getLiteral(model, taxonomyResource, "mnemonic");
             if (mnemonic != null) term.setMnemonic(mnemonic);  */
 
             String commonName = getLiteral(model, taxonomyResource, "commonName");
-            organism.setCommonName(commonName);
+            if(commonName != null && commonName.length() > 0)
+                organism.setCommonName(commonName);
 
             String scientificName = getLiteral(model, taxonomyResource, "scientificName");
-            organism.setScientificName(scientificName);
+            if(scientificName != null && scientificName.length() > 0)
+                organism.setScientificName(scientificName);
 
             String synonym = getLiteral(model, taxonomyResource, "synonym");
-            organism.getAliases().add(new DefaultAlias(synonym));
+            if(synonym != null && synonym.length() > 0)
+                organism.getAliases().add(new DefaultAlias(synonym));
         }
         finally {
             try {
@@ -122,17 +103,19 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
     }
 
     public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+        Collection<Organism> results = new ArrayList<Organism>();
+        for(Integer taxID : taxIDs){
+            results.add(getOrganismByTaxID(taxID));
+        }
+        return results;
     }
 
 
     private String getLiteral(Model model, Resource taxonomyResource, String propertyName) {
         Property property = model.getProperty(UNIPROT_NS, propertyName);
-
         if (model.contains(taxonomyResource, property)) {
             return model.getProperty(taxonomyResource, property).getLiteral().getString();
         }
-
         return null;
     }
 }

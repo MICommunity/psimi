@@ -41,6 +41,8 @@
             <version>LATEST</version>
         </dependency>
 
+
+
         <dependency>
             <groupId>uk.ac.ebi.intact.commons</groupId>
             <artifactId>irefindex-seguid</artifactId>
