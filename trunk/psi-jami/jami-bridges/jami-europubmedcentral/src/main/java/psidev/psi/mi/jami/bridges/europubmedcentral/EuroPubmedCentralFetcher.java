@@ -17,8 +17,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 
-// NOTE: Run a Maven build to generate the sources for ebi.cdb.webservice
-
 /**
  * Uses the EuroPubmedCentral WSDL SOAP service to fetch publication entries.
  *
@@ -37,11 +35,19 @@ public class EuroPubmedCentralFetcher
 
     private WSCitationImplService service;
 
-
+    /**
+     * Initiates the EuroPubmedCentral fetcher
+     * @throws BridgeFailedException
+     */
     public EuroPubmedCentralFetcher() throws BridgeFailedException {
         this("http://www.ebi.ac.uk/webservices/citexplore/v3.0.1/service?wsdl");
     }
 
+    /**
+     * Uses the current WSDL URL to initiate the service.
+     * @param wsdlUrl   The URL of the current version of WSDL in use.
+     * @throws BridgeFailedException
+     */
     private EuroPubmedCentralFetcher(String wsdlUrl) throws BridgeFailedException {
         try {
             service = new WSCitationImplService(new URL(wsdlUrl), new QName("http://webservice.cdb.ebi.ac.uk/", "WSCitationImplService"));

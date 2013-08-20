@@ -27,6 +27,12 @@ public class EnsemblFetcher
 
     protected static final Logger log = LoggerFactory.getLogger(EnsemblFetcher.class.getName());
 
+    /**
+     * Queries for the gene in Ensembl, then repeats the query on Ensembl Genomes if the entry was not found.
+     * @param identifier    An Ensembl or Ensembl Genomes identifier.
+     * @return              A complete gene record. Null if the identifier can not be found.
+     * @throws BridgeFailedException
+     */
     public Gene getGeneByIdentifierOfUnknownType(String identifier) throws BridgeFailedException {
         Gene gene = getGeneByEnsemblIdentifier(identifier);
         if(gene == null)
@@ -35,7 +41,7 @@ public class EnsemblFetcher
     }
 
     public Gene getGeneByEnsemblIdentifier(String identifier) throws BridgeFailedException {
-        String server = "http://beta.rest.ensembl.org";
+        final String server = "http://beta.rest.ensembl.org";
         Gene gene = new DefaultGene(identifier);
         gene.setEnsembl(identifier);
         gene = fetchID(identifier , gene , server);
@@ -45,7 +51,7 @@ public class EnsemblFetcher
     }
 
     public Gene getGeneByEnsemblGenomesIdentifier(String identifier) throws BridgeFailedException {
-        String server = "http://beta.rest.ensemblgenomes.org/";
+        final String server = "http://beta.rest.ensemblgenomes.org/";
         Gene gene = new DefaultGene(identifier);
         gene.setEnsemblGenome(identifier);
         gene = fetchID(identifier , gene , server);
@@ -54,7 +60,14 @@ public class EnsemblFetcher
         return gene;
     }
 
-
+    /**
+     * Makes a query to the address provided. Assumes that the protocol is that of Ensembl and Ensembl Genomes.
+     * @param identifier    The identifier to query for.
+     * @param geneFetched   The fetched gene to enrich.
+     * @param server        The REST server to query against.
+     * @return              The completed gene record. Null if it could not be found.
+     * @throws BridgeFailedException
+     */
     private Gene fetchID(String identifier , Gene geneFetched , String server) throws BridgeFailedException {
         try{
             String queryType = "/lookup/id/";
@@ -66,7 +79,6 @@ public class EnsemblFetcher
             HttpURLConnection httpConnection = (HttpURLConnection)connection;
 
             int responseCode = httpConnection.getResponseCode();
-
             if(responseCode != 200) {
                 String cause;
                 if(responseCode == 400) return null; //Entry could not be found
@@ -83,6 +95,7 @@ public class EnsemblFetcher
             log.info(jsonTxt);
             JSONObject jsonObj = (JSONObject) JSONSerializer.toJSON( jsonTxt );
 
+            //TODO integrate the returned information into the fetched gene
             // System.out.println(jsonObj.getString("dbname"));
             // System.out.println(jsonObj.getString("primary_id"));
 
@@ -124,7 +137,6 @@ public class EnsemblFetcher
 
             for(Object obj : json){
                 JSONObject JSONobj = (JSONObject)obj;
-                // log.info("db: "+JSONobj.getString("dbname"));
                 if(JSONobj.getString("dbname").equalsIgnoreCase("EntrezGene"))
                     geneFetched.setEntrezGeneId(JSONobj.getString("primary_id"));
                 else if(JSONobj.getString("dbname").equalsIgnoreCase("Refseq"))
