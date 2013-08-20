@@ -127,6 +127,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         else if (writeHeader){
             try {
                 writeHeader();
+                writer.write(MitabUtils.LINE_BREAK);
             } catch (IOException e) {
                 throw new MIIOException("Impossible to write the MITAB header.", e);
             }
@@ -207,6 +208,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
                     writeHeader = true;
                     version = MitabVersion.v2_5;
                     columnFeeder = null;
+                    hasStarted = false;
                 }
             }
         }
@@ -224,6 +226,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
                 writeHeader = true;
                 version = MitabVersion.v2_5;
                 columnFeeder = null;
+                hasStarted = false;
             }
         }
     }
@@ -250,7 +253,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
             writer.write(MitabUtils.LINE_BREAK);
         }
         else {
-            hasStarted = true;
+            start();
         }
 
         // id A
