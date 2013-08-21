@@ -39,11 +39,15 @@ public class LazyCvTerm implements CvTerm {
     private Collection<Annotation> annotations = null;
     private Collection<Alias> synonyms = null;
 
+    private Xref primaryIdentifier;
     private Xref miIdentifier;
     private Xref modIdentifier;
     private Xref parIdentifier;
 
-    private String MI_ONTOLOGY = "MI";
+    public static final String MI_ONTOLOGY = "MI";
+    public static final String MOD_ONTOLOGY = "MOD";
+    public static final String PAR_ONTOLOGY = "PAR";
+    public static final String GO_ONTOLOGY = "GO";
 
 
     public LazyCvTerm(String miTermName , boolean exact) throws BridgeFailedException {
@@ -70,6 +74,7 @@ public class LazyCvTerm implements CvTerm {
             Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
             fullName = entry.getValue();
             setMIIdentifier(entry.getKey());
+            primaryIdentifier = miIdentifier;
         } else {
             fullName = null;
             identifiers = null;
@@ -94,12 +99,64 @@ public class LazyCvTerm implements CvTerm {
 
         try {
             String fullName = queryService.getTermById(miIdentifier, MI_ONTOLOGY);
-            log.info("retrieved fullname = "+fullName);
             if(fullName.equals(miIdentifier)){
                 // The OLS service echoes back the original query term if it can not be found
+                log.warn("MiIdentifier "+miIdentifier+" could not be found");
                 initialiseIdentifiers();
             } else {
                 setMIIdentifier(miIdentifier);
+                primaryIdentifier = this.miIdentifier;
+                this.fullName = fullName;
+            }
+        } catch (RemoteException e) {
+            throw new BridgeFailedException(e);
+        }
+    }
+
+    /**
+     * Create a new LazyCvTerm using an MiIdentifier
+     * @param identifier          The identifier of the cvTerm.
+     * @throws BridgeFailedException
+     */
+    public LazyCvTerm(String identifier , String ontology) throws BridgeFailedException {
+        if (identifier == null)
+            throw new IllegalArgumentException("The short name is required and cannot be null");
+
+        initialiseIdentifiers();
+        if (MI_ONTOLOGY.equals(ontology)){
+            setMIIdentifier(identifier);
+            primaryIdentifier = miIdentifier;
+        } else if(MOD_ONTOLOGY.equals(ontology)) {
+            setMODIdentifier(identifier);
+            primaryIdentifier = modIdentifier;
+        } else if(PAR_ONTOLOGY.equals(ontology)) {
+            setPARIdentifier(identifier);
+            primaryIdentifier = parIdentifier;
+        } else if(GO_ONTOLOGY.equals(ontology)) {
+            primaryIdentifier = XrefUtils.createIdentityXref("GO" , identifier);
+            identifiers.add(primaryIdentifier);
+        } else {
+            primaryIdentifier = XrefUtils.createIdentityXref(ontology , identifier);
+            identifiers.add(primaryIdentifier);
+        }
+
+
+        try{
+            queryService = new QueryServiceLocator().getOntologyQuery();
+        }catch (ServiceException e) {
+            queryService = null;
+            throw new BridgeFailedException(e);
+        }
+
+        try {
+            String fullName = queryService.getTermById(identifier, ontology);
+            if(fullName.equals(identifier)){
+                // The OLS service echoes back the original query term if it can not be found
+                log.warn("identifier "+identifier+" could not be found in ontology "+ontology);
+                initialiseIdentifiers();
+                clearPropertiesLinkedToIdentifiers();
+            } else {
+                setMIIdentifier(identifier);
                 this.fullName = fullName;
             }
         } catch (RemoteException e) {
@@ -150,7 +207,7 @@ public class LazyCvTerm implements CvTerm {
     }
 
     protected void initialiseIdentifiers(){
-        this.identifiers = new ArrayList<Xref>();
+        this.identifiers = new CvTermIdentifierList();
     }
 
     public String getMIIdentifier() {
@@ -335,13 +392,11 @@ public class LazyCvTerm implements CvTerm {
     }
 
     protected void clearPropertiesLinkedToIdentifiers() {
+        primaryIdentifier = null;
         miIdentifier = null;
         modIdentifier = null;
         parIdentifier = null;
     }
-
-
-
 
 
     @Override
@@ -399,8 +454,7 @@ public class LazyCvTerm implements CvTerm {
      * The identifier is used to find the metadata
      * which can be used to find the identifier phrases for short labels and synonyms.
      *
-     * @param identifier
-     * @return          A new CvTerm with any results that were found filled in.
+     * @param identifier    The identifier that is being used.
      * @throws BridgeFailedException
      */
     private void fetchMetaDataByIdentifier(String identifier, String ontology)
@@ -418,17 +472,17 @@ public class LazyCvTerm implements CvTerm {
 
     /**
      * Scans the meta data to find the short name if one is present.
-     * @param metaDataMap
-     * @param database
-     * @return
+     * @param metaDataMap           The map of data to search in.
+     * @param miTermOntologyName    The name used for the ontology in MI.
+     * @return                      The short name if one is found.
      */
-    private String extractShortNameFromMetaData(Map metaDataMap, String database){
+    private String extractShortNameFromMetaData(Map metaDataMap, String miTermOntologyName){
 
         String META_DATA_SEPARATOR = "_";
         String SHORTLABEL_IDENTIFIER;
-        if(database == null) return null;
-        else if(database.equals("psi-mi")) SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
-        else if(database.equals("psi-mod")) SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
+        if(miTermOntologyName == null) return null;
+        else if(miTermOntologyName.equals(PSI_MI)) SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
+        else if(miTermOntologyName.equals(PSI_MOD)) SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
         else return null;
 
         if (metaDataMap != null) {
@@ -444,8 +498,8 @@ public class LazyCvTerm implements CvTerm {
 
     /**
      * Scans the meta data to find the description if one is present.
-     * @param metaDataMap
-     * @return
+     * @param metaDataMap   The map of metaData to scrape for a definition
+     * @return              The definition for the term if it is known.
      */
     private String extractDescriptionFromMetaData(Map metaDataMap){
         String DEFINITION_KEY = "definition";
@@ -462,18 +516,18 @@ public class LazyCvTerm implements CvTerm {
 
     /**
      * Scans the meta data to find the synonyms if any are present.
-     * @param metaDataMap
-     * @param database
-     * @return
+     * @param metaDataMap           The map of meatData to scrape for synonyms.
+     * @param miTermOntologyName    The name of the ontology used in psi-mi
+     * @return                      The synonyms. Or an empty collection if none are found.
      */
-    private Collection<Alias> extractSynonymsFromMetaData(Map metaDataMap, String database){
+    private Collection<Alias> extractSynonymsFromMetaData(Map metaDataMap, String miTermOntologyName){
 
         String META_DATA_SEPARATOR = "_";
         String SYNONYM_IDENTIFIER;
         String EXACT_SYNONYM_KEY = "exact_synonym";
-        if(database == null) return Collections.EMPTY_LIST;
-        else if(database.equalsIgnoreCase("psi-mi")) SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
-        else if(database.equalsIgnoreCase("psi-mod")) SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
+        if(miTermOntologyName == null) return Collections.EMPTY_LIST;
+        else if(miTermOntologyName.equalsIgnoreCase(PSI_MI)) SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
+        else if(miTermOntologyName.equalsIgnoreCase(PSI_MOD)) SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
         else return Collections.EMPTY_LIST;
 
         if (metaDataMap != null) {
