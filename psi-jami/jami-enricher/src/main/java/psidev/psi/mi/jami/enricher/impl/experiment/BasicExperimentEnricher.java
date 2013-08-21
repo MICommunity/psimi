@@ -18,6 +18,6 @@ public class BasicExperimentEnricher
      */
     @Override
     protected void processExperiment(Experiment experimentToEnrich) throws EnricherException {
-
+        // Empty - no additional processing
     }
 }

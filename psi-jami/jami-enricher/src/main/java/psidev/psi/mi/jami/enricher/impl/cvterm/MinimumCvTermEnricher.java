@@ -35,7 +35,7 @@ public class MinimumCvTermEnricher
 
         //ShortName not checked - never null
 
-        //FullName
+        // == FullName ================================================================
         if(cvTermToEnrich.getFullName() == null
                 && cvTermFetched.getFullName() != null){
 
@@ -44,7 +44,7 @@ public class MinimumCvTermEnricher
                 getCvTermEnricherListener().onFullNameUpdate(cvTermToEnrich, null);
         }
 
-        //Identifiers
+        // == Identifiers =============================================================
         if(! cvTermFetched.getIdentifiers().isEmpty()) {
 
             XrefMerger merger = new XrefMerger();

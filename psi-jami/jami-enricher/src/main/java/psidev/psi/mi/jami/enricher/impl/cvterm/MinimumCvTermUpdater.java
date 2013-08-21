@@ -36,7 +36,7 @@ public class MinimumCvTermUpdater
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
 
-        // Short Name
+        // == Short Name ====================================================================
         if(cvTermFetched.getShortName() != null
                 && ! cvTermFetched.getShortName().equalsIgnoreCase(cvTermToEnrich.getShortName())){
 
@@ -46,7 +46,7 @@ public class MinimumCvTermUpdater
                 getCvTermEnricherListener().onShortNameUpdate(cvTermToEnrich, oldValue);
         }
 
-        //Full Name
+        // == Full Name ======================================================================
         if(cvTermFetched.getFullName() != null
                 && ! cvTermFetched.getFullName().equalsIgnoreCase(cvTermToEnrich.getFullName())){
 
@@ -56,7 +56,7 @@ public class MinimumCvTermUpdater
                 getCvTermEnricherListener().onFullNameUpdate(cvTermToEnrich, oldValue);
         }
 
-        //Identifiers
+        // == Identifiers ===================================================================
         if(! cvTermFetched.getIdentifiers().isEmpty()) {
             XrefMerger merger = new XrefMerger();
             merger.merge(cvTermFetched.getIdentifiers() , cvTermToEnrich.getIdentifiers() , false);

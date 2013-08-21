@@ -14,6 +14,11 @@ import psidev.psi.mi.jami.utils.PositionUtils;
 public class BasicFeatureUpdater<F extends  Feature>
         extends BasicFeatureEnricher <F>{
 
+    @Override
+    protected void processFeature(F featureToEnrich) throws EnricherException {
+        super.processFeature(featureToEnrich);
+    }
+
     /**
      * The way in which an invalid range in processed.
      * Sets the limits on the range to undefined

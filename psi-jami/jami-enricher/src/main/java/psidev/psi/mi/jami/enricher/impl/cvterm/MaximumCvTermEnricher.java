@@ -36,6 +36,7 @@ public class MaximumCvTermEnricher
     protected void processCvTerm(CvTerm cvTermToEnrich){
         super.processCvTerm(cvTermToEnrich);
 
+        // == Synonyms =======================================================
         if(! cvTermFetched.getSynonyms().isEmpty()) {
             AliasMerger merger = new AliasMerger();
             merger.merge(cvTermFetched.getSynonyms() , cvTermToEnrich.getSynonyms());

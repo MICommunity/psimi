@@ -81,6 +81,11 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
      * @throws IOException
      */
     public StatisticsWriter(File successFile, File failureFile, String jamiObject) throws IOException {
+        /**
+         * Removing the following statement would allow the creation of a stats writer with a null file.
+         * You may want to do this in future to bypass the creation of empty success stats files,
+         * caused by fetcher-less enrichers which generate no stats and therefore have nothing to record..
+         * */
         if(successFile == null || failureFile == null)
             throw new IllegalArgumentException("Provided a null file to write to.");
 
