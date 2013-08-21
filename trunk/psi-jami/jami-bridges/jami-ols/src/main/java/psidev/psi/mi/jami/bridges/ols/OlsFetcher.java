@@ -2,8 +2,7 @@ package psidev.psi.mi.jami.bridges.ols;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.*;
-import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -27,8 +26,7 @@ import java.util.Map;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/05/13
  */
-public class OlsFetcher
-        implements CvTermFetcher<CvTerm> {
+public class OlsFetcher extends AbstractOlsFetcher<CvTerm>{
 
     protected final Logger log = LoggerFactory.getLogger(OlsFetcher.class.getName());
     private Query queryService;
@@ -305,6 +303,11 @@ public class OlsFetcher
             results.add(getCvTermByExactName(name));
         }
         return results;
+    }
+
+    @Override
+    protected CvTerm instantiateCvTerm(String termName, Xref identity) {
+        return new LazyCvTerm(queryService, termName, identity);
     }
 
 
