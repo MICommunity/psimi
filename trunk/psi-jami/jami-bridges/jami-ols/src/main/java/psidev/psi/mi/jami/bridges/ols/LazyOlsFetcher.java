@@ -15,10 +15,9 @@ import java.util.Collection;
 public class LazyOlsFetcher implements CvTermFetcher<CvTerm> {
 
     public CvTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
-        if(! ontologyDatabaseName.equals("psi-mi"))
-            return null;
-        LazyCvTerm cvTerm = new LazyCvTerm(termIdentifier);
-        if(cvTerm.getMIIdentifier() == null)
+
+        LazyCvTerm cvTerm = new LazyCvTerm(termIdentifier, ontologyDatabaseName);
+        if(cvTerm.getFullName() == null)
             return null;
         return cvTerm;
     }
@@ -33,10 +32,9 @@ public class LazyOlsFetcher implements CvTermFetcher<CvTerm> {
     }
 
     public CvTerm getCvTermByExactName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
-        if(! ontologyDatabaseName.equals("psi-mi"))
-            return null;
-        LazyCvTerm cvTerm = new LazyCvTerm(searchName , true);
-        if(cvTerm.getMIIdentifier() == null)
+
+        LazyCvTerm cvTerm = new LazyCvTerm(searchName , ontologyDatabaseName, true);
+        if(cvTerm.getFullName() == null)
             return null;
         return cvTerm;
     }

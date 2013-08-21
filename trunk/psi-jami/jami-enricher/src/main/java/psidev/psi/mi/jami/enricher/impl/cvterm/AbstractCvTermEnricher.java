@@ -28,7 +28,6 @@ public abstract class AbstractCvTermEnricher
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractCvTermEnricher.class.getName());
 
-
     public static final int RETRY_COUNT = 5;
 
     private CvTermFetcher fetcher = null;
@@ -162,9 +161,7 @@ public abstract class AbstractCvTermEnricher
 
 
         for(Xref identifierXref : cvTermToEnrich.getIdentifiers()){
-            if( cvTermFetched != null ) break;
-
-
+            //if( cvTermFetched != null ) break;
             try {
                 cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
                         identifierXref.getId(), identifierXref.getDatabase());

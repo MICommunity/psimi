@@ -9,5 +9,5 @@ import psidev.psi.mi.jami.model.ModelledFeature;
  * @since 13/08/13
  */
 public class BasicModelledFeatureEnricher
-        extends AbstractFeatureEnricher<ModelledFeature>{
+        extends BasicFeatureEnricher<ModelledFeature>{
 }

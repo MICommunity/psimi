@@ -92,9 +92,7 @@ public class UniprotFetcher
             EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
 
             while(entries.hasNext()){
-                log.info("Cycling through entries for identifier "+identifier);
-                UniProtEntry currentEntry = entries.next();
-                proteins.add(uniprotTranslationUtil.getProteinFromEntry(currentEntry)); //TOdo method should be static
+                proteins.add(uniprotTranslationUtil.getProteinFromEntry(entries.next())); //TOdo method should be static
             }
         }catch (RemoteDataAccessException e){
             throw new BridgeFailedException("Problem with Uniprot Service.",e);

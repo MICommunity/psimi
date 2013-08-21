@@ -50,32 +50,78 @@ public class LazyCvTerm implements CvTerm {
     public static final String GO_ONTOLOGY = "GO";
 
 
-    public LazyCvTerm(String miTermName , boolean exact) throws BridgeFailedException {
-        if (miTermName == null)
-            throw new IllegalArgumentException("The short name is required and cannot be null");
-
+    private void startQueryService() throws BridgeFailedException {
         try{
             queryService = new QueryServiceLocator().getOntologyQuery();
         }catch (ServiceException e) {
             queryService = null;
             throw new BridgeFailedException(e);
         }
+    }
+
+    public LazyCvTerm(String miTermName , boolean exact) throws BridgeFailedException {
+        this(miTermName, PSI_MI , exact);
+    }
+
+    public LazyCvTerm(String termName , String ontologyName, boolean exact) throws BridgeFailedException {
+        if (termName == null)
+            throw new IllegalArgumentException("The short name is required and cannot be null");
+        if (ontologyName == null)
+            throw new IllegalArgumentException("The ontology name is required and cannot be null");
+
+        startQueryService();
+
+        String olsOntologyName = null;
+        if(PSI_MI.equalsIgnoreCase(ontologyName))
+            olsOntologyName = MI_ONTOLOGY;
+        else if(PSI_MOD.equalsIgnoreCase(ontologyName))
+            olsOntologyName = MOD_ONTOLOGY;
+        else if(PSI_PAR.equalsIgnoreCase(ontologyName))
+            olsOntologyName = PAR_ONTOLOGY;
+        else if("GO".equalsIgnoreCase(ontologyName))
+            olsOntologyName = GO_ONTOLOGY;
 
         HashMap<String,String> termNamesMap;
         try{
-            termNamesMap = queryService.getTermsByExactName(miTermName, MI_ONTOLOGY);
+            termNamesMap = queryService.getTermsByExactName(termName, olsOntologyName);
             if(!exact && termNamesMap.isEmpty())
-                termNamesMap = queryService.getTermsByName(miTermName, MI_ONTOLOGY , false);
+                termNamesMap = queryService.getTermsByName(termName, olsOntologyName , false);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
         }
 
+        log.info("entries: "+termNamesMap.size());
+
+
         if(termNamesMap.size() == 1){
             Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
+            log.info(entry.getValue()+","+entry.getKey());
             fullName = entry.getValue();
-            setMIIdentifier(entry.getKey());
-            primaryIdentifier = miIdentifier;
+
+            initialiseIdentifiers();
+            if (PSI_MI.equalsIgnoreCase(ontologyName)){
+                setMIIdentifier(entry.getKey());
+                primaryIdentifier = miIdentifier;
+            } else if(PSI_MOD.equalsIgnoreCase(ontologyName)) {
+                setMODIdentifier(entry.getKey());
+                primaryIdentifier = modIdentifier;
+            } else if(PSI_PAR.equalsIgnoreCase(ontologyName)) {
+                setPARIdentifier(entry.getKey());
+                primaryIdentifier = parIdentifier;
+            } else if(GO_ONTOLOGY.equalsIgnoreCase(ontologyName)) {
+                primaryIdentifier = XrefUtils.createIdentityXref("GO" , entry.getKey());
+                identifiers.add(primaryIdentifier);
+            } else {
+                primaryIdentifier = XrefUtils.createIdentityXref(ontologyName , entry.getKey());
+                identifiers.add(primaryIdentifier);
+            }
+            log.info(fullName);
+
         } else {
+            if(termNamesMap.size() > 1){
+                log.info("A choice could not be made on the following:");
+                log.info(termNamesMap.entrySet().toString());
+            }
             fullName = null;
             identifiers = null;
         }
@@ -87,30 +133,7 @@ public class LazyCvTerm implements CvTerm {
      * @throws BridgeFailedException
      */
     public LazyCvTerm(String miIdentifier) throws BridgeFailedException {
-        if (miIdentifier == null)
-            throw new IllegalArgumentException("The short name is required and cannot be null");
-
-        try{
-            queryService = new QueryServiceLocator().getOntologyQuery();
-        }catch (ServiceException e) {
-            queryService = null;
-            throw new BridgeFailedException(e);
-        }
-
-        try {
-            String fullName = queryService.getTermById(miIdentifier, MI_ONTOLOGY);
-            if(fullName.equals(miIdentifier)){
-                // The OLS service echoes back the original query term if it can not be found
-                log.warn("MiIdentifier "+miIdentifier+" could not be found");
-                initialiseIdentifiers();
-            } else {
-                setMIIdentifier(miIdentifier);
-                primaryIdentifier = this.miIdentifier;
-                this.fullName = fullName;
-            }
-        } catch (RemoteException e) {
-            throw new BridgeFailedException(e);
-        }
+        this( miIdentifier , PSI_MI );
     }
 
     /**
@@ -118,45 +141,40 @@ public class LazyCvTerm implements CvTerm {
      * @param identifier          The identifier of the cvTerm.
      * @throws BridgeFailedException
      */
-    public LazyCvTerm(String identifier , String ontology) throws BridgeFailedException {
+    public LazyCvTerm(String identifier , String ontologyName) throws BridgeFailedException {
         if (identifier == null)
             throw new IllegalArgumentException("The short name is required and cannot be null");
+        if (ontologyName == null)
+            throw new IllegalArgumentException("The ontology name is required and cannot be null");
+
+        startQueryService();
 
         initialiseIdentifiers();
-        if (MI_ONTOLOGY.equals(ontology)){
+        if (PSI_MI.equalsIgnoreCase(ontologyName)){
             setMIIdentifier(identifier);
             primaryIdentifier = miIdentifier;
-        } else if(MOD_ONTOLOGY.equals(ontology)) {
+        } else if(PSI_MOD.equalsIgnoreCase(ontologyName)) {
             setMODIdentifier(identifier);
             primaryIdentifier = modIdentifier;
-        } else if(PAR_ONTOLOGY.equals(ontology)) {
+        } else if(PSI_PAR.equalsIgnoreCase(ontologyName)) {
             setPARIdentifier(identifier);
             primaryIdentifier = parIdentifier;
-        } else if(GO_ONTOLOGY.equals(ontology)) {
+        } else if(GO_ONTOLOGY.equalsIgnoreCase(ontologyName)) {
             primaryIdentifier = XrefUtils.createIdentityXref("GO" , identifier);
             identifiers.add(primaryIdentifier);
         } else {
-            primaryIdentifier = XrefUtils.createIdentityXref(ontology , identifier);
+            primaryIdentifier = XrefUtils.createIdentityXref(ontologyName , identifier);
             identifiers.add(primaryIdentifier);
         }
 
-
-        try{
-            queryService = new QueryServiceLocator().getOntologyQuery();
-        }catch (ServiceException e) {
-            queryService = null;
-            throw new BridgeFailedException(e);
-        }
-
         try {
-            String fullName = queryService.getTermById(identifier, ontology);
+            String fullName = queryService.getTermById(identifier, null);
             if(fullName.equals(identifier)){
                 // The OLS service echoes back the original query term if it can not be found
-                log.warn("identifier "+identifier+" could not be found in ontology "+ontology);
+                log.warn("identifier "+identifier+" could not be found in ontology "+ontologyName);
                 initialiseIdentifiers();
                 clearPropertiesLinkedToIdentifiers();
             } else {
-                setMIIdentifier(identifier);
                 this.fullName = fullName;
             }
         } catch (RemoteException e) {
@@ -168,7 +186,7 @@ public class LazyCvTerm implements CvTerm {
     public String getShortName() {
         if(shortName == null){
             try {
-                fetchMetaDataByIdentifier(getMIIdentifier() , MI_ONTOLOGY);
+                fetchMetaDataByIdentifier(getMIIdentifier());
             } catch (BridgeFailedException e) {
                 log.warn("Lazy CvTerm throws bridge failed");
             }
@@ -310,7 +328,7 @@ public class LazyCvTerm implements CvTerm {
     public Collection<Alias> getSynonyms() {
         if (synonyms == null){
             try {
-                fetchMetaDataByIdentifier(getMIIdentifier() , MI_ONTOLOGY);
+                fetchMetaDataByIdentifier(getMIIdentifier());
             } catch (BridgeFailedException e) {
                 log.warn("Lazy CvTerm throws bridge failed");
             }
@@ -457,12 +475,17 @@ public class LazyCvTerm implements CvTerm {
      * @param identifier    The identifier that is being used.
      * @throws BridgeFailedException
      */
-    private void fetchMetaDataByIdentifier(String identifier, String ontology)
+    private void fetchMetaDataByIdentifier(String identifier)
             throws BridgeFailedException{
         try{
             Map<String,String> metaDataMap = queryService.getTermMetadata(identifier, null);
-            shortName = extractShortNameFromMetaData(metaDataMap , ontology);
-            synonyms = extractSynonymsFromMetaData(metaDataMap , ontology);
+            if(primaryIdentifier == null)
+                log.info("null primary");
+            if(primaryIdentifier.getDatabase() == null)
+                log.info("null database");
+            log.info("using "+primaryIdentifier.getDatabase().getShortName());
+            shortName = extractShortNameFromMetaData(metaDataMap , primaryIdentifier.getDatabase().getShortName());
+            synonyms = extractSynonymsFromMetaData(metaDataMap , primaryIdentifier.getDatabase().getShortName());
             if(synonyms.isEmpty())
                 initialiseSynonyms();
         }catch (RemoteException e) {

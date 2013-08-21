@@ -29,22 +29,6 @@ public class UniprotFetcherTest {
         fetcher = new UniprotFetcher();
     }
 
-
-    String[] testterms = {"O95487","P53992","P53992","Q15436"};
-
-    @Test
-    public void test_featured_terms_normal() throws BridgeFailedException {
-
-        //"Q15436","Q15436",,"Q15436"
-        for(String term : testterms){
-
-            log.info("Term is "+term);
-            fetcher.getProteinsByIdentifier(term);
-        }
-    }
-
-
-
     @Test
     public void test_stuff(){
         String[] identifiers = {
@@ -60,9 +44,6 @@ public class UniprotFetcherTest {
             log.warn("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
 
         }
-
-
-
     }
 
     //--------------MASTER
@@ -84,7 +65,6 @@ public class UniprotFetcherTest {
             throws BridgeFailedException {
 
         String[] identifiers = {"Q6ZRI6-3", "P13055-2"};
-
         for(String identifier : identifiers){
             //assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
             assertTrue(UniprotFetcher.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());

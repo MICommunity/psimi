@@ -41,7 +41,7 @@ public class MaximumCvTermUpdater
         super.processCvTerm(cvTermToEnrich);
 
 
-        // Add synonyms
+        // == Synonyms =============================================================
         if(! cvTermFetched.getSynonyms().isEmpty()) {
             AliasMerger merger = new AliasMerger();
             merger.merge(cvTermFetched.getSynonyms() , cvTermToEnrich.getSynonyms());

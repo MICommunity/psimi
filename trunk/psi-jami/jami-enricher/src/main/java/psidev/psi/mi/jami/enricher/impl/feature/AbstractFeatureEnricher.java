@@ -72,8 +72,7 @@ public abstract class AbstractFeatureEnricher <F extends Feature>
      * @param featureToEnrich       The feature being enriched.
      * @throws EnricherException    Thrown if problems are encountered in a fetcher.
      */
-    protected void processFeature(F featureToEnrich) throws EnricherException{
-    }
+    protected abstract void processFeature(F featureToEnrich) throws EnricherException;
 
     /**
      * The way in which an invalid range in processed.

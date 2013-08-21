@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @since 13/08/13
  */
 public class MaximumFeatureEvidenceUpdater
-        extends BasicFeatureUpdater<FeatureEvidence>{
+        extends MinimumFeatureEvidenceUpdater{
 
     /**
      * Processes the specific details of the feature which are not delegated to a subEnricher.

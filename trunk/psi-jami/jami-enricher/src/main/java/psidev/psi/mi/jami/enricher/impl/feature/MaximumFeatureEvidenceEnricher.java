@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @since 13/08/13
  */
 public class MaximumFeatureEvidenceEnricher
-        extends AbstractFeatureEnricher<FeatureEvidence>{
+        extends MinimumFeatureEvidenceEnricher{
 
     /**
      * Processes the specific details of the feature which are not delegated to a subEnricher.
@@ -21,6 +21,7 @@ public class MaximumFeatureEvidenceEnricher
     @Override
     public void processFeature(FeatureEvidence featureToEnrich)
             throws EnricherException {
+
         super.processFeature(featureToEnrich);
         if(getCvTermEnricher() != null)
             getCvTermEnricher().enrichCvTerms(featureToEnrich.getDetectionMethods());
