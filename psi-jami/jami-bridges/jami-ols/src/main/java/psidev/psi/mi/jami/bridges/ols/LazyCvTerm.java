@@ -49,7 +49,10 @@ public class LazyCvTerm implements CvTerm {
     public static final String PAR_ONTOLOGY = "PAR";
     public static final String GO_ONTOLOGY = "GO";
 
-
+    /**
+     * Initiates the query service.
+     * @throws BridgeFailedException
+     */
     private void startQueryService() throws BridgeFailedException {
         try{
             queryService = new QueryServiceLocator().getOntologyQuery();
@@ -59,10 +62,33 @@ public class LazyCvTerm implements CvTerm {
         }
     }
 
+    /**
+     * Will create a lazy CvTerm using a known termName to find the identifier.
+     *
+     * The term must be an MI term and only the MI ontology will be searched.
+     * Will search for the exact name. If the exact flag is false, and no exact terms were found,
+     * the search will be repeated on inexact names.
+     * @param miTermName        The name of the MI term to search for.
+     * @param exact             True if only exact names should be searched.
+     *                          False if inexact names should also be tried.
+     * @throws BridgeFailedException
+     */
     public LazyCvTerm(String miTermName , boolean exact) throws BridgeFailedException {
         this(miTermName, PSI_MI , exact);
     }
 
+    /**
+     * Will create a lazy CvTerm using a known termName to find the identifier.
+     *
+     * The search is limited to the ontology of the given name if that name is recognised, otherwise all of OLS is used.
+     * Will search for the exact name. If the exact flag is false, and no exact terms were found,
+     * the search will be repeated on inexact names.
+     * @param termName          The name of the term to search for.
+     * @param ontologyName      The MI name used for the ontology. (EG, 'PSI-MI' for the ontology 'MI')
+     * @param exact             True if only exact names should be searched.
+     *                          False if inexact names should also be tried.
+     * @throws BridgeFailedException
+     */
     public LazyCvTerm(String termName , String ontologyName, boolean exact) throws BridgeFailedException {
         if (termName == null)
             throw new IllegalArgumentException("The short name is required and cannot be null");
@@ -137,8 +163,9 @@ public class LazyCvTerm implements CvTerm {
     }
 
     /**
-     * Create a new LazyCvTerm using an MiIdentifier
-     * @param identifier          The identifier of the cvTerm.
+     * Creates a new CvTerm using the known identifier. The full name will also be queried for.
+     * @param identifier        The identifier of the term.
+     * @param ontologyName      The Mi name of the ontology from which the identifier was taken.
      * @throws BridgeFailedException
      */
     public LazyCvTerm(String identifier , String ontologyName) throws BridgeFailedException {
@@ -171,7 +198,7 @@ public class LazyCvTerm implements CvTerm {
             String fullName = queryService.getTermById(identifier, null);
             if(fullName.equals(identifier)){
                 // The OLS service echoes back the original query term if it can not be found
-                log.warn("identifier "+identifier+" could not be found in ontology "+ontologyName);
+                log.warn("identifier "+identifier+" could not be found.");
                 initialiseIdentifiers();
                 clearPropertiesLinkedToIdentifiers();
             } else {
@@ -182,17 +209,16 @@ public class LazyCvTerm implements CvTerm {
         }
     }
 
-
+    /**
+     * If the shortName is not yet known, a query will be made to OLS.
+     * If no shortName is found, the fullName is used instead.
+     * @return  The shortName of the cvTerm.
+     */
     public String getShortName() {
-        if(shortName == null){
-            try {
-                fetchMetaDataByIdentifier(getMIIdentifier());
-            } catch (BridgeFailedException e) {
-                log.warn("Lazy CvTerm throws bridge failed");
-            }
-            if (shortName == null)
-                shortName = fullName;
-        }
+        if(shortName == null)
+            fetchMetaDataByIdentifier(getMIIdentifier());
+        if (shortName == null)
+            shortName = fullName;
         return shortName;
     }
 
@@ -202,7 +228,7 @@ public class LazyCvTerm implements CvTerm {
 
     /**
      * Returns the full name, found at initialisation.
-     * @return      The full name.
+     * @return      The full name. If this CvTerm is for an unreachable term, it will be null.
      */
     public String getFullName() {
         return this.fullName;
@@ -326,13 +352,9 @@ public class LazyCvTerm implements CvTerm {
     }
 
     public Collection<Alias> getSynonyms() {
-        if (synonyms == null){
-            try {
-                fetchMetaDataByIdentifier(getMIIdentifier());
-            } catch (BridgeFailedException e) {
-                log.warn("Lazy CvTerm throws bridge failed");
-            }
-        }
+        if (synonyms == null)
+            fetchMetaDataByIdentifier(getMIIdentifier());
+
         return this.synonyms;
     }
 
@@ -437,7 +459,7 @@ public class LazyCvTerm implements CvTerm {
 
     @Override
     public String toString() {
-        return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : (parIdentifier != null ? parIdentifier.getId() : "-"))) + " ("+shortName+")";
+        return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : (parIdentifier != null ? parIdentifier.getId() : "-"))) + " ("+(shortName != null ? shortName : fullName)+")";
     }
 
     private class CvTermIdentifierList extends AbstractListHavingProperties<Xref> {
@@ -475,8 +497,7 @@ public class LazyCvTerm implements CvTerm {
      * @param identifier    The identifier that is being used.
      * @throws BridgeFailedException
      */
-    private void fetchMetaDataByIdentifier(String identifier)
-            throws BridgeFailedException{
+    private void fetchMetaDataByIdentifier(String identifier){
         try{
             Map<String,String> metaDataMap = queryService.getTermMetadata(identifier, null);
             if(primaryIdentifier == null)
@@ -489,7 +510,7 @@ public class LazyCvTerm implements CvTerm {
             if(synonyms.isEmpty())
                 initialiseSynonyms();
         }catch (RemoteException e) {
-            throw new BridgeFailedException(e);
+            log.warn("LazyCvTerm "+toString()+" failed whilst attempting to access metaData.",e);
         }
     }
 
