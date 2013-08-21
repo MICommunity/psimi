@@ -1,34 +1,29 @@
 package psidev.psi.mi.jami.bridges.ols;
 
-import com.sun.xml.internal.ws.addressing.model.ActionNotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.model.impl.DefaultOntologyTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import uk.ac.ebi.ols.soap.Query;
-import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
-import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 14/08/13
+ * @since 21/08/13
  */
-public class LazyCvTerm extends DefaultCvTerm {
+public class LazyOntologyTerm
+        extends DefaultOntologyTerm{
+
 
     protected final Logger log = LoggerFactory.getLogger(LazyCvTerm.class.getName());
 
@@ -38,10 +33,10 @@ public class LazyCvTerm extends DefaultCvTerm {
     private boolean hasXrefs  = false;
     private boolean hasAnnotations = false;
 
-    public LazyCvTerm(Query queryService, String fullName, Xref identityRef) {
+    public LazyOntologyTerm(Query queryService, String fullName, Xref identityRef) {
         super("");
         if (queryService == null){
-            throw new IllegalArgumentException("The lazy cv term needs the Ols query service which cannot be null.");
+            throw new IllegalArgumentException("The lazy ontology term needs the Ols query service which cannot be null.");
         }
         this.queryService = queryService;
 
