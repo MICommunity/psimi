@@ -1,24 +1,9 @@
 package psidev.psi.mi.jami.bridges.ols;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.AliasUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import uk.ac.ebi.ols.soap.Query;
-import uk.ac.ebi.ols.soap.QueryServiceLocator;
-
-import javax.xml.rpc.ServiceException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
