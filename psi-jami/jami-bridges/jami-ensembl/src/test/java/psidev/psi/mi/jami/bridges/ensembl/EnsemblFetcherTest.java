@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Xref;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -32,8 +34,8 @@ public class EnsemblFetcherTest {
             log.info("* TESTING "+test);
             log.info("**************************" );
 
-            Gene geneTest = fetcher.getGeneByIdentifierOfUnknownType(test);
-            readOutGene(geneTest);
+            Collection<Gene> geneTest = fetcher.getGenesByIdentifierOfUnknownType(test);
+            readOutGene(geneTest.iterator().next());
             Thread.sleep(1000); // Reduces request rate to <1/second , a rate of >3/second causes the server to refuse.
         }
     }
