@@ -575,7 +575,7 @@ public class UniprotTranslationUtil {
 
 
 
-    public psidev.psi.mi.jami.model.Gene getGeneFromEntry(UniProtEntry entity){
+    public static psidev.psi.mi.jami.model.Gene getGeneFromEntry(UniProtEntry entity){
         //TODO
         // Using protein id as gene short name:
         // Noe's Example uses this in lower case with "_gene" appended, should that be applied?

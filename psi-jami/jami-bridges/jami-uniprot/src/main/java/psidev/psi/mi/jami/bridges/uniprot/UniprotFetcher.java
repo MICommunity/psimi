@@ -183,38 +183,4 @@ public class UniprotFetcher
         return proteins;
     }
 
-
-    // == GENE FETCHER ========================================
-
-
-    public Collection<Gene> getGeneByEnsemblIdentifier(String identifier){
-        if(identifier == null || identifier.isEmpty())
-            throw new IllegalArgumentException("Could not perform search on null identifier.");
-
-        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType.ENSEMBL , identifier);
-        EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
-        Collection<Gene> genes = new ArrayList<Gene>();
-        if(entryIterator.hasNext()){
-            Gene gene = uniprotTranslationUtil.getGeneFromEntry(entryIterator.next());
-            gene.setEnsembl(identifier);
-            genes.add(gene);
-        }
-        return genes;
-    }
-
-
-    public Collection<Gene> getGeneByEnsemblGenomesIdentifier(String identifier){
-        if(identifier == null || identifier.isEmpty())
-            throw new IllegalArgumentException("Could not perform search on null identifier.");
-
-        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType.ENSEMBL , identifier);
-        EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
-        Collection<Gene> genes = new ArrayList<Gene>();
-        if(entryIterator.hasNext()){
-            Gene gene = uniprotTranslationUtil.getGeneFromEntry(entryIterator.next());
-            gene.setEnsemblGenome(identifier);
-            genes.add(gene);
-        }
-        return genes;
-    }
 }
