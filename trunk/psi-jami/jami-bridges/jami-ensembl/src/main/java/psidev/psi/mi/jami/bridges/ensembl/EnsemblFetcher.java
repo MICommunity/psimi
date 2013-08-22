@@ -15,6 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,31 +36,43 @@ public class EnsemblFetcher
      * @return              A complete gene record. Null if the identifier can not be found.
      * @throws BridgeFailedException
      */
-    public Gene getGeneByIdentifierOfUnknownType(String identifier) throws BridgeFailedException {
-        Gene gene = getGeneByEnsemblIdentifier(identifier);
-        if(gene == null)
-            gene = getGeneByEnsemblGenomesIdentifier(identifier);
-        return gene;
+    public Collection<Gene> getGenesByIdentifierOfUnknownType(String identifier) throws BridgeFailedException {
+
+        Collection<Gene> genes = getGenesByEnsemblIdentifier(identifier);
+        if(genes == null)
+            genes = getGenesByEnsemblGenomesIdentifier(identifier);
+
+        return genes;
     }
 
-    public Gene getGeneByEnsemblIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Gene> getGenesByEnsemblIdentifier(String identifier) throws BridgeFailedException {
         final String server = "http://beta.rest.ensembl.org";
         Gene gene = new DefaultGene(identifier);
         gene.setEnsembl(identifier);
         gene = fetchID(identifier , gene , server);
-        if(gene == null) return null;
+        if(gene == null)
+            return Collections.EMPTY_LIST;
+
         gene = fetchXrefs(identifier , gene , server);
-        return gene;
+
+        Collection<Gene> genes = new ArrayList<Gene>();
+        genes.add(gene);
+        return genes;
     }
 
-    public Gene getGeneByEnsemblGenomesIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier) throws BridgeFailedException {
         final String server = "http://beta.rest.ensemblgenomes.org/";
         Gene gene = new DefaultGene(identifier);
         gene.setEnsemblGenome(identifier);
         gene = fetchID(identifier , gene , server);
-        if(gene == null) return null;
+        if(gene == null)
+            return Collections.EMPTY_LIST;
+
         gene = fetchXrefs(identifier , gene , server);
-        return gene;
+
+        Collection<Gene> genes = new ArrayList<Gene>();
+        genes.add(gene);
+        return genes;
     }
 
     /**
