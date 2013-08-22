@@ -16,11 +16,11 @@ public interface CvTermFetcher<C extends CvTerm>{
     /**
      * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
      * @param termIdentifier    The identifier for the CvTerm to fetch.
-     * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
+     * @param miOntologyName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
      * @return  A full cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
+    public C getCvTermByIdentifier(String termIdentifier, String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -36,11 +36,11 @@ public interface CvTermFetcher<C extends CvTerm>{
     /**
      * Uses the name of the term and the name of the database to search for a complete form of the term.
      * @param searchName    A full or short name for the term to be searched for.
-     * @param ontologyDatabaseName  The ontology to search for the term in.
+     * @param miOntologyName  The ontology to search for the term in.
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C getCvTermByExactName(String searchName, String ontologyDatabaseName)
+    public C getCvTermByExactName(String searchName, String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -60,11 +60,11 @@ public interface CvTermFetcher<C extends CvTerm>{
      * A fuzzy search can also be used by setting @link{useFuzzySearch} to true.
      * This will extend to search possibilities to partial matches if no exact matches can be found.
      * @param searchName
-     * @param databaseName
+     * @param miOntologyName
      * @return
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermByInexactName(String searchName, String databaseName)
+    public Collection<C> getCvTermByInexactName(String searchName, String miOntologyName)
             throws BridgeFailedException;
 
     public Collection<C> getCvTermByInexactName(String searchName, CvTerm database)
@@ -77,11 +77,11 @@ public interface CvTermFetcher<C extends CvTerm>{
     /**
      * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
      * @param termIdentifiers       The identifier for the CvTerm to fetch and the corresponding ontology database name.
-     * @param ontologyDatabaseName  The name of the ontology to search for the names in.
+     * @param miOntologyName  The name of the ontology to search for the names in.
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiers(Collection<String> termIdentifiers , String ontologyDatabaseName)
+    public Collection<C> getCvTermsByIdentifiers(Collection<String> termIdentifiers , String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -97,11 +97,11 @@ public interface CvTermFetcher<C extends CvTerm>{
     /**
      * Uses the name of the term and the name of the database to search for a complete form of the term.
      * @param searchNames   A full or short name for the term to be searched for.
-     * @param ontologyDatabaseName  The name of the database to search for the names in.
+     * @param miOntologyName  The name of the database to search for the names in.
      * @return              A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByExactNames(Collection<String> searchNames , String ontologyDatabaseName )
+    public Collection<C> getCvTermsByExactNames(Collection<String> searchNames , String miOntologyName )
             throws BridgeFailedException;
 
     /**

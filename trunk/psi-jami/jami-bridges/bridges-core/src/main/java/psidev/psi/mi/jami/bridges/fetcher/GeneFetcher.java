@@ -4,6 +4,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.impl.DefaultGene;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -12,10 +14,10 @@ import psidev.psi.mi.jami.model.impl.DefaultGene;
  */
 public interface GeneFetcher {
 
-    public Gene getGeneByEnsemblIdentifier(String identifier)
+    public Collection<Gene> getGenesByEnsemblIdentifier(String identifier)
             throws BridgeFailedException;
 
-    public Gene getGeneByEnsemblGenomesIdentifier(String identifier)
+    public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier)
             throws BridgeFailedException;
 
     /* public Gene getGeneByIdentifier (String identifier)

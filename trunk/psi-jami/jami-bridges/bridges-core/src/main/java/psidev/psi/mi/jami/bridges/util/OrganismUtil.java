@@ -57,4 +57,8 @@ public class OrganismUtil {
             return null;
         }
     }
+
+    public static Organism createUnknownOrganism(){
+        return createSpecialistOrganism(-3);
+    }
 }

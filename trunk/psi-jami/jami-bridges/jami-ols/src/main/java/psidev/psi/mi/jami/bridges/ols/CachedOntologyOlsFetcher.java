@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import psidev.psi.mi.jami.model.Xref;
@@ -48,117 +49,166 @@ public class CachedOntologyOlsFetcher
 
 
     /**
-     * Finds all the leaf children and then their parents using the first identifier of the provided term as a starting point.
-     * <p>
-     * Finds the identifiers of all leaf children.
-     * Then finds the OntologyTerm for these identifiers and all parents.
-     *
-     * @param ontologyTerm  A complete ontologyTerm to find children for
-     * @return      A collection of all the deepest children
+     * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
+     * @param termIdentifier    The identifier for the CvTerm to fetch.
+     * @param miOntologyName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
+     * @return  A full cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<OntologyTerm> findAllParentsOfDeepestChildren(OntologyTerm ontologyTerm , Xref identity)
-            throws BridgeFailedException {
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String miOntologyName)
+            throws BridgeFailedException{
+        if(termIdentifier == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+        if(miOntologyName == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
 
-        if(ontologyTerm == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
-        if(identity == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
-
-        final String key = "findAllParentsOfDeepestChildren#"+ontologyTerm+"#"+identity.getDatabase();
+        final String key = "getCvTermByIdentifier#"+termIdentifier+"#"+miOntologyName;
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.findAllParentsOfDeepestChildren(ontologyTerm);
+            data = super.getCvTermByIdentifier(termIdentifier, miOntologyName);
             storeInCache(key, data);
         }
-        return (Collection<OntologyTerm>)data;
+        return (OntologyTerm)data;
     }
 
     /**
-     * Finds the children of the provided term, checking the cache first.
-     * If the entry has not been cached it uses the inherited form of this method to query OLS
-     * @param termIdentifier
+     * Uses the identifier and a cvTerm denoting the database to search to fetch a complete from of the term.
+     * @param termIdentifier     The identifier for the CvTerm to fetch
+     * @param ontologyDatabase  The cvTerm of the ontology to search for.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
+    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+            throws BridgeFailedException{
+        if(termIdentifier == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+        if(ontologyDatabase == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
+
+        final String key = "getCvTermByIdentifier#"+termIdentifier+"#"+ontologyDatabase.getShortName();
+
+        Object data = getFromCache( key );
+        if( data == null) {
+            data = super.getCvTermByIdentifier(termIdentifier, ontologyDatabase);
+            storeInCache(key, data);
+        }
+        return (OntologyTerm)data;
+    }
+
+    /**
+     * Uses the name of the term and the name of the database to search for a complete form of the term.
+     * @param searchName    A full or short name for the term to be searched for.
+     * @param miOntologyName  The ontology to search for the term in.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
+    public OntologyTerm getCvTermByExactName(String searchName, String miOntologyName)
+            throws BridgeFailedException{
+        if(searchName == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+        if(miOntologyName == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
+
+        final String key = "getCvTermByExactName#"+searchName+"#"+miOntologyName;
+
+        Object data = getFromCache( key );
+        if( data == null) {
+            data = super.getCvTermByExactName(searchName, miOntologyName);
+            storeInCache(key, data);
+        }
+        return (OntologyTerm)data;
+    }
+
+    /**
+     * Uses the name of the term and the name of the database to search for a complete form of the term.
+     * <p>
+     * If the term can not be resolved to a database, then this method may return null.
+     *
+     * @param searchName    A full or short name for the term to be searched for.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
+    public OntologyTerm getCvTermByExactName(String searchName)
+            throws BridgeFailedException{
+        if(searchName == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
+
+        final String key = "getCvTermByExactName#"+searchName;
+
+        Object data = getFromCache( key );
+        if( data == null) {
+            data = super.getCvTermByExactName(searchName);
+            storeInCache(key, data);
+        }
+        return (OntologyTerm)data;
+    }
+
+    /**
+     * Identifies and initiates a CvTerm using its name.
+     * A fuzzy search can also be used by setting @link{useFuzzySearch} to true.
+     * This will extend to search possibilities to partial matches if no exact matches can be found.
+     * @param searchName
+     * @param databaseName
      * @return
      * @throws BridgeFailedException
      */
-    public Map<String , String> getChildrenIDs(String termIdentifier) throws BridgeFailedException {
-        final String key = "getChildrenIDs#"+termIdentifier;
-        Object data = getFromCache( key );
-        if( data == null) {
-            data = super.getChildrenIDs(termIdentifier);
-            storeInCache(key , data);
-        }
-        return (Map<String , String>)data;
+    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, String databaseName)
+            throws BridgeFailedException{
+        return Collections.EMPTY_LIST;
     }
 
-    //=======================================
-    // Find with Relations
+    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, CvTerm database)
+            throws BridgeFailedException{
+        return Collections.EMPTY_LIST;
+    }
+
+
 
     /**
-    * Finds an ontologyTerm using a termIdentifier and an ontology database name.
-    * If children or parents are selected it will recursively find them.
-    * If both are selected, all parents of the deepest children will be found.
-    *
-    * @param termIdentifier        The identifier for the CvTerm to fetch.
-    * @param ontologyDatabaseName  The name of the ontology to search for. Eg, psi-mi, psi-mod, go. Must not be Null.
-    * @param childrenDepth         Flag to note the depth of children that should be found.
-    *                              0 if no children should be found, -1 if the depth should be infinite
-    * @param parentDepth           Flag to note the depth of parents that should be found.
-    *                              0 if no parents should be found, -1 if the depth should be infinite
-    * @return          A completed term or null if no term could be found.
-    * @throws BridgeFailedException
-    */
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName,
-                                              int childrenDepth, int parentDepth)
-            throws BridgeFailedException {
-
-        final String key = "getCvTermByIdentifier#"+termIdentifier+"#DBNAME:"+ontologyDatabaseName+
-                "#"+childrenDepth+"#"+parentDepth;
-        Object data = getFromCache( key );
-        if( data == null ) {
-            data = super.getCvTermByIdentifier(termIdentifier, ontologyDatabaseName,childrenDepth, parentDepth);
-            storeInCache( key, data );
-        }
-        return (OntologyTerm) data;
-    }
-
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase,
-                                              int childrenDepth, int parentDepth)
+     * Uses the identifier and the name of the database to search for a complete form of the cvTerm.
+     * @param termIdentifiers       The identifier for the CvTerm to fetch and the corresponding ontology database name.
+     * @param miOntologyName  The name of the ontology to search for the names in.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers , String miOntologyName)
             throws BridgeFailedException{
-
-        final String key = "getCvTermByIdentifier#"+termIdentifier+"#CVTERM:"+ontologyDatabase+
-                "#"+childrenDepth+"#"+parentDepth;
-        Object data = getFromCache( key );
-        if( data == null ) {
-            data = super.getCvTermByIdentifier(termIdentifier, ontologyDatabase,childrenDepth, parentDepth);
-            storeInCache( key, data );
-        }
-        return (OntologyTerm) data;
+        return Collections.EMPTY_LIST;
     }
 
-    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,
-                                             int childrenDepth, int parentDepth)
+    /**
+     * Uses the identifier and a cvTerm denoting the database to search to fetch a complete from of the term.
+     * @param termIdentifiers       The identifier for the CvTerms to fetch.
+     * @param ontologyDatabase      The name of the ontology to search for the terms in.
+     * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
+    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers , CvTerm ontologyDatabase)
             throws BridgeFailedException{
-
-        final String key = "getCvTermByExactName#"+searchName+"#DBNAME:"+ontologyDatabaseName+"#"+childrenDepth+"#"+parentDepth;
-        Object data = getFromCache( key );
-        if( data == null ) {
-            data = super.getCvTermByExactName(searchName, ontologyDatabaseName, childrenDepth , parentDepth);
-            storeInCache( key, data );
-        }
-        return (OntologyTerm) data;
+        return Collections.EMPTY_LIST;
     }
 
-    public OntologyTerm getCvTermByExactName(String searchName , int childrenDepth, int parentDepth)
+    /**
+     * Uses the name of the term and the name of the database to search for a complete form of the term.
+     * @param searchNames   A full or short name for the term to be searched for.
+     * @param miOntologyName  The name of the database to search for the names in.
+     * @return              A fully enriched cvTerm which matches the search term or null if one cannot be found.
+     * @throws BridgeFailedException
+     */
+    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames , String miOntologyName )
             throws BridgeFailedException{
-
-        final String key = "getCvTermByExactName#"+searchName+"#"+childrenDepth+"#"+parentDepth;
-        Object data = getFromCache( key );
-        if( data == null ) {
-            data = super.getCvTermByExactName(searchName ,childrenDepth, parentDepth);
-            storeInCache( key, data );
-        }
-        return (OntologyTerm) data;
+        return Collections.EMPTY_LIST;
     }
+
+    /**
+     * Finds the CvTerms which match the exact names provided.
+     * <p>
+     * If the a term found by the search can not be resolved to a database, this method may return null.
+     *
+     * @param searchNames   A collection full or short names for the term to be searched for.
+     * @return              A collection of cvTerms which matched a search term.
+     * @throws BridgeFailedException
+     */
+    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames)
+            throws BridgeFailedException{
+        return Collections.EMPTY_LIST;
+    }
+
+
 
     /////////////////////////
     // EH CACHE utilities
@@ -169,7 +219,6 @@ public class CachedOntologyOlsFetcher
         initialiseCache( EHCACHE_CONFIG_FILE );
     }
 
-
     public void initialiseCache(String settingsFile) {
         URL url = getClass().getResource( settingsFile );
         cacheManager =  CacheManager.create( url );
@@ -178,20 +227,18 @@ public class CachedOntologyOlsFetcher
         if( cache == null ) throw new IllegalStateException( "Could not load cache" );
     }
 
-
     public Object getFromCache( String key ) {
         Object data = null;
         Element element = cache.get( key );
         if( element != null ){
-            if( log.isDebugEnabled() ) log.debug("getting key: "+key);
+            //if( log.isDebugEnabled() ) log.debug("getting key: "+key);
             data = element.getObjectValue();
         }
         return data;
     }
 
     public void storeInCache( String key, Object data ) {
-        if( log.isDebugEnabled() ) log.debug("storing key: "+key);
-
+        //if( log.isDebugEnabled() ) log.debug("storing key: "+key);
         Element element = new Element( key, data );
         cache.put( element );
     }

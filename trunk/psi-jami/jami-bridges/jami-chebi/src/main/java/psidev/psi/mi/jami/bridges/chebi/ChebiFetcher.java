@@ -5,8 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.BioactiveEntity;
+import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
+import psidev.psi.mi.jami.utils.AliasUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.webservices.chebi.*;
 
 
@@ -19,6 +23,9 @@ import uk.ac.ebi.webservices.chebi.*;
  */
 public class ChebiFetcher
         implements BioactiveEntityFetcher {
+
+    public static final String IUPAC_MI = "MI:2007";
+    public static final String IUPAC = "iupac name";
 
     protected static final Logger log = LoggerFactory.getLogger(ChebiFetcher.class.getName());
 
@@ -46,29 +53,42 @@ public class ChebiFetcher
             Entity entity = client.getChebiWebServicePort().getCompleteEntity(identifier);
             if(entity == null) return null;
 
-            // Short name / Full name
+            // == Short name / Full name
             bioactiveEntity = new DefaultBioactiveEntity(entity.getChebiAsciiName());
             // bioactiveEntity.setFullName( entity.getChebiAsciiName() );
 
-            // Chebi ID
+            // == Chebi ID
             bioactiveEntity.setChebi( entity.getChebiId() );
-            // Smile
+
+            // == Secondary CHEBI IDs
+            for(String secondaryId : entity.getSecondaryChEBIIds()){
+                bioactiveEntity.getIdentifiers().add(XrefUtils.createChebiSecondary(secondaryId));
+            }
+
+            // == Smile
             bioactiveEntity.setSmile( entity.getSmiles() );
-            // Inchi code
+
+            // == Inchi / Inchi Key
             bioactiveEntity.setStandardInchi( entity.getInchi() );
-            // Inchi Key
             bioactiveEntity.setStandardInchiKey( entity.getInchiKey() );
 
+            // == SYNONYMS
+            for(DataItem syn : entity.getSynonyms()){
+                bioactiveEntity.getAliases().add(AliasUtils.createAlias(
+                        Alias.SYNONYM , Alias.SYNONYM_MI , syn.getData()));
+            }
+
+            // == IUPAC names
+            for(DataItem syn : entity.getIupacNames()){
+                bioactiveEntity.getAliases().add(AliasUtils.createAlias(
+                        IUPAC , IUPAC_MI , syn.getData()));
+            }
+
             //UNUSED FIELDS
-            for(DataItem syn : entity.getDatabaseLinks()){
+            /*for(DataItem syn : entity.getDatabaseLinks()){
                 log.info("LIN: ["+syn.getData()+"] ty ["+syn.getType()+"]");
-            }
-           /* for(DataItem syn : entity.getSynonyms()){
-                log.info("SYN: "+syn.getData());
-            }
-            for(String sec : entity.getSecondaryChEBIIds()){
-                log.info("SEC: "+sec);
-            }*/
+            } */
+
 
         } catch ( ChebiWebServiceFault_Exception e ) {
             throw new BridgeFailedException(e);

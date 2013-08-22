@@ -155,24 +155,6 @@ public class LazyCvTerm extends DefaultCvTerm {
     }
 
     /**
-     * Scans the meta data to find the description if one is present.
-     * @param metaDataMap   The map of metaData to scrape for a definition
-     * @return              The definition for the term if it is known.
-     */
-    private String extractDescriptionFromMetaData(Map metaDataMap){
-        String DEFINITION_KEY = "definition";
-        if (metaDataMap != null) {
-            for (Object key : metaDataMap.keySet()){
-                String keyName = (String)key;
-                if (DEFINITION_KEY.equalsIgnoreCase(keyName)){
-                    return (String) metaDataMap.get(key);
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * Scans the meta data to find the synonyms if any are present.
      * @param metaDataMap           The map of meatData to scrape for synonyms.
      * @param miTermOntologyName    The name of the ontology used in psi-mi
@@ -205,10 +187,10 @@ public class LazyCvTerm extends DefaultCvTerm {
     }
 
     private void initialiseOlsXrefs(){
-        getXrefs();
+        super.getXrefs();
     }
 
     private void initialiseOlsAnnotations(){
-        getAnnotations();
+        super.getAnnotations();
     }
 }
