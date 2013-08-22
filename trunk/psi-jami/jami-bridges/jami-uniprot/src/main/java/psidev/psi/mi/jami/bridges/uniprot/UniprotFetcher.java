@@ -5,9 +5,14 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
+import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultGene;
+import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.AlternativeProductsIsoform;
+import uk.ac.ebi.kraken.interfaces.uniprot.description.Field;
+import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.Feature;
 import uk.ac.ebi.kraken.uuw.services.remoting.*;
 
@@ -34,13 +39,15 @@ public class UniprotFetcher
         uniprotTranslationUtil = new UniprotTranslationUtil();
     }
 
+    // PRO regular expression: "PRO" followed by "-" OR "_" then any number of digits.
     public static final Pattern UNIPROT_PRO_REGEX = Pattern.compile("PRO[_|-][0-9]+");
+    // Isoform regular expression: "-" followed by any number of digits.
     public static final Pattern UNIPROT_ISOFORM_REGEX = Pattern.compile("-[0-9]");
 
     /**
      *
-     * @param identifier
-     * @return
+     * @param identifier    A Uniprot protein identifier, a Uniprot protein isoform identifier or a PRO identifier.
+     * @return              The proteins which match the given identifier.
      * @throws BridgeFailedException
      */
     public Collection<Protein> getProteinsByIdentifier(String identifier)
@@ -48,9 +55,10 @@ public class UniprotFetcher
 
         if(identifier == null) throw new IllegalArgumentException("Could not perform search on null identifier.");
 
-        Collection<Protein> proteins = null;
+        Collection<Protein> proteins;
 
         if(UNIPROT_PRO_REGEX.matcher(identifier).find()){
+            // Truncate the pro identifier to allow the search to take place
             String proIdentifier = identifier.substring(identifier.indexOf("PRO") + 4, identifier.length());
             proteins = fetchFeatureByIdentifier(proIdentifier);
         } else if (UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){
@@ -72,9 +80,6 @@ public class UniprotFetcher
         }
         return proteinResults;
     }
-
-
-
 
     /**
      *
@@ -176,5 +181,40 @@ public class UniprotFetcher
             throw new BridgeFailedException("Problem with Uniprot Service.",e);
         }
         return proteins;
+    }
+
+
+    // == GENE FETCHER ========================================
+
+
+    public Collection<Gene> getGeneByEnsemblIdentifier(String identifier){
+        if(identifier == null || identifier.isEmpty())
+            throw new IllegalArgumentException("Could not perform search on null identifier.");
+
+        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType.ENSEMBL , identifier);
+        EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
+        Collection<Gene> genes = new ArrayList<Gene>();
+        if(entryIterator.hasNext()){
+            Gene gene = uniprotTranslationUtil.getGeneFromEntry(entryIterator.next());
+            gene.setEnsembl(identifier);
+            genes.add(gene);
+        }
+        return genes;
+    }
+
+
+    public Collection<Gene> getGeneByEnsemblGenomesIdentifier(String identifier){
+        if(identifier == null || identifier.isEmpty())
+            throw new IllegalArgumentException("Could not perform search on null identifier.");
+
+        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType.ENSEMBL , identifier);
+        EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
+        Collection<Gene> genes = new ArrayList<Gene>();
+        if(entryIterator.hasNext()){
+            Gene gene = uniprotTranslationUtil.getGeneFromEntry(entryIterator.next());
+            gene.setEnsemblGenome(identifier);
+            genes.add(gene);
+        }
+        return genes;
     }
 }

@@ -3,12 +3,10 @@ package psidev.psi.mi.jami.bridges.uniprot.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.util.OrganismUtil;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultOrganism;
-import psidev.psi.mi.jami.model.impl.DefaultProtein;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -36,10 +34,7 @@ import uk.ac.ebi.kraken.interfaces.uniprot.genename.ORFName;
 import uk.ac.ebi.kraken.interfaces.uniprot.genename.OrderedLocusName;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Utilities for translating Uniprot objects to JAMI objects.
@@ -116,7 +111,7 @@ public class UniprotTranslationUtil {
                     "The Uniprot entry has no names, accessions, or identifiers.");
         }
 
-        //FULLNAME
+        //FULL NAME
         p.setFullName(fullName);
 
         //PRIMARY ACCESSION
@@ -499,7 +494,6 @@ public class UniprotTranslationUtil {
 
     private Map<DatabaseType,CvTerm> uniprotDatabases = null;
 
-
     private void initiateDatabaseMap(){
         uniprotDatabases = new HashMap<DatabaseType, CvTerm>();
         uniprotDatabases.put( DatabaseType.GO,       new DefaultCvTerm("go" , "MI:0448"));
@@ -580,13 +574,42 @@ public class UniprotTranslationUtil {
     }
 
 
+
+    public psidev.psi.mi.jami.model.Gene getGeneFromEntry(UniProtEntry entity){
+        //TODO
+        // Using protein id as gene short name:
+        // Noe's Example uses this in lower case with "_gene" appended, should that be applied?
+        psidev.psi.mi.jami.model.Gene jamiGene = new DefaultGene(entity.getUniProtId().getValue());
+
+        String fullName = null;
+        for(Field f: entity.getProteinDescription().getRecommendedName().getFields()){
+            if(f.getType() == FieldType.FULL){
+                fullName = f.getValue();
+                break;
+            }
+        }
+        jamiGene.setFullName(fullName);
+        jamiGene.setOrganism(getOrganismFromEntry(entity));
+
+        for(Gene entityGene : entity.getGenes()){
+            if(entityGene.hasGeneName())
+                jamiGene.getAliases().add(AliasUtils.createGeneName( entityGene.getGeneName().getValue() ));
+            for(GeneNameSynonym synonym : entityGene.getGeneNameSynonyms()){
+                jamiGene.getAliases().add(AliasUtils.createGeneNameSynonym(synonym.getValue()));
+            }
+        }
+        return jamiGene;
+    }
+
+
+
     public static Organism getOrganismFromEntry(UniProtEntry e){
 
         Organism o = null;
 
         if(e.getNcbiTaxonomyIds() == null
                 || e.getNcbiTaxonomyIds().isEmpty()){
-            o = new DefaultOrganism(-3); //Unknown
+            o = OrganismUtil.createUnknownOrganism(); //Unknown
         } else if(e.getNcbiTaxonomyIds().size() > 1){
             throw new IllegalArgumentException(
                     "Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] "
