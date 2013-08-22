@@ -30,22 +30,25 @@ import java.util.regex.Pattern;
 public class UniprotFetcher
         implements ProteinFetcher {
 
-    private UniprotTranslationUtil uniprotTranslationUtil;
-    private UniProtQueryService uniProtQueryService;
     private final Logger log = LoggerFactory.getLogger(UniprotFetcher.class.getName());
 
-    public UniprotFetcher() {
-        uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
-        uniprotTranslationUtil = new UniprotTranslationUtil();
-    }
+    private UniprotTranslationUtil uniprotTranslationUtil;
+    private UniProtQueryService uniProtQueryService;
 
     // PRO regular expression: "PRO" followed by "-" OR "_" then any number of digits.
     public static final Pattern UNIPROT_PRO_REGEX = Pattern.compile("PRO[_|-][0-9]+");
     // Isoform regular expression: "-" followed by any number of digits.
     public static final Pattern UNIPROT_ISOFORM_REGEX = Pattern.compile("-[0-9]");
 
+
+    public UniprotFetcher() {
+        uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
+        uniprotTranslationUtil = new UniprotTranslationUtil();
+    }
+
+
     /**
-     *
+     * Takes the various type of uniprot protein identifier and uses the uniprotJAPI to retrieve the matching proteins.
      * @param identifier    A Uniprot protein identifier, a Uniprot protein isoform identifier or a PRO identifier.
      * @return              The proteins which match the given identifier.
      * @throws BridgeFailedException
@@ -73,6 +76,13 @@ public class UniprotFetcher
             return proteins;
     }
 
+    /**
+     * Takes the various type of uniprot protein identifier
+     * and uses the uniprotJAPI to retrieve the matching proteins.
+     * @param identifiers   The identifiers to search for.
+     * @return              The proteins which match an identifier in the query.
+     * @throws BridgeFailedException
+     */
     public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         Collection<Protein> proteinResults = new ArrayList<Protein>();
         for(String identifier : identifiers){
@@ -83,8 +93,8 @@ public class UniprotFetcher
 
     /**
      *
-     * @param identifier
-     * @return
+     * @param identifier    The identifier for a master protein
+     * @return              The master proteins which match the identifier.
      * @throws BridgeFailedException
      */
     public Collection<Protein> fetchMasterProteinsByIdentifier(String identifier) throws BridgeFailedException {

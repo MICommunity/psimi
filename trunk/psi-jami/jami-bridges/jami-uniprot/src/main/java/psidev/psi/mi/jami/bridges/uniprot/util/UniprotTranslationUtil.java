@@ -68,20 +68,20 @@ public class UniprotTranslationUtil {
      * SEQUENCE = sequence
      * ORGANISM = organism
      * CHECKSUMS + generated ROGID, supplied CRC64
-     * @param e
+     * @param entity
      * @return
      * @throws BridgeFailedException
      */                                     //TODO should be a static method
-    public Protein getProteinFromEntry(UniProtEntry e) throws BridgeFailedException {
+    public Protein getProteinFromEntry(UniProtEntry entity) throws BridgeFailedException {
 
-        if(e == null) throw new IllegalArgumentException("The Uniprot entry was null");
+        if(entity == null) throw new IllegalArgumentException("The Uniprot entry was null");
 
         Protein p;
         String shortName = null;
         String fullName = null;
 
         //THIS ID HAS BEEN TAKEN FROM THE 'ID' name
-        List<Field> fields =  e.getProteinDescription().getRecommendedName().getFields();
+        List<Field> fields =  entity.getProteinDescription().getRecommendedName().getFields();
         for(Field f: fields){
             if(f.getType() == FieldType.SHORT){
                 if(shortName == null){
@@ -102,10 +102,10 @@ public class UniprotTranslationUtil {
             p = new DefaultProtein(shortName);
         }else if(fullName != null){
             p = new DefaultProtein(fullName);
-        }else if(e.getUniProtId() != null){
-            p = new DefaultProtein(e.getUniProtId().getValue());
-        }else if(e.getPrimaryUniProtAccession() != null){
-            p = new DefaultProtein(e.getPrimaryUniProtAccession().getValue());
+        }else if(entity.getUniProtId() != null){
+            p = new DefaultProtein(entity.getUniProtId().getValue());
+        }else if(entity.getPrimaryUniProtAccession() != null){
+            p = new DefaultProtein(entity.getPrimaryUniProtAccession().getValue());
         } else {
             throw new IllegalArgumentException(
                     "The Uniprot entry has no names, accessions, or identifiers.");
@@ -115,22 +115,22 @@ public class UniprotTranslationUtil {
         p.setFullName(fullName);
 
         //PRIMARY ACCESSION
-        if(e.getPrimaryUniProtAccession() != null){
-            p.setUniprotkb(e.getPrimaryUniProtAccession().getValue());
+        if(entity.getPrimaryUniProtAccession() != null){
+            p.setUniprotkb(entity.getPrimaryUniProtAccession().getValue());
         } else {
             throw new IllegalArgumentException(
                     "The Uniprot entry ["+p.getShortName()+"] has no primary Accession.");
         }
 
         //UNIPROT ID AS SECONDARY AC
-        if(e.getUniProtId() != null){
+        if(entity.getUniProtId() != null){
             p.getIdentifiers().add(
-                    XrefUtils.createUniprotSecondary(e.getUniProtId().getValue()));
+                    XrefUtils.createUniprotSecondary(entity.getUniProtId().getValue()));
         }
         //SECONDARY ACs
-        if(e.getSecondaryUniProtAccessions() != null
-                && ! e.getSecondaryUniProtAccessions().isEmpty()) {
-            for(SecondaryUniProtAccession ac : e.getSecondaryUniProtAccessions()){
+        if(entity.getSecondaryUniProtAccessions() != null
+                && ! entity.getSecondaryUniProtAccessions().isEmpty()) {
+            for(SecondaryUniProtAccession ac : entity.getSecondaryUniProtAccessions()){
                 if(ac.getValue() != null){
                     p.getIdentifiers().add(
                             XrefUtils.createUniprotSecondary(ac.getValue()));
@@ -140,8 +140,8 @@ public class UniprotTranslationUtil {
 
 
         //Aliases
-        if(e.getGenes() != null && e.getGenes().size() > 0){
-            for(Gene g : e.getGenes()){
+        if(entity.getGenes() != null && entity.getGenes().size() > 0){
+            for(Gene g : entity.getGenes()){
                 //Gene Name
                 if(g.hasGeneName()){
                     p.getAliases().add(AliasUtils.createGeneName(g.getGeneName().getValue()));
@@ -171,7 +171,7 @@ public class UniprotTranslationUtil {
         }
 
         // Database Xrefs
-        for(DatabaseCrossReference dbxref : e.getDatabaseCrossReferences()){
+        for(DatabaseCrossReference dbxref : entity.getDatabaseCrossReferences()){
             Xref dbxrefStandardised = getDatabaseXref(dbxref);
             if(dbxrefStandardised != null){
                 p.getXrefs().add(dbxrefStandardised);
@@ -180,44 +180,15 @@ public class UniprotTranslationUtil {
 
 
         // SEQUENCE
-        p.setSequence(e.getSequence().getValue());
+        p.setSequence(entity.getSequence().getValue());
 
         // ORGANISM
-        p.setOrganism(getOrganismFromEntry(e));
+        p.setOrganism(getOrganismFromEntry(entity));
 
         generateChecksums(p);
 
         return p;
     }
-
-
-
-    private static void generateChecksums(Protein p) throws BridgeFailedException {
-        // CHECKSUMS
-        if(p.getSequence() != null){
-           /* //TODO add an MI term if one is created
-            Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
-            p.getChecksums().add(crc64Checksum);
-
-            if(p.getOrganism() != null
-                    && p.getOrganism().getTaxId() != -3){
-                try {
-                    RogidGenerator rogidGenerator = new RogidGenerator();
-                    String rogidValue = null;
-                    rogidValue = rogidGenerator.calculateRogid(
-                            p.getSequence(),""+p.getOrganism().getTaxId());
-                    Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
-                    p.getChecksums().add(rogidChecksum);
-
-                } catch (SeguidException exception) {
-                    throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher. "+
-                                    exception.toString());
-                }
-            } */
-        }
-    }
-
 
 
     /**
@@ -242,8 +213,8 @@ public class UniprotTranslationUtil {
      * @param identifier
      * @return
      */
-    public static Protein getProteinIsoformFromEntry(
-            UniProtEntry entry, AlternativeProductsIsoform isoform, String identifier) throws BridgeFailedException {
+    public static Protein getProteinIsoformFromEntry(UniProtEntry entry, AlternativeProductsIsoform isoform, String identifier)
+            throws BridgeFailedException {
 
         if(entry == null) throw new IllegalArgumentException("Uniprot entry was null.");
         if(isoform == null) throw new IllegalArgumentException("Isoform entry was null.");
@@ -333,29 +304,6 @@ public class UniprotTranslationUtil {
                 entry.getPrimaryUniProtAccession().toString() , ISOFORM_PARENT, ISOFORM_PARENT_MI));
 
         return p;
-    }
-
-    /**
-     *
-     * Entry => comments => Isoforms => ids
-     * There will be one ID matching the search identifier for each entry.
-     *
-     * @param entry
-     * @param identifier
-     */
-    public static AlternativeProductsIsoform findIsoformInEntry(UniProtEntry entry, String identifier){
-
-        List<AlternativeProductsComment> comments = entry.getComments(CommentType.ALTERNATIVE_PRODUCTS );
-
-        for ( AlternativeProductsComment comment : comments ) {
-            List<AlternativeProductsIsoform> isoforms = comment.getIsoforms();
-            for ( AlternativeProductsIsoform isoform : isoforms ){
-                for( IsoformId id :  isoform.getIds()){
-                    if(identifier.equals(id.getValue())) return isoform;
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -467,6 +415,59 @@ public class UniprotTranslationUtil {
 
         return p;
     }
+
+
+
+    private static void generateChecksums(Protein p) throws BridgeFailedException {
+        // CHECKSUMS
+        if(p.getSequence() != null){
+           /* //TODO add an MI term if one is created
+            Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
+            p.getChecksums().add(crc64Checksum);
+
+            if(p.getOrganism() != null
+                    && p.getOrganism().getTaxId() != -3){
+                try {
+                    RogidGenerator rogidGenerator = new RogidGenerator();
+                    String rogidValue = null;
+                    rogidValue = rogidGenerator.calculateRogid(
+                            p.getSequence(),""+p.getOrganism().getTaxId());
+                    Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
+                    p.getChecksums().add(rogidChecksum);
+
+                } catch (SeguidException exception) {
+                    throw new BridgeFailedException(
+                            "Error was encountered whilst generating RogID in protein fetcher. "+
+                                    exception.toString());
+                }
+            } */
+        }
+    }
+
+
+    /**
+     *
+     * Entry => comments => Isoforms => ids
+     * There will be one ID matching the search identifier for each entry.
+     *
+     * @param entry
+     * @param identifier
+     */
+    public static AlternativeProductsIsoform findIsoformInEntry(UniProtEntry entry, String identifier){
+
+        List<AlternativeProductsComment> comments = entry.getComments(CommentType.ALTERNATIVE_PRODUCTS );
+
+        for ( AlternativeProductsComment comment : comments ) {
+            List<AlternativeProductsIsoform> isoforms = comment.getIsoforms();
+            for ( AlternativeProductsIsoform isoform : isoforms ){
+                for( IsoformId id :  isoform.getIds()){
+                    if(identifier.equals(id.getValue())) return isoform;
+                }
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Searches a uniprot entry to find the feature with a matching identifier.
@@ -603,29 +604,29 @@ public class UniprotTranslationUtil {
 
 
 
-    public static Organism getOrganismFromEntry(UniProtEntry e){
+    public static Organism getOrganismFromEntry(UniProtEntry entity){
 
         Organism o = null;
 
-        if(e.getNcbiTaxonomyIds() == null
-                || e.getNcbiTaxonomyIds().isEmpty()){
+        if(entity.getNcbiTaxonomyIds() == null
+                || entity.getNcbiTaxonomyIds().isEmpty()){
             o = OrganismUtil.createUnknownOrganism(); //Unknown
-        } else if(e.getNcbiTaxonomyIds().size() > 1){
+        } else if(entity.getNcbiTaxonomyIds().size() > 1){
             throw new IllegalArgumentException(
-                    "Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] "
+                    "Uniprot entry ["+entity.getPrimaryUniProtAccession().getValue()+"] "
                             +"has multiple organisms.");
         } else {
-            String id = e.getNcbiTaxonomyIds().get(0).getValue();
+            String id = entity.getNcbiTaxonomyIds().get(0).getValue();
             try{
                 o = new DefaultOrganism( Integer.parseInt( id ) );
-                if(e.getOrganism().hasCommonName())
-                    o.setCommonName(e.getOrganism().getCommonName().getValue());
-                if(e.getOrganism().getScientificName() != null)
-                    o.setScientificName(e.getOrganism().getScientificName().getValue());
-                if(e.getOrganism().hasSynonym())
-                    o.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, e.getOrganism().getSynonym().getValue()));
+                if(entity.getOrganism().hasCommonName())
+                    o.setCommonName(entity.getOrganism().getCommonName().getValue());
+                if(entity.getOrganism().getScientificName() != null)
+                    o.setScientificName(entity.getOrganism().getScientificName().getValue());
+                if(entity.getOrganism().hasSynonym())
+                    o.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, entity.getOrganism().getSynonym().getValue()));
             }catch(NumberFormatException n){
-                throw new IllegalArgumentException("Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] " +
+                throw new IllegalArgumentException("Uniprot entry ["+entity.getPrimaryUniProtAccession().getValue()+"] " +
                         "has a TaxonomyID which could not be cast to an integer: ("+id+").",n);
             }
         }
