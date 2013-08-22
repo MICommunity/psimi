@@ -13,8 +13,6 @@ import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.webservices.chebi.*;
 
-
-
 /**
  * Accesses Chebi entries using the WSDL SOAP service.
  *
