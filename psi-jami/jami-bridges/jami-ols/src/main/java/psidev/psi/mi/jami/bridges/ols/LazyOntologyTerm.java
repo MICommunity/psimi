@@ -193,10 +193,14 @@ public class LazyOntologyTerm
         try{
             Map<String,String> metaDataMap = queryService.getTermMetadata(identifier.getId(), null);
 
-            super.setShortName(
-                    extractShortNameFromMetaData(metaDataMap , identifier.getDatabase().getShortName()) );
+            String shortName = extractShortNameFromMetaData(metaDataMap , identifier.getDatabase().getShortName());
+            if(shortName == null || shortName.isEmpty())
+                shortName = getFullName();
+            super.setShortName(shortName);
+
             super.getSynonyms().addAll(
                     extractSynonymsFromMetaData(metaDataMap , identifier.getDatabase().getShortName()) );
+
             super.setDefinition(
                     extractDefinitionFromMetaData(metaDataMap) );
         }catch (RemoteException e) {
