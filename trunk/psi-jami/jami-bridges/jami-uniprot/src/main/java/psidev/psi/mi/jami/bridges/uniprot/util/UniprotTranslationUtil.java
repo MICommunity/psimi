@@ -50,6 +50,8 @@ public class UniprotTranslationUtil {
     static final String ISOFORM_PARENT_MI = "MI:0243";
     static final String ISOFORM_PARENT = "isoform-parent";
 
+    private RogidGenerator rogidGenerator = new RogidGenerator();
+
     private final static Logger log = LoggerFactory.getLogger(UniprotTranslationUtil.class.getName());
 
     public UniprotTranslationUtil(){
@@ -70,7 +72,7 @@ public class UniprotTranslationUtil {
      * @param entity    A uniprot protein entity
      * @return          The protein object from the entity
      * @throws BridgeFailedException
-     */                                     //TODO should be a static method
+     */
     public Protein getProteinFromEntry(UniProtEntry entity) throws BridgeFailedException {
 
         if(entity == null) throw new IllegalArgumentException("The Uniprot entry was null");
@@ -136,7 +138,6 @@ public class UniprotTranslationUtil {
                 }
             }
         }
-
 
         //Aliases
         if(entity.getGenes() != null && entity.getGenes().size() > 0){
@@ -212,7 +213,7 @@ public class UniprotTranslationUtil {
      * @param identifier
      * @return
      */
-    public static Protein getProteinIsoformFromEntry(UniProtEntry entry, AlternativeProductsIsoform isoform, String identifier)
+    public Protein getProteinIsoformFromEntry(UniProtEntry entry, AlternativeProductsIsoform isoform, String identifier)
             throws BridgeFailedException {
 
         if(entry == null) throw new IllegalArgumentException("Uniprot entry was null.");
@@ -325,7 +326,7 @@ public class UniprotTranslationUtil {
      * @param identifier
      * @return
      */
-    public static Protein getProteinFeatureFromEntry(
+    public Protein getProteinFeatureFromEntry(
             UniProtEntry entry, Feature feature, String identifier) throws BridgeFailedException {
 
 
@@ -417,7 +418,7 @@ public class UniprotTranslationUtil {
 
 
 
-    private static void generateChecksums(Protein p) throws BridgeFailedException {
+    private void generateChecksums(Protein p) throws BridgeFailedException {
         // CHECKSUMS
         if(p.getSequence() != null){
             //TODO add an MI term if one is created
@@ -427,18 +428,15 @@ public class UniprotTranslationUtil {
             if(p.getOrganism() != null
                     && p.getOrganism().getTaxId() > 0){
                 try {
-                    RogidGenerator rogidGenerator = new RogidGenerator();
                     String rogidValue = null;
                     rogidValue = rogidGenerator.calculateRogid(
                             p.getSequence(),""+p.getOrganism().getTaxId());
                     Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
                     p.getChecksums().add(rogidChecksum);
 
-                } catch (Exception exception) {
-                //Todo - Seguid Exception is causing problems with the beans im  springbatch
+                } catch (SeguidException e) {
                     throw new BridgeFailedException(
-                            "Error was encountered whilst generating RogID in protein fetcher. "+
-                                    exception.toString());
+                            "Error was encountered whilst generating RogID in protein fetcher.",e);
                 }
             }
         }
@@ -577,7 +575,6 @@ public class UniprotTranslationUtil {
 
 
     public static psidev.psi.mi.jami.model.Gene getGeneFromEntry(UniProtEntry entity){
-        //TODO
         // Using protein id as gene short name:
         // Noe's Example uses this in lower case with "_gene" appended, should that be applied?
         psidev.psi.mi.jami.model.Gene jamiGene = new DefaultGene(entity.getUniProtId().getValue());

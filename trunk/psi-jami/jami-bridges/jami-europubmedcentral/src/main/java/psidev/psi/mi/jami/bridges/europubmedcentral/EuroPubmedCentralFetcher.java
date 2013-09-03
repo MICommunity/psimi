@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.model.Publication;
 import javax.xml.namespace.QName;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -103,5 +104,20 @@ public class EuroPubmedCentralFetcher
             }
         }
         return publication;
+    }
+
+    /**
+     * Uses the PubMed identifiers to search for publications and return completed records.
+     * @param identifiers   The identifiers of the publications to search for.
+     * @return              Completed records for the publications.
+     * @throws BridgeFailedException
+     */
+    @Override
+    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        Collection<Publication> results = new ArrayList<Publication>();
+        for(String identifier : identifiers){
+            results.add(getPublicationByIdentifier(identifier));
+        }
+        return results;
     }
 }
