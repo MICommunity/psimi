@@ -14,7 +14,7 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * Created with IntelliJ IDEA.
+ * A cached version of the EuroPubmedCentralFetcher.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
