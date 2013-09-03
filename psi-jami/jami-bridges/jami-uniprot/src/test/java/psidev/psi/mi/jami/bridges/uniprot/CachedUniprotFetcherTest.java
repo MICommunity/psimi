@@ -1,11 +1,10 @@
-package psidev.psi.mi.jami.bridges;
+package psidev.psi.mi.jami.bridges.uniprot;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.Collection;
@@ -19,9 +18,9 @@ import static org.junit.Assert.*;
  * Date: 29/05/13
  * Time: 16:16
  */
-public class UniprotFetcherTest {
+public class CachedUniprotFetcherTest {
 
-    private static final Logger log = LoggerFactory.getLogger(UniprotFetcherTest.class.getName());
+    private final Logger log = LoggerFactory.getLogger(CachedUniprotFetcherTest.class.getName());
     private UniprotFetcher fetcher;
 
     @Before
@@ -29,6 +28,7 @@ public class UniprotFetcherTest {
         fetcher = new UniprotFetcher();
     }
 
+    /*
     @Test
     public void test_stuff(){
         String[] identifiers = {
@@ -42,9 +42,8 @@ public class UniprotFetcherTest {
             String proIdentifier = identifier.substring(identifier.indexOf("PRO")+4,identifier.length()).trim();
             log.warn("doing identifier "+identifier);
             log.warn("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
-
         }
-    }
+    }*/
 
     //--------------MASTER
 
@@ -65,6 +64,7 @@ public class UniprotFetcherTest {
             throws BridgeFailedException {
 
         String[] identifiers = {"Q6ZRI6-3", "P13055-2"};
+
         for(String identifier : identifiers){
             //assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
             assertTrue(UniprotFetcher.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
