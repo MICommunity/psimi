@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.bridges.ols;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.OntologyTerm;
@@ -19,13 +18,17 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
+ * A lazy ontology term, which only checks for parents of children when required.
+ *
+ * //TODO currently will no link parents and children, nor cache new parents or children
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 21/08/13
  */
 public class LazyOntologyTerm
         extends DefaultOntologyTerm{
+
+
 
     protected final Logger log = LoggerFactory.getLogger(LazyCvTerm.class.getName());
 
@@ -154,16 +157,16 @@ public class LazyOntologyTerm
     }
 
     private void initialiseOlsParents(Xref identifier){
-        Map<String,String> childrenIDs;
+        Map<String,String> parentIDs;
         try{
-            childrenIDs = queryService.getTermParents(identifier.getId(), null);
+            parentIDs = queryService.getTermParents(identifier.getId(), null);
         } catch (RemoteException e) {
             log.warn("LazyOntologyTerm "+toString()+" failed whilst attempting to access metaData.",e);
             throw new IllegalStateException("The query service has failed.");
         }
 
-        for(Map.Entry<String,String> entry: childrenIDs.entrySet()){
-            super.getChildren().add( new LazyOntologyTerm(
+        for(Map.Entry<String,String> entry: parentIDs.entrySet()){
+            super.getParents().add( new LazyOntologyTerm(
                     this.queryService ,
                     entry.getValue() ,
                     new DefaultXref(identifier.getDatabase() , entry.getKey())));

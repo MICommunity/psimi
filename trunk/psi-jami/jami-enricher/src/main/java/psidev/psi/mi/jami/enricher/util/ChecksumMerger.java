@@ -1,95 +1,64 @@
 package psidev.psi.mi.jami.enricher.util;
 
 import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.comparator.checksum.DefaultChecksumComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Find the CRC64 and ROGID checksums in both lists
- * Find the other checksums so they can be added.
- * Only add CRC64/ROGID is the fetcher sequence is in the enriched protein
- * decide if the crc64 or rogid should be removed.
- *
- * Define the line between an enricher and validator.
- * Enricher should assure that nothing incorrect is added.
- * in enriching wrong information can be left
- * in updating wrong information might be removed?
- *
+ *  Defines the behaviour of merged checksum lists.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 11/07/13
  */
 public class ChecksumMerger {
 
-    Checksum crc64ChecksumToEnrich = null;
-    Checksum rogidChecksumToEnrich = null;
-    Checksum fetchedCrc64Checksum = null;
-    Checksum fetchedRogidChecksum = null;
-
-    public void merge(Collection<Checksum> checksumsToEnrich , Collection<Checksum> checksumsFetched){
+    boolean fetchedCRC64 = false;
+    boolean fetchedROGID = false;
+    Collection<Checksum> fetchedToAdd = new ArrayList<Checksum>();
+    Collection<Checksum> toRemove = new ArrayList<Checksum>();
 
 
-        // Checksums
-        // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
-
-        // Find the CRC64 & ROGID in the fetched protein.
-        for(Checksum checksum : checksumsFetched){
-            if(checksum.getMethod() != null){
-                if(ChecksumUtils.doesChecksumHaveMethod(checksum, Checksum.ROGID_MI, Checksum.ROGID)){
-                    rogidChecksumToEnrich = checksum;
-                }
-                else if(ChecksumUtils.doesChecksumHaveMethod(checksum , null , "CRC64")){
-                    crc64ChecksumToEnrich = checksum;
-                }
-            }
-            if(crc64ChecksumToEnrich != null && rogidChecksumToEnrich != null) break;
-        }
-        // If either were found, look for the crc64 and a the rogid in the enriched
-        if(crc64ChecksumToEnrich != null || rogidChecksumToEnrich != null){
-            for(Checksum checksum : checksumsToEnrich){
-                if(checksum.getMethod() != null){
-                    if(ChecksumUtils.doesChecksumHaveMethod(checksum , Checksum.ROGID_MI , Checksum.ROGID)){
-                        fetchedRogidChecksum = checksum;
-                    }
-                    else if(ChecksumUtils.doesChecksumHaveMethod(checksum , null , "CRC64")){
-                        fetchedCrc64Checksum = checksum;
-                    }
-                }
-                if(fetchedCrc64Checksum != null && fetchedRogidChecksum != null) break;
-            }
-        }
+    public Collection<Checksum> getFetchedToAdd(){
+        return fetchedToAdd;
     }
 
-    public void test(String sequence){
-        /*if(proteinFetched.getSequence() != null
-                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
-            if(fetchedCrc64Checksum != null) {
-                if( crc64ChecksumToEnrich != null
-                        && ! fetchedCrc64Checksum.getValue().equalsIgnoreCase(crc64ChecksumToEnrich.getValue())) {
-                    checksumsToEnrich.remove(crc64ChecksumToEnrich);
-                    if(listener != null) listener.onRemovedChecksum(proteinToEnrich, crc64ChecksumToEnrich);
-                    crc64ChecksumToEnrich = null;
-                }
-                if(crc64ChecksumToEnrich == null){
-                    checksumsToEnrich.add(fetchedCrc64Checksum);
-                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedCrc64Checksum);
-                }
-            }
-            if(fetchedRogidChecksum != null
-                    && proteinFetched.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()
-                    && proteinToEnrich.getOrganism().getTaxId() != -3){
-                if( rogidChecksumToEnrich != null
-                        && ! fetchedRogidChecksum.getValue().equalsIgnoreCase(rogidChecksumToEnrich.getValue())) {
-                    checksumsToEnrich.remove(rogidChecksumToEnrich);
-                    if(listener != null) listener.onRemovedChecksum(proteinToEnrich, rogidChecksumToEnrich);
-                    rogidChecksumToEnrich = null;
-                }
-                if(rogidChecksumToEnrich == null){
-                    checksumsToEnrich.add(fetchedRogidChecksum);
-                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedRogidChecksum);
+    public Collection<Checksum> getToRemove(){
+        return toRemove;
+    }
+
+    public void merge(Collection<Checksum> toEnrichChecksums , Collection<Checksum> fetchedChecksums){
+        fetchedCRC64 = false;
+        fetchedROGID = false;
+
+        fetchedToAdd.clear();
+        fetchedToAdd.addAll(fetchedChecksums);
+
+        toRemove.clear();
+
+        // Check all of the checksums which are to be enriched
+        for(Checksum checksumToEnrich : toEnrichChecksums){
+            boolean isInFetchedList = false;
+
+            // Remove from the list of checksums to add, all which are already present.
+            for(Checksum checksumToAdd : fetchedToAdd){
+                if(DefaultChecksumComparator.areEquals(checksumToEnrich, checksumToAdd)){
+                    isInFetchedList = true;
+                    fetchedToAdd.remove(checksumToAdd); // No need to add it as it is already there
+                    break;
                 }
             }
-        }*/
+
+            // If it's not in the fetched list, remove it
+            if(! isInFetchedList){
+                toRemove.add(checksumToEnrich);
+            }
+        }
     }
 }
