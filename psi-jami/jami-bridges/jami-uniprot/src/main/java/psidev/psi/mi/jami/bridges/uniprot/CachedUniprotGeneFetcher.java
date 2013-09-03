@@ -7,9 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
+import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
+import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Protein;
+import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
+import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.kraken.uuw.services.remoting.EntryIterator;
+import uk.ac.ebi.kraken.uuw.services.remoting.Query;
+import uk.ac.ebi.kraken.uuw.services.remoting.UniProtQueryBuilder;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,37 +26,46 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 14/05/13
  */
-public class CachedUniprotFetcher
-        extends UniprotFetcher
+public class CachedUniprotGeneFetcher
+        extends UniprotGeneFetcher
         implements CachedFetcher {
 
-    private final Logger log = LoggerFactory.getLogger(CachedUniprotFetcher.class.getName());
+    private final Logger log = LoggerFactory.getLogger(CachedUniprotGeneFetcher.class.getName());
 
     private Cache cache;
     private static CacheManager cacheManager;
 
     public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
-    public static final String CACHE_NAME = "uniprot-service-cache";
+    public static final String CACHE_NAME = "uniprot-gene-service-cache";
 
 
 
-    public CachedUniprotFetcher() {
+    public CachedUniprotGeneFetcher() {
         super();
         initialiseCache();
     }
 
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
 
-        final String key = "getProteinsByIdentifier#"+identifier;
+    public Collection<Gene> getGenesByEnsemblIdentifier(String identifier){
+        final String key = "getGenesByEnsemblIdentifier#"+identifier;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getProteinsByIdentifier(identifier);
+            data = super.getGenesByEnsemblIdentifier(identifier);
             storeInCache(key , data);
         }
-        return (Collection<Protein> )data;
+        return (Collection<Gene> )data;
     }
 
 
+    public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier){
+        final String key = "getGenesByEnsemblGenomesIdentifier#"+identifier;
+        Object data = getFromCache( key );
+        if( data == null) {
+            data = super.getGenesByEnsemblGenomesIdentifier(identifier);
+            storeInCache(key , data);
+        }
+        return (Collection<Gene> )data;
+    }
 
     /////////////////////////
     // EH CACHE utilities

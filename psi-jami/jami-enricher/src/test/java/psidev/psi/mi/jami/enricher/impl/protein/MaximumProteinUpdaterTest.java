@@ -1363,7 +1363,7 @@ public class MaximumProteinUpdaterTest {
                 if(idXref) fail("multiples of the uniprot id");
                 else idXref=true;
             else
-                fail(xref+"unrecognised alias");
+                fail(xref+" unrecognised alias");
         }
 
         assertTrue(newXref);

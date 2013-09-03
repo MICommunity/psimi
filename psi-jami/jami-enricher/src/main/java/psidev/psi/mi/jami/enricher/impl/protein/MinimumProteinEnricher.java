@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.AliasMerger;
+import psidev.psi.mi.jami.enricher.util.ChecksumMerger;
 import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -13,7 +14,8 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
- * Created with IntelliJ IDEA.
+ * Enriches a protein to the minimum level. As an enricher, no data will be overwritten in the protein being enriched.
+ * This covers full name, primary AC, checksums, identifiers and aliases.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 14/05/13
@@ -100,67 +102,14 @@ public class MinimumProteinEnricher
 
         }
 
-        //Checksums
-        // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
-        if(proteinFetched.getSequence() != null
-                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
-
-            boolean hasCrc64Checksum = false;
-            boolean hasRogidChecksum = false;
-            Checksum fetchedCrc64Checksum = null;
-            Checksum fetchedRogidChecksum = null;
-
-            // If the organisms do no match - all rogid searching can be curtailed.
-            if(proteinFetched.getOrganism().getTaxId() != proteinToEnrich.getOrganism().getTaxId()
-                    || proteinToEnrich.getOrganism().getTaxId() == -3 ){
-                hasRogidChecksum = true;
-            }
-
-            // Find checksums already in protein
-            for(Checksum checksum : proteinToEnrich.getChecksums()){
-                if(checksum.getMethod() != null){
-                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                            || (checksum.getMethod().getMIIdentifier() != null
-                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
-                        hasRogidChecksum = true;
-                    }
-                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                        hasCrc64Checksum = true;
-                    }
-                }
-                if(hasCrc64Checksum && hasRogidChecksum) break;
-            }
-            // Find the fetched checksums
-            for(Checksum checksum : proteinFetched.getChecksums()){
-                if(checksum.getMethod() != null){
-                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                            || (checksum.getMethod().getMIIdentifier() != null
-                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
-                        fetchedRogidChecksum = checksum;
-                    }
-                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                        fetchedCrc64Checksum = checksum;
-                    }
-                }
-                if( (fetchedCrc64Checksum != null || hasCrc64Checksum)
-                        && (fetchedRogidChecksum != null || hasRogidChecksum) ) break;
-            }
-
-            if(!hasCrc64Checksum) {
-                if(fetchedCrc64Checksum != null) {
-                    proteinToEnrich.getChecksums().add(fetchedCrc64Checksum);
-                    if(getProteinEnricherListener() != null)
-                        getProteinEnricherListener().onAddedChecksum(proteinToEnrich, fetchedCrc64Checksum);
-                }
-            }
-
-            if(!hasRogidChecksum){
-                if(fetchedRogidChecksum != null){
-                    proteinToEnrich.getChecksums().add(fetchedRogidChecksum);
-                    if(getProteinEnricherListener() != null)
-                        getProteinEnricherListener().onAddedChecksum(proteinToEnrich, fetchedRogidChecksum);
-                }
-            }
+        //CHECKSUMS
+        //TODO - behaviour may add two crc64s or ROGID
+        ChecksumMerger checksumMerger = new ChecksumMerger();
+        checksumMerger.merge(proteinToEnrich.getChecksums() , proteinFetched.getChecksums());
+        for(Checksum toAdd : checksumMerger.getFetchedToAdd()){
+            proteinToEnrich.getChecksums().add(toAdd);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onAddedChecksum(proteinToEnrich , toAdd);
         }
 
 

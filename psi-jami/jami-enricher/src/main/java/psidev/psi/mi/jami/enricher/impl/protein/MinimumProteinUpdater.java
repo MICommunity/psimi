@@ -13,8 +13,8 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
- * Provides minimum updating of the Protein.
- * As an updater, values from the provided Protein to enrich may be overwritten.
+ * Updates a protein to the minimum level. As an updater, data may be overwritten.
+ * This covers short name, full name, primary AC, checksums, identifiers and aliases.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
@@ -118,8 +118,19 @@ public class MinimumProteinUpdater
                 getProteinEnricherListener().onSequenceUpdate(proteinToEnrich, oldValue);
         }
 
+        // CHECKSUMS
         ChecksumMerger checksumMerger = new ChecksumMerger();
-        //TODO
+        checksumMerger.merge(proteinToEnrich.getChecksums() , proteinFetched.getChecksums());
+        for(Checksum toAdd : checksumMerger.getFetchedToAdd()){
+            proteinToEnrich.getChecksums().add(toAdd);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onAddedChecksum(proteinToEnrich , toAdd);
+        }
+        for(Checksum toRemove : checksumMerger.getToRemove()){
+            proteinToEnrich.getChecksums().remove(toRemove);
+            if(getProteinEnricherListener() != null)
+                getProteinEnricherListener().onRemovedChecksum(proteinToEnrich , toRemove);
+        }
 
 
 

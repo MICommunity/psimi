@@ -39,7 +39,6 @@ import java.util.*;
 /**
  * Utilities for translating Uniprot objects to JAMI objects.
  *
- *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 14/05/13
  */
@@ -58,18 +57,18 @@ public class UniprotTranslationUtil {
     }
 
     /**
-     * SHORTNAME = recommended short name // full name // identifier
-     * FULLNAME = recommended  full name
-     * UNIPROTAC = primary UniprotAC
+     * SHORT NAME = recommended short name // full name // identifier
+     * FULL NAME = recommended  full name
+     * UNIPROT AC = primary UniprotAC
      * IDENTIFIERS + UniprotID
-     * IDNETIFIERS + Secondary UniprotACs
+     * IDENTIFIERS + Secondary UniprotACs
      * ALIASES + genes, ORF, Locus
      * XREFS + database cross references
      * SEQUENCE = sequence
      * ORGANISM = organism
      * CHECKSUMS + generated ROGID, supplied CRC64
-     * @param entity
-     * @return
+     * @param entity    A uniprot protein entity
+     * @return          The protein object from the entity
      * @throws BridgeFailedException
      */                                     //TODO should be a static method
     public Protein getProteinFromEntry(UniProtEntry entity) throws BridgeFailedException {
@@ -421,12 +420,12 @@ public class UniprotTranslationUtil {
     private static void generateChecksums(Protein p) throws BridgeFailedException {
         // CHECKSUMS
         if(p.getSequence() != null){
-           /* //TODO add an MI term if one is created
+            //TODO add an MI term if one is created
             Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", Crc64.getCrc64(p.getSequence()));
             p.getChecksums().add(crc64Checksum);
 
             if(p.getOrganism() != null
-                    && p.getOrganism().getTaxId() != -3){
+                    && p.getOrganism().getTaxId() > 0){
                 try {
                     RogidGenerator rogidGenerator = new RogidGenerator();
                     String rogidValue = null;
@@ -435,12 +434,13 @@ public class UniprotTranslationUtil {
                     Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
                     p.getChecksums().add(rogidChecksum);
 
-                } catch (SeguidException exception) {
+                } catch (Exception exception) {
+                //Todo - Seguid Exception is causing problems with the beans im  springbatch
                     throw new BridgeFailedException(
                             "Error was encountered whilst generating RogID in protein fetcher. "+
                                     exception.toString());
                 }
-            } */
+            }
         }
     }
 

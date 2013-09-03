@@ -21,11 +21,12 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import java.util.Collection;
 
 /**
- * The Protein enricher is an enricher which can enrich either single protein or a collection.
- * The Protein enricher has one subEnricher. A protein enricher must be initiated with a protein fetcher.
+ * The Protein enricher is an enricher which can enrich either a single protein or a collection.
+ * A protein enricher must be initiated with a protein fetcher.
  *
- * If the protein fetcher also fetches an organism, and the organism fetcher is a mockOrganism fetcher,
- * then the organism from the fetched protein is set in the mock organism fetcher.
+ * If the protein fetcher also fetches an organism and an organism enricher is provided,
+ * the organism fetcher will be bypassed, and the organism fetched by the protein fetcher
+ * will be used for the organism enrichment.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  14/06/13
