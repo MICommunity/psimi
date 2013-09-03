@@ -64,6 +64,7 @@
     <bean id="xmlExperimentUpdater" class="psidev.psi.mi.jami.enricher.impl.experiment.BasicExperimentEnricher">
         <property name="cvTermEnricher" ref="xmlCvTermUpdater"/>
         <property name="publicationEnricher" ref="xmlPublicationUpdater"/>
+        <property name="organismEnricher" ref="xmlOrganismUpdater" />
         <property name="experimentEnricherListener" ref="experimentListener"/>
     </bean>
 
@@ -87,6 +88,7 @@
                 <entry key="output_format_key" value="psi25_xml"/>
             </map>
         </property>
+        <property name="output" ref="miFileOutput"/>
     </bean>
 
     <!-- Basic Step configuration -->

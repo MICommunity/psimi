@@ -42,7 +42,6 @@
         <property name="proteinEnricherListener" ref="xmlProteinListenerManager"/>
     </bean>
 
-
     <bean id="xmlFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureEvidenceEnricher">
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricherListener" ref="featureListener"/>
@@ -65,6 +64,7 @@
     <bean id="xmlExperimentEnricher" class="psidev.psi.mi.jami.enricher.impl.experiment.BasicExperimentEnricher">
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="publicationEnricher" ref="xmlPublicationEnricher"/>
+        <property name="organismEnricher" ref="xmlOrganismEnricher"/>
         <property name="experimentEnricherListener" ref="experimentListener"/>
     </bean>
 
@@ -88,6 +88,7 @@
                 <entry key="output_format_key" value="psi25_xml"/>
             </map>
         </property>
+        <property name="output" ref="miFileOutput"/>
     </bean>
 
     <!-- Basic Step configuration -->

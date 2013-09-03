@@ -80,7 +80,7 @@
         <property name="priorityIdentifiers" value="false"/>
         <property name="prioritySequence" value="true"/>
         <property name="remapListener" ref="proteinRemapperListener"/>
-     </bean>
+    </bean>
 
     <!-- fetchers -->
     <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsFetcher"/>
@@ -89,7 +89,6 @@
     <bean id="organismFetcher" class="psidev.psi.mi.jami.bridges.uniprottaxonomy.CachedUniprotTaxonomyFetcher"/>
 
     <!-- interaction writer -->
-
     <bean id="miFileOutput" class="org.springframework.core.io.FileSystemResource">
         <constructor-arg value="${mi.output}"/>
     </bean>
