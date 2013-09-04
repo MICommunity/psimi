@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Date;
+import java.util.EventListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,7 @@ import java.util.Date;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/08/13
  */
-public interface PublicationChangeListener {
+public interface PublicationChangeListener extends EventListener {
 
     public void onPubmedIdUpdate(Publication publication , String oldPubmedId);
 
