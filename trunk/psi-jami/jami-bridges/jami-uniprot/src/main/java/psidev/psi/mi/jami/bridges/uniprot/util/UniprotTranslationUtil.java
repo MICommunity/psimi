@@ -589,6 +589,21 @@ public class UniprotTranslationUtil {
         jamiGene.setFullName(fullName);
         jamiGene.setOrganism(getOrganismFromEntry(entity));
 
+        for(DatabaseCrossReference crossRef : entity.getDatabaseCrossReferences(DatabaseType.REFSEQ)){
+            if(crossRef instanceof RefSeq){
+                RefSeq xrefRefseq = (RefSeq)crossRef;
+                if(xrefRefseq.hasRefSeqAccessionNumber())
+                    jamiGene.getXrefs().add(XrefUtils.createRefseqSecondary(xrefRefseq.getRefSeqAccessionNumber().getValue()));
+            }
+        }
+        for(DatabaseCrossReference crossRef : entity.getDatabaseCrossReferences(DatabaseType.ENSEMBL)){
+            if(crossRef instanceof Ensembl){
+                Ensembl xrefEnsembl = (Ensembl)crossRef;
+                if(xrefEnsembl.hasEnsemblGeneIdentifier())
+                    jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsembl.getEnsemblGeneIdentifier().getValue()));
+            }
+        }
+
         for(Gene entityGene : entity.getGenes()){
             if(entityGene.hasGeneName())
                 jamiGene.getAliases().add(AliasUtils.createGeneName( entityGene.getGeneName().getValue() ));

@@ -46,18 +46,21 @@ public class UniprotGeneFetcher implements GeneFetcher {
 
 
     public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier){
-        /* if(identifier == null || identifier.isEmpty())
+        return null;
+    }
+
+    public Collection<Gene> getGenesByRefseqIdentifier(String identifier){
+        if(identifier == null || identifier.isEmpty())
             throw new IllegalArgumentException("Could not perform search on null identifier.");
 
-        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType. , identifier);
+        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType.REFSEQ , identifier);
         EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
         Collection<Gene> genes = new ArrayList<Gene>();
         if(entryIterator.hasNext()){
             Gene gene = UniprotTranslationUtil.getGeneFromEntry(entryIterator.next());
-            gene.setEnsemblGenome(identifier);
+            gene.setRefseq(identifier);
             genes.add(gene);
         }
-        return genes;  */
-        return null;
+        return genes;
     }
 }
