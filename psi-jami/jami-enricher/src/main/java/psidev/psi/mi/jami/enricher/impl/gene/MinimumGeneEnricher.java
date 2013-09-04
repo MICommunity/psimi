@@ -49,8 +49,8 @@ public class MinimumGeneEnricher
         }
 
         // == EnsemblGenomes AC ================================================================
-        if(geneToEnrich.getEnsembleGenome() == null
-                && geneFetched.getEnsembleGenome() != null){
+        if(geneToEnrich.getEnsemblGenome() == null
+                && geneFetched.getEnsemblGenome() != null){
 
             geneToEnrich.setFullName(geneFetched.getEnsembl());
             if (getGeneEnricherListener() != null)

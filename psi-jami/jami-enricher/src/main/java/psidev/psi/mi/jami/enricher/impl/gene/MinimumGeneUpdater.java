@@ -62,11 +62,11 @@ public class MinimumGeneUpdater
         }
 
         // == EnsemblGenomes AC ================================================================
-        if(geneFetched.getEnsembleGenome() != null
-                && ! geneFetched.getEnsembleGenome().equalsIgnoreCase(geneToEnrich.getEnsembleGenome())){
+        if(geneFetched.getEnsemblGenome() != null
+                && ! geneFetched.getEnsemblGenome().equalsIgnoreCase(geneToEnrich.getEnsemblGenome())){
 
-            String oldValue = geneToEnrich.getEnsembleGenome();
-            geneToEnrich.setEnsemblGenome(geneFetched.getEnsembleGenome());
+            String oldValue = geneToEnrich.getEnsemblGenome();
+            geneToEnrich.setEnsemblGenome(geneFetched.getEnsemblGenome());
             if (getGeneEnricherListener() != null)
                 getGeneEnricherListener().onEnsemblGenomeUpdate(geneToEnrich, oldValue);
         }

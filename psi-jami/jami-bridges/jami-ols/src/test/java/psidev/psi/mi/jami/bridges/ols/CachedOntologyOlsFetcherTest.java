@@ -68,7 +68,7 @@ public class CachedOntologyOlsFetcherTest {
      * Test that an ontology term is correctly retrieved with children but no parents.
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByIdentifier_with_children() throws BridgeFailedException {
 
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
@@ -89,7 +89,7 @@ public class CachedOntologyOlsFetcherTest {
      * Test that an ontology term is correctly retrieved with parents but no children.
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByIdentifier_with_parents() throws BridgeFailedException {
 
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
@@ -111,7 +111,7 @@ public class CachedOntologyOlsFetcherTest {
      * children are only fetched to that level.
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByIdentifier_with_finite_children() throws BridgeFailedException {
         int childrenLimit = 1;
 
@@ -139,7 +139,7 @@ public class CachedOntologyOlsFetcherTest {
      * parents are only fetched to that level
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByIdentifier_with_finite_parents() throws BridgeFailedException {
         int parentLimit = 2;
         OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
@@ -184,7 +184,7 @@ public class CachedOntologyOlsFetcherTest {
      * Confirm that the Ontology term is correctly retrieved
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByExactName__with_children() throws BridgeFailedException {
         OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME, TEST_TERM_A_DBNAME , -1 , 0);
 
@@ -203,7 +203,7 @@ public class CachedOntologyOlsFetcherTest {
      * Confirm that the Ontology term is correctly retrieved
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByExactName__with_parents() throws BridgeFailedException {
         OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME , 0 , -1);
 
@@ -222,7 +222,7 @@ public class CachedOntologyOlsFetcherTest {
      * Confirm that the Ontology term is correctly retrieved
      * @throws BridgeFailedException
      */
-    @Test
+   /* @Test
     public void test_getCvTermByExactName__with_finite_children() throws BridgeFailedException {
         int childrenLimit = 1;
 
@@ -247,7 +247,7 @@ public class CachedOntologyOlsFetcherTest {
      * Confirm that the Ontology term is correctly retrieved
      * @throws BridgeFailedException
      */
-    @Test
+    /*@Test
     public void test_getCvTermByExactName_with_finite_parents() throws BridgeFailedException {
         int parentLimit = 2;
         OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(

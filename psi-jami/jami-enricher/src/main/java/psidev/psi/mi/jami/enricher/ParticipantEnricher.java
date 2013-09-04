@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.participant.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
@@ -21,7 +22,7 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
      * @param participantToEnrich       The participant to be enriched.
      * @throws EnricherException        Thrown if a fetcher encounters a problem
      */
-    public void enrichParticipant(P participantToEnrich) throws EnricherException;
+    public void enrichParticipant(P participantToEnrich) throws EnricherException, BridgeFailedException;
 
     /**
      * Enriches a collection of participants.

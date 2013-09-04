@@ -47,7 +47,7 @@ public abstract class AbstractGeneEnricher
         setGeneFetcher(fetcher);
     }
 
-    public void enrichGene(Gene geneToEnrich) throws EnricherException, BridgeFailedException {
+    public void enrichGene(Gene geneToEnrich) throws EnricherException {
         if(geneToEnrich == null)
             throw new IllegalArgumentException("Can not enrich null Gene.");
 
@@ -100,7 +100,7 @@ public abstract class AbstractGeneEnricher
 
     }
 
-    public void enrichGenes(Collection<Gene> genesToEnrich) throws EnricherException, BridgeFailedException {
+    public void enrichGenes(Collection<Gene> genesToEnrich) throws EnricherException {
         for(Gene geneToEnrich : genesToEnrich){
             enrichGene(geneToEnrich);
         }
@@ -165,24 +165,58 @@ public abstract class AbstractGeneEnricher
 
     abstract void processGene(Gene geneToEnrich);
 
-    private Gene fetchGene(Gene geneToEnrich) throws BridgeFailedException {
+    private Gene fetchGene(Gene geneToEnrich) throws EnricherException {
         if(getGeneFetcher() == null)
             throw new IllegalStateException("Can not fetch with null gene fetcher.");
 
         Collection<Gene> results = Collections.emptyList();
 
-        if(geneToEnrich.getEnsembl() != null)
-            results = getGeneFetcher().getGenesByEnsemblIdentifier(geneToEnrich.getEnsembl());
-        if(!results.isEmpty())
-            if(results.size() == 1)
-                return results.iterator().next();
+        if(geneToEnrich.getEnsembl() != null){
+            try {
+                results = getGeneFetcher().getGenesByEnsemblIdentifier(geneToEnrich.getEnsembl());
+                if(!results.isEmpty())
+                    if(results.size() == 1)
+                        return results.iterator().next();
+            } catch (BridgeFailedException e) {
+                int index = 0;
+                while(index < RETRY_COUNT){
+                    try {
+                        results = getGeneFetcher().getGenesByEnsemblIdentifier(geneToEnrich.getEnsembl());
+                        if(!results.isEmpty())
+                            if(results.size() == 1)
+                                return results.iterator().next();
+                    } catch (BridgeFailedException ee) {
+                        ee.printStackTrace();
+                    }
+                    index++;
+                }
+                throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
+            }
+        }
 
-
-        if(geneToEnrich.getRefseq() != null)
-            results = Collections.emptyList();
-        if(!results.isEmpty())
-            if(results.size() == 1)
-                return results.iterator().next();
+        /*
+        if(geneToEnrich.getRefseq() != null){
+            try {
+                results = Collections.emptyList();
+                if(!results.isEmpty())
+                    if(results.size() == 1)
+                        return results.iterator().next();
+            } catch (BridgeFailedException e) {
+                int index = 0;
+                while(index < RETRY_COUNT){
+                    try {
+                        results = Collections.emptyList();
+                        if(!results.isEmpty())
+                            if(results.size() == 1)
+                                return results.iterator().next();
+                    } catch (BridgeFailedException ee) {
+                        ee.printStackTrace();
+                    }
+                    index++;
+                }
+                throw new EnricherException("Retried "+RETRY_COUNT+" times", e);
+            }
+        } */
 
         return null;
     }
