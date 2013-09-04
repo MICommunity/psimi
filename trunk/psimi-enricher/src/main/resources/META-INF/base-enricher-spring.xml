@@ -36,17 +36,28 @@
         <constructor-arg index="1" value="${cvTerm.failure.logFile}"/>
     </bean>
 
+    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${organism.success.logFile}"/>
+        <constructor-arg index="1" value="${organism.failure.logFile}"/>
+    </bean>
+
     <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherStatisticsWriter">
         <constructor-arg index="0" value="${protein.success.logFile}"/>
         <constructor-arg index="1" value="${protein.failure.logFile}"/>
     </bean>
 
-    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${organism.success.logFile}"/>
-        <constructor-arg index="1" value="${organism.failure.logFile}"/>
-    </bean>
     <bean id="proteinRemapperListener" class="psidev.psi.mi.jami.bridges.remapper.listener.ProteinRemapperStatisticsWriter">
         <constructor-arg value="${remap.success.logFile}"/>
+    </bean>
+
+    <bean id="bioactiveEntityListener" class="psidev.psi.mi.jami.enricher.listener.bioactiveentity.BioactiveEntityStatisticsWriter">
+        <constructor-arg index="0" value="${bioactiveentity.success.logFile}"/>
+        <constructor-arg index="1" value="${bioactiveentity.failure.logFile}"/>
+    </bean>
+
+    <bean id="geneListener" class="psidev.psi.mi.jami.enricher.listener.gene.GeneStatisticsWriter">
+        <constructor-arg index="0" value="${gene.success.logFile}"/>
+        <constructor-arg index="1" value="${gene.failure.logFile}"/>
     </bean>
 
     <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.feature.FeatureEnricherStatisticsWriter">
@@ -85,8 +96,10 @@
     <!-- fetchers -->
     <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsFetcher"/>
     <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+    <bean id="bioactiveEntityFetcher" class="psidev.psi.mi.jami.bridges.chebi.ChebiFetcher"/>
+    <bean id="geneFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotGeneFetcher"/>
     <bean id="publicationFetcher" class="psidev.psi.mi.jami.bridges.europubmedcentral.CachedEuroPubmedCentralFetcher"/>
-    <bean id="organismFetcher" class="psidev.psi.mi.jami.bridges.uniprottaxonomy.CachedUniprotTaxonomyFetcher"/>
+    <bean id="organismFetcher" class="psidev.psi.mi.jami.bridges.uniprot.taxonomy.CachedUniprotTaxonomyFetcher"/>
 
     <!-- interaction writer -->
     <bean id="miFileOutput" class="org.springframework.core.io.FileSystemResource">

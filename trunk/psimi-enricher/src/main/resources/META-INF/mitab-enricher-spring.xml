@@ -42,6 +42,20 @@
         <property name="proteinEnricherListener" ref="mitabProteinListenerManager"/>
     </bean>
 
+    <bean id="mitabBioactiveEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.bioactiveentity.MinimumBioactiveEntityEnricher">
+        <constructor-arg ref="bioactiveEntityFetcher"/>
+        <property name="bioactiveEntityFetcher" ref="bioactiveEntityFetcher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="bioactiveEntityEnricherListener" ref="bioactiveEntityListener"/>
+    </bean>
+
+    <bean id="mitabGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.gene.MinimumGeneEnricher">
+        <constructor-arg ref="geneFetcher"/>
+        <property name="organismEnricher" ref="mitabOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="geneEnricherListener" ref="geneListener"/>
+    </bean>
+
     <bean id="mitabFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEvidenceEnricher">
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="featureEnricherListener" ref="featureListener"/>
@@ -51,6 +65,8 @@
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="featureEnricher" ref="mitabFeatureEnricher"/>
         <property name="proteinEnricher" ref="mitabProteinEnricher"/>
+        <property name="geneEnricher" ref="mitabGeneEnricher"/>
+        <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityEnricher"/>
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
