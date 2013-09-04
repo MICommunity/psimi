@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-chebi</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>PSI :: JAMI - CHEBI</name>
@@ -41,13 +42,6 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 
     <build>
         <!-- To define the plugin version in your parent POM -->
@@ -138,5 +132,13 @@
         </plugins>
     </build>
 
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
 
 </project>

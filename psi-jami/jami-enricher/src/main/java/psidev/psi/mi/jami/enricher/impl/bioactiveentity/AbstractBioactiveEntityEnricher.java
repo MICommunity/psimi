@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.bioactiveentity.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherListener;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 import java.util.Collection;
@@ -29,6 +31,7 @@ public abstract class AbstractBioactiveEntityEnricher
 
     public static final int RETRY_COUNT = 5;
     private BioactiveEntityFetcher fetcher = null;
+    private CvTermEnricher cvTermEnricher = null;
     private BioactiveEntityEnricherListener listener = null;
     protected BioactiveEntity bioactiveEntityFetched = null;
 
@@ -134,6 +137,16 @@ public abstract class AbstractBioactiveEntityEnricher
     public BioactiveEntityFetcher getBioactiveEntityFetcher() {
         return fetcher;
     }
+
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+        this.cvTermEnricher = cvTermEnricher;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
+    }
+
 
     /**
      * Sets the listener to use when the bioactiveEntity has been changed

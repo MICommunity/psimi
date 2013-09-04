@@ -57,4 +57,9 @@ public interface BioactiveEntityEnricher{
      * @return  The current listener. Can be null.
      */
     public BioactiveEntityEnricherListener getBioactiveEntityEnricherListener();
+
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+
+    public CvTermEnricher getCvTermEnricher();
 }
