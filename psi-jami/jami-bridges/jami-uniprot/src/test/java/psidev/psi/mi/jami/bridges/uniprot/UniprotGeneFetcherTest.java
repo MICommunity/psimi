@@ -63,4 +63,43 @@ public class UniprotGeneFetcherTest {
             }
         }
     }
+
+    @Test
+    public void refseqIdTest() throws BridgeFailedException {
+        UniprotGeneFetcher fetcher = new UniprotGeneFetcher();
+        String[] refseqIds = {
+                "NP_001734.1",
+                "NM_001743.4",
+                "NP_005175.2",
+                "NM_005184.2",
+                "NP_008819.1",
+                "NM_006888.4"};
+
+        //We expect only one entrance                   "ENSG00000126001"
+        for(String id : refseqIds){
+            Collection<Gene> candidatesList = fetcher.getGenesByRefseqIdentifier(id);
+            log.info("----- Entry "+id+" has "+candidatesList.size()+" ----------") ;
+            for(Gene inta : candidatesList)  {
+                log.info("******");
+                log.info("---- full: " + inta.getFullName());
+                log.info("---- short: " + inta.getShortName());
+                log.info("---- organism: " + inta.getOrganism().toString());
+                log.info("---- ensembl: " + inta.getEnsembl());
+                log.info("---- ensemblGenomes: " + inta.getEnsembleGenome());
+                log.info("---- refseq: " + inta.getRefseq());
+                log.info("---- entrez: " + inta.getEntrezGeneId());
+                //log.info(inta.)
+                for(Alias alias : inta.getAliases()){
+                    log.info("   +--- Alias: "+alias.toString());
+                }
+                for(Annotation alias : inta.getAnnotations()){
+                    log.info("   +--- Anno: "+alias.toString());
+                }
+                for(Xref xref : inta.getXrefs())  {
+                    log.info("   +--- Xref: "+xref.toString());
+                }
+                log.info("********");
+            }
+        }
+    }
 }
