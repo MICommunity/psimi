@@ -46,20 +46,20 @@ public class CachedOntologyOLSFetcherSpeedTest {
         if(ontologyOLSFetcher == null) log.warn("null OLS!");
         else{
             long start =  System.currentTimeMillis();
-            OntologyTerm term = ontologyOLSFetcher.getCvTermByExactName("biological feature" , "psi-mi", -1 , -1);
+            OntologyTerm term = ontologyOLSFetcher.getCvTermByExactName("biological feature" , "psi-mi");
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for feature type");
             listChildren(term , "");
         }
         for(String name : featureTests){
             long start =  System.currentTimeMillis();
-            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name , "psi-mi" , -1 , -1);
+            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name , "psi-mi" );
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
         }
         for(String name : featureTests){
             long start =  System.currentTimeMillis();
-            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name , -1 , -1);
+            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name );
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
         }
@@ -68,7 +68,7 @@ public class CachedOntologyOLSFetcherSpeedTest {
 
         for(String name : additionalTests){
             long start =  System.currentTimeMillis();
-            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name , -1 , -1);
+            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name );
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
         }

@@ -85,7 +85,7 @@ public class UniprotGeneFetcherTest {
                 log.info("---- short: " + inta.getShortName());
                 log.info("---- organism: " + inta.getOrganism().toString());
                 log.info("---- ensembl: " + inta.getEnsembl());
-                log.info("---- ensemblGenomes: " + inta.getEnsembleGenome());
+                log.info("---- ensemblGenomes: " + inta.getEnsemblGenome());
                 log.info("---- refseq: " + inta.getRefseq());
                 log.info("---- entrez: " + inta.getEntrezGeneId());
                 //log.info(inta.)

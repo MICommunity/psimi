@@ -24,7 +24,7 @@ public interface GeneEnricher {
      * @throws EnricherException        Thrown if problems are encountered in the fetcher
      */
     public void enrichGene(Gene geneToEnrich)
-            throws EnricherException, BridgeFailedException;
+            throws EnricherException;
 
     /**
      * Enriches a collection of genes.
@@ -32,7 +32,7 @@ public interface GeneEnricher {
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichGenes(Collection<Gene> genesToEnrich)
-            throws EnricherException, BridgeFailedException;
+            throws EnricherException;
 
     /**
      * Sets the gene fetcher to be used for enrichment.

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.participant.ParticipantEnricherListener;
@@ -36,7 +37,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
     }
 
 
-    public void enrichParticipant(P participantToEnrich) throws EnricherException {
+    public void enrichParticipant(P participantToEnrich) throws EnricherException{
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 

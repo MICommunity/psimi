@@ -48,7 +48,7 @@ public class EnsemblFetcherTest {
         log.info("short name : "+gene.getShortName());
         log.info("full name : "+gene.getFullName());
         //gene.get
-        log.info("ensembl genome: "+gene.getEnsembleGenome());
+        log.info("ensembl genome: "+gene.getEnsemblGenome());
         log.info("ensembl : "+gene.getEnsembl()) ;
         log.info("entrez : "+gene.getEntrezGeneId());
         log.info("refseq : "+gene.getRefseq());

@@ -112,7 +112,7 @@ public class XmlGene extends XmlInteractor implements Gene{
     }
 
     @XmlTransient
-    public String getEnsembleGenome() {
+    public String getEnsemblGenome() {
         if (xrefContainer == null){
             initialiseXrefContainer();
         }
