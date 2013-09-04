@@ -83,29 +83,29 @@ public class DefaultGeneTest {
         Assert.assertEquals(0, interactor.getXrefs().size());
 
         interactor.setEnsemblGenome("ENSEMBL:xxx");
-        Assert.assertEquals("ENSEMBL:xxx", interactor.getEnsembleGenome());
+        Assert.assertEquals("ENSEMBL:xxx", interactor.getEnsemblGenome());
         Assert.assertEquals(1, interactor.getIdentifiers().size());
         Assert.assertEquals(XrefUtils.createIdentityXref(Xref.ENSEMBL_GENOMES, Xref.ENSEMBL_GENOMES_MI, "ENSEMBL:xxx"), interactor.getIdentifiers().iterator().next());
         Assert.assertEquals(0, interactor.getXrefs().size());
 
         interactor.setEnsemblGenome("ENSEMBL:xx2");
-        Assert.assertEquals("ENSEMBL:xx2", interactor.getEnsembleGenome());
+        Assert.assertEquals("ENSEMBL:xx2", interactor.getEnsemblGenome());
         Assert.assertEquals(1, interactor.getIdentifiers().size());
         Assert.assertEquals(XrefUtils.createIdentityXref(Xref.ENSEMBL_GENOMES, Xref.ENSEMBL_GENOMES_MI, "ENSEMBL:xx2"), interactor.getIdentifiers().iterator().next());
 
         interactor.getIdentifiers().clear();
-        Assert.assertNull(interactor.getEnsembleGenome());
+        Assert.assertNull(interactor.getEnsemblGenome());
         Assert.assertEquals(0, interactor.getIdentifiers().size());
 
         interactor.getIdentifiers().add(XrefUtils.createXref(Xref.ENSEMBL_GENOMES, Xref.ENSEMBL_GENOMES_MI, "ENSEMBL:xx2"));
-        Assert.assertEquals("ENSEMBL:xx2", interactor.getEnsembleGenome());
+        Assert.assertEquals("ENSEMBL:xx2", interactor.getEnsemblGenome());
         Assert.assertEquals(1, interactor.getIdentifiers().size());
         interactor.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL_GENOMES, Xref.ENSEMBL_GENOMES_MI, "ENSEMBL:xx3"));
-        Assert.assertEquals("ENSEMBL:xx3", interactor.getEnsembleGenome());
+        Assert.assertEquals("ENSEMBL:xx3", interactor.getEnsemblGenome());
         Assert.assertEquals(2, interactor.getIdentifiers().size());
 
         interactor.setEnsemblGenome(null);
-        Assert.assertNull(interactor.getEnsembleGenome());
+        Assert.assertNull(interactor.getEnsemblGenome());
         Assert.assertEquals(0, interactor.getIdentifiers().size());
     }
 
