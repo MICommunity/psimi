@@ -172,6 +172,11 @@
             <version>${jami.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-chebi</artifactId>
+            <version>${jami.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
