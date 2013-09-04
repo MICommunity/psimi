@@ -128,7 +128,7 @@ public class DefaultGene extends DefaultMolecule implements Gene {
         }
     }
 
-    public String getEnsembleGenome() {
+    public String getEnsemblGenome() {
         return this.ensemblGenome != null ? this.ensemblGenome.getId() : null;
     }
 

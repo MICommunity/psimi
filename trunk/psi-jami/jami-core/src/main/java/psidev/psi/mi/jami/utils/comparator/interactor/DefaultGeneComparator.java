@@ -45,8 +45,8 @@ public class DefaultGeneComparator {
             }
 
             // compares ensemblGenomes identifier if at least one ensembl identifier is not set
-            String ensemblGenome1 = gene1.getEnsembleGenome();
-            String ensemblGenome2 = gene2.getEnsembleGenome();
+            String ensemblGenome1 = gene1.getEnsemblGenome();
+            String ensemblGenome2 = gene2.getEnsemblGenome();
 
             if (ensemblGenome1 != null && ensemblGenome2 != null){
                 if (!ensemblGenome1.equals(ensemblGenome2)){

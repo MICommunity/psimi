@@ -38,7 +38,7 @@ public interface Gene extends Molecule{
      * Ex: ENSG00000139618
      * @return the Ensembl geneome accessiom
      */
-    public String getEnsembleGenome();
+    public String getEnsemblGenome();
 
     /**
      * Sets the Ensembl genomes identifier
