@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.listener;
 
 import psidev.psi.mi.jami.model.*;
 
+import java.util.EventListener;
+
 
 /**
  * A generic listener for an interactor.
@@ -9,7 +11,8 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public interface InteractorListener<T extends Interactor> {
+public interface InteractorListener<T extends Interactor>
+        extends EventListener {
 
     /**
      * Listens for the event where the shortName has been changed.
