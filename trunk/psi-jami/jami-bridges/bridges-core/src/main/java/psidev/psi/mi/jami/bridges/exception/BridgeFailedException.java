@@ -5,7 +5,7 @@ package psidev.psi.mi.jami.bridges.exception;
  * This exception would usually be expected pass the original Exception that caused the problem.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 15/04/13
+ * @since  15/04/13
  */
 public class BridgeFailedException extends Exception{
 

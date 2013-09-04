@@ -46,10 +46,10 @@ public class UniprotGeneFetcher implements GeneFetcher {
 
 
     public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier){
-        if(identifier == null || identifier.isEmpty())
+        /* if(identifier == null || identifier.isEmpty())
             throw new IllegalArgumentException("Could not perform search on null identifier.");
 
-        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType.ENSEMBL , identifier);
+        Query query = UniProtQueryBuilder.buildDatabaseCrossReferenceQuery(DatabaseType. , identifier);
         EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
         Collection<Gene> genes = new ArrayList<Gene>();
         if(entryIterator.hasNext()){
@@ -57,6 +57,7 @@ public class UniprotGeneFetcher implements GeneFetcher {
             gene.setEnsemblGenome(identifier);
             genes.add(gene);
         }
-        return genes;
+        return genes;  */
+        return null;
     }
 }

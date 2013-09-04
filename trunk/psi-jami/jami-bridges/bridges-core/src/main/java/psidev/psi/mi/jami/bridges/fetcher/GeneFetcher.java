@@ -2,12 +2,11 @@ package psidev.psi.mi.jami.bridges.fetcher;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.impl.DefaultGene;
 
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * A fetcher for genes.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13

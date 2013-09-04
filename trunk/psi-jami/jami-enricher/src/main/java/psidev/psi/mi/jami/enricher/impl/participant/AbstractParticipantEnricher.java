@@ -24,6 +24,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
     private ProteinEnricher proteinEnricher;
     private CvTermEnricher cvTermEnricher;
+    private GeneEnricher geneEnricher;
     private FeatureEnricher<F> featureEnricher;
     private BioactiveEntityEnricher bioactiveEntityEnricher;
 
@@ -43,15 +44,14 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
         if(getCvTermEnricher() != null)
             getCvTermEnricher().enrichCvTerm(participantToEnrich.getBiologicalRole());
 
-        // Prepare Features
+        // == Prepare Features =====================================
         if( getFeatureEnricher() != null )
             getFeatureEnricher().setFeaturesToEnrich(participantToEnrich);
 
 
 
-        // Enrich Interactor
+        // == Enrich Interactor ============================
         CvTerm interactorType = participantToEnrich.getInteractor().getInteractorType();
-
         processParticipant(participantToEnrich);
 
         if(interactorType.getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)
@@ -96,7 +96,27 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
             }
         }
 
-        // Enrich Features
+
+        if( interactorType.getMIIdentifier().equalsIgnoreCase(Gene.GENE_MI)
+                || interactorType.getShortName().equalsIgnoreCase(Gene.GENE )){
+            if(getGeneEnricher() != null){
+                if(participantToEnrich.getInteractor() instanceof Gene){
+                    getGeneEnricher().enrichGene( (Gene) participantToEnrich.getInteractor() );
+                } else {
+                    if(listener != null) listener.onEnrichmentComplete(participantToEnrich ,
+                            EnrichmentStatus.FAILED,
+                            "Found interactor of type "+interactorType.getShortName()+
+                                    " ("+interactorType.getMIIdentifier()+") "+
+                                    "but was not an instance of 'Gene', " +
+                                    "was "+participantToEnrich.getInteractor().getClass().getName()+" instead.");
+                    return;
+                }
+            }
+        }
+
+
+
+        // == Enrich Features =========================================================
         if( getFeatureEnricher() != null )
                 getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
 
@@ -189,5 +209,23 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
      */
     public BioactiveEntityEnricher getBioactiveEntityEnricher(){
         return this.bioactiveEntityEnricher;
+    }
+
+
+    /**
+     * Sets the new enricher for genes
+     * @param geneEnricher   The enricher to use for genes. Can be null.
+     */
+    public void setGeneEnricher(GeneEnricher geneEnricher){
+        this.geneEnricher = geneEnricher;
+    }
+
+    /**
+     * The current enricher used for genes.
+     * If null, genes are not currently being enriched.
+     * @return  The current enricher. May be null.
+     */
+    public GeneEnricher getGeneEnricher(){
+        return this.geneEnricher;
     }
 }

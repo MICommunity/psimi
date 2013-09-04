@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since 08/08/13
  */
 public interface BioactiveEntityChangeListener
-        extends InteractorListener<BioactiveEntity>{
+        extends InteractorChangeListener<BioactiveEntity> {
 
     /**
      * Listens for the event where the Chebi identifier has been updated.

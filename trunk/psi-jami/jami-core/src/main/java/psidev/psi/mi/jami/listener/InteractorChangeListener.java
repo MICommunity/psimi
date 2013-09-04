@@ -11,7 +11,7 @@ import java.util.EventListener;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public interface InteractorListener<T extends Interactor>
+public interface InteractorChangeListener<T extends Interactor>
         extends EventListener {
 
     /**

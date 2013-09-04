@@ -15,12 +15,18 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
 
-
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * Enrichment of features.
+ * Features are loaded before the protein is enriched.
+ *  - Upon loading the feature, the ranges are ratified
+ *  - Upon a change of protein sequence, the ranges are re-calculated
+ *  - The enrichment of the features then takes place (only cvTerms at this point)
+ *  // TODO consider a less divided way of feature updating (current method will list each feature three times in the stats writer)
+ *
+ *  Alternative methods are given for the enrichment and updating of invalid ranges.
  *
  * @author  Gabriel Aldam (galdam@ebi.ac.uk)
  * @since   13/06/13
