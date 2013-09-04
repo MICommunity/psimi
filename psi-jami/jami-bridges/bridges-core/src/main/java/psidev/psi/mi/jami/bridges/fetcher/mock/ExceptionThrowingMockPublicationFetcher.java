@@ -5,6 +5,9 @@ import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * A mock fetcher for testing exceptions.
  * It extends the functionality of the mock fetcher but can also throw exceptions.
@@ -27,5 +30,9 @@ public class ExceptionThrowingMockPublicationFetcher
 
     public Publication getPublicationByIdentifier(String pubmedID) throws BridgeFailedException {
         return getEntry(pubmedID);
+    }
+
+    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        return Collections.EMPTY_LIST;
     }
 }

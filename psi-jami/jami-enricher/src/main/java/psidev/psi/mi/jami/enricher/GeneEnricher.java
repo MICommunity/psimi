@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.enricher;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
+import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.gene.GeneEnricherListener;
 import psidev.psi.mi.jami.model.Gene;
@@ -22,7 +24,7 @@ public interface GeneEnricher {
      * @throws EnricherException        Thrown if problems are encountered in the fetcher
      */
     public void enrichGene(Gene geneToEnrich)
-            throws EnricherException;
+            throws EnricherException, BridgeFailedException;
 
     /**
      * Enriches a collection of genes.
@@ -30,7 +32,7 @@ public interface GeneEnricher {
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
     public void enrichGenes(Collection<Gene> genesToEnrich)
-            throws EnricherException;
+            throws EnricherException, BridgeFailedException;
 
     /**
      * Sets the gene fetcher to be used for enrichment.
@@ -56,4 +58,26 @@ public interface GeneEnricher {
      * @return  The current listener. Can be null.
      */
     public GeneEnricherListener getGeneEnricherListener();
+
+
+
+
+    /**
+     * The organism enricher which will be used to collect data about the organisms.
+     * @param organismEnricher  The organism enricher to be used.
+     */
+    public void setOrganismEnricher(OrganismEnricher organismEnricher);
+
+    /**
+     * The Enricher to use on the protein's organism.
+     * @return  The current organism enricher.
+     */
+    public OrganismEnricher getOrganismEnricher();
+
+
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+
+    public CvTermEnricher getCvTermEnricher();
+
 }

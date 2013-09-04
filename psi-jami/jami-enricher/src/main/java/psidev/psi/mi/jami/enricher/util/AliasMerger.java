@@ -20,8 +20,6 @@ import java.util.Collection;
  * @since 03/07/13
  */
 public class AliasMerger {
-    //protected static final Logger log = LoggerFactory.getLogger(AliasMerger.class.getName());
-
 
     private Collection<Alias> toRemove = new ArrayList<Alias>();
     private Collection<Alias> fetchedToAdd = new ArrayList<Alias>();
@@ -33,6 +31,7 @@ public class AliasMerger {
     public Collection<Alias> getToRemove() {
         return toRemove;
     }
+
 
     public void merge(Collection<Alias> fetchedAliases , Collection<Alias> toEnrichAliases){
         fetchedToAdd.clear();

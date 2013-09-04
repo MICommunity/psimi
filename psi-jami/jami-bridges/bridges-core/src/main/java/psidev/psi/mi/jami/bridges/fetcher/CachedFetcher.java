@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
-import java.io.File;
 
 /**
  * An interface defining the basic interaction with the cache.

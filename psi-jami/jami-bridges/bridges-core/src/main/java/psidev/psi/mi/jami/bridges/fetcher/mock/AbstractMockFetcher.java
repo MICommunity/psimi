@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
+ * A general mock fetcher which can be used to quickly make new mocks with predictable behaviour.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13

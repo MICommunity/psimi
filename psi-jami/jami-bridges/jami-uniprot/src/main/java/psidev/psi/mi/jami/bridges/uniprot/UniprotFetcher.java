@@ -142,7 +142,7 @@ public class UniprotFetcher
                 AlternativeProductsIsoform isoform = UniprotTranslationUtil.findIsoformInEntry(entry, identifier);
                 if(isoform == null) log.warn("No isoform in entry "+entry.getUniProtId());
                 else{
-                    proteins.add(UniprotTranslationUtil.getProteinIsoformFromEntry(entry, isoform, identifier));
+                    proteins.add(uniprotTranslationUtil.getProteinIsoformFromEntry(entry, isoform, identifier));
                 }
             }
         }catch (RemoteDataAccessException e){
@@ -185,7 +185,7 @@ public class UniprotFetcher
             while(entries.hasNext()){
                 UniProtEntry entry = entries.next();
                 Feature feature = UniprotTranslationUtil.findFeatureInEntry(entry, identifier);
-                proteins.add(UniprotTranslationUtil.getProteinFeatureFromEntry(entry, feature, identifier));
+                proteins.add(uniprotTranslationUtil.getProteinFeatureFromEntry(entry, feature, identifier));
             }
         }catch (RemoteDataAccessException e){
             throw new BridgeFailedException("Problem with Uniprot Service.",e);

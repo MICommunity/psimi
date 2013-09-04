@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 29/07/13
  */
-public class OrganismUtil {
+public class OrganismFetchingUtil {
 
     /**
      * If the TaxId is one of the reserved numbers (-5 to -1), it denotes a non-real organism.

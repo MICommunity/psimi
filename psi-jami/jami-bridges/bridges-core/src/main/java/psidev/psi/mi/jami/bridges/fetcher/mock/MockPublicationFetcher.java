@@ -5,6 +5,9 @@ import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * A mock fetcher for testing.
  * It extends all the methods of the true fetcher, but does not access an external service.
@@ -24,5 +27,14 @@ public class MockPublicationFetcher
 
     public Publication getPublicationByIdentifier(String pubmedID) throws BridgeFailedException {
         return getEntry(pubmedID);
+    }
+
+    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers)
+            throws BridgeFailedException {
+        Collection<Publication> results = new ArrayList<Publication>();
+        for(String id : identifiers){
+            results.add(getPublicationByIdentifier(id));
+        }
+        return results;
     }
 }

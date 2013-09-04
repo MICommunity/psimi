@@ -79,6 +79,21 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
      */
     public BioactiveEntityEnricher getBioactiveEntityEnricher();
 
+
+    /**
+     * Sets the new enricher for genes
+     * @param geneEnricher   The enricher to use for genes. Can be null.
+     */
+    public void setGeneEnricher(GeneEnricher geneEnricher);
+
+    /**
+     * The current enricher used for genes.
+     * If null, genes are not currently being enriched.
+     * @return  The current enricher. May be null.
+     */
+    public GeneEnricher getGeneEnricher();
+
+
     /**
      * Sets the listener for Participant events. If null, events will not be reported.
      * @param listener  The listener to use. Can be null.

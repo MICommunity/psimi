@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @since 04/09/13
  */
 public interface GeneChangeListener
-        extends InteractorListener<Gene>{
+        extends InteractorChangeListener<Gene> {
 
     /**
      * Listens to the event where the Ensembl identifier is changed.
