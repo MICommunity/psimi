@@ -13,12 +13,26 @@ import java.util.Collection;
  */
 public interface GeneFetcher {
 
-    public Collection<Gene> getGenesByEnsemblIdentifier(String identifier)
+    /**
+     *
+     * @param identifier    The identifier of the gene
+     * @param source        The database that the identifier is from.
+     * @return              The genes matching the search terms.
+     * @throws BridgeFailedException
+     */
+    public Collection<Gene> getGenesByIdentifier(String identifier , GeneIdentifierSource source)
             throws BridgeFailedException;
 
-    public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier)
+    /**
+     *
+     * @param identifier    The identifier of the gene
+     * @param source        The database that the identifier is from.
+     * @param taxID         The organism the gene is from.
+     * @return              The genes matching the search terms.
+     * @throws BridgeFailedException
+     */
+    public Collection<Gene> getGenesByIdentifier(String identifier , GeneIdentifierSource source, int taxID)
             throws BridgeFailedException;
 
-    /* public Gene getGeneByIdentifier (String identifier)
-            throws BridgeFailedException;   */
+
 }

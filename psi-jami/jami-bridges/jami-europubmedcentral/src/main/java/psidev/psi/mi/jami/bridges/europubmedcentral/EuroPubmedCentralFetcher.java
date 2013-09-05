@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.europubmedcentral.util.*;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
+import psidev.psi.mi.jami.bridges.fetcher.PublicationIdentifierSource;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import uk.ac.ebi.cdb.webservice.*;
 
@@ -69,41 +70,47 @@ public class EuroPubmedCentralFetcher
      * @return      a completed publication record.
      * @throws BridgeFailedException
      */
-    public Publication getPublicationByIdentifier(String id) throws BridgeFailedException{
+    public Publication getPublicationByIdentifier(String id , PublicationIdentifierSource source) throws BridgeFailedException{
         if(id == null || id.length() < 1)
             throw new IllegalArgumentException("Can not fetch on an empty identifier");
 
-        Collection<Result> results = Collections.EMPTY_LIST;
+        if(source == PublicationIdentifierSource.PUBMED){
 
-        final String query = "EXT_ID:" + id + " SRC:"+IDENTIFIER_TYPE;
-        try {
-            ResponseWrapper wrapper = getPort().searchPublications(query, DATA_SET , RESULT_TYPE, 0, false, EMAIL);
+            Collection<Result> results = Collections.EMPTY_LIST;
 
-            if(wrapper.getResultList() != null)
-                results = wrapper.getResultList().getResult();
-        } catch (QueryException_Exception e) {
-            throw new BridgeFailedException("Problem fetching query: "+query, e);
-        }
+            final String query = "EXT_ID:" + id + " SRC:"+IDENTIFIER_TYPE;
+            try {
+                ResponseWrapper wrapper = getPort().searchPublications(query, DATA_SET , RESULT_TYPE, 0, false, EMAIL);
 
-        Publication publication = new DefaultPublication();
+                if(wrapper.getResultList() != null)
+                    results = wrapper.getResultList().getResult();
+            } catch (QueryException_Exception e) {
+                throw new BridgeFailedException("Problem fetching query: "+query, e);
+            }
 
-        if (!results.isEmpty()) {
-            Result entry = results.iterator().next();
+            Publication publication = new DefaultPublication();
 
-            EuroPubmedCentralTranslationUtil.
-                    convertDataResultToPublication(publication, entry);
+            if (!results.isEmpty()) {
+                Result entry = results.iterator().next();
 
-            if( entry.getHasDbCrossReferences().equals("Y") ){
-                try {
-                    ResponseWrapper xrefResults = getPort().getDatabaseLinks(id, IDENTIFIER_TYPE, null, 0, EMAIL) ;
-                    EuroPubmedCentralTranslationUtil.
-                            convertXrefResultToPublication(publication, xrefResults);
-                } catch (QueryException_Exception e) {
-                    throw new BridgeFailedException(e);
+                EuroPubmedCentralTranslationUtil.
+                        convertDataResultToPublication(publication, entry);
+
+                if( entry.getHasDbCrossReferences().equals("Y") ){
+                    try {
+                        ResponseWrapper xrefResults = getPort().getDatabaseLinks(id, IDENTIFIER_TYPE, null, 0, EMAIL) ;
+                        EuroPubmedCentralTranslationUtil.
+                                convertXrefResultToPublication(publication, xrefResults);
+                    } catch (QueryException_Exception e) {
+                        throw new BridgeFailedException(e);
+                    }
                 }
             }
+            return publication;
         }
-        return publication;
+        else {
+            return null;
+        }
     }
 
     /**
@@ -113,10 +120,11 @@ public class EuroPubmedCentralFetcher
      * @throws BridgeFailedException
      */
     @Override
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers, PublicationIdentifierSource source)
+            throws BridgeFailedException {
         Collection<Publication> results = new ArrayList<Publication>();
         for(String identifier : identifiers){
-            results.add(getPublicationByIdentifier(identifier));
+            results.add(getPublicationByIdentifier(identifier, source));
         }
         return results;
     }

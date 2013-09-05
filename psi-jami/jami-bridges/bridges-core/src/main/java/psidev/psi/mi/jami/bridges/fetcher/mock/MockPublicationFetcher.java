@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.PublicationIdentifierSource;
 import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
@@ -25,15 +26,15 @@ public class MockPublicationFetcher
         super();
     }
 
-    public Publication getPublicationByIdentifier(String pubmedID) throws BridgeFailedException {
+    public Publication getPublicationByIdentifier(String pubmedID , PublicationIdentifierSource source) throws BridgeFailedException {
         return getEntry(pubmedID);
     }
 
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers)
+    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers , PublicationIdentifierSource source)
             throws BridgeFailedException {
         Collection<Publication> results = new ArrayList<Publication>();
         for(String id : identifiers){
-            results.add(getPublicationByIdentifier(id));
+            results.add(getPublicationByIdentifier(id , source));
         }
         return results;
     }
