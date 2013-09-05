@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -20,18 +21,20 @@ public interface PublicationFetcher {
      * @param source        The database that the identifier is from.
      * @return              A completed record for the publication or null if no publication could be found.
      * @throws BridgeFailedException
+     * @throws IllegalArgumentException if identifier is null
+     * @throws IllegalArgumentException if source is null
      */
     public Publication getPublicationByIdentifier(String identifier , PublicationIdentifierSource source)
             throws BridgeFailedException;
 
     /**
      * Uses the identifiers to search for publications and return completed records.
-     * @param identifiers   The identifiers of the publications to search for.
-     * @param source        The database that the identifier is from.
+     * @param identifiers   The identifiers of the publications to search for per publication identifier source.
      * @return              Completed records for the publications.
      * @throws BridgeFailedException
+     * @throws IllegalArgumentException if identifiers is null or key/value is null
      */
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers , PublicationIdentifierSource source)
+    public Collection<Publication> getPublicationsByIdentifiers(Map<PublicationIdentifierSource,Collection<String>> identifiers)
             throws BridgeFailedException;
 
 }
