@@ -50,6 +50,15 @@ public interface Xref {
     public static String PRIMARY_MI = "MI:0358";
     public static String SEE_ALSO = "see-also";
     public static String SEE_ALSO_MI = "MI:0361";
+    public static String GO = "go";
+    public static String GO_MI = "MI:0448";
+    public static String METHOD_REFERENCE = "method reference";
+    public static String METHOD_REFERENCE_MI = "MI:0357";
+    public static String RESID = "resid";
+    public static String RESID_MI = "MI:0248";
+    public static String SO = "so";
+    public static String SO_MI = "MI:0601";
+
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.
