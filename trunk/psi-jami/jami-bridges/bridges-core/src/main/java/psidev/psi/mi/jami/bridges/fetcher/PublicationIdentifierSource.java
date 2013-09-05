@@ -7,5 +7,5 @@ package psidev.psi.mi.jami.bridges.fetcher;
  * @since 04/09/13
  */
 public enum PublicationIdentifierSource {
-    PUBMED;
+    PUBMED, DOI
 }
