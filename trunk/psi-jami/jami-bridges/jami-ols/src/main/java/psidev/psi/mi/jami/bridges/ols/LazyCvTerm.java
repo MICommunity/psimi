@@ -3,11 +3,13 @@ package psidev.psi.mi.jami.bridges.ols;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import psidev.psi.mi.jami.bridges.ols.utils.OlsUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import uk.ac.ebi.ols.soap.Query;
 
 import java.rmi.RemoteException;
@@ -26,10 +28,13 @@ public class LazyCvTerm extends DefaultCvTerm {
     private Query queryService;
 
     private boolean hasShortName = false;
-    private boolean hasXrefs  = false;
-    private boolean hasAnnotations = false;
+    private boolean hasSynonyms = false;
+    private boolean hasLoadedMetadata = false;
+    private boolean hasLoadedXrefs = false;
 
-    public LazyCvTerm(Query queryService, String fullName, Xref identityRef) {
+    private String ontologyName;
+
+    public LazyCvTerm(Query queryService, String fullName, Xref identityRef, String ontologyName) {
         super("");
         if (queryService == null){
             throw new IllegalArgumentException("The lazy cv term needs the Ols query service which cannot be null.");
@@ -41,6 +46,8 @@ public class LazyCvTerm extends DefaultCvTerm {
         if (identityRef != null){
             getIdentifiers().add(identityRef);
         }
+
+        this.ontologyName = ontologyName;
     }
 
     /**
@@ -51,8 +58,7 @@ public class LazyCvTerm extends DefaultCvTerm {
     @Override
     public String getShortName() {
         if (!hasShortName){
-            initialiseShortNameAndSynonyms( getIdentifiers().iterator().next() );
-            hasShortName = true;
+            initialiseMetaData(getIdentifiers().iterator().next());
         }
         return super.getShortName();
     }
@@ -67,7 +73,6 @@ public class LazyCvTerm extends DefaultCvTerm {
     public Collection<Xref> getXrefs() {
         if (!hasXrefs){
             initialiseOlsXrefs();
-            hasXrefs = true;
         }
         return super.getXrefs();
     }
@@ -75,15 +80,13 @@ public class LazyCvTerm extends DefaultCvTerm {
     public Collection<Annotation> getAnnotations() {
         if (!hasAnnotations){
             initialiseOlsAnnotations();
-            hasAnnotations = true;
         }
         return super.getAnnotations();
     }
 
     public Collection<Alias> getSynonyms() {
-        if (!hasShortName) {
-            initialiseShortNameAndSynonyms( getIdentifiers().iterator().next()  );
-            hasShortName = true;
+        if (!hasSynonyms) {
+            initialiseMetaData(getIdentifiers().iterator().next());
         }
 
         return super.getSynonyms();
@@ -104,23 +107,141 @@ public class LazyCvTerm extends DefaultCvTerm {
      *
      * @param identifier    The identifier that is being used.
      */
-    private void initialiseShortNameAndSynonyms(Xref identifier){
-        try{
-            Map<String,String> metaDataMap = queryService.getTermMetadata(identifier.getId(), null);
+    private void initialiseMetaData(Xref identifier){
+        Map<String,String> metaDataMap = null;
+        try {
+            metaDataMap = queryService.getTermMetadata(identifier.getId(), ontologyName);
 
-            String shortName = extractShortNameFromMetaData(metaDataMap , identifier.getDatabase().getShortName());
-            if(shortName == null || shortName.isEmpty())
-                shortName = getFullName();
-            super.setShortName(shortName);
+            if (metaDataMap != null){
+                if (!hasSynonyms){
+                    for (Object key : metaDataMap.keySet()){
+                        String keyName = (String) key;
 
-            super.getSynonyms().addAll(
-                    extractSynonymsFromMetaData(metaDataMap , identifier.getDatabase().getShortName()) );
-        }catch (RemoteException e) {
-            log.warn("LazyCvTerm "+toString()+" failed whilst attempting to access metaData.",e);
+                        // definition
+                        if (OlsUtils.DEFINITION_KEY.equalsIgnoreCase(keyName)){
+                            String description = (String) metaDataMap.get(keyName);
+                            Annotation url = processDefinition(description);
+                            if (url != null){
+                                description = description.replaceAll(url.getValue(),"");
+                            }
+                            super.getAnnotations().add(AnnotationUtils.createComment(description));
+                        }
+                        // comment
+                        else if (OlsUtils.DEFINITION_KEY.equalsIgnoreCase(keyName) || keyName.startsWith(OlsUtils.COMMENT_KEY + OlsUtils.META_DATA_SEPARATOR)){
+                            String comment = (String) metaDataMap.get(keyName);
+                            super.getAnnotations().add(AnnotationUtils.createComment(comment));
+                        }
+                        else {
+                            String synonym = (String) metaDataMap.get(keyName);
+                            processSynonym(keyName, synonym);
+                        }
+                    }
+                }
+            }
+
+            hasLoadedMetadata = true;
+        } catch (RemoteException e) {
+            throw new LazyTermLoadingException("Impossible to load OLS metada for " + identifier.getId(),e);
         }
     }
 
+    @Override
+    protected void processSynonym(String synonymName, String synonym) {
 
+        if (synonymName.startsWith(OlsUtils.MI_SHORTLABEL_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR)
+                || synonymName.startsWith(OlsUtils.MOD_SHORTLABEL_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR)){
+            if (!hasShortName){
+                super.setShortName(synonym.toLowerCase());
+                hasShortName = true;
+            }
+        }
+        else if (synonymName.startsWith(OlsUtils.EXACT_SYNONYM_KEY + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.EXACT_SYNONYM_KEY.equalsIgnoreCase(synonymName)){
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
+        }
+        else if (synonymName.startsWith(OlsUtils.ALIAS_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.ALIAS_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        if (synonymName.startsWith(OlsUtils.SHORTLABEL_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR)){
+            this.shortLabel = synonym.toLowerCase();
+        }
+        else if (synonymName.startsWith(OlsUtils.EXACT_SYNONYM_KEY + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.EXACT_SYNONYM_KEY.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        else if (synonymName.startsWith(OlsUtils.MOD_ALIAS_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.MOD_ALIAS_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        else if (synonymName.startsWith(OlsUtils.RESID_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        else if (synonymName.startsWith(OlsUtils.RESID_MISNOMER_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_MISNOMER_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        else if (synonymName.startsWith(OlsUtils.RESID_NAME_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_NAME_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        else if (synonymName.startsWith(OlsUtils.RESID_SYSTEMATIC_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_SYSTEMATIC_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+        else if (synonymName.startsWith(OlsUtils.UNIPROT_FEATURE_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.UNIPROT_FEATURE_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            this.aliases.add(synonym);
+        }
+    }
+
+    /**
+     * Process the definition String
+     * @param definition
+     * @return
+     */
+    protected Annotation processDefinition(String definition) {
+        if ( definition.contains( OlsUtils.LINE_BREAK ) ) {
+            String[] defArray = definition.split( OlsUtils.LINE_BREAK );
+
+            String otherInfoString = null;
+            if ( defArray.length == 2 ) {
+                otherInfoString = defArray[1];
+                return processInfoInDescription(otherInfoString, defArray[0].length());
+            } else if ( defArray.length > 2 ) {
+
+                for (int i = 1; i < defArray.length; i++){
+                    otherInfoString = defArray[i];
+                    Annotation annot = processInfoInDescription(otherInfoString, defArray[0].length());
+                    if (annot != null){
+                         return annot;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Process the other information in the description
+     * @param otherInfoString
+     * @return true if an obsolete annotation has been added
+     */
+    protected Annotation processInfoInDescription(String otherInfoString, int defLength) {
+
+        // URL
+        if ( otherInfoString.startsWith( OlsUtils.HTTP_DEF ) ) {
+            Annotation annot = AnnotationUtils.createAnnotation(Annotation.URL, Annotation.URL_MI, otherInfoString);
+            super.getAnnotations().add(annot);
+            return annot;
+        }
+        else if (otherInfoString.contains( OlsUtils.HTTP_DEF )){
+            String[] defArray = otherInfoString.split( OlsUtils.HTTP_DEF );
+
+            if ( defArray.length == 2 ) {
+                Annotation annot = AnnotationUtils.createAnnotation(Annotation.URL, Annotation.URL_MI, OlsUtils.HTTP_DEF + defArray[1]);
+                        super.getAnnotations().add(annot);
+                return annot;
+            } else if ( defArray.length > 2 ) {
+                Annotation annot = AnnotationUtils.createAnnotation(Annotation.URL, Annotation.URL_MI, otherInfoString.substring(defLength));
+                        super.getAnnotations().add(annot);
+                return annot;
+            }
+
+        }
+        return null;
+    }
 
     /**
      * Scans the meta data to find the short name if one is present.
@@ -182,9 +303,11 @@ public class LazyCvTerm extends DefaultCvTerm {
 
     private void initialiseOlsXrefs(){
         super.getXrefs();
+        hasXrefs = true;
     }
 
     private void initialiseOlsAnnotations(){
         super.getAnnotations();
+        hasAnnotations = true;
     }
 }
