@@ -15,14 +15,14 @@ import psidev.psi.mi.jami.model.Xref;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class OntologyOlsFetcher extends AbstractOlsFetcher<OntologyTerm> {
+public class OlsOntologyTermFetcher extends AbstractOlsFetcher<OntologyTerm> {
 
-    public OntologyOlsFetcher() throws BridgeFailedException {
+    public OlsOntologyTermFetcher() throws BridgeFailedException {
         super();
     }
 
     @Override
-    protected OntologyTerm instantiateCvTerm(String termName, Xref identity) {
-        return new LazyOntologyTerm(queryService, termName, identity);
+    protected OntologyTerm instantiateCvTerm(String termName, Xref identity, String ontologyName) {
+        return new LazyOntologyTerm(queryService, termName, identity, ontologyName);
     }
 }

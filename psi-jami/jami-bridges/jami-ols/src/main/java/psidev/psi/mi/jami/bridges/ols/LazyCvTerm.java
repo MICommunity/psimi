@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.ols.soap.Query;
 
 import java.rmi.RemoteException;
@@ -33,6 +34,7 @@ public class LazyCvTerm extends DefaultCvTerm {
     private boolean hasLoadedXrefs = false;
 
     private String ontologyName;
+    private Xref originalXref;
 
     public LazyCvTerm(Query queryService, String fullName, Xref identityRef, String ontologyName) {
         super("");
@@ -42,7 +44,7 @@ public class LazyCvTerm extends DefaultCvTerm {
         this.queryService = queryService;
 
         setFullName(fullName);
-
+        originalXref = identityRef;
         if (identityRef != null){
             getIdentifiers().add(identityRef);
         }
@@ -58,7 +60,7 @@ public class LazyCvTerm extends DefaultCvTerm {
     @Override
     public String getShortName() {
         if (!hasShortName){
-            initialiseMetaData(getIdentifiers().iterator().next());
+            initialiseMetaData(originalXref);
         }
         return super.getShortName();
     }
@@ -71,22 +73,25 @@ public class LazyCvTerm extends DefaultCvTerm {
     }
 
     public Collection<Xref> getXrefs() {
-        if (!hasXrefs){
-            initialiseOlsXrefs();
+        if (!hasLoadedXrefs){
+            initialiseOlsXrefs(originalXref);
         }
         return super.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {
-        if (!hasAnnotations){
-            initialiseOlsAnnotations();
+        if (!hasLoadedXrefs){
+            initialiseOlsXrefs(originalXref);
+        }
+        if (!hasLoadedMetadata){
+            initialiseMetaData(originalXref);
         }
         return super.getAnnotations();
     }
 
     public Collection<Alias> getSynonyms() {
         if (!hasSynonyms) {
-            initialiseMetaData(getIdentifiers().iterator().next());
+            initialiseMetaData(originalXref);
         }
 
         return super.getSynonyms();
@@ -95,6 +100,18 @@ public class LazyCvTerm extends DefaultCvTerm {
     @Override
     public String toString() {
         return (getMIIdentifier() != null ? getMIIdentifier() : (getMODIdentifier() != null ? getMODIdentifier() : (getPARIdentifier() != null ? getPARIdentifier() : "-"))) + " ("+getFullName()+")";
+    }
+
+    protected Xref getOriginalXref() {
+        return originalXref;
+    }
+
+    protected String getOntologyName() {
+        return ontologyName;
+    }
+
+    protected Query getQueryService() {
+        return queryService;
     }
 
     // == QUERY METHODS =======================================================================
@@ -107,7 +124,7 @@ public class LazyCvTerm extends DefaultCvTerm {
      *
      * @param identifier    The identifier that is being used.
      */
-    private void initialiseMetaData(Xref identifier){
+    protected void initialiseMetaData(Xref identifier){
         Map<String,String> metaDataMap = null;
         try {
             metaDataMap = queryService.getTermMetadata(identifier.getId(), ontologyName);
@@ -124,12 +141,12 @@ public class LazyCvTerm extends DefaultCvTerm {
                             if (url != null){
                                 description = description.replaceAll(url.getValue(),"");
                             }
-                            super.getAnnotations().add(AnnotationUtils.createComment(description));
+                            initialiseDefinition(description);
                         }
                         // comment
                         else if (OlsUtils.DEFINITION_KEY.equalsIgnoreCase(keyName) || keyName.startsWith(OlsUtils.COMMENT_KEY + OlsUtils.META_DATA_SEPARATOR)){
                             String comment = (String) metaDataMap.get(keyName);
-                            super.getAnnotations().add(AnnotationUtils.createComment(comment));
+                            initialiseDefinition(comment);
                         }
                         else {
                             String synonym = (String) metaDataMap.get(keyName);
@@ -140,13 +157,29 @@ public class LazyCvTerm extends DefaultCvTerm {
             }
 
             hasLoadedMetadata = true;
+            hasSynonyms = true;
+
+            if (!hasShortName){
+                super.setShortName(getFullName());
+            }
         } catch (RemoteException e) {
             throw new LazyTermLoadingException("Impossible to load OLS metada for " + identifier.getId(),e);
         }
     }
 
-    @Override
-    protected void processSynonym(String synonymName, String synonym) {
+    protected void initialiseDefinition(String description) {
+        super.getAnnotations().add(AnnotationUtils.createComment(description));
+    }
+
+    protected boolean hasLoadedMetadata() {
+        return hasLoadedMetadata;
+    }
+
+    protected boolean hasLoadedXrefs() {
+        return hasLoadedXrefs;
+    }
+
+    private void processSynonym(String synonymName, String synonym) {
 
         if (synonymName.startsWith(OlsUtils.MI_SHORTLABEL_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR)
                 || synonymName.startsWith(OlsUtils.MOD_SHORTLABEL_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR)){
@@ -158,32 +191,26 @@ public class LazyCvTerm extends DefaultCvTerm {
         else if (synonymName.startsWith(OlsUtils.EXACT_SYNONYM_KEY + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.EXACT_SYNONYM_KEY.equalsIgnoreCase(synonymName)){
             super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
-        else if (synonymName.startsWith(OlsUtils.ALIAS_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.ALIAS_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
-        }
-        if (synonymName.startsWith(OlsUtils.SHORTLABEL_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR)){
-            this.shortLabel = synonym.toLowerCase();
-        }
-        else if (synonymName.startsWith(OlsUtils.EXACT_SYNONYM_KEY + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.EXACT_SYNONYM_KEY.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+        else if (synonymName.startsWith(OlsUtils.MI_ALIAS_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.MI_ALIAS_IDENTIFIER.equalsIgnoreCase(synonymName)){
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
         else if (synonymName.startsWith(OlsUtils.MOD_ALIAS_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.MOD_ALIAS_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
         else if (synonymName.startsWith(OlsUtils.RESID_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
         else if (synonymName.startsWith(OlsUtils.RESID_MISNOMER_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_MISNOMER_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
         else if (synonymName.startsWith(OlsUtils.RESID_NAME_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_NAME_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
         else if (synonymName.startsWith(OlsUtils.RESID_SYSTEMATIC_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.RESID_SYSTEMATIC_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
         else if (synonymName.startsWith(OlsUtils.UNIPROT_FEATURE_IDENTIFIER + OlsUtils.META_DATA_SEPARATOR) || OlsUtils.UNIPROT_FEATURE_IDENTIFIER.equalsIgnoreCase(synonymName)){
-            this.aliases.add(synonym);
+            super.getSynonyms().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
         }
     }
 
@@ -192,7 +219,7 @@ public class LazyCvTerm extends DefaultCvTerm {
      * @param definition
      * @return
      */
-    protected Annotation processDefinition(String definition) {
+    private Annotation processDefinition(String definition) {
         if ( definition.contains( OlsUtils.LINE_BREAK ) ) {
             String[] defArray = definition.split( OlsUtils.LINE_BREAK );
 
@@ -211,6 +238,7 @@ public class LazyCvTerm extends DefaultCvTerm {
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -218,7 +246,7 @@ public class LazyCvTerm extends DefaultCvTerm {
      * @param otherInfoString
      * @return true if an obsolete annotation has been added
      */
-    protected Annotation processInfoInDescription(String otherInfoString, int defLength) {
+    private Annotation processInfoInDescription(String otherInfoString, int defLength) {
 
         // URL
         if ( otherInfoString.startsWith( OlsUtils.HTTP_DEF ) ) {
@@ -244,70 +272,173 @@ public class LazyCvTerm extends DefaultCvTerm {
     }
 
     /**
-     * Scans the meta data to find the short name if one is present.
-     * @param metaDataMap           The map of data to search in.
-     * @param miTermOntologyName    The name used for the ontology in MI.
-     * @return                      The short name if one is found.
+     * This method will initialize the xrefs of this object from the map of xrefs
      */
-    private String extractShortNameFromMetaData(Map metaDataMap, String miTermOntologyName){
+    private void initialiseOlsXrefs(Xref identifier) {
+        Map<String,String> metaDataRefs = null;
+        try {
+            metaDataRefs = queryService.getTermXrefs(identifier.getId(), ontologyName);
 
-        String META_DATA_SEPARATOR = "_";
-        String SHORTLABEL_IDENTIFIER;
-        if(miTermOntologyName == null) return null;
-        else if(miTermOntologyName.equals(PSI_MI)) SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
-        else if(miTermOntologyName.equals(PSI_MOD)) SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
-        else return null;
+            if (metaDataRefs != null){
+                for (Object key : metaDataRefs.keySet()){
+                    String keyName = (String) key;
 
-        if (metaDataMap != null) {
-            for (Object key : metaDataMap.keySet()){
-                String keyName = (String)key;
-                if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
-                    return (String)metaDataMap.get(key);
+                    // xref definitions
+                    if (OlsUtils.XREF_DEFINITION_KEY.equalsIgnoreCase(keyName) || keyName.startsWith(OlsUtils.XREF_DEFINITION_KEY)) {
+                        String xref = (String) metaDataRefs.get(keyName);
+
+                        if (xref.contains(OlsUtils.META_XREF_SEPARATOR)){
+                            String [] xrefDef = xref.split(OlsUtils.META_XREF_SEPARATOR);
+                            String database = null;
+                            String accession = null;
+                            String pubmedPrimary = null;
+
+                            if (xrefDef.length == 2){
+                                database = xrefDef[0];
+                                accession = xrefDef[1].trim();
+                            }
+                            else if (xrefDef.length > 2){
+                                database = xrefDef[0];
+                                accession = xref.substring(database.length() + 1).trim();
+                            }
+
+                            if (database != null && accession != null){
+                                pubmedPrimary = processXrefDefinition(xref, database, accession, pubmedPrimary);
+                            }
+                        }
+                    }
+                    else {
+                        String xref = (String) metaDataRefs.get(keyName);
+
+                        if (xref.contains(OlsUtils.META_XREF_SEPARATOR)){
+                            String [] xrefDef = xref.split(OlsUtils.META_XREF_SEPARATOR);
+                            String database = null;
+                            String accession = null;
+
+                            if (xrefDef.length == 2){
+                                database = xrefDef[0];
+                                accession = xrefDef[1].trim();
+                            }
+                            else if (xrefDef.length > 2){
+                                database = xrefDef[0];
+                                accession = xref.substring(database.length() + 1).trim();
+                            }
+
+                            if (database != null && accession != null){
+                                processXref(database, accession);
+                            }
+                        }
+                        else {
+                            processXref(null, xref);
+                        }
+                    }
                 }
             }
+
+            hasLoadedXrefs = true;
+        } catch (RemoteException e) {
+            throw new LazyTermLoadingException("Impossible to load OLS metada for " + identifier.getId(),e);
         }
-        return null;
     }
 
-    /**
-     * Scans the meta data to find the synonyms if any are present.
-     * @param metaDataMap           The map of meatData to scrape for synonyms.
-     * @param miTermOntologyName    The name of the ontology used in psi-mi
-     * @return                      The synonyms. Or an empty collection if none are found.
-     */
-    private Collection<Alias> extractSynonymsFromMetaData(Map metaDataMap, String miTermOntologyName){
+    private void processXref(String db, String accession) {
+        // xref validation regexp
+        if (Annotation.VALIDATION_REGEXP.equalsIgnoreCase(db)){
 
-        String META_DATA_SEPARATOR = "_";
-        String SYNONYM_IDENTIFIER;
-        String EXACT_SYNONYM_KEY = "exact_synonym";
-        if(miTermOntologyName == null) return Collections.EMPTY_LIST;
-        else if(miTermOntologyName.equalsIgnoreCase(PSI_MI)) SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
-        else if(miTermOntologyName.equalsIgnoreCase(PSI_MOD)) SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
-        else return Collections.EMPTY_LIST;
+            String annotationText = accession.trim();
 
-        if (metaDataMap != null) {
-            Collection<Alias> synonyms = new ArrayList<Alias>();
-            for (Object key : metaDataMap.keySet()){
-                String keyName = (String)key;
-                if (keyName.startsWith(SYNONYM_IDENTIFIER + META_DATA_SEPARATOR)){
-                    synonyms.add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, (String) metaDataMap.get(key)));
-                }else if (keyName.startsWith(EXACT_SYNONYM_KEY)){
-                    synonyms.add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, (String) metaDataMap.get(key)));
-                }
+            if (annotationText.startsWith(OlsUtils.QUOTE)){
+                annotationText = annotationText.substring(OlsUtils.QUOTE.length());
             }
-            return synonyms;
-        }else{
-            return Collections.EMPTY_LIST;
+            if (annotationText.endsWith(OlsUtils.QUOTE)){
+                annotationText = annotationText.substring(0, annotationText.indexOf(OlsUtils.QUOTE));
+            }
+
+            Annotation validation = AnnotationUtils.createAnnotation(Annotation.VALIDATION_REGEXP, Annotation.VALIDATION_REGEXP_MI, annotationText);  // MI xref
+            super.getAnnotations().add(validation);
+        }
+        // search url
+        else if (db == null && accession.startsWith(Annotation.SEARCH_URL)){
+            String url = accession.substring(Annotation.SEARCH_URL.length());
+
+            if (url.startsWith("\\")){
+                url = url.substring(1);
+            }
+            if (url.endsWith("\\")){
+                url = url.substring(0, url.length() - 1);
+            }
+
+            Annotation validation = AnnotationUtils.createAnnotation(Annotation.SEARCH_URL, Annotation.SEARCH_URL_MI, url);  // MI xref
+            super.getAnnotations().add(validation);
+        }
+        else if (db.equalsIgnoreCase(Annotation.SEARCH_URL)){
+            String url = accession.trim();
+
+            Annotation validation = AnnotationUtils.createAnnotation(Annotation.SEARCH_URL, Annotation.SEARCH_URL_MI, url);  // MI xref
+            super.getAnnotations().add(validation);
+        }
+        else if (db.startsWith(Annotation.SEARCH_URL)){
+            String prefix = db.substring(Annotation.SEARCH_URL.length());
+            String url = prefix + OlsUtils.META_XREF_SEPARATOR + accession;
+
+            if (url.startsWith("\"")){
+                url = url.substring(1);
+            }
+            if (url.endsWith("\"")){
+                url = url.substring(0, url.length() - 1);
+            }
+
+            Annotation validation = AnnotationUtils.createAnnotation(Annotation.SEARCH_URL, Annotation.SEARCH_URL_MI, url);  // MI xref
+            super.getAnnotations().add(validation);
         }
     }
 
-    private void initialiseOlsXrefs(){
-        super.getXrefs();
-        hasXrefs = true;
-    }
+    private String processXrefDefinition(String xref, String database, String accession, String pubmedPrimary) {
 
-    private void initialiseOlsAnnotations(){
-        super.getAnnotations();
-        hasAnnotations = true;
+        if ( OlsUtils.PMID.equalsIgnoreCase(database) ) {
+            if (pubmedPrimary == null){
+                pubmedPrimary = xref;
+
+                Xref primaryPubmedRef = XrefUtils.createXrefWithQualifier(Xref.PUBMED, Xref.PUBMED_MI, accession, Xref.PRIMARY, Xref.PRIMARY_MI);
+                super.getXrefs().add(primaryPubmedRef);
+            }
+            else {
+                Xref pubmedRef = XrefUtils.createXrefWithQualifier(Xref.PUBMED, Xref.PUBMED_MI, accession, Xref.METHOD_REFERENCE, Xref.METHOD_REFERENCE_MI);
+                super.getXrefs().add(pubmedRef);
+            }
+        }
+        else if ( OlsUtils.PMID_APPLICATION.equalsIgnoreCase(database) ) {
+            Xref pubmedRef = XrefUtils.createXrefWithQualifier(Xref.PUBMED, Xref.PUBMED_MI, accession, Xref.SEE_ALSO, Xref.SEE_ALSO_MI);
+            super.getXrefs().add(pubmedRef); // MI not MOD
+        } else if ( Xref.GO.equalsIgnoreCase(database) ) {
+            Xref goRef = XrefUtils.createXrefWithQualifier(Xref.GO, Xref.GO_MI, database + ":" + accession, Xref.SEE_ALSO, Xref.SEE_ALSO_MI);
+            super.getXrefs().add(goRef); // MI not MOD
+        } else if ( Xref.RESID.equalsIgnoreCase(database) ) {
+            Xref resXref = XrefUtils.createXrefWithQualifier(Xref.RESID, Xref.RESID_MI, accession, Xref.SEE_ALSO, Xref.SEE_ALSO_MI);
+            super.getXrefs().add(resXref);
+        } else if ( Xref.SO.equalsIgnoreCase(database) ) {
+            Xref soRef = XrefUtils.createXrefWithQualifier(Xref.SO, Xref.SO_MI, database + ":" + accession, Xref.SEE_ALSO, Xref.SEE_ALSO_MI);
+            super.getXrefs().add(soRef);  // MI not MOD
+        }
+        else if ( Xref.PUBMED.equalsIgnoreCase(database) ) {
+            if (pubmedPrimary == null){
+                pubmedPrimary = xref;
+
+                Xref primaryPubmedRef = XrefUtils.createXrefWithQualifier(Xref.PUBMED, Xref.PUBMED_MI, accession, Xref.PRIMARY, Xref.PRIMARY_MI);
+                super.getXrefs().add(primaryPubmedRef);
+            }
+            else {
+                Xref pubmedRef = XrefUtils.createXrefWithQualifier(Xref.PUBMED, Xref.PUBMED_MI, accession, Xref.METHOD_REFERENCE, Xref.METHOD_REFERENCE_MI);
+                super.getXrefs().add(pubmedRef);
+            }
+        }
+        else if ( Xref.CHEBI.equalsIgnoreCase(database) ) {
+            Xref chebiRef = XrefUtils.createXrefWithQualifier(Xref.CHEBI, Xref.CHEBI_MI, accession, Xref.SEE_ALSO, Xref.SEE_ALSO_MI);
+            super.getXrefs().add(chebiRef);  // MOD xref
+        } else if ( Annotation.URL.equalsIgnoreCase(database) ) {
+            super.getAnnotations().add(AnnotationUtils.createAnnotation(Annotation.URL, Annotation.URL_MI, accession));
+        }
+
+        return pubmedPrimary;
     }
 }

@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -15,11 +17,11 @@ public class CachedOntologyOLSFetcherSpeedTest {
 
     protected static  final Logger log = LoggerFactory.getLogger(CachedOntologyOLSFetcherSpeedTest.class.getName());
 
-    private CachedOntologyOlsFetcher ontologyOLSFetcher;
+    private CachedOlsOntologyTermFetcher ontologyOLSFetcher;
 
 
     public CachedOntologyOLSFetcherSpeedTest() throws BridgeFailedException {
-        ontologyOLSFetcher = new CachedOntologyOlsFetcher();
+        ontologyOLSFetcher = new CachedOlsOntologyTermFetcher();
     }
 
 
@@ -46,20 +48,20 @@ public class CachedOntologyOLSFetcherSpeedTest {
         if(ontologyOLSFetcher == null) log.warn("null OLS!");
         else{
             long start =  System.currentTimeMillis();
-            OntologyTerm term = ontologyOLSFetcher.getCvTermByExactName("biological feature" , "psi-mi");
+            OntologyTerm term = ontologyOLSFetcher.fetchCvTermByName("biological feature", "psi-mi");
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for feature type");
             listChildren(term , "");
         }
         for(String name : featureTests){
             long start =  System.currentTimeMillis();
-            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name , "psi-mi" );
+            OntologyTerm result = ontologyOLSFetcher.fetchCvTermByName(name, "psi-mi");
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
         }
         for(String name : featureTests){
             long start =  System.currentTimeMillis();
-            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name );
+            Collection<OntologyTerm> result = ontologyOLSFetcher.fetchCvTermByName(name );
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
         }
@@ -68,7 +70,7 @@ public class CachedOntologyOLSFetcherSpeedTest {
 
         for(String name : additionalTests){
             long start =  System.currentTimeMillis();
-            OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(name );
+            Collection<OntologyTerm> result = ontologyOLSFetcher.fetchCvTermByName(name );
             long end = System.currentTimeMillis() ;
             log.info((end-start) + " was time for "+name);
         }

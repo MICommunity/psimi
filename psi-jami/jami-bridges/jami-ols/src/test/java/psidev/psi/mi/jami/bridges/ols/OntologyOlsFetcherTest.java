@@ -21,7 +21,7 @@ public class OntologyOlsFetcherTest {
 
     protected static final Logger log = LoggerFactory.getLogger(OntologyOlsFetcherTest.class.getName());
 
-    private OntologyOlsFetcher ontologyOLSFetcher;
+    private OlsOntologyTermFetcher ontologyOLSFetcher;
 
     public static final String TEST_TERM_A_IDENTIFIER = "MI:0113";
     public static final String TEST_TERM_A_DBNAME = "psi-mi";
@@ -34,7 +34,7 @@ public class OntologyOlsFetcherTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        ontologyOLSFetcher = new OntologyOlsFetcher();
+        ontologyOLSFetcher = new OlsOntologyTermFetcher();
     }
 
     /*
@@ -171,7 +171,7 @@ public class OntologyOlsFetcherTest {
      */
     @Test
     public void test_getCvTermByExactName_without_relations() throws BridgeFailedException {
-        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME);
+        OntologyTerm result = ontologyOLSFetcher.fetchCvTermByName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME);
 
         assertNotNull(result);
         assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());
