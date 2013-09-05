@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public abstract class AbstractExceptionThrowingMockFetcher<T>
+public abstract class AbstractFailingFetcher<T>
         extends AbstractMockFetcher<T>{
 
     private String lastQuery = null;
@@ -23,7 +23,7 @@ public abstract class AbstractExceptionThrowingMockFetcher<T>
      * If the maxQuery is -1, it will always throw an exception.
      * @param maxQuery  The number of time to throw an exception, or -1 if exception should always be thrown.
      */
-    protected AbstractExceptionThrowingMockFetcher(int maxQuery){
+    protected AbstractFailingFetcher(int maxQuery){
         super();
         this.maxQuery = maxQuery;
     }

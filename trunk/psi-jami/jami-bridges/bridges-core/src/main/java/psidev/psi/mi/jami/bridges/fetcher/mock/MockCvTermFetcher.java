@@ -2,10 +2,10 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A mock fetcher for testing.
@@ -20,35 +20,23 @@ public class MockCvTermFetcher
         extends AbstractMockFetcher<CvTerm>
         implements CvTermFetcher<CvTerm>{
 
-    public CvTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
+    public CvTerm fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntry(termIdentifier);
     }
 
-    public CvTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public CvTerm fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
         return getEntry(termIdentifier);
     }
 
-    public CvTerm getCvTermByExactName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
+    public CvTerm fetchCvTermByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntry(searchName);
     }
 
-    public CvTerm getCvTermByExactName(String searchName) throws BridgeFailedException {
+    public CvTerm fetchCvTermByName(String searchName) throws BridgeFailedException {
         return getEntry(searchName);
     }
 
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName) throws BridgeFailedException {
-        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
-        resultsList.add( getEntry(searchName) );
-        return resultsList;
-    }
-
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database) throws BridgeFailedException {
-        ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
-        resultsList.add( getEntry(searchName) );
-        return resultsList;
-    }
-
-    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : termIdentifiers){
             resultsList.add( getEntry(identifier) );
@@ -56,7 +44,7 @@ public class MockCvTermFetcher
         return resultsList;
     }
 
-    public Collection<CvTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : termIdentifiers){
             resultsList.add( getEntry(identifier) );
@@ -64,7 +52,7 @@ public class MockCvTermFetcher
         return resultsList;
     }
 
-    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : searchNames){
             resultsList.add( getEntry(identifier) );
@@ -72,7 +60,7 @@ public class MockCvTermFetcher
         return resultsList;
     }
 
-    public Collection<CvTerm> getCvTermsByExactNames(Collection<String> searchNames) throws BridgeFailedException {
+    public Collection<CvTerm> fetchCvTermsByNames(Collection<String> searchNames) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : searchNames){
             resultsList.add( getEntry(identifier) );

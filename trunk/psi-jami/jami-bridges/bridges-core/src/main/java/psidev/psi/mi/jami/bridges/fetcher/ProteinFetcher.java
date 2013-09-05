@@ -21,7 +21,7 @@ public interface ProteinFetcher {
      * @return              The proteins which match the search term. Empty if no matches.
      * @throws BridgeFailedException    A problem has been encountered when contacting the service
      */
-    public Collection<Protein> getProteinsByIdentifier(String identifier)
+    public Collection<Protein> fetchProteinsByIdentifier(String identifier)
             throws BridgeFailedException;
 
     /**
@@ -32,6 +32,6 @@ public interface ProteinFetcher {
      * @return              The proteins which match the search term. Empty if no matches.
      * @throws BridgeFailedException
      */
-    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers)
+    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers)
             throws BridgeFailedException;
 }

@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.bridges.fetcher;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
+import java.util.Collection;
+
 /**
  * A fetcher for bioactiveEntities
  *
@@ -17,8 +19,10 @@ public interface BioactiveEntityFetcher {
      * @return  A complete bioactiveEntity record.
      * @throws BridgeFailedException
      */
-    public BioactiveEntity getBioactiveEntityByIdentifier (String identifier)
+    public BioactiveEntity fetchBioactiveEntityByIdentifier(String identifier)
             throws BridgeFailedException;
 
 
+    public Collection<BioactiveEntity> fetchBioactiveEntityByIdentifiers(Collection<String> identifier)
+            throws BridgeFailedException;
 }

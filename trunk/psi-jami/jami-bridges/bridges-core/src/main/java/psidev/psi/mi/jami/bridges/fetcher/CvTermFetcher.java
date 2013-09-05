@@ -20,7 +20,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A full cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C getCvTermByIdentifier(String termIdentifier, String miOntologyName)
+    public C fetchCvTermByIdentifier(String termIdentifier, String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -30,7 +30,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+    public C fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException;
 
     /**
@@ -40,7 +40,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C getCvTermByExactName(String searchName, String miOntologyName)
+    public C fetchCvTermByName(String searchName, String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -52,26 +52,8 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C getCvTermByExactName(String searchName)
+    public C fetchCvTermByName(String searchName)
             throws BridgeFailedException;
-
-    /**
-     * Identifies and initiates a CvTerm using its name.
-     * A fuzzy search can also be used by setting @link{useFuzzySearch} to true.
-     * This will extend to search possibilities to partial matches if no exact matches can be found.
-     * @param searchName
-     * @param miOntologyName
-     * @return
-     * @throws BridgeFailedException
-     */
-    public Collection<C> getCvTermByInexactName(String searchName, String miOntologyName)
-            throws BridgeFailedException;
-
-    public Collection<C> getCvTermByInexactName(String searchName, CvTerm database)
-            throws BridgeFailedException;
-
-
-    //------
 
 
     /**
@@ -81,7 +63,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiers(Collection<String> termIdentifiers , String miOntologyName)
+    public Collection<C> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -91,7 +73,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByIdentifiers(Collection<String> termIdentifiers , CvTerm ontologyDatabase)
+    public Collection<C> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException;
 
     /**
@@ -101,7 +83,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return              A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByExactNames(Collection<String> searchNames , String miOntologyName )
+    public Collection<C> fetchCvTermsByNames(Collection<String> searchNames, String miOntologyName)
             throws BridgeFailedException;
 
     /**
@@ -113,22 +95,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return              A collection of cvTerms which matched a search term.
      * @throws BridgeFailedException
      */
-    public Collection<C> getCvTermsByExactNames(Collection<String> searchNames)
+    public Collection<C> fetchCvTermsByNames(Collection<String> searchNames)
             throws BridgeFailedException;
-
-    /**
-     * Identifies and initiates a CvTerm using its name.
-     * A fuzzy search can also be used by setting @link{useFuzzySearch} to true.
-     * This will extend to search possibilities to partial matches if no exact matches can be found.
-     * @param searchName
-     * @param databaseName
-     * @return
-     * @throws BridgeFailedException
-     */
-    /*public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
-            throws BridgeFailedException;
-
-    public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database)
-            throws BridgeFailedException; */
 
 }

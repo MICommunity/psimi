@@ -2,12 +2,11 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.PublicationIdentifierSource;
-import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * A mock fetcher for testing exceptions.
@@ -20,20 +19,20 @@ import java.util.Collections;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 05/08/13
  */
-public class ExceptionThrowingMockPublicationFetcher
-        extends AbstractExceptionThrowingMockFetcher<Publication>
+public class FailingPublicationFetcher
+        extends AbstractFailingFetcher<Publication>
         implements PublicationFetcher {
 
 
-    public ExceptionThrowingMockPublicationFetcher(int maxQuery) {
+    public FailingPublicationFetcher(int maxQuery) {
         super(maxQuery);
     }
 
-    public Publication getPublicationByIdentifier(String pubmedID, PublicationIdentifierSource source) throws BridgeFailedException {
+    public Publication fetchPublicationByIdentifier(String pubmedID, String source) throws BridgeFailedException {
         return getEntry(pubmedID);
     }
 
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers , PublicationIdentifierSource source) throws BridgeFailedException {
+    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String,Collection<String>> identifiers) throws BridgeFailedException {
         return Collections.EMPTY_LIST;
     }
 }

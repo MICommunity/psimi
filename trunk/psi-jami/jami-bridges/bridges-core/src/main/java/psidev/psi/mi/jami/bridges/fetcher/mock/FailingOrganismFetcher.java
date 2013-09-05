@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.Organism;
 
 import java.util.*;
@@ -18,19 +17,19 @@ import java.util.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
-public class ExceptionThrowingMockOrganismFetcher
-        extends AbstractExceptionThrowingMockFetcher<Organism>
+public class FailingOrganismFetcher
+        extends AbstractFailingFetcher<Organism>
         implements OrganismFetcher {
 
-    public ExceptionThrowingMockOrganismFetcher(int maxQuery) {
+    public FailingOrganismFetcher(int maxQuery) {
         super(maxQuery);
     }
 
-    public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
+    public Organism fetchOrganismByTaxID(int taxID) throws BridgeFailedException {
         return getEntry( Integer.toString(taxID) );
     }
 
-    public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
         ArrayList<Organism> resultsList= new ArrayList<Organism>();
         for(Integer identifier : taxIDs){
             resultsList.add( getEntry(Integer.toString(identifier)) );
