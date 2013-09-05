@@ -37,8 +37,8 @@ public class FailingCvTermFetcher
         return getEntry(searchName);
     }
 
-    public CvTerm fetchCvTermByName(String searchName) throws BridgeFailedException {
-        return getEntry(searchName);
+    public Collection<CvTerm> fetchCvTermByName(String searchName) throws BridgeFailedException {
+        return Arrays.asList(getEntry(searchName));
     }
 
     public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {

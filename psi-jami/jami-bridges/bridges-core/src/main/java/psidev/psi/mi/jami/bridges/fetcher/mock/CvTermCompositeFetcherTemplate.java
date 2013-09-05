@@ -83,8 +83,8 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
         }
     }
 
-    public T fetchCvTermByName(String searchName) throws BridgeFailedException {
-        T firstTermRetrieved = null;
+    public Collection<T> fetchCvTermByName(String searchName) throws BridgeFailedException {
+        Collection<T> firstTermRetrieved = null;
         Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
         while(firstTermRetrieved == null && fetcherIterator.hasNext()){
             firstTermRetrieved = fetcherIterator.next().fetchCvTermByName(searchName);
