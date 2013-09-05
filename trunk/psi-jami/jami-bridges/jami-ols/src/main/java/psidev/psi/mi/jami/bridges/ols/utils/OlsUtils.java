@@ -22,5 +22,13 @@ public class OlsUtils {
     public static final String MI_SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
     public static final String MOD_SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
     public static final String MI_ALIAS_IDENTIFIER = "Alternate label curated by PSI-MI";
-    public static final String MOD_ALIAS_IDENTIFIER = "Alternate label curated by PSI-MOD";
+    public static final String MOD_ALIAS_IDENTIFIER = "Alternate name curated by PSI-MOD";
+    public static final String RESID_IDENTIFIER = "Alternate name from RESID"; //
+    public static final String RESID_MISNOMER_IDENTIFIER = "Misnomer tagged alternate name from RESID";
+    public static final String RESID_NAME_IDENTIFIER = "Name from RESID"; //
+    public static final String RESID_SYSTEMATIC_IDENTIFIER = "Systematic name from RESID";   //
+    public static final String UNIPROT_FEATURE_IDENTIFIER = "Protein feature description from UniProtKB";
+    public static final String PMID = "PMID";
+    public static final String PMID_APPLICATION = "PMID for application instance";
+    public static final String QUOTE = "&quot;";
 }

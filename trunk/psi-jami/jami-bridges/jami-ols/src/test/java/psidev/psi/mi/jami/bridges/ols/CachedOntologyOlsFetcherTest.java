@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
-import java.util.Collection;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
@@ -24,7 +22,7 @@ public class CachedOntologyOlsFetcherTest {
 
     protected final Logger log = LoggerFactory.getLogger(CachedOntologyOlsFetcherTest.class.getName());
 
-    private CachedOntologyOlsFetcher ontologyOLSFetcher;
+    private CachedOlsOntologyTermFetcher ontologyOLSFetcher;
 
     public static final String TEST_TERM_A_IDENTIFIER = "MI:0113";
     public static final String TEST_TERM_A_DBNAME = "psi-mi";
@@ -36,7 +34,7 @@ public class CachedOntologyOlsFetcherTest {
 
     @Before
     public void setup() throws BridgeFailedException {
-        ontologyOLSFetcher = new CachedOntologyOlsFetcher();
+        ontologyOLSFetcher = new CachedOlsOntologyTermFetcher();
     }
 
     @After
@@ -51,7 +49,7 @@ public class CachedOntologyOlsFetcherTest {
      */
     @Test
     public void test_getCvTermByIdentifier_without_relations() throws BridgeFailedException {
-        OntologyTerm result = ontologyOLSFetcher.getCvTermByIdentifier(
+        OntologyTerm result = ontologyOLSFetcher.fetchCvTermByIdentifier(
                 TEST_TERM_A_IDENTIFIER , TEST_TERM_A_DBNAME);
 
         assertNotNull(result);
@@ -168,7 +166,7 @@ public class CachedOntologyOlsFetcherTest {
      */
     @Test
     public void test_getCvTermByExactName_without_relations() throws BridgeFailedException {
-        OntologyTerm result = ontologyOLSFetcher.getCvTermByExactName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME);
+        OntologyTerm result = ontologyOLSFetcher.fetchCvTermByName(TEST_TERM_A_SHORTNAME , TEST_TERM_A_DBNAME);
 
         assertNotNull(result);
         assertEquals(TEST_TERM_A_SHORTNAME , result.getShortName());

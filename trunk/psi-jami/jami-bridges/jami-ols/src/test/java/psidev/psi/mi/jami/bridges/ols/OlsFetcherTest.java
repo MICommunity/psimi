@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,18 +18,18 @@ import static org.junit.Assert.*;
  */
 public class OlsFetcherTest {
 
-    private OlsFetcher fetcher;
+    private OlsCvTermFetcher fetcher;
 
     @Before
     public void initialiseFetcher() throws BridgeFailedException {
-        fetcher = new OlsFetcher();
+        fetcher = new OlsCvTermFetcher();
     }
 
     @Test
     public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName() throws BridgeFailedException {
         String identifier = "MI:0580";
         String ontologyName = "psi-mi";
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontologyName);
 
         assertNotNull(cvTermFetched);
         assertEquals("electron acceptor" , cvTermFetched.getShortName());
@@ -38,14 +40,14 @@ public class OlsFetcherTest {
     public void test_getCvTermByIdentifier_using_MI_Identifier_and_null_databaseName() throws BridgeFailedException {
         String identifier = "MI:0580";
         String ontologyName = null;
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontologyName);
     }
 
     @Test
     public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName_with_ShortName() throws BridgeFailedException {
         String identifier = "MI:0473";
         String ontologyName = "psi-mi";
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontologyName);
 
         assertNotNull(cvTermFetched);
         assertEquals("participant xref" , cvTermFetched.getShortName());
@@ -57,7 +59,7 @@ public class OlsFetcherTest {
     public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName_with_Synonym() throws BridgeFailedException {
         String identifier = "MI:1064";
         String ontologyName = "psi-mi";
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontologyName);
 
         assertNotNull(cvTermFetched);
         assertEquals("confidence" , cvTermFetched.getShortName());
@@ -73,7 +75,7 @@ public class OlsFetcherTest {
     public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseName_with_failing_identifier() throws BridgeFailedException {
         String identifier = "Foo";
         String ontologyName = "psi-mi";
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontologyName);
 
         assertNull(cvTermFetched);
     }
@@ -82,7 +84,7 @@ public class OlsFetcherTest {
     public void test_getCvTermByIdentifier_using_GO_Identifier_and_databaseName() throws BridgeFailedException {
         String identifier = "GO:0009055";
         String ontologyName = "go";
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontologyName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontologyName);
 
         assertNotNull(cvTermFetched);
         assertEquals("electron carrier activity" , cvTermFetched.getShortName());
@@ -93,7 +95,7 @@ public class OlsFetcherTest {
     public void test_getCvTermByIdentifier_using_MI_Identifier_and_databaseCvTerm() throws BridgeFailedException {
         String identifier = "MI:0580";
         CvTerm ontology = CvTermUtils.createPsiMiDatabase();
-        CvTerm cvTermFetched =  fetcher.getCvTermByIdentifier(identifier, ontology);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByIdentifier(identifier, ontology);
 
         assertNotNull(cvTermFetched);
         assertEquals("electron acceptor" , cvTermFetched.getShortName());
@@ -104,7 +106,7 @@ public class OlsFetcherTest {
     public void test_getCvTermByExactName_using_MI_TermName_and_databaseName() throws BridgeFailedException {
         String term = "electron acceptor";
         String databaseName = "psi-mi";
-        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term, databaseName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByName(term, databaseName);
 
         assertNotNull(cvTermFetched);
         assertEquals(term, cvTermFetched.getShortName());
@@ -115,7 +117,7 @@ public class OlsFetcherTest {
     public void test_getCvTermByExactName_using_MI_TermName_and_null_databaseName() throws BridgeFailedException {
         String term = "electron acceptor";
         String databaseName = null;
-        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term, databaseName);
+        CvTerm cvTermFetched =  fetcher.fetchCvTermByName(term, databaseName);
 
     }
 
@@ -123,21 +125,21 @@ public class OlsFetcherTest {
     public void test_getCvTermByExactName_using_MI_TermName() throws BridgeFailedException {
         String term = "allosteric change in dynamics";
         //String databaseName = null;
-        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term);
+        Collection<CvTerm> cvTermFetched =  fetcher.fetchCvTermByName(term);
 
-        assertNotNull(cvTermFetched);
-        assertEquals(term, cvTermFetched.getShortName());
-        assertEquals("MI:1166" , cvTermFetched.getMIIdentifier());
+        assertEquals(1, cvTermFetched.size());
+        assertEquals(term, cvTermFetched.iterator().next().getShortName());
+        assertEquals("MI:1166" , cvTermFetched.iterator().next().getMIIdentifier());
     }
 
     @Test
     public void test_getCvTermByExactName_using_GO_TermName() throws BridgeFailedException {
         String term = "actin cortical patch localization";
         //String databaseName = null;
-        CvTerm cvTermFetched =  fetcher.getCvTermByExactName(term);
+        Collection<CvTerm> cvTermFetched =  fetcher.fetchCvTermByName(term);
 
-        assertNotNull(cvTermFetched);
-        assertEquals(term, cvTermFetched.getShortName());
-        assertEquals("GO:0051666" , cvTermFetched.getIdentifiers().iterator().next().getId());
+        assertEquals(1, cvTermFetched.size());
+        assertEquals(term, cvTermFetched.iterator().next().getShortName());
+        assertEquals("GO:0051666" , cvTermFetched.iterator().next().getIdentifiers().iterator().next().getId());
     }
 }

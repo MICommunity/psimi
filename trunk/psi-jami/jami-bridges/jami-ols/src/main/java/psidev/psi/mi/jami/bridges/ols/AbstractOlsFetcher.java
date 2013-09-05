@@ -5,19 +5,16 @@ import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
 import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Abstract class for OlsFetcher
+ * Abstract class for OlsCvTermFetcher
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -43,7 +40,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         dbMap.put("psi-mi", "MI");
         dbMap.put("psi-mod", "MOD");
         dbMap.put("psi-par", "PAR");
-        dbMap.put("go","GO");
+        dbMap.put("go", "GO");
     }
 
     private Xref createXref(String identifier, String  miOntologyName){
@@ -56,7 +53,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         }
     }
 
-    public T getCvTermByIdentifier(String termIdentifier, String miOntologyName) throws BridgeFailedException {
+    public T fetchCvTermByIdentifier(String termIdentifier, String miOntologyName) throws BridgeFailedException {
 
         if(termIdentifier == null || termIdentifier.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
@@ -80,10 +77,10 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
             return null;
 
         // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
-        return instantiateCvTerm(fullName , createXref(termIdentifier , miOntologyName));
+        return instantiateCvTerm(fullName , createXref(termIdentifier , miOntologyName), olsOntologyName);
     }
 
-    public T getCvTermByIdentifier(String termIdentifier, CvTerm ontologyCvTerm) throws BridgeFailedException {
+    public T fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyCvTerm) throws BridgeFailedException {
 
         if(termIdentifier == null || termIdentifier.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
@@ -107,15 +104,13 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
             return null;
 
         // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
-        return instantiateCvTerm(fullName , new DefaultXref(ontologyCvTerm , termIdentifier));
+        return instantiateCvTerm(fullName , new DefaultXref(ontologyCvTerm , termIdentifier), olsOntologyName);
     }
 
-    public T getCvTermByExactName(String searchName, String miOntologyName) throws BridgeFailedException {
+    public T fetchCvTermByName(String searchName, String miOntologyName) throws BridgeFailedException {
 
         if(searchName == null || searchName.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
-        if(miOntologyName == null)
-            throw new IllegalArgumentException("Can not search for an identifier in an ontology without a value.");
 
         String olsOntologyName = null;
         if(dbMap.containsKey(miOntologyName))
@@ -137,11 +132,11 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         String fullName = entry.getValue();
 
         // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
-        return instantiateCvTerm(fullName , createXref(entry.getKey() , miOntologyName));
+        return instantiateCvTerm(fullName , createXref(entry.getKey() , miOntologyName), olsOntologyName);
     }
 
-    public T getCvTermByExactName(String searchName) throws BridgeFailedException {
-        /*if(searchName == null || searchName.isEmpty())
+    public Collection<T> fetchCvTermByName(String searchName) throws BridgeFailedException {
+        if(searchName == null || searchName.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
 
         // 1) query ols which returns full name.
@@ -153,74 +148,82 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         }
 
         // 2) if no results, return null
-        if(termNamesMap.size() != 1)
-            return null;
+        if(termNamesMap.isEmpty())
+            return Collections.EMPTY_LIST;
 
-        Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
-        String fullName = entry.getValue();
+        Collection<T> results = new ArrayList<T>(termNamesMap.size());
 
-        // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
-        return instantiateCvTerm(fullName , createXref(entry.getKey() , miOntologyName));*/
-        return null;
-    }
+        for (Map.Entry<String, String> entry : termNamesMap.entrySet()){
+            String fullName = entry.getValue();
 
-    public Collection<T> getCvTermByInexactName(String searchName, String miOntologyName)
-            throws BridgeFailedException {
-        /*if(searchName == null || searchName.isEmpty())
-            throw new IllegalArgumentException("Can not search for an identifier without a value.");
-        if(miOntologyName == null)
-            throw new IllegalArgumentException("Can not search for an identifier in an ontology without a value.");
-
-        String olsOntologyName = null;
-        if(dbMap.containsKey(miOntologyName))
-            olsOntologyName = dbMap.get(miOntologyName);
-
-        // 1) query ols which returns full name.
-        HashMap<String,String> termNamesMap;
-        try{
-            termNamesMap = queryService.getTermsByExactName(searchName, olsOntologyName);
-            if(termNamesMap.isEmpty())
-                termNamesMap = queryService.getTermsByName(searchName, olsOntologyName , false);
-        }catch (RemoteException e) {
-            throw new BridgeFailedException("Failed to query in OLS fetcher.",e);
+            // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
+            results.add(instantiateCvTerm(fullName, createXref(entry.getKey(), "unknown"), null));
         }
 
-        // 2) if no results, return null
-        if(termNamesMap.size() != 1)
-            return null;
-
-        Map.Entry<String, String> entry = termNamesMap.entrySet().iterator().next();
-        String fullName = entry.getValue();
-
-        // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
-        return instantiateCvTerm(fullName , createXref(entry.getKey() , miOntologyName));*/
-        return null;
+        return results;
     }
 
-    public Collection<T> getCvTermByInexactName(String searchName, CvTerm database)
+    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String miOntologyName)
             throws BridgeFailedException {
-        return null;
+        if (termIdentifiers == null){
+            throw new IllegalArgumentException("The term identifiers cannot be null.");
+        }
+
+        Collection<T> results = new ArrayList<T>(termIdentifiers.size());
+        for (String id : termIdentifiers){
+            T element = fetchCvTermByIdentifier(id, miOntologyName);
+            if (element != null){
+                results.add(element);
+            }
+        }
+        return results;
     }
 
-    public Collection<T> getCvTermsByIdentifiers(Collection<String> termIdentifiers, String miOntologyName)
+    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException {
-        return null;
+        if (termIdentifiers == null){
+            throw new IllegalArgumentException("The term identifiers cannot be null.");
+        }
+
+        Collection<T> results = new ArrayList<T>(termIdentifiers.size());
+        for (String id : termIdentifiers){
+            T element = fetchCvTermByIdentifier(id, ontologyDatabase);
+            if (element != null){
+                results.add(element);
+            }
+        }
+        return results;
     }
 
-    public Collection<T> getCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase)
+    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames, String miOntologyName)
             throws BridgeFailedException {
-        return null;
+        if (searchNames == null){
+            throw new IllegalArgumentException("The term identifiers cannot be null.");
+        }
+
+        Collection<T> results = new ArrayList<T>(searchNames.size());
+        for (String id : searchNames){
+            T element = fetchCvTermByName(id, miOntologyName);
+            if (element != null){
+                results.add(element);
+            }
+        }
+        return results;
     }
 
-    public Collection<T> getCvTermsByExactNames(Collection<String> searchNames, String miOntologyName)
+    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames)
             throws BridgeFailedException {
-        return null;
+        if (searchNames == null){
+            throw new IllegalArgumentException("The term identifiers cannot be null.");
+        }
+
+        Collection<T> results = new ArrayList<T>(searchNames.size());
+        for (String id : searchNames){
+            results.addAll(fetchCvTermByName(id));
+
+        }
+        return results;
     }
 
-    public Collection<T> getCvTermsByExactNames(Collection<String> searchNames)
-            throws BridgeFailedException {
-        return null;
-    }
-
-    protected abstract T instantiateCvTerm(String termName, Xref identity);
+    protected abstract T instantiateCvTerm(String termName, Xref identity, String olsOntologyName);
 }
