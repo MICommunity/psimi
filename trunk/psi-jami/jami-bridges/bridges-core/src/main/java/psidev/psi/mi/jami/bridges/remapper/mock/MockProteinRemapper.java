@@ -1,9 +1,8 @@
-package psidev.psi.mi.jami.bridges.remapper.mockRemapper;
+package psidev.psi.mi.jami.bridges.remapper.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.Collections;
