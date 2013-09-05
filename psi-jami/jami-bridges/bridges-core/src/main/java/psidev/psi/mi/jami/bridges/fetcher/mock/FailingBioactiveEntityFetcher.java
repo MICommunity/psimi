@@ -12,9 +12,14 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/08/13
  */
-public class MockBioactiveEntityFetcher
-        extends AbstractMockFetcher<BioactiveEntity>
-        implements BioactiveEntityFetcher{
+public class FailingBioactiveEntityFetcher
+        extends AbstractFailingFetcher<BioactiveEntity>
+        implements BioactiveEntityFetcher {
+
+
+    public FailingBioactiveEntityFetcher(int maxQuery) {
+        super(maxQuery);
+    }
 
     public BioactiveEntity fetchBioactiveEntityByIdentifier(String identifier) throws BridgeFailedException {
         return super.getEntry(identifier);

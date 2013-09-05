@@ -42,129 +42,41 @@ public class MockOntologyTermFetcher
         return value;
     }
 
-
-
-
-
-
-
-
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName,
-                                              int childrenDepth, int parentDepth)
+    public OntologyTerm fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
             throws BridgeFailedException {
         return localOntologyTerms.get(termIdentifier);
     }
 
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase,
-                                              int childrenDepth, int parentDepth)
+    public OntologyTerm fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException {
         return localOntologyTerms.get(termIdentifier);
     }
 
-    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName,
-                                             int childrenDepth, int parentDepth)
+    public OntologyTerm fetchCvTermByName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException {
         return localOntologyTerms.get(searchName);
     }
 
-    public OntologyTerm getCvTermByExactName(String searchName, int childrenDepth, int parentDepth)
-            throws BridgeFailedException {
+    public OntologyTerm fetchCvTermByName(String searchName) throws BridgeFailedException {
         return localOntologyTerms.get(searchName);
     }
 
-
-
-
-
-
-
-
-    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName,
-                                                            int childrenDepth, int parentDepth)
-            throws BridgeFailedException {
-        return getMockTermCollection(termIdentifiers);
-    }
-
-    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase,
-                                                            int childrenDepth, int parentDepth)
-            throws BridgeFailedException {
-        return getMockTermCollection(termIdentifiers);
-    }
-
-    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName,
-                                                           int childrenDepth, int parentDepth)
-            throws BridgeFailedException {
-        return getMockTermCollection(searchNames);
-    }
-
-    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, int childrenDepth, int parentDepth)
-            throws BridgeFailedException {
-        return getMockTermCollection(searchNames);
-    }
-
-
-
-
-
-
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
-            throws BridgeFailedException {
-        return localOntologyTerms.get(termIdentifier);
-    }
-
-    public OntologyTerm getCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
-            throws BridgeFailedException {
-        return localOntologyTerms.get(termIdentifier);
-    }
-
-    public OntologyTerm getCvTermByExactName(String searchName, String ontologyDatabaseName)
-            throws BridgeFailedException {
-        return localOntologyTerms.get(searchName);
-    }
-
-    public OntologyTerm getCvTermByExactName(String searchName) throws BridgeFailedException {
-        return localOntologyTerms.get(searchName);
-    }
-
-
-
-
-
-
-
-
-
-    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, String databaseName)
-            throws BridgeFailedException {
-
-        ArrayList<OntologyTerm> value = new ArrayList<OntologyTerm>();
-        value.add(localOntologyTerms.get(searchName));
-        return value;
-    }
-
-    public Collection<OntologyTerm> getCvTermByInexactName(String searchName, CvTerm database)
-            throws BridgeFailedException {
-        ArrayList<OntologyTerm> value = new ArrayList<OntologyTerm>();
-        value.add(localOntologyTerms.get(searchName));
-        return value;
-    }
-
-    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
+    public Collection<OntologyTerm> fetchCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
             throws BridgeFailedException {
         return getMockTermCollection(identifiers);
     }
 
-    public Collection<OntologyTerm> getCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
+    public Collection<OntologyTerm> fetchCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException {
         return getMockTermCollection(identifiers);
     }
 
-    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames, String ontologyDatabaseName)
+    public Collection<OntologyTerm> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName)
             throws BridgeFailedException {
         return getMockTermCollection(searchNames);
     }
 
-    public Collection<OntologyTerm> getCvTermsByExactNames(Collection<String> searchNames)
+    public Collection<OntologyTerm> fetchCvTermsByNames(Collection<String> searchNames)
             throws BridgeFailedException {
         return getMockTermCollection(searchNames);
     }

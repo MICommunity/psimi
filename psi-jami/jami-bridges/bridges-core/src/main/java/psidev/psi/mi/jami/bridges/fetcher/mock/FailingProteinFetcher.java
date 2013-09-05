@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.*;
@@ -20,15 +19,15 @@ import java.util.*;
  * @since <pre>23/05/13</pre>
  */
 
-public class ExceptionThrowingMockProteinFetcher
-        extends AbstractExceptionThrowingMockFetcher<ArrayList<Protein>>
+public class FailingProteinFetcher
+        extends AbstractFailingFetcher<Collection<Protein>>
         implements ProteinFetcher {
 
-    public ExceptionThrowingMockProteinFetcher(int maxQuery) {
+    public FailingProteinFetcher(int maxQuery) {
         super(maxQuery);
     }
 
-    protected ArrayList<Protein> getEntry(String identifier) throws BridgeFailedException {
+    protected Collection<Protein> getEntry(String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException(
                 "Attempted to query mock protein fetcher for null identifier.");
 
@@ -49,11 +48,11 @@ public class ExceptionThrowingMockProteinFetcher
     }
 
 
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Protein> fetchProteinsByIdentifier(String identifier) throws BridgeFailedException {
         return getEntry(identifier);
     }
 
-    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         ArrayList<Protein> resultsList= new ArrayList<Protein>();
         for(String identifier : identifiers){
             resultsList.addAll( getEntry(identifier) );

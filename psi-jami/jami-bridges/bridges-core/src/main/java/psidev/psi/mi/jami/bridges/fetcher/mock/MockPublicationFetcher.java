@@ -2,12 +2,11 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.PublicationIdentifierSource;
-import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * A mock fetcher for testing.
@@ -26,15 +25,17 @@ public class MockPublicationFetcher
         super();
     }
 
-    public Publication getPublicationByIdentifier(String pubmedID , PublicationIdentifierSource source) throws BridgeFailedException {
+    public Publication fetchPublicationByIdentifier(String pubmedID , String source) throws BridgeFailedException {
         return getEntry(pubmedID);
     }
 
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers , PublicationIdentifierSource source)
+    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String, Collection<String>> identifiers)
             throws BridgeFailedException {
         Collection<Publication> results = new ArrayList<Publication>();
-        for(String id : identifiers){
-            results.add(getPublicationByIdentifier(id , source));
+        for(Map.Entry<String, Collection<String>> id : identifiers.entrySet()){
+            for (String id2 : id.getValue()){
+                results.add(fetchPublicationByIdentifier(id.getKey(), id2));
+            }
         }
         return results;
     }
