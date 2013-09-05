@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.PublicationIdentifierSource;
 import psidev.psi.mi.jami.bridges.fetcher.mock.AbstractExceptionThrowingMockFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
@@ -28,11 +29,11 @@ public class ExceptionThrowingMockPublicationFetcher
         super(maxQuery);
     }
 
-    public Publication getPublicationByIdentifier(String pubmedID) throws BridgeFailedException {
+    public Publication getPublicationByIdentifier(String pubmedID, PublicationIdentifierSource source) throws BridgeFailedException {
         return getEntry(pubmedID);
     }
 
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers , PublicationIdentifierSource source) throws BridgeFailedException {
         return Collections.EMPTY_LIST;
     }
 }

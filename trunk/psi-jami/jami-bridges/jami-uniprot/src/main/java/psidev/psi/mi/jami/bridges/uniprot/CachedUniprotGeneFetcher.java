@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.GeneIdentifierSource;
 import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Protein;
@@ -38,30 +39,31 @@ public class CachedUniprotGeneFetcher
     public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
     public static final String CACHE_NAME = "uniprot-gene-service-cache";
 
-
-
     public CachedUniprotGeneFetcher() {
         super();
         initialiseCache();
     }
 
 
-    public Collection<Gene> getGenesByEnsemblIdentifier(String identifier){
-        final String key = "getGenesByEnsemblIdentifier#"+identifier;
+    public Collection<Gene> getGenesByIdentifier(String identifier , GeneIdentifierSource source)
+            throws BridgeFailedException{
+
+        final String key = "getGenesByIdentifier#"+identifier+"#"+source;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getGenesByEnsemblIdentifier(identifier);
+            data = super.getGenesByIdentifier(identifier , source);
             storeInCache(key , data);
         }
         return (Collection<Gene> )data;
     }
 
+    public Collection<Gene> getGenesByIdentifier(String identifier , GeneIdentifierSource source, int taxID)
+            throws BridgeFailedException{
 
-    public Collection<Gene> getGenesByEnsemblGenomesIdentifier(String identifier){
-        final String key = "getGenesByEnsemblGenomesIdentifier#"+identifier;
+        final String key = "getGenesByIdentifier#"+identifier+"#"+source+"#"+taxID;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getGenesByEnsemblGenomesIdentifier(identifier);
+            data = super.getGenesByIdentifier(identifier , source , taxID);
             storeInCache(key , data);
         }
         return (Collection<Gene> )data;

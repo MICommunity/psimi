@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.bridges.util.OrganismFetchingUtil;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.utils.OrganismUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +37,7 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
 
 
     public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
-        Organism organism = OrganismFetchingUtil.createSpecialistOrganism(taxID);
+        Organism organism = OrganismUtils.createSpecialistOrganism(taxID);
         if ( organism == null ) {
             organism = getOrganismFromStream( taxID );
         }

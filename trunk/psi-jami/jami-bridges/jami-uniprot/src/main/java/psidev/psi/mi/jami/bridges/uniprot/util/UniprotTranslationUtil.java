@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.bridges.uniprot.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.util.OrganismFetchingUtil;
+import psidev.psi.mi.jami.utils.OrganismFetchingUtil;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.*;
