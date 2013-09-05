@@ -26,6 +26,6 @@ public class FailingBioactiveEntityFetcher
     }
 
     public Collection<BioactiveEntity> fetchBioactiveEntityByIdentifiers(Collection<String> identifier) throws BridgeFailedException {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return super.getEntries(identifier);
     }
 }
