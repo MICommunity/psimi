@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -32,8 +33,8 @@ public class MockCvTermFetcher
         return getEntry(searchName);
     }
 
-    public CvTerm fetchCvTermByName(String searchName) throws BridgeFailedException {
-        return getEntry(searchName);
+    public Collection<CvTerm> fetchCvTermByName(String searchName) throws BridgeFailedException {
+        return Arrays.asList(getEntry(searchName));
     }
 
     public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {

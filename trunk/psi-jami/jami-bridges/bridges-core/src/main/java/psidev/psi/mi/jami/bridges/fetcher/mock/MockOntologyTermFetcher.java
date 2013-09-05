@@ -57,8 +57,8 @@ public class MockOntologyTermFetcher
         return localOntologyTerms.get(searchName);
     }
 
-    public OntologyTerm fetchCvTermByName(String searchName) throws BridgeFailedException {
-        return localOntologyTerms.get(searchName);
+    public Collection<OntologyTerm> fetchCvTermByName(String searchName) throws BridgeFailedException {
+        return Arrays.asList(localOntologyTerms.get(searchName));
     }
 
     public Collection<OntologyTerm> fetchCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)

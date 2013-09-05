@@ -52,7 +52,7 @@ public interface CvTermFetcher<C extends CvTerm>{
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public C fetchCvTermByName(String searchName)
+    public Collection<C> fetchCvTermByName(String searchName)
             throws BridgeFailedException;
 
 
