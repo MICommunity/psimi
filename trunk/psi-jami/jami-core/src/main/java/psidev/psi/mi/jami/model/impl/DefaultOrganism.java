@@ -30,11 +30,11 @@ public class DefaultOrganism implements Organism {
     private CvTerm tissue;
 
     public DefaultOrganism(int taxId){
-        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
+        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0){
             this.taxId = taxId;
         }
         else {
-            throw new IllegalArgumentException("The taxId "+taxId+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
+            throw new IllegalArgumentException("The taxId "+taxId+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4, -5 are valid taxids.");
         }
     }
 
@@ -103,11 +103,11 @@ public class DefaultOrganism implements Organism {
     }
 
     public void setTaxId(int id) {
-        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
+        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0){
             this.taxId = id;
         }
         else {
-            throw new IllegalArgumentException("The taxId "+id+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
+            throw new IllegalArgumentException("The taxId "+id+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4, -5 are valid taxids.");
         }
     }
 
