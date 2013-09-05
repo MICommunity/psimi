@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.remapper;
+package psidev.psi.mi.jami.bridges.mapper;
 
 
 import psidev.psi.mi.jami.model.Protein;
@@ -11,20 +11,20 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 05/06/13
  */
-public interface ProteinRemapperListener {
+public interface ProteinMapperListener {
 
     /**
      * A stacked report listing the exit case first, followed by any errors, the approaches used and the strategy.
      * @param p
      * @param report
      */
-    public void onRemappingSuccessful(Protein p, Collection<String> report);
+    public void onSuccessfulMapping(Protein p, Collection<String> report);
 
     /**
      *
      * @param p
      * @param report
      */
-    public void onRemappingFailed(Protein p, Collection<String> report);
+    public void onFailedMapping(Protein p, Collection<String> report);
 
 }

@@ -1,9 +1,9 @@
-package psidev.psi.mi.jami.bridges.remapper.listener;
+package psidev.psi.mi.jami.bridges.mapper.listener;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
+import psidev.psi.mi.jami.bridges.mapper.ProteinMapperListener;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.Collection;
@@ -14,19 +14,19 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 23/07/13
  */
-public class LoggingRemapListener implements ProteinRemapperListener {
+public class ProteinMappingLogger implements ProteinMapperListener {
 
-    protected static final Logger log = LoggerFactory.getLogger(LoggingRemapListener.class.getName());
+    protected static final Logger log = LoggerFactory.getLogger(ProteinMappingLogger.class.getName());
 
 
-    public void onRemappingSuccessful(Protein p, Collection<String> report) {
+    public void onSuccessfulMapping(Protein p, Collection<String> report) {
         log.info("Remapping succeeded: ");
         for(String string : report){
             log.info(string);
         }
     }
 
-    public void onRemappingFailed(Protein p, Collection<String> report) {
+    public void onFailedMapping(Protein p, Collection<String> report) {
         log.info("Remapping failed: ");
         for(String string : report){
             log.info(string);

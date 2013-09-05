@@ -1,8 +1,8 @@
-package psidev.psi.mi.jami.bridges.remapper.mock;
+package psidev.psi.mi.jami.bridges.mapper.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
+import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
+import psidev.psi.mi.jami.bridges.mapper.ProteinMapperListener;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.Collections;
@@ -15,38 +15,33 @@ import java.util.Map;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 23/07/13
  */
-public class MockProteinRemapper implements ProteinRemapper {
+public class MockProteinMapper implements ProteinMapper {
 
-    private ProteinRemapperListener listener = null;
+    private ProteinMapperListener listener = null;
     private boolean checking;
     private boolean priorityIdentifiers;
     private boolean prioritySequence;
 
-
-
     private Map<String,String> localRemap;
 
-    public MockProteinRemapper(){
+    public MockProteinMapper(){
         localRemap = new HashMap<String, String>();
     }
 
-    public void addRemap(String oldKey , String newIdentifier){
+    public void addMappingResult(String oldKey, String newIdentifier){
         if(oldKey == null || newIdentifier == null) return;
         this.localRemap.put(oldKey , newIdentifier);
     }
 
-
-
-    public void setRemapListener(ProteinRemapperListener listener) {
+    public void setListener(ProteinMapperListener listener) {
         this.listener = listener;
     }
 
-    public ProteinRemapperListener getRemapListener() {
+    public ProteinMapperListener getListener() {
         return listener;
     }
 
-
-    public void remapProtein(Protein p) throws BridgeFailedException {
+    public void mapProtein(Protein p) throws BridgeFailedException {
         String newID = null;
 
         if(p.getSequence() != null) {
@@ -54,7 +49,7 @@ public class MockProteinRemapper implements ProteinRemapper {
             if(newID != null){
                 p.setUniprotkb(newID);
                 if( listener != null )
-                    listener.onRemappingSuccessful(p, Collections.<String>emptyList());
+                    listener.onSuccessfulMapping(p, Collections.<String>emptyList());
             }
             return;
         }
@@ -63,13 +58,13 @@ public class MockProteinRemapper implements ProteinRemapper {
             if(newID != null){
                 p.setUniprotkb(newID);
                 if( listener != null )
-                    listener.onRemappingSuccessful(p, Collections.<String>emptyList());
+                    listener.onSuccessfulMapping(p, Collections.<String>emptyList());
             }
             return;
         }
 
         if( listener != null )
-            listener.onRemappingFailed(p, Collections.<String>emptyList());
+            listener.onFailedMapping(p, Collections.<String>emptyList());
 
     }
 
@@ -82,7 +77,7 @@ public class MockProteinRemapper implements ProteinRemapper {
     }
 
     public boolean isPriorityIdentifiers() {
-        return priorityIdentifiers;  //To change body of implemented methods use File | Settings | File Templates.
+        return priorityIdentifiers;
     }
 
     public void setPriorityIdentifiers(boolean priorityIdentifiers) {
