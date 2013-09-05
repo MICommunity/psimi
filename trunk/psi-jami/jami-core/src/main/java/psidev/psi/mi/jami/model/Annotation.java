@@ -71,6 +71,8 @@ public interface Annotation {
     public static final String FIGURE_LEGEND_MI = "MI:0599";
     public static final String EXP_MODIFICATION = "experiment modification";
     public static final String EXP_MODIFICATION_MI = "MI:0627";
+    public static final String SEARCH_URL = "search-url";
+    public static final String SEARCH_URL_MI = "MI:0615";
 
     /**
      * The annotation topic is a controlled vocabulary term and it cannot be null.
