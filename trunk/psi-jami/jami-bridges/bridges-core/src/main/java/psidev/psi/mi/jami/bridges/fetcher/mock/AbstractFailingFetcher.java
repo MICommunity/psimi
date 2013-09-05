@@ -2,6 +2,9 @@ package psidev.psi.mi.jami.bridges.fetcher.mock;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * A mock fetcher for testing behaviour of bridgeFailedExceptions.
  * It can be set to throw exceptions for a given number of queries or to continuously throw the exception.
@@ -57,4 +60,15 @@ public abstract class AbstractFailingFetcher<T>
         }
     }
 
+    protected Collection<T> getEntries(Collection<String> identifier) throws BridgeFailedException {
+        if(identifier == null) throw new IllegalArgumentException(
+                "Attempted to query mock protein fetcher for null identifier.");
+
+        Collection<T> listOfResults = new ArrayList<T>(identifier.size());
+        for (String id : identifier){
+            listOfResults.add(getEntry(id));
+        }
+
+        return listOfResults;
+    }
 }
