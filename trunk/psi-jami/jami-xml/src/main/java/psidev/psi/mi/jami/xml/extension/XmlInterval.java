@@ -9,12 +9,12 @@ import java.math.BigInteger;
 
 /**
  * Xml implementation of a position which is an interval
- *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interval")
 public class XmlInterval extends AbstractXmlPosition{
     private BigInteger start;

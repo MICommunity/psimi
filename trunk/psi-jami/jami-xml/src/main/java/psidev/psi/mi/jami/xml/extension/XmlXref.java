@@ -19,7 +19,7 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.util.Collection;
+import java.util.ArrayList;
 
 
 /**
@@ -29,72 +29,13 @@ import java.util.Collection;
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
- * <pre>
- * &lt;complexType name="dbReference">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence minOccurs="0">
- *         &lt;element name="attributeList" type="{http://psi.hupo.org/mi/mif}attributeList"/>
- *       &lt;/sequence>
- *       &lt;attribute name="db" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="dbAc">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="id" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="secondary">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="version">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="refType">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="refTypeAc">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
+ * The JAXB bindings is designed to be read-only and is not designed for writing
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "dbReference", propOrder = {
-    "annotations"
+    "JAXBAttributes"
 })
 public class XmlXref
     implements Xref, FileSourceContext
@@ -106,7 +47,7 @@ public class XmlXref
     private String version;
 
     private String secondary;
-    private Collection<XmlAnnotation> annotations;
+    private ArrayList<XmlAnnotation> annotations;
 
     private PsiXmLocator sourceLocator;
 
@@ -141,7 +82,6 @@ public class XmlXref
     }
 
 
-    @XmlTransient
     public CvTerm getDatabase() {
         if (this.database == null){
             this.database = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
@@ -186,7 +126,6 @@ public class XmlXref
         this.version = value;
     }
 
-    @XmlTransient
     public CvTerm getQualifier() {
         return this.qualifier;
     }
@@ -200,7 +139,7 @@ public class XmlXref
      *
      */
     @XmlAttribute(name = "db", required = true)
-    public String getDb() {
+    public String getJAXBDb() {
         return getDatabase().getShortName();
     }
 
@@ -212,7 +151,7 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setDb(String value) {
+    public void setJAXBDb(String value) {
         if (this.database == null && value != null){
             this.database = new DefaultCvTerm(value);
         }
@@ -230,7 +169,7 @@ public class XmlXref
      *
      */
     @XmlAttribute(name = "dbAc")
-    public String getDbAc() {
+    public String getJAXBDbAc() {
         return getDatabase().getMIIdentifier();
     }
 
@@ -242,7 +181,7 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setDbAc(String value) {
+    public void setJAXBDbAc(String value) {
         if (this.database == null && value != null){
             this.database = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
         }
@@ -260,7 +199,7 @@ public class XmlXref
      *
      */
     @XmlAttribute(name = "refType")
-    public String getRefType() {
+    public String getJAXBRefType() {
         return this.qualifier != null ? this.qualifier.getShortName() : null;
     }
 
@@ -272,7 +211,7 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setRefType(String value) {
+    public void setJAXBRefType(String value) {
         if (this.qualifier == null && value != null){
             this.qualifier = new DefaultCvTerm(value);
         }
@@ -295,7 +234,7 @@ public class XmlXref
      *
      */
     @XmlAttribute(name = "refTypeAc")
-    public String getRefTypeAc() {
+    public String getJAXBRefTypeAc() {
         return this.qualifier != null ? this.qualifier.getMIIdentifier() : null;
     }
 
@@ -307,7 +246,7 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setRefTypeAc(String value) {
+    public void setJAXBRefTypeAc(String value) {
         if (this.qualifier == null && value != null){
             this.qualifier = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
         }
@@ -331,7 +270,7 @@ public class XmlXref
      *
      */
     @XmlAttribute(name = "secondary")
-    public String getSecondary() {
+    public String getJAXBSecondary() {
         return secondary;
     }
 
@@ -343,7 +282,7 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setSecondary(String value) {
+    public void setJAXBSecondary(String value) {
         this.secondary = value;
     }
 
@@ -358,11 +297,11 @@ public class XmlXref
      */
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute")
-    public Collection<XmlAnnotation> getAnnotations() {
+    public ArrayList<XmlAnnotation> getJAXBAttributes() {
         return this.annotations;
     }
 
-    public void setAnnotations(Collection<XmlAnnotation> annotations) {
+    public void setJAXBAttributes(ArrayList<XmlAnnotation> annotations) {
         this.annotations = annotations;
     }
 
@@ -376,7 +315,6 @@ public class XmlXref
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

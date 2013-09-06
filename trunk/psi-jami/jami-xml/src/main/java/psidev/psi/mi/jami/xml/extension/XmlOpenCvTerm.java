@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
@@ -17,14 +16,16 @@ import java.util.Collection;
  *
  * Does write annotations
  *
+ * The JAXB binding is designed to be read-only and is not designed for writing
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "openCvType", propOrder = {
-        "names",
-        "xref",
+        "JAXBNames",
+        "JAXBXref",
         "attributes"
 })
 @XmlSeeAlso({
@@ -64,7 +65,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *
      */
     @XmlElement(name = "names", required = true)
-    public NamesContainer getNames() {
+    public NamesContainer getJAXBNames() {
         return super.getNamesContainer();
     }
 
@@ -76,7 +77,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *     {@link NamesContainer }
      *
      */
-    public void setNames(NamesContainer value) {
+    public void setJAXBNames(NamesContainer value) {
         super.setNamesContainer(value);
     }
 
@@ -89,7 +90,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *
      */
     @XmlElement(name = "xref", required = true)
-    public CvTermXrefContainer getXref() {
+    public CvTermXrefContainer getJAXBXref() {
         if (super.getXrefContainer().isEmpty()){
             return null;
         }
@@ -104,44 +105,38 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      *     {@link XrefContainer }
      *
      */
-    public void setXref(CvTermXrefContainer value) {
+    public void setJAXBXref(CvTermXrefContainer value) {
         super.setXrefContainer(value);
     }
 
-    @XmlTransient
     public String getShortName() {
-        return getNames().getShortLabel();
+        return getNamesContainer().getJAXBShortLabel();
     }
 
     public void setShortName(String name) {
-        getNames().setShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
+        getNamesContainer().setJAXBShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
     }
 
-    @XmlTransient
     public String getFullName() {
-        return getNames().getFullName();
+        return getNamesContainer().getJAXBFullName();
     }
 
     public void setFullName(String name) {
-        getNames().setFullName(name);
+        getNamesContainer().setJAXBFullName(name);
     }
 
-    @XmlTransient
     public Collection<Xref> getIdentifiers() {
         return getXrefContainer().getAllIdentifiers();
     }
 
-    @XmlTransient
     public String getMIIdentifier() {
         return getXrefContainer().getMIIdentifier();
     }
 
-    @XmlTransient
     public String getMODIdentifier() {
         return getXrefContainer().getMODIdentifier();
     }
 
-    @XmlTransient
     public String getPARIdentifier() {
         return getXrefContainer().getPARIdentifier();
     }
@@ -158,12 +153,10 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
         getXrefContainer().setPARIdentifier(par);
     }
 
-    @XmlTransient
     public Collection<Xref> getXrefs() {
         return getXrefContainer().getAllXrefs();
     }
 
-    @XmlTransient
     public Collection<Annotation> getAnnotations() {
         return super.getAnnotations();
     }
@@ -171,19 +164,16 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute", required = true)
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
-    @Override
-    public ArrayList<Annotation> getAttributes() {
+    public ArrayList<Annotation> getJAXBAttributes() {
         return super.getAttributes();
     }
 
-    @Override
-    public void setAttributes(ArrayList<Annotation> annot){
+    public void setJAXBAttributes(ArrayList<Annotation> annot){
         super.setAttributes(annot);
     }
 
-    @XmlTransient
     public Collection<Alias> getSynonyms() {
-        return getNames().getAliases();
+        return getNamesContainer().getJAXBAliases();
     }
 
     @XmlLocation
@@ -194,11 +184,5 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
     public void setSaxLocator(Locator sourceLocator) {
         super.setSaxLocator(sourceLocator);
-    }
-
-    @Override
-    @XmlTransient
-    public FileSourceLocator getSourceLocator() {
-        return super.getSourceLocator();
     }
 }

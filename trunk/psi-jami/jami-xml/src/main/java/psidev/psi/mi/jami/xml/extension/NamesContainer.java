@@ -13,16 +13,16 @@ import java.util.Collections;
 
 /**
  * A container for aliases, shortname and fullname
- *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "names", propOrder = {
-        "shortLabel",
-        "fullName",
-        "aliases"
+        "JAXBShortLabel",
+        "JAXBFullName",
+        "JAXBAliases"
 })
 @XmlSeeAlso({
         ProteinNamesContainer.class
@@ -44,7 +44,7 @@ public class NamesContainer implements FileSourceContext{
      *
      */
     @XmlAttribute(name = "shortLabel")
-    public String getShortLabel() {
+    public String getJAXBShortLabel() {
         return shortLabel;
     }
 
@@ -56,7 +56,7 @@ public class NamesContainer implements FileSourceContext{
      *     {@link String }
      *
      */
-    public void setShortLabel(String value) {
+    public void setJAXBShortLabel(String value) {
         this.shortLabel = value;
     }
 
@@ -69,7 +69,7 @@ public class NamesContainer implements FileSourceContext{
      *
      */
     @XmlAttribute(name = "fullName")
-    public String getFullName() {
+    public String getJAXBFullName() {
         return fullName;
     }
 
@@ -81,7 +81,7 @@ public class NamesContainer implements FileSourceContext{
      *     {@link String }
      *
      */
-    public void setFullName(String value) {
+    public void setJAXBFullName(String value) {
         this.fullName = value;
     }
 
@@ -109,7 +109,7 @@ public class NamesContainer implements FileSourceContext{
      */
     @XmlElement(name = "alias")
     @XmlElementRefs({ @XmlElementRef(type=XmlAlias.class)})
-    public Collection<Alias> getAliases() {
+    public Collection<Alias> getJAXBAliases() {
         if (aliases == null) {
             initialiseAliases();
         }
@@ -126,7 +126,6 @@ public class NamesContainer implements FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
@@ -135,9 +134,8 @@ public class NamesContainer implements FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
-    @XmlTransient
     public boolean isEmpty(){
-        return (shortLabel == null && fullName == null && getAliases().isEmpty());
+        return (shortLabel == null && fullName == null && getJAXBAliases().isEmpty());
     }
 
     protected void initialiseAliases(){

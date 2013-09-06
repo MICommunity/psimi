@@ -14,15 +14,15 @@ import java.util.List;
 
 /**
  * Xref container in XML implementation
- *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "xrefContainer", propOrder = {
-        "primaryRef",
-        "secondaryRefs"
+        "JAXBPrimaryRef",
+        "JAXBSecondaryRefs"
 })
 @XmlSeeAlso({
         CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class,
@@ -45,7 +45,7 @@ public class XrefContainer implements FileSourceContext{
      *
      */
     @XmlElement(required = true)
-    public XmlXref getPrimaryRef() {
+    public XmlXref getJAXBPrimaryRef() {
         return primaryRef;
     }
 
@@ -57,7 +57,7 @@ public class XrefContainer implements FileSourceContext{
      *     {@link XmlXref }
      *
      */
-    public void setPrimaryRef(XmlXref value) {
+    public void setJAXBPrimaryRef(XmlXref value) {
         if (this.primaryRef != null){
             processRemovedPrimaryRef(this.primaryRef);
         }
@@ -91,14 +91,13 @@ public class XrefContainer implements FileSourceContext{
      *
      */
     @XmlElement(name = "secondaryRef")
-    public Collection<XmlXref> getSecondaryRefs() {
+    public Collection<XmlXref> getJAXBSecondaryRefs() {
         if (secondaryRefs == null) {
             secondaryRefs = new SecondaryXrefList();
         }
         return secondaryRefs;
     }
 
-    @XmlTransient
     public Collection<Xref> getAllXrefs() {
         if (allXrefs == null){
             initialiseXrefs();
@@ -106,9 +105,8 @@ public class XrefContainer implements FileSourceContext{
         return allXrefs;
     }
 
-    @XmlTransient
     public boolean isEmpty(){
-        if (primaryRef == null && getSecondaryRefs().isEmpty()){
+        if (primaryRef == null && getJAXBSecondaryRefs().isEmpty()){
             return true;
         }
         return false;
@@ -124,7 +122,6 @@ public class XrefContainer implements FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
@@ -169,7 +166,7 @@ public class XrefContainer implements FileSourceContext{
                 primaryRef = (XmlXref)added;
             }
             else{
-                ((SecondaryXrefList)getSecondaryRefs()).addOnly((XmlXref)added);
+                ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly((XmlXref)added);
             }
         }
     }
@@ -177,7 +174,7 @@ public class XrefContainer implements FileSourceContext{
     protected void processRemovedXref(Xref removed) {
         if (removed instanceof XmlXref){
             if (primaryRef != null && removed.equals(primaryRef)){
-                if (!getSecondaryRefs().isEmpty()){
+                if (!getJAXBSecondaryRefs().isEmpty()){
                     primaryRef = secondaryRefs.iterator().next();
                     ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
                 }
@@ -190,7 +187,7 @@ public class XrefContainer implements FileSourceContext{
 
     protected void clearFullXrefProperties() {
         primaryRef = null;
-        ((SecondaryXrefList)getSecondaryRefs()).clearOnly();
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).clearOnly();
     }
 
     class FullXrefList extends AbstractListHavingProperties<Xref> {

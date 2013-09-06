@@ -20,7 +20,7 @@
 
     <modules>
         <module>jami-core</module>
-        <!--<module>jami-html</module>-->
+        <module>jami-html</module>
         <module>jami-bridges</module>
         <module>jami-enricher</module>
         <module>jami-mitab</module>

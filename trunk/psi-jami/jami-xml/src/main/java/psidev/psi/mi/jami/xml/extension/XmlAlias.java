@@ -13,13 +13,15 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import javax.xml.bind.annotation.*;
 
 /**
- * Xml implementation of an Alias
+ * Xml implementation of an Alias.
+ *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "alias", propOrder = {
         "name"
 })
@@ -47,7 +49,6 @@ public class XmlAlias implements Alias, FileSourceContext {
         this.name = name;
     }
 
-    @XmlTransient
     public CvTerm getType() {
         return null;
     }
@@ -73,7 +74,7 @@ public class XmlAlias implements Alias, FileSourceContext {
      *
      */
     @XmlAttribute(name = "typeAc")
-    public String getTypeAc() {
+    public String getJAXBTypeAc() {
         return this.type != null ? this.type.getMIIdentifier() : null;
     }
 
@@ -85,7 +86,7 @@ public class XmlAlias implements Alias, FileSourceContext {
      *     {@link String }
      *
      */
-    public void setTypeAc(String value) {
+    public void setJAXBTypeAc(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
         }
@@ -108,7 +109,7 @@ public class XmlAlias implements Alias, FileSourceContext {
      *
      */
     @XmlAttribute(name = "type")
-    public String getTypeName() {
+    public String getJAXBTypeName() {
         return this.type != null ? this.type.getShortName() : null;
     }
 
@@ -120,7 +121,7 @@ public class XmlAlias implements Alias, FileSourceContext {
      *     {@link String }
      *
      */
-    public void setTypeName(String value) {
+    public void setJAXBTypeName(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(value);
         }
@@ -144,7 +145,6 @@ public class XmlAlias implements Alias, FileSourceContext {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

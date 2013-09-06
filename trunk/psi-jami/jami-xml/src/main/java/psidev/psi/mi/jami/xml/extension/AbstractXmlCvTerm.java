@@ -77,7 +77,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
     protected NamesContainer getNamesContainer() {
         if (namesContainer == null){
             namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
         return namesContainer;
     }
@@ -85,12 +85,12 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
     protected void setNamesContainer(NamesContainer value) {
         if (value == null){
             namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
         else {
             this.namesContainer = value;
-            if (this.namesContainer.getShortLabel() == null){
-                namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+            if (this.namesContainer.getJAXBShortLabel() == null){
+                namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
             }
         }
     }
@@ -102,14 +102,14 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
         return this.annotations;
     }
 
-    public ArrayList<Annotation> getAttributes() {
+    protected ArrayList<Annotation> getAttributes() {
         if (getAnnotations().isEmpty()){
             return null;
         }
         return new ArrayList<Annotation>(this.annotations);
     }
 
-    public void setAttributes(ArrayList<Annotation> annot){
+    protected void setAttributes(ArrayList<Annotation> annot){
         getAnnotations().clear();
         if (annot != null && !annot.isEmpty()){
             getAnnotations().addAll(annot);

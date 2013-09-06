@@ -15,11 +15,13 @@ import javax.xml.bind.annotation.*;
 /**
  * Xml implementation of an Annotation
  *
+ * The JAXB binding is designed to be read-only and is not designed for writing
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "attribute", propOrder = {
         "value"
 })
@@ -47,7 +49,6 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
         this.topic = topic;
     }
 
-    @XmlTransient
     public CvTerm getTopic() {
         if (topic == null){
             this.topic = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
@@ -73,7 +74,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
      *
      */
     @XmlAttribute(name = "name", required = true)
-    public String getName() {
+    public String getJAXBName() {
         return getTopic().getShortName();
     }
 
@@ -85,7 +86,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
      *     {@link String }
      *
      */
-    public void setName(String value) {
+    public void setJAXBName(String value) {
         if (this.topic == null && value != null){
             this.topic = new DefaultCvTerm(value);
         }
@@ -103,7 +104,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
      *
      */
     @XmlAttribute(name = "nameAc")
-    public String getNameAc() {
+    public String getJAXBNameAc() {
         return getTopic().getMIIdentifier();
     }
 
@@ -115,7 +116,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
      *     {@link String }
      *
      */
-    public void setNameAc(String value) {
+    public void setJAXBNameAc(String value) {
         if (this.topic == null && value != null){
             this.topic = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
         }
@@ -134,7 +135,6 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
