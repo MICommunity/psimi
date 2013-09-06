@@ -37,7 +37,7 @@
     <bean id="mitabProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher">
         <constructor-arg ref="proteinFetcher"/>
         <property name="organismEnricher" ref="mitabOrganismEnricher"/>
-        <property name="proteinRemapper" ref="proteinRemapper"/>
+        <property name="proteinMapper" ref="proteinMapper"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
         <property name="proteinEnricherListener" ref="mitabProteinListenerManager"/>
     </bean>

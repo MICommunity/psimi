@@ -28,6 +28,7 @@ public class InteractionEvidenceEnricherProcessor implements ItemProcessor<Inter
 
         // enrich interaction
         interactionEnricher.enrichInteraction(item);
+        // TODO - test try catch
 
         return item;
     }
