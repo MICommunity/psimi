@@ -59,7 +59,6 @@
 
     <modules>
         <module>bridges-core</module>
-        <module>jami-ensembl</module>
         <module>jami-chebi</module>
         <module>jami-uniprot</module>
         <module>jami-ols</module>

@@ -25,7 +25,7 @@ public class FailingBioactiveEntityFetcher
         return super.getEntry(identifier);
     }
 
-    public Collection<BioactiveEntity> fetchBioactiveEntityByIdentifiers(Collection<String> identifier) throws BridgeFailedException {
-        return super.getEntries(identifier);
+    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        return super.getEntries(identifiers);
     }
 }
