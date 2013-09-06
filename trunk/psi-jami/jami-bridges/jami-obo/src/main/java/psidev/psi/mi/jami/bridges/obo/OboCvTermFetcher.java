@@ -11,13 +11,13 @@ import psidev.psi.mi.jami.model.CvTerm;
  * @since <pre>17/07/13</pre>
  */
 
-public class OboFetcher extends OboFetcherTemplate<CvTerm> implements CvTermFetcher<CvTerm>{
+public class OboCvTermFetcher extends OboFetcherTemplate<CvTerm> implements CvTermFetcher<CvTerm>{
 
-    public OboFetcher(CvTerm database, String filePath) {
+    public OboCvTermFetcher(CvTerm database, String filePath) {
         super(database, new BasicOboLoader(database), filePath);
     }
 
-    public OboFetcher(String databaseName, String filePath) {
+    public OboCvTermFetcher(String databaseName, String filePath) {
         super(databaseName, new BasicOboLoader(databaseName), filePath);
     }
 }

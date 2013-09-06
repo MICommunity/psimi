@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import uk.ac.ebi.ols.model.interfaces.Term;
 
 /**
- * TODO comment this
+ * Basic implementation of Obo loader
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

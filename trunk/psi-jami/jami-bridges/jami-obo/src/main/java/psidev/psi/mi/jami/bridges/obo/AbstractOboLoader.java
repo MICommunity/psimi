@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Basic obo loader
+ * Abstract obo loader
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
