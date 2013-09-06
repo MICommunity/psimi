@@ -11,9 +11,7 @@ import uk.ac.ebi.kraken.interfaces.uniprot.comments.AlternativeProductsIsoform;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.Feature;
 import uk.ac.ebi.kraken.uuw.services.remoting.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -53,15 +51,17 @@ public class UniprotProteinFetcher
 
         if(identifier == null) throw new IllegalArgumentException("Could not perform search on null identifier.");
 
-        Collection<Protein> proteins;
+        Collection<Protein> proteins = null;
 
-        if(UNIPROT_PRO_REGEX.matcher(identifier).find()){
+        String idType = identifierType(identifier);
+
+        if(idType.equals(PROID)){
             // Truncate the pro identifier to allow the search to take place
             String proIdentifier = identifier.substring(identifier.indexOf("PRO") + 4, identifier.length());
             proteins = fetchFeatureByIdentifier(proIdentifier);
-        } else if (UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){
+        } else if (idType.equals(ISOID)){
             proteins = fetchIsoformsByIdentifier(identifier);
-        } else {
+        } else if (idType.equals(MASID)) {
             proteins = fetchMasterProteinsByIdentifier(identifier);
         }
 
@@ -69,6 +69,19 @@ public class UniprotProteinFetcher
             return Collections.EMPTY_LIST;
         else
             return proteins;
+    }
+
+    private final String PROID = "pro";
+    private final String MASID = "mas";
+    private final String ISOID = "iso";
+    private String identifierType(String identifier){
+        if(UNIPROT_PRO_REGEX.matcher(identifier).find()){
+            return PROID;
+        } else if (UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){
+            return ISOID;
+        } else {
+            return MASID;
+        }
     }
 
     /**
@@ -79,9 +92,31 @@ public class UniprotProteinFetcher
      * @throws BridgeFailedException
      */
     public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        Collection<Protein> proteinResults = new ArrayList<Protein>();
+        List<String> masterIdentifiers = new ArrayList<String>();
+        List<String> featureIdentifiers = new ArrayList<String>();
+        List<String> isoformIdentifiers = new ArrayList<String>();
+
         for(String identifier : identifiers){
-            proteinResults.addAll(fetchProteinsByIdentifier(identifier));
+            String idType = identifierType(identifier);
+            if(idType.equals(MASID))
+                masterIdentifiers.add(identifier);
+            else if(idType.equals(ISOID))
+                isoformIdentifiers.add(identifier);
+            else if(idType.equals(PROID))
+                featureIdentifiers.add(identifier);
+        }
+
+        Collection<Protein> proteinResults = new ArrayList<Protein>();
+
+        // == Masters ===========
+        proteinResults.addAll(fetchMasterProteinsByIdentifiers(masterIdentifiers));
+
+        // == Isoforms ==========
+        proteinResults.addAll(fetchIsoformsByIdentifiers(isoformIdentifiers));
+
+        // == Features ===========
+        for(String identifier : featureIdentifiers){
+            proteinResults.addAll(fetchFeatureByIdentifier(identifier));
         }
         return proteinResults;
     }
@@ -102,7 +137,37 @@ public class UniprotProteinFetcher
             EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
 
             while(entries.hasNext()){
-                proteins.add(uniprotTranslationUtil.getProteinFromEntry(entries.next())); //TOdo method should be static
+                proteins.add(uniprotTranslationUtil.getProteinFromEntry(entries.next()));
+            }
+        }catch (RemoteDataAccessException e){
+            throw new BridgeFailedException("Problem with Uniprot Service.",e);
+        }
+
+        // Examples:
+        // - one single entry : P12345
+        // - uniprot demerge (different uniprot entries with different organisms) : P77681
+        // - uniprot demerge (different uniprot entries with same organisms) : P11163
+
+        return proteins;
+    }
+
+    /**
+     *
+     * @param identifiers    The identifier for a master protein
+     * @return              The master proteins which match the identifier.
+     * @throws BridgeFailedException
+     */
+    public Collection<Protein> fetchMasterProteinsByIdentifiers(List<String> identifiers) throws BridgeFailedException {
+        if(identifiers == null) throw new IllegalArgumentException(
+                "Attempted to search for protein on a null identifier.");
+        Collection<Protein> proteins = new ArrayList<Protein>();
+
+        try{
+            Query query = UniProtQueryBuilder.buildIDListQuery(identifiers);
+            EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
+
+            while(entries.hasNext()){
+                proteins.add(uniprotTranslationUtil.getProteinFromEntry(entries.next()));
             }
         }catch (RemoteDataAccessException e){
             throw new BridgeFailedException("Problem with Uniprot Service.",e);
@@ -137,6 +202,38 @@ public class UniprotProteinFetcher
                 AlternativeProductsIsoform isoform = UniprotTranslationUtil.findIsoformInEntry(entry, identifier);
                 if(isoform == null) log.warn("No isoform in entry "+entry.getUniProtId());
                 else{
+                    proteins.add(uniprotTranslationUtil.getProteinIsoformFromEntry(entry, isoform, identifier));
+                }
+            }
+        }catch (RemoteDataAccessException e){
+            throw new BridgeFailedException("Problem encountered whilst querying Uniprot service for isoforms.",e);
+        }
+        return proteins;
+    }
+
+    /**
+     * Queries uniprot for the isoform identifier and returns the results in a list of Proteins
+     *
+     * @param identifiers    the isoform identifier in the form of [MasterID]-[IsoformNumber]
+     * @return      the collection of proteins which match the search term
+     * @throws BridgeFailedException
+     */
+    public Collection<Protein> fetchIsoformsByIdentifiers(List<String> identifiers) throws BridgeFailedException {
+        if(identifiers == null) throw new IllegalArgumentException(
+                "Attempted to search for protein isoform on a null identifier.");
+        Collection<Protein> proteins = new ArrayList<Protein>();
+
+        try{
+            Query query = UniProtQueryBuilder.buildIDListQuery(identifiers);
+            EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
+
+            while(entries.hasNext()){
+                UniProtEntry entry = entries.next();
+                Map<String , AlternativeProductsIsoform> matchingIsoform = UniprotTranslationUtil.findIsoformInEntry(entry, identifiers);
+                if(matchingIsoform.isEmpty()) log.warn("No isoform in entry "+entry.getUniProtId());
+                else{
+                    String identifier = matchingIsoform.entrySet().iterator().next().getKey();
+                    AlternativeProductsIsoform isoform = matchingIsoform.get(identifier);
                     proteins.add(uniprotTranslationUtil.getProteinIsoformFromEntry(entry, isoform, identifier));
                 }
             }
