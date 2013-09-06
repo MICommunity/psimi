@@ -339,7 +339,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
             else if (type.getMIIdentifier() != null){
                 OntologyTerm term = null;
                 try {
-                    term = fetcher.getCvTermByIdentifier(type.getMIIdentifier(), CvTerm.PSI_MI, 0, -1);
+                    term = fetcher.fetchCvTermByIdentifier(type.getMIIdentifier(), CvTerm.PSI_MI);
                 } catch (BridgeFailedException e) {
                     logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + type.getMIIdentifier(), e);
                 }
@@ -369,9 +369,9 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 OntologyTerm term = null;
                 String name = type.getFullName() != null ? type.getFullName() : type.getShortName();
                 try {
-                    term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MI, 0, -1);
+                    term = fetcher.fetchCvTermByName(name, CvTerm.PSI_MI);
                     if (term == null){
-                        term = fetcher.getCvTermByExactName(name, CvTerm.PSI_MOD);
+                        term = fetcher.fetchCvTermByName(name, CvTerm.PSI_MOD);
                     }
                 } catch (BridgeFailedException e) {
                     logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + (type.getFullName() != null ? type.getFullName() : type.getShortName()), e);
