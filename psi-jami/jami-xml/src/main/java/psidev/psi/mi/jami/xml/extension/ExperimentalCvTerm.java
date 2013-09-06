@@ -26,31 +26,19 @@ import java.util.Map;
  * <p>Java class for experimentalPreparation complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="experimentalPreparation">
- *   &lt;complexContent>
- *     &lt;extension base="{http://psi.hupo.org/mi/mif}cvType">
- *       &lt;sequence minOccurs="0">
- *         &lt;element name="experimentRefList" type="{http://psi.hupo.org/mi/mif}experimentRefList" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
+ *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "experimentalPreparation", propOrder = {
-    "experimentRefList"
+    "JAXBExperimentRefList"
 })
 public class ExperimentalCvTerm
     extends XmlCvTerm
 {
 
     private Map<Integer, Object> mapOfReferencedObjects;
-    private Collection<Integer> experimentRefList;
+    private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
 
     public ExperimentalCvTerm() {
@@ -92,7 +80,7 @@ public class ExperimentalCvTerm
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef")
-    public Collection<Integer> getExperimentRefList() {
+    public ArrayList<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }
 
@@ -104,11 +92,10 @@ public class ExperimentalCvTerm
      *     {@link Integer }
      *     
      */
-    public void setExperimentRefList(Collection<Integer> value) {
+    public void setJAXBExperimentRefList(ArrayList<Integer> value) {
         this.experimentRefList = value;
     }
 
-    @XmlTransient
     public Collection<Experiment> getExperiments() {
         if (experiments == null){
             experiments = new ArrayList<Experiment>();

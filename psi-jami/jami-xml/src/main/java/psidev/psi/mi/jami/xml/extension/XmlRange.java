@@ -13,18 +13,20 @@ import javax.xml.bind.annotation.*;
 /**
  * Xml implementation of Range
  *
+ * The JAXB binding is designed to be read-only and is not designed for writing
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "baseLocation", propOrder = {
-        "startStatus",
-        "beginInterval",
-        "beginPosition",
-        "endStatus",
-        "endInterval",
-        "endPosition",
+        "JAXBStartStatus",
+        "JAXBBeginInterval",
+        "JAXBBeginPosition",
+        "JAXBEndStatus",
+        "JAXBEndInterval",
+        "JAXBEndPosition",
         "link"
 })
 public class XmlRange implements Range, FileSourceContext{
@@ -79,7 +81,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "startStatus", required = true, type = XmlCvTerm.class)
-    public CvTerm getStartStatus() {
+    public CvTerm getJAXBStartStatus() {
         return getStart().getStatus();
     }
 
@@ -91,7 +93,7 @@ public class XmlRange implements Range, FileSourceContext{
      *     {@link XmlCvTerm }
      *
      */
-    public void setStartStatus(XmlCvTerm value) {
+    public void setJAXBStartStatus(XmlCvTerm value) {
         if (getStart() instanceof AbstractXmlPosition){
             AbstractXmlPosition pos = (AbstractXmlPosition) start;
             pos.setStatus(value);
@@ -111,7 +113,6 @@ public class XmlRange implements Range, FileSourceContext{
         }
     }
 
-    @XmlTransient
     public Position getStart() {
         if (start == null){
            start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
@@ -128,7 +129,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "beginInterval")
-    public XmlInterval getBeginInterval() {
+    public XmlInterval getJAXBBeginInterval() {
         if (start instanceof XmlInterval){
             return (XmlInterval) start;
         }
@@ -143,7 +144,7 @@ public class XmlRange implements Range, FileSourceContext{
      *     {@link XmlInterval }
      *
      */
-    public void setBeginInterval(XmlInterval value) {
+    public void setJAXBBeginInterval(XmlInterval value) {
         this.start = value;
     }
 
@@ -156,7 +157,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "begin")
-    public Position getBeginPosition() {
+    public Position getJAXBBeginPosition() {
         if (start instanceof XmlPosition){
             return (XmlPosition) start;
         }
@@ -171,7 +172,7 @@ public class XmlRange implements Range, FileSourceContext{
      *     {@link Position }
      *
      */
-    public void setBeginPosition(XmlPosition value) {
+    public void setJAXBBeginPosition(XmlPosition value) {
         this.start = value;
     }
 
@@ -184,7 +185,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "endStatus", required = true, type = XmlCvTerm.class)
-    public CvTerm getEndStatus() {
+    public CvTerm getJAXBEndStatus() {
         return getEnd().getStatus();
     }
 
@@ -196,7 +197,7 @@ public class XmlRange implements Range, FileSourceContext{
      *     {@link XmlCvTerm }
      *
      */
-    public void setEndStatus(XmlCvTerm value) {
+    public void setJAXBEndStatus(XmlCvTerm value) {
         if (getEnd() instanceof AbstractXmlPosition){
             AbstractXmlPosition pos = (AbstractXmlPosition) end;
             pos.setStatus(value);
@@ -215,7 +216,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "endInterval")
-    public XmlInterval getEndInterval() {
+    public XmlInterval getJAXBEndInterval() {
         if (end instanceof XmlInterval){
             return (XmlInterval) end;
         }
@@ -230,7 +231,7 @@ public class XmlRange implements Range, FileSourceContext{
      *     {@link XmlInterval }
      *
      */
-    public void setEndInterval(XmlInterval value) {
+    public void setJAXBEndInterval(XmlInterval value) {
         this.end = value;
     }
 
@@ -243,7 +244,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "end")
-    public XmlPosition getEndPosition() {
+    public XmlPosition getJAXBEndPosition() {
         if (end instanceof XmlPosition){
             return (XmlPosition) end;
         }
@@ -258,11 +259,10 @@ public class XmlRange implements Range, FileSourceContext{
      *     {@link XmlPosition }
      *
      */
-    public void setEndPosition(XmlPosition value) {
+    public void setJAXBEndPosition(XmlPosition value) {
         this.end = value;
     }
 
-    @XmlTransient
     public Position getEnd() {
         if (end == null){
             end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
@@ -303,7 +303,6 @@ public class XmlRange implements Range, FileSourceContext{
         this.end = end;
     }
 
-    @XmlTransient
     public ResultingSequence getResultingSequence() {
         return this.resultingSequence;
     }
@@ -312,7 +311,6 @@ public class XmlRange implements Range, FileSourceContext{
         this.resultingSequence = resultingSequence;
     }
 
-    @XmlTransient
     public Participant getParticipant() {
         return this.participant;
     }
@@ -331,7 +329,6 @@ public class XmlRange implements Range, FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

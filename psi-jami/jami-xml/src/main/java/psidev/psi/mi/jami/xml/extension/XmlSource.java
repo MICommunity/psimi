@@ -32,38 +32,16 @@ import java.util.Collection;
  * <p>Java class for source complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="source">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="names" type="{http://psi.hupo.org/mi/mif}names" minOccurs="0"/>
- *         &lt;element name="bibref" type="{http://psi.hupo.org/mi/mif}bibref" minOccurs="0"/>
- *         &lt;element name="xrefContainer" type="{http://psi.hupo.org/mi/mif}xrefContainer" minOccurs="0"/>
- *         &lt;element name="attributeList" type="{http://psi.hupo.org/mi/mif}attributeList" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="release">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;minLength value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="releaseDate" type="{http://www.w3.org/2001/XMLSchema}date" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
+ *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  * 
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "source", propOrder = {
-    "names",
+    "JAXBNames",
     "publication",
-    "xref",
-    "attributes"
+    "JAXBXref",
+    "JAXBAttributes"
 })
 public class XmlSource extends XmlOpenCvTerm
     implements Source, FileSourceContext
@@ -141,7 +119,6 @@ public class XmlSource extends XmlOpenCvTerm
         initialiseAnnotationsWith(new SourceAnnotationList());
     }
 
-    @XmlTransient
     public String getUrl() {
         return this.url != null ? this.url.getValue() : null;
     }
@@ -166,7 +143,6 @@ public class XmlSource extends XmlOpenCvTerm
         }
     }
 
-    @XmlTransient
     public String getPostalAddress() {
         return this.postalAddress;
     }
@@ -193,7 +169,7 @@ public class XmlSource extends XmlOpenCvTerm
      *     
      */
     @XmlAttribute(name = "release")
-    public String getRelease() {
+    public String getJAXBRelease() {
         return release;
     }
 
@@ -205,7 +181,7 @@ public class XmlSource extends XmlOpenCvTerm
      *     {@link String }
      *     
      */
-    public void setRelease(String value) {
+    public void setJAXBRelease(String value) {
         this.release = value;
     }
 
@@ -219,7 +195,7 @@ public class XmlSource extends XmlOpenCvTerm
      */
     @XmlAttribute(name = "releaseDate")
     @XmlSchemaType(name = "date")
-    public XMLGregorianCalendar getReleaseDate() {
+    public XMLGregorianCalendar getJAXBReleaseDate() {
         return releaseDate;
     }
 
@@ -231,7 +207,7 @@ public class XmlSource extends XmlOpenCvTerm
      *     {@link javax.xml.datatype.XMLGregorianCalendar }
      *     
      */
-    public void setReleaseDate(XMLGregorianCalendar value) {
+    public void setJAXBReleaseDate(XMLGregorianCalendar value) {
         this.releaseDate = value;
     }
 
@@ -239,7 +215,7 @@ public class XmlSource extends XmlOpenCvTerm
     @XmlElement(name="attribute", required = true)
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
     @Override
-    public ArrayList<Annotation> getAttributes() {
+    public ArrayList<Annotation> getJAXBAttributes() {
         if (getAnnotations().isEmpty() && this.postalAddress == null){
             return  null;
         }
@@ -256,7 +232,7 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     @Override
-    public void setAttributes(ArrayList<Annotation> annotations){
+    public void setJAXBAttributes(ArrayList<Annotation> annotations){
         getAnnotations().clear();
         if (annotations != null){
             // we have a bibref. Some annotations can be processed
@@ -281,7 +257,6 @@ public class XmlSource extends XmlOpenCvTerm
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

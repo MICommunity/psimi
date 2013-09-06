@@ -10,11 +10,12 @@ import java.math.BigInteger;
 /**
  * Xml implementation of a simple Position
  *
+ * The JAXB binding is designed to be read-only and is not designed for writing
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "position")
 public class XmlPosition extends AbstractXmlPosition{
 
