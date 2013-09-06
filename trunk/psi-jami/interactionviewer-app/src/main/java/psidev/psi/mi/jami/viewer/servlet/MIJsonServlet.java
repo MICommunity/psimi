@@ -12,8 +12,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.OntologyTermCompositeFetcher;
-import psidev.psi.mi.jami.bridges.obo.OntologyOboFetcher;
-import psidev.psi.mi.jami.bridges.ols.CachedOntologyOlsFetcher;
+import psidev.psi.mi.jami.bridges.obo.OboOntologyTermFetcher;
+import psidev.psi.mi.jami.bridges.ols.CachedOlsOntologyTermFetcher;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
@@ -78,14 +78,14 @@ public class MIJsonServlet extends HttpServlet{
             if (path == null || (path != null && path.length() == 0)){
                 OntologyTermCompositeFetcher compositeFetcher = new OntologyTermCompositeFetcher();
                 this.fetcher = compositeFetcher;
-                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OntologyOboFetcher(CvTermUtils.getPsimi(), MIJsonServlet.class.getResource("/psi-mi25.obo").getFile()));
-                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOlsFetcher());
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OboOntologyTermFetcher(CvTermUtils.getPsimi(), MIJsonServlet.class.getResource("/psi-mi25.obo").getFile()));
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOlsOntologyTermFetcher());
             }
             else {
                 OntologyTermCompositeFetcher compositeFetcher = new OntologyTermCompositeFetcher();
                 this.fetcher = compositeFetcher;
-                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OntologyOboFetcher(CvTermUtils.getPsimi(), path));
-                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOntologyOlsFetcher());
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MI, new OboOntologyTermFetcher(CvTermUtils.getPsimi(), path));
+                compositeFetcher.addCvTermFetcher(CvTerm.PSI_MOD, new CachedOlsOntologyTermFetcher());
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "cannot load the property file /viewer.properties where we can find the psi-mi OBO file path. The ontology fetcher will be null.");
