@@ -20,7 +20,7 @@ public class MockBioactiveEntityFetcher
         return super.getEntry(identifier);
     }
 
-    public Collection<BioactiveEntity> fetchBioactiveEntityByIdentifiers(Collection<String> identifier) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
