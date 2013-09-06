@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.GeneIdentifierSource;
 import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Protein;
@@ -45,25 +44,25 @@ public class CachedUniprotGeneFetcher
     }
 
 
-    public Collection<Gene> getGenesByIdentifier(String identifier , GeneIdentifierSource source)
+    public Collection<Gene> getGenesByIdentifier(String identifier)
             throws BridgeFailedException{
 
-        final String key = "getGenesByIdentifier#"+identifier+"#"+source;
+        final String key = "getGenesByIdentifier#"+identifier;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getGenesByIdentifier(identifier , source);
+            data = super.fetchGenesByIdentifier(identifier );
             storeInCache(key , data);
         }
         return (Collection<Gene> )data;
     }
 
-    public Collection<Gene> getGenesByIdentifier(String identifier , GeneIdentifierSource source, int taxID)
+    public Collection<Gene> getGenesByIdentifier(String identifier , int taxID)
             throws BridgeFailedException{
 
-        final String key = "getGenesByIdentifier#"+identifier+"#"+source+"#"+taxID;
+        final String key = "getGenesByIdentifier#"+identifier+"#"+taxID;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getGenesByIdentifier(identifier , source , taxID);
+            data = super.fetchGenesByIdentifier(identifier , taxID);
             storeInCache(key , data);
         }
         return (Collection<Gene> )data;

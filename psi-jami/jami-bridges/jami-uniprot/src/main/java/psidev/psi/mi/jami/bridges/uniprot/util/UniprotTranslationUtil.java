@@ -3,13 +3,13 @@ package psidev.psi.mi.jami.bridges.uniprot.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.utils.OrganismFetchingUtil;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.OrganismUtils;
 import uk.ac.ebi.intact.commons.util.Crc64;
 import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
@@ -17,6 +17,11 @@ import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.Gene;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensembl.Ensembl;
+import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensemblbacteria.EnsemblBacteria;
+import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensemblfungi.EnsemblFungi;
+import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensemblmetazoa.EnsemblMetazoa;
+import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensemblplants.EnsemblPlants;
+import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensemblprotists.EnsemblProtists;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.flybase.FlyBase;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.go.Go;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.interpro.InterPro;
@@ -574,7 +579,7 @@ public class UniprotTranslationUtil {
 
 
 
-    public static psidev.psi.mi.jami.model.Gene getGeneFromEntry(UniProtEntry entity){
+    public static psidev.psi.mi.jami.model.Gene getGeneFromEntry(UniProtEntry entity , String identifier){
         // Using protein id as gene short name:
         // Noe's Example uses this in lower case with "_gene" appended, should that be applied?
         psidev.psi.mi.jami.model.Gene jamiGene = new DefaultGene(entity.getUniProtId().getValue());
@@ -589,18 +594,72 @@ public class UniprotTranslationUtil {
         jamiGene.setFullName(fullName);
         jamiGene.setOrganism(getOrganismFromEntry(entity));
 
-        for(DatabaseCrossReference crossRef : entity.getDatabaseCrossReferences(DatabaseType.REFSEQ)){
-            if(crossRef instanceof RefSeq){
-                RefSeq xrefRefseq = (RefSeq)crossRef;
-                if(xrefRefseq.hasRefSeqAccessionNumber())
-                    jamiGene.getXrefs().add(XrefUtils.createRefseqSecondary(xrefRefseq.getRefSeqAccessionNumber().getValue()));
-            }
-        }
-        for(DatabaseCrossReference crossRef : entity.getDatabaseCrossReferences(DatabaseType.ENSEMBL)){
-            if(crossRef instanceof Ensembl){
-                Ensembl xrefEnsembl = (Ensembl)crossRef;
-                if(xrefEnsembl.hasEnsemblGeneIdentifier())
-                    jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsembl.getEnsemblGeneIdentifier().getValue()));
+
+        for(DatabaseCrossReference crossRef : entity.getDatabaseCrossReferences()){
+            switch (crossRef.getDatabase()){
+                case REFSEQ:
+                    RefSeq xrefRefseq = (RefSeq)crossRef;
+                    if(xrefRefseq.hasRefSeqAccessionNumber()) {
+                        if(xrefRefseq.getRefSeqAccessionNumber().getValue().equals(identifier))
+                            jamiGene.setRefseq(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createRefseqSecondary(xrefRefseq.getRefSeqAccessionNumber().getValue()));
+                    }
+                    break;
+                case ENSEMBL:
+                    Ensembl xrefEnsembl = (Ensembl)crossRef;
+                    if(xrefEnsembl.hasEnsemblGeneIdentifier()) {
+                        if(xrefEnsembl.getEnsemblGeneIdentifier().getValue().equals(identifier))
+                            jamiGene.setEnsembl(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsembl.getEnsemblGeneIdentifier().getValue()));
+                    }
+                    break;
+                case ENSEMBLBACTERIA:
+                    EnsemblBacteria xrefEnsemblBac = (EnsemblBacteria)crossRef;
+                    if(xrefEnsemblBac.hasEnsemblBacteriaGeneIdentifier()) {
+                        if(xrefEnsemblBac.getEnsemblBacteriaGeneIdentifier().getValue().equals(identifier))
+                            jamiGene.setEnsemblGenome(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsemblBac.getEnsemblBacteriaGeneIdentifier().getValue()));
+                    }
+                    break;
+                case ENSEMBLFUNGI:
+                    EnsemblFungi xrefEnsemblFun = (EnsemblFungi)crossRef;
+                    if(xrefEnsemblFun.hasEnsemblFungiGeneIdentifier()) {
+                        if(xrefEnsemblFun.getEnsemblFungiGeneIdentifier().getValue().equals(identifier))
+                            jamiGene.setEnsemblGenome(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsemblFun.getEnsemblFungiGeneIdentifier().getValue()));
+                    }
+                    break;
+                case ENSEMBLMETAZOA:
+                    EnsemblMetazoa xrefEnsemblMet = (EnsemblMetazoa)crossRef;
+                    if(xrefEnsemblMet.hasEnsemblMetazoaGeneIdentifier()) {
+                        if(xrefEnsemblMet.getEnsemblMetazoaGeneIdentifier().getValue().equals(identifier))
+                            jamiGene.setEnsemblGenome(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsemblMet.getEnsemblMetazoaGeneIdentifier().getValue()));
+                    }
+                    break;
+                case ENSEMBLPLANTS:
+                    EnsemblPlants xrefEnsemblPla = (EnsemblPlants)crossRef;
+                    if(xrefEnsemblPla.hasEnsemblPlantsGeneIdentifier()) {
+                        if(xrefEnsemblPla.getEnsemblPlantsGeneIdentifier().getValue().equals(identifier))
+                            jamiGene.setEnsemblGenome(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsemblPla.getEnsemblPlantsGeneIdentifier().getValue()));
+                    }
+                    break;
+                case ENSEMBLPROTISTS:
+                    EnsemblProtists xrefEnsemblPro = (EnsemblProtists)crossRef;
+                    if(xrefEnsemblPro.hasEnsemblProtistsGeneIdentifier()) {
+                        if(xrefEnsemblPro.getEnsemblProtistsGeneIdentifier().getValue().equals(identifier))
+                            jamiGene.setEnsemblGenome(identifier);
+                        else
+                            jamiGene.getXrefs().add(XrefUtils.createEnsemblSecondary(xrefEnsemblPro.getEnsemblProtistsGeneIdentifier().getValue()));
+                    }
+                    break;
             }
         }
 
@@ -622,7 +681,7 @@ public class UniprotTranslationUtil {
 
         if(entity.getNcbiTaxonomyIds() == null
                 || entity.getNcbiTaxonomyIds().isEmpty()){
-            o = OrganismFetchingUtil.createUnknownOrganism(); //Unknown
+            o = OrganismUtils.createUnknownOrganism();
         } else if(entity.getNcbiTaxonomyIds().size() > 1){
             throw new IllegalArgumentException(
                     "Uniprot entry ["+entity.getPrimaryUniProtAccession().getValue()+"] "

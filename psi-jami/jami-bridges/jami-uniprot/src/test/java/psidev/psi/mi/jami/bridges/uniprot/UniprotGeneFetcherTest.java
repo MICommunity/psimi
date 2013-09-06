@@ -5,19 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.GeneIdentifierSource;
-import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Xref;
-import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
-import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.uuw.services.remoting.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,7 +51,7 @@ public class UniprotGeneFetcherTest {
 
         //We expect only one entrance                   "ENSG00000126001"
         for(String id : ensemblIds){
-            Collection<Gene> candidatesList = fetcher.getGenesByIdentifier(id , GeneIdentifierSource.ENSEMBL);
+            Collection<Gene> candidatesList = fetcher.fetchGenesByIdentifier(id);
             log.info("----- Entry "+id+" has "+candidatesList.size()+" ----------") ;
             readall(id , candidatesList);
         }
@@ -66,7 +59,7 @@ public class UniprotGeneFetcherTest {
 
         log.info("______________________ HUMAN TESTS __________________");
         for(String id : ensemblIds){
-            Collection<Gene> candidatesList = fetcher.getGenesByIdentifier(id , GeneIdentifierSource.ENSEMBL , 9606);
+            Collection<Gene> candidatesList = fetcher.fetchGenesByIdentifier(id , 9606);
             log.info("----- Entry "+id+" has "+candidatesList.size()+" ----------") ;
             readall(id , candidatesList);
         }

@@ -9,9 +9,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
-import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -20,11 +18,11 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 14/05/13
  */
-public class CachedUniprotFetcher
-        extends UniprotFetcher
+public class CachedUniprotProteinFetcher
+        extends UniprotProteinFetcher
         implements CachedFetcher {
 
-    private final Logger log = LoggerFactory.getLogger(CachedUniprotFetcher.class.getName());
+    private final Logger log = LoggerFactory.getLogger(CachedUniprotProteinFetcher.class.getName());
 
     private Cache cache;
     private static CacheManager cacheManager;
@@ -34,22 +32,25 @@ public class CachedUniprotFetcher
 
 
 
-    public CachedUniprotFetcher() {
+    public CachedUniprotProteinFetcher() {
         super();
         initialiseCache();
     }
 
-    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Protein> fetchProteinsByIdentifier(String identifier) throws BridgeFailedException {
 
         final String key = "getProteinsByIdentifier#"+identifier;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getProteinsByIdentifier(identifier);
+            data = super.fetchProteinsByIdentifier(identifier);
             storeInCache(key , data);
         }
         return (Collection<Protein> )data;
     }
 
+    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        return null;  //TODO
+    }
 
 
     /////////////////////////

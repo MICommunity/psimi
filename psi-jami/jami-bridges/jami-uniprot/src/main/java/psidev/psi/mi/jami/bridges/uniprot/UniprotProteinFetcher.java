@@ -5,14 +5,9 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
-import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.impl.DefaultGene;
-import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.AlternativeProductsIsoform;
-import uk.ac.ebi.kraken.interfaces.uniprot.description.Field;
-import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.Feature;
 import uk.ac.ebi.kraken.uuw.services.remoting.*;
 
@@ -27,10 +22,10 @@ import java.util.regex.Pattern;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  14/05/13
  */
-public class UniprotFetcher
+public class UniprotProteinFetcher
         implements ProteinFetcher {
 
-    private final Logger log = LoggerFactory.getLogger(UniprotFetcher.class.getName());
+    private final Logger log = LoggerFactory.getLogger(UniprotProteinFetcher.class.getName());
 
     private UniprotTranslationUtil uniprotTranslationUtil;
     private UniProtQueryService uniProtQueryService;
@@ -41,7 +36,7 @@ public class UniprotFetcher
     public static final Pattern UNIPROT_ISOFORM_REGEX = Pattern.compile("-[0-9]");
 
 
-    public UniprotFetcher() {
+    public UniprotProteinFetcher() {
         uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
         uniprotTranslationUtil = new UniprotTranslationUtil();
     }
@@ -53,7 +48,7 @@ public class UniprotFetcher
      * @return              The proteins which match the given identifier.
      * @throws BridgeFailedException
      */
-    public Collection<Protein> getProteinsByIdentifier(String identifier)
+    public Collection<Protein> fetchProteinsByIdentifier(String identifier)
             throws BridgeFailedException {
 
         if(identifier == null) throw new IllegalArgumentException("Could not perform search on null identifier.");
@@ -83,10 +78,10 @@ public class UniprotFetcher
      * @return              The proteins which match an identifier in the query.
      * @throws BridgeFailedException
      */
-    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         Collection<Protein> proteinResults = new ArrayList<Protein>();
         for(String identifier : identifiers){
-            proteinResults.addAll(getProteinsByIdentifier(identifier));
+            proteinResults.addAll(fetchProteinsByIdentifier(identifier));
         }
         return proteinResults;
     }
