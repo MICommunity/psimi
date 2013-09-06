@@ -471,6 +471,33 @@ public class UniprotTranslationUtil {
         return null;
     }
 
+    /**
+     *
+     * Entry => comments => Isoforms => ids
+     * There will be one ID matching the search identifier for each entry.
+     *
+     * @param entry
+     * @param identifiers
+     */
+    public static Map<String , AlternativeProductsIsoform> findIsoformInEntry(UniProtEntry entry, List<String> identifiers){
+
+        List<AlternativeProductsComment> comments = entry.getComments(CommentType.ALTERNATIVE_PRODUCTS );
+
+        for ( AlternativeProductsComment comment : comments ) {
+            List<AlternativeProductsIsoform> isoforms = comment.getIsoforms();
+            for ( AlternativeProductsIsoform isoform : isoforms ){
+                for( IsoformId id :  isoform.getIds()){
+                    if(identifiers.contains(id.getValue())){
+                        Map<String , AlternativeProductsIsoform> result = new HashMap<String, AlternativeProductsIsoform>(1);
+                        result.put(id.getValue() , isoform);
+                        return result;
+                    }
+                }
+            }
+        }
+        return Collections.EMPTY_MAP;
+    }
+
 
     /**
      * Searches a uniprot entry to find the feature with a matching identifier.

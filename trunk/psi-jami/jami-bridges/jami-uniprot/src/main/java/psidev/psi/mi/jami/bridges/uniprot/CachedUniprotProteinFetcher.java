@@ -38,7 +38,6 @@ public class CachedUniprotProteinFetcher
     }
 
     public Collection<Protein> fetchProteinsByIdentifier(String identifier) throws BridgeFailedException {
-
         final String key = "getProteinsByIdentifier#"+identifier;
         Object data = getFromCache( key );
         if( data == null) {
@@ -48,9 +47,16 @@ public class CachedUniprotProteinFetcher
         return (Collection<Protein> )data;
     }
 
+    /*
     public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        return null;  //TODO
-    }
+        final String key = "getProteinsByIdentifier#"+identifier;
+        Object data = getFromCache( key );
+        if( data == null) {
+            data = super.fetchProteinsByIdentifier(identifier);
+            storeInCache(key , data);
+        }
+        return (Collection<Protein> )data;
+    } */
 
 
     /////////////////////////
