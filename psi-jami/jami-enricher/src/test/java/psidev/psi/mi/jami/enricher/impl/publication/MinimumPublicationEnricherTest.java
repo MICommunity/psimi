@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher.impl.publication;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockPublicationFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.FailingPublicationFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -61,7 +61,7 @@ public class MinimumPublicationEnricherTest {
         persistentPublication = new DefaultPublication(TEST_PUBMED_ID);
 
         int timesToTry = -1;
-        ExceptionThrowingMockPublicationFetcher fetcher = new ExceptionThrowingMockPublicationFetcher(timesToTry);
+        FailingPublicationFetcher fetcher = new FailingPublicationFetcher(timesToTry);
         fetcher.addEntry(TEST_PUBMED_ID , testPub);
         publicationEnricher.setPublicationFetcher(fetcher);
 
@@ -86,7 +86,7 @@ public class MinimumPublicationEnricherTest {
                 "Change the timesToTry." ,
                 timesToTry < MinimumPublicationEnricher.RETRY_COUNT);
 
-        ExceptionThrowingMockPublicationFetcher fetcher = new ExceptionThrowingMockPublicationFetcher(timesToTry);
+        FailingPublicationFetcher fetcher = new FailingPublicationFetcher(timesToTry);
         fetcher.addEntry(TEST_PUBMED_ID , testPub);
         publicationEnricher.setPublicationFetcher(fetcher);
 

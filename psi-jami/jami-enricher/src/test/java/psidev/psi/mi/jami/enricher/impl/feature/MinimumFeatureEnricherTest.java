@@ -21,6 +21,8 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import static org.junit.Assert.*;
@@ -83,12 +85,16 @@ public class MinimumFeatureEnricherTest {
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
         fullProtein.setSequence(TEST_SEQUENCE_NEW);
         fullProtein.setOrganism(new DefaultOrganism(TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC));
-        proteinFetcher.addEntry(TEST_AC_FULL_PROT, fullProtein);
+        Collection<Protein> fullProteinList = new ArrayList<Protein>();
+        fullProteinList.add(fullProtein);
+        proteinFetcher.addEntry(TEST_AC_FULL_PROT, fullProteinList);
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         halfProtein.setOrganism(new DefaultOrganism(-3));
-        proteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProtein);
+        Collection<Protein> halfProteinList = new ArrayList<Protein>();
+        halfProteinList.add(halfProtein);
+        proteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProteinList);
 
         persistentParticipant = null;
         persistentFeature = null;

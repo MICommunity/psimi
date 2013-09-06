@@ -79,9 +79,9 @@ public interface ProteinEnricher {
 
     /**
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
-     * @param proteinRemapper   The remapper to use.
+     * @param proteinMapper   The remapper to use.
      */
-    public void setProteinMapper(ProteinMapper proteinRemapper);
+    public void setProteinMapper(ProteinMapper proteinMapper);
 
     /**
      * The protein remapper has no default and can be left null

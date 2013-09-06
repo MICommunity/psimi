@@ -10,11 +10,11 @@
     </parent>
 
     <groupId>psidev.psi.mi.jami.bridges</groupId>
-    <artifactId>uniprot-remapping</artifactId>
+    <artifactId>uniprot-mapping</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>PSI :: JAMI - uniprot-remapping</name>
-    <description>JAMI module to remap proteins to uniprot</description>
+    <name>PSI :: JAMI - uniprot-mapping</name>
+    <description>JAMI module to map proteins to uniprot</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -47,6 +47,7 @@ public class UniprotGeneFetcherTest {
                 //"ENST00000596362",
                 //"ENSP00000472141",
                 //"ENSG00000160014",
+                "ENSG00000087245",
                 "ENSG00000126001"};
 
         //We expect only one entrance                   "ENSG00000126001"

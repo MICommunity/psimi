@@ -28,6 +28,21 @@ public class UniprotProteinFetcherTest {
         fetcher = new UniprotProteinFetcher();
     }
 
+
+    @Test
+    public void test_broken_isoform() throws BridgeFailedException {
+        String identifier = "P15941-7";
+        Collection<Protein> results = fetcher.fetchProteinsByIdentifier(identifier);
+        for(Protein result : results){
+            log.info(result.toString());
+            log.info(result.getShortName());
+            log.info(result.getFullName());
+            log.info(result.getUniprotkb());
+        }
+
+
+    }
+
     @Test
     public void test_stuff(){
         String[] identifiers = {

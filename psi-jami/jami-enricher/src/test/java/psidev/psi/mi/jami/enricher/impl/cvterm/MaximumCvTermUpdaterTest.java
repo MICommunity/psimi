@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher.impl.cvterm;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockCvTermFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.FailingCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.cvterm.CvTermEnricherListener;
@@ -93,7 +93,7 @@ public class MaximumCvTermUpdaterTest {
 
         int timesToTry = -1;
 
-        ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
+        FailingCvTermFetcher fetcher = new FailingCvTermFetcher(timesToTry);
         fetcher.addEntry(MI_ID , mockCvTerm);
         cvTermEnricher.setCvTermFetcher(fetcher);
 
@@ -118,7 +118,7 @@ public class MaximumCvTermUpdaterTest {
                 "Change the timesToTry." ,
                 timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
 
-        ExceptionThrowingMockCvTermFetcher fetcher = new ExceptionThrowingMockCvTermFetcher(timesToTry);
+        FailingCvTermFetcher fetcher = new FailingCvTermFetcher(timesToTry);
         fetcher.addEntry(MI_ID , mockCvTerm);
         cvTermEnricher.setCvTermFetcher(fetcher);
 
