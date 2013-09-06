@@ -5,7 +5,8 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.europubmedcentral.util.*;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
-import psidev.psi.mi.jami.bridges.fetcher.PublicationIdentifierSource;
+
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import uk.ac.ebi.cdb.webservice.*;
 
@@ -15,9 +16,7 @@ import psidev.psi.mi.jami.model.Publication;
 import javax.xml.namespace.QName;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Uses the EuroPubmedCentral WSDL SOAP service to fetch publication entries.
@@ -70,48 +69,49 @@ public class EuroPubmedCentralFetcher
      * @return      a completed publication record.
      * @throws BridgeFailedException
      */
-    public Publication getPublicationByIdentifier(String id , PublicationIdentifierSource source) throws BridgeFailedException{
-        if(id == null || id.length() < 1)
+    public Publication fetchPublicationByIdentifier(String id , String source) throws BridgeFailedException{
+        if(id == null || id.isEmpty())
             throw new IllegalArgumentException("Can not fetch on an empty identifier");
 
-        if(source == PublicationIdentifierSource.PUBMED){
-
-            Collection<Result> results = Collections.EMPTY_LIST;
-
-            final String query = "EXT_ID:" + id + " SRC:"+IDENTIFIER_TYPE;
-            try {
-                ResponseWrapper wrapper = getPort().searchPublications(query, DATA_SET , RESULT_TYPE, 0, false, EMAIL);
-
-                if(wrapper.getResultList() != null)
-                    results = wrapper.getResultList().getResult();
-            } catch (QueryException_Exception e) {
-                throw new BridgeFailedException("Problem fetching query: "+query, e);
-            }
-
-            Publication publication = new DefaultPublication();
-
-            if (!results.isEmpty()) {
-                Result entry = results.iterator().next();
-
-                EuroPubmedCentralTranslationUtil.
-                        convertDataResultToPublication(publication, entry);
-
-                if( entry.getHasDbCrossReferences().equals("Y") ){
-                    try {
-                        ResponseWrapper xrefResults = getPort().getDatabaseLinks(id, IDENTIFIER_TYPE, null, 0, EMAIL) ;
-                        EuroPubmedCentralTranslationUtil.
-                                convertXrefResultToPublication(publication, xrefResults);
-                    } catch (QueryException_Exception e) {
-                        throw new BridgeFailedException(e);
-                    }
-                }
-            }
-            return publication;
-        }
-        else {
+        Collection<Result> results = Collections.EMPTY_LIST;
+        String query;
+        if(source.equals(Xref.PUBMED)){
+            query = "EXT_ID:" + id + " SRC:"+IDENTIFIER_TYPE;
+        } else if(source.equals(Xref.DOI)){
+            query = "DOI:" + id + " SRC:"+IDENTIFIER_TYPE;
+        }else {
             return null;
         }
+
+        try {
+            ResponseWrapper wrapper = getPort().searchPublications(query, DATA_SET , RESULT_TYPE, 0, false, EMAIL);
+            if(wrapper.getResultList() != null)
+                results = wrapper.getResultList().getResult();
+        } catch (QueryException_Exception e) {
+            throw new BridgeFailedException("Problem fetching query: "+query, e);
+        }
+
+        Publication publication = new DefaultPublication();
+
+        if (!results.isEmpty()) {
+            Result entry = results.iterator().next();
+
+            EuroPubmedCentralTranslationUtil.
+                    convertDataResultToPublication(publication, entry);
+
+            if( entry.getHasDbCrossReferences().equals("Y") ){
+                try {
+                    ResponseWrapper xrefResults = getPort().getDatabaseLinks(id, IDENTIFIER_TYPE, null, 0, EMAIL) ;
+                    EuroPubmedCentralTranslationUtil.
+                            convertXrefResultToPublication(publication, xrefResults);
+                } catch (QueryException_Exception e) {
+                    throw new BridgeFailedException(e);
+                }
+            }
+        }
+        return publication;
     }
+
 
     /**
      * Uses the PubMed identifiers to search for publications and return completed records.
@@ -120,11 +120,13 @@ public class EuroPubmedCentralFetcher
      * @throws BridgeFailedException
      */
     @Override
-    public Collection<Publication> getPublicationsByIdentifiers(Collection<String> identifiers, PublicationIdentifierSource source)
-            throws BridgeFailedException {
+    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
         Collection<Publication> results = new ArrayList<Publication>();
-        for(String identifier : identifiers){
-            results.add(getPublicationByIdentifier(identifier, source));
+        for (Map.Entry<String, Collection<String>> identifierSets : identifiers.entrySet()) {
+            String source = identifierSets.getKey();
+            for (String identifier : identifierSets.getValue()) {
+                results.add(fetchPublicationByIdentifier(identifier, source));
+            }
         }
         return results;
     }

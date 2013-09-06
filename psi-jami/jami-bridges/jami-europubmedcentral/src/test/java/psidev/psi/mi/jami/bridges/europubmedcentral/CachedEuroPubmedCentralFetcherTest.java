@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +31,7 @@ public class CachedEuroPubmedCentralFetcherTest {
     @Test
     public void test_publicationC() throws BridgeFailedException{
 
-        Publication publication = fetcher.getPublicationByIdentifier("13054692");
+        Publication publication = fetcher.fetchPublicationByIdentifier("13054692", Xref.PUBMED);
         assertEquals( "13054692" , publication.getPubmedId() );
         assertEquals( "10.1038/171737a0" , publication.getDoi());
         assertEquals( "Molecular structure of nucleic acids; a structure for deoxyribose nucleic acid." , publication.getTitle());
@@ -46,7 +47,7 @@ public class CachedEuroPubmedCentralFetcherTest {
 
     @Test
     public void test_publicationB() throws  BridgeFailedException{
-        Publication publication = fetcher.getPublicationByIdentifier("23671334");
+        Publication publication = fetcher.fetchPublicationByIdentifier("23671334", Xref.PUBMED);
         assertEquals("23671334" , publication.getPubmedId());
         assertEquals("A new reference implementation of the PSICQUIC web service." , publication.getTitle());
     }
@@ -54,7 +55,7 @@ public class CachedEuroPubmedCentralFetcherTest {
     @Test
     public void test_publicationA() throws BridgeFailedException{
 
-        Publication publication = fetcher.getPublicationByIdentifier("10831611");
+        Publication publication = fetcher.fetchPublicationByIdentifier("10831611", Xref.PUBMED);
         assertEquals( "10831611" , publication.getPubmedId() );
         assertEquals( "10.1083/jcb.149.5.1073" , publication.getDoi() );
         assertEquals( "Zyxin, a regulator of actin filament assembly, targets the mitotic apparatus by interacting with h-warts/LATS1 tumor suppressor." , publication.getTitle());
