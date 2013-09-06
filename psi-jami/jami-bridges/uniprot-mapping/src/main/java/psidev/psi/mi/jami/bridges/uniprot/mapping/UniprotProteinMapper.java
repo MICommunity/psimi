@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.uniprot.remapping;
+package psidev.psi.mi.jami.bridges.uniprot.mapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
