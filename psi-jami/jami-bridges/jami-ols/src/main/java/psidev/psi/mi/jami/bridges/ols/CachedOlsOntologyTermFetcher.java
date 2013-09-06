@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.bridges.ols;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.model.OntologyTerm;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class CachedOlsOntologyTermFetcher extends CachedOlsFetcher<OntologyTerm>{
+public class CachedOlsOntologyTermFetcher extends CachedOlsFetcher<OntologyTerm> implements OntologyTermFetcher{
 
     public static final String CACHE_NAME = "ontology-cache";
 

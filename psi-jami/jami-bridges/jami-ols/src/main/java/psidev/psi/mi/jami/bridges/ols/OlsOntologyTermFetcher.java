@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.ols;
 
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/07/13
  */
-public class OlsOntologyTermFetcher extends AbstractOlsFetcher<OntologyTerm> {
+public class OlsOntologyTermFetcher extends AbstractOlsFetcher<OntologyTerm> implements OntologyTermFetcher{
 
     public OlsOntologyTermFetcher() throws BridgeFailedException {
         super();
