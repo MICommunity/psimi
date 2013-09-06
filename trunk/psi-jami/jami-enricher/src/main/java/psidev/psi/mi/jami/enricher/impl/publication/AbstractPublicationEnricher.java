@@ -7,8 +7,10 @@ import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Collection;
 
@@ -105,13 +107,13 @@ public abstract class AbstractPublicationEnricher
 
         if(publicationToEnrich.getPubmedId() != null && publicationToEnrich.getPubmedId().length() > 0){
             try {
-                publicationFetched = getPublicationFetcher().getPublicationByIdentifier(publicationToEnrich.getPubmedId());
+                publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getPubmedId() , Xref.ENSEMBL);
                 if(publicationFetched != null) return publicationFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        publicationFetched = getPublicationFetcher().getPublicationByIdentifier(publicationToEnrich.getPubmedId());
+                        publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getPubmedId() , Xref.ENSEMBL);
                         if(publicationFetched != null) return publicationFetched;
                     } catch (BridgeFailedException ee) {
                         ee.printStackTrace();

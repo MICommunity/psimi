@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
+import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
@@ -44,7 +44,7 @@ public abstract class AbstractProteinEnricher
 
     private OrganismEnricher organismEnricher = null;
     private MockOrganismFetcher mockFetcher = new MockOrganismFetcher();
-    private ProteinRemapper proteinRemapper = null;
+    private ProteinMapper proteinMapper = null;
     private CvTermEnricher cvTermEnricher;
 
     protected Protein proteinFetched = null;
@@ -285,12 +285,12 @@ public abstract class AbstractProteinEnricher
 
     private Collection<Protein> fetchProteinList(Protein proteinToEnrich) throws EnricherException {
         try {
-            return fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+            return fetcher.fetchProteinsByIdentifier(proteinToEnrich.getUniprotkb());
         } catch (BridgeFailedException e) {
             int index = 0;
             while(index < RETRY_COUNT){
                 try {
-                    return fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+                    return fetcher.fetchProteinsByIdentifier(proteinToEnrich.getUniprotkb());
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
                 }
@@ -313,7 +313,7 @@ public abstract class AbstractProteinEnricher
     protected boolean remapProtein(Protein proteinToEnrich, String remapCause) throws EnricherException {
 
         // If there is no protein remapper, the enrichment fails
-        if( getProteinRemapper() == null ){
+        if( getProteinMapper() == null ){
             if(getProteinEnricherListener() != null)
                 getProteinEnricherListener().onEnrichmentComplete(proteinToEnrich , EnrichmentStatus.FAILED ,
                     "Attempted to remap because "+remapCause+" "+
@@ -323,7 +323,7 @@ public abstract class AbstractProteinEnricher
 
         // Attempt the remapping
         try {
-            getProteinRemapper().remapProtein(proteinToEnrich);
+            getProteinMapper().mapProtein(proteinToEnrich);
         } catch (BridgeFailedException e) {
             throw new EnricherException(e);
         }
@@ -393,17 +393,17 @@ public abstract class AbstractProteinEnricher
 
     /**
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
-     * @param proteinRemapper   The remapper to use.
+     * @param proteinMapper   The remapper to use.
      */
-    public void setProteinRemapper(ProteinRemapper proteinRemapper){
-        this.proteinRemapper = proteinRemapper;
+    public void setProteinMapper(ProteinMapper proteinMapper){
+        this.proteinMapper = proteinMapper;
     }
     /**
      * The protein remapper has no default and can be left null
      * @return  The current remapper.
      */
-    public ProteinRemapper getProteinRemapper(){
-        return proteinRemapper;
+    public ProteinMapper getProteinMapper(){
+        return proteinMapper;
     }
 
     /**

@@ -97,14 +97,14 @@ public abstract class AbstractBioactiveEntityEnricher
 
         if(bioactiveEntityToEnrich.getChebi() != null){
             try {
-                fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
+                fetchedBioactiveEntity = getBioactiveEntityFetcher().fetchBioactiveEntityByIdentifier(
                         bioactiveEntityToEnrich.getChebi());
                 if(fetchedBioactiveEntity != null) return fetchedBioactiveEntity;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        fetchedBioactiveEntity = getBioactiveEntityFetcher().getBioactiveEntityByIdentifier(
+                        fetchedBioactiveEntity = getBioactiveEntityFetcher().fetchBioactiveEntityByIdentifier(
                                 bioactiveEntityToEnrich.getChebi());
                         if(fetchedBioactiveEntity != null) return fetchedBioactiveEntity;
                     } catch (BridgeFailedException ee) {

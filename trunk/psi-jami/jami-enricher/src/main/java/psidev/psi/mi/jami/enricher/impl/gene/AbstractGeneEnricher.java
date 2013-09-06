@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.enricher.listener.gene.GeneEnricherListener;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
@@ -173,7 +174,7 @@ public abstract class AbstractGeneEnricher
 
         if(geneToEnrich.getEnsembl() != null){
             try {
-                results = getGeneFetcher().getGenesByEnsemblIdentifier(geneToEnrich.getEnsembl());
+                results = getGeneFetcher().fetchGenesByIdentifier(geneToEnrich.getEnsembl());
                 if(!results.isEmpty())
                     if(results.size() == 1)
                         return results.iterator().next();
@@ -181,7 +182,7 @@ public abstract class AbstractGeneEnricher
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        results = getGeneFetcher().getGenesByEnsemblIdentifier(geneToEnrich.getEnsembl());
+                        results = getGeneFetcher().fetchGenesByIdentifier(geneToEnrich.getEnsembl());
                         if(!results.isEmpty())
                             if(results.size() == 1)
                                 return results.iterator().next();
