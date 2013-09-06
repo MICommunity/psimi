@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
+import psidev.psi.mi.jami.bridges.mapper.ProteinMapperListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -27,7 +27,7 @@ public class UniprotProteinRemapperTest {
 
     public static final Log log = LogFactory.getLog(UniprotProteinRemapperTest.class);
 
-    public UniprotProteinRemapper remap;
+    public UniprotProteinMapper remap;
 
     public Protein protein;
 
@@ -101,7 +101,7 @@ public class UniprotProteinRemapperTest {
 
     @Before
     public void build_bridge(){
-        remap = new UniprotProteinRemapper();
+        remap = new UniprotProteinMapper();
 
         MAPPABLE_A = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSP00000351524"); //P42694
         MAPPABLE_B = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000198265"); //P42694
@@ -125,18 +125,18 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(CONFLICT);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
                 //log.info("success: "+report.toString());
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNotNull(protein.getUniprotkb());
         assertFalse(protein.getUniprotkb().equalsIgnoreCase(TESTID));
         assertEquals("P08246", protein.getUniprotkb());
@@ -155,18 +155,18 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
                 //log.info("success: "+report.toString());
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
     }
@@ -184,18 +184,18 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_B);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
                 //log.info("success: "+report.toString());
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
     }
@@ -209,17 +209,17 @@ public class UniprotProteinRemapperTest {
         protein.setSequence(test_sequence);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID , protein.getUniprotkb());
@@ -248,17 +248,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 fail();
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNull(protein.getUniprotkb());;
     }
 
@@ -277,17 +277,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
     }
@@ -307,17 +307,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -338,17 +338,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -369,18 +369,18 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
 
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 fail();
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
         });
 
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNull(protein.getUniprotkb());
     }
 
@@ -399,17 +399,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -430,17 +430,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -461,17 +461,17 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -491,18 +491,18 @@ public class UniprotProteinRemapperTest {
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
-        remap.setRemapListener(new ProteinRemapperListener() {
-            public void onRemappingSuccessful(Protein p, Collection<String> report) {
+        remap.setListener(new ProteinMapperListener() {
+            public void onSuccessfulMapping(Protein p, Collection<String> report) {
                 log.info("SU: "+report);
                 fail();
             }
 
-            public void onRemappingFailed(Protein p, Collection<String> report) {
+            public void onFailedMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
         });
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         assertNull(protein.getUniprotkb());
     }
 
@@ -522,7 +522,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -548,7 +548,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -574,7 +574,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -600,7 +600,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
@@ -631,7 +631,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -658,7 +658,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -685,7 +685,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         //  assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -712,7 +712,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
@@ -739,7 +739,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -766,7 +766,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         //  assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -793,7 +793,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -820,7 +820,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
@@ -843,7 +843,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         //  assertFalse(remapReport.isMappingFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -870,7 +870,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         //  assertFalse(remapReport.isMappingFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -897,7 +897,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         // assertTrue(remapReport.isRemapped());
         // assertFalse(remapReport.isMappingFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -924,7 +924,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
        // assertTrue(remapReport.isRemapped());
        assertTrue(countingRemapListener.isFromSequence());
        // assertFalse(remapReport.isMappingFromIdentifiers());
@@ -950,7 +950,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
        // assertTrue(remapReport.isRemapped());
        assertTrue(countingRemapListener.isFromIdentifiers());
        assertTrue(countingRemapListener.isFromSequence());
@@ -977,7 +977,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         //assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -1004,7 +1004,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         //assertTrue(remapReport.isRemapped());
         assertTrue(countingRemapListener.isFromIdentifiers());
         assertTrue(countingRemapListener.isFromSequence());
@@ -1030,7 +1030,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
        // assertFalse(remapReport.isRemapped());
         //assertFalse(remapReport.isMappingFromIdentifiers());
         assertFalse(countingRemapListener.isFromSequence());
@@ -1055,7 +1055,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.remapProtein(protein);
+        remap.mapProtein(protein);
         //assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         //assertNotNull(remapReport.getConflictMessage());

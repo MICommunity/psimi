@@ -39,20 +39,20 @@ public class CachedUniprotTaxonomyFetcher
     }
 
 
-    public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
+    public Organism fetchOrganismByTaxID(int taxID) throws BridgeFailedException {
         final String key = "getOrganismByTaxID#"+taxID;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.getOrganismByTaxID(taxID);
+            data = super.fetchOrganismByTaxID(taxID);
             storeInCache(key , data);
         }
         return (Organism )data;
     }
 
-    public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
         Collection<Organism> results = new ArrayList<Organism>();
         for(Integer taxID : taxIDs){
-            results.add(getOrganismByTaxID(taxID));
+            results.add(fetchOrganismByTaxID(taxID));
         }
         return results;
     }

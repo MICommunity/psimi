@@ -23,6 +23,6 @@ public interface BioactiveEntityFetcher {
             throws BridgeFailedException;
 
 
-    public Collection<BioactiveEntity> fetchBioactiveEntityByIdentifiers(Collection<String> identifier)
+    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers)
             throws BridgeFailedException;
 }

@@ -26,19 +26,19 @@ public class ChebiFetcherTest {
 
     @Test
     public void test() throws BridgeFailedException {
-        BioactiveEntity fetched = chebiFetcher.getBioactiveEntityByIdentifier("CHEBI:15377");
+        BioactiveEntity fetched = chebiFetcher.fetchBioactiveEntityByIdentifier("CHEBI:15377");
         report(fetched);
     }
 
     @Test
     public void testB() throws BridgeFailedException {
-        BioactiveEntity fetched = chebiFetcher.getBioactiveEntityByIdentifier("CHEBI:53438");
+        BioactiveEntity fetched = chebiFetcher.fetchBioactiveEntityByIdentifier("CHEBI:53438");
         report(fetched);
     }
 
     @Test
     public void testC() throws BridgeFailedException {
-        BioactiveEntity fetched = chebiFetcher.getBioactiveEntityByIdentifier("CHEBI:17627");
+        BioactiveEntity fetched = chebiFetcher.fetchBioactiveEntityByIdentifier("CHEBI:17627");
         report(fetched);
 
     }

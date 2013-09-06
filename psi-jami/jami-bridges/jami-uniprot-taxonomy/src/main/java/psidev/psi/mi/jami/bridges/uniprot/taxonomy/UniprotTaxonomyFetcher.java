@@ -36,15 +36,15 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
     }
 
 
-    public Organism getOrganismByTaxID(int taxID) throws BridgeFailedException {
+    public Organism fetchOrganismByTaxID(int taxID) throws BridgeFailedException {
         Organism organism = OrganismUtils.createSpecialistOrganism(taxID);
         if ( organism == null ) {
-            organism = getOrganismFromStream( taxID );
+            organism = fetchOrganismFromStream( taxID );
         }
         return organism;
     }
 
-    private Organism getOrganismFromStream(int taxID) throws BridgeFailedException {
+    private Organism fetchOrganismFromStream(int taxID) throws BridgeFailedException {
         final InputStream stream;
         try {
             stream = getInputStream( taxID );
@@ -101,10 +101,10 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
         return organism;
     }
 
-    public Collection<Organism> getOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
         Collection<Organism> results = new ArrayList<Organism>();
         for(Integer taxID : taxIDs){
-            results.add(getOrganismByTaxID(taxID));
+            results.add(fetchOrganismByTaxID(taxID));
         }
         return results;
     }
