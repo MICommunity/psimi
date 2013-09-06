@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
+import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
@@ -81,13 +81,13 @@ public interface ProteinEnricher {
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
      * @param proteinRemapper   The remapper to use.
      */
-    public void setProteinRemapper(ProteinRemapper proteinRemapper);
+    public void setProteinMapper(ProteinMapper proteinRemapper);
 
     /**
      * The protein remapper has no default and can be left null
      * @return  The current remapper.
      */
-    public ProteinRemapper getProteinRemapper();
+    public ProteinMapper getProteinMapper();
 
 
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);

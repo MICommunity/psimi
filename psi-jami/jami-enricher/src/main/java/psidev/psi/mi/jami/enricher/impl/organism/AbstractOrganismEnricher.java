@@ -91,13 +91,13 @@ public abstract class AbstractOrganismEnricher
 
 
         try {
-            organismFetched = getOrganismFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
+            organismFetched = getOrganismFetcher().fetchOrganismByTaxID(organismToEnrich.getTaxId());
             if(organismFetched != null) return organismFetched;
         } catch (BridgeFailedException e) {
             int index = 0;
             while(index < RETRY_COUNT){
                 try {
-                    organismFetched = getOrganismFetcher().getOrganismByTaxID(organismToEnrich.getTaxId());
+                    organismFetched = getOrganismFetcher().fetchOrganismByTaxID(organismToEnrich.getTaxId());
                     if(organismFetched != null) return organismFetched;
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
