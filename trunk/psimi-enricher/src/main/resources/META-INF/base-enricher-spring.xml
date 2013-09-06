@@ -46,7 +46,7 @@
         <constructor-arg index="1" value="${protein.failure.logFile}"/>
     </bean>
 
-    <bean id="proteinRemapperListener" class="psidev.psi.mi.jami.bridges.remapper.listener.ProteinRemapperStatisticsWriter">
+    <bean id="proteinMapperListener" class="psidev.psi.mi.jami.bridges.mapper.listener.ProteinMappingStatisticsWriter">
         <constructor-arg value="${remap.success.logFile}"/>
     </bean>
 
@@ -86,16 +86,16 @@
     </bean>
 
     <!-- remapper -->
-    <bean id="proteinRemapper" class="psidev.psi.mi.jami.bridges.uniprot.remapping.UniprotProteinRemapper">
+    <bean id="proteinMapper" class="psidev.psi.mi.jami.bridges.uniprot.mapping.UniprotProteinMapper">
         <property name="checkingEnabled" value="true"/>
         <property name="priorityIdentifiers" value="false"/>
         <property name="prioritySequence" value="true"/>
-        <property name="remapListener" ref="proteinRemapperListener"/>
+        <property name="listener" ref="proteinMapperListener"/>
     </bean>
 
     <!-- fetchers -->
-    <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsFetcher"/>
-    <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotFetcher"/>
+    <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsCvTermFetcher"/>
+    <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotProteinFetcher"/>
     <bean id="bioactiveEntityFetcher" class="psidev.psi.mi.jami.bridges.chebi.ChebiFetcher"/>
     <bean id="geneFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotGeneFetcher"/>
     <bean id="publicationFetcher" class="psidev.psi.mi.jami.bridges.europubmedcentral.CachedEuroPubmedCentralFetcher"/>

@@ -180,7 +180,7 @@
 
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
-            <artifactId>uniprot-remapping</artifactId>
+            <artifactId>uniprot-mapping</artifactId>
             <version>${jami.version}</version>
             <exclusions>
                 <exclusion>

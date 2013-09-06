@@ -37,9 +37,23 @@
     <bean id="xmlProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinEnricher">
         <constructor-arg ref="proteinFetcher"/>
         <property name="organismEnricher" ref="xmlOrganismEnricher"/>
-        <property name="proteinRemapper" ref="proteinRemapper"/>
+        <property name="proteinMapper" ref="proteinMapper"/>
         <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
         <property name="proteinEnricherListener" ref="xmlProteinListenerManager"/>
+    </bean>
+
+    <bean id="xmlBioactiveEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.bioactiveentity.MaximumBioactiveEntityEnricher">
+        <constructor-arg ref="bioactiveEntityFetcher"/>
+        <property name="bioactiveEntityFetcher" ref="bioactiveEntityFetcher"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
+        <property name="bioactiveEntityEnricherListener" ref="bioactiveEntityListener"/>
+    </bean>
+
+    <bean id="xmlGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.gene.MaximumGeneEnricher">
+        <constructor-arg ref="geneFetcher"/>
+        <property name="organismEnricher" ref="xmlOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
+        <property name="geneEnricherListener" ref="geneListener"/>
     </bean>
 
     <bean id="xmlFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureEvidenceEnricher">
@@ -51,6 +65,8 @@
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricher" ref="xmlFeatureEnricher"/>
         <property name="proteinEnricher" ref="xmlProteinEnricher"/>
+        <property name="geneEnricher" ref="xmlGeneEnricher"/>
+        <property name="bioactiveEntityEnricher" ref="xmlBioactiveEntityEnricher"/>
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
