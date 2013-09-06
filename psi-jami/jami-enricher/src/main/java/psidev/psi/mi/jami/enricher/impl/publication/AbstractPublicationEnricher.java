@@ -105,15 +105,34 @@ public abstract class AbstractPublicationEnricher
 
         Publication publicationFetched = null;
 
-        if(publicationToEnrich.getPubmedId() != null && publicationToEnrich.getPubmedId().length() > 0){
+        if(publicationToEnrich.getPubmedId() != null && ! publicationToEnrich.getPubmedId().isEmpty()){
             try {
-                publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getPubmedId() , Xref.ENSEMBL);
+                publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getPubmedId() , Xref.PUBMED);
                 if(publicationFetched != null) return publicationFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getPubmedId() , Xref.ENSEMBL);
+                        publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getPubmedId() , Xref.PUBMED);
+                        if(publicationFetched != null) return publicationFetched;
+                    } catch (BridgeFailedException ee) {
+                        ee.printStackTrace();
+                    }
+                    index++;
+                }
+                throw new EnricherException("Re-tried "+RETRY_COUNT+" times", e);
+            }
+        }
+
+        if(publicationToEnrich.getDoi() != null && ! publicationToEnrich.getDoi().isEmpty()){
+            try {
+                publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getDoi() , Xref.DOI);
+                if(publicationFetched != null) return publicationFetched;
+            } catch (BridgeFailedException e) {
+                int index = 0;
+                while(index < RETRY_COUNT){
+                    try {
+                        publicationFetched = getPublicationFetcher().fetchPublicationByIdentifier(publicationToEnrich.getDoi() , Xref.DOI);
                         if(publicationFetched != null) return publicationFetched;
                     } catch (BridgeFailedException ee) {
                         ee.printStackTrace();

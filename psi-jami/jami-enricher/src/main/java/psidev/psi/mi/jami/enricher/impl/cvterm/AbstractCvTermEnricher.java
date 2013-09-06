@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -98,14 +99,14 @@ public abstract class AbstractCvTermEnricher
 
         if(cvTermToEnrich.getMIIdentifier() != null){
             try {
-                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                         cvTermToEnrich.getMIIdentifier(), CvTerm.PSI_MI);
                 if(cvTermFetched != null) return cvTermFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                                 cvTermToEnrich.getMIIdentifier(), CvTerm.PSI_MI);
                         if(cvTermFetched != null) return cvTermFetched;
                     } catch (BridgeFailedException ee) {
@@ -119,14 +120,14 @@ public abstract class AbstractCvTermEnricher
 
         if(cvTermToEnrich.getMODIdentifier() != null){
             try {
-                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                         cvTermToEnrich.getMODIdentifier(), CvTerm.PSI_MOD);
                 if(cvTermFetched != null) return cvTermFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                                 cvTermToEnrich.getMODIdentifier(), CvTerm.PSI_MOD);
                         if(cvTermFetched != null) return cvTermFetched;
                     } catch (BridgeFailedException ee) {
@@ -140,14 +141,14 @@ public abstract class AbstractCvTermEnricher
 
         if(cvTermToEnrich.getPARIdentifier() != null){
             try {
-                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                         cvTermToEnrich.getPARIdentifier(), CvTerm.PSI_PAR);
                 if(cvTermFetched != null) return cvTermFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                                 cvTermToEnrich.getPARIdentifier(), CvTerm.PSI_PAR);
                         if(cvTermFetched != null) return cvTermFetched;
                     } catch (BridgeFailedException ee) {
@@ -163,14 +164,14 @@ public abstract class AbstractCvTermEnricher
         for(Xref identifierXref : cvTermToEnrich.getIdentifiers()){
             //if( cvTermFetched != null ) break;
             try {
-                cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                         identifierXref.getId(), identifierXref.getDatabase());
                 if(cvTermFetched != null) return cvTermFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        cvTermFetched = getCvTermFetcher().getCvTermByIdentifier(
+                        cvTermFetched = getCvTermFetcher().fetchCvTermByIdentifier(
                                 identifierXref.getId(), identifierXref.getDatabase());
                         if(cvTermFetched != null) return cvTermFetched;
                     } catch (BridgeFailedException ee) {
@@ -185,15 +186,19 @@ public abstract class AbstractCvTermEnricher
 
         if(cvTermFetched == null && cvTermToEnrich.getFullName() != null){
             try {
-                cvTermFetched = getCvTermFetcher().getCvTermByExactName(
+                Collection<CvTerm> results;
+                results = getCvTermFetcher().fetchCvTermByName(
                         cvTermToEnrich.getFullName());
+                if (! results.isEmpty())cvTermFetched = results.iterator().next();
                 if(cvTermFetched != null) return cvTermFetched;
             } catch (BridgeFailedException e) {
                 int index = 0;
                 while(index < RETRY_COUNT){
                     try {
-                        cvTermFetched = getCvTermFetcher().getCvTermByExactName(
+                        Collection<CvTerm> results;
+                        results = getCvTermFetcher().fetchCvTermByName(
                                 cvTermToEnrich.getFullName());
+                        if (! results.isEmpty())cvTermFetched = results.iterator().next();
                         if(cvTermFetched != null) return cvTermFetched;
                     } catch (BridgeFailedException ee) {
                         ee.printStackTrace();
