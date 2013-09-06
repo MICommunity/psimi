@@ -65,6 +65,6 @@
         <module>jami-uniprot-taxonomy</module>
         <module>jami-obo</module>
         <module>jami-europubmedcentral</module>
-        <module>uniprot-remapping</module>
+        <module>uniprot-mapping</module>
     </modules>
 </project>

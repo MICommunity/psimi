@@ -61,11 +61,10 @@ public class UniprotGeneFetcher implements GeneFetcher {
             queryTerms = queryTerms +" AND "+"organism.ncbi:"+taxID;
 
         query = UniProtQueryBuilder.buildQuery(queryTerms) ;
-        log.info("Query is: "+query.toString());
 
         EntryIterator<UniProtEntry> entryIterator = uniProtQueryService.getEntryIterator(query);
         Collection<Gene> genes = new ArrayList<Gene>();
-        while(entryIterator.hasNext()){
+        if(entryIterator.hasNext()){
             Gene gene = UniprotTranslationUtil.getGeneFromEntry(entryIterator.next() , identifier);
             genes.add(gene);
         }

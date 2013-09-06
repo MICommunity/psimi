@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.bioactiveentity;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockBioactiveEntityFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -65,7 +65,7 @@ public class MaximumBioactiveEntityEnricherTest {
 
         int timesToTry = -1;
 
-        ExceptionThrowingMockBioactiveEntityFetcher fetcher = new ExceptionThrowingMockBioactiveEntityFetcher(timesToTry);
+        FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
         enricher.setBioactiveEntityFetcher(fetcher);
 
@@ -91,7 +91,7 @@ public class MaximumBioactiveEntityEnricherTest {
                 "Change the timesToTry." ,
                 timesToTry < MaximumBioactiveEntityEnricher.RETRY_COUNT);
 
-        ExceptionThrowingMockBioactiveEntityFetcher fetcher = new ExceptionThrowingMockBioactiveEntityFetcher(timesToTry);
+        FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
         enricher.setBioactiveEntityFetcher(fetcher);
 

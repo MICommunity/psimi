@@ -114,7 +114,7 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-        if(proteinToEnrich.getInteractorType() != null){
+        if(getCvTermEnricher() != null && proteinToEnrich.getInteractorType() != null){
             getCvTermEnricher().enrichCvTerm(proteinToEnrich.getInteractorType());
         }
 

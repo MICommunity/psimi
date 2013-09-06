@@ -6,9 +6,9 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockProteinFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
-import psidev.psi.mi.jami.bridges.remapper.mockRemapper.MockProteinRemapper;
+import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager;
@@ -17,6 +17,9 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Unit tests for MinimumProteinEnricher
@@ -60,11 +63,15 @@ public class MinimumProteinEnricherTest {
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
         fullProtein.setSequence(TEST_SEQUENCE);
         fullProtein.setOrganism(new DefaultOrganism(TEST_ORGANISM_ID, TEST_ORGANISM_COMMON, TEST_ORGANISM_SCIENTIFIC));
-        mockProteinFetcher.addEntry(TEST_AC_FULL_PROT, fullProtein);
+        Collection<Protein> fullProteinList = new ArrayList<Protein>();
+        fullProteinList.add(fullProtein);
+        mockProteinFetcher.addEntry(TEST_AC_FULL_PROT, fullProteinList);
 
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
-        mockProteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProtein);
+        Collection<Protein> halfProteinList = new ArrayList<Protein>();
+        halfProteinList.add(halfProtein);
+        mockProteinFetcher.addEntry(TEST_AC_HALF_PROT, halfProteinList);
 
         persistentProtein = null;
         persistentInt = 0;
@@ -74,7 +81,7 @@ public class MinimumProteinEnricherTest {
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
 
-        ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(-1);
+        FailingProteinFetcher fetcher = new FailingProteinFetcher(-1);
         Protein proteinToEnrich = new DefaultProtein(TEST_SHORTNAME);
         proteinToEnrich.setUniprotkb(TEST_AC_HALF_PROT);
 
@@ -93,7 +100,7 @@ public class MinimumProteinEnricherTest {
         int timesToTry = 3;
         assertTrue(timesToTry < MinimumProteinEnricher.RETRY_COUNT);
 
-        ExceptionThrowingMockProteinFetcher fetcher = new ExceptionThrowingMockProteinFetcher(timesToTry);
+        FailingProteinFetcher fetcher = new FailingProteinFetcher(timesToTry);
 
         Protein proteinToEnrich = new DefaultProtein(TEST_SHORTNAME);
         proteinToEnrich.setUniprotkb(TEST_AC_HALF_PROT);
@@ -139,15 +146,15 @@ public class MinimumProteinEnricherTest {
 
     @Test
     public void test_default_has_no_remapper(){
-        assertNull(proteinEnricher.getProteinRemapper());
+        assertNull(proteinEnricher.getProteinMapper());
     }
 
     @Test
     public void test_set_remapper_is_returned(){
-        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
-        assertNull(proteinEnricher.getProteinRemapper());
-        proteinEnricher.setProteinRemapper(mockProteinRemapper);
-        assertTrue(mockProteinRemapper == proteinEnricher.getProteinRemapper());
+        MockProteinMapper mockProteinMapper = new MockProteinMapper();
+        assertNull(proteinEnricher.getProteinMapper());
+        proteinEnricher.setProteinMapper(mockProteinMapper);
+        assertTrue(mockProteinMapper == proteinEnricher.getProteinMapper());
     }
 
     // == NULL REMAPPER CASES =======================================================================================
@@ -167,7 +174,7 @@ public class MinimumProteinEnricherTest {
 
         assertNotNull(persistentProtein);
         assertNull(persistentProtein.getUniprotkb());
-        assertNull(proteinEnricher.getProteinRemapper());
+        assertNull(proteinEnricher.getProteinMapper());
 
 
 
@@ -221,7 +228,7 @@ public class MinimumProteinEnricherTest {
         assertNotNull(persistentProtein);
         persistentProtein.setUniprotkb(TEST_AC_DEAD_PROT);
         assertNotNull(persistentProtein.getUniprotkb());
-        assertNull(proteinEnricher.getProteinRemapper());
+        assertNull(proteinEnricher.getProteinMapper());
 
 
 
@@ -273,15 +280,15 @@ public class MinimumProteinEnricherTest {
             throws EnricherException {
 
 
-        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
-        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+        MockProteinMapper mockProteinMapper = new MockProteinMapper();
+        proteinEnricher.setProteinMapper(mockProteinMapper);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentInt = 0;
 
         assertNotNull(persistentProtein);
         assertNull(persistentProtein.getUniprotkb());
-        assertNotNull(proteinEnricher.getProteinRemapper());
+        assertNotNull(proteinEnricher.getProteinMapper());
 
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
               //  new ProteinEnricherLogger() ,  //Comment this line to silence logging
@@ -330,8 +337,8 @@ public class MinimumProteinEnricherTest {
     public void test_fetching_on_protein_with_dead_identifier_when_remapper_is_not_null_and_no_remap_is_found()
             throws EnricherException {
 
-        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
-        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+        MockProteinMapper mockProteinMapper = new MockProteinMapper();
+        proteinEnricher.setProteinMapper(mockProteinMapper);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentInt = 0;
@@ -339,7 +346,7 @@ public class MinimumProteinEnricherTest {
         assertNotNull(persistentProtein);
         persistentProtein.setUniprotkb(TEST_AC_DEAD_PROT);
         assertNotNull(persistentProtein.getUniprotkb());
-        assertNotNull(proteinEnricher.getProteinRemapper());
+        assertNotNull(proteinEnricher.getProteinMapper());
 
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
@@ -389,16 +396,16 @@ public class MinimumProteinEnricherTest {
             throws EnricherException {
 
 
-        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
-        mockProteinRemapper.addRemap(TEST_SEQUENCE , TEST_AC_HALF_PROT);
-        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+        MockProteinMapper mockProteinMapper = new MockProteinMapper();
+        mockProteinMapper.addMappingResult(TEST_SEQUENCE, TEST_AC_HALF_PROT);
+        proteinEnricher.setProteinMapper(mockProteinMapper);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentProtein.setSequence(TEST_SEQUENCE);
 
         assertNotNull(persistentProtein);
         assertNull(persistentProtein.getUniprotkb());
-        assertNotNull(proteinEnricher.getProteinRemapper());
+        assertNotNull(proteinEnricher.getProteinMapper());
 
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() , //Comment this line to silence logging
@@ -457,9 +464,9 @@ public class MinimumProteinEnricherTest {
     public void test_fetching_on_protein_with_dead_identifier_when_remapper_is_not_null_and_remap_is_found()
             throws EnricherException {
 
-        MockProteinRemapper mockProteinRemapper = new MockProteinRemapper();
-        mockProteinRemapper.addRemap(TEST_SEQUENCE , TEST_AC_HALF_PROT);
-        proteinEnricher.setProteinRemapper(mockProteinRemapper);
+        MockProteinMapper mockProteinMapper = new MockProteinMapper();
+        mockProteinMapper.addMappingResult(TEST_SEQUENCE, TEST_AC_HALF_PROT);
+        proteinEnricher.setProteinMapper(mockProteinMapper);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentProtein.setUniprotkb(TEST_AC_DEAD_PROT);
@@ -467,7 +474,7 @@ public class MinimumProteinEnricherTest {
 
         assertNotNull(persistentProtein);
         assertNotNull(persistentProtein.getUniprotkb());
-        assertNotNull(proteinEnricher.getProteinRemapper());
+        assertNotNull(proteinEnricher.getProteinMapper());
 
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
                // new ProteinEnricherLogger() ,  //Comment this line to silence logging
@@ -583,7 +590,9 @@ public class MinimumProteinEnricherTest {
         Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         customProtein.setOrganism(new DefaultOrganism(9898));
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
@@ -640,7 +649,9 @@ public class MinimumProteinEnricherTest {
         Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         customProtein.setOrganism(new DefaultOrganism(9898));
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME, TEST_OLD_FULLNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
@@ -814,10 +825,11 @@ public class MinimumProteinEnricherTest {
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
-
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         assertNotNull(persistentProtein.getShortName());
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
@@ -868,10 +880,12 @@ public class MinimumProteinEnricherTest {
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         assertNull(persistentProtein.getFullName());
 
@@ -927,10 +941,11 @@ public class MinimumProteinEnricherTest {
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME , TEST_OLD_FULLNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
-
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         assertNotNull(persistentProtein.getFullName());
         assertEquals(TEST_OLD_FULLNAME , persistentProtein.getFullName());
@@ -983,13 +998,15 @@ public class MinimumProteinEnricherTest {
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
-        fetchProtein.setSequence(TEST_SEQUENCE);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
+        customProtein.setSequence(TEST_SEQUENCE);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
 
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
-        assertEquals(TEST_SEQUENCE , fetchProtein.getSequence());
+        assertEquals(TEST_SEQUENCE , customProtein.getSequence());
         assertNull(persistentProtein.getSequence());
 
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
@@ -1045,13 +1062,14 @@ public class MinimumProteinEnricherTest {
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         persistentProtein.setSequence(TEST_OLD_SEQUENCE);
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
-        fetchProtein.setSequence(TEST_SEQUENCE);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
+        customProtein.setSequence(TEST_SEQUENCE);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
-
-        assertEquals(TEST_SEQUENCE , fetchProtein.getSequence());
+        assertEquals(TEST_SEQUENCE , customProtein.getSequence());
         assertNotNull(persistentProtein.getSequence());
         assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
 
@@ -1103,11 +1121,14 @@ public class MinimumProteinEnricherTest {
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         persistentProtein.getIdentifiers().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN000"));
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
-        fetchProtein.getIdentifiers().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        customProtein.getIdentifiers().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
 
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
+
 
         assertEquals(2 , persistentProtein.getIdentifiers().size());
 
@@ -1187,11 +1208,13 @@ public class MinimumProteinEnricherTest {
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         persistentProtein.getAliases().add(new DefaultAlias(CvTermUtils.createEnsemblDatabase() , "EN000"));
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
-        fetchProtein.getAliases().add(new DefaultAlias(CvTermUtils.createEnsemblDatabase() , "EN999"));
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        customProtein.getAliases().add(new DefaultAlias(CvTermUtils.createEnsemblDatabase() , "EN999"));
 
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         assertEquals(1 , persistentProtein.getAliases().size());
 
@@ -1270,11 +1293,13 @@ public class MinimumProteinEnricherTest {
         persistentProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
         persistentProtein.getXrefs().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN000"));
 
-        Protein fetchProtein = new DefaultProtein(TEST_SHORTNAME);
-        fetchProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
-        fetchProtein.getXrefs().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
+        Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
+        customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        customProtein.getXrefs().add(new DefaultXref(CvTermUtils.createEnsemblDatabase() , "EN999"));
 
-        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , fetchProtein);
+        Collection<Protein> customList = new ArrayList<Protein>();
+        customList.add(customProtein);
+        mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
         assertEquals(1 , persistentProtein.getXrefs().size());
 

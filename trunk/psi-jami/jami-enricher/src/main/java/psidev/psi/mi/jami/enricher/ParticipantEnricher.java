@@ -22,7 +22,7 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
      * @param participantToEnrich       The participant to be enriched.
      * @throws EnricherException        Thrown if a fetcher encounters a problem
      */
-    public void enrichParticipant(P participantToEnrich) throws EnricherException, BridgeFailedException;
+    public void enrichParticipant(P participantToEnrich) throws EnricherException;
 
     /**
      * Enriches a collection of participants.

@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.fetcher.mock.ExceptionThrowingMockOrganismFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.listener.organism.OrganismEnricherListener;
@@ -67,7 +67,7 @@ public class MinimumOrganismEnricherTest {
 
         int timesToTry = -1;
 
-        ExceptionThrowingMockOrganismFetcher fetcher = new ExceptionThrowingMockOrganismFetcher(timesToTry);
+        FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
         organismEnricher.setOrganismFetcher(fetcher);
 
@@ -93,7 +93,7 @@ public class MinimumOrganismEnricherTest {
                 "Change the timesToTry." ,
                 timesToTry < AbstractOrganismEnricher.RETRY_COUNT);
 
-        ExceptionThrowingMockOrganismFetcher fetcher = new ExceptionThrowingMockOrganismFetcher(timesToTry);
+        FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
         organismEnricher.setOrganismFetcher(fetcher);
 

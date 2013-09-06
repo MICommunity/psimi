@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
+
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
-import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.gene.GeneEnricherListener;
 import psidev.psi.mi.jami.model.Gene;

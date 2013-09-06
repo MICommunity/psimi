@@ -93,13 +93,13 @@ public class UniprotTranslationUtil {
                 if(shortName == null){
                     shortName = f.getValue();
                 }
-                else{log.warn("Uniprot entry has multiple recommended shortNames: "+shortName+", "+f.getValue());}
+                // else{log.warn("Uniprot entry has multiple recommended shortNames: "+shortName+", "+f.getValue());}
             }
             else if(f.getType() == FieldType.FULL){
                 if(fullName == null){
                     fullName = f.getValue();
                 }
-                else{log.warn("Uniprot entry has multiple recommended fullNames: "+fullName+", "+f.getValue());}
+                // else{log.warn("Uniprot entry has multiple recommended fullNames: "+fullName+", "+f.getValue());}
             }
         }
 
@@ -197,7 +197,7 @@ public class UniprotTranslationUtil {
 
 
     /**
-     *
+     * //TODO - isoforms may run into problems if the protein is remapped
      * The mapping of fields for isoforms is as follows:
      * SHORTNAME = isoform identifier
      * FULLNAME = protein description
@@ -224,33 +224,46 @@ public class UniprotTranslationUtil {
         if(entry == null) throw new IllegalArgumentException("Uniprot entry was null.");
         if(isoform == null) throw new IllegalArgumentException("Isoform entry was null.");
 
-        // SHORT NAME - identifier
-        Protein p = new DefaultProtein(identifier);
+        Protein p;
+        String shortName = null;
+        String fullName = null;
 
-        // FULL NAME - protein description
-        if(entry.getProteinDescription().hasRecommendedName()) {
-            for(Field f: entry.getProteinDescription().getRecommendedName().getFields()){
-                if(f.getType() == FieldType.FULL){
-                    p.setFullName(f.getValue()); //Use the full name if there is one
-                    break;
-                }else if(f.getType() == FieldType.SHORT){
-                    p.setFullName(f.getValue()); //Use the short name if nothing else
+        //THIS ID HAS BEEN TAKEN FROM THE 'ID' name
+        List<Field> fields =  entry.getProteinDescription().getRecommendedName().getFields();
+        for(Field f: fields){
+            if(f.getType() == FieldType.SHORT){
+                if(shortName == null){
+                    shortName = f.getValue();
                 }
+                // else{log.warn("Uniprot entry has multiple recommended shortNames: "+shortName+", "+f.getValue());}
             }
+            else if(f.getType() == FieldType.FULL){
+                if(fullName == null){
+                    fullName = f.getValue();
+                }
+                // else{log.warn("Uniprot entry has multiple recommended fullNames: "+fullName+", "+f.getValue());}
+            }
+        }
+
+        //SHORT NAME - ShortName/FullName/UniprotID/UniprotAC
+        if(shortName != null){
+            p = new DefaultProtein(shortName);
+        }else if(fullName != null){
+            p = new DefaultProtein(fullName);
+        }else{
+            p = new DefaultProtein(identifier);
         }
 
         //PRIMARY ACCESSION
         if(entry.getPrimaryUniProtAccession() != null){
-            p.setUniprotkb(entry.getPrimaryUniProtAccession().getValue());
+            p.setUniprotkb(identifier);
         } else {
             throw new IllegalArgumentException(
                     "The Uniprot entry ["+p.getShortName()+"] has no primary Accession.");
         }
 
-
         // ORGANISM
         p.setOrganism(getOrganismFromEntry(entry));
-
 
         // SEQUENCE
         switch (isoform.getIsoformSequenceStatus()) {
