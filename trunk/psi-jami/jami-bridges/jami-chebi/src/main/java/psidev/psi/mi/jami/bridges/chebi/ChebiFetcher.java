@@ -13,6 +13,9 @@ import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.webservices.chebi.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Accesses Chebi entries using the WSDL SOAP service.
  *
@@ -43,7 +46,7 @@ public class ChebiFetcher
      * @return              A completed bioactiveEntity for the given identifier. May be null.
      * @throws BridgeFailedException    Thrown if the fetcher encounters a problem.
      */
-    public BioactiveEntity getBioactiveEntityByIdentifier (String identifier) throws BridgeFailedException {
+    public BioactiveEntity fetchBioactiveEntityByIdentifier (String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException("Can not fetch on null identifier");
 
         BioactiveEntity bioactiveEntity;
@@ -92,5 +95,14 @@ public class ChebiFetcher
             throw new BridgeFailedException(e);
         }
         return bioactiveEntity;
+    }
+
+    @Override
+    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        Collection<BioactiveEntity> results = new ArrayList<BioactiveEntity>();
+        for(String id : identifiers){
+            results.add(fetchBioactiveEntityByIdentifier(id));
+        }
+        return results;
     }
 }

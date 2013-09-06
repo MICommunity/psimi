@@ -23,7 +23,7 @@ import java.util.HashMap;
 public  class GeneralTest {
 
     public static final Log log = LogFactory.getLog(GeneralTest.class);
-    static UniprotProteinRemapper remap;
+    static UniprotProteinMapper remap;
     static ArrayList<Protein> tests;
     static HashMap<String, Xref> xrefs = new HashMap<String, Xref>();
     static String[][] xrefsraw;
@@ -86,7 +86,7 @@ public  class GeneralTest {
         pdns.setSequence("") ;
         tests.add(pdns);
 
-        remap = new UniprotProteinRemapper();
+        remap = new UniprotProteinMapper();
 
     }
      /*
@@ -148,7 +148,7 @@ public  class GeneralTest {
 
         remap.setPriorityIdentifiers(ids);
         remap.setPrioritySequence(seq);
-        remap.remapProtein(p);
+        remap.mapProtein(p);
         log.info("The ac for p is "+p.getUniprotkb());
     }
 

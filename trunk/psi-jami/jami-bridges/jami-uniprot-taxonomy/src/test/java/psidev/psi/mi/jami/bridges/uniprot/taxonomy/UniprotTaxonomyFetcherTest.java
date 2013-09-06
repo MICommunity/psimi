@@ -30,7 +30,7 @@ public class UniprotTaxonomyFetcherTest {
 
     @Test
     public void test_fetching_known_organism_A() throws BridgeFailedException {
-        Organism organism = taxonomyFetcher.getOrganismByTaxID(9615);
+        Organism organism = taxonomyFetcher.fetchOrganismByTaxID(9615);
         assertEquals(9615 , organism.getTaxId());
         assertEquals("Dog" , organism.getCommonName());
         assertEquals("Canis familiaris" , organism.getScientificName());
@@ -41,7 +41,7 @@ public class UniprotTaxonomyFetcherTest {
 
     @Test
     public void test_fetching_known_organism_B() throws BridgeFailedException {
-        Organism organism = taxonomyFetcher.getOrganismByTaxID(9258);
+        Organism organism = taxonomyFetcher.fetchOrganismByTaxID(9258);
         assertEquals(9258 , organism.getTaxId());
         assertEquals("Duckbill platypus" , organism.getCommonName());
         assertEquals("Ornithorhynchus anatinus" , organism.getScientificName());
@@ -52,7 +52,7 @@ public class UniprotTaxonomyFetcherTest {
 
     @Test
     public void test_fetching_known_organism_c() throws BridgeFailedException {
-        Organism organism = taxonomyFetcher.getOrganismByTaxID(436495);
+        Organism organism = taxonomyFetcher.fetchOrganismByTaxID(436495);
         assertEquals(436495 , organism.getTaxId());
         assertEquals("Tyrant lizard king" , organism.getCommonName());
         assertEquals("Tyrannosaurus rex" , organism.getScientificName());
