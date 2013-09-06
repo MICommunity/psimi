@@ -24,7 +24,7 @@ public class HtmlWriterUtils {
                 if (context.getSourceLocator() != null){
                     FileSourceLocator locator = context.getSourceLocator();
 
-                    return locator.getLocationDescription();
+                    return locator.toString();
                 }
             }
 
@@ -52,13 +52,8 @@ public class HtmlWriterUtils {
                 if (context.getSourceLocator() != null){
                     FileSourceLocator locator = context.getSourceLocator();
 
-                    return locator.getLocationDescription();
+                    return locator.toString();
                 }
-            }
-
-            // get IMEx id
-            if (experiment.getShortLabel() != null){
-                return experiment.getShortLabel();
             }
 
             return Integer.toString(experiment.hashCode());
@@ -76,7 +71,7 @@ public class HtmlWriterUtils {
                 if (context.getSourceLocator() != null){
                     FileSourceLocator locator = context.getSourceLocator();
 
-                    return locator.getLocationDescription();
+                    return locator.toString();
                 }
             }
             return Integer.toString(participant.hashCode());
@@ -94,7 +89,7 @@ public class HtmlWriterUtils {
                 if (context.getSourceLocator() != null){
                     FileSourceLocator locator = context.getSourceLocator();
 
-                    return locator.getLocationDescription();
+                    return locator.toString();
                 }
             }
 
@@ -117,7 +112,7 @@ public class HtmlWriterUtils {
                 if (context.getSourceLocator() != null){
                     FileSourceLocator locator = context.getSourceLocator();
 
-                    return locator.getLocationDescription();
+                    return locator.toString();
                 }
             }
 

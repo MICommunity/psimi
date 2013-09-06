@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.html;
 
-import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
@@ -109,13 +109,13 @@ public class MIHtmlWriter {
         writer.write(NEW_LINE);
     }
 
-    public void writeDataSource(StreamingInteractionSource interactionSource) throws IOException {
+    public void writeDataSource(InteractionSource interactionSource) throws IOException {
         writerStartDocument();
         writeHeader();
         writerStartBody();
         if (interactionSource != null){
             writeInteractionList();
-            Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
+            Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionsIterator();
             while(interactionIterator != null && interactionIterator.hasNext()){
                 writeInteractionEvidence(interactionIterator.next());
             }
@@ -123,11 +123,11 @@ public class MIHtmlWriter {
         writerEndBody();
     }
 
-    public void writeDataSourceWithoutHeaderAndBody(StreamingInteractionSource interactionSource) throws IOException {
+    public void writeDataSourceWithoutHeaderAndBody(InteractionSource interactionSource) throws IOException {
         if (interactionSource != null){
             writeHtmlStyle();
             writeInteractionList();
-            Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
+            Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionsIterator();
             while(interactionIterator != null && interactionIterator.hasNext()){
                 writeInteractionEvidence(interactionIterator.next());
             }
@@ -179,15 +179,15 @@ public class MIHtmlWriter {
             writeExperiment(interaction.getExperiment());
 
             // write participants
-            if (!interaction.getParticipantEvidences().isEmpty()){
+            if (!interaction.getParticipants().isEmpty()){
                 writeSubTitle("Participants: ");
-                for (ParticipantEvidence participant : interaction.getParticipantEvidences()){
+                for (ParticipantEvidence participant : interaction.getParticipants()){
                     writeParticipant(participant);
                 }
             }
 
             // write type
-            writeCvTerm("Interaction type", interaction.getType());
+            writeCvTerm("Interaction type", interaction.getInteractionType());
 
             // write xrefs
             if (!interaction.getXrefs().isEmpty()){
@@ -202,8 +202,8 @@ public class MIHtmlWriter {
             }
 
             // write parameters
-            if (!interaction.getExperimentalParameters().isEmpty()){
-                for (Parameter ref : interaction.getExperimentalParameters()){
+            if (!interaction.getParameters().isEmpty()){
+                for (Parameter ref : interaction.getParameters()){
                     if (ref.getUnit() != null){
                         writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
                     }
@@ -214,14 +214,9 @@ public class MIHtmlWriter {
             }
 
             // write confidences
-            if (!interaction.getExperimentalConfidences().isEmpty()){
-                for (Confidence ref : interaction.getExperimentalConfidences()){
-                    if (ref.getUnit() != null){
-                        writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue(), ref.getUnit().getShortName());
-                    }
-                    else {
-                        writeProperty(ref.getType().getShortName(), ref.getValue());
-                    }
+            if (!interaction.getConfidences().isEmpty()){
+                for (Confidence ref : interaction.getConfidences()){
+                    writeProperty(ref.getType().getShortName(), ref.getValue());
                 }
             }
 
@@ -279,7 +274,7 @@ public class MIHtmlWriter {
 
 
             // write experiment name
-            writeProperty("Name", experiment.getShortLabel());
+            writeProperty("Name", experiment.toString());
 
             // write publication
             writePublication(experiment.getPublication());
@@ -343,7 +338,9 @@ public class MIHtmlWriter {
             writeInteractor(participant.getInteractor());
 
             // write participant identification method
-            writeCvTerm("Participant identification method", participant.getIdentificationMethod());
+            for (CvTerm identification : participant.getIdentificationMethods()){
+                writeCvTerm("Participant identification method", identification);
+            }
 
             // write biological role
             writeCvTerm("Biological role", participant.getBiologicalRole());
@@ -355,7 +352,7 @@ public class MIHtmlWriter {
             writeOrganism("Expressed in organism", participant.getExpressedInOrganism());
 
             if (participant.getStoichiometry() != null){
-                writeProperty("Stoichiometry", Integer.toString(participant.getStoichiometry()));
+                writeProperty("Stoichiometry", participant.getStoichiometry().toString());
             }
 
             // experimental preparations
@@ -382,12 +379,7 @@ public class MIHtmlWriter {
             // write confidences
             if (!participant.getConfidences().isEmpty()){
                 for (Confidence ref : participant.getConfidences()){
-                    if (ref.getUnit() != null){
-                        writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue(), ref.getUnit().getShortName());
-                    }
-                    else {
-                        writeProperty(ref.getType().getShortName(), ref.getValue());
-                    }
+                    writeProperty(ref.getType().getShortName(), ref.getValue());
                 }
             }
 
@@ -416,9 +408,9 @@ public class MIHtmlWriter {
             }
 
             // write features
-            if (!participant.getFeatureEvidences().isEmpty()){
+            if (!participant.getFeatures().isEmpty()){
                 writeSubTitle("Features: ");
-                for (FeatureEvidence ref : participant.getFeatureEvidences()){
+                for (FeatureEvidence ref : participant.getFeatures()){
                     writeFeature(ref);
                 }
             }
@@ -468,7 +460,7 @@ public class MIHtmlWriter {
             writeOrganism("Organism", interactor.getOrganism());
 
             // write type
-            writeCvTerm("Interactor type", interactor.getType());
+            writeCvTerm("Interactor type", interactor.getInteractorType());
 
             // write sequence if any
             if (interactor instanceof Polymer){
@@ -592,7 +584,9 @@ public class MIHtmlWriter {
             writeCvTerm("Feature type", feature.getType());
 
             // write detection method
-            writeCvTerm("Feature detection method", feature.getDetectionMethod());
+            for (CvTerm detectMethod : feature.getDetectionMethods()){
+                writeCvTerm("Feature detection method", detectMethod);
+            }
 
             // write xrefs
             if (!feature.getXrefs().isEmpty()){
