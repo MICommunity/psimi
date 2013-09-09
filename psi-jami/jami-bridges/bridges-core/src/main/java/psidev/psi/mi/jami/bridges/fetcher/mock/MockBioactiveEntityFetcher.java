@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -21,6 +22,10 @@ public class MockBioactiveEntityFetcher
     }
 
     public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Collection<BioactiveEntity> resultsList= new ArrayList<BioactiveEntity>(identifiers.size());
+        for(String identifier : identifiers){
+            resultsList.add( getEntry(identifier) );
+        }
+        return resultsList;
     }
 }
