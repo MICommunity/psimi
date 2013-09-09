@@ -28,7 +28,8 @@ public interface Alias {
     public static final String ORF_NAME_MI = "MI:0306";
     public static final String LOCUS_NAME = "locus name";
     public static final String LOCUS_NAME_MI = "MI:0305";
-
+    public static final String IUPAC_MI = "MI:2007";
+    public static final String IUPAC = "iupac name";
     /**
      * The alias type is a controlled vocabulary term.
      * The type can be null.
