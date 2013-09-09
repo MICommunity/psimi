@@ -4,8 +4,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -33,6 +33,12 @@ public class FailingPublicationFetcher
     }
 
     public Collection<Publication> fetchPublicationsByIdentifiers(Map<String,Collection<String>> identifiers) throws BridgeFailedException {
-        return Collections.EMPTY_LIST;
+        Collection<Publication> results = new ArrayList<Publication>();
+        for(Map.Entry<String, Collection<String>> id : identifiers.entrySet()){
+            for (String id2 : id.getValue()){
+                results.add(fetchPublicationByIdentifier(id.getKey(), id2));
+            }
+        }
+        return results;
     }
 }

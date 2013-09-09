@@ -53,7 +53,7 @@ public class FailingProteinFetcher
     }
 
     public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        ArrayList<Protein> resultsList= new ArrayList<Protein>();
+        Collection<Protein> resultsList= new ArrayList<Protein>();
         for(String identifier : identifiers){
             resultsList.addAll( getEntry(identifier) );
         }

@@ -30,7 +30,7 @@ public class FailingOrganismFetcher
     }
 
     public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
-        ArrayList<Organism> resultsList= new ArrayList<Organism>();
+        Collection<Organism> resultsList= new ArrayList<Organism>();
         for(Integer identifier : taxIDs){
             resultsList.add( getEntry(Integer.toString(identifier)) );
         }
