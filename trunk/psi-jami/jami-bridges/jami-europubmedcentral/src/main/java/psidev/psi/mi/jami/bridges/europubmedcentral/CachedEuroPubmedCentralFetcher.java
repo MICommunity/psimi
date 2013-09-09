@@ -1,17 +1,12 @@
 package psidev.psi.mi.jami.bridges.europubmedcentral;
 
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.AbstractCachedFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.model.Publication;
 
-import java.io.File;
-import java.net.URL;
+import java.util.*;
 
 /**
  * A cached version of the EuroPubmedCentralFetcher.
@@ -20,69 +15,57 @@ import java.net.URL;
  * @since 31/07/13
  */
 public class CachedEuroPubmedCentralFetcher
-        extends EuroPubmedCentralFetcher
-        implements CachedFetcher {
+        extends AbstractCachedFetcher
+        implements PublicationFetcher {
 
-    private final Logger log = LoggerFactory.getLogger(CachedEuroPubmedCentralFetcher.class.getName());
-
-    private Cache cache;
-    private static CacheManager cacheManager;
-
-    public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
     public static final String CACHE_NAME = "europubmedcentral-service-cache";
 
+    private PublicationFetcher publicationFetcher;
+
     public CachedEuroPubmedCentralFetcher() throws BridgeFailedException {
-        super();
+        super(CACHE_NAME);
         initialiseCache();
+        this.publicationFetcher = new EuroPubmedCentralFetcher();
     }
 
 
-    public Publication fetchPublicationByIdentifier(String id , String source) throws BridgeFailedException {
-        final String key = "getPublicationByPubmedID#"+ id+"#"+source;
-        Object data = getFromCache( key );
-        if( data == null) {
-            data = super.fetchPublicationByIdentifier(id , source);
-            storeInCache(key , data);
+    public Publication fetchPublicationByIdentifier(String identifier, String source) throws BridgeFailedException {
+        if (identifier != null){
+            final String key = "GET_PUBLICATION_BY_IDENTIFIER_"+source+"_"+identifier;
+            Object object = getFromCache(key);
+            if (object != null){
+                return (Publication)object;
+            }
+            else{
+                Publication pub = publicationFetcher.fetchPublicationByIdentifier(identifier, source);
+                storeInCache(key, pub);
+                return pub;
+            }
         }
-        return (Publication)data;
+        return publicationFetcher.fetchPublicationByIdentifier(identifier, source);
     }
 
-    public Object getFromCache( String key ) {
-        Object data = null;
-        Element element = cache.get( key );
-        if( element != null ){
-            data = element.getObjectValue();
+    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
+        if (identifiers != null){
+            String key = "GET_ENTITIES_BY_IDENTIFIERS_";
+            for (Map.Entry<String, Collection<String>> entry : identifiers.entrySet()){
+                List<String> ids = new ArrayList<String>(entry.getValue());
+                Collections.sort(ids);
+                for (String id : ids){
+                    key= key+"_"+entry.getKey()+"_"+id;
+                }
+            }
+
+            Object object = getFromCache(key);
+            if (object != null){
+                return (Collection<Publication>)object;
+            }
+            else{
+                Collection<Publication> pub = publicationFetcher.fetchPublicationsByIdentifiers(identifiers);
+                storeInCache(key, pub);
+                return pub;
+            }
         }
-        return data;
-    }
-
-    public void storeInCache( String key, Object data ) {
-        Element element = new Element( key, data );
-        cache.put( element );
-    }
-
-    @Override
-    public void initialiseCache() {
-        initialiseCache( EHCACHE_CONFIG_FILE );
-    }
-
-    @Override
-    public void initialiseCache(String settingsFile) {
-        URL url = getClass().getResource( settingsFile );
-        cacheManager =  CacheManager.create( url );
-        if(! cacheManager.cacheExists(CACHE_NAME))
-            cacheManager.addCache(CACHE_NAME);
-        this.cache = cacheManager.getCache( CACHE_NAME );
-        if( cache == null ) throw new IllegalStateException( "Could not load cache" );
-    }
-
-    @Override
-    public void clearCache() {
-        cacheManager.clearAll();
-    }
-
-    @Override
-    public void shutDownCache() {
-        cacheManager.shutdown();
+        return publicationFetcher.fetchPublicationsByIdentifiers(identifiers);
     }
 }

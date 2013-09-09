@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.cdb.ebi.ac.uk/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://webservice.cdb.ebi.ac.uk/" name="WSCitationImplService">
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.cdb.ebi.ac.uk/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://webservice.cdb.ebi.ac.uk/" name="WSCitationImplService">
   <types>
     <xsd:schema>
       <xsd:import schemaLocation="http://www.ebi.ac.uk:80/webservices/citexplore/v3.0.1/service?xsd=1" namespace="http://webservice.cdb.ebi.ac.uk/"></xsd:import>
