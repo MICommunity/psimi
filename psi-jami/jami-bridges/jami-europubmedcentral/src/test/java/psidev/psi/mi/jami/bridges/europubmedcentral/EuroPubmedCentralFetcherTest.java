@@ -36,8 +36,8 @@ public class EuroPubmedCentralFetcherTest {
         assertEquals( "10.1038/171737a0" , publication.getDoi());
         assertEquals( "Molecular structure of nucleic acids; a structure for deoxyribose nucleic acid." , publication.getTitle());
         assertEquals( "Nature" , publication.getJournal());
-        assertTrue(publication.getAuthors().contains("WATSON JD"));
-        assertTrue(publication.getAuthors().contains("CRICK FH"));
+        assertTrue(publication.getAuthors().contains("WATSON JD."));
+        assertTrue(publication.getAuthors().contains("CRICK FH."));
         //month 4
         //year 1953
         //publication.addAuthor: WATSON JD
@@ -53,8 +53,8 @@ public class EuroPubmedCentralFetcherTest {
         assertEquals( "10.1038/171737a0" , publication.getDoi());
         assertEquals( "Molecular structure of nucleic acids; a structure for deoxyribose nucleic acid." , publication.getTitle());
         assertEquals( "Nature" , publication.getJournal());
-        assertTrue(publication.getAuthors().contains("WATSON JD"));
-        assertTrue(publication.getAuthors().contains("CRICK FH"));
+        assertTrue(publication.getAuthors().contains("WATSON JD."));
+        assertTrue(publication.getAuthors().contains("CRICK FH."));
         //month 4
         //year 1953
         //publication.addAuthor: WATSON JD
