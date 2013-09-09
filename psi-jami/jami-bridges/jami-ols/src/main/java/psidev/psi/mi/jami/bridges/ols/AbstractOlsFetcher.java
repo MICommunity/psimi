@@ -31,7 +31,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
             queryService = new QueryServiceLocator().getOntologyQuery();
         }catch (ServiceException e) {
             queryService = null;
-            throw new BridgeFailedException(e);
+            throw new BridgeFailedException("Cannot create OLS fetcher.", e);
         }
         initialiseDbMap();
     }
@@ -69,7 +69,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         try{
              fullName = queryService.getTermById(termIdentifier , olsOntologyName);
         } catch (RemoteException e) {
-            throw new BridgeFailedException("Failed to query in OLS fetcher.");
+            throw new BridgeFailedException("Failed to query in OLS fetcher.", e);
         }
 
         // 2) if no results, return null
@@ -96,7 +96,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         try{
             fullName = queryService.getTermById(termIdentifier , null);
         } catch (RemoteException e) {
-            throw new BridgeFailedException("Failed to query in OLS fetcher.");
+            throw new BridgeFailedException("Failed to query in OLS fetcher.", e);
         }
 
         // 2) if no results, return null
