@@ -26,13 +26,6 @@
             <version>${jami.version}</version>
         </dependency>
 
-        <!-- Caching Service-->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.7.2</version>
-        </dependency>
-
         <!-- Ontology Lookup Service Client -->
         <dependency>
             <groupId>uk.ac.ebi.ols</groupId>

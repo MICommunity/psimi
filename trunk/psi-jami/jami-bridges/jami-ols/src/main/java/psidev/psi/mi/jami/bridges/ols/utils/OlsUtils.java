@@ -12,7 +12,6 @@ public class OlsUtils {
 
     public static final String DEFINITION_KEY = "definition";
     public static final String COMMENT_KEY = "comment";
-    public static final String EXACT_KEY = "exact";
     public static final String EXACT_SYNONYM_KEY = "exact_synonym";
     public static final String XREF_DEFINITION_KEY = "xref_definition";
     public static final String META_DATA_SEPARATOR = "_";
