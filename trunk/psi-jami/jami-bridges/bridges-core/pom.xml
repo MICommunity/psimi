@@ -18,26 +18,21 @@
 
     <dependencies>
 
-        <!-- Testing
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <optional>true</optional>
             <scope>test</scope>
-        </dependency>  -->
-
-        <!-- Logging
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
         </dependency>
+
+        <!-- Caching Service-->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
-        </dependency> -->
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.7.2</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

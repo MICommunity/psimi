@@ -30,4 +30,18 @@ public interface CachedFetcher {
      * Shuts the cache down.
      */
     public void shutDownCache();
+
+    /**
+     * Fetch an element from the cache with a given key
+     * @param key
+     * @return
+     */
+    public Object getFromCache( String key );
+
+    /**
+     * Stores a given object in the cache with a key
+     * @param key
+     * @param data
+     */
+    public void storeInCache( String key, Object data );
 }
