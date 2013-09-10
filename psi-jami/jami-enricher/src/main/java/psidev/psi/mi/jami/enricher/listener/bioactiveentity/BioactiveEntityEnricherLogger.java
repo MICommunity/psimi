@@ -17,10 +17,14 @@ import psidev.psi.mi.jami.model.Xref;
 public class BioactiveEntityEnricherLogger
         implements BioactiveEntityEnricherListener{
 
-    protected static final Logger log = LoggerFactory.getLogger(BioactiveEntityEnricherLogger.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(BioactiveEntityEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
         log.info(object.toString()+" enrichment complete with status of "+status+", message: "+message);
+    }
+
+    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+        log.error(object.toString()+" enrichment error for "+object.toString()+", message: "+message, e);
     }
 
     public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) {

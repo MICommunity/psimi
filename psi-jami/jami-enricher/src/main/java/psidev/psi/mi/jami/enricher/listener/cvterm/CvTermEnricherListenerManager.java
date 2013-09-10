@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.cvterm;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -17,7 +16,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @since 08/07/13
  */
 public class CvTermEnricherListenerManager
-    extends EnricherListenerManager<CvTermEnricherListener>
+    extends EnricherListenerManager<CvTerm, CvTermEnricherListener>
     implements CvTermEnricherListener{
 
     /**
@@ -35,74 +34,68 @@ public class CvTermEnricherListenerManager
 
     //=============================================================================================================
 
-    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
-        for(CvTermEnricherListener listener : listenersList){
-            listener.onEnrichmentComplete(cvTerm, status, message);
-        }
-    }
-
     public void onShortNameUpdate(CvTerm cv, String oldShortName) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onShortNameUpdate( cv,  oldShortName);
         }
     }
 
     public void onFullNameUpdate(CvTerm cv, String oldFullName) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onFullNameUpdate( cv,  oldFullName);
         }
     }
 
     public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onMIIdentifierUpdate( cv,  oldMI) ;
         }
     }
 
     public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onMODIdentifierUpdate(cv, oldMOD);
         }
     }
 
     public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onPARIdentifierUpdate(cv, oldPAR);
         }
     }
 
     public void onAddedIdentifier(CvTerm cv, Xref added) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onAddedIdentifier(cv, added);
         }
     }
 
     public void onRemovedIdentifier(CvTerm cv, Xref removed) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onRemovedIdentifier(cv, removed);
         }
     }
 
     public void onAddedXref(CvTerm cv, Xref added) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onAddedXref(cv, added);
         }
     }
 
     public void onRemovedXref(CvTerm cv, Xref removed) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onRemovedXref(cv, removed);
         }
     }
 
     public void onAddedSynonym(CvTerm cv, Alias added) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onAddedSynonym(cv, added);
         }
     }
 
     public void onRemovedSynonym(CvTerm cv, Alias removed) {
-        for(CvTermEnricherListener listener : listenersList){
+        for(CvTermEnricherListener listener : getListenersList()){
             listener.onRemovedSynonym(cv, removed);
         }
     }

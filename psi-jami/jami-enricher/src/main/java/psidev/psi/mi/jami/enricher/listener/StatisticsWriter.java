@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.enricher.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 
 import java.io.*;
 
@@ -25,49 +26,42 @@ import java.io.*;
  */
 public abstract class StatisticsWriter<T> implements EnricherListener<T>{
 
-    protected static final Logger log = LoggerFactory.getLogger(StatisticsWriter.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(StatisticsWriter.class.getName());
 
     /* The last object that was changed */
-    protected T lastObject = null;
+    private T lastObject = null;
 
     /* Writers for successes and failures.  */
-    private Writer successWriter , failureWriter;
-
-    /* Characters to be used for new rows, new columns, blank cells */
-    public static final String NEW_LINE = "\n" , NEW_EVENT = "\t" , BLANK_SPACE = "-";
+    private Writer successWriter;
+    private Writer failureWriter;
 
     /* Counters for the changes made to the current object. */
-    protected int updateCount = 0, removedCount = 0, additionCount = 0;
+    private int updateCount = 0;
+    private int removedCount = 0;
+    private int additionCount = 0;
 
-    /**
-     * A constructor which by default names the files by their object type.
-     * @param jamiObject        The name of the object type to be used in the file
-     *                          and as the seed for the file names.
-     * @throws IOException
-     */
-    public StatisticsWriter(String jamiObject) throws IOException {
-        this(jamiObject, jamiObject);
-    }
+    public static final String SUCCESS_SUFFIX="_success.csv";
+    public static final String FAILURE_SUFFIX="_failed.csv";
+
+    private String fileName;
 
     /**
      * A constructor which takes the given filename and appends success and failed for the two lists.
      * @param fileName      The seed for name of the files to record enrichments. Can not be null.
-     * @param jamiObject    The name of the object type being enriched to be used in the file.
      * @throws IOException
      */
-    public StatisticsWriter(String fileName, String jamiObject) throws IOException {
-        this(new File("success_"+fileName), new File("failed_"+fileName), jamiObject);
+    public StatisticsWriter(String fileName) throws IOException {
+        this(new File(fileName+SUCCESS_SUFFIX), new File(fileName+FAILURE_SUFFIX));
     }
 
     /**
      * A constructor setting the file type
      * @param successFileName   The name of the file to record successful enrichments. Can not be null.
      * @param failureFileName   The name of file to record failed enrichments. Can not be null.
-     * @param jamiObject        The name of the object type being enriched to be used in the file.
      * @throws IOException
      */
-    public StatisticsWriter(String successFileName, String failureFileName, String jamiObject) throws IOException {
-        this(new File(successFileName), new File(failureFileName), jamiObject);
+    public StatisticsWriter(String successFileName, String failureFileName) throws IOException {
+        this(new File(successFileName), new File(failureFileName));
     }
 
 
@@ -77,10 +71,9 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
      *
      * @param successFile   The file to record successful enrichments.
      * @param failureFile   The file to record failed enrichments.
-     * @param jamiObject    The name of the objectType being enriched
      * @throws IOException
      */
-    public StatisticsWriter(File successFile, File failureFile, String jamiObject) throws IOException {
+    public StatisticsWriter(File successFile, File failureFile) throws IOException {
         /**
          * Removing the following statement would allow the creation of a stats writer with a null file.
          * You may want to do this in future to bypass the creation of empty success stats files,
@@ -90,16 +83,13 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
             throw new IllegalArgumentException("Provided a null file to write to.");
 
         successWriter = new BufferedWriter( new FileWriter(successFile) );
-        successWriter.write(jamiObject); successWriter.write(NEW_EVENT);
-        successWriter.write("Updated"); successWriter.write(NEW_EVENT);
-        successWriter.write("Removed"); successWriter.write(NEW_EVENT);
-        successWriter.write("Added"); successWriter.write(NEW_EVENT);
-        successWriter.write("File Source");
-        successWriter.flush();
+        successWriter.write("File Source"); successWriter.write(EnricherUtils.NEW_EVENT);
+        successWriter.write("Updated"); successWriter.write(EnricherUtils.NEW_EVENT);
+        successWriter.write("Removed"); successWriter.write(EnricherUtils.NEW_EVENT);
+        successWriter.write("Added");
 
         failureWriter = new BufferedWriter( new FileWriter(failureFile) );
-        failureWriter.write(jamiObject); failureWriter.write(NEW_EVENT);
-        failureWriter.write("File Source"); failureWriter.write(NEW_EVENT);
+        failureWriter.write("File Source"); failureWriter.write(EnricherUtils.NEW_EVENT);
         failureWriter.write("Message");
         failureWriter.flush();
     }
@@ -115,6 +105,10 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
         finally {
             if(failureWriter != null) failureWriter.close();
         }
+        this.lastObject = null;
+        this.updateCount =0;
+        this.additionCount = 0;
+        this.removedCount = 0;
     }
 
     /**
@@ -138,26 +132,22 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
      * @param status    The exit status of the finished enrichment.
      * @param message   The message given to accompany the last enrichment.
      */
-    protected void onObjectEnriched(T obj, EnrichmentStatus status, String message){
+    public void onEnrichmentComplete(T obj, EnrichmentStatus status, String message) {
         checkObject(obj);
 
         try{
-            String fileSource = BLANK_SPACE;
+            String fileSource = obj.toString();
             switch(status){
                 case SUCCESS:
                     if(updateCount == 0 && removedCount == 0 && additionCount == 0)
                         break;
-                    if(successWriter == null) break;
-
-                    successWriter.write(NEW_LINE);
-                    successWriter.write(obj.toString());
-                    successWriter.write(NEW_EVENT);
+                    successWriter.write(EnricherUtils.NEW_EVENT);
                     successWriter.write(Integer.toString(updateCount));
-                    successWriter.write(NEW_EVENT);
+                    successWriter.write(EnricherUtils.NEW_EVENT);
                     successWriter.write(Integer.toString(removedCount));
-                    successWriter.write(NEW_EVENT);
+                    successWriter.write(EnricherUtils.NEW_EVENT);
                     successWriter.write(Integer.toString(additionCount));
-                    successWriter.write(NEW_EVENT);
+                    successWriter.write(EnricherUtils.NEW_EVENT);
                     if (obj instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) obj;
                         if (context.getSourceLocator() != null)
@@ -168,33 +158,82 @@ public abstract class StatisticsWriter<T> implements EnricherListener<T>{
                     break;
 
                 case FAILED:
-                    if(failureWriter == null) break;
-
-                    failureWriter.write(NEW_LINE);
-                    failureWriter.write(obj.toString());
-                    failureWriter.write(NEW_EVENT);
+                    failureWriter.write(EnricherUtils.NEW_EVENT);
                     if (obj instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) obj;
                         if (context.getSourceLocator() != null)
                             fileSource = context.getSourceLocator().toString();
                     }
                     failureWriter.write(fileSource);
-                    failureWriter.write(NEW_EVENT);
+                    failureWriter.write(EnricherUtils.NEW_EVENT);
                     if(message != null)
                         failureWriter.write(message);
                     else
-                        failureWriter.write(BLANK_SPACE);
+                        failureWriter.write(EnricherUtils.BLANK_SPACE);
                     failureWriter.flush();
                     break;
             }
         } catch (IOException e) {
-            log.warn(e.getMessage());
-            e.printStackTrace(); //TODO LOG this
+            log.error("Cannot write enrichment event", e.getMessage());
         }
 
         updateCount = 0;
         removedCount = 0;
         additionCount = 0;
         lastObject = null;
+    }
+
+    public void onEnrichmentError(T obj, String message, Exception e) {
+        checkObject(obj);
+
+        try{
+            String fileSource = obj.toString();
+            failureWriter.write(EnricherUtils.NEW_EVENT);
+            if (obj instanceof FileSourceContext){
+                FileSourceContext context = (FileSourceContext) obj;
+                if (context.getSourceLocator() != null)
+                    fileSource = context.getSourceLocator().toString();
+            }
+            failureWriter.write(fileSource);
+            failureWriter.write(EnricherUtils.NEW_EVENT);
+            if(message != null) {
+                failureWriter.write(message);
+                failureWriter.write(": ");
+                failureWriter.write(e.getClass().getCanonicalName());
+            }
+            else {
+                failureWriter.write(e.getClass().getCanonicalName());
+                failureWriter.write(": ");
+                failureWriter.write(e.getMessage());
+            }
+            failureWriter.flush();
+        } catch (IOException e2) {
+            log.error("Cannot write failed enrichment event", e2.getMessage());
+        }
+
+        updateCount = 0;
+        removedCount = 0;
+        additionCount = 0;
+        lastObject = null;
+    }
+
+    protected Writer getSuccessWriter() {
+        return successWriter;
+    }
+
+    protected Writer getFailureWriter() {
+        return failureWriter;
+    }
+
+    protected void incrementUpdateCount() {
+        updateCount++;
+    }
+
+    protected void incrementRemovedCount() {
+        removedCount++;
+    }
+
+    protected void incrementAdditionCount() {
+        additionCount++;
     }
 }

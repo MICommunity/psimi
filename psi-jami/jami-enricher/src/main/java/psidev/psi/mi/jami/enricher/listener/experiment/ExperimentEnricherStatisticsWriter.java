@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener.experiment;
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
 import psidev.psi.mi.jami.model.Experiment;
 
@@ -19,14 +18,14 @@ public class ExperimentEnricherStatisticsWriter
         extends StatisticsWriter<Experiment>
         implements ExperimentEnricherListener{
 
-    private static final String jamiObject = "Experiment";
+    private static final String FILE_NAME = "experiment";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ExperimentEnricherStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -35,7 +34,7 @@ public class ExperimentEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ExperimentEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -45,7 +44,7 @@ public class ExperimentEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ExperimentEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -55,13 +54,6 @@ public class ExperimentEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ExperimentEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
-    }
-
-
-    // ================================================================
-
-    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
-        onObjectEnriched(experiment , status , message);
+        super(successFile, failureFile);
     }
 }

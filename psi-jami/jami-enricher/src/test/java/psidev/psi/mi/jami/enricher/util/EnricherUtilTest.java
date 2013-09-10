@@ -43,15 +43,15 @@ public class EnricherUtilTest {
 
     @Test
     public void test_link_linkFeatureEnricherToProteinEnricher_with_null_protein(){
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, null);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(featureEnricher, null);
     }
     @Test
     public void test_link_linkFeatureEnricherToProteinEnricher_with_null_feature(){
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(null , proteinEnricher);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(null, proteinEnricher);
     }
     @Test
     public void test_link_linkFeatureEnricherToProteinEnricher_with_null_protein_and_feature(){
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(null , null);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(null, null);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class EnricherUtilTest {
         };
 
         assertNull(proteinEnricher.getProteinEnricherListener());
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(nonListenerFeatureEnricher , proteinEnricher);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(nonListenerFeatureEnricher, proteinEnricher);
         assertNull(proteinEnricher.getProteinEnricherListener());
     }
 
@@ -76,7 +76,7 @@ public class EnricherUtilTest {
     public void test_linkFeatureEnricherToProteinEnricher_with_null_proteinListener(){
         assertNull(proteinEnricher.getProteinEnricherListener());
 
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher , proteinEnricher);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(featureEnricher, proteinEnricher);
 
         assertNotNull(proteinEnricher.getProteinEnricherListener());
         assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
@@ -87,7 +87,7 @@ public class EnricherUtilTest {
         proteinEnricher.setProteinEnricherListener(proteinEnricherListenerManager);
         assertNotNull(proteinEnricher.getProteinEnricherListener());
 
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher , proteinEnricher);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(featureEnricher, proteinEnricher);
 
         assertNotNull(proteinEnricher.getProteinEnricherListener());
         assertTrue(proteinEnricher.getProteinEnricherListener() == proteinEnricherListenerManager);
@@ -99,7 +99,7 @@ public class EnricherUtilTest {
         proteinEnricher.setProteinEnricherListener(proteinEnricherListener);
         assertNotNull(proteinEnricher.getProteinEnricherListener());
 
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher , proteinEnricher);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(featureEnricher, proteinEnricher);
 
         assertNotNull(proteinEnricher.getProteinEnricherListener());
         assertTrue(proteinEnricher.getProteinEnricherListener() instanceof ProteinEnricherListenerManager);

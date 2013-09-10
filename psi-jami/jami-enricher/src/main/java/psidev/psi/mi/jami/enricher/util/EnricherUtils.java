@@ -10,7 +10,12 @@ import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManag
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
  */
-public class EnricherUtil {
+public class EnricherUtils {
+
+    /* Characters to be used for new rows, new columns, blank cells */
+    public static final String NEW_LINE = "\n";
+    public static final String NEW_EVENT = "\t";
+    public static final String BLANK_SPACE = "-";
 
     /**
      * Adds the FeatureEnricher as a listener of the ProteinEnricher.

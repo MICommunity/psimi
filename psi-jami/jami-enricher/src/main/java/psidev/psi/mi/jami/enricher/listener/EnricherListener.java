@@ -13,4 +13,5 @@ public interface EnricherListener<T> {
 
     public void onEnrichmentComplete(T object , EnrichmentStatus status , String message);
 
+    public void onEnrichmentError(T object , String message, Exception e);
 }

@@ -1,11 +1,10 @@
 package psidev.psi.mi.jami.enricher.impl.participant;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.participant.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.util.EnricherUtil;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
@@ -150,7 +149,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
      */
     public void setProteinEnricher(ProteinEnricher proteinEnricher) {
         this.proteinEnricher = proteinEnricher;
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), proteinEnricher);
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(getFeatureEnricher(), proteinEnricher);
     }
 
     /**
@@ -184,7 +183,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
      */
     public void setFeatureEnricher(FeatureEnricher<F> featureEnricher){
         this.featureEnricher = featureEnricher;
-        EnricherUtil.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
+        EnricherUtils.linkFeatureEnricherToProteinEnricher(featureEnricher, getProteinEnricher());
     }
 
     /**

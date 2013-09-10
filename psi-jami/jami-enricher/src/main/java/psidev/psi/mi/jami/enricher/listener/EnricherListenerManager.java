@@ -14,12 +14,12 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public abstract class EnricherListenerManager<T extends EnricherListener> {
+public abstract class EnricherListenerManager<O extends Object, T extends EnricherListener<O>> implements EnricherListener<O>{
 
     /**
      * The list of listeners of the given type to be fired.
      */
-    protected Collection<T> listenersList = new ArrayList<T>();
+    private Collection<T> listenersList = new ArrayList<T>();
 
     /**
      * An empty constructor to allow the manager to initiated without an listeners.
@@ -32,33 +32,23 @@ public abstract class EnricherListenerManager<T extends EnricherListener> {
      */
     protected EnricherListenerManager(T... listeners){
         for(T listener : listeners){
-            addEnricherListener(listener);
+            this.listenersList.add(listener);
         }
     }
 
-    /**
-     * Adds the listener to the list of listeners, if the list does not already contain it.
-     * @param listener      The listener to be added.
-     */
-    public void addEnricherListener(T listener){
-       // if( ! listenersList.contains(listener) )
-            listenersList.add(listener);
+    protected Collection<T> getListenersList() {
+        return listenersList;
     }
 
-    /**
-     * Removes the listener from the list
-     * @param listener      The listener to be removed.
-     */
-    public void removeEnricherListener(T listener){
-        listenersList.remove(listener);
+    public void onEnrichmentComplete(O object, EnrichmentStatus status, String message) {
+        for(T listener : this.listenersList){
+            listener.onEnrichmentComplete(object, status, message);
+        }
     }
 
-    /**
-     * Finds whether the listener manager contains the given listener.
-     * @param listener  The listener to be searched for.
-     * @return          True if the list contains the listener.
-     */
-    public boolean containsEnricherListener(T listener){
-        return listenersList.contains(listener);
+    public void onEnrichmentError(O object, String message, Exception e) {
+        for(T listener : this.listenersList){
+            listener.onEnrichmentError(object, message, e);
+        }
     }
 }

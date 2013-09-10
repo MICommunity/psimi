@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.experiment;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Experiment;
 
 /**
@@ -15,22 +14,10 @@ import psidev.psi.mi.jami.model.Experiment;
  * @since 0 1/08/13
  */
 public class ExperimentEnricherListenerManager
-        extends EnricherListenerManager<ExperimentEnricherListener>
+        extends EnricherListenerManager<Experiment, ExperimentEnricherListener>
         implements ExperimentEnricherListener{
 
     public ExperimentEnricherListenerManager (ExperimentEnricherListener... experimentEnricherListener){
         super (experimentEnricherListener);
-    }
-
-    /**
-     * An event fired when an experiment's enrichment has been completed.
-     * @param experiment    The experiment that was enriched. can not be null.
-     * @param status        The status of the enrichment. Can not be null.
-     * @param message       An additional message which may be included if the status was failed. Can be null.
-     */
-    public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
-        for(ExperimentEnricherListener listener : listenersList) {
-            listener.onEnrichmentComplete(experiment , status, message);
-        }
     }
 }

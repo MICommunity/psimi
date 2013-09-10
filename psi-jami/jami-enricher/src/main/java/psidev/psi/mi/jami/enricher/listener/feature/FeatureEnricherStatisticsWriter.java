@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.enricher.listener.feature;
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -19,13 +19,13 @@ public class FeatureEnricherStatisticsWriter
         implements FeatureEnricherListener {
 
 
-    private static final String jamiObject = "Feature";
+    private static final String FILE_NAME = "feature";
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public FeatureEnricherStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -34,7 +34,7 @@ public class FeatureEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public FeatureEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -44,7 +44,7 @@ public class FeatureEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public FeatureEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -54,83 +54,70 @@ public class FeatureEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public FeatureEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
 
-    public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
-        onObjectEnriched(feature, status, message);
-    }
-
-    public void onUpdatedRange(Feature feature, Range updated, String message) {
-        checkObject(feature);
-        updateCount++;
-    }
-
-    public void onInvalidRange(Feature feature, Range invalid, String message) {
-        // No changes have been made
-    }
-
     public void onShortNameUpdate(Feature feature, String oldShortName) {
         checkObject(feature);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onFullNameUpdate(Feature feature, String oldFullName) {
         checkObject(feature);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onInterproUpdate(Feature feature, String oldInterpro) {
         checkObject(feature);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onTypeAdded(Feature feature, CvTerm oldType) {
         checkObject(feature);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onAddedIdentifier(Feature feature, Xref added) {
         checkObject(feature);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedIdentifier(Feature feature, Xref removed) {
         checkObject(feature);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAddedXref(Feature feature, Xref added) {
         checkObject(feature);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedXref(Feature feature, Xref removed) {
         checkObject(feature);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAddedAnnotation(Feature feature, Annotation added) {
         checkObject(feature);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedAnnotation(Feature feature, Annotation removed) {
         checkObject(feature);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAddedRange(Feature feature, Range added) {
         checkObject(feature);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedRange(Feature feature, Range removed) {
         checkObject(feature);
-        removedCount++;
+        incrementRemovedCount();
     }
 
 
