@@ -14,9 +14,9 @@ import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import uk.ac.ebi.intact.commons.util.Crc64;
-import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
+import psidev.psi.mi.jami.utils.checksum.Crc64Generator;
+import psidev.psi.mi.jami.utils.checksum.RogidGenerator;
+import psidev.psi.mi.jami.utils.checksum.SeguidException;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensembl.Ensembl;
@@ -475,12 +475,12 @@ public class UniprotProteinFetcher
         // CHECKSUMS
         if(p.getSequence() != null){
             //TODO add an MI term if one is created
-            p.getChecksums().add(ChecksumUtils.createChecksum("crc64", Crc64.getCrc64(p.getSequence())));
+            p.getChecksums().add(ChecksumUtils.createChecksum("crc64", Crc64Generator.computeCrc64For(p.getSequence())));
 
             if(p.getOrganism() != null){
                 try {
-                    String rogidValue = rogidGenerator.calculateRogid(
-                            p.getSequence(),Integer.toString(p.getOrganism().getTaxId()));
+                    String rogidValue = rogidGenerator.computeRogidFrom(
+                            p.getSequence(), Integer.toString(p.getOrganism().getTaxId()));
                     p.setRogid(rogidValue);
 
                 } catch (SeguidException e) {
