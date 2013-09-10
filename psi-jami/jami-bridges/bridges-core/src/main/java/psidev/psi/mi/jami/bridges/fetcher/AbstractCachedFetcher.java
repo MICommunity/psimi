@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.bridges.fetcher;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 
 import java.net.URL;
 
@@ -23,7 +22,7 @@ public abstract class AbstractCachedFetcher implements CachedFetcher{
     public static final String EHCACHE_CONFIG_FILE = "/service.ehcache.xml";
     private String cacheName;
 
-    public AbstractCachedFetcher(String cacheName) throws BridgeFailedException {
+    public AbstractCachedFetcher(String cacheName) {
         if (cacheName == null){
             throw new IllegalArgumentException("The name of the cache is mandatory");
         }
