@@ -117,7 +117,10 @@ public class EuroPubmedCentralFetcher
         for (Map.Entry<String, Collection<String>> identifierSets : identifiers.entrySet()) {
             String source = identifierSets.getKey();
             for (String identifier : identifierSets.getValue()) {
-                results.add(fetchPublicationByIdentifier(identifier, source));
+                Publication pub = fetchPublicationByIdentifier(identifier, source);
+                if (pub != null){
+                    results.add(pub);
+                }
             }
         }
         return results;
