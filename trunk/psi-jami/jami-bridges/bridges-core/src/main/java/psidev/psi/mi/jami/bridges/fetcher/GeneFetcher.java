@@ -33,4 +33,22 @@ public interface GeneFetcher {
             throws BridgeFailedException;
 
 
+    /**
+     *
+     * @param identifier    The identifiers of the gene
+     * @return              The genes matching the search terms.
+     * @throws BridgeFailedException
+     */
+    public Collection<Gene> fetchGenesByIdentifiers(String identifier)
+            throws BridgeFailedException;
+
+    /**
+     *
+     * @param identifier    The identifiers of the gene
+     * @param taxID         The organism the gene is from.
+     * @return              The genes matching the search terms.
+     * @throws BridgeFailedException
+     */
+    public Collection<Gene> fetchGenesByIdentifiers(String identifier, int taxID)
+            throws BridgeFailedException;
 }
