@@ -49,7 +49,7 @@ public class CachedChebiFetcher extends AbstractCachedFetcher implements Bioacti
         if (identifiers != null){
             List<String> ids = new ArrayList<String>(identifiers);
             Collections.sort(ids);
-            String key = "GET_ENTITIES_BY_IDENTIFIERS_";
+            String key = "GET_ENTITIES_BY_IDENTIFIERS";
             for (String id : ids){
                 key= key+"_"+id;
             }
