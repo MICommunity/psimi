@@ -27,13 +27,6 @@
             <version>${jami.version}</version>
         </dependency>
 
-        <!-- Caching Service-->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.7.2</version>
-        </dependency>
-
         <!-- Uniprot service -->
         <dependency>
             <groupId>uk.ac.ebi.uniprot.kraken</groupId>
@@ -44,13 +37,13 @@
         <dependency>
             <groupId>uk.ac.ebi.intact.commons</groupId>
             <artifactId>irefindex-seguid</artifactId>
-            <version> 2.1.10-SNAPSHOT </version>
+            <version> 2.1.9</version>
         </dependency>
 
         <dependency>
             <groupId>uk.ac.ebi.intact.commons</groupId>
             <artifactId>intact-commons</artifactId>
-            <version> 2.1.10-SNAPSHOT </version>
+            <version> 2.1.9</version>
         </dependency>
 
     </dependencies>
