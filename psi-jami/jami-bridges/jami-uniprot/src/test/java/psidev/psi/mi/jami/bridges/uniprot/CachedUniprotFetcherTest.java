@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.uniprot.util.UniprotUtils;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.Collection;
@@ -67,11 +68,11 @@ public class CachedUniprotFetcherTest {
 
         for(String identifier : identifiers){
             //assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
-            assertTrue(UniprotProteinFetcher.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
+            assertTrue(UniprotUtils.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
 
             Collection<Protein> proteins = fetcher.fetchProteinsByIdentifier(identifier);
             for(Protein protein : proteins){
-                assertEquals(identifier, protein.getShortName());
+                assertEquals(identifier.toLowerCase(), protein.getShortName());
                 assertNotNull(protein.getOrganism());
                 assertNotNull(protein.getSequence());
                 assertTrue(protein.getXrefs().size() == 1);
@@ -103,7 +104,7 @@ public class CachedUniprotFetcherTest {
 
         for(String identifier : identifiers){
             log.warn("testing entry: "+identifier);
-            assertTrue(UniprotProteinFetcher.UNIPROT_PRO_REGEX.matcher(identifier).find());
+            assertTrue(UniprotUtils.UNIPROT_PRO_REGEX.matcher(identifier).find());
             Collection<Protein> proteins = fetcher.fetchProteinsByIdentifier(identifier);
             assertNotNull(proteins);
             assertEquals(1, proteins.size());

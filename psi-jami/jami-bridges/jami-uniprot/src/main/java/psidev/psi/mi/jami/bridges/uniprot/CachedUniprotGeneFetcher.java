@@ -7,17 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CachedFetcher;
-import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
 import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.Protein;
-import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
-import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.uuw.services.remoting.EntryIterator;
-import uk.ac.ebi.kraken.uuw.services.remoting.Query;
-import uk.ac.ebi.kraken.uuw.services.remoting.UniProtQueryBuilder;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
