@@ -92,4 +92,23 @@ public class ProteinMappingStatisticsWriter implements ProteinMapperListener {
             log.error("Could not write on failed mapping",e);
         }
     }
+
+    public void onToBeReviewedMapping(Protein p, Collection<String> report) {
+        try{
+            writer.write(NEW_LINE);
+            writer.write(p.toString()); writer.write(NEW_EVENT);
+            writer.write("To be reviewed");     writer.write(NEW_EVENT);
+            if(report.iterator().hasNext())
+                writer.write(report.iterator().next());
+            writer.write(NEW_EVENT);
+            if (p instanceof FileSourceContext){
+                FileSourceContext context = (FileSourceContext) p;
+                if (context.getSourceLocator() != null)
+                    writer.write(context.getSourceLocator().toString());
+            }
+            writer.flush();
+        } catch (IOException e) {
+            log.error("Could not write on failed mapping",e);
+        }
+    }
 }

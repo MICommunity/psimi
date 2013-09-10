@@ -32,4 +32,11 @@ public class ProteinMappingLogger implements ProteinMapperListener {
             log.info(string);
         }
     }
+
+    public void onToBeReviewedMapping(Protein p, Collection<String> report) {
+        log.info("Remapping to be reviewed: ");
+        for(String string : report){
+            log.info(string);
+        }
+    }
 }
