@@ -316,7 +316,7 @@ public class UniprotProteinMapper
         return null;
     }
 
-    private IdentificationResults identifyProtein(
+    protected IdentificationResults identifyProtein(
             Xref xrefToMap, IdentificationContext context)
             throws BridgeFailedException {
 
@@ -351,7 +351,7 @@ public class UniprotProteinMapper
      * @param sequence the protein sequence to find a Mapping for
      * @return  The results of the query. Can be null.
      */
-    private IdentificationResults identifyProtein(String sequence, IdentificationContext context)
+    protected IdentificationResults identifyProtein(String sequence, IdentificationContext context)
             throws BridgeFailedException {
 
         if(sequence != null && sequence.length() > 0) {
@@ -371,8 +371,6 @@ public class UniprotProteinMapper
             return null;
         }
     }
-
-
 
     /**
      * Gives the state of the checking flag.
