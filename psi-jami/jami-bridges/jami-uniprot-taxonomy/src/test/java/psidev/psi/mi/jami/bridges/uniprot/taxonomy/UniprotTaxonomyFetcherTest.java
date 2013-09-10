@@ -5,10 +5,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,9 +33,6 @@ public class UniprotTaxonomyFetcherTest {
         assertEquals(9615 , organism.getTaxId());
         assertEquals("Dog" , organism.getCommonName());
         assertEquals("Canis familiaris" , organism.getScientificName());
-        for(Alias syno : organism.getAliases()){
-            assertEquals("Canis lupus familiaris" , syno.getName());
-        }
     }
 
     @Test
@@ -45,9 +41,6 @@ public class UniprotTaxonomyFetcherTest {
         assertEquals(9258 , organism.getTaxId());
         assertEquals("Duckbill platypus" , organism.getCommonName());
         assertEquals("Ornithorhynchus anatinus" , organism.getScientificName());
-        for(Alias syno : organism.getAliases()){
-            fail(); // Has no synonyms
-        }
     }
 
     @Test
@@ -56,9 +49,6 @@ public class UniprotTaxonomyFetcherTest {
         assertEquals(436495 , organism.getTaxId());
         assertEquals("Tyrant lizard king" , organism.getCommonName());
         assertEquals("Tyrannosaurus rex" , organism.getScientificName());
-        for(Alias syno : organism.getAliases()){
-            fail(); // Has no synonyms
-        }
     }
 
 }
