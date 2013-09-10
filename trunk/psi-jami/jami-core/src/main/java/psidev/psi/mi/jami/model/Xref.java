@@ -58,7 +58,10 @@ public interface Xref {
     public static String RESID_MI = "MI:0248";
     public static String SO = "so";
     public static String SO_MI = "MI:0601";
-
+    public static final String CHAIN_PARENT_MI = "MI:0951";
+    public static final String CHAIN_PARENT = "chain-parent";
+    public static final String ISOFORM_PARENT_MI = "MI:0243";
+    public static final String ISOFORM_PARENT = "isoform-parent";
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.
