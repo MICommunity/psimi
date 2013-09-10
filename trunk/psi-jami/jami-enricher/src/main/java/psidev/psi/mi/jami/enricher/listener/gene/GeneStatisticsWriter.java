@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener.gene;
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Checksum;
@@ -21,14 +20,14 @@ public class GeneStatisticsWriter
         implements GeneEnricherListener {
 
 
-    public static final String jamiObject = "Gene";
+    public static final String FILE_NAME = "Gene";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
     public GeneStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -37,7 +36,7 @@ public class GeneStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public GeneStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -47,7 +46,7 @@ public class GeneStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public GeneStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -57,93 +56,89 @@ public class GeneStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public GeneStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
 
-    public void onEnrichmentComplete(Gene object, EnrichmentStatus status, String message){
-        onObjectEnriched(object , status , message);
-    }
-
     public void onEnsemblUpdate(Gene gene, String oldValue) {
         checkObject(gene);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onEnsemblGenomeUpdate(Gene gene, String oldValue) {
         checkObject(gene);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onEntrezGeneIdUpdate(Gene gene, String oldValue) {
         checkObject(gene);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onRefseqUpdate(Gene gene, String oldValue) {
         checkObject(gene);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onShortNameUpdate(Gene gene, String oldShortName) {
         checkObject(gene);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onFullNameUpdate(Gene gene, String oldFullName) {
         checkObject(gene);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onAddedOrganism(Gene gene) {
         checkObject(gene);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onAddedInteractorType(Gene gene) {
         checkObject(gene);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onAddedIdentifier(Gene gene, Xref added) {
         checkObject(gene);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedIdentifier(Gene gene, Xref removed) {
         checkObject(gene);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAddedXref(Gene gene, Xref added) {
         checkObject(gene);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedXref(Gene gene, Xref removed) {
         checkObject(gene);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAddedAlias(Gene gene, Alias added) {
         checkObject(gene);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedAlias(Gene gene, Alias removed) {
         checkObject(gene);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAddedChecksum(Gene gene, Checksum added) {
         checkObject(gene);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedChecksum(Gene gene, Checksum removed) {
         checkObject(gene);
-        removedCount++;
+        incrementRemovedCount();
     }
 }

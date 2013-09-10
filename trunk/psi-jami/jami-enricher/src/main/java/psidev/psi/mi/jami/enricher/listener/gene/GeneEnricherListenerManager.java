@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.gene;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Gene;
@@ -14,7 +13,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @since 03/09/13
  */
 public class GeneEnricherListenerManager
-        extends EnricherListenerManager<GeneEnricherListener>
+        extends EnricherListenerManager<Gene, GeneEnricherListener>
         implements GeneEnricherListener{
 
 
@@ -31,105 +30,98 @@ public class GeneEnricherListenerManager
         super(listeners);
     }
 
-
-    public void onEnrichmentComplete(Gene object, EnrichmentStatus status, String message) {
-        for(GeneEnricherListener listener : listenersList){
-            listener.onEnrichmentComplete(object, status, message);
-        }
-    }
-
     public void onEnsemblUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onEnsemblUpdate( gene,  oldValue) ;
         }
     }
 
     public void onEnsemblGenomeUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onEnsemblGenomeUpdate( gene, oldValue);
         }
     }
 
     public void onEntrezGeneIdUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onEntrezGeneIdUpdate( gene, oldValue);
         }
     }
 
     public void onRefseqUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onRefseqUpdate( gene, oldValue);
         }
     }
 
     public void onShortNameUpdate(Gene interactor, String oldShortName) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onShortNameUpdate(interactor, oldShortName);
         }
     }
 
     public void onFullNameUpdate(Gene interactor, String oldFullName) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onFullNameUpdate(interactor, oldFullName);
         }
     }
 
     public void onAddedOrganism(Gene interactor) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onAddedOrganism(interactor) ;
         }
     }
 
     public void onAddedInteractorType(Gene interactor) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onAddedInteractorType(interactor);
         }
     }
 
     public void onAddedIdentifier(Gene interactor, Xref added) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onAddedIdentifier( interactor, added);
         }
     }
 
     public void onRemovedIdentifier(Gene interactor, Xref removed) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onRemovedIdentifier(interactor, removed);
         }
     }
 
     public void onAddedXref(Gene interactor, Xref added) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onAddedXref(interactor, added) ;
         }
     }
 
     public void onRemovedXref(Gene interactor, Xref removed) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onRemovedXref(interactor, removed) ;
         }
     }
 
     public void onAddedAlias(Gene interactor, Alias added) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onAddedAlias(interactor, added);
         }
     }
 
     public void onRemovedAlias(Gene interactor, Alias removed) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onRemovedAlias(interactor, removed);
         }
     }
 
     public void onAddedChecksum(Gene interactor, Checksum added) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onAddedChecksum(interactor, added);
         }
     }
 
     public void onRemovedChecksum(Gene interactor, Checksum removed) {
-        for(GeneEnricherListener listener : listenersList){
+        for(GeneEnricherListener listener : getListenersList()){
             listener.onRemovedChecksum(interactor, removed);
         }
     }

@@ -1,10 +1,8 @@
 package psidev.psi.mi.jami.enricher.listener.feature;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.FeatureChangeListener;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Range;
 
 /**
  * An extension of the FeatureChangeListener
@@ -16,30 +14,4 @@ import psidev.psi.mi.jami.model.Range;
  */
 public interface FeatureEnricherListener
         extends FeatureChangeListener, EnricherListener<Feature> {
-
-    /**
-     *
-     * @param feature   The feature that was enriched. Can not be null.
-     * @param status    The status of the enrichment upon completion. Can not be null.
-     * @param message   A message with additional information. Can be null.
-     */
-    public void onEnrichmentComplete(Feature feature , EnrichmentStatus status , String message);
-
-    /**
-     *
-     * @param feature   The feature that was enriched. Can not be null.
-     * @param updated   The range that was update. Can not be null.
-     * @param message   A message with additional information. Can be null.
-     */
-    public void onUpdatedRange(Feature feature, Range updated , String message);
-
-    /**
-     *
-     * @param feature   The feature that was enriched. Can not be null.
-     * @param invalid   The range which was found to be invalid. Can be null.
-     * @param message   A message with additional information. Can be null.
-     */
-    public void onInvalidRange(Feature feature, Range invalid, String message);
-
-
 }

@@ -17,10 +17,14 @@ import psidev.psi.mi.jami.model.Xref;
 public class GeneEnricherLogger
         implements GeneEnricherListener{
 
-    protected static final Logger log = LoggerFactory.getLogger(GeneEnricherLogger.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(GeneEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(Gene object, EnrichmentStatus status, String message) {
         log.info(object.toString()+" enrichment complete with status of "+status+", message: "+message);
+    }
+
+    public void onEnrichmentError(Gene object, String message, Exception e) {
+        log.error(object.toString()+" enrichment error, message: "+message, e);
     }
 
     public void onEnsemblUpdate(Gene gene, String oldValue) {
@@ -32,58 +36,58 @@ public class GeneEnricherLogger
     }
 
     public void onEntrezGeneIdUpdate(Gene gene, String oldValue) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info(gene.toString() + " EntrezGeneId updated from " +oldValue);
     }
 
     public void onRefseqUpdate(Gene gene, String oldValue) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info(gene.toString() + " Refseq updated from " +oldValue);
     }
 
     public void onShortNameUpdate(Gene interactor, String oldShortName) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Shortname updated from " +oldShortName + " to " + interactor.getShortName());
     }
 
     public void onFullNameUpdate(Gene interactor, String oldFullName) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Fullname updated from " +oldFullName + " to " + interactor.getFullName());
     }
 
     public void onAddedOrganism(Gene interactor) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Added organism to "+interactor.toString());
     }
 
     public void onAddedInteractorType(Gene interactor) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Added interactor type to "+interactor.toString());
     }
 
     public void onAddedIdentifier(Gene interactor, Xref added) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Added identifier "+added.toString() + " to gene " + interactor.toString());
     }
 
     public void onRemovedIdentifier(Gene interactor, Xref removed) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Removed identifier "+removed.toString() + " to gene " + interactor.toString());
     }
 
     public void onAddedXref(Gene interactor, Xref added) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Added xref "+added.toString() + " to gene " + interactor.toString());
     }
 
     public void onRemovedXref(Gene interactor, Xref removed) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Removed xref "+removed.toString() + " to gene " + interactor.toString());
     }
 
     public void onAddedAlias(Gene interactor, Alias added) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Added alias "+added.toString() + " to gene " + interactor.toString());
     }
 
     public void onRemovedAlias(Gene interactor, Alias removed) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Removed alias "+removed.toString() + " to gene " + interactor.toString());
     }
 
     public void onAddedChecksum(Gene interactor, Checksum added) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Added checksum "+added.toString() + " to gene " + interactor.toString());
     }
 
     public void onRemovedChecksum(Gene interactor, Checksum removed) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        log.info("Removed checksum "+removed.toString() + " to gene " + interactor.toString());
     }
 }

@@ -15,11 +15,14 @@ public class FeatureEnricherLogger
         implements FeatureEnricherListener {
 
 
-    protected static final Logger log = LoggerFactory.getLogger(FeatureEnricherLogger.class.getName());
-
+    private static final Logger log = LoggerFactory.getLogger(FeatureEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
         log.info(feature.toString()+" enrichment complete with status ["+status+"], message: "+message);
+    }
+
+    public void onEnrichmentError(Feature object, String message, Exception e) {
+        log.error(object.toString()+" enrichment error, message: "+message, e);
     }
 
     public void onShortNameUpdate(Feature feature, String oldShortName) {
@@ -64,14 +67,6 @@ public class FeatureEnricherLogger
 
     public void onAddedRange(Feature feature, Range added) {
         log.info(feature+" has added range "+added.toString());
-    }
-
-    public void onInvalidRange(Feature feature, Range invalid, String message) {
-        log.info(feature+" has updated range "+invalid.toString()+", message reads: "+ message);
-    }
-
-    public void onUpdatedRange(Feature feature, Range updated, String message) {
-        log.info(feature+" has updated range "+updated.toString()+", message reads: "+ message);
     }
 
     public void onRemovedRange(Feature feature, Range removed) {

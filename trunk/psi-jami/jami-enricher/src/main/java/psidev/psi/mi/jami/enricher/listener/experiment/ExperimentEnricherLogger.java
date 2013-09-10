@@ -14,11 +14,14 @@ import psidev.psi.mi.jami.model.Experiment;
 public class ExperimentEnricherLogger
         implements ExperimentEnricherListener{
 
-
-    protected static final Logger log = LoggerFactory.getLogger(ExperimentEnricherLogger.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(ExperimentEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(Experiment experiment, EnrichmentStatus status, String message) {
         log.info(experiment.toString()+" enrichment complete " +
                 "with status ["+status+"], message: "+message);
+    }
+
+    public void onEnrichmentError(Experiment object, String message, Exception e) {
+        log.error(object.toString()+" enrichment error, message: "+message, e);
     }
 }

@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.enricher.listener.bioactiveentity;
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.BioactiveEntity;
+import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.Xref;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,14 +21,14 @@ public class BioactiveEntityStatisticsWriter
         extends StatisticsWriter<BioactiveEntity>
         implements BioactiveEntityEnricherListener {
 
-    public static final String jamiObject = "Bioactive Entity";
+    public static final String FILE_NAME = "bioactive_entity";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public BioactiveEntityStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -35,7 +37,7 @@ public class BioactiveEntityStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public BioactiveEntityStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -45,7 +47,7 @@ public class BioactiveEntityStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public BioactiveEntityStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -55,95 +57,90 @@ public class BioactiveEntityStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public BioactiveEntityStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
 
-    public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message){
-        onObjectEnriched(object , status , message);
-    }
-
-
     public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) {
         checkObject(bioactiveEntity);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) {
         checkObject(bioactiveEntity);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) {
         checkObject(bioactiveEntity);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi) {
         checkObject(bioactiveEntity);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
 
     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName) {
         checkObject(interactor);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {
         checkObject(interactor);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onAddedOrganism(BioactiveEntity interactor) {
         checkObject(interactor);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onAddedInteractorType(BioactiveEntity interactor) {
         checkObject(interactor);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) {
         checkObject(interactor);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) {
         checkObject(interactor);
-        removedCount ++;
+        incrementRemovedCount();
     }
 
     public void onAddedXref(BioactiveEntity interactor, Xref added) {
         checkObject(interactor);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedXref(BioactiveEntity interactor, Xref removed) {
         checkObject(interactor);
-        removedCount ++;
+        incrementRemovedCount();
     }
 
     public void onAddedAlias(BioactiveEntity interactor, Alias added) {
         checkObject(interactor);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) {
         checkObject(interactor);
-        removedCount ++;
+        incrementRemovedCount();
     }
 
     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) {
         checkObject(interactor);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) {
         checkObject(interactor);
-        removedCount ++;
+        incrementRemovedCount();
     }
 }
