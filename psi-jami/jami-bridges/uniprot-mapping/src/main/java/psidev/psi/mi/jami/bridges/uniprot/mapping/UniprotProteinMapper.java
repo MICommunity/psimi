@@ -27,29 +27,50 @@ public class UniprotProteinMapper
 
     public static final Log log = LogFactory.getLog(UniprotProteinMapper.class);
 
-    private static ProteinMapperListener listener = null;
+    private ProteinMapperListener listener = null;
 
-    private static boolean checkingEnabled = true;
-    private static boolean priorityIdentifiers = true;
-    private static boolean prioritySequence = true;
+    private boolean checkingEnabled = true;
+    private boolean priorityIdentifiers = true;
+    private boolean prioritySequence = true;
 
+    private Stack<String> report;
 
-    private static  Stack<String> report = new Stack<String>();
+    private StrategyWithIdentifier strategyWithIdentifier;
+    private StrategyWithSequence strategyWithSequence;
+
+    private Map<Xref, IdentificationResults> identifierMappingResults;
+
+    public UniprotProteinMapper() {
+        report = new Stack<String>();
+        this.strategyWithIdentifier = new StrategyWithIdentifier();
+        this.strategyWithSequence = new StrategyWithSequence();
+        identifierMappingResults = new HashMap<Xref, IdentificationResults>();
+    }
 
     /**
      * Maps the provided protein to a uniprot identifier.
      * @param proteinToMap     the protein to be Mapped
      */
     public void mapProtein(Protein proteinToMap) throws BridgeFailedException {
+        if(proteinToMap == null){
+            throw new IllegalArgumentException("Cannot remap a null protein");
+        }
+        clear();
 
         IdentificationContext context = new IdentificationContext();
         if( proteinToMap.getOrganism() != null )
-            context.setOrganism(new BioSource("ShortName", ""+proteinToMap.getOrganism().getTaxId()));
+            context.setOrganism(new BioSource(proteinToMap.getOrganism().getCommonName() != null ? proteinToMap.getOrganism().getCommonName() : "not specified", Integer.toString(proteinToMap.getOrganism().getTaxId())));
 
-        if(priorityIdentifiers && prioritySequence) priorityMapping(proteinToMap, context);
-        else if(priorityIdentifiers) identifierPriorityMapping(proteinToMap, context);
-        else if(prioritySequence) sequencePriorityMapping(proteinToMap, context);
-        else noPriorityMapping(proteinToMap, context);
+        if(priorityIdentifiers == prioritySequence) mapWithBothPriorities(proteinToMap, context);
+        else if(priorityIdentifiers) mapWithPriorityToIdentifiers(proteinToMap, context);
+        else if(prioritySequence) mapWithPriorityToSequence(proteinToMap, context);
+    }
+
+    private void clear() {
+        report.clear();
+        this.strategyWithSequence.getListOfActionReports().clear();
+        this.strategyWithIdentifier.getListOfActionReports().clear();
+        this.identifierMappingResults.clear();
     }
 
     /**
@@ -59,53 +80,94 @@ public class UniprotProteinMapper
      * @param context
      * @throws BridgeFailedException
      */
-    private static void priorityMapping(Protein proteinToMap, IdentificationContext context)
+    private void mapWithBothPriorities(Protein proteinToMap, IdentificationContext context)
             throws BridgeFailedException {
 
-        report.push("Priority for identifiers and sequence.");
+        log.info("Priority to identifiers and sequence.");
+        IdentificationResults identifierResult = null;
+        if(checkingEnabled){
+            mapAllIdentifiersFor(proteinToMap, context);
+            if(!areAllIdentifierMappingsConsistent()){
+                if(listener != null)
+                    listener.onToBeReviewedMapping(proteinToMap, report);
+                return;
+            }
+            identifierResult = getFirstSuccessfulResult();
+        }
+        else{
+            identifierResult = mapFirstValidIdentifierFor(proteinToMap, context);
+        }
 
-        IdentificationResults sequenceMapping = getMappingForSequence(proteinToMap , context);
+        IdentificationResults sequenceMapping = identifyProtein(proteinToMap.getSequence(), context);
         if (sequenceMapping == null || ! sequenceMapping.hasUniqueUniprotId()){
-            report.push("No mapping found for sequence.");
+            report.push("Sequence mapping FAILED: No mapping found for sequence.");
+        }
+        // both sequence and identifiers have results
+        if (sequenceMapping != null && identifierResult != null){
+            if (sequenceMapping.getFinalUniprotId() != null && !sequenceMapping.getFinalUniprotId().equals(identifierResult.getFinalUniprotId())){
+                report.push("Mapping consistency TO BE REVIEWED: The identifiers can map to a different uniprot protein from the sequence.");
+                if(listener != null) listener.onToBeReviewedMapping(proteinToMap, report);
+                return;
+            }
+            if(sequenceMapping.getFinalUniprotId() != null){
+                proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
+            }
+            else{
+                proteinToMap.setUniprotkb(identifierResult.getFinalUniprotId());
+            }
+            if(listener != null){
+                listener.onSuccessfulMapping(proteinToMap ,report );
+            }
+        }
+        // only the sequence has results
+        else if (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()){
+            proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
+            if(listener != null){
+                listener.onSuccessfulMapping(proteinToMap ,report );
+            }
+        }
+        // only the identifiers have results
+        else if (identifierResult != null){
+            proteinToMap.setUniprotkb(identifierResult.getFinalUniprotId());
+            if(listener != null){
+                listener.onSuccessfulMapping(proteinToMap ,report );
+            }
+        }
+        // failed mapping
+        else{
             if(listener != null) listener.onFailedMapping(proteinToMap, report);
             return;
-        } else {
-            IdentificationResults identifierMapping;
-            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
+        }
+    }
 
-            if(checkingEnabled){
-                if(! areAllIdentifierMappingsConsistent(proteinToMap, identifierMappingResults, context)){
-                    if(listener != null)
-                        listener.onFailedMapping(proteinToMap, report);
-                    return;
-                }
-            } else{
-                isThereAnIdentifierMapping(proteinToMap, identifierMappingResults, context);
-            }
-
-            identifierMapping = getFirstMappedIdentifierResult(identifierMappingResults);
-
-
-            if( identifierMapping == null || ! identifierMapping.hasUniqueUniprotId()) {
-                report.push("No mapping found for identifiers");
-                if(listener != null)
-                    listener.onFailedMapping(proteinToMap, report);
-            } else {
-                if(! identifierMapping.getFinalUniprotId().equalsIgnoreCase(sequenceMapping.getFinalUniprotId())){
-                    report.push("Conflict between mappings for " +
-                            "identifiers ["+identifierMapping.getFinalUniprotId()+"] and " +
-                            "sequence ["+sequenceMapping.getFinalUniprotId()+"].");
-                    if(listener != null)
-                        listener.onFailedMapping(proteinToMap , report);
-                } else {
-                    proteinToMap.setUniprotkb(identifierMapping.getFinalUniprotId());
-                    report.push("Mapping found for sequence and identifiers.");
-                    if(listener != null){
-                        listener.onSuccessfulMapping(proteinToMap ,report );
-                    }
+    private void mapAllIdentifiersFor(Protein prot, IdentificationContext context) throws BridgeFailedException {
+        //Populate the list
+        for(Xref xref : prot.getIdentifiers()){
+            IdentificationResults result = identifyProtein(xref, context);
+            identifierMappingResults.put(xref, result);
+            if (result != null){
+                for (Object obj : result.getListOfActions()){
+                    report.push(obj.toString());
                 }
             }
         }
+    }
+
+    private IdentificationResults mapFirstValidIdentifierFor(Protein prot, IdentificationContext context) throws BridgeFailedException {
+        //Populate the list
+        for(Xref xref : prot.getIdentifiers()){
+            IdentificationResults result = identifyProtein(xref, context);
+            if (result != null){
+                for (Object obj : result.getListOfActions()){
+                    report.push(obj.toString());
+                }
+                if (result.getFinalUniprotId() != null){
+                    return result;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -114,47 +176,48 @@ public class UniprotProteinMapper
      * @param context
      * @throws BridgeFailedException
      */
-    private static void identifierPriorityMapping(Protein proteinToMap , IdentificationContext context)
+    private void mapWithPriorityToIdentifiers(Protein proteinToMap, IdentificationContext context)
             throws BridgeFailedException {
 
-        report.push("Priority for identifiers.");
+        log.info("Priority to identifiers.");
 
-        HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
-        IdentificationResults identifierMapping;
-
+        IdentificationResults identifierResult = null;
         if(checkingEnabled){
-            if(! areAllIdentifierMappingsConsistent(proteinToMap, identifierMappingResults, context)){
+            mapAllIdentifiersFor(proteinToMap, context);
+            if(!areAllIdentifierMappingsConsistent()){
                 if(listener != null)
-                    listener.onFailedMapping(proteinToMap, report);
+                    listener.onToBeReviewedMapping(proteinToMap, report);
                 return;
             }
-        } else{
-            isThereAnIdentifierMapping(proteinToMap, identifierMappingResults, context);
+            identifierResult = getFirstSuccessfulResult();
         }
-
-        identifierMapping = getFirstMappedIdentifierResult(identifierMappingResults);
-
-        if (identifierMapping != null){
-            proteinToMap.setUniprotkb(identifierMapping.getFinalUniprotId());
-            report.push("Mapping found for identifiers.");
+        else{
+            identifierResult = mapFirstValidIdentifierFor(proteinToMap, context);
+        }
+        // we stop here if the identifiers could map to one protein
+        if (identifierResult != null){
+            proteinToMap.setUniprotkb(identifierResult.getFinalUniprotId());
             if(listener != null){
-                listener.onSuccessfulMapping(proteinToMap, report);
+                listener.onSuccessfulMapping(proteinToMap ,report );
             }
             return;
-        }else {
-            IdentificationResults sequenceMapping = getMappingForSequence(proteinToMap , context);
-            if (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()){
-                proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
-                report.push("Mapping found for sequence.");
-                if(listener != null){
-                    listener.onSuccessfulMapping(proteinToMap,report);
-                }
-                return;
-            }else { // sequenceMapping == null
-                report.push("No Mapping found for sequence and identifiers.");
-                if(listener != null) listener.onFailedMapping(proteinToMap , report );
-                return;
+        }
+
+        IdentificationResults sequenceMapping = identifyProtein(proteinToMap.getSequence(), context);
+        if (sequenceMapping == null || ! sequenceMapping.hasUniqueUniprotId()){
+            report.push("Sequence mapping FAILED: No mapping found for sequence.");
+        }
+        // only the sequence has results
+        if (sequenceMapping != null && sequenceMapping.getFinalUniprotId() != null){
+            proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
+            if(listener != null){
+                listener.onSuccessfulMapping(proteinToMap ,report );
             }
+        }
+        // failed mapping
+        else{
+            if(listener != null) listener.onFailedMapping(proteinToMap, report);
+            return;
         }
     }
 
@@ -164,165 +227,76 @@ public class UniprotProteinMapper
      * @param context
      * @throws BridgeFailedException
      */
-    private static void sequencePriorityMapping(Protein proteinToMap , IdentificationContext context)
+    private void mapWithPriorityToSequence(Protein proteinToMap, IdentificationContext context)
             throws BridgeFailedException {
-        report.push("Priority for sequence.");
-        IdentificationResults sequenceMapping = getMappingForSequence(proteinToMap , context);
-
-        if( sequenceMapping != null && sequenceMapping.hasUniqueUniprotId() ) {
+        report.push("Priority to sequence.");
+        IdentificationResults sequenceMapping = identifyProtein(proteinToMap.getSequence(), context);
+        if (sequenceMapping == null || ! sequenceMapping.hasUniqueUniprotId()){
+            report.push("Sequence mapping FAILED: No mapping found for sequence.");
+        }
+        // only the sequence has results
+        if (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()){
             proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
-            report.push("Mapping found for sequence.");
             if(listener != null){
-                listener.onSuccessfulMapping(proteinToMap,report);
-            }
-            return ;
-        } else {
-
-            IdentificationResults identifierMapping;
-            HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
-
-            if(checkingEnabled){
-                if(! areAllIdentifierMappingsConsistent(proteinToMap, identifierMappingResults, context)){
-                    report.push("Identifier mappings have conflicts.");
-                    if(listener != null)
-                        listener.onFailedMapping(proteinToMap, report );
-                    return;
-                }
-            } else{
-                isThereAnIdentifierMapping(proteinToMap, identifierMappingResults, context);
-            }
-
-            identifierMapping = getFirstMappedIdentifierResult(identifierMappingResults);
-
-            if (identifierMapping != null && identifierMapping.hasUniqueUniprotId()){
-                proteinToMap.setUniprotkb(identifierMapping.getFinalUniprotId());
-                report.push("Identifiers have mapping.");
-                if(listener != null){
-                    listener.onSuccessfulMapping(proteinToMap,report);
-                }
-                return;
-            } else {
-                report.push("Neither sequence nor identifiers have mapping.");
-                if(listener != null)
-                    listener.onFailedMapping(proteinToMap, report);
-                return;
+                listener.onSuccessfulMapping(proteinToMap ,report );
             }
         }
-    }
 
-
-    /**
-     * Maps the protein using the identifiers and sequence.
-     * If the sequence or identifiers are null, but the other has a mapping, that mapping will be used.
-     * @param proteinToMap
-     * @param context
-     * @throws BridgeFailedException
-     */
-    private static void noPriorityMapping(Protein proteinToMap, IdentificationContext context) throws BridgeFailedException {
-        report.push("Priority for neither identifiers nor sequence.");
-
-        HashMap<Xref, IdentificationResults> identifierMappingResults = new HashMap<Xref, IdentificationResults>();
+        IdentificationResults identifierResult = null;
         if(checkingEnabled){
-            if( ! areAllIdentifierMappingsConsistent(proteinToMap, identifierMappingResults, context)){
-                report.push("Identifier mappings have conflicts.");
+            mapAllIdentifiersFor(proteinToMap, context);
+            if(!areAllIdentifierMappingsConsistent()){
                 if(listener != null)
-                    listener.onFailedMapping(proteinToMap,report);
+                    listener.onToBeReviewedMapping(proteinToMap, report);
                 return;
             }
-        } else{
-            isThereAnIdentifierMapping(proteinToMap, identifierMappingResults, context);
+            identifierResult = getFirstSuccessfulResult();
+        }
+        else{
+            identifierResult = mapFirstValidIdentifierFor(proteinToMap, context);
         }
 
-        IdentificationResults identifierMapping = getFirstMappedIdentifierResult(identifierMappingResults);
-        IdentificationResults sequenceMapping = getMappingForSequence(proteinToMap , context);
-
-        if( (identifierMapping != null && identifierMapping.hasUniqueUniprotId())
-                && (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()) ){
-            if(identifierMapping.getFinalUniprotId().equalsIgnoreCase(sequenceMapping.getFinalUniprotId())){
-                proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
-                report.push("Mapping without conflicts found for sequence and identifiers.");
-                if(listener != null) listener.onSuccessfulMapping(proteinToMap, report);
-            } else {
-                if(listener != null) {
-                    report.push("Conflict between " +
-                            "sequence mapping [" +sequenceMapping.getFinalUniprotId()+"] " +
-                            "and identifier mapping ["+identifierMapping.getFinalUniprotId()+"].");
-                    listener.onFailedMapping(proteinToMap,report);
-                }
+        if (identifierResult != null){
+            proteinToMap.setUniprotkb(identifierResult.getFinalUniprotId());
+            if(listener != null){
+                listener.onSuccessfulMapping(proteinToMap ,report );
             }
-        }else if ( (identifierMapping != null && identifierMapping.hasUniqueUniprotId()) ){
-            proteinToMap.setUniprotkb(identifierMapping.getFinalUniprotId());
-            report.push("Mapping found for identifiers.");
-            if(listener != null) listener.onSuccessfulMapping(proteinToMap,report);
-        }else if ( (sequenceMapping != null && sequenceMapping.hasUniqueUniprotId()) ){
-            proteinToMap.setUniprotkb(sequenceMapping.getFinalUniprotId());
-            report.push("Mapping found for sequence.");
-            if(listener != null) listener.onSuccessfulMapping(proteinToMap,report);
-        } else {
-            report.push("No mapping for sequence or identifiers.");
-            if(listener != null) listener.onFailedMapping(proteinToMap,report);
+        }
+        // failed mapping
+        else{
+            if(listener != null) listener.onFailedMapping(proteinToMap, report);
         }
     }
-
-
-
 
     /**
      * Queries and adds the results to the map, checks the identifier mappings for consistency
      * and returns false as soon as a conflict is found.
-     * @param proteinToMap     the protein to Map
      */
-    private static boolean areAllIdentifierMappingsConsistent(
-            Protein proteinToMap,
-            HashMap<Xref, IdentificationResults> identifierMappingResults,
-            IdentificationContext context)
+    private boolean areAllIdentifierMappingsConsistent()
             throws BridgeFailedException {
 
-        IdentificationResults MappedUniprot = null;
+        String mappedUniprot = null;
         //Populate the list
-        for(Xref xref : proteinToMap.getXrefs()){
-            IdentificationResults result = getMappingForXref( xref, context);
-            identifierMappingResults.put(xref , result);
+        for(Map.Entry<Xref, IdentificationResults> entry : identifierMappingResults.entrySet()){
 
-            if(result != null) log.info(xref+" ID="+result.getFinalUniprotId());
-            else    log.info("Dead xref? "+xref);
+            IdentificationResults result = entry.getValue();
             if(result != null && result.hasUniqueUniprotId()){
 
-                if (MappedUniprot != null){
-                    if(! MappedUniprot.getFinalUniprotId().equalsIgnoreCase(result.getFinalUniprotId())){
-                        report.push("Identifier mappings have conflict: ["+ MappedUniprot.getFinalUniprotId()+"] and ["+result.getFinalUniprotId()+"].");
+                if (mappedUniprot != null){
+                    if(!mappedUniprot.equals(result.getFinalUniprotId())){
+                        report.push("Identifier mapping FAILED: we could remap to "+mappedUniprot + " with a previous identifier and "+entry.getKey().getId()+" can remap to another entry "+result.getFinalUniprotId());
                         return false;
                     }
                 }
                 else{
-                    MappedUniprot = result;
+                    mappedUniprot = result.getFinalUniprotId();
                 }
             }
         }
-        report.push("Identifier mappings have no conflicts.");
-        return true;
-    }
-
-    /**
-     * Finds the first identifier Mapping which has a uniprot id and adds it to the identifier mapping results.
-     * @param proteinToMap
-     * @param identifierMappingResults
-     * @param context
-     * @return
-     * @throws BridgeFailedException
-     */
-    private static boolean isThereAnIdentifierMapping(
-            Protein proteinToMap, HashMap<Xref, IdentificationResults> identifierMappingResults, IdentificationContext context)
-            throws BridgeFailedException {
-
-        for(Xref xref : proteinToMap.getXrefs()){
-            IdentificationResults result = getMappingForXref(xref, context);
-            if(result != null && result.hasUniqueUniprotId()){
-                identifierMappingResults.put(xref , result);
-                return true;
-            }
+        if (mappedUniprot != null){
+            report.push("Identifier mapping SUCCESSFUL: we could remap to "+mappedUniprot);
         }
-        return false;
+        return true;
     }
 
     /**
@@ -331,8 +305,7 @@ public class UniprotProteinMapper
      *
      * @return      the first Mapping which has a uniprot entry
      */
-    private static IdentificationResults getFirstMappedIdentifierResult(
-            HashMap<Xref, IdentificationResults> identifierMappingResults){
+    private IdentificationResults getFirstSuccessfulResult(){
 
         for(Map.Entry<Xref, IdentificationResults> entry : identifierMappingResults.entrySet()){
             if(entry.getValue() != null
@@ -343,32 +316,28 @@ public class UniprotProteinMapper
         return null;
     }
 
-
-
-    private static IdentificationResults getMappingForXref(
+    private IdentificationResults identifyProtein(
             Xref xrefToMap, IdentificationContext context)
             throws BridgeFailedException {
 
         String value =  xrefToMap.getId();
         String database = null;
-
-        StrategyWithIdentifier identifierStrategy;
-        identifierStrategy = new StrategyWithIdentifier();
-        identifierStrategy.enableIsoforms(true);
-
+        String databaseName = null;
 
         //Find a way to identify the database
         if(xrefToMap.getDatabase() != null){
             database = xrefToMap.getDatabase().getMIIdentifier();
-            if(database == null) database = xrefToMap.getDatabase().getShortName();
+            databaseName = xrefToMap.getDatabase().getShortName();
         }
         //If there's an identity do a search - else return an empty result.
-        if(database != null && value != null){
+        if((database != null || databaseName != null) && value != null){
+            context.setSequence(null);
             context.setDatabaseForIdentifier(database);
+            context.setDatabaseName(databaseName);
             context.setIdentifier(value);
 
             try{
-                return identifierStrategy.identifyProtein(context);
+                return strategyWithIdentifier.identifyProtein(context);
             }catch(StrategyException e){
                 throw new BridgeFailedException("Failure while attempting to Map protein identifier.",e);
             }
@@ -379,29 +348,26 @@ public class UniprotProteinMapper
 
     /**
      * Finds a Mapping for the proteins sequence using the method which is implemented.
-     * @param proteinToMap the protein to find a Mapping for
+     * @param sequence the protein sequence to find a Mapping for
      * @return  The results of the query. Can be null.
      */
-    protected static IdentificationResults getMappingForSequence(Protein proteinToMap, IdentificationContext context)
+    private IdentificationResults identifyProtein(String sequence, IdentificationContext context)
             throws BridgeFailedException {
 
-        if(proteinToMap.getSequence() != null && proteinToMap.getSequence().length() > 0) {
-            context.setSequence(proteinToMap.getSequence());
+        if(sequence != null && sequence.length() > 0) {
+            context.setSequence(sequence);
+            context.setDatabaseForIdentifier(null);
+            context.setDatabaseName(null);
+            context.setIdentifier(null);
             try{
-                StrategyWithSequence sequenceStrategy = new StrategyWithSequence();
-                sequenceStrategy.setBasicBlastRequired(false);
-                sequenceStrategy.setEnableIntactSearch(false);
-                sequenceStrategy.enableIsoforms(true);
-
-                return sequenceStrategy.identifyProtein(context);
+                return this.strategyWithSequence.identifyProtein(context);
             }catch(StrategyException e){
                 throw new BridgeFailedException("Encountered a StrategyException " +
                         "when searching for sequence", e);
             }
         }
         else {
-            report.push("Could not get mapping for sequence, no sequence was available.");
-            log.warn("Sequence is not set in context.");
+            report.push("Sequence mapping FAILED: Could not get mapping for sequence, no sequence was available.");
             return null;
         }
     }

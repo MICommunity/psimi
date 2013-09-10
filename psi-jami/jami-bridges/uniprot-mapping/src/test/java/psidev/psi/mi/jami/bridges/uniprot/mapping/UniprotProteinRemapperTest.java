@@ -122,7 +122,7 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(CONFLICT);
+        protein.getIdentifiers().add(CONFLICT);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -132,6 +132,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -152,7 +156,7 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -162,6 +166,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -181,7 +189,7 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(MAPPABLE_B);
+        protein.getIdentifiers().add(MAPPABLE_B);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -191,6 +199,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -217,10 +229,14 @@ public class UniprotProteinRemapperTest {
             public void onFailedMapping(Protein p, Collection<String> report) {
                 fail();
             }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
         });
 
         remap.mapProtein(protein);
-        
+
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID , protein.getUniprotkb());
     }
@@ -245,21 +261,25 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(true);
 
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
             public void onSuccessfulMapping(Protein p, Collection<String> report) {
-                fail();
+                assertTrue(p == protein);
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
-                assertTrue(p == protein);
+               fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
+                fail();
             }
         });
 
         remap.mapProtein(protein);
-        assertNull(protein.getUniprotkb());;
+        assertNotNull(protein.getUniprotkb());
     }
 
     // ID 1 , SEQ 0
@@ -274,7 +294,7 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -283,6 +303,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -303,8 +327,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(UNMAPPABLE);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -313,6 +337,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -334,8 +362,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(MAPPABLE_B);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -344,6 +372,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -364,8 +396,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(CONFLICT);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
 
@@ -375,6 +407,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 assertTrue(p == protein);
             }
         });
@@ -396,7 +432,7 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
 
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -405,6 +441,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -426,8 +466,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
 
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(UNMAPPABLE);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -436,6 +476,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -457,8 +501,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
 
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(MAPPABLE_B);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -467,6 +511,10 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
                 fail();
             }
         });
@@ -487,8 +535,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
 
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(CONFLICT);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
 
         remap.setListener(new ProteinMapperListener() {
@@ -498,91 +546,17 @@ public class UniprotProteinRemapperTest {
             }
 
             public void onFailedMapping(Protein p, Collection<String> report) {
+                fail();
+            }
+
+            public void onToBeReviewedMapping(Protein p, Collection<String> report) {
+
                 assertTrue(p == protein);
             }
         });
 
         remap.mapProtein(protein);
         assertNull(protein.getUniprotkb());
-    }
-
-    // ID 0 , SEQ 0
-
-    /**
-     * Checking // NO SEQUENCE tests // ID 0 , SEQ 0
-     * 1 mappable xref - no sequence
-     */
-    /*@Test
-    public void test_mappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // NO SEQUENCE tests // ID 0 , SEQ 0
-     * 1 mappable xref, 1 unmappable
-     */
-    /*@Test
-    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // NO SEQUENCE tests // ID 0 , SEQ 0
-     * 2 mappable xrefs (no conflict)
-     */
-    /*@Test
-    public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        //  assertNull(remapReport.getConflictMessage());
-
     }
 
     /**
@@ -595,8 +569,8 @@ public class UniprotProteinRemapperTest {
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
 
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(CONFLICT);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
         
 
@@ -604,96 +578,6 @@ public class UniprotProteinRemapperTest {
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
-    }
-
-
-
-
-
-    // // Checking
-
-    // // SEQUENCE tests
-
-    // ID 1 , SEQ 1
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 1
-     * 1 mappable xref - no sequence
-     */
-    /*@Test
-    public void test_mappable_xref_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 1
-     * 1 mappable xref, 1 unmappable
-     */
-    /*@Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 1
-     * 2 mappable xrefs (no conflict)
-     */
-    /*@Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        //  assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        //  assertNull(remapReport.getConflictMessage());
-
     }
 
     /**
@@ -707,10 +591,10 @@ public class UniprotProteinRemapperTest {
         remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(CONFLICT);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        
+
 
         remap.mapProtein(protein);
         // assertFalse(remapReport.isRemapped());
@@ -718,326 +602,6 @@ public class UniprotProteinRemapperTest {
         // assertNotNull(remapReport.getConflictMessage());
     }
 
-
-
-
-
-    // ID 1 , SEQ 0
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 0
-     * 1 mappable xref - no sequence
-     */
-    /*@Test
-    public void test_mappable_xref_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        //  assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 0
-     * 1 mappable xref, 1 unmappable
-     */
-    /*@Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        //  assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 0
-     * 2 mappable xrefs (no conflict)
-     */
-    /*@Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-
-    }
-
-    /**
-     * Checking // SEQUENCE tests // ID 1 , SEQ 0
-     * 2 mappable xrefs, (with conflict)
-     */
-    /*@Test
-    public void test_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(true);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertFalse(remapReport.isRemapped());
-        assertNull(protein.getUniprotkb());
-        // assertNotNull(remapReport.getConflictMessage());
-    }
-
-    // ID 0 , SEQ 1
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 1
-     * 1 mappable xref - no sequence
-     */
-    /*@Test
-    public void test_mappable_xref_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        //  assertFalse(remapReport.isMappingFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 1
-     * 1 mappable xref, 1 unmappable
-     */
-    /*@Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        //  assertFalse(remapReport.isMappingFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 1
-     * 2 mappable xrefs (no conflict)
-     */
-    /*@Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        // assertTrue(remapReport.isRemapped());
-        // assertFalse(remapReport.isMappingFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-       // assertNull(remapReport.getConflictMessage());
-    }
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 1
-     * 2 mappable xrefs, (with conflict)
-     * Sequence should dbe used over the identifiers.
-     */
-    /*@Test
-    public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(true);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-       // assertTrue(remapReport.isRemapped());
-       assertTrue(countingRemapListener.isFromSequence());
-       // assertFalse(remapReport.isMappingFromIdentifiers());
-       // assertNotNull(protein.getUniprotkb());
-       // assertEquals(TESTID, protein.getUniprotkb());
-       // assertNull(remapReport.getConflictMessage());
-    }
-
-    // ID 0 , SEQ 0
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 0
-     * 1 mappable xref - no sequence
-     */
-    /*@Test
-    public void test_mappable_xref_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-       // assertTrue(remapReport.isRemapped());
-       assertTrue(countingRemapListener.isFromIdentifiers());
-       assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-       // assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 0
-     * 1 mappable xref, 1 unmappable
-     */
-    /*@Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(UNMAPPABLE);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        //assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-        //assertNull(remapReport.getConflictMessage());
-    }
-
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 0
-     * 2 mappable xrefs (no conflict)
-     */
-    /*@Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(MAPPABLE_B);
-        protein.getXrefs().add(MAPPABLE_A);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-        //assertTrue(remapReport.isRemapped());
-        assertTrue(countingRemapListener.isFromIdentifiers());
-        assertTrue(countingRemapListener.isFromSequence());
-
-        assertNotNull(protein.getUniprotkb());
-        assertEquals(TESTID, protein.getUniprotkb());
-       // assertNull(remapReport.getConflictMessage());
-
-    }
-
-    /**
-     * Checking // SEQUENCE tests // ID 0 , SEQ 0
-     * 1 mappable xref - conflicts with sequence
-     */
-   /* @Test
-    public void test_mappable_xref_which_conflicts_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
-        remap.setCheckingEnabled(true);
-        remap.setPriorityIdentifiers(false);
-        remap.setPrioritySequence(false);
-        protein.setSequence(test_sequence);
-
-        protein.getXrefs().add(CONFLICT);
-        assertNull(protein.getUniprotkb());
-        
-
-        remap.mapProtein(protein);
-       // assertFalse(remapReport.isRemapped());
-        //assertFalse(remapReport.isMappingFromIdentifiers());
-        assertFalse(countingRemapListener.isFromSequence());
-
-        assertNull(protein.getUniprotkb());
-        //assertNotNull(remapReport.getConflictMessage());
-    }
 
     /**
      * Checking // SEQUENCE tests // ID 0 , SEQ 0
@@ -1050,8 +614,8 @@ public class UniprotProteinRemapperTest {
         remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
-        protein.getXrefs().add(CONFLICT);
-        protein.getXrefs().add(MAPPABLE_A);
+        protein.getIdentifiers().add(CONFLICT);
+        protein.getIdentifiers().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
         
 
