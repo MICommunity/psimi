@@ -24,7 +24,7 @@ public class CachedChebiFetcher extends AbstractCachedFetcher implements Bioacti
 
     private ChebiFetcher chebiFetcher;
 
-    public CachedChebiFetcher() throws BridgeFailedException {
+    public CachedChebiFetcher() {
         super(CHEBI_CACHE_NAME);
         this.chebiFetcher = new ChebiFetcher();
     }
