@@ -27,4 +27,11 @@ public interface ProteinMapperListener {
      */
     public void onFailedMapping(Protein p, Collection<String> report);
 
+    /**
+     *
+     * @param p
+     * @param report
+     */
+    public void onToBeReviewedMapping(Protein p, Collection<String> report);
+
 }
