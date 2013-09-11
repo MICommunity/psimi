@@ -5,11 +5,9 @@ import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.listener.publication.PublicationEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Collection;
