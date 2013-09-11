@@ -1,11 +1,6 @@
 package psidev.psi.mi.jami.listener;
 
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
-
-import java.util.EventListener;
 
 /**
  * CvTerm change listener
@@ -15,7 +10,7 @@ import java.util.EventListener;
  * @since <pre>11/06/13</pre>
  */
 
-public interface CvTermChangeListener extends EventListener {
+public interface CvTermChangeListener extends AnnotationsChangeListener, XrefsChangeListener, IdentifiersChangeListener, AliasesChangeListener {
 
     /**
      * Listen to the event where the shortName of a cv term has been changed.
@@ -59,60 +54,4 @@ public interface CvTermChangeListener extends EventListener {
      * @param oldPAR
      */
     public void onPARIdentifierUpdate(CvTerm cv, String oldPAR);
-
-    /**
-     * Listen to the event where an identifier has been added to the cv term identifiers.
-     * @param cv
-     * @param added
-     */
-    public void onAddedIdentifier(CvTerm cv, Xref added);
-
-    /**
-     * Listen to the event where an identifier has been removed from the cv term identifiers.
-     * @param cv
-     * @param removed
-     */
-    public void onRemovedIdentifier(CvTerm cv, Xref removed);
-
-    /**
-     * Listen to the event where a xref has been added to the cv term xrefs.
-     * @param cv
-     * @param added
-     */
-    public void onAddedXref(CvTerm cv, Xref added);
-
-    /**
-     * Listen to the event where a xref has been removed from the cv term xrefs.
-     * @param cv
-     * @param removed
-     */
-    public void onRemovedXref(CvTerm cv, Xref removed);
-
-    /**
-     * Listen to the event where a synonym has been added to the cv term synonyms.
-     * @param cv
-     * @param added
-     */
-    public void onAddedSynonym(CvTerm cv, Alias added);
-
-    /**
-     * Listen to the event where a synonym has been removed from the cv term synonyms.
-     * @param cv
-     * @param removed
-     */
-    public void onRemovedSynonym(CvTerm cv, Alias removed);
-
-    /**
-     * Listen to the event where an annotation has been added to the cv term annotations.
-     * @param cv
-     * @param added
-     */
-    public void onAddedAnnotation(CvTerm cv, Annotation added);
-
-    /**
-     * Listen to the event where an annotation has been removed from the cv term annotations.
-     * @param cv
-     * @param removed
-     */
-    public void onRemovedAnnotation(CvTerm cv, Annotation removed);
 }

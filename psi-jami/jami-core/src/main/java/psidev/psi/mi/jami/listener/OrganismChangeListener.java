@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.listener;
 
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
-
-import java.util.EventListener;
 
 /**
  * This listener listen to Organism changes
@@ -13,7 +10,7 @@ import java.util.EventListener;
  * @since <pre>11/06/13</pre>
  */
 
-public interface OrganismChangeListener extends EventListener {
+public interface OrganismChangeListener extends AliasesChangeListener {
 
     /**
      * Listen to the event where the commonName of an organism has been changed.
@@ -37,18 +34,4 @@ public interface OrganismChangeListener extends EventListener {
      * @param oldTaxid
      */
     public void onTaxidUpdate(Organism organism, String oldTaxid);
-
-    /**
-     * Listen to the event where an alias has been added to the organism aliases.
-     * @param organism
-     * @param added
-     */
-    public void onAddedAlias(Organism organism, Alias added);
-
-    /**
-     * Listen to the event where an alias has been removed from the organism aliases.
-     * @param organism
-     * @param removed
-     */
-    public void onRemovedAlias(Organism organism, Alias removed);
 }
