@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.util.AliasMerger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -39,7 +38,7 @@ public class MaximumOrganismEnricher
 
 
             if(! organismFetched.getAliases().isEmpty()) {
-                AliasMerger merger = new AliasMerger();
+                AliasMergeUtils merger = new AliasMergeUtils();
                 merger.merge(organismFetched.getAliases() , organismToEnrich.getAliases());
 
                 for(Alias alias: merger.getToAdd()){

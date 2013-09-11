@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.participant.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherListenerManager;
@@ -67,7 +67,7 @@ public class MinimumFeatureEnricherTest {
     @Before
     public void setup() throws IOException {
         cvTermFetcher = new MockCvTermFetcher();
-        cvTermEnricher = new MinimumCvTermEnricher(cvTermFetcher);
+        cvTermEnricher = new MinimalCvTermEnricher(cvTermFetcher);
 
 
         featureEnricher = new BasicFeatureEnricher();

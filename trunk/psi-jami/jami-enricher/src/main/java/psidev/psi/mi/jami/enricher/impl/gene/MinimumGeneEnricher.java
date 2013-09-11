@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.gene;
 
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
-import psidev.psi.mi.jami.enricher.util.AliasMerger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Gene;
 
@@ -61,7 +60,7 @@ public class MinimumGeneEnricher
         // == Alias ====================================================================
         if( ! geneToEnrich.getAliases().isEmpty()
                 && ! geneFetched.getAliases().isEmpty() ){
-            AliasMerger merger = new AliasMerger();
+            AliasMergeUtils merger = new AliasMergeUtils();
             merger.merge(geneFetched.getAliases() , geneToEnrich.getAliases());
             for(Alias alias : merger.getToAdd()){
                 geneToEnrich.getAliases().add(alias);

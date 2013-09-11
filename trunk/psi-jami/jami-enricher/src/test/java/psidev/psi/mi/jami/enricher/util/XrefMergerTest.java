@@ -14,19 +14,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests to assure that the XrefMerger has the correct behaviour.
+ * Tests to assure that the XrefMergeUtils has the correct behaviour.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 02/08/13
  */
 public class XrefMergerTest {
 
-    private XrefMerger merger;
+    private XrefMergeUtils merger;
 
 
     @Before
     public void setup(){
-        merger = new XrefMerger();
+        merger = new XrefMergeUtils();
     }
 
     /**

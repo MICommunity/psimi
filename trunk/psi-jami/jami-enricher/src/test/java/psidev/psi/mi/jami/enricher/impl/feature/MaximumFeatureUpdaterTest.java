@@ -46,7 +46,7 @@ public class MaximumFeatureUpdaterTest {
 
         cvTermFetcher = new MockCvTermFetcher();
 
-        participantEnricher.setCvTermEnricher(new MaximumCvTermUpdater(cvTermFetcher));
+        participantEnricher.setCvTermEnricher(new FullCvTermUpdater(cvTermFetcher));
         participantEnricher.getCvTermEnricher().setCvTermEnricherListener(new CvTermEnricherLogger());
 
         featureEnricher = participantEnricher.getFeatureEnricher();
