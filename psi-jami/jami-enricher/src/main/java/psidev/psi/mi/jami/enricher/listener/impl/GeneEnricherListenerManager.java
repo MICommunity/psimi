@@ -1,11 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,6 +120,18 @@ public class GeneEnricherListenerManager
     public void onRemovedChecksum(Gene interactor, Checksum removed) {
         for(GeneEnricherListener listener : getListenersList()){
             listener.onRemovedChecksum(interactor, removed);
+        }
+    }
+
+    public void onAddedAnnotation(Gene o, Annotation added) {
+        for(GeneEnricherListener listener : getListenersList()){
+            listener.onAddedAnnotation(o, added);
+        }
+    }
+
+    public void onRemovedAnnotation(Gene o, Annotation removed) {
+        for(GeneEnricherListener listener : getListenersList()){
+            listener.onRemovedAnnotation(o, removed);
         }
     }
 }

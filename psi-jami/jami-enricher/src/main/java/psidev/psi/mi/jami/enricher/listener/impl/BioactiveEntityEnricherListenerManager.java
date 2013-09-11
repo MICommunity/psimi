@@ -1,11 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.BioactiveEntity;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 /**
  * A manager for listeners which holds a list of listeners.
@@ -125,6 +121,18 @@ public class BioactiveEntityEnricherListenerManager extends EnricherListenerMana
     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) {
         for(BioactiveEntityEnricherListener listener : getListenersList()){
             listener.onRemovedChecksum(interactor, removed);
+        }
+    }
+
+    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+        for(BioactiveEntityEnricherListener listener : getListenersList()){
+            listener.onAddedAnnotation(o, added);
+        }
+    }
+
+    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+        for(BioactiveEntityEnricherListener listener : getListenersList()){
+            listener.onRemovedAnnotation(o, removed);
         }
     }
 }

@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
@@ -75,12 +74,12 @@ public class PublicationEnricherStatisticsWriter
         incrementUpdateCount();
     }
 
-    public void onIdentifierAdded(Publication publication, Xref addedXref) {
+    public void onAddedIdentifier(Publication publication, Xref addedXref) {
         checkObject(publication);
         incrementUpdateCount();
     }
 
-    public void onIdentifierRemoved(Publication publication, Xref removedXref) {
+    public void onRemovedIdentifier(Publication publication, Xref removedXref) {
         checkObject(publication);
         incrementRemovedCount();
     }
@@ -115,22 +114,22 @@ public class PublicationEnricherStatisticsWriter
         incrementRemovedCount();
     }
 
-    public void onXrefAdded(Publication publication, Xref addedXref) {
+    public void onAddedXref(Publication publication, Xref addedXref) {
         checkObject(publication);
         incrementAdditionCount();
     }
 
-    public void onXrefRemoved(Publication publication, Xref removedXref) {
+    public void onRemovedXref(Publication publication, Xref removedXref) {
         checkObject(publication);
         incrementRemovedCount();
     }
 
-    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {
+    public void onAddedAnnotation(Publication publication, Annotation annotationAdded) {
         checkObject(publication);
         incrementAdditionCount();
     }
 
-    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved) {
+    public void onRemovedAnnotation(Publication publication, Annotation annotationRemoved) {
         checkObject(publication);
         incrementRemovedCount();
     }

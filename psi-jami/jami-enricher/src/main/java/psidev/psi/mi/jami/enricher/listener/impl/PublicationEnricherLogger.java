@@ -35,11 +35,11 @@ public class PublicationEnricherLogger implements PublicationEnricherListener {
         log.info(publication.toString()+" updated Doi to "+publication.getDoi()+" from "+oldDoi);
     }
 
-    public void onIdentifierAdded(Publication publication, Xref addedXref) {
+    public void onAddedIdentifier(Publication publication, Xref addedXref) {
         log.info(publication.toString()+" added identifier "+addedXref);
     }
 
-    public void onIdentifierRemoved(Publication publication, Xref removedXref) {
+    public void onRemovedIdentifier(Publication publication, Xref removedXref) {
         log.info(publication.toString()+" removed identifier "+removedXref);
     }
 
@@ -67,19 +67,19 @@ public class PublicationEnricherLogger implements PublicationEnricherListener {
         log.info(publication.toString()+" removed author "+removedAuthor);
     }
 
-    public void onXrefAdded(Publication publication, Xref addedXref) {
+    public void onAddedXref(Publication publication, Xref addedXref) {
         log.info(publication.toString()+" added Xref "+addedXref);
     }
 
-    public void onXrefRemoved(Publication publication, Xref removedXref) {
+    public void onRemovedXref(Publication publication, Xref removedXref) {
         log.info(publication.toString()+" removed Xref "+removedXref);
     }
 
-    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {
+    public void onAddedAnnotation(Publication publication, Annotation annotationAdded) {
         log.info(publication.toString()+" added annotation "+annotationAdded);
     }
 
-    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved) {
+    public void onRemovedAnnotation(Publication publication, Annotation annotationRemoved) {
         log.info(publication.toString()+" removed annotation "+annotationRemoved);
     }
 

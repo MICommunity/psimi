@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.model.*;
 

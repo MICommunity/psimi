@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
@@ -50,15 +49,15 @@ public class PublicationEnricherListenerManager
         }
     }
 
-    public void onIdentifierAdded(Publication publication, Xref addedXref) {
+    public void onAddedIdentifier(Publication publication, Xref addedXref) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onIdentifierAdded(publication, addedXref);
+            listener.onAddedIdentifier(publication, addedXref);
         }
     }
 
-    public void onIdentifierRemoved(Publication publication, Xref removedXref) {
+    public void onRemovedIdentifier(Publication publication, Xref removedXref) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onIdentifierRemoved(publication, removedXref);
+            listener.onRemovedIdentifier(publication, removedXref);
         }
     }
 
@@ -98,27 +97,27 @@ public class PublicationEnricherListenerManager
         }
     }
 
-    public void onXrefAdded(Publication publication, Xref addedXref) {
+    public void onAddedXref(Publication publication, Xref addedXref) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onXrefAdded(publication, addedXref);
+            listener.onAddedXref(publication, addedXref);
         }
     }
 
-    public void onXrefRemoved(Publication publication, Xref removedXref) {
+    public void onRemovedXref(Publication publication, Xref removedXref) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onXrefRemoved(publication, removedXref);
+            listener.onRemovedXref(publication, removedXref);
         }
     }
 
-    public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {
+    public void onAddedAnnotation(Publication publication, Annotation annotationAdded) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onAnnotationAdded(publication, annotationAdded);
+            listener.onAddedAnnotation(publication, annotationAdded);
         }
     }
 
-    public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved) {
+    public void onRemovedAnnotation(Publication publication, Annotation annotationRemoved) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onAnnotationRemoved(publication, annotationRemoved);
+            listener.onRemovedAnnotation(publication, annotationRemoved);
         }
     }
 

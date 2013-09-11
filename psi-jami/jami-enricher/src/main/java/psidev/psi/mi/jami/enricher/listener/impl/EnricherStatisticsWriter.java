@@ -31,7 +31,7 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
     private static final Logger log = LoggerFactory.getLogger(EnricherStatisticsWriter.class.getName());
 
     /* The last object that was changed */
-    private T lastObject = null;
+    private Object lastObject = null;
 
     /* Writers for successes and failures.  */
     private Writer successWriter;
@@ -116,7 +116,7 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
      * If they are different, the new object is taken and all stats reset.
      * @param obj   The object to compare to the last object changed.
      */
-    protected void checkObject(T obj){
+    protected void checkObject(Object obj){
         if(lastObject == null) lastObject = obj;
         else if(lastObject != obj){
             updateCount = 0;

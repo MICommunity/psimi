@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -89,15 +89,27 @@ public class CvTermEnricherListenerManager
         }
     }
 
-    public void onAddedSynonym(CvTerm cv, Alias added) {
+    public void onAddedAlias(CvTerm cv, Alias added) {
         for(CvTermEnricherListener listener : getListenersList()){
-            listener.onAddedSynonym(cv, added);
+            listener.onRemovedAlias(cv, added);
         }
     }
 
-    public void onRemovedSynonym(CvTerm cv, Alias removed) {
+    public void onRemovedAlias(CvTerm o, Alias removed) {
         for(CvTermEnricherListener listener : getListenersList()){
-            listener.onRemovedSynonym(cv, removed);
+            listener.onRemovedAlias(o, removed);
+        }
+    }
+
+    public void onAddedAnnotation(CvTerm o, Annotation added) {
+        for(CvTermEnricherListener listener : getListenersList()){
+            listener.onAddedAnnotation(o, added);
+        }
+    }
+
+    public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+        for(CvTermEnricherListener listener : getListenersList()){
+            listener.onRemovedAnnotation(o, removed);
         }
     }
 }

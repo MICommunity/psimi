@@ -1,13 +1,14 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.*;
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
+import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -109,13 +110,23 @@ public class CvTermEnricherStatisticsWriter
         incrementRemovedCount();
     }
 
-    public void onAddedSynonym(CvTerm cv, Alias added) {
+    public void onAddedAlias(CvTerm cv, Alias added) {
         checkObject(cv);
         incrementAdditionCount();
     }
 
-    public void onRemovedSynonym(CvTerm cv, Alias removed) {
+    public void onRemovedAlias(CvTerm cv, Alias removed) {
         checkObject(cv);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(CvTerm o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+        checkObject(o);
         incrementRemovedCount();
     }
 }

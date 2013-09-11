@@ -1,11 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.BioactiveEntity;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -142,6 +138,16 @@ public class BioactiveEntityStatisticsWriter
 
     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) {
         checkObject(interactor);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+        checkObject(o);
         incrementRemovedCount();
     }
 }

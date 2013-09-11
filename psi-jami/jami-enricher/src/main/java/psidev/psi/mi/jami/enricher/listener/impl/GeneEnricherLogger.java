@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,5 +87,12 @@ public class GeneEnricherLogger
 
     public void onRemovedChecksum(Gene interactor, Checksum removed) {
         log.info("Removed checksum "+removed.toString() + " to gene " + interactor.toString());
+    }
+
+    public void onAddedAnnotation(Gene o, Annotation added) {
+        log.info(o.toString()+" has annotation added "+added.toString());    }
+
+    public void onRemovedAnnotation(Gene o, Annotation removed) {
+        log.info(o.toString()+" has annotation removed "+removed.toString());
     }
 }
