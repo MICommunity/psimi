@@ -4,9 +4,7 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.util.AliasMerger;
 import psidev.psi.mi.jami.enricher.util.ChecksumMerger;
-import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -142,7 +140,7 @@ public class MinimumProteinUpdater
 
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
-            XrefMerger xrefMerger = new XrefMerger();
+            XrefMergeUtils xrefMerger = new XrefMergeUtils();
             // TODO no identifiers can be removed while the qualifiers are offering protection
             xrefMerger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers() , true);
 
@@ -163,7 +161,7 @@ public class MinimumProteinUpdater
 
         // == Alias ==
         if(! proteinFetched.getAliases().isEmpty()) {
-            AliasMerger aliasMerger = new AliasMerger();
+            AliasMergeUtils aliasMerger = new AliasMergeUtils();
             aliasMerger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
 
             for(Alias alias: aliasMerger.getToRemove()){

@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -30,7 +29,7 @@ public class MaximumProteinUpdater
         super.processProtein(proteinToEnrich);
 
         if(! proteinFetched.getXrefs().isEmpty()) {
-            XrefMerger merger = new XrefMerger();               //TODO check that qualifiers should protect xrefs
+            XrefMergeUtils merger = new XrefMergeUtils();               //TODO check that qualifiers should protect xrefs
             merger.merge(proteinFetched.getXrefs() , proteinToEnrich.getXrefs() , true);
             for(Xref xref: merger.getToRemove()){
                 proteinToEnrich.getXrefs().remove(xref);

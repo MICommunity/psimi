@@ -22,6 +22,7 @@ public interface CvTermEnricher{
      * At the end of the enrichment, the listener will be fired
      * @param cvTermToEnrich        A CvTerm to enrich
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     * @throws IllegalArgumentException if CvTerm is null
      */
     public void enrichCvTerm(CvTerm cvTermToEnrich) throws EnricherException;
 
@@ -29,16 +30,9 @@ public interface CvTermEnricher{
      * Enriches a collection of CvTerms.
      * @param cvTermsToEnrich       The cvTerms to be enriched
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     * @throws IllegalArgumentException if cvTermsToEnrich is null
      */
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException;
-
-
-    /**
-     * Sets the cvTerm fetcher to be used for enrichment.
-     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
-     * @param fetcher   The fetcher to be used to gather data for enrichment
-     */
-    public void setCvTermFetcher(CvTermFetcher fetcher);
 
     /**
      * The fetcher to be used for used to collect data.

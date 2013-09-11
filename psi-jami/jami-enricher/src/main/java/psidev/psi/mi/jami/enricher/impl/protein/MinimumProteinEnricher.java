@@ -4,9 +4,7 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.util.AliasMerger;
 import psidev.psi.mi.jami.enricher.util.ChecksumMerger;
-import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
@@ -115,7 +113,7 @@ public class MinimumProteinEnricher
 
         // == Identifiers ==
         if(! proteinFetched.getIdentifiers().isEmpty()) {
-            XrefMerger merger = new XrefMerger();
+            XrefMergeUtils merger = new XrefMergeUtils();
             merger.merge(proteinFetched.getIdentifiers() , proteinToEnrich.getIdentifiers(), true);
 
             for(Xref xref: merger.getToAdd()){
@@ -129,7 +127,7 @@ public class MinimumProteinEnricher
 
         // == Alias ==
         if(! proteinFetched.getAliases().isEmpty()) {
-            AliasMerger merger = new AliasMerger();
+            AliasMergeUtils merger = new AliasMergeUtils();
             merger.merge(proteinFetched.getAliases() , proteinToEnrich.getAliases());
 
             for(Alias alias: merger.getToAdd()){

@@ -5,7 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.participant.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherListenerManager;
@@ -71,7 +71,7 @@ public class MinimumInteractionEnricherTest {
     @Test
     public void test_enrichment_with_cvTermEnricher_but_no_cvTerms() throws EnricherException {
 
-        interactionEnricher.setCvTermEnricher(new MinimumCvTermEnricher(new MockCvTermFetcher()));
+        interactionEnricher.setCvTermEnricher(new MinimalCvTermEnricher(new MockCvTermFetcher()));
 
         assertNull(persistentInteraction.getInteractionType());
 
@@ -94,7 +94,7 @@ public class MinimumInteractionEnricherTest {
     @Test
     public void test_enrichment_with_CvTermEnricher_with_CvTerm() throws EnricherException {
         mockCvTermFetcher = new MockCvTermFetcher();
-        interactionEnricher.setCvTermEnricher(new MinimumCvTermEnricher(mockCvTermFetcher));
+        interactionEnricher.setCvTermEnricher(new MinimalCvTermEnricher(mockCvTermFetcher));
 
         mockCvTermFetcher.addEntry("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
         interactionEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);

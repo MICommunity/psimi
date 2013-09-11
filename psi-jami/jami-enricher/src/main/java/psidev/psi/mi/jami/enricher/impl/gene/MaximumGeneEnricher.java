@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.gene;
 
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
-import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -25,7 +24,7 @@ public class MaximumGeneEnricher
         // == Xref ====================================================================
         if( ! geneToEnrich.getXrefs().isEmpty()
                 && ! geneFetched.getXrefs().isEmpty() ){
-            XrefMerger merger = new XrefMerger();
+            XrefMergeUtils merger = new XrefMergeUtils();
             merger.merge(geneFetched.getXrefs() , geneToEnrich.getXrefs() , false);
             for(Xref xref : merger.getToAdd()){
                 geneToEnrich.getXrefs().add(xref);

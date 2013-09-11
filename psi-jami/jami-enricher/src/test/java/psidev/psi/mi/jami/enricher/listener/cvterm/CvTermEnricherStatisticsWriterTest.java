@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherStatisticsWriter;
@@ -32,7 +32,7 @@ public class CvTermEnricherStatisticsWriterTest {
 
     protected static final Logger log = LoggerFactory.getLogger(CvTermEnricherLogger.class.getName());
 
-    MinimumCvTermEnricher minimumCvTermEnricher;
+    MinimalCvTermEnricher minimumCvTermEnricher;
     MockCvTermFetcher mockCvTermFetcher;
     CvTermEnricherStatisticsWriter cvTermStatisticsWriter;
 
@@ -46,7 +46,7 @@ public class CvTermEnricherStatisticsWriterTest {
     @Before
     public void setup() throws BridgeFailedException, IOException {
         mockCvTermFetcher = new MockCvTermFetcher();
-        minimumCvTermEnricher = new MinimumCvTermEnricher(mockCvTermFetcher);
+        minimumCvTermEnricher = new MinimalCvTermEnricher(mockCvTermFetcher);
 
         successFile = new File("success.txt");
         failFile = new File("failed.txt");

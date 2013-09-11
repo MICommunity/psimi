@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.FullCvTermUpdater;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
@@ -33,7 +35,7 @@ import static junit.framework.Assert.assertEquals;
 public class MaximumCvTermUpdaterTest {
 
 
-    private MaximumCvTermUpdater cvTermEnricher;
+    private FullCvTermUpdater cvTermEnricher;
     private MockCvTermFetcher mockCvTermFetcher ;
 
     private CvTerm mockCvTerm;
@@ -60,7 +62,7 @@ public class MaximumCvTermUpdaterTest {
     public void setup() throws BridgeFailedException {
         mockCvTermFetcher = new MockCvTermFetcher();
 
-        cvTermEnricher = new MaximumCvTermUpdater(mockCvTermFetcher);
+        cvTermEnricher = new FullCvTermUpdater(mockCvTermFetcher);
 
         mockCvTerm = new DefaultCvTerm(short_name, full_name, MI_ID);
         mockCvTerm.getIdentifiers().add(new DefaultXref(
@@ -116,7 +118,7 @@ public class MaximumCvTermUpdaterTest {
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < MinimumCvTermEnricher.RETRY_COUNT);
+                timesToTry < MinimalCvTermEnricher.RETRY_COUNT);
 
         FailingCvTermFetcher fetcher = new FailingCvTermFetcher(timesToTry);
         fetcher.addEntry(MI_ID , mockCvTerm);

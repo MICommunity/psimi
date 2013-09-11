@@ -13,7 +13,7 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 /**
- * Tests to confirm that the AliasMerger behaves as expected.
+ * Tests to confirm that the AliasMergeUtils behaves as expected.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 02/08/13
@@ -21,12 +21,12 @@ import static org.junit.Assert.*;
 public class AliasMergerTest {
 
 
-    private AliasMerger merger;
+    private AliasMergeUtils merger;
 
 
     @Before
     public void setup(){
-        merger = new AliasMerger();
+        merger = new AliasMergeUtils();
     }
 
     /**

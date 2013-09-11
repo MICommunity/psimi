@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ExperimentEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
@@ -62,7 +62,7 @@ public class MinimumExperimentEnricherTest {
             throws EnricherException {
 
         experimentEnricher.setCvTermEnricher(
-                new MinimumCvTermEnricher(
+                new MinimalCvTermEnricher(
                         new MockCvTermFetcher()));
         experimentEnricher.setOrganismEnricher(
                 new MinimumOrganismEnricher(
@@ -89,7 +89,7 @@ public class MinimumExperimentEnricherTest {
             throws EnricherException {
 
         experimentEnricher.setCvTermEnricher(
-                new MinimumCvTermEnricher(
+                new MinimalCvTermEnricher(
                         new MockCvTermFetcher()));
 
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(

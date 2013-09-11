@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.feature.BasicFeatureEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherListenerManager;
@@ -74,7 +74,7 @@ public class MinimumParticipantEnricherTest {
     @Test
     public void test_enrichment_with_cvTermEnricher_but_no_cvTerms() throws EnricherException {
 
-        participantEnricher.setCvTermEnricher(new MinimumCvTermEnricher(new MockCvTermFetcher()));
+        participantEnricher.setCvTermEnricher(new MinimalCvTermEnricher(new MockCvTermFetcher()));
 
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
@@ -100,7 +100,7 @@ public class MinimumParticipantEnricherTest {
     @Test
     public void test_enrichment_with_CvTermEnricher_enriches_CvTerms() throws EnricherException {
         MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
-        participantEnricher.setCvTermEnricher(new MinimumCvTermEnricher(mockCvTermFetcher));
+        participantEnricher.setCvTermEnricher(new MinimalCvTermEnricher(mockCvTermFetcher));
         mockCvTermFetcher.addEntry("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
         participantEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
 

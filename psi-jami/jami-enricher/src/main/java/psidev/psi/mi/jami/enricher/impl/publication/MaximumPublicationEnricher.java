@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.publication;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.enricher.util.XrefMerger;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -59,7 +58,7 @@ public class MaximumPublicationEnricher extends MinimumPublicationEnricher {
 
         // == XREFS ===========================================================================
         if(!publicationFetched.getXrefs().isEmpty()){
-            XrefMerger xrefMerger = new XrefMerger();
+            XrefMergeUtils xrefMerger = new XrefMergeUtils();
             xrefMerger.merge(publicationFetched.getXrefs() , publicationToEnrich.getXrefs() , false);
             for(Xref newXref : xrefMerger.getToAdd()) {
                 publicationToEnrich.getXrefs().add(newXref);
