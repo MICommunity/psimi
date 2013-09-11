@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -62,7 +63,8 @@ public class FullCvTermEnricher
     }
 
     protected void processXrefs(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
-        mergeXrefs(cvTermToEnrich, cvTermFetched.getXrefs(), false, false);
+        EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getXrefs(), cvTermFetched.getXrefs(), false, false,
+                getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
     protected void mergeAnnotations(CvTerm termToEnrich, Collection<Annotation> fetchedAnnotations , boolean remove){
@@ -128,7 +130,7 @@ public class FullCvTermEnricher
             if (remove && !containsAlias){
                 aliasIterator.remove();
                 if (getCvTermEnricherListener() != null){
-                    getCvTermEnricherListener().onRemovedSynonym(termToEnrich, alias);
+                    getCvTermEnricherListener().onRemovedAlias(termToEnrich, alias);
                 }
             }
         }
@@ -149,7 +151,7 @@ public class FullCvTermEnricher
             if (!containsAlias){
                 toEnrichAliases.add(alias);
                 if (getCvTermEnricherListener() != null){
-                    getCvTermEnricherListener().onAddedSynonym(termToEnrich, alias);
+                    getCvTermEnricherListener().onAddedAlias(termToEnrich, alias);
                 }
             }
         }

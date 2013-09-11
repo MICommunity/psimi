@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 
 
@@ -49,7 +50,8 @@ public class MinimalCvTermUpdater extends MinimalCvTermEnricher{
 
     @Override
     protected void processIdentifiers(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
-        mergeXrefs(cvTermToEnrich, cvTermFetched.getIdentifiers(), true, true);
+        EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getIdentifiers(), cvTermFetched.getIdentifiers(), true, true,
+                getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
     @Override
