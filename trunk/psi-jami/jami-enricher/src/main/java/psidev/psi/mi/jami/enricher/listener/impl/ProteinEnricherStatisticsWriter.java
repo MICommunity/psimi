@@ -1,12 +1,8 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,6 +145,16 @@ public class ProteinEnricherStatisticsWriter
 
     public void onRemovedChecksum(Protein protein, Checksum removed) {
         checkObject(protein);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(Protein o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(Protein o, Annotation removed) {
+        checkObject(o);
         incrementRemovedCount();
     }
 }

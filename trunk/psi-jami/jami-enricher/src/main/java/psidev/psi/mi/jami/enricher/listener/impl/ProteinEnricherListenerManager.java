@@ -1,12 +1,8 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 /**
  * A manager for listeners which holds a list of listeners.
@@ -136,6 +132,18 @@ public class ProteinEnricherListenerManager
     public void onRemovedChecksum(Protein protein, Checksum removed) {
         for(ProteinEnricherListener l : getListenersList()){
             l.onRemovedChecksum(protein, removed);
+        }
+    }
+
+    public void onAddedAnnotation(Protein o, Annotation added) {
+        for(ProteinEnricherListener listener : getListenersList()){
+            listener.onAddedAnnotation(o, added);
+        }
+    }
+
+    public void onRemovedAnnotation(Protein o, Annotation removed) {
+        for(ProteinEnricherListener listener : getListenersList()){
+            listener.onRemovedAnnotation(o, removed);
         }
     }
 }

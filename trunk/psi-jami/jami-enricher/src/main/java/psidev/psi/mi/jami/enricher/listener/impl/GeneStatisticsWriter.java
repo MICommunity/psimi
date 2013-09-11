@@ -1,11 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -140,6 +136,16 @@ public class GeneStatisticsWriter
 
     public void onRemovedChecksum(Gene gene, Checksum removed) {
         checkObject(gene);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(Gene o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(Gene o, Annotation removed) {
+        checkObject(o);
         incrementRemovedCount();
     }
 }

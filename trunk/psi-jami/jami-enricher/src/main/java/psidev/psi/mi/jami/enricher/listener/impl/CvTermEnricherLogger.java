@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -62,11 +63,18 @@ public class CvTermEnricherLogger implements CvTermEnricherListener {
         log.info(cv+" has removed xref "+removed.toString());
     }
 
-    public void onAddedSynonym(CvTerm cv, Alias added) {
+    public void onAddedAlias(CvTerm cv, Alias added) {
         log.info(cv+" has added synonym "+added.toString());
     }
 
-    public void onRemovedSynonym(CvTerm cv, Alias removed) {
+    public void onRemovedAlias(CvTerm cv, Alias removed) {
         log.info(cv+" has removed synonym "+removed.toString());
+    }
+
+    public void onAddedAnnotation(CvTerm o, Annotation added) {
+        log.info(o.toString()+" has annotation added "+added.toString());    }
+
+    public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+        log.info(o.toString()+" has annotation removed "+removed.toString());
     }
 }
