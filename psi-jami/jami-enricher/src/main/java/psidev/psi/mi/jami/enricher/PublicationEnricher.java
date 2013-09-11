@@ -33,13 +33,6 @@ public interface PublicationEnricher {
     public void enrichPublications(Collection<Publication> publicationsToEnrich) throws EnricherException;
 
     /**
-     * Sets the publication fetcher.
-     * If null, an illegal state exception will be thrown at the next enrichment
-     * @param fetcher   the fetcher to be used to retrieve publication entries
-     */
-    public void setPublicationFetcher(PublicationFetcher fetcher);
-
-    /**
      * Gets the publication fetcher which is currently being used to retrieve entries
      * @return  the current publication fetcher.
      */
