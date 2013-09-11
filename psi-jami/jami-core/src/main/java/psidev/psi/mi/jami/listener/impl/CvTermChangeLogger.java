@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.listener.impl;
 
 import psidev.psi.mi.jami.listener.CvTermChangeListener;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -94,5 +95,13 @@ public class CvTermChangeLogger implements CvTermChangeListener {
 
     public void onRemovedSynonym(CvTerm cv, Alias removed) {
         cvChangeLogger.log(Level.INFO, "The synonym " + removed.toString() + " has been removed from the cv term " + cv.toString());
+    }
+
+    public void onAddedAnnotation(CvTerm cv, Annotation added) {
+        cvChangeLogger.log(Level.INFO, "The annotation " + added.toString() + " has been added to the cv term " + cv.toString());
+    }
+
+    public void onRemovedAnnotation(CvTerm cv, Annotation removed) {
+        cvChangeLogger.log(Level.INFO, "The annotation " + removed.toString() + " has been removed from the cv term " + cv.toString());
     }
 }

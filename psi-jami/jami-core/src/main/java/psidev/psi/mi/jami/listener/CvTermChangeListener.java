@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.listener;
 
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -100,4 +101,18 @@ public interface CvTermChangeListener extends EventListener {
      * @param removed
      */
     public void onRemovedSynonym(CvTerm cv, Alias removed);
+
+    /**
+     * Listen to the event where an annotation has been added to the cv term annotations.
+     * @param cv
+     * @param added
+     */
+    public void onAddedAnnotation(CvTerm cv, Annotation added);
+
+    /**
+     * Listen to the event where an annotation has been removed from the cv term annotations.
+     * @param cv
+     * @param removed
+     */
+    public void onRemovedAnnotation(CvTerm cv, Annotation removed);
 }
