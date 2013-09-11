@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.listener;
 
-import psidev.psi.mi.jami.model.*;
-
-import java.util.EventListener;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Range;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +10,7 @@ import java.util.EventListener;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public interface FeatureChangeListener extends EventListener{
+public interface FeatureChangeListener extends AnnotationsChangeListener, XrefsChangeListener, IdentifiersChangeListener {
 
     public void onShortNameUpdate(Feature feature, String oldShortName);
 
@@ -19,18 +19,6 @@ public interface FeatureChangeListener extends EventListener{
     public void onInterproUpdate(Feature feature, String oldInterpro);
 
     public void onTypeAdded(Feature feature , CvTerm oldType);
-
-    public void onAddedIdentifier(Feature feature, Xref added);
-
-    public void onRemovedIdentifier(Feature feature, Xref removed);
-
-    public void onAddedXref(Feature feature, Xref added);
-
-    public void onRemovedXref(Feature feature, Xref removed);
-
-    public void onAddedAnnotation(Feature feature, Annotation added);
-
-    public void onRemovedAnnotation(Feature feature, Annotation removed);
 
     public void onAddedRange(Feature feature, Range added);
 
