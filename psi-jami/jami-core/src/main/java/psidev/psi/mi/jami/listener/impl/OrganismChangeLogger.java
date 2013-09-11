@@ -47,11 +47,11 @@ public class OrganismChangeLogger implements OrganismChangeListener {
         organismChangeListener.log(Level.INFO, "The taxid "+oldTaxid+" has been updated with " + organism.getTaxId() + " in the organism " + organism.toString());
     }
 
-    public void onAddedAlias(Object organism, Alias added) {
+    public void onAddedAlias(Organism organism, Alias added) {
         organismChangeListener.log(Level.INFO, "The alias "+added.toString()+" has been added to the organism " + organism.toString());
     }
 
-    public void onRemovedAlias(Object organism, Alias removed) {
+    public void onRemovedAlias(Organism organism, Alias removed) {
         organismChangeListener.log(Level.INFO, "The alias "+removed.toString()+" has been removed from the organism " + organism.toString());
     }
 }

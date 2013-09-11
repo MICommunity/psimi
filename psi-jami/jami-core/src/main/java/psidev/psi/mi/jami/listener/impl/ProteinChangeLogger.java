@@ -103,27 +103,27 @@ public class ProteinChangeLogger implements ProteinChangeListener {
         proteinChangeLogger.log(Level.INFO, "The organism " + protein.getOrganism().getTaxId() + " has been added to the protein " + protein.toString());
     }
 
-    public void onAddedIdentifier(Object protein, Xref added) {
+    public void onAddedIdentifier(Protein protein, Xref added) {
         proteinChangeLogger.log(Level.INFO, "The identifier " + added.toString() + " has been added to the protein " + protein.toString());
     }
 
-    public void onRemovedIdentifier(Object protein, Xref removed) {
+    public void onRemovedIdentifier(Protein protein, Xref removed) {
         proteinChangeLogger.log(Level.INFO, "The identifier " + removed.toString() + " has been removed from the protein " + protein.toString());
     }
 
-    public void onAddedXref(Object protein, Xref added) {
+    public void onAddedXref(Protein protein, Xref added) {
         proteinChangeLogger.log(Level.INFO, "The xref " + added.toString() + " has been added to the protein " + protein.toString());
     }
 
-    public void onRemovedXref(Object protein, Xref removed) {
+    public void onRemovedXref(Protein protein, Xref removed) {
         proteinChangeLogger.log(Level.INFO, "The xref " + removed.toString() + " has been removed from the protein " + protein.toString());
     }
 
-    public void onAddedAlias(Object protein, Alias added) {
+    public void onAddedAlias(Protein protein, Alias added) {
         proteinChangeLogger.log(Level.INFO, "The alias " + added.toString() + " has been added to the protein " + protein.toString());
     }
 
-    public void onRemovedAlias(Object protein, Alias removed) {
+    public void onRemovedAlias(Protein protein, Alias removed) {
         proteinChangeLogger.log(Level.INFO, "The alias " + removed.toString() + " has been removed from the protein " + protein.toString());
     }
 
@@ -135,11 +135,11 @@ public class ProteinChangeLogger implements ProteinChangeListener {
         proteinChangeLogger.log(Level.INFO, "The checksum " + removed.toString() + " has been removed from the protein " + protein.toString());
     }
 
-    public void onAddedAnnotation(Object protein, Annotation added) {
+    public void onAddedAnnotation(Protein protein, Annotation added) {
         proteinChangeLogger.log(Level.INFO, "The annotation " + added.toString() + " has been added to the protein " + protein.toString());
     }
 
-    public void onRemovedAnnotation(Object protein, Annotation removed) {
+    public void onRemovedAnnotation(Protein protein, Annotation removed) {
         proteinChangeLogger.log(Level.INFO, "The annotation " + removed.toString() + " has been removed from the protein " + protein.toString());
     }
 }

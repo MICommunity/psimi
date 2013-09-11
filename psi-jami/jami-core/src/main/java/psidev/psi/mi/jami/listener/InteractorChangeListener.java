@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since 08/08/13
  */
 public interface InteractorChangeListener<T extends Interactor>
-        extends AliasesChangeListener, XrefsChangeListener, AnnotationsChangeListener, IdentifiersChangeListener {
+        extends AliasesChangeListener<T>, XrefsChangeListener<T>, AnnotationsChangeListener<T>, IdentifiersChangeListener<T> {
 
     /**
      * Listens for the event where the shortName has been changed.

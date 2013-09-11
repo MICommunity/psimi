@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.CvTerm;
  * @since <pre>11/06/13</pre>
  */
 
-public interface CvTermChangeListener extends AnnotationsChangeListener, XrefsChangeListener, IdentifiersChangeListener, AliasesChangeListener {
+public interface CvTermChangeListener extends AnnotationsChangeListener<CvTerm>, XrefsChangeListener<CvTerm>, IdentifiersChangeListener<CvTerm>, AliasesChangeListener<CvTerm> {
 
     /**
      * Listen to the event where the shortName of a cv term has been changed.

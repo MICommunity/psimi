@@ -11,19 +11,19 @@ import java.util.EventListener;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public interface AliasesChangeListener extends EventListener {
+public interface AliasesChangeListener<T extends Object> extends EventListener {
 
     /**
      * Listen to the event where an alias has been added to the object aliases.
      * @param o        The object which has changed.
      * @param added             The added alias.
      */
-    public void onAddedAlias(Object o , Alias added);
+    public void onAddedAlias(T o , Alias added);
 
     /**
      * Listen to the event where an alias has been removed from the object aliases.
      * @param o        The object which has changed.
      * @param removed           The removed alias.
      */
-    public void onRemovedAlias(Object o , Alias removed);
+    public void onRemovedAlias(T o , Alias removed);
 }

@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Organism;
  * @since <pre>11/06/13</pre>
  */
 
-public interface OrganismChangeListener extends AliasesChangeListener {
+public interface OrganismChangeListener extends AliasesChangeListener<Organism> {
 
     /**
      * Listen to the event where the commonName of an organism has been changed.
