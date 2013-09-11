@@ -8,10 +8,10 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalPublicationEnricher;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ExperimentEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
-import psidev.psi.mi.jami.enricher.impl.publication.MinimumPublicationEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
@@ -68,7 +68,7 @@ public class MinimumExperimentEnricherTest {
                 new MinimumOrganismEnricher(
                         new MockOrganismFetcher()));
         experimentEnricher.setPublicationEnricher(
-                new MinimumPublicationEnricher(
+                new MinimalPublicationEnricher(
                         new MockPublicationFetcher()));
 
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(
@@ -115,7 +115,7 @@ public class MinimumExperimentEnricherTest {
             throws EnricherException {
 
         experimentEnricher.setPublicationEnricher(
-                new MinimumPublicationEnricher(
+                new MinimalPublicationEnricher(
                         new MockPublicationFetcher()));
 
         experimentEnricher.setExperimentEnricherListener( new ExperimentEnricherListenerManager(

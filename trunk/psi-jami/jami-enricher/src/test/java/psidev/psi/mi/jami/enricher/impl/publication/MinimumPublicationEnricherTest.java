@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingPublicationFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.MinimalPublicationEnricher;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherLogger;
@@ -43,7 +44,7 @@ public class MinimumPublicationEnricherTest {
     @Before
     public void setup(){
         fetcher = new MockPublicationFetcher();
-        publicationEnricher = new MinimumPublicationEnricher(fetcher);
+        publicationEnricher = new MinimalPublicationEnricher(fetcher);
         testPub = new DefaultPublication(TEST_PUBMED_ID);
         fetcher.addEntry(TEST_PUBMED_ID, testPub);
 
@@ -84,7 +85,7 @@ public class MinimumPublicationEnricherTest {
         int timesToTry = 3;
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < MinimumPublicationEnricher.RETRY_COUNT);
+                timesToTry < MinimalPublicationEnricher.RETRY_COUNT);
 
         FailingPublicationFetcher fetcher = new FailingPublicationFetcher(timesToTry);
         fetcher.addEntry(TEST_PUBMED_ID , testPub);

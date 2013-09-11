@@ -3,6 +3,14 @@ package psidev.psi.mi.jami.enricher.util;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager;
+import psidev.psi.mi.jami.listener.IdentifiersChangeListener;
+import psidev.psi.mi.jami.listener.XrefsChangeListener;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Utilities for enrichers.
@@ -58,6 +66,78 @@ public class EnricherUtils {
                 }
             } else {
                 proteinEnricher.setProteinEnricherListener(listeningFeatureEnricher);
+            }
+        }
+    }
+
+    /**
+     * Takes two lists of Xrefs and produces a list of those to add and those to remove.
+     *
+     * It will add in toEnrichXrefs all xref from fetchedXrefs that are not there. It will also remove extra identifiers from toEnrichXrefs
+     * if remove boolean is true.
+     *
+     *
+     * @param termToEnrich     The object to enrich
+     * @param fetchedXrefs      The new xrefs to be added.
+     * @param remove: if true, we remove xrefs that are not in enriched list
+     * @param isIdentifier if true compare identifiers, otherwise xrefs
+     */
+    public static <T extends Object> void mergeXrefs(T termToEnrich, Collection<Xref> toEnrichXrefs, Collection<Xref> fetchedXrefs , boolean remove,
+                              boolean isIdentifier, XrefsChangeListener<T> xrefListener, IdentifiersChangeListener<T> identifierListener){
+
+        Iterator<Xref> refIterator = toEnrichXrefs.iterator();
+        // remove xrefs in toEnrichXrefs that are not in fetchedXrefs
+        while(refIterator.hasNext()){
+            Xref ref = refIterator.next();
+            boolean containsRef = false;
+            for (Xref ref2 : toEnrichXrefs){
+                // identical xrefs and qualifier null. Only compare as identifier
+                if (DefaultXrefComparator.areEquals(ref, ref2)){
+                    containsRef = true;
+                    break;
+                }
+            }
+            // remove xref not in second list
+            if (remove && !containsRef){
+                refIterator.remove();
+                if (isIdentifier){
+                    if (identifierListener != null){
+                        identifierListener.onRemovedIdentifier(termToEnrich, ref);
+                    }
+                }
+                else{
+                    if (xrefListener != null){
+                        xrefListener.onRemovedXref(termToEnrich, ref);
+                    }
+                }
+            }
+        }
+
+        // add xrefs from fetchedXrefs that are not in toEnrichXref
+        refIterator = fetchedXrefs.iterator();
+        while(refIterator.hasNext()){
+            Xref ref = refIterator.next();
+            boolean containsRef = false;
+            for (Xref ref2 : toEnrichXrefs){
+                // identical xrefs
+                if (DefaultXrefComparator.areEquals(ref, ref2)){
+                    containsRef = true;
+                    break;
+                }
+            }
+            // add missing xref not in second list
+            if (!containsRef){
+                toEnrichXrefs.add(ref);
+                if (isIdentifier){
+                    if (identifierListener != null){
+                        identifierListener.onAddedIdentifier(termToEnrich, ref);
+                    }
+                }
+                else{
+                    if (xrefListener != null){
+                        xrefListener.onAddedXref(termToEnrich, ref);
+                    }
+                }
             }
         }
     }

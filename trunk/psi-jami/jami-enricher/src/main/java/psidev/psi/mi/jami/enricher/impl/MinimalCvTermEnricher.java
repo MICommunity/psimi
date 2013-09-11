@@ -6,13 +6,12 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * Provides minimum enrichment of the CvTerm.
@@ -122,7 +121,8 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
     }
 
     protected void processIdentifiers(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
-        mergeXrefs(cvTermToEnrich, cvTermFetched.getIdentifiers(), false, true);
+        EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getIdentifiers(), cvTermFetched.getIdentifiers(), false, true,
+                getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
     protected void processFullName(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
@@ -132,74 +132,6 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
             if (getCvTermEnricherListener() != null)
                 getCvTermEnricherListener().onFullNameUpdate(cvTermToEnrich, null);
-        }
-    }
-
-    /**
-     * Takes two lists of Xrefs and produces a list of those to add and those to remove.
-     *
-     * It will add in toEnrichXrefs all xref from fetchedXrefs that are not there. It will also remove extra identifiers from toEnrichXrefs
-     * if remove boolean is true.
-     *
-     *
-     * @param termToEnrich     The cv term to enrich
-     * @param fetchedXrefs      The new xrefs to be added.
-     * @param remove: if true, we remove xrefs that are not in enriched list
-     * @param isIdentifier if true compare identifiers, otherwise xrefs
-     */
-    protected void mergeXrefs(CvTerm termToEnrich, Collection<Xref> fetchedXrefs , boolean remove, boolean isIdentifier){
-        Collection<Xref> toEnrichXrefs = isIdentifier ? termToEnrich.getIdentifiers() : termToEnrich.getXrefs();
-
-        Iterator<Xref> refIterator = toEnrichXrefs.iterator();
-        // remove xrefs in toEnrichXrefs that are not in fetchedXrefs
-        while(refIterator.hasNext()){
-            Xref ref = refIterator.next();
-            boolean containsRef = false;
-            for (Xref ref2 : toEnrichXrefs){
-                // identical xrefs and qualifier null. Only compare as identifier
-                if (DefaultXrefComparator.areEquals(ref, ref2)){
-                    containsRef = true;
-                    break;
-                }
-            }
-            // remove xref not in second list
-            if (remove && !containsRef){
-                refIterator.remove();
-                if (getCvTermEnricherListener() != null){
-                    if (isIdentifier){
-                        getCvTermEnricherListener().onRemovedIdentifier(termToEnrich, ref);
-                    }
-                    else{
-                        getCvTermEnricherListener().onRemovedXref(termToEnrich, ref);
-                    }
-                }
-            }
-        }
-
-        // add xrefs from fetchedXrefs that are not in toEnrichXref
-        refIterator = fetchedXrefs.iterator();
-        while(refIterator.hasNext()){
-            Xref ref = refIterator.next();
-            boolean containsRef = false;
-            for (Xref ref2 : toEnrichXrefs){
-                // identical xrefs
-                if (DefaultXrefComparator.areEquals(ref, ref2)){
-                    containsRef = true;
-                    break;
-                }
-            }
-            // add missing xref not in second list
-            if (!containsRef){
-                toEnrichXrefs.add(ref);
-                if (getCvTermEnricherListener() != null){
-                    if (isIdentifier){
-                        getCvTermEnricherListener().onAddedIdentifier(termToEnrich, ref);
-                    }
-                    else{
-                        getCvTermEnricherListener().onAddedXref(termToEnrich, ref);
-                    }
-                }
-            }
         }
     }
 

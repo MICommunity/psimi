@@ -22,6 +22,7 @@ public interface PublicationEnricher {
      * If the publication is null an illegal state exception is thrown
      * @param publicationToEnrich   The publication to be enriched
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
+     * @throws IllegalArgumentException if publicationToEnrich is null
      */
     public void enrichPublication(Publication publicationToEnrich) throws EnricherException;
 
@@ -29,6 +30,7 @@ public interface PublicationEnricher {
      * Takes a collection of publications and enriches each in turn.
      * @param publicationsToEnrich      The publications to be enriched
      * @throws EnricherException        Thrown if problems are encountered in the fetcher
+     * @throws IllegalArgumentException if collection is null
      */
     public void enrichPublications(Collection<Publication> publicationsToEnrich) throws EnricherException;
 

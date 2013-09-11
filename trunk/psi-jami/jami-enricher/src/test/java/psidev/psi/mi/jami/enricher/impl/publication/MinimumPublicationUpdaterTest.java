@@ -6,6 +6,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.MinimalPublicationUpdater;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherLogger;
@@ -45,7 +46,7 @@ public class MinimumPublicationUpdaterTest {
     @Before
     public void setup(){
         fetcher = new MockPublicationFetcher();
-        publicationEnricher = new MinimumPublicationUpdater(fetcher);
+        publicationEnricher = new MinimalPublicationUpdater(fetcher);
 
         testPub = new DefaultPublication(TEST_PUBMED_ID);
         fetcher.addEntry(TEST_PUBMED_ID, testPub);

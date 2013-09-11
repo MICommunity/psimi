@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.publication;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
