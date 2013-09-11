@@ -17,11 +17,14 @@ import java.util.Date;
  */
 public class PublicationEnricherLogger implements PublicationEnricherListener{
 
-    protected static final Logger log = LoggerFactory.getLogger(PublicationEnricherLogger.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(PublicationEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
         log.info(publication.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
+
+    public void onEnrichmentError(Publication object, String message, Exception e) {
+        log.error(object.toString()+" enrichment error, message: "+message, e);    }
 
     public void onPubmedIdUpdate(Publication publication, String oldPubmedId) {
         log.info(publication.toString()+" updated pubmedId to "+publication.getPubmedId()+" from "+oldPubmedId);

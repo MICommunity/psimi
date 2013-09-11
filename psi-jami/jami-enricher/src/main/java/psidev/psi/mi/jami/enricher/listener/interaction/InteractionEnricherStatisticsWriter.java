@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.enricher.listener.interaction;
 
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Interaction;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -20,13 +20,13 @@ public class InteractionEnricherStatisticsWriter
         implements InteractionEnricherListener {
 
 
-    private static final String jamiObject = "Interaction";
+    private static final String FILE_NAME = "Interaction";
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public InteractionEnricherStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -35,7 +35,7 @@ public class InteractionEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public InteractionEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -45,7 +45,7 @@ public class InteractionEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public InteractionEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -55,14 +55,9 @@ public class InteractionEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public InteractionEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
-
-
-    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message){
-        onObjectEnriched(interaction , status , message);
-    }
 }

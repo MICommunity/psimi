@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.protein;
 
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.ProteinChangeListener;
 import psidev.psi.mi.jami.model.Protein;
 
@@ -14,9 +13,5 @@ import psidev.psi.mi.jami.model.Protein;
  */
 public interface ProteinEnricherListener
         extends ProteinChangeListener , EnricherListener<Protein> {
-
-    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status , String message);
-
-    public void onProteinRemapped(Protein protein, String oldUniprot);
 
 }

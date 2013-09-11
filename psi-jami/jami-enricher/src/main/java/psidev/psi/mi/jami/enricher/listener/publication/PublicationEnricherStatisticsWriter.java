@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.publication;
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.BioactiveEntity;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -23,7 +21,7 @@ public class PublicationEnricherStatisticsWriter
         extends StatisticsWriter<Publication>
         implements PublicationEnricherListener{
 
-    private static final String jamiObject = "Publication";
+    private static final String FILE_NAME = "Publication";
 
 
     /**
@@ -31,7 +29,7 @@ public class PublicationEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public PublicationEnricherStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -40,7 +38,7 @@ public class PublicationEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public PublicationEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -50,7 +48,7 @@ public class PublicationEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public PublicationEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -60,88 +58,84 @@ public class PublicationEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public PublicationEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
 
-    public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message){
-        onObjectEnriched(publication , status , message);
-    }
-
     public void onPubmedIdUpdate(Publication publication, String oldPubmedId) {
         checkObject(publication);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onDoiUpdate(Publication publication, String oldDoi) {
         checkObject(publication);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onIdentifierAdded(Publication publication, Xref addedXref) {
         checkObject(publication);
-        additionCount++;
+        incrementUpdateCount();
     }
 
     public void onIdentifierRemoved(Publication publication, Xref removedXref) {
         checkObject(publication);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onImexIdentifierAdded(Publication publication, Xref addedXref) {
         checkObject(publication);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onTitleUpdated(Publication publication, String oldTitle) {
         checkObject(publication);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onJournalUpdated(Publication publication, String oldJournal) {
         checkObject(publication);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onPublicationDateUpdated(Publication publication, Date oldDate) {
         checkObject(publication);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onAuthorAdded(Publication publication, String addedAuthor) {
         checkObject(publication);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onAuthorRemoved(Publication publication, String removedAuthor) {
         checkObject(publication);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onXrefAdded(Publication publication, Xref addedXref) {
         checkObject(publication);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onXrefRemoved(Publication publication, Xref removedXref) {
         checkObject(publication);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {
         checkObject(publication);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onAnnotationRemoved(Publication publication, Annotation annotationRemoved) {
         checkObject(publication);
-        removedCount++;
+        incrementRemovedCount();
     }
 
     public void onReleaseDateUpdated(Publication publication, Date oldDate) {
         checkObject(publication);
-        updateCount++;
+        incrementUpdateCount();
     }
 }

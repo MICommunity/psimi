@@ -14,9 +14,13 @@ import psidev.psi.mi.jami.model.Participant;
 public class ParticipantEnricherLogger
         implements  ParticipantEnricherListener{
 
-    protected static final Logger log = LoggerFactory.getLogger(ParticipantEnricherLogger.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(ParticipantEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
         log.info(participant.toString()+" enrichment complete with status ["+status+"], message: "+message);
+    }
+
+    public void onEnrichmentError(Participant object, String message, Exception e) {
+        log.info(object.toString()+" enrichment error, message: "+message, e);
     }
 }
