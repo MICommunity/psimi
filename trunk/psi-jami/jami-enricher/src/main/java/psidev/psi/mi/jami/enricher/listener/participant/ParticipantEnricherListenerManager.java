@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.participant;
 
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
@@ -16,7 +15,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @since 10/07/13
  */
 public class ParticipantEnricherListenerManager
-        extends EnricherListenerManager<ParticipantEnricherListener>
+        extends EnricherListenerManager<Participant, ParticipantEnricherListener>
         implements ParticipantEnricherListener{
 
     /**
@@ -35,11 +34,4 @@ public class ParticipantEnricherListenerManager
 
 
     //============================================================================================
-
-
-    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
-        for(ParticipantEnricherListener listener : listenersList){
-            listener.onEnrichmentComplete(participant, status, message);
-        }
-    }
 }

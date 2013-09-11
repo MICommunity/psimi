@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.enricher.listener.organism;
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Organism;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -19,13 +20,13 @@ public class OrganismEnricherStatisticsWriter
         implements OrganismEnricherListener {
 
 
-    private static final String jamiObject = "Organism";
+    private static final String FILE_NAME = "Organism";
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public OrganismEnricherStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -34,7 +35,7 @@ public class OrganismEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public OrganismEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -44,7 +45,7 @@ public class OrganismEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public OrganismEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -54,40 +55,34 @@ public class OrganismEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public OrganismEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
 
-
-
-    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message){
-        onObjectEnriched(organism , status , message);
-    }
-
     public void onCommonNameUpdate(Organism organism, String oldCommonName) {
         checkObject(organism);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onScientificNameUpdate(Organism organism, String oldScientificName) {
         checkObject(organism);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onTaxidUpdate(Organism organism, String oldTaxid) {
         checkObject(organism);
-        updateCount++;
+        incrementUpdateCount();
     }
 
     public void onAddedAlias(Organism organism, Alias added) {
         checkObject(organism);
-        additionCount++;
+        incrementAdditionCount();
     }
 
     public void onRemovedAlias(Organism organism, Alias removed) {
         checkObject(organism);
-        removedCount++;
+        incrementRemovedCount();
     }
 }

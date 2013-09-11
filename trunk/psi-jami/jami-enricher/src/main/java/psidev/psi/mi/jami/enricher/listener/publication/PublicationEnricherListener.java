@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.publication;
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.PublicationChangeListener;
 import psidev.psi.mi.jami.model.Publication;
 
@@ -15,13 +14,4 @@ import psidev.psi.mi.jami.model.Publication;
  */
 public interface PublicationEnricherListener
         extends EnricherListener<Publication>, PublicationChangeListener{
-
-    /**
-     *
-     * @param publication   The publication which was being enriched
-     * @param status        The status of the enrichment upon completion.
-     * @param message       Additional information about the enrichment. Can be null.
-     */
-    public void onEnrichmentComplete(
-            Publication publication ,EnrichmentStatus status , String message);
 }

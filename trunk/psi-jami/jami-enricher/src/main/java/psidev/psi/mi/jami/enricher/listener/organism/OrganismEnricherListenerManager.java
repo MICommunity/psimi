@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.enricher.listener.organism;
 
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -20,7 +19,7 @@ import psidev.psi.mi.jami.model.Organism;
  * @since 08/07/13
  */
 public class OrganismEnricherListenerManager
-        extends EnricherListenerManager<OrganismEnricherListener>
+        extends EnricherListenerManager<Organism, OrganismEnricherListener>
         implements OrganismEnricherListener{
 
     /**
@@ -38,38 +37,32 @@ public class OrganismEnricherListenerManager
 
     //===================================================================================================
 
-    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
-        for(OrganismEnricherListener listener : listenersList){
-            listener.onEnrichmentComplete(organism, status, message) ;
-        }
-    }
-
     public void onCommonNameUpdate(Organism organism, String oldCommonName) {
-        for(OrganismEnricherListener listener : listenersList){
+        for(OrganismEnricherListener listener : getListenersList()){
             listener.onCommonNameUpdate(organism, oldCommonName);
         }
     }
 
     public void onScientificNameUpdate(Organism organism, String oldScientificName) {
-        for(OrganismEnricherListener listener : listenersList){
+        for(OrganismEnricherListener listener : getListenersList()){
             listener.onScientificNameUpdate(organism, oldScientificName);
         }
     }
 
     public void onTaxidUpdate(Organism organism, String oldTaxid) {
-        for(OrganismEnricherListener listener : listenersList){
+        for(OrganismEnricherListener listener : getListenersList()){
             listener.onTaxidUpdate(organism, oldTaxid);
         }
     }
 
     public void onAddedAlias(Organism organism, Alias added) {
-        for(OrganismEnricherListener listener : listenersList){
+        for(OrganismEnricherListener listener : getListenersList()){
             listener.onAddedAlias(organism, added);
         }
     }
 
     public void onRemovedAlias(Organism organism, Alias removed) {
-        for(OrganismEnricherListener listener : listenersList){
+        for(OrganismEnricherListener listener : getListenersList()){
             listener.onRemovedAlias(organism, removed);
         }
     }

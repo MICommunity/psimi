@@ -1,11 +1,14 @@
 package psidev.psi.mi.jami.enricher.listener.protein;
 
 
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.StatisticsWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Xref;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -20,14 +23,14 @@ public class ProteinEnricherStatisticsWriter
         implements ProteinEnricherListener {
 
 
-    private static final String jamiObject = "Protein";
+    private static final String FILE_NAME = "Protein";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ProteinEnricherStatisticsWriter() throws IOException {
-        super(jamiObject);
+        super(FILE_NAME);
     }
 
     /**
@@ -36,7 +39,7 @@ public class ProteinEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ProteinEnricherStatisticsWriter(String fileName) throws IOException {
-        super(fileName, jamiObject);
+        super(fileName);
     }
 
     /**
@@ -46,7 +49,7 @@ public class ProteinEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ProteinEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
-        super(successFileName, failureFileName, jamiObject);
+        super(successFileName, failureFileName);
     }
 
     /**
@@ -56,104 +59,95 @@ public class ProteinEnricherStatisticsWriter
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
     public ProteinEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
-        super(successFile, failureFile, jamiObject);
+        super(successFile, failureFile);
     }
 
 
     // ================================================================
 
 
-    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message){
-        onObjectEnriched(protein , status , message);
-    }
-
-    public void onProteinRemapped(Protein protein, String oldUniprot) {
-        checkObject(protein);
-        updateCount ++;
-    }
-
     public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onRefseqUpdate(Protein protein, String oldRefseq) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onGeneNameUpdate(Protein protein, String oldGeneName) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onRogidUpdate(Protein protein, String oldRogid) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onShortNameUpdate(Protein protein, String oldShortName) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onFullNameUpdate(Protein protein, String oldFullName) {
         checkObject(protein);
-        updateCount ++;
+        incrementUpdateCount();
     }
 
     public void onAddedInteractorType(Protein protein) {
         checkObject(protein);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onAddedOrganism(Protein protein) {
         checkObject(protein);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onAddedIdentifier(Protein protein, Xref added) {
         checkObject(protein);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedIdentifier(Protein protein, Xref removed) {
         checkObject(protein);
-        removedCount ++;
+        incrementRemovedCount();
     }
 
     public void onAddedXref(Protein protein, Xref added) {
         checkObject(protein);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedXref(Protein protein, Xref removed) {
         checkObject(protein);
-        removedCount ++;
+        incrementRemovedCount();
     }
 
     public void onAddedAlias(Protein protein, Alias added) {
         checkObject(protein);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedAlias(Protein protein, Alias removed) {
         checkObject(protein);
-        removedCount ++;
+        incrementRemovedCount();
     }
 
     public void onAddedChecksum(Protein protein, Checksum added) {
         checkObject(protein);
-        additionCount ++;
+        incrementAdditionCount();
     }
 
     public void onRemovedChecksum(Protein protein, Checksum removed) {
         checkObject(protein);
-        removedCount ++;
+        incrementRemovedCount();
     }
 }

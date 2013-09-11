@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.protein;
 
 
 import psidev.psi.mi.jami.enricher.listener.EnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Protein;
@@ -19,7 +18,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @since  12/06/13
  */
 public class ProteinEnricherListenerManager
-        extends EnricherListenerManager<ProteinEnricherListener>
+        extends EnricherListenerManager<Protein, ProteinEnricherListener>
         implements ProteinEnricherListener {
 
     /**
@@ -37,116 +36,104 @@ public class ProteinEnricherListenerManager
 
     //============================================================================================
 
-    public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
-        for(ProteinEnricherListener l : listenersList){
-            l.onEnrichmentComplete(protein, status , message);
-        }
-    }
-
-    public void onProteinRemapped(Protein protein, String oldUniprot) {
-        for(ProteinEnricherListener l : listenersList){
-            l.onProteinRemapped(protein, oldUniprot);
-        }
-    }
-
     public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onUniprotKbUpdate(protein, oldUniprot);
         }
     }
 
     public void onRefseqUpdate(Protein protein, String oldRefseq) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onRefseqUpdate(protein, oldRefseq);
         }
     }
 
     public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onGeneNameUpdate(protein, oldGeneName);
         }
     }
 
     public void onRogidUpdate(Protein protein, String oldRogid) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onRogidUpdate(protein, oldRogid);
         }
     }
 
     public void onSequenceUpdate(Protein protein, String oldSequence) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onSequenceUpdate(protein, oldSequence);
         }
     }
 
     public void onShortNameUpdate(Protein protein, String oldShortName) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onShortNameUpdate(protein, oldShortName);
         }
     }
 
     public void onFullNameUpdate(Protein protein, String oldFullName) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onFullNameUpdate(protein, oldFullName);
         }
     }
 
     public void onAddedInteractorType(Protein protein) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onAddedInteractorType(protein);
         }
     }
 
     public void onAddedOrganism(Protein protein) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onAddedOrganism(protein);
         }
     }
 
     public void onAddedIdentifier(Protein protein, Xref added) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onAddedIdentifier(protein, added);
         }
     }
 
     public void onRemovedIdentifier(Protein protein, Xref removed) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onRemovedIdentifier(protein, removed);
         }
     }
 
     public void onAddedXref(Protein protein, Xref added) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onAddedXref(protein, added);
         }
     }
 
     public void onRemovedXref(Protein protein, Xref removed) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onRemovedXref(protein, removed);
         }
     }
 
     public void onAddedAlias(Protein protein, Alias added) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onAddedAlias(protein, added);
         }
     }
 
     public void onRemovedAlias(Protein protein, Alias removed) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onRemovedAlias(protein, removed);
         }
     }
 
     public void onAddedChecksum(Protein protein, Checksum added) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onAddedChecksum(protein, added);
         }
     }
 
     public void onRemovedChecksum(Protein protein, Checksum removed) {
-        for(ProteinEnricherListener l : listenersList){
+        for(ProteinEnricherListener l : getListenersList()){
             l.onRemovedChecksum(protein, removed);
         }
     }

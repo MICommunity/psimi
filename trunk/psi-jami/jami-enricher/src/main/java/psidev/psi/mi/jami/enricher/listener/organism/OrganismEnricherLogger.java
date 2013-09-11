@@ -1,12 +1,10 @@
 package psidev.psi.mi.jami.enricher.listener.organism;
 
 
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.impl.OrganismChangeLogger;
 import psidev.psi.mi.jami.model.Organism;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A logging listener. It will display a message when each event if fired.
@@ -19,11 +17,15 @@ public class OrganismEnricherLogger
         implements OrganismEnricherListener {
 
 
-    private static final Logger organismChangeLogger = Logger.getLogger("ProteinEnricherLogger");
-
+    private static final org.slf4j.Logger organismChangeLogger = LoggerFactory.getLogger(OrganismEnricherLogger.class);
 
     public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
-        organismChangeLogger.log(Level.INFO, "Organism enriching complete. " +
+        organismChangeLogger.info(organism.toString()+" enrichment complete " +
                 "The status was: "+status+". Additional info: "+message);
+    }
+
+    public void onEnrichmentError(Organism object, String message, Exception e) {
+        organismChangeLogger.error(object.toString()+" enrichment error " +
+                "Error message : " + message, e);
     }
 }
