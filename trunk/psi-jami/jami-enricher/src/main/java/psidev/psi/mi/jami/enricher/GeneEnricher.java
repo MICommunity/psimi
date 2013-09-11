@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.listener.gene.GeneEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
 import psidev.psi.mi.jami.model.Gene;
 
 import java.util.Collection;
