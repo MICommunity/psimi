@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Range;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public interface FeatureChangeListener extends AnnotationsChangeListener, XrefsChangeListener, IdentifiersChangeListener {
+public interface FeatureChangeListener extends AnnotationsChangeListener<Feature>, XrefsChangeListener<Feature>, IdentifiersChangeListener<Feature> {
 
     public void onShortNameUpdate(Feature feature, String oldShortName);
 

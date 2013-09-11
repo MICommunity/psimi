@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/08/13
  */
-public interface PublicationChangeListener extends IdentifiersChangeListener, XrefsChangeListener, AnnotationsChangeListener {
+public interface PublicationChangeListener extends IdentifiersChangeListener<Publication>, XrefsChangeListener<Publication>, AnnotationsChangeListener<Publication> {
 
     public void onPubmedIdUpdate(Publication publication , String oldPubmedId);
 

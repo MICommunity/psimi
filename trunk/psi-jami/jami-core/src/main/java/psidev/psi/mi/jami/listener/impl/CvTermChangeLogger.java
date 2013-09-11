@@ -73,35 +73,35 @@ public class CvTermChangeLogger implements CvTermChangeListener {
         }
     }
 
-    public void onAddedIdentifier(Object cv, Xref added) {
+    public void onAddedIdentifier(CvTerm cv, Xref added) {
         cvChangeLogger.log(Level.INFO, "The identifier " + added.toString() + " has been added to the cv term " + cv.toString());
     }
 
-    public void onRemovedIdentifier(Object cv, Xref removed) {
+    public void onRemovedIdentifier(CvTerm cv, Xref removed) {
         cvChangeLogger.log(Level.INFO, "The identifier " + removed.toString() + " has been removed from the cv term " + cv.toString());
     }
 
-    public void onAddedXref(Object cv, Xref added) {
+    public void onAddedXref(CvTerm cv, Xref added) {
         cvChangeLogger.log(Level.INFO, "The xref " + added.toString() + " has been added to the cv term " + cv.toString());
     }
 
-    public void onRemovedXref(Object cv, Xref removed) {
+    public void onRemovedXref(CvTerm cv, Xref removed) {
         cvChangeLogger.log(Level.INFO, "The xref " + removed.toString() + " has been removed from the cv term " + cv.toString());
     }
 
-    public void onAddedAlias(Object cv, Alias added) {
+    public void onAddedAlias(CvTerm cv, Alias added) {
         cvChangeLogger.log(Level.INFO, "The synonym " + added.toString() + " has been added to the cv term " + cv.toString());
     }
 
-    public void onRemovedAlias(Object cv, Alias removed) {
+    public void onRemovedAlias(CvTerm cv, Alias removed) {
         cvChangeLogger.log(Level.INFO, "The synonym " + removed.toString() + " has been removed from the cv term " + cv.toString());
     }
 
-    public void onAddedAnnotation(Object cv, Annotation added) {
+    public void onAddedAnnotation(CvTerm cv, Annotation added) {
         cvChangeLogger.log(Level.INFO, "The annotation " + added.toString() + " has been added to the cv term " + cv.toString());
     }
 
-    public void onRemovedAnnotation(Object cv, Annotation removed) {
+    public void onRemovedAnnotation(CvTerm cv, Annotation removed) {
         cvChangeLogger.log(Level.INFO, "The annotation " + removed.toString() + " has been removed from the cv term " + cv.toString());
     }
 }
