@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.listener;
 
-import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Interactor;
 
 
@@ -11,7 +10,8 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since 08/08/13
  */
 public interface InteractorChangeListener<T extends Interactor>
-        extends AliasesChangeListener<T>, XrefsChangeListener<T>, AnnotationsChangeListener<T>, IdentifiersChangeListener<T> {
+        extends AliasesChangeListener<T>, XrefsChangeListener<T>, AnnotationsChangeListener<T>, IdentifiersChangeListener<T>,
+                ChecksumsChangeListener<T>{
 
     /**
      * Listens for the event where the shortName has been changed.
@@ -40,18 +40,4 @@ public interface InteractorChangeListener<T extends Interactor>
      * @param interactor        The interactor which has changed.
      */
     public void onAddedInteractorType(T interactor);
-
-    /**
-     * Listen to the event where a checksum has been added to the interactor checksums.
-     * @param interactor        The interactor which has changed.
-     * @param added             The added checksum.
-     */
-    public void onAddedChecksum(T interactor , Checksum added);
-
-    /**
-     * Listen to the event where a checksum has been removed from the interactor checksums.
-     * @param interactor        The interactor which has changed.
-     * @param removed           The removed checksum.
-     */
-    public void onRemovedChecksum(T interactor , Checksum removed);
 }
