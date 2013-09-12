@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.FullBioactiveEntityUpdater;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherListenerManager;
@@ -41,7 +42,7 @@ public class MaximumBioactiveEntityUpdaterTest {
     @Before
     public void setUp(){
         fetcher = new MockBioactiveEntityFetcher();
-        enricher = new MaximumBioactiveEntityUpdater(fetcher);
+        enricher = new FullBioactiveEntityUpdater(fetcher);
 
         persistentBioactiveEntity = null;
         persistentInt = 0;
@@ -88,7 +89,7 @@ public class MaximumBioactiveEntityUpdaterTest {
         int timesToTry = 3;
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < MaximumBioactiveEntityUpdater.RETRY_COUNT);
+                timesToTry < FullBioactiveEntityUpdater.RETRY_COUNT);
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);

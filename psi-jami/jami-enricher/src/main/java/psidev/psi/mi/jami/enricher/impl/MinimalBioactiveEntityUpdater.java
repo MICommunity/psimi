@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.bioactiveentity;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
@@ -10,14 +10,14 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class MinimumBioactiveEntityUpdater
+public class MinimalBioactiveEntityUpdater
         extends AbstractBioactiveEntityEnricher{
 
     /**
      * A constructor which initiates with a fetcher.
      * @param fetcher   The fetcher to use to gather bioactive entity records.
      */
-    public MinimumBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
+    public MinimalBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
         super(fetcher);
     }
 

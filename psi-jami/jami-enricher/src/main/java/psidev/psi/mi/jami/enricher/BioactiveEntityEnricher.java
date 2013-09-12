@@ -34,13 +34,6 @@ public interface BioactiveEntityEnricher{
             throws EnricherException;
 
     /**
-     * Sets the bioactiveEntity fetcher to be used for enrichment.
-     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
-     * @param fetcher   The fetcher to be used to gather data for enrichment
-     */
-    public void setBioactiveEntityFetcher(BioactiveEntityFetcher fetcher);
-
-    /**
      * Returns the current fetcher which is being used to collect information about entities for enrichment.
      * @return  The current fetcher.
      */
@@ -58,8 +51,11 @@ public interface BioactiveEntityEnricher{
      */
     public BioactiveEntityEnricherListener getBioactiveEntityEnricherListener();
 
-
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
 
     public CvTermEnricher getCvTermEnricher();
+
+    public void setOrganismEnricher(OrganismEnricher organismEnricher);
+
+    public OrganismEnricher getOrganismEnricher();
 }

@@ -40,7 +40,7 @@ public class FullCvTermUpdater extends FullCvTermEnricher{
 
     @Override
     protected void processSynonyms(CvTerm cvTermToEnrich, CvTerm termFetched) {
-        mergeSynonyms(cvTermToEnrich, termFetched.getSynonyms(), true);
+        EnricherUtils.mergeAliases(cvTermToEnrich, cvTermToEnrich.getSynonyms(), termFetched.getSynonyms(), true, getCvTermEnricherListener());
     }
 
     @Override

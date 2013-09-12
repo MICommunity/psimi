@@ -34,7 +34,7 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
      *                      If null, an illegal state exception will be thrown at the next enrichment.
      */
     public MinimalCvTermEnricher(CvTermFetcher cvTermFetcher) {
-        if (fetcher == null){
+        if (cvTermFetcher == null){
             throw new IllegalArgumentException("The fetcher is required and cannot be null");
         }
         this.fetcher = cvTermFetcher;

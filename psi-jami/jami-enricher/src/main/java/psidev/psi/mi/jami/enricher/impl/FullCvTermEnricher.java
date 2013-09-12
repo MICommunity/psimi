@@ -2,10 +2,8 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.annotation.DefaultAnnotationComparator;
 
 import java.util.Collection;
@@ -59,7 +57,7 @@ public class FullCvTermEnricher
     }
 
     protected void processSynonyms(CvTerm cvTermToEnrich, CvTerm termFetched) {
-        mergeSynonyms(cvTermToEnrich, termFetched.getSynonyms(), false);
+        EnricherUtils.mergeAliases(cvTermToEnrich, cvTermToEnrich.getSynonyms(), termFetched.getSynonyms(), false, getCvTermEnricherListener());
     }
 
     protected void processXrefs(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
@@ -107,51 +105,6 @@ public class FullCvTermEnricher
                 toEnrichAnnotations.add(annotation);
                 if (getCvTermEnricherListener() != null){
                     getCvTermEnricherListener().onAddedAnnotation(termToEnrich, annotation);
-                }
-            }
-        }
-    }
-
-    protected void mergeSynonyms(CvTerm termToEnrich, Collection<Alias> fetchedAliases , boolean remove){
-        Collection<Alias> toEnrichAliases = termToEnrich.getSynonyms();
-        Iterator<Alias> aliasIterator = toEnrichAliases.iterator();
-        // remove aliases in toEnrichAliases that are not in fetchedAliases
-        while(aliasIterator.hasNext()){
-            Alias alias = aliasIterator.next();
-            boolean containsAlias = false;
-            for (Alias alias2 : toEnrichAliases){
-                // identical aliases
-                if (DefaultAliasComparator.areEquals(alias, alias2)){
-                    containsAlias = true;
-                    break;
-                }
-            }
-            // remove alias not in second list
-            if (remove && !containsAlias){
-                aliasIterator.remove();
-                if (getCvTermEnricherListener() != null){
-                    getCvTermEnricherListener().onRemovedAlias(termToEnrich, alias);
-                }
-            }
-        }
-
-        // add xrefs from fetchedXrefs that are not in toEnrichXref
-        aliasIterator = fetchedAliases.iterator();
-        while(aliasIterator.hasNext()){
-            Alias alias = aliasIterator.next();
-            boolean containsAlias = false;
-            for (Alias alias2 : toEnrichAliases){
-                // identical aliases
-                if (DefaultAliasComparator.areEquals(alias, alias2)){
-                    containsAlias = true;
-                    break;
-                }
-            }
-            // add missing xref not in second list
-            if (!containsAlias){
-                toEnrichAliases.add(alias);
-                if (getCvTermEnricherListener() != null){
-                    getCvTermEnricherListener().onAddedAlias(termToEnrich, alias);
                 }
             }
         }
