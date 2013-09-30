@@ -69,7 +69,7 @@ public class EuroPubmedCentralFetcher
      * @return      a completed publication record.
      * @throws BridgeFailedException
      */
-    public Publication fetchPublicationByIdentifier(String id , String source) throws BridgeFailedException{
+    public Publication fetchByIdentifier(String id, String source) throws BridgeFailedException{
         if(id == null)
             throw new IllegalArgumentException("Cannot fetch null identifier");
         if(source == null)
@@ -109,7 +109,7 @@ public class EuroPubmedCentralFetcher
      * @return              Completed records for the publications.
      * @throws BridgeFailedException
      */
-    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
+    public Collection<Publication> fetchByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
         if (identifiers == null){
            throw new IllegalArgumentException("The map of identifiers cannot be null");
         }
@@ -117,7 +117,7 @@ public class EuroPubmedCentralFetcher
         for (Map.Entry<String, Collection<String>> identifierSets : identifiers.entrySet()) {
             String source = identifierSets.getKey();
             for (String identifier : identifierSets.getValue()) {
-                Publication pub = fetchPublicationByIdentifier(identifier, source);
+                Publication pub = fetchByIdentifier(identifier, source);
                 if (pub != null){
                     results.add(pub);
                 }
