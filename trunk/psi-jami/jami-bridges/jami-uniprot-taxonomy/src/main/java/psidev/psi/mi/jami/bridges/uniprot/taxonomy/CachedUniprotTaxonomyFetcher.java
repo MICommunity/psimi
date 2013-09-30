@@ -29,17 +29,17 @@ public class CachedUniprotTaxonomyFetcher
     }
 
 
-    public Organism fetchOrganismByTaxID(int taxID) throws BridgeFailedException {
+    public Organism fetchByTaxID(int taxID) throws BridgeFailedException {
         final String key = "GET_BY_TAXID_"+taxID;
         Object data = getFromCache( key );
         if( data == null) {
-            data = organismFetcher.fetchOrganismByTaxID(taxID);
+            data = organismFetcher.fetchByTaxID(taxID);
             storeInCache(key , data);
         }
         return (Organism )data;
     }
 
-    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+    public Collection<Organism> fetchByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
         if (taxIDs != null){
             List<Integer> ids = new ArrayList<Integer>(taxIDs);
             Collections.sort(ids);
@@ -52,11 +52,11 @@ public class CachedUniprotTaxonomyFetcher
                 return (Collection<Organism>)object;
             }
             else{
-                Collection<Organism> entity = organismFetcher.fetchOrganismsByTaxIDs(taxIDs);
+                Collection<Organism> entity = organismFetcher.fetchByTaxIDs(taxIDs);
                 storeInCache(key, entity);
                 return entity;
             }
         }
-        return organismFetcher.fetchOrganismsByTaxIDs(taxIDs);
+        return organismFetcher.fetchByTaxIDs(taxIDs);
     }
 }
