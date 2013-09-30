@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.feature;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.model.FeatureEvidence;
 
@@ -8,6 +8,6 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MinimumFeatureEvidenceUpdater
-        extends BasicFeatureUpdater<FeatureEvidence> {
+public class MinimumFeatureEvidenceEnricher
+        extends BasicFeatureEnricher<FeatureEvidence>{
 }

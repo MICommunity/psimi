@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.feature;
+package psidev.psi.mi.jami.enricher.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
