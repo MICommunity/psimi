@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.bridges.unisave;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.SequenceVersionFetcher;
 import uk.ac.ebi.uniprot.unisave.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -20,7 +21,7 @@ import java.util.*;
  * @since <pre>30/09/13</pre>
  */
 
-public class UnisaveClient {
+public class UnisaveClient implements SequenceVersionFetcher{
 
     private UnisavePortType unisavePortType;
     public static final String WSDL = "http://www.ebi.ac.uk/uniprot/unisave/unisave.wsdl";
@@ -289,5 +290,25 @@ public class UnisaveClient {
         } // versions
 
         return sequenceUpdates;
+    }
+
+    public String fetchSequenceFromVersion(String id, int version) throws BridgeFailedException{
+        String sequence = getSequenceFor(id, false, version);
+        // the id was maybe not a primary id. Try with secondary = true
+        if (sequence == null){
+            sequence = getSequenceFor(id, true, version);
+        }
+        return sequence;
+    }
+
+    public int fetchVersionFromSequence(String id, String sequence) throws BridgeFailedException{
+        int version = getSequenceVersion(id, false, sequence);
+
+        // the id was maybe not a primary id. Try with secondary = true
+        if (version == -1){
+           version = getSequenceVersion(id, true, sequence);
+        }
+
+        return version;
     }
 }
