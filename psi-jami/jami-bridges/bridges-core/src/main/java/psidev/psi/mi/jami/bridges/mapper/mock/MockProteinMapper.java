@@ -41,7 +41,7 @@ public class MockProteinMapper implements ProteinMapper {
         return listener;
     }
 
-    public void mapProtein(Protein p) throws BridgeFailedException {
+    public void map(Protein p) throws BridgeFailedException {
         String newID = null;
 
         if(p.getSequence() != null) {

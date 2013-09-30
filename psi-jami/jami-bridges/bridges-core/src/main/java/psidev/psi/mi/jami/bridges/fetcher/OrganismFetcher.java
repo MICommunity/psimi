@@ -20,7 +20,7 @@ public interface OrganismFetcher{
      * @return          A matching organism, or null if one could not be found.
      * @throws BridgeFailedException
      */
-    public Organism fetchOrganismByTaxID(int taxID)
+    public Organism fetchByTaxID(int taxID)
             throws BridgeFailedException;
 
     /**
@@ -31,6 +31,6 @@ public interface OrganismFetcher{
      * @throws BridgeFailedException
      * @throws IllegalArgumentException if taxIds is null
      */
-    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs)
+    public Collection<Organism> fetchByTaxIDs(Collection<Integer> taxIDs)
             throws BridgeFailedException;
 }

@@ -28,15 +28,15 @@ public class FailingPublicationFetcher
         super(maxQuery);
     }
 
-    public Publication fetchPublicationByIdentifier(String pubmedID, String source) throws BridgeFailedException {
+    public Publication fetchByIdentifier(String pubmedID, String source) throws BridgeFailedException {
         return getEntry(pubmedID);
     }
 
-    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String,Collection<String>> identifiers) throws BridgeFailedException {
+    public Collection<Publication> fetchByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
         Collection<Publication> results = new ArrayList<Publication>();
         for(Map.Entry<String, Collection<String>> id : identifiers.entrySet()){
             for (String id2 : id.getValue()){
-                results.add(fetchPublicationByIdentifier(id.getKey(), id2));
+                results.add(fetchByIdentifier(id.getKey(), id2));
             }
         }
         return results;

@@ -21,11 +21,11 @@ public class MockOrganismFetcher
         extends AbstractMockFetcher<Organism>
         implements OrganismFetcher {
 
-    public Organism fetchOrganismByTaxID(int taxID) throws BridgeFailedException {
+    public Organism fetchByTaxID(int taxID) throws BridgeFailedException {
         return getEntry( Integer.toString(taxID) );
     }
 
-    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+    public Collection<Organism> fetchByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
         Collection<Organism> resultsList= new ArrayList<Organism>();
         for(Integer identifier : taxIDs){
             resultsList.add( getEntry(Integer.toString(identifier)) );

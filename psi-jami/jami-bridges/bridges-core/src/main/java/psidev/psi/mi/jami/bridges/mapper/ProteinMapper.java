@@ -18,5 +18,5 @@ public interface ProteinMapper {
      * Will remap the protein using the settings provided.
      * A remapReport will be fired to all RemapListeners at the end.
      */
-    public void mapProtein(Protein p) throws BridgeFailedException;
+    public void map(Protein p) throws BridgeFailedException;
 }

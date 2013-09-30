@@ -48,11 +48,11 @@ public class FailingProteinFetcher
     }
 
 
-    public Collection<Protein> fetchProteinsByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Protein> fetchByIdentifier(String identifier) throws BridgeFailedException {
         return getEntry(identifier);
     }
 
-    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Protein> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         Collection<Protein> resultsList= new ArrayList<Protein>();
         for(String identifier : identifiers){
             resultsList.addAll( getEntry(identifier) );
