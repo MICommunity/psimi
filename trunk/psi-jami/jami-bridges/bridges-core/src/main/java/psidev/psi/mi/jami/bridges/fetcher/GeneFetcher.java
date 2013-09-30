@@ -19,7 +19,7 @@ public interface GeneFetcher {
      * @return              The genes matching the search terms.
      * @throws BridgeFailedException
      */
-    public Collection<Gene> fetchGenesByIdentifier(String identifier)
+    public Collection<Gene> fetchByIdentifier(String identifier)
             throws BridgeFailedException;
 
     /**
@@ -29,7 +29,7 @@ public interface GeneFetcher {
      * @return              The genes matching the search terms.
      * @throws BridgeFailedException
      */
-    public Collection<Gene> fetchGenesByIdentifier(String identifier, int taxID)
+    public Collection<Gene> fetchByIdentifier(String identifier, int taxID)
             throws BridgeFailedException;
 
 
@@ -39,7 +39,7 @@ public interface GeneFetcher {
      * @return              The genes matching the search terms.
      * @throws BridgeFailedException
      */
-    public Collection<Gene> fetchGenesByIdentifiers(Collection<String> identifiers)
+    public Collection<Gene> fetchByIdentifiers(Collection<String> identifiers)
             throws BridgeFailedException;
 
     /**
@@ -49,6 +49,6 @@ public interface GeneFetcher {
      * @return              The genes matching the search terms.
      * @throws BridgeFailedException
      */
-    public Collection<Gene> fetchGenesByIdentifiers(Collection<String> identifiers, int taxID)
+    public Collection<Gene> fetchByIdentifiers(Collection<String> identifiers, int taxID)
             throws BridgeFailedException;
 }

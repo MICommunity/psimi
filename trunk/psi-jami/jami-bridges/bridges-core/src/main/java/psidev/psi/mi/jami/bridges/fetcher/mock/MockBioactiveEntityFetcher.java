@@ -17,11 +17,11 @@ public class MockBioactiveEntityFetcher
         extends AbstractMockFetcher<BioactiveEntity>
         implements BioactiveEntityFetcher{
 
-    public BioactiveEntity fetchBioactiveEntityByIdentifier(String identifier) throws BridgeFailedException {
+    public BioactiveEntity fetchByIdentifier(String identifier) throws BridgeFailedException {
         return super.getEntry(identifier);
     }
 
-    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         Collection<BioactiveEntity> resultsList= new ArrayList<BioactiveEntity>(identifiers.size());
         for(String identifier : identifiers){
             resultsList.add( getEntry(identifier) );

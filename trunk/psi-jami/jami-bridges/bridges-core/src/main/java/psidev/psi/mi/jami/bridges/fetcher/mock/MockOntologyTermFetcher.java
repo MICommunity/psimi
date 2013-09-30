@@ -42,41 +42,41 @@ public class MockOntologyTermFetcher
         return value;
     }
 
-    public OntologyTerm fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName)
+    public OntologyTerm fetchByIdentifier(String termIdentifier, String ontologyDatabaseName)
             throws BridgeFailedException {
         return localOntologyTerms.get(termIdentifier);
     }
 
-    public OntologyTerm fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+    public OntologyTerm fetchByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException {
         return localOntologyTerms.get(termIdentifier);
     }
 
-    public OntologyTerm fetchCvTermByName(String searchName, String ontologyDatabaseName)
+    public OntologyTerm fetchByName(String searchName, String ontologyDatabaseName)
             throws BridgeFailedException {
         return localOntologyTerms.get(searchName);
     }
 
-    public Collection<OntologyTerm> fetchCvTermByName(String searchName) throws BridgeFailedException {
+    public Collection<OntologyTerm> fetchByName(String searchName) throws BridgeFailedException {
         return Arrays.asList(localOntologyTerms.get(searchName));
     }
 
-    public Collection<OntologyTerm> fetchCvTermsByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
+    public Collection<OntologyTerm> fetchByIdentifiers(Collection<String> identifiers, String ontologyDatabaseName)
             throws BridgeFailedException {
         return getMockTermCollection(identifiers);
     }
 
-    public Collection<OntologyTerm> fetchCvTermsByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
+    public Collection<OntologyTerm> fetchByIdentifiers(Collection<String> identifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException {
         return getMockTermCollection(identifiers);
     }
 
-    public Collection<OntologyTerm> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName)
+    public Collection<OntologyTerm> fetchByNames(Collection<String> searchNames, String ontologyDatabaseName)
             throws BridgeFailedException {
         return getMockTermCollection(searchNames);
     }
 
-    public Collection<OntologyTerm> fetchCvTermsByNames(Collection<String> searchNames)
+    public Collection<OntologyTerm> fetchByNames(Collection<String> searchNames)
             throws BridgeFailedException {
         return getMockTermCollection(searchNames);
     }

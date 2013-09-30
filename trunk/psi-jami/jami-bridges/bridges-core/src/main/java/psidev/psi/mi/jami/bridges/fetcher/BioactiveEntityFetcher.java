@@ -19,10 +19,10 @@ public interface BioactiveEntityFetcher {
      * @return  A complete bioactiveEntity record.
      * @throws BridgeFailedException
      */
-    public BioactiveEntity fetchBioactiveEntityByIdentifier(String identifier)
+    public BioactiveEntity fetchByIdentifier(String identifier)
             throws BridgeFailedException;
 
 
-    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers)
+    public Collection<BioactiveEntity> fetchByIdentifiers(Collection<String> identifiers)
             throws BridgeFailedException;
 }

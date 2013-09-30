@@ -22,13 +22,13 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
         this.delegateFetchers = new HashMap<String, F>();
     }
 
-    public T fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
+    public T fetchByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
 
         if (ontologyDatabaseName == null || !this.delegateFetchers.containsKey(ontologyDatabaseName)){
             T firstTermRetrieved = null;
             Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
             while(firstTermRetrieved == null && fetcherIterator.hasNext()){
-                 firstTermRetrieved = fetcherIterator.next().fetchCvTermByIdentifier(termIdentifier, ontologyDatabaseName);
+                 firstTermRetrieved = fetcherIterator.next().fetchByIdentifier(termIdentifier, ontologyDatabaseName);
             }
 
             return firstTermRetrieved;
@@ -39,16 +39,16 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
             return null;
         }
         else {
-            return fetcher.fetchCvTermByIdentifier(termIdentifier, ontologyDatabaseName);
+            return fetcher.fetchByIdentifier(termIdentifier, ontologyDatabaseName);
         }
     }
 
-    public T fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public T fetchByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
         if (ontologyDatabase == null || !this.delegateFetchers.containsKey(ontologyDatabase.getShortName())){
             T firstTermRetrieved = null;
             Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
             while(firstTermRetrieved == null && fetcherIterator.hasNext()){
-                firstTermRetrieved = fetcherIterator.next().fetchCvTermByIdentifier(termIdentifier, ontologyDatabase);
+                firstTermRetrieved = fetcherIterator.next().fetchByIdentifier(termIdentifier, ontologyDatabase);
             }
 
             return firstTermRetrieved;
@@ -59,16 +59,16 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
             return null;
         }
         else {
-            return fetcher.fetchCvTermByIdentifier(termIdentifier, ontologyDatabase);
+            return fetcher.fetchByIdentifier(termIdentifier, ontologyDatabase);
         }
     }
 
-    public T fetchCvTermByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
+    public T fetchByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName == null || !this.delegateFetchers.containsKey(ontologyDatabaseName)){
             T firstTermRetrieved = null;
             Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
             while(firstTermRetrieved == null && fetcherIterator.hasNext()){
-                firstTermRetrieved = fetcherIterator.next().fetchCvTermByName(searchName, ontologyDatabaseName);
+                firstTermRetrieved = fetcherIterator.next().fetchByName(searchName, ontologyDatabaseName);
             }
 
             return firstTermRetrieved;
@@ -79,26 +79,26 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
             return null;
         }
         else {
-            return fetcher.fetchCvTermByName(searchName, ontologyDatabaseName);
+            return fetcher.fetchByName(searchName, ontologyDatabaseName);
         }
     }
 
-    public Collection<T> fetchCvTermByName(String searchName) throws BridgeFailedException {
+    public Collection<T> fetchByName(String searchName) throws BridgeFailedException {
         Collection<T> firstTermRetrieved = null;
         Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
         while(firstTermRetrieved == null && fetcherIterator.hasNext()){
-            firstTermRetrieved = fetcherIterator.next().fetchCvTermByName(searchName);
+            firstTermRetrieved = fetcherIterator.next().fetchByName(searchName);
         }
 
         return firstTermRetrieved;
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName == null || !this.delegateFetchers.containsKey(ontologyDatabaseName)){
             Collection<T> firstTermRetrieved = Collections.EMPTY_LIST;
             Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
             while(firstTermRetrieved.isEmpty() && fetcherIterator.hasNext()){
-                firstTermRetrieved = fetcherIterator.next().fetchCvTermsByIdentifiers(termIdentifiers, ontologyDatabaseName);
+                firstTermRetrieved = fetcherIterator.next().fetchByIdentifiers(termIdentifiers, ontologyDatabaseName);
             }
 
             return firstTermRetrieved;
@@ -109,16 +109,16 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
             return null;
         }
         else {
-            return fetcher.fetchCvTermsByIdentifiers(termIdentifiers, ontologyDatabaseName);
+            return fetcher.fetchByIdentifiers(termIdentifiers, ontologyDatabaseName);
         }
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         if (ontologyDatabase == null || !this.delegateFetchers.containsKey(ontologyDatabase.getShortName())){
             Collection<T> firstTermRetrieved = Collections.EMPTY_LIST;
             Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
             while(firstTermRetrieved.isEmpty() && fetcherIterator.hasNext()){
-                firstTermRetrieved = fetcherIterator.next().fetchCvTermsByIdentifiers(termIdentifiers, ontologyDatabase);
+                firstTermRetrieved = fetcherIterator.next().fetchByIdentifiers(termIdentifiers, ontologyDatabase);
             }
 
             return firstTermRetrieved;
@@ -129,16 +129,16 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
             return null;
         }
         else {
-            return fetcher.fetchCvTermsByIdentifiers(termIdentifiers, ontologyDatabase);
+            return fetcher.fetchByIdentifiers(termIdentifiers, ontologyDatabase);
         }
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<T> fetchByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName == null || !this.delegateFetchers.containsKey(ontologyDatabaseName)){
             Collection<T> firstTermRetrieved = Collections.EMPTY_LIST;
             Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
             while(firstTermRetrieved.isEmpty() && fetcherIterator.hasNext()){
-                firstTermRetrieved = fetcherIterator.next().fetchCvTermsByNames(searchNames, ontologyDatabaseName);
+                firstTermRetrieved = fetcherIterator.next().fetchByNames(searchNames, ontologyDatabaseName);
             }
 
             return firstTermRetrieved;
@@ -149,15 +149,15 @@ public class CvTermCompositeFetcherTemplate<T extends CvTerm, F extends CvTermFe
             return null;
         }
         else {
-            return fetcher.fetchCvTermsByNames(searchNames, ontologyDatabaseName);
+            return fetcher.fetchByNames(searchNames, ontologyDatabaseName);
         }
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames) throws BridgeFailedException {
+    public Collection<T> fetchByNames(Collection<String> searchNames) throws BridgeFailedException {
         Collection<T> firstTermRetrieved = Collections.EMPTY_LIST;
         Iterator<F> fetcherIterator = delegateFetchers.values().iterator();
         while(firstTermRetrieved.isEmpty() && fetcherIterator.hasNext()){
-            firstTermRetrieved = fetcherIterator.next().fetchCvTermsByNames(searchNames);
+            firstTermRetrieved = fetcherIterator.next().fetchByNames(searchNames);
         }
 
         return firstTermRetrieved;

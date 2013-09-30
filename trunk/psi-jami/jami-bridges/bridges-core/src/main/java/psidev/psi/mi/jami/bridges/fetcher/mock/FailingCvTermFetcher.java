@@ -25,35 +25,35 @@ public class FailingCvTermFetcher
         super(maxQuery);
     }
 
-    public CvTerm fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
+    public CvTerm fetchByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntry(termIdentifier);
     }
 
-    public CvTerm fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public CvTerm fetchByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
         return getEntry(termIdentifier);
     }
 
-    public CvTerm fetchCvTermByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
+    public CvTerm fetchByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntry(searchName);
     }
 
-    public Collection<CvTerm> fetchCvTermByName(String searchName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByName(String searchName) throws BridgeFailedException {
         return Arrays.asList(getEntry(searchName));
     }
 
-    public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntries(termIdentifiers);
     }
 
-    public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         return getEntries(termIdentifiers);
     }
 
-    public Collection<CvTerm> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntries(searchNames);
     }
 
-    public Collection<CvTerm> fetchCvTermsByNames(Collection<String> searchNames) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByNames(Collection<String> searchNames) throws BridgeFailedException {
         return getEntries(searchNames);
     }
 }

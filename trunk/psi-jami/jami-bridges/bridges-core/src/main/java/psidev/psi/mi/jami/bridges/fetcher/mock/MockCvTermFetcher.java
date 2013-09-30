@@ -21,23 +21,23 @@ public class MockCvTermFetcher
         extends AbstractMockFetcher<CvTerm>
         implements CvTermFetcher<CvTerm>{
 
-    public CvTerm fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
+    public CvTerm fetchByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntry(termIdentifier);
     }
 
-    public CvTerm fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public CvTerm fetchByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
         return getEntry(termIdentifier);
     }
 
-    public CvTerm fetchCvTermByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
+    public CvTerm fetchByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
         return getEntry(searchName);
     }
 
-    public Collection<CvTerm> fetchCvTermByName(String searchName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByName(String searchName) throws BridgeFailedException {
         return Arrays.asList(getEntry(searchName));
     }
 
-    public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : termIdentifiers){
             resultsList.add( getEntry(identifier) );
@@ -45,7 +45,7 @@ public class MockCvTermFetcher
         return resultsList;
     }
 
-    public Collection<CvTerm> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : termIdentifiers){
             resultsList.add( getEntry(identifier) );
@@ -53,7 +53,7 @@ public class MockCvTermFetcher
         return resultsList;
     }
 
-    public Collection<CvTerm> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : searchNames){
             resultsList.add( getEntry(identifier) );
@@ -61,7 +61,7 @@ public class MockCvTermFetcher
         return resultsList;
     }
 
-    public Collection<CvTerm> fetchCvTermsByNames(Collection<String> searchNames) throws BridgeFailedException {
+    public Collection<CvTerm> fetchByNames(Collection<String> searchNames) throws BridgeFailedException {
         ArrayList<CvTerm> resultsList= new ArrayList<CvTerm>();
         for(String identifier : searchNames){
             resultsList.add( getEntry(identifier) );

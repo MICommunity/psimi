@@ -24,7 +24,7 @@ public interface PublicationFetcher {
      * @throws IllegalArgumentException if identifier is null
      * @throws IllegalArgumentException if source is null
      */
-    public Publication fetchPublicationByIdentifier(String identifier, String source)
+    public Publication fetchByIdentifier(String identifier, String source)
             throws BridgeFailedException;
 
     /**
@@ -34,7 +34,7 @@ public interface PublicationFetcher {
      * @throws BridgeFailedException
      * @throws IllegalArgumentException if identifiers is null or key/value is null
      */
-    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String, Collection<String>> identifiers)
+    public Collection<Publication> fetchByIdentifiers(Map<String, Collection<String>> identifiers)
             throws BridgeFailedException;
 
 }
