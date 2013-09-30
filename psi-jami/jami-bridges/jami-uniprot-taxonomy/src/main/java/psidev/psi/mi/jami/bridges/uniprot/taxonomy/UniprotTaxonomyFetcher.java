@@ -32,7 +32,7 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
     private static final String UNIPROT_NS = "http://purl.uniprot.org/core/";
     private static final String UNIPROT_TAXONOMY_NS = "http://purl.uniprot.org/taxonomy/";
 
-    public Organism fetchOrganismByTaxID(int taxID) throws BridgeFailedException {
+    public Organism fetchByTaxID(int taxID) throws BridgeFailedException {
         Organism organism = OrganismUtils.createSpecialistOrganism(taxID);
         if ( organism == null ) {
             organism = fetchOrganismFromStream( taxID );
@@ -40,7 +40,7 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
         return organism;
     }
 
-    public Collection<Organism> fetchOrganismsByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
+    public Collection<Organism> fetchByTaxIDs(Collection<Integer> taxIDs) throws BridgeFailedException {
 
         if (taxIDs == null){
             throw new IllegalArgumentException("The collection of taxids cannot be null");
@@ -50,7 +50,7 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
         }
         Collection<Organism> results = new ArrayList<Organism>(taxIDs.size());
         for(Integer taxID : taxIDs){
-            Organism organism = fetchOrganismByTaxID(taxID);
+            Organism organism = fetchByTaxID(taxID);
             if (organism != null){
                 results.add(organism);
             }
