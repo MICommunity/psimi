@@ -1,11 +1,8 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.model.Publication;
-
-import java.util.Collection;
 
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
@@ -15,24 +12,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13
  */
-public interface PublicationEnricher {
-
-    /**
-     * Takes a publication and uses the publication fetcher to add additional details.
-     * If the publication is null an illegal state exception is thrown
-     * @param publicationToEnrich   The publication to be enriched
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     * @throws IllegalArgumentException if publicationToEnrich is null
-     */
-    public void enrichPublication(Publication publicationToEnrich) throws EnricherException;
-
-    /**
-     * Takes a collection of publications and enriches each in turn.
-     * @param publicationsToEnrich      The publications to be enriched
-     * @throws EnricherException        Thrown if problems are encountered in the fetcher
-     * @throws IllegalArgumentException if collection is null
-     */
-    public void enrichPublications(Collection<Publication> publicationsToEnrich) throws EnricherException;
+public interface PublicationEnricher extends MIEnricher<Publication>{
 
     /**
      * Gets the publication fetcher which is currently being used to retrieve entries

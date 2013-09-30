@@ -11,8 +11,6 @@ import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 
-import java.util.Collection;
-
 /**
  * Provides minimum enrichment of the Publication.
  * Will enrich the pubmedID and the authors.
@@ -21,7 +19,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
  */
-public class MinimalPublicationEnricher implements PublicationEnricher {
+public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> implements PublicationEnricher {
 
     private int retryCount = 5;
 
@@ -39,47 +37,6 @@ public class MinimalPublicationEnricher implements PublicationEnricher {
             throw new IllegalArgumentException("The fetcher is required and cannot be null");
         }
         this.fetcher = fetcher;
-    }
-
-    /**
-     * Enriches a collection of publications.
-     * @param publicationsToEnrich      The publications to be enriched
-     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException        Thrown if problems are encountered in the fetcher
-     */
-    public void enrichPublications(Collection<Publication> publicationsToEnrich)
-            throws EnricherException {
-        if( publicationsToEnrich == null )
-            throw new IllegalArgumentException("Attempted to enrich a null collection of publications.");
-        for(Publication publicationToEnrich : publicationsToEnrich){
-            enrichPublication(publicationToEnrich);
-        }
-    }
-
-    /**
-     * Enriches the publicationToEnrich using a record found using the fetcher.
-     * @param publicationToEnrich   The publication to be enriched. Can not be null.
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrichPublication(Publication publicationToEnrich)
-            throws EnricherException{
-
-        if( publicationToEnrich == null )
-            throw new IllegalArgumentException("Attempted to enrich a null publication.");
-
-        // == FETCH ============================================================
-        Publication publicationFetched = fetchPublication(publicationToEnrich);
-        if(publicationFetched == null){
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onEnrichmentComplete(
-                        publicationToEnrich, EnrichmentStatus.FAILED, "No matching publication could be found.");
-            return;
-        }
-
-        // == ENRICH ==========================================================
-        processPublication(publicationToEnrich, publicationFetched);
-
-        if( getPublicationEnricherListener() != null)
-            getPublicationEnricherListener().onEnrichmentComplete(publicationToEnrich , EnrichmentStatus.SUCCESS , "The publication has been successfully enriched");
     }
 
     /**
@@ -170,18 +127,12 @@ public class MinimalPublicationEnricher implements PublicationEnricher {
 
     protected void processSource(Publication publicationToEnrich) throws EnricherException {
         if (this.cvTermEnricher != null && publicationToEnrich.getSource() != null){
-            this.cvTermEnricher.enrichCvTerm(publicationToEnrich.getSource());
+            this.cvTermEnricher.enrich(publicationToEnrich.getSource());
         }
     }
 
-    /**
-     * Fetches a publication record which matches the publicationToEnrich.
-     * @param publicationToEnrich   The publication to match.
-     * @return                      The fetched publication. Null if no publication is found.
-     * @throws EnricherException    Thrown if the fetcher encounters a problem.
-     */
-    private Publication fetchPublication(Publication publicationToEnrich) throws EnricherException{
-
+    @Override
+    protected Publication fetchEnrichedVersionFrom(Publication publicationToEnrich) throws EnricherException {
         Publication publicationFetched = null;
 
         if(publicationToEnrich.getPubmedId() != null){
@@ -197,14 +148,29 @@ public class MinimalPublicationEnricher implements PublicationEnricher {
         return publicationFetched;
     }
 
+    @Override
+    protected void onEnrichedVersionNotFound(Publication publicationToEnrich) throws EnricherException {
+        if(getPublicationEnricherListener() != null)
+            getPublicationEnricherListener().onEnrichmentComplete(
+                    publicationToEnrich, EnrichmentStatus.FAILED, "No matching publication could be found.");
+    }
+
+    @Override
+    protected void enrich(Publication publicationToEnrich, Publication publicationFetched) throws EnricherException {
+        processPublication(publicationToEnrich, publicationFetched);
+
+        if( getPublicationEnricherListener() != null)
+            getPublicationEnricherListener().onEnrichmentComplete(publicationToEnrich , EnrichmentStatus.SUCCESS , "The publication has been successfully enriched");
+    }
+
     private Publication fetchPublication(String id, String db) throws EnricherException {
         try {
-            return getPublicationFetcher().fetchPublicationByIdentifier(id, db);
+            return getPublicationFetcher().fetchByIdentifier(id, db);
         } catch (BridgeFailedException e) {
             int index = 1;
             while(index < retryCount){
                 try {
-                    return getPublicationFetcher().fetchPublicationByIdentifier(id, db);
+                    return getPublicationFetcher().fetchByIdentifier(id, db);
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
                 }
