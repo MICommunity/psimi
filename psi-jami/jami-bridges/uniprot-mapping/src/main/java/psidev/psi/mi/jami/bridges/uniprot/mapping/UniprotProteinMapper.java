@@ -51,7 +51,7 @@ public class UniprotProteinMapper
      * Maps the provided protein to a uniprot identifier.
      * @param proteinToMap     the protein to be Mapped
      */
-    public void mapProtein(Protein proteinToMap) throws BridgeFailedException {
+    public void map(Protein proteinToMap) throws BridgeFailedException {
         if(proteinToMap == null){
             throw new IllegalArgumentException("Cannot remap a null protein");
         }
