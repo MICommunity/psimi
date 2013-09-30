@@ -29,7 +29,7 @@ public class CachedChebiFetcher extends AbstractCachedFetcher implements Bioacti
         this.chebiFetcher = new ChebiFetcher();
     }
 
-    public BioactiveEntity fetchBioactiveEntityByIdentifier(String identifier) throws BridgeFailedException {
+    public BioactiveEntity fetchByIdentifier(String identifier) throws BridgeFailedException {
         if (identifier != null){
             final String key = "GET_ENTITY_BY_IDENTIFIER_"+identifier;
             Object object = getFromCache(key);
@@ -37,15 +37,15 @@ public class CachedChebiFetcher extends AbstractCachedFetcher implements Bioacti
                 return (BioactiveEntity)object;
             }
             else{
-                BioactiveEntity entity = chebiFetcher.fetchBioactiveEntityByIdentifier(identifier);
+                BioactiveEntity entity = chebiFetcher.fetchByIdentifier(identifier);
                 storeInCache(key, entity);
                 return entity;
             }
         }
-        return chebiFetcher.fetchBioactiveEntityByIdentifier(identifier);
+        return chebiFetcher.fetchByIdentifier(identifier);
     }
 
-    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         if (identifiers != null){
             List<String> ids = new ArrayList<String>(identifiers);
             Collections.sort(ids);
@@ -58,11 +58,11 @@ public class CachedChebiFetcher extends AbstractCachedFetcher implements Bioacti
                 return (Collection<BioactiveEntity>)object;
             }
             else{
-                Collection<BioactiveEntity> entity = chebiFetcher.fetchBioactiveEntitiesByIdentifiers(identifiers);
+                Collection<BioactiveEntity> entity = chebiFetcher.fetchByIdentifiers(identifiers);
                 storeInCache(key, entity);
                 return entity;
             }
         }
-        return chebiFetcher.fetchBioactiveEntitiesByIdentifiers(identifiers);
+        return chebiFetcher.fetchByIdentifiers(identifiers);
     }
 }

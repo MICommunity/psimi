@@ -48,7 +48,7 @@ public class ChebiFetcher
      * @return              A completed bioactiveEntity for the given identifier. May be null.
      * @throws BridgeFailedException    Thrown if the fetcher encounters a problem.
      */
-    public BioactiveEntity fetchBioactiveEntityByIdentifier (String identifier) throws BridgeFailedException {
+    public BioactiveEntity fetchByIdentifier (String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException("Can not fetch on null identifier");
 
         BioactiveEntity bioactiveEntity = null;
@@ -124,7 +124,7 @@ public class ChebiFetcher
         return entityType;
     }
 
-    public Collection<BioactiveEntity> fetchBioactiveEntitiesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
 
         if (identifiers == null) {
             throw new IllegalArgumentException("The collection of identifiers cannot be null");
