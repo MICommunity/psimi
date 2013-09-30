@@ -59,7 +59,7 @@ public class MinimalCvTermUpdater extends MinimalCvTermEnricher{
         // == Full Name ======================================================================
         if((cvTermFetched.getFullName() != null && !cvTermFetched.getFullName().equals(cvTermToEnrich.getFullName()))
              || (cvTermFetched.getFullName() == null
-                && cvTermFetched != null)){
+                && cvTermToEnrich.getFullName() != null)){
 
             String oldValue = cvTermToEnrich.getFullName();
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
