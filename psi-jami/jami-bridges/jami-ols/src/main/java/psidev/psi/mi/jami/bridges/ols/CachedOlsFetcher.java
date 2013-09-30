@@ -36,7 +36,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
      * @return  A full cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public T fetchCvTermByIdentifier(String termIdentifier, String miOntologyName)
+    public T fetchByIdentifier(String termIdentifier, String miOntologyName)
             throws BridgeFailedException{
         if(termIdentifier == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
         if(miOntologyName == null) throw new IllegalArgumentException("Provided OntologyTerm has no ontology name.");
@@ -45,7 +45,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermByIdentifier(termIdentifier, miOntologyName);
+            data = delegateFetcher.fetchByIdentifier(termIdentifier, miOntologyName);
             storeInCache(key, data);
         }
         return (T)data;
@@ -58,7 +58,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public T fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
+    public T fetchByIdentifier(String termIdentifier, CvTerm ontologyDatabase)
             throws BridgeFailedException{
         if(termIdentifier == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
         if(ontologyDatabase == null) throw new IllegalArgumentException("Provided OntologyTerm has no ontology name.");
@@ -67,7 +67,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermByIdentifier(termIdentifier, ontologyDatabase);
+            data = delegateFetcher.fetchByIdentifier(termIdentifier, ontologyDatabase);
             storeInCache(key, data);
         }
         return (T)data;
@@ -80,7 +80,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public T fetchCvTermByName(String searchName, String miOntologyName)
+    public T fetchByName(String searchName, String miOntologyName)
             throws BridgeFailedException{
         if(searchName == null) throw new IllegalArgumentException("Provided OntologyTerm has no identifier.");
         if(miOntologyName == null) throw new IllegalArgumentException("Provided OntologyTerm has no ontology name.");
@@ -89,7 +89,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermByName(searchName, miOntologyName);
+            data = delegateFetcher.fetchByName(searchName, miOntologyName);
             storeInCache(key, data);
         }
         return (T)data;
@@ -104,7 +104,7 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
      * @return  A fully enriched cvTerm which matches the search term or null if one cannot be found.
      * @throws BridgeFailedException
      */
-    public Collection<T> fetchCvTermByName(String searchName)
+    public Collection<T> fetchByName(String searchName)
             throws BridgeFailedException{
         if(searchName == null) throw new IllegalArgumentException("Provided OntologyTerm is null.");
 
@@ -112,13 +112,13 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermByName(searchName);
+            data = delegateFetcher.fetchByName(searchName);
             storeInCache(key, data);
         }
         return (Collection<T>)data;
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String miOntologyName) throws BridgeFailedException {
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, String miOntologyName) throws BridgeFailedException {
         if(termIdentifiers == null) throw new IllegalArgumentException("Provided identifiers are null.");
         if(miOntologyName == null) throw new IllegalArgumentException("Provided OntologyTerm has no ontology names.");
 
@@ -132,13 +132,13 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermsByIdentifiers(termIdentifiers, miOntologyName);
+            data = delegateFetcher.fetchByIdentifiers(termIdentifiers, miOntologyName);
             storeInCache(key, data);
         }
-        return delegateFetcher.fetchCvTermsByIdentifiers(termIdentifiers, miOntologyName);
+        return (Collection<T>)data;
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         if(termIdentifiers == null) throw new IllegalArgumentException("Provided identifiers are null.");
         if(ontologyDatabase == null) throw new IllegalArgumentException("Provided OntologyTerm has no ontology names.");
 
@@ -152,13 +152,13 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermsByIdentifiers(termIdentifiers, ontologyDatabase);
+            data = delegateFetcher.fetchByIdentifiers(termIdentifiers, ontologyDatabase);
             storeInCache(key, data);
         }
-        return delegateFetcher.fetchCvTermsByIdentifiers(termIdentifiers, ontologyDatabase);
+        return (Collection<T>)data;
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames, String miOntologyName) throws BridgeFailedException {
+    public Collection<T> fetchByNames(Collection<String> searchNames, String miOntologyName) throws BridgeFailedException {
         if(searchNames == null) throw new IllegalArgumentException("Provided names are null.");
         if(miOntologyName == null) throw new IllegalArgumentException("Provided OntologyTerm has no ontology names.");
 
@@ -172,13 +172,13 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermsByNames(searchNames, miOntologyName);
+            data = delegateFetcher.fetchByNames(searchNames, miOntologyName);
             storeInCache(key, data);
         }
-        return delegateFetcher.fetchCvTermsByNames(searchNames, miOntologyName);
+        return (Collection<T>)data;
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames) throws BridgeFailedException {
+    public Collection<T> fetchByNames(Collection<String> searchNames) throws BridgeFailedException {
         if(searchNames == null) throw new IllegalArgumentException("Provided names are null.");
 
         String key = "GET_BY_NAMES";
@@ -191,9 +191,9 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
 
         Object data = getFromCache( key );
         if( data == null) {
-            data = delegateFetcher.fetchCvTermsByNames(searchNames);
+            data = delegateFetcher.fetchByNames(searchNames);
             storeInCache(key, data);
         }
-        return delegateFetcher.fetchCvTermsByNames(searchNames);
+        return (Collection<T>)data;
     }
 }
