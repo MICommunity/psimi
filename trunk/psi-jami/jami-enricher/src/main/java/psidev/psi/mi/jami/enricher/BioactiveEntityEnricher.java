@@ -1,11 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
-import psidev.psi.mi.jami.model.BioactiveEntity;
-
-import java.util.Collection;
 
 /**
  * An enricher for bioactive entities which can either enrich a single entity or a collection.
@@ -16,22 +12,6 @@ import java.util.Collection;
  * @since  07/08/13
  */
 public interface BioactiveEntityEnricher{
-
-    /**
-     * Enriches a single bioactive entity.
-     * @param bioactiveEntityToEnrich   The entity to be enriched.
-     * @throws EnricherException        Thrown if problems are encountered in the fetcher
-     */
-    public void enrichBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich)
-            throws EnricherException;
-
-    /**
-     * Enriches a collection of bioactive entities.
-     * @param bioactiveEntitiesToEnrich       The entities to be enriched
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-     public void enrichBioactiveEntities(Collection<BioactiveEntity> bioactiveEntitiesToEnrich)
-            throws EnricherException;
 
     /**
      * Returns the current fetcher which is being used to collect information about entities for enrichment.

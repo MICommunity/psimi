@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
@@ -22,13 +24,19 @@ public class FullBioactiveEntityUpdater
         super(fetcher);
     }
 
-    /**
-     * Strategy for the BioactiveEntity enrichment.
-     * This method can be overwritten to change how the BioactiveEntity is enriched.
-     * @param bioactiveEntityToEnrich   The BioactiveEntity to be enriched.
-     */
     @Override
-    protected void processBioactiveEntity(BioactiveEntity bioactiveEntityToEnrich) {
-        super.processBioactiveEntity(bioactiveEntityToEnrich);
+    protected boolean isFullEnrichment() {
+        return true;
     }
+
+    @Override
+    protected void processChecksums(BioactiveEntity bioactiveEntityToEnrich, BioactiveEntity fetched) throws EnricherException {
+        EnricherUtils.mergeChecksums(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getChecksums(), fetched.getChecksums(), true,
+                getListener());
+    }
+
+    @Override
+    protected void processXrefs(BioactiveEntity bioactiveEntityToEnrich, BioactiveEntity fetched) {
+        EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), true, false,
+                getListener(), getListener());    }
 }
