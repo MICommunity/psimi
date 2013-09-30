@@ -53,7 +53,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         }
     }
 
-    public T fetchCvTermByIdentifier(String termIdentifier, String miOntologyName) throws BridgeFailedException {
+    public T fetchByIdentifier(String termIdentifier, String miOntologyName) throws BridgeFailedException {
 
         if(termIdentifier == null || termIdentifier.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
@@ -80,7 +80,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return instantiateCvTerm(fullName , createXref(termIdentifier , miOntologyName), olsOntologyName);
     }
 
-    public T fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyCvTerm) throws BridgeFailedException {
+    public T fetchByIdentifier(String termIdentifier, CvTerm ontologyCvTerm) throws BridgeFailedException {
 
         if(termIdentifier == null || termIdentifier.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
@@ -107,7 +107,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return instantiateCvTerm(fullName , new DefaultXref(ontologyCvTerm , termIdentifier), olsOntologyName);
     }
 
-    public T fetchCvTermByName(String searchName, String miOntologyName) throws BridgeFailedException {
+    public T fetchByName(String searchName, String miOntologyName) throws BridgeFailedException {
 
         if(searchName == null || searchName.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
@@ -135,7 +135,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return instantiateCvTerm(fullName , createXref(entry.getKey() , miOntologyName), olsOntologyName);
     }
 
-    public Collection<T> fetchCvTermByName(String searchName) throws BridgeFailedException {
+    public Collection<T> fetchByName(String searchName) throws BridgeFailedException {
         if(searchName == null || searchName.isEmpty())
             throw new IllegalArgumentException("Can not search for an identifier without a value.");
 
@@ -163,7 +163,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return results;
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String miOntologyName)
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, String miOntologyName)
             throws BridgeFailedException {
         if (termIdentifiers == null){
             throw new IllegalArgumentException("The term identifiers cannot be null.");
@@ -171,7 +171,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
 
         Collection<T> results = new ArrayList<T>(termIdentifiers.size());
         for (String id : termIdentifiers){
-            T element = fetchCvTermByIdentifier(id, miOntologyName);
+            T element = fetchByIdentifier(id, miOntologyName);
             if (element != null){
                 results.add(element);
             }
@@ -179,7 +179,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return results;
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase)
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase)
             throws BridgeFailedException {
         if (termIdentifiers == null){
             throw new IllegalArgumentException("The term identifiers cannot be null.");
@@ -187,7 +187,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
 
         Collection<T> results = new ArrayList<T>(termIdentifiers.size());
         for (String id : termIdentifiers){
-            T element = fetchCvTermByIdentifier(id, ontologyDatabase);
+            T element = fetchByIdentifier(id, ontologyDatabase);
             if (element != null){
                 results.add(element);
             }
@@ -195,7 +195,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return results;
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames, String miOntologyName)
+    public Collection<T> fetchByNames(Collection<String> searchNames, String miOntologyName)
             throws BridgeFailedException {
         if (searchNames == null){
             throw new IllegalArgumentException("The term identifiers cannot be null.");
@@ -203,7 +203,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
 
         Collection<T> results = new ArrayList<T>(searchNames.size());
         for (String id : searchNames){
-            T element = fetchCvTermByName(id, miOntologyName);
+            T element = fetchByName(id, miOntologyName);
             if (element != null){
                 results.add(element);
             }
@@ -211,7 +211,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         return results;
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames)
+    public Collection<T> fetchByNames(Collection<String> searchNames)
             throws BridgeFailedException {
         if (searchNames == null){
             throw new IllegalArgumentException("The term identifiers cannot be null.");
@@ -219,7 +219,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
 
         Collection<T> results = new ArrayList<T>(searchNames.size());
         for (String id : searchNames){
-            results.addAll(fetchCvTermByName(id));
+            results.addAll(fetchByName(id));
 
         }
         return results;
