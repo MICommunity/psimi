@@ -29,7 +29,7 @@ public class CachedEuroPubmedCentralFetcher
     }
 
 
-    public Publication fetchPublicationByIdentifier(String identifier, String source) throws BridgeFailedException {
+    public Publication fetchByIdentifier(String identifier, String source) throws BridgeFailedException {
         if (identifier != null){
             final String key = "GET_PUBLICATION_BY_IDENTIFIER_"+source+"_"+identifier;
             Object object = getFromCache(key);
@@ -37,15 +37,15 @@ public class CachedEuroPubmedCentralFetcher
                 return (Publication)object;
             }
             else{
-                Publication pub = publicationFetcher.fetchPublicationByIdentifier(identifier, source);
+                Publication pub = publicationFetcher.fetchByIdentifier(identifier, source);
                 storeInCache(key, pub);
                 return pub;
             }
         }
-        return publicationFetcher.fetchPublicationByIdentifier(identifier, source);
+        return publicationFetcher.fetchByIdentifier(identifier, source);
     }
 
-    public Collection<Publication> fetchPublicationsByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
+    public Collection<Publication> fetchByIdentifiers(Map<String, Collection<String>> identifiers) throws BridgeFailedException {
         if (identifiers != null){
             String key = "GET_ENTITIES_BY_IDENTIFIERS_";
             for (Map.Entry<String, Collection<String>> entry : identifiers.entrySet()){
@@ -61,11 +61,11 @@ public class CachedEuroPubmedCentralFetcher
                 return (Collection<Publication>)object;
             }
             else{
-                Collection<Publication> pub = publicationFetcher.fetchPublicationsByIdentifiers(identifiers);
+                Collection<Publication> pub = publicationFetcher.fetchByIdentifiers(identifiers);
                 storeInCache(key, pub);
                 return pub;
             }
         }
-        return publicationFetcher.fetchPublicationsByIdentifiers(identifiers);
+        return publicationFetcher.fetchByIdentifiers(identifiers);
     }
 }
