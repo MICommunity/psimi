@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="unisave"
+             targetNamespace="http://www.ebi.ac.uk/uniprot/unisave"
+             xmlns:tns="http://www.ebi.ac.uk/uniprot/unisave"
+             xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+             xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:unisave="http://www.ebi.ac.uk/uniprot/unisave"
+             xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+             xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+             xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+
+        <schema targetNamespace="http://www.ebi.ac.uk/uniprot/unisave"
+                xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:unisave="http://www.ebi.ac.uk/uniprot/unisave"
+                xmlns="http://www.w3.org/2001/XMLSchema"
+                elementFormDefault="unqualified"
+                attributeFormDefault="unqualified">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <simpleType name="EntryStatusType">
+                <restriction base="xsd:string">
+                    <enumeration value="ACTIVE"/>
+                    <enumeration value="CHANGED"/>
+                    <enumeration value="REPLACED"/>
+                    <enumeration value="DELETED"/>
+                    <enumeration value="INTEGRATED"/>
+                </restriction>
+            </simpleType>
+            <simpleType name="DiffBlockType">
+                <restriction base="xsd:string">
+                    <enumeration value="FIRST"/>
+                    <enumeration value="SECOND"/>
+                    <enumeration value="BOTH"/>
+                </restriction>
+            </simpleType>
+            <complexType name="EntryVersionInfo">
+                <sequence>
+                    <element name="database" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    <element name="status" type="unisave:EntryStatusType" minOccurs="1" maxOccurs="1"/>
+                    <element name="primaryAccession" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    <element name="entryName" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    <element name="entryVersion" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+                    <element name="internalEntryVersion" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+                    <element name="sequenceVersion" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+                    <element name="release" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    <element name="releaseDate" type="xsd:date" minOccurs="1" maxOccurs="1"/>
+                    <element name="entryId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </complexType>
+            <complexType name="VersionInfo">
+                <sequence>
+                    <element name="entryVersionInfo" type="unisave:EntryVersionInfo" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </complexType>
+            <complexType name="Version">
+                <sequence>
+                    <element name="entry" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </complexType>
+            <complexType name="DiffBlock">
+                <sequence>
+                    <element name="diffBlockType" type="unisave:DiffBlockType" minOccurs="1" maxOccurs="1"/>
+                    <element name="diffBlock" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </complexType>
+            <complexType name="Diff">
+                <sequence>
+                    <element name="diffBlock" type="unisave:DiffBlock" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </complexType>
+            <complexType name="EntryReplacedInfo">
+                <sequence>
+                    <element name="primaryAccession" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </complexType>
+            <complexType name="ReplacedInfo">
+                <sequence>
+                    <element name="entryReplacedInfo" type="unisave:EntryReplacedInfo" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </complexType>
+            <!-- operation request element -->
+            <element name="getVersionInfo">
+                <complexType>
+                    <sequence>
+                        <element name="identifier" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                        <element name="isSecondary" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation response element -->
+            <element name="VersionInfoResponse">
+                <complexType>
+                    <sequence>
+                        <element name="return" type="unisave:VersionInfo" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation request element -->
+            <element name="getVersion">
+                <complexType>
+                    <sequence>
+                        <element name="entryId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                        <element name="isFasta" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation response element -->
+            <element name="VersionResponse">
+                <complexType>
+                    <sequence>
+                        <element name="return" type="unisave:Version" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation request element -->
+            <element name="getDiff">
+                <complexType>
+                    <sequence>
+                        <element name="entryId1" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                        <element name="entryId2" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation response element -->
+            <element name="DiffResponse">
+                <complexType>
+                    <sequence>
+                        <element name="return" type="unisave:Diff" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation request element -->
+            <element name="getReplacedInfo">
+                <complexType>
+                    <sequence>
+                        <element name="primaryAccession" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <!-- operation response element -->
+            <element name="ReplacedInfoResponse">
+                <complexType>
+                    <sequence>
+                        <element name="return" type="unisave:ReplacedInfo" minOccurs="1" maxOccurs="1"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+
+    </types>
+
+    <message name="getVersionInfo">
+        <part name="parameters" element="unisave:getVersionInfo"/>
+    </message>
+
+    <message name="VersionInfoResponse">
+        <part name="parameters" element="unisave:VersionInfoResponse"/>
+    </message>
+
+    <message name="getVersion">
+        <part name="parameters" element="unisave:getVersion"/>
+    </message>
+
+    <message name="VersionResponse">
+        <part name="parameters" element="unisave:VersionResponse"/>
+    </message>
+
+    <message name="getDiff">
+        <part name="parameters" element="unisave:getDiff"/>
+    </message>
+
+    <message name="DiffResponse">
+        <part name="parameters" element="unisave:DiffResponse"/>
+    </message>
+
+    <message name="getReplacedInfo">
+        <part name="parameters" element="unisave:getReplacedInfo"/>
+    </message>
+
+    <message name="ReplacedInfoResponse">
+        <part name="parameters" element="unisave:ReplacedInfoResponse"/>
+    </message>
+
+    <portType name="unisavePortType">
+        <operation name="getVersionInfo">
+            <documentation>returns the entry version information given a primary accession number or an entry name. </documentation>
+            <input message="tns:getVersionInfo"/>
+            <output message="tns:VersionInfoResponse"/>
+        </operation>
+        <operation name="getVersion">
+            <documentation>returns the entry version in flat file or fasta format given an entry identifier.</documentation>
+            <input message="tns:getVersion"/>
+            <output message="tns:VersionResponse"/>
+        </operation>
+        <operation name="getDiff">
+            <documentation>returns the differences between two entry versions in flat file format given their entry identifiers.</documentation>
+            <input message="tns:getDiff"/>
+            <output message="tns:DiffResponse"/>
+        </operation>
+        <operation name="getReplacedInfo">
+            <documentation>returns the entries that have the given primary accession number as a secondary accession number.</documentation>
+            <input message="tns:getReplacedInfo"/>
+            <output message="tns:ReplacedInfoResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="unisave" type="tns:unisavePortType">
+        <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getVersionInfo">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body parts="parameters" use="literal"/>
+            </input>
+            <output>
+                <SOAP:body parts="parameters" use="literal"/>
+            </output>
+        </operation>
+        <operation name="getVersion">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body parts="parameters" use="literal"/>
+            </input>
+            <output>
+                <SOAP:body parts="parameters" use="literal"/>
+            </output>
+        </operation>
+        <operation name="getDiff">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body parts="parameters" use="literal"/>
+            </input>
+            <output>
+                <SOAP:body parts="parameters" use="literal"/>
+            </output>
+        </operation>
+        <operation name="getReplacedInfo">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body parts="parameters" use="literal"/>
+            </input>
+            <output>
+                <SOAP:body parts="parameters" use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="unisave">
+        <documentation>UniProtKB Sequence Annotation Version Archive (UniSave)</documentation>
+        <port name="unisave" binding="tns:unisave">
+            <SOAP:address location="http://www.ebi.ac.uk/uniprot/unisave/soap"/>
+        </port>
+    </service>
+
+</definitions>
