@@ -1,42 +1,27 @@
-package psidev.psi.mi.jami.enricher.impl.experiment;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
-import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
+import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.model.Experiment;
 
-import java.util.Collection;
-
 /**
- * The experiment enricher has no fetcher and can enrich either a single experiment of a collection.
- * It has subEnrichers for CvTerms, Organisms, and publications.
+ * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since  31/07/13
+ * @since 13/08/13
  */
-public abstract class AbstractExperimentEnricher
-        implements ExperimentEnricher{
+public class BasicExperimentEnricher implements ExperimentEnricher{
 
     private PublicationEnricher publicationEnricher = null;
     private CvTermEnricher cvTermEnricher = null;
-    private OrganismEnricher organismEnricher = null;
     private ExperimentEnricherListener listener = null;
 
-    public AbstractExperimentEnricher(){}
+    public BasicExperimentEnricher(){
 
-    /**
-     * Enriches a collection of experiments.
-     * @param experimentsToEnrich   The experiments which are to be enriched.
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrichExperiments(Collection<Experiment> experimentsToEnrich) throws EnricherException {
-        for(Experiment experimentToEnrich : experimentsToEnrich){
-            enrichExperiment(experimentToEnrich);
-        }
     }
 
     /**
@@ -44,34 +29,21 @@ public abstract class AbstractExperimentEnricher
      * @param experimentToEnrich    The experiment which is to be enriched.
      * @throws EnricherException    Thrown if problems are encountered in the fetcher
      */
-    public void enrichExperiment(Experiment experimentToEnrich) throws EnricherException {
+    public void enrich(Experiment experimentToEnrich) throws EnricherException {
         if( experimentToEnrich == null )
             throw new IllegalArgumentException("Attempted to enrich null experiment.");
 
-        if( getOrganismEnricher() != null
-                && experimentToEnrich.getHostOrganism() != null)
-            getOrganismEnricher().enrichOrganism(experimentToEnrich.getHostOrganism());
-
         if( getPublicationEnricher() != null
                 && experimentToEnrich.getPublication() != null )
-            getPublicationEnricher().enrichPublication(experimentToEnrich.getPublication());
+            getPublicationEnricher().enrich(experimentToEnrich.getPublication());
 
         if( getCvTermEnricher() != null
                 && experimentToEnrich.getInteractionDetectionMethod() != null )
-            getCvTermEnricher().enrichCvTerm(experimentToEnrich.getInteractionDetectionMethod());
-
-        processExperiment(experimentToEnrich);
+            getCvTermEnricher().enrich(experimentToEnrich.getInteractionDetectionMethod());
 
         if( getExperimentEnricherListener() != null )
-            getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , null);
+            getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , "The experiment has been successfully enriched.");
     }
-
-    /**
-     * Processes the specific details of the experiment which are not delegated to a subEnricher.
-     * @param experimentToEnrich    The experiment which is to be enriched
-     * @throws EnricherException    Thrown if problems are encountered in a fetcher.
-     */
-    protected abstract void processExperiment(Experiment experimentToEnrich) throws EnricherException;
 
     /**
      * Sets the subEnricher for CvTerms. Can be null.
@@ -86,21 +58,6 @@ public abstract class AbstractExperimentEnricher
      */
     public CvTermEnricher getCvTermEnricher() {
         return cvTermEnricher;
-    }
-
-    /**
-     * Sets the subEnricher for organisms. Can be null.
-     * @param organismEnricher The Organism enricher which is to be used.
-     */
-    public void setOrganismEnricher(OrganismEnricher organismEnricher) {
-        this.organismEnricher = organismEnricher;
-    }
-    /**
-     * Gets the subEnricher for organisms. Can be null.
-     * @return  The organism enricher currently being used.
-     */
-    public OrganismEnricher getOrganismEnricher() {
-        return organismEnricher;
     }
 
     /**
