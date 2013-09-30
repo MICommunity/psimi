@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>psidev.psi.mi.jami.bridges</groupId>
+        <artifactId>jami-bridges</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>psidev.psi.mi.jami.bridges</groupId>
+    <artifactId>jami-unisave</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>PSI :: JAMI - unisave</name>
+    <description>Bridges module with unisave webservice</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>1.12</version>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.xml</groupId>
+                        <artifactId>webservices-api</artifactId>
+                        <version>1.4</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-xjc</artifactId>
+                        <version>2.1.12</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.sun.xml.ws</groupId>
+                        <artifactId>jaxws-rt</artifactId>
+                        <version>2.1.4</version>
+                    </dependency>
+                </dependencies>
+
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- bridges core -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>bridges-core</artifactId>
+            <version>${jami.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>
