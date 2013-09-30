@@ -50,7 +50,7 @@ public class UniprotGeneFetcher implements GeneFetcher {
      * @return              The matching gene records, or an empty collection if no record was found.
      * @throws BridgeFailedException
      */
-    public Collection<Gene> fetchGenesByIdentifier(String identifier, int taxID)
+    public Collection<Gene> fetchByIdentifier(String identifier, int taxID)
             throws BridgeFailedException {
 
         if(identifier == null)
@@ -79,18 +79,18 @@ public class UniprotGeneFetcher implements GeneFetcher {
         return genes;
     }
 
-    public Collection<Gene> fetchGenesByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        return fetchGenesByIdentifiers(identifiers, -3);
+    public Collection<Gene> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        return fetchByIdentifiers(identifiers, -3);
     }
 
-    public Collection<Gene> fetchGenesByIdentifiers(Collection<String> identifiers, int taxID) throws BridgeFailedException {
+    public Collection<Gene> fetchByIdentifiers(Collection<String> identifiers, int taxID) throws BridgeFailedException {
         if(identifiers == null)
             throw new IllegalArgumentException("Could not perform search on null collection of identifiers.");
 
         if (!identifiers.isEmpty()){
             Collection<Gene> genes = new ArrayList<Gene>(identifiers.size());
             for (String id : identifiers){
-                genes.addAll(fetchGenesByIdentifier(id, taxID));
+                genes.addAll(fetchByIdentifier(id, taxID));
             }
 
             return genes;
@@ -98,11 +98,11 @@ public class UniprotGeneFetcher implements GeneFetcher {
         return Collections.EMPTY_LIST;
     }
 
-    public Collection<Gene> fetchGenesByIdentifier(String identifier)
+    public Collection<Gene> fetchByIdentifier(String identifier)
             throws BridgeFailedException {
         if(identifier == null)
             throw new IllegalArgumentException("Could not perform search on null identifier.");
-        return fetchGenesByIdentifier(identifier, -3);
+        return fetchByIdentifier(identifier, -3);
     }
 
     private psidev.psi.mi.jami.model.Gene createGenesFromEntry(UniProtEntry entity , String identifier){

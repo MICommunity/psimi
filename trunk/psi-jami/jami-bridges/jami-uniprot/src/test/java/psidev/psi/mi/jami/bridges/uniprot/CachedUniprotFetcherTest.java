@@ -70,7 +70,7 @@ public class CachedUniprotFetcherTest {
             //assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
             assertTrue(UniprotUtils.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
 
-            Collection<Protein> proteins = fetcher.fetchProteinsByIdentifier(identifier);
+            Collection<Protein> proteins = fetcher.fetchByIdentifier(identifier);
             for(Protein protein : proteins){
                 assertEquals(identifier.toLowerCase(), protein.getShortName());
                 assertNotNull(protein.getOrganism());
@@ -105,7 +105,7 @@ public class CachedUniprotFetcherTest {
         for(String identifier : identifiers){
             log.warn("testing entry: "+identifier);
             assertTrue(UniprotUtils.UNIPROT_PRO_REGEX.matcher(identifier).find());
-            Collection<Protein> proteins = fetcher.fetchProteinsByIdentifier(identifier);
+            Collection<Protein> proteins = fetcher.fetchByIdentifier(identifier);
             assertNotNull(proteins);
             assertEquals(1, proteins.size());
         }
@@ -127,7 +127,7 @@ public class CachedUniprotFetcherTest {
 
         //Sequence and length were independently verified at:
         //http://www.uniprot.org/uniprot/P15515
-        proteins = fetcher.fetchProteinsByIdentifier("PRO_0000021416");
+        proteins = fetcher.fetchByIdentifier("PRO_0000021416");
         //Fringe case - the end is at the maximum length
         assertTrue(proteins.size() == 1);
 
@@ -155,7 +155,7 @@ public class CachedUniprotFetcherTest {
 
         //Sequence and length were independently verified at:
         //http://www.uniprot.org/uniprot/Q9TQY7
-        proteins = fetcher.fetchProteinsByIdentifier("PRO_0000015868");
+        proteins = fetcher.fetchByIdentifier("PRO_0000015868");
         //Fringe case - the beginning is the first position
         assertTrue(proteins.size() == 1);
 

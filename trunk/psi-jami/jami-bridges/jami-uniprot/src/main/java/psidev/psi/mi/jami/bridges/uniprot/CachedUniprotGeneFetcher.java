@@ -36,25 +36,25 @@ public class CachedUniprotGeneFetcher
     }
 
 
-    public Collection<Gene> getGenesByIdentifier(String identifier)
+    public Collection<Gene> getByIdentifier(String identifier)
             throws BridgeFailedException{
 
         final String key = "getGenesByIdentifier#"+identifier;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.fetchGenesByIdentifier(identifier );
+            data = super.fetchByIdentifier(identifier );
             storeInCache(key , data);
         }
         return (Collection<Gene> )data;
     }
 
-    public Collection<Gene> getGenesByIdentifier(String identifier , int taxID)
+    public Collection<Gene> getByIdentifier(String identifier , int taxID)
             throws BridgeFailedException{
 
         final String key = "getGenesByIdentifier#"+identifier+"#"+taxID;
         Object data = getFromCache( key );
         if( data == null) {
-            data = super.fetchGenesByIdentifier(identifier , taxID);
+            data = super.fetchByIdentifier(identifier , taxID);
             storeInCache(key , data);
         }
         return (Collection<Gene> )data;

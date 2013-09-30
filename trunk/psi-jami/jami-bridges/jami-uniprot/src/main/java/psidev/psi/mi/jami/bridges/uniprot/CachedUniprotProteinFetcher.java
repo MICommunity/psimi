@@ -28,17 +28,17 @@ public class CachedUniprotProteinFetcher
         proteinFetcher = new UniprotProteinFetcher();
     }
 
-    public Collection<Protein> fetchProteinsByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<Protein> fetchByIdentifier(String identifier) throws BridgeFailedException {
         final String key = "GET_PROTEINS_BY_ACCESSION_"+identifier;
         Object data = getFromCache( key );
         if( data == null) {
-            data = proteinFetcher.fetchProteinsByIdentifier(identifier);
+            data = proteinFetcher.fetchByIdentifier(identifier);
             storeInCache(key , data);
         }
         return (Collection<Protein>)data;
     }
 
-    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Protein> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         if (identifiers != null){
             List<String> ids = new ArrayList<String>(identifiers);
             Collections.sort(ids);
@@ -51,11 +51,11 @@ public class CachedUniprotProteinFetcher
                 return (Collection<Protein>)object;
             }
             else{
-                Collection<Protein> entity = proteinFetcher.fetchProteinsByIdentifiers(identifiers);
+                Collection<Protein> entity = proteinFetcher.fetchByIdentifiers(identifiers);
                 storeInCache(key, entity);
                 return entity;
             }
         }
-        return proteinFetcher.fetchProteinsByIdentifiers(identifiers);
+        return proteinFetcher.fetchByIdentifiers(identifiers);
     }
 }

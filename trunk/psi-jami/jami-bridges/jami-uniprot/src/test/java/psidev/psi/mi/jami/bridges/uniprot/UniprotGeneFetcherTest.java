@@ -52,7 +52,7 @@ public class UniprotGeneFetcherTest {
 
         //We expect only one entrance                   "ENSG00000126001"
         for(String id : ensemblIds){
-            Collection<Gene> candidatesList = fetcher.fetchGenesByIdentifier(id);
+            Collection<Gene> candidatesList = fetcher.fetchByIdentifier(id);
             log.info("----- Entry "+id+" has "+candidatesList.size()+" ----------") ;
             readall(id , candidatesList);
         }
@@ -60,7 +60,7 @@ public class UniprotGeneFetcherTest {
 
         log.info("______________________ HUMAN TESTS __________________");
         for(String id : ensemblIds){
-            Collection<Gene> candidatesList = fetcher.fetchGenesByIdentifier(id , 9606);
+            Collection<Gene> candidatesList = fetcher.fetchByIdentifier(id , 9606);
             log.info("----- Entry "+id+" has "+candidatesList.size()+" ----------") ;
             readall(id , candidatesList);
         }

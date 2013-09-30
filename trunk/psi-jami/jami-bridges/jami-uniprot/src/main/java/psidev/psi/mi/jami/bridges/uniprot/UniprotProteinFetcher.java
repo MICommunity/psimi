@@ -86,7 +86,7 @@ public class UniprotProteinFetcher
      * @return              The proteins which match the given identifier.
      * @throws BridgeFailedException
      */
-    public Collection<Protein> fetchProteinsByIdentifier(String identifier)
+    public Collection<Protein> fetchByIdentifier(String identifier)
             throws BridgeFailedException {
 
         if(identifier == null) throw new IllegalArgumentException("Could not perform search on null identifier.");
@@ -109,7 +109,7 @@ public class UniprotProteinFetcher
      * @return              The proteins which match an identifier in the query.
      * @throws BridgeFailedException
      */
-    public Collection<Protein> fetchProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+    public Collection<Protein> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
         if(identifiers == null) throw new IllegalArgumentException("Could not perform search on null collection of identifiers.");
         if(identifiers.isEmpty()){
            return Collections.EMPTY_LIST;
