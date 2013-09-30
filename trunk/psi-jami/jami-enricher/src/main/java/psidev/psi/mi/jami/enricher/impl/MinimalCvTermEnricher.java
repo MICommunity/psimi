@@ -11,8 +11,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
-import java.util.Collection;
-
 /**
  * Provides minimum enrichment of the CvTerm.
  * Will enrich the full name if it is null and the identifiers.
@@ -21,7 +19,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/05/13
  */
-public class MinimalCvTermEnricher implements CvTermEnricher{
+public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements CvTermEnricher{
 
     private int retryCount = 5;
 
@@ -73,39 +71,6 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
     }
 
     /**
-     * Enriches a collection of CvTerms.
-     * @param cvTermsToEnrich       The cvTerms to be enriched
-     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) throws EnricherException {
-        if ( cvTermsToEnrich == null )
-            throw new IllegalArgumentException("Attempted to enrich null collection of cv terms.") ;
-        for(CvTerm cvTermToEnrich : cvTermsToEnrich){
-            enrichCvTerm(cvTermToEnrich);
-        }
-    }
-
-    /**
-     * Uses the cvTermToEnrich to fetch a more complete term
-     * and then processes the CvTerm to modify it to a more enriched or updated form.
-     * @param cvTermToEnrich  a CvTerm to enrich
-     */
-    public void enrichCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
-        if ( cvTermToEnrich == null )
-            throw new IllegalArgumentException("Attempted to enrich null cv term.") ;
-
-        CvTerm cvTermFetched = fetchCvTerm(cvTermToEnrich);
-        if(cvTermFetched == null){
-            if(getCvTermEnricherListener() != null)
-                getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The cvTerm does not exist.");
-            return;
-        }
-
-        processCvTerm(cvTermToEnrich, cvTermFetched);
-        if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "CvTerm enriched successfully.");
-    }
-
-    /**
      * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
      * @param cvTermToEnrich the CvTerm to enrich
      */
@@ -135,13 +100,8 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
         }
     }
 
-    /**
-     * Uses the CvTermToEnrich to fetch a more complete CvTerm
-     * @param cvTermToEnrich the CvTerm that is being enriched and will be used to fetch.
-     * @return  a CvTerm fetched from the fetching service.
-     */
-    private CvTerm fetchCvTerm(CvTerm cvTermToEnrich) throws EnricherException {
-
+    @Override
+    protected CvTerm fetchEnrichedVersionFrom(CvTerm cvTermToEnrich) throws EnricherException {
         CvTerm cvTermFetched = null;
 
         if(cvTermToEnrich.getMIIdentifier() != null){
@@ -194,14 +154,26 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
         return cvTermFetched;
     }
 
+    @Override
+    protected void onEnrichedVersionNotFound(CvTerm cvTermToEnrich) {
+        if(getCvTermEnricherListener() != null)
+            getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The cvTerm does not exist.");
+    }
+
+    @Override
+    protected void enrich(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+        processCvTerm(cvTermToEnrich, cvTermFetched);
+        if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "CvTerm enriched successfully.");
+    }
+
     private CvTerm fetchCvTerm(String id, CvTerm db) throws EnricherException {
         try {
-            return getCvTermFetcher().fetchCvTermByIdentifier(id, db);
+            return getCvTermFetcher().fetchByIdentifier(id, db);
         } catch (BridgeFailedException e) {
             int index = 1;
             while(index < retryCount){
                 try {
-                    return getCvTermFetcher().fetchCvTermByIdentifier(id, db);
+                    return getCvTermFetcher().fetchByIdentifier(id, db);
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
                 }
@@ -213,12 +185,12 @@ public class MinimalCvTermEnricher implements CvTermEnricher{
 
     private CvTerm fetchCvTerm(String name, String db) throws EnricherException {
         try {
-            return getCvTermFetcher().fetchCvTermByName(name, db);
+            return getCvTermFetcher().fetchByName(name, db);
         } catch (BridgeFailedException e) {
             int index = 1;
             while(index < retryCount){
                 try {
-                    return getCvTermFetcher().fetchCvTermByName(name, db);
+                    return getCvTermFetcher().fetchByName(name, db);
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
                 }
