@@ -140,7 +140,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNotNull(protein.getUniprotkb());
         assertFalse(protein.getUniprotkb().equalsIgnoreCase(TESTID));
         assertEquals("P08246", protein.getUniprotkb());
@@ -174,7 +174,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
     }
@@ -207,7 +207,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
     }
@@ -235,7 +235,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID , protein.getUniprotkb());
@@ -278,7 +278,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNotNull(protein.getUniprotkb());
     }
 
@@ -311,7 +311,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
     }
@@ -345,7 +345,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -380,7 +380,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -416,7 +416,7 @@ public class UniprotProteinRemapperTest {
         });
 
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNull(protein.getUniprotkb());
     }
 
@@ -449,7 +449,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -484,7 +484,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -519,7 +519,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -555,7 +555,7 @@ public class UniprotProteinRemapperTest {
             }
         });
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         assertNull(protein.getUniprotkb());
     }
 
@@ -574,7 +574,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
@@ -596,7 +596,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
 
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         // assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         // assertNotNull(remapReport.getConflictMessage());
@@ -619,7 +619,7 @@ public class UniprotProteinRemapperTest {
         assertNull(protein.getUniprotkb());
         
 
-        remap.mapProtein(protein);
+        remap.map(protein);
         //assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         //assertNotNull(remapReport.getConflictMessage());

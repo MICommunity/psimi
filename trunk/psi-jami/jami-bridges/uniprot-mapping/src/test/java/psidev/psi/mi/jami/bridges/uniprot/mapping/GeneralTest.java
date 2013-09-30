@@ -148,7 +148,7 @@ public  class GeneralTest {
 
         remap.setPriorityIdentifiers(ids);
         remap.setPrioritySequence(seq);
-        remap.mapProtein(p);
+        remap.map(p);
         log.info("The ac for p is "+p.getUniprotkb());
     }
 
