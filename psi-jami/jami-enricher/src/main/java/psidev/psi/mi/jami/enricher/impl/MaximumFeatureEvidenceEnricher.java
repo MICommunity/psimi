@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.feature;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -9,8 +9,8 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MaximumFeatureEvidenceUpdater
-        extends MinimumFeatureEvidenceUpdater{
+public class MaximumFeatureEvidenceEnricher
+        extends MinimumFeatureEvidenceEnricher{
 
     /**
      * Processes the specific details of the feature which are not delegated to a subEnricher.
@@ -20,8 +20,10 @@ public class MaximumFeatureEvidenceUpdater
     @Override
     public void processFeature(FeatureEvidence featureToEnrich)
             throws EnricherException {
+
         super.processFeature(featureToEnrich);
         if(getCvTermEnricher() != null)
             getCvTermEnricher().enrichCvTerms(featureToEnrich.getDetectionMethods());
     }
+
 }

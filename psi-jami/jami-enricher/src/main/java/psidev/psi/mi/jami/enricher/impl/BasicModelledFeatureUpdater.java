@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.feature;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.model.Feature;
 
