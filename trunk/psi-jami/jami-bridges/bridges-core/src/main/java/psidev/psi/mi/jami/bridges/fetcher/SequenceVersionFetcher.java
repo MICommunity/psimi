@@ -10,7 +10,7 @@ package psidev.psi.mi.jami.bridges.fetcher;
 
 public interface SequenceVersionFetcher {
 
-    public String fetchSequenceFromVersion(String id, int version, boolean isSecondary);
+    public String fetchSequenceFromVersion(String id, int version);
 
-    public int fetchVersionFromSequence(String id, String sequence, boolean isSecondary);
+    public int fetchVersionFromSequence(String id, String sequence);
 }
