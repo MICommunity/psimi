@@ -47,32 +47,32 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
         oboLoader.parseOboFile(new File(filePath), id2Term, name2Term);
     }
 
-    public T fetchCvTermByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
+    public T fetchByIdentifier(String termIdentifier, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
             return null;
         }
         return id2Term.get(termIdentifier);
     }
 
-    public T fetchCvTermByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public T fetchByIdentifier(String termIdentifier, CvTerm ontologyDatabase) throws BridgeFailedException {
         if (ontologyDatabase != null && !DefaultCvTermComparator.areEquals(ontologyDatabase, this.ontologyDatabase)){
             return null;
         }
         return id2Term.get(termIdentifier);
     }
 
-    public T fetchCvTermByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
+    public T fetchByName(String searchName, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
             return null;
         }
         return name2Term.get(searchName);
     }
 
-    public Collection<T> fetchCvTermByName(String searchName) throws BridgeFailedException {
+    public Collection<T> fetchByName(String searchName) throws BridgeFailedException {
         return Collections.singletonList(name2Term.get(searchName));
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
             return Collections.EMPTY_LIST;
         }
@@ -87,7 +87,7 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
         return terms;
     }
 
-    public Collection<T> fetchCvTermsByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
+    public Collection<T> fetchByIdentifiers(Collection<String> termIdentifiers, CvTerm ontologyDatabase) throws BridgeFailedException {
         if (ontologyDatabase != null && !DefaultCvTermComparator.areEquals(ontologyDatabase, this.ontologyDatabase)){
             return Collections.EMPTY_LIST;
         }
@@ -102,7 +102,7 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
         return terms;
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
+    public Collection<T> fetchByNames(Collection<String> searchNames, String ontologyDatabaseName) throws BridgeFailedException {
         if (ontologyDatabaseName != null && !this.ontologyDatabase.getShortName().equalsIgnoreCase(ontologyDatabaseName)){
             return Collections.EMPTY_LIST;
         }
@@ -117,7 +117,7 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
         return terms;
     }
 
-    public Collection<T> fetchCvTermsByNames(Collection<String> searchNames) throws BridgeFailedException {
+    public Collection<T> fetchByNames(Collection<String> searchNames) throws BridgeFailedException {
         Collection<T> terms = new ArrayList<T>(searchNames.size());
 
         for (String name : searchNames){
