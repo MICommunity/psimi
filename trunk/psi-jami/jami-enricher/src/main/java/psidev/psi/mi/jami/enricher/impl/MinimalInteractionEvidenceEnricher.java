@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.interaction;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
@@ -13,8 +13,8 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class BasicInteractionEvidenceEnricher
-        extends BasicInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
+public class MinimalInteractionEvidenceEnricher
+        extends MinimalInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
         implements InteractionEvidenceEnricher {
 
     private ExperimentEnricher experimentEnricher = null;
@@ -25,14 +25,11 @@ public class BasicInteractionEvidenceEnricher
      * @param interactionToEnrich   The interaction to be enriched.
      */
     @Override
-    public void processInteraction(InteractionEvidence interactionToEnrich) throws EnricherException {
-        super.processInteraction(interactionToEnrich);
+    protected void processInteraction(InteractionEvidence interactionToEnrich) throws EnricherException {
 
-        if( getExperimentEnricher() != null
-                && interactionToEnrich.getExperiment() != null )
-            getExperimentEnricher().enrichExperiment( interactionToEnrich.getExperiment() );
+        //PROCESS experiment
+        processExperiment(interactionToEnrich);
     }
-
 
     /**
      * The experimentEnricher which is currently being used for the enriching or updating of experiments.
@@ -48,6 +45,12 @@ public class BasicInteractionEvidenceEnricher
      */
     public void setExperimentEnricher(ExperimentEnricher experimentEnricher) {
         this.experimentEnricher = experimentEnricher;
+    }
+
+    protected void processExperiment(InteractionEvidence interactionToEnrich) throws EnricherException {
+        if( getExperimentEnricher() != null
+                && interactionToEnrich.getExperiment() != null )
+            getExperimentEnricher().enrich(interactionToEnrich.getExperiment());
     }
 
 }

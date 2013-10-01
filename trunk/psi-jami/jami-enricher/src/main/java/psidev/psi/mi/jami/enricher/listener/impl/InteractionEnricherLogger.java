@@ -24,4 +24,8 @@ public class InteractionEnricherLogger
     public void onEnrichmentError(Interaction object, String message, Exception e) {
         log.error(object.toString() + " enrichment error, message: " + message, e);
     }
+
+    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+        log.info("New rigid has been generated : " + interaction.getRigid()+". The old rigid was " + oldRigid);
+    }
 }
