@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
-import psidev.psi.mi.jami.listener.InteractorChangeListener;
+import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -80,8 +80,21 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
     }
 
     @Override
-    protected InteractorChangeListener<Gene> getListener() {
+    public InteractorEnricherListener<Gene> getListener() {
         return this.listener;
+    }
+
+    @Override
+    public void setListener(InteractorEnricherListener<Gene> listener) {
+        if (listener instanceof GeneEnricherListener){
+            this.listener = (GeneEnricherListener)listener;
+        }
+        else if (listener == null){
+            this.listener = null;
+        }
+        else{
+            throw new IllegalArgumentException("A GeneEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
+        }
     }
 
     @Override

@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.InteractorEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.listener.InteractorChangeListener;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since <pre>30/09/13</pre>
  */
 
-public abstract class AbstractInteractorEnricher<T extends Interactor> extends AbstractMIEnricher<T>{
+public abstract class AbstractInteractorEnricher<T extends Interactor> extends AbstractMIEnricher<T> implements InteractorEnricher<T>{
 
     private CvTermEnricher cvTermEnricher = null;
     private OrganismEnricher organismEnricher = null;
@@ -45,7 +46,9 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         return cvTermEnricher;
     }
 
-    protected abstract InteractorChangeListener<T> getListener();
+    public abstract InteractorEnricherListener<T> getListener();
+
+    public abstract void setListener(InteractorEnricherListener<T> listener);
 
     @Override
     protected abstract T fetchEnrichedVersionFrom(T objectToEnrich) throws EnricherException;
@@ -114,7 +117,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
                 getListener().onAddedInteractorType(entityToEnrich);
             }
         }
-        if (cvTermEnricher != null){
+        if (cvTermEnricher != null && entityToEnrich.getInteractorType() != null){
             cvTermEnricher.enrich(entityToEnrich.getInteractorType());
         }
     }
