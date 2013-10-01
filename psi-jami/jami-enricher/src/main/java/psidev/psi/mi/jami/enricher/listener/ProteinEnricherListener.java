@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener;
 
 
+import psidev.psi.mi.jami.listener.ProteinChangeListener;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
@@ -10,6 +11,6 @@ import psidev.psi.mi.jami.model.Protein;
  * @since  10/06/13
  */
 public interface ProteinEnricherListener
-        extends InteractorEnricherListener<Protein>, EnricherListener<Protein> {
+        extends InteractorEnricherListener<Protein>, ProteinChangeListener {
 
 }

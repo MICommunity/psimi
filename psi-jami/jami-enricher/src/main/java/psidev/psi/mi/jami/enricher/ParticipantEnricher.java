@@ -1,12 +1,9 @@
 package psidev.psi.mi.jami.enricher;
 
 
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
-
-import java.util.Collection;
 
 /**
  * Sub enrichers: Protein, CvTerm, Feature, Bioactive3Entity
@@ -14,21 +11,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
  */
-public interface ParticipantEnricher <P extends Participant , F extends Feature> {
-
-    /**
-     * Enriches a single participant.
-     * @param participantToEnrich       The participant to be enriched.
-     * @throws EnricherException        Thrown if a fetcher encounters a problem
-     */
-    public void enrichParticipant(P participantToEnrich) throws EnricherException;
-
-    /**
-     * Enriches a collection of participants.
-     * @param participantsToEnrich      The participants to be enriched
-     * @throws EnricherException        Thrown if problems are encountered in the fetcher
-     */
-    public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException;
+public interface ParticipantEnricher <P extends Participant , F extends Feature> extends MIEnricher<P>{
 
     /**
      * Sets the enricher for proteins. If null, proteins will not be enriched.

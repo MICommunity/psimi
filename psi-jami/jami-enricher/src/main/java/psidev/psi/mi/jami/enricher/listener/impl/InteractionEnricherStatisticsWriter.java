@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.model.Interaction;
 
@@ -57,6 +56,19 @@ public class InteractionEnricherStatisticsWriter
      */
     public InteractionEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
+    }
+
+    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+        checkObject(interaction);
+        if (oldRigid != null && interaction.getRigid() != null){
+            incrementUpdateCount();
+        }
+        else if (oldRigid != null){
+            incrementRemovedCount();
+        }
+        else{
+            incrementAdditionCount();
+        }
     }
 
 

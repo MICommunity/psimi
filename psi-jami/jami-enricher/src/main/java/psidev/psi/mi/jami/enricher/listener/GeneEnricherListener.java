@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener;
 
+import psidev.psi.mi.jami.listener.GeneChangeListener;
 import psidev.psi.mi.jami.model.Gene;
 
 /**
@@ -9,5 +10,5 @@ import psidev.psi.mi.jami.model.Gene;
  * @since 03/09/13
  */
 public interface GeneEnricherListener
-    extends InteractorEnricherListener<Gene>, EnricherListener<Gene> {
+    extends InteractorEnricherListener<Gene>, GeneChangeListener {
 }

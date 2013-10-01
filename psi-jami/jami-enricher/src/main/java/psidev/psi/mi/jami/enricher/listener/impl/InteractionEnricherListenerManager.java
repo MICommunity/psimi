@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.model.Interaction;
 
@@ -29,6 +28,12 @@ public class InteractionEnricherListenerManager
      */
     public InteractionEnricherListenerManager(InteractionEnricherListener... listeners){
         super(listeners);
+    }
+
+    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+        for (InteractionEnricherListener listener : getListenersList()){
+            listener.onUpdatedRigid(interaction, oldRigid);
+        }
     }
 
     //============================================================================================
