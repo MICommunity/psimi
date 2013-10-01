@@ -8,6 +8,8 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.model.Experiment;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -43,6 +45,14 @@ public class BasicExperimentEnricher implements ExperimentEnricher{
 
         if( getExperimentEnricherListener() != null )
             getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , "The experiment has been successfully enriched.");
+    }
+
+    public void enrich(Collection<Experiment> objects) throws EnricherException {
+        if( objects == null )
+            throw new IllegalArgumentException("Cannot enrich a null collection of experiments.");
+        for(Experiment exp : objects){
+            enrich(exp);
+        }
     }
 
     /**

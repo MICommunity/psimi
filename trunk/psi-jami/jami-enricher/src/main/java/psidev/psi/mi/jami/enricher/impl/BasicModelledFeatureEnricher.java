@@ -3,11 +3,10 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.model.ModelledFeature;
 
 /**
- * Created with IntelliJ IDEA.
+ * Basic enricher for modelled feature
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class BasicModelledFeatureEnricher
-        extends BasicFeatureEnricher<ModelledFeature>{
+public class BasicModelledFeatureEnricher extends MinimalFeatureEnricher<ModelledFeature> {
 }

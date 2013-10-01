@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
+import psidev.psi.mi.jami.model.Experiment;
 
 /**
  * The experimentEnricher can enrich either a single experiment or a collection.
@@ -10,7 +11,7 @@ import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13
  */
-public interface ExperimentEnricher {
+public interface ExperimentEnricher extends MIEnricher<Experiment>{
     /**
      * Sets the subEnricher for CvTerms. Can be null.
      * @param cvTermEnricher    The CvTerm enricher to be used

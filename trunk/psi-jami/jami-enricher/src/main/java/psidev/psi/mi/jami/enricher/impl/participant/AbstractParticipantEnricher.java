@@ -46,7 +46,7 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
 
         // == Prepare Features =====================================
         if( getFeatureEnricher() != null )
-            getFeatureEnricher().setFeaturesToEnrich(participantToEnrich);
+            getFeatureEnricher().setFeaturesWithRangesToUpdate(participantToEnrich);
 
 
 
