@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.listener.ProteinChangeListener;
 import psidev.psi.mi.jami.model.Feature;
 
 /**
@@ -12,6 +12,6 @@ import psidev.psi.mi.jami.model.Feature;
  * @since  19/07/13
  */
 public interface ProteinListeningFeatureEnricher<F extends Feature>
-    extends FeatureEnricher<F>, ProteinEnricherListener{
+    extends FeatureEnricher<F>, ProteinChangeListener{
 
 }

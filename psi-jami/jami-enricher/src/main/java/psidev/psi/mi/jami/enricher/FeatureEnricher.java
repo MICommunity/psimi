@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.util.Collection;
 
@@ -15,22 +13,9 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
  */
-public interface FeatureEnricher <F extends Feature>{
+public interface FeatureEnricher <F extends Feature> extends MIEnricher<F>{
 
-    /**
-     * Enrichment of a single feature.
-     * @param featureToEnrich       The feature which is to be enriched.
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrichFeature(F featureToEnrich) throws EnricherException;
-    /**
-     * Enriches a collection of features.
-     * @param featuresToEnrich   The features which are to be enriched.
-     * @throws EnricherException    Thrown if problems are encountered in a fetcher
-     */
-    public void enrichFeatures(Collection<F> featuresToEnrich) throws EnricherException;
-
-    public void setFeaturesToEnrich(Participant participant);
+    public void setFeaturesWithRangesToUpdate(Collection<F> features);
 
     /**
      * Sets the listener of feature changes. Can be null.
