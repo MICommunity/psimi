@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener;
 
-import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.listener.BioactiveEntityChangeListener;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
@@ -11,6 +10,6 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since 07/08/13
  */
 public interface BioactiveEntityEnricherListener
-        extends EnricherListener <BioactiveEntity> , BioactiveEntityChangeListener {
+        extends InteractorEnricherListener<BioactiveEntity>, BioactiveEntityChangeListener {
 
 }

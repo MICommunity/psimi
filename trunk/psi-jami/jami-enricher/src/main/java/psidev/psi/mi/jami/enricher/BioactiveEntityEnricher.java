@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
  * An enricher for bioactive entities which can either enrich a single entity or a collection.
@@ -11,7 +12,7 @@ import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  07/08/13
  */
-public interface BioactiveEntityEnricher{
+public interface BioactiveEntityEnricher extends InteractorEnricher<BioactiveEntity>{
 
     /**
      * Returns the current fetcher which is being used to collect information about entities for enrichment.
@@ -30,12 +31,4 @@ public interface BioactiveEntityEnricher{
      * @return  The current listener. Can be null.
      */
     public BioactiveEntityEnricherListener getBioactiveEntityEnricherListener();
-
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
-
-    public CvTermEnricher getCvTermEnricher();
-
-    public void setOrganismEnricher(OrganismEnricher organismEnricher);
-
-    public OrganismEnricher getOrganismEnricher();
 }

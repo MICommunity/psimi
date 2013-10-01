@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.listener.InteractorChangeListener;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
@@ -97,8 +97,13 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected InteractorChangeListener<T> getListener() {
+    public InteractorEnricherListener<T> getListener() {
         return interactorEnricher.getListener();
+    }
+
+    @Override
+    public void setListener(InteractorEnricherListener<T> listener) {
+        this.interactorEnricher.setListener(listener);
     }
 
     @Override

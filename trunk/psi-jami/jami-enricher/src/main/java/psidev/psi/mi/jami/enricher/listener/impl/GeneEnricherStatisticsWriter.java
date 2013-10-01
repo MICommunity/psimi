@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/09/13
  */
-public class GeneStatisticsWriter
+public class GeneEnricherStatisticsWriter
         extends EnricherStatisticsWriter<Gene>
         implements GeneEnricherListener {
 
@@ -23,7 +23,7 @@ public class GeneStatisticsWriter
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public GeneStatisticsWriter() throws IOException {
+    public GeneEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
@@ -32,7 +32,7 @@ public class GeneStatisticsWriter
      * @param fileName          The seed to base the names of the files on.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public GeneStatisticsWriter(String fileName) throws IOException {
+    public GeneEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -42,7 +42,7 @@ public class GeneStatisticsWriter
      * @param failureFileName   The exact name for the file to log failed enrichments in
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public GeneStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public GeneEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -52,7 +52,7 @@ public class GeneStatisticsWriter
      * @param failureFile       The file to log failed enrichments in.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public GeneStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public GeneEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
     }
 

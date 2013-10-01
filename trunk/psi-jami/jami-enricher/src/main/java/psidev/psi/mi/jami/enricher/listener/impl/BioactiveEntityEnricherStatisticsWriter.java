@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public class BioactiveEntityStatisticsWriter
+public class BioactiveEntityEnricherStatisticsWriter
         extends EnricherStatisticsWriter<BioactiveEntity>
         implements BioactiveEntityEnricherListener {
 
@@ -24,7 +24,7 @@ public class BioactiveEntityStatisticsWriter
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public BioactiveEntityStatisticsWriter() throws IOException {
+    public BioactiveEntityEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
@@ -33,7 +33,7 @@ public class BioactiveEntityStatisticsWriter
      * @param fileName          The seed to base the names of the files on.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public BioactiveEntityStatisticsWriter(String fileName) throws IOException {
+    public BioactiveEntityEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -43,7 +43,7 @@ public class BioactiveEntityStatisticsWriter
      * @param failureFileName   The exact name for the file to log failed enrichments in
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public BioactiveEntityStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public BioactiveEntityEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -53,7 +53,7 @@ public class BioactiveEntityStatisticsWriter
      * @param failureFile       The file to log failed enrichments in.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public BioactiveEntityStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public BioactiveEntityEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
     }
 

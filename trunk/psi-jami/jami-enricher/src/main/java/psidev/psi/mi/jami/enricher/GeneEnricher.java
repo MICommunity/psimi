@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 03/09/13
  */
-public interface GeneEnricher extends MIEnricher<Gene>{
+public interface GeneEnricher extends InteractorEnricher<Gene>{
 
     /**
      * Returns the current fetcher which is being used to collect information about entities for enrichment.
@@ -30,22 +30,5 @@ public interface GeneEnricher extends MIEnricher<Gene>{
      * @return  The current listener. Can be null.
      */
     public GeneEnricherListener getGeneEnricherListener();
-
-
-    /**
-     * The organism enricher which will be used to collect data about the organisms.
-     * @param organismEnricher  The organism enricher to be used.
-     */
-    public void setOrganismEnricher(OrganismEnricher organismEnricher);
-
-    /**
-     * The Enricher to use on the protein's organism.
-     * @return  The current organism enricher.
-     */
-    public OrganismEnricher getOrganismEnricher();
-
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
-
-    public CvTermEnricher getCvTermEnricher();
 
 }

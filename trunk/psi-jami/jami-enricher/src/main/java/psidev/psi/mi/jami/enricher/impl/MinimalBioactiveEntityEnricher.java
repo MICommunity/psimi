@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.listener.InteractorChangeListener;
+import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -60,8 +60,21 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
     }
 
     @Override
-    protected InteractorChangeListener<BioactiveEntity> getListener() {
+    public InteractorEnricherListener<BioactiveEntity> getListener() {
         return listener;
+    }
+
+    @Override
+    public void setListener(InteractorEnricherListener<BioactiveEntity> listener) {
+        if (listener instanceof BioactiveEntityEnricherListener){
+            this.listener = (BioactiveEntityEnricherListener)listener;
+        }
+        else if (listener == null){
+            this.listener = null;
+        }
+        else{
+            throw new IllegalArgumentException("A BioactiveEntityEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
+        }
     }
 
     @Override
