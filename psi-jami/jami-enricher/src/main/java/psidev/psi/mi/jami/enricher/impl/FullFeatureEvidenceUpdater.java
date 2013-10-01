@@ -19,9 +19,9 @@ public class FullFeatureEvidenceUpdater extends MinimalFeatureEvidenceUpdater {
     @Override
     public void enrich(FeatureEvidence featureToEnrich)
             throws EnricherException {
-        super.enrich(featureToEnrich);
         // DETECTION METHODS
         processDetectionMethods(featureToEnrich);
+        super.enrich(featureToEnrich);
     }
 
     protected void processDetectionMethods(FeatureEvidence featureToEnrich) throws EnricherException {
