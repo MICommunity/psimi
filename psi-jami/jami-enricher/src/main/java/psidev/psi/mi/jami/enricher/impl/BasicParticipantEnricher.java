@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl.participant;
+package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -16,115 +16,110 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13
  */
-public abstract class AbstractParticipantEnricher<P extends Participant , F extends Feature>
+public class BasicParticipantEnricher<P extends Participant , F extends Feature<P,F>>
         implements ParticipantEnricher<P , F>  {
 
-
     private ParticipantEnricherListener listener;
-
     private ProteinEnricher proteinEnricher;
     private CvTermEnricher cvTermEnricher;
     private GeneEnricher geneEnricher;
     private FeatureEnricher<F> featureEnricher;
     private BioactiveEntityEnricher bioactiveEntityEnricher;
+    private InteractorEnricher<Interactor> interactorEnricher;
 
+    public void enrich(Collection<P> participantsToEnrich) throws EnricherException {
+        if(participantsToEnrich == null) throw new IllegalArgumentException("Cannot enrich a null collection of participants.");
 
-    public void enrichParticipants(Collection<P> participantsToEnrich) throws EnricherException {
-        for(Participant participant : participantsToEnrich){
-            enrichParticipant((P) participant);
+        for(P participant : participantsToEnrich){
+            enrich(participant);
         }
     }
 
-
-    public void enrichParticipant(P participantToEnrich) throws EnricherException{
+    public void enrich(P participantToEnrich) throws EnricherException{
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");
 
         // == CvTerm BioRole =========================================================
-        if(getCvTermEnricher() != null)
-            getCvTermEnricher().enrichCvTerm(participantToEnrich.getBiologicalRole());
+        processBiologicalRole(participantToEnrich);
 
         // == Prepare Features =====================================
         if( getFeatureEnricher() != null )
-            getFeatureEnricher().setFeaturesWithRangesToUpdate(participantToEnrich);
-
-
+            getFeatureEnricher().setFeaturesWithRangesToUpdate((Collection<F>)participantToEnrich.getFeatures());
+        // == Enrich Features =========================================================
+        processFeatures(participantToEnrich);
 
         // == Enrich Interactor ============================
-        CvTerm interactorType = participantToEnrich.getInteractor().getInteractorType();
-        processParticipant(participantToEnrich);
+        processInteractor(participantToEnrich);
 
-        if(interactorType.getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)
-                || interactorType.getShortName().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR)){
-
-        }
-
-
-
-
-        if(interactorType.getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)
-                || interactorType.getShortName().equalsIgnoreCase(Protein.PROTEIN)){
-            if(getProteinEnricher() != null){
-                if(participantToEnrich.getInteractor() instanceof Protein){
-                    getProteinEnricher().enrichProtein( (Protein) participantToEnrich.getInteractor() );
-                } else {
-                    if(listener != null) listener.onEnrichmentComplete(participantToEnrich ,
-                            EnrichmentStatus.FAILED,
-                            "Found interactor of type "+interactorType.getShortName()+
-                                    " ("+interactorType.getMIIdentifier()+") "+
-                                    "but was not an instance of 'Protein', " +
-                                    "was "+participantToEnrich.getInteractor().getClass()+" instead.");
-                    return;
-                }
-            }
-        }
-        if( interactorType.getMIIdentifier().equalsIgnoreCase(BioactiveEntity.BIOACTIVE_ENTITY_MI)
-                || interactorType.getShortName().equalsIgnoreCase(BioactiveEntity.BIOACTIVE_ENTITY )){
-            if(getBioactiveEntityEnricher() != null){
-                if(participantToEnrich.getInteractor() instanceof BioactiveEntity){
-                    getBioactiveEntityEnricher().enrichBioactiveEntity(
-                            (BioactiveEntity) participantToEnrich.getInteractor() );
-                } else {
-                    if(listener != null) listener.onEnrichmentComplete(participantToEnrich ,
-                            EnrichmentStatus.FAILED,
-                            "Found interactor of type "+interactorType.getShortName()+
-                                    " ("+interactorType.getMIIdentifier()+") "+
-                                    "but was not an instance of 'BioactiveEntity', " +
-                                    "was "+participantToEnrich.getInteractor().getClass()+" instead.");
-                    return;
-                }
-            }
-        }
-
-
-        if( interactorType.getMIIdentifier().equalsIgnoreCase(Gene.GENE_MI)
-                || interactorType.getShortName().equalsIgnoreCase(Gene.GENE )){
-            if(getGeneEnricher() != null){
-                if(participantToEnrich.getInteractor() instanceof Gene){
-                    getGeneEnricher().enrichGene( (Gene) participantToEnrich.getInteractor() );
-                } else {
-                    if(listener != null) listener.onEnrichmentComplete(participantToEnrich ,
-                            EnrichmentStatus.FAILED,
-                            "Found interactor of type "+interactorType.getShortName()+
-                                    " ("+interactorType.getMIIdentifier()+") "+
-                                    "but was not an instance of 'Gene', " +
-                                    "was "+participantToEnrich.getInteractor().getClass().getName()+" instead.");
-                    return;
-                }
-            }
-        }
-
-
-
-        // == Enrich Features =========================================================
-        if( getFeatureEnricher() != null )
-                getFeatureEnricher().enrichFeatures(participantToEnrich.getFeatures());
+        // enrich other properties
+        processOtherProperties(participantToEnrich);
 
         if( getParticipantEnricherListener() != null )
             getParticipantEnricherListener().onEnrichmentComplete(participantToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
-    protected abstract void processParticipant(P participantToEnrich) throws EnricherException;
+    protected void processOtherProperties(P participantToEnrich) throws EnricherException {
+        // do nothing
+    }
+
+    protected void processFeatures(P participantToEnrich) throws EnricherException {
+        if( getFeatureEnricher() != null )
+                getFeatureEnricher().enrich(participantToEnrich.getFeatures());
+    }
+
+    protected void processInteractor(P participantToEnrich) throws EnricherException {
+        boolean enrichProteins = getProteinEnricher() != null;
+        boolean enrichSmallMolecules = getBioactiveEntityEnricher() != null;
+        boolean enrichGenes = getGeneEnricher() != null;
+        boolean enrichBasicInteractors = getBasicInteractorEnricher() != null;
+
+        Interactor interactor = participantToEnrich.getInteractor();
+        // we can enrich interactors
+        if (enrichProteins || enrichSmallMolecules || enrichGenes || enrichBasicInteractors){
+            boolean isProtein = interactor instanceof Protein;
+
+            if (isProtein){
+                if (enrichProteins){
+                    getProteinEnricher().enrich((Protein)interactor);
+                }
+                else if (enrichBasicInteractors){
+                    getBasicInteractorEnricher().enrich(interactor);
+                }
+            }
+            else {
+                boolean isSmallMolecule = interactor instanceof BioactiveEntity;
+
+                if (isSmallMolecule){
+                    if (enrichSmallMolecules){
+                        getBioactiveEntityEnricher().enrich((BioactiveEntity)interactor);
+                    }
+                    else if (enrichBasicInteractors){
+                        getBasicInteractorEnricher().enrich(interactor);
+                    }
+                }
+                else {
+                    boolean isGene = interactor instanceof Gene;
+
+                    if (isGene){
+                        if (enrichGenes){
+                            getGeneEnricher().enrich((Gene)interactor);
+                        }
+                        else if (enrichBasicInteractors){
+                            getBasicInteractorEnricher().enrich(interactor);
+                        }
+                    }
+                    else if (enrichBasicInteractors){
+                        getBasicInteractorEnricher().enrich(interactor);
+                    }
+                }
+            }
+        }
+    }
+
+    protected void processBiologicalRole(P participantToEnrich) throws EnricherException {
+        if(getCvTermEnricher() != null && participantToEnrich.getBiologicalRole() != null)
+            getCvTermEnricher().enrich(participantToEnrich.getBiologicalRole());
+    }
 
     /**
      * Sets the listener for Participant events. If null, events will not be reported.
@@ -227,5 +222,13 @@ public abstract class AbstractParticipantEnricher<P extends Participant , F exte
      */
     public GeneEnricher getGeneEnricher(){
         return this.geneEnricher;
+    }
+
+    public void setBasicInteractorEnricher(InteractorEnricher<Interactor> interactorEnricher) {
+        this.interactorEnricher = interactorEnricher;
+    }
+
+    public InteractorEnricher<Interactor> getBasicInteractorEnricher() {
+        return this.interactorEnricher;
     }
 }
