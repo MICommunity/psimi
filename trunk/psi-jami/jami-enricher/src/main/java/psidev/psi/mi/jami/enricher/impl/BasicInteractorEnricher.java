@@ -83,7 +83,7 @@ public class BasicInteractorEnricher extends AbstractInteractorEnricher<Interact
     @Override
     protected void processOrganism(Interactor entityToEnrich, Interactor fetched) throws EnricherException {
         if (getOrganismEnricher() != null && entityToEnrich.getOrganism() != null){
-            getOrganismEnricher().enrichOrganism(entityToEnrich.getOrganism());
+            getOrganismEnricher().enrich(entityToEnrich.getOrganism());
         }
     }
 }

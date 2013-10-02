@@ -80,7 +80,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
         }
 
         if (getOrganismEnricher() != null && entityToEnrich.getOrganism() != null){
-            getOrganismEnricher().enrichOrganism(entityToEnrich.getOrganism());
+            getOrganismEnricher().enrich(entityToEnrich.getOrganism());
         }
     }
 

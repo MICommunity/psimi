@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.impl.FullOrganismUpdater;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -45,7 +46,7 @@ public class MaximumOrganismUpdaterTest {
     public void initialiseFetcherAndEnricher() {
         persistentOrganism = null;
         this.fetcher = new MockOrganismFetcher();
-        this.organismEnricher = new MaximumOrganismUpdater();
+        this.organismEnricher = new FullOrganismUpdater();
         organismEnricher.setOrganismFetcher(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
