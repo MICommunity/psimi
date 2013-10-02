@@ -2,11 +2,8 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
-import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
-
-import java.util.Collection;
 
 /**
  * The Protein enricher is an enricher which can enrich either single protein or a collection.
@@ -18,22 +15,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  16/05/13
  */
-public interface ProteinEnricher {
-
-    /**
-     * Enrichment of a single Protein.
-     * At the end of the enrichment, the listener will be fired
-     * @param proteinToEnrich       A protein to enrich
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrichProtein(Protein proteinToEnrich) throws EnricherException;
-
-    /**
-     * Enrichment of a collection of proteins.
-     * @param proteinsToEnrich      The proteins to be enriched
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrichProteins(Collection<Protein> proteinsToEnrich) throws EnricherException;
+public interface ProteinEnricher extends MIEnricher<Protein>{
 
 
     //====================

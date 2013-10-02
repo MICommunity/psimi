@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.FullInteractionEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
-import psidev.psi.mi.jami.enricher.impl.participant.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherLogger;

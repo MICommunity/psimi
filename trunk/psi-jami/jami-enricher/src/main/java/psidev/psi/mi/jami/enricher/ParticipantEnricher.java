@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
@@ -11,7 +12,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
  */
-public interface ParticipantEnricher <P extends Participant , F extends Feature> extends MIEnricher<P>{
+public interface ParticipantEnricher <P extends Participant, F extends Feature<P,F>> extends MIEnricher<P>{
 
     /**
      * Sets the enricher for proteins. If null, proteins will not be enriched.
@@ -76,6 +77,18 @@ public interface ParticipantEnricher <P extends Participant , F extends Feature>
      */
     public GeneEnricher getGeneEnricher();
 
+    /**
+     * Sets the new enricher for interactors
+     * @param geneEnricher   The enricher to use for basic interactors that are not proteins, bioactive entities or genes. Can be null.
+     */
+    public void setBasicInteractorEnricher(InteractorEnricher<Interactor> geneEnricher);
+
+    /**
+     * The current enricher used for basic interactors.
+     * If null, basic interactors are not currently being enriched.
+     * @return  The current enricher. May be null.
+     */
+    public InteractorEnricher<Interactor> getBasicInteractorEnricher();
 
     /**
      * Sets the listener for Participant events. If null, events will not be reported.

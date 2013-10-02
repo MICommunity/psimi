@@ -12,7 +12,6 @@ import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.MinimalFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
-import psidev.psi.mi.jami.enricher.impl.participant.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherLogger;
