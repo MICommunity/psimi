@@ -131,7 +131,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         }
 
         if (organismEnricher != null && entityToEnrich.getOrganism() != null){
-            organismEnricher.enrichOrganism(entityToEnrich.getOrganism());
+            organismEnricher.enrich(entityToEnrich.getOrganism());
         }
     }
 

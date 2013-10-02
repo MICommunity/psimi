@@ -5,6 +5,8 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.FullOrganismEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalOrganismEnricher;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherLogger;
@@ -26,7 +28,7 @@ import static junit.framework.Assert.*;
  */
 public class MaximumOrganismEnricherTest {
 
-    private MinimumOrganismEnricher organismEnricher;
+    private MinimalOrganismEnricher organismEnricher;
     private MockOrganismFetcher fetcher;
 
     private Organism mockOrganism;
@@ -44,7 +46,7 @@ public class MaximumOrganismEnricherTest {
     public void initialiseFetcherAndEnricher() {
         persistentOrganism = null;
         this.fetcher = new MockOrganismFetcher();
-        this.organismEnricher = new MaximumOrganismEnricher();
+        this.organismEnricher = new FullOrganismEnricher();
         organismEnricher.setOrganismFetcher(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
