@@ -12,6 +12,8 @@ public interface Protein extends Polymer {
 
     public static final String PROTEIN="protein";
     public static final String PROTEIN_MI="MI:0326";
+    public static final String PEPTIDE="peptide";
+    public static final String PEPTIDE_MI="MI:0327";
 
     /**
      * The unique uniprot Accession which identifies the protein.
