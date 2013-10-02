@@ -25,22 +25,6 @@ public class GeneEnricherLogger
         log.error(object.toString()+" enrichment error, message: "+message, e);
     }
 
-    public void onEnsemblUpdate(Gene gene, String oldValue) {
-        log.info(gene.toString() + " Ensembl updated from " +oldValue);
-    }
-
-    public void onEnsemblGenomeUpdate(Gene gene, String oldValue) {
-        log.info(gene.toString() + " EnsemblGenomes updated from " +oldValue);
-    }
-
-    public void onEntrezGeneIdUpdate(Gene gene, String oldValue) {
-        log.info(gene.toString() + " EntrezGeneId updated from " +oldValue);
-    }
-
-    public void onRefseqUpdate(Gene gene, String oldValue) {
-        log.info(gene.toString() + " Refseq updated from " +oldValue);
-    }
-
     public void onShortNameUpdate(Gene interactor, String oldShortName) {
         log.info("Shortname updated from " +oldShortName + " to " + interactor.getShortName());
     }

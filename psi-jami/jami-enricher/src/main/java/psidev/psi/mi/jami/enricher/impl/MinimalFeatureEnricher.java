@@ -411,7 +411,7 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
 
                 // log range shifted
                 if(getFeatureEnricherListener() != null){
-                   getFeatureEnricherListener().onAddedRange(feature, range);
+                   getFeatureEnricherListener().onUpdatedRangePositions(feature, range, oldStart, oldEnd);
                 }
             }
             // one position has been shifted but is not valid

@@ -60,27 +60,6 @@ public class BioactiveEntityEnricherStatisticsWriter
 
     // ================================================================
 
-    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) {
-        checkObject(bioactiveEntity);
-        incrementUpdateCount();
-    }
-
-    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) {
-        checkObject(bioactiveEntity);
-        incrementUpdateCount();
-    }
-
-    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) {
-        checkObject(bioactiveEntity);
-        incrementUpdateCount();
-    }
-
-    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi) {
-        checkObject(bioactiveEntity);
-        incrementUpdateCount();
-    }
-
-
     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName) {
         checkObject(interactor);
         incrementUpdateCount();
