@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherLogger;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Unit tests for MinimumProteinEnricher
+ * Unit tests for MinimalProteinEnricher
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  23/05/13
@@ -30,7 +31,7 @@ import java.util.Collection;
 
 public class MinimumProteinEnricherTest {
 
-    private MinimumProteinEnricher proteinEnricher;
+    private MinimalProteinEnricher proteinEnricher;
     private MockProteinFetcher mockProteinFetcher;
 
     Protein persistentProtein;
@@ -57,7 +58,7 @@ public class MinimumProteinEnricherTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         mockProteinFetcher = new MockProteinFetcher();
-        proteinEnricher = new MinimumProteinEnricher(mockProteinFetcher);
+        proteinEnricher = new MinimalProteinEnricher(mockProteinFetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -98,7 +99,7 @@ public class MinimumProteinEnricherTest {
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         int timesToTry = 3;
-        assertTrue(timesToTry < MinimumProteinEnricher.RETRY_COUNT);
+        assertTrue(timesToTry < MinimalProteinEnricher.RETRY_COUNT);
 
         FailingProteinFetcher fetcher = new FailingProteinFetcher(timesToTry);
 

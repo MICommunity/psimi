@@ -15,11 +15,7 @@ import psidev.psi.mi.jami.model.Protein;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  16/05/13
  */
-public interface ProteinEnricher extends MIEnricher<Protein>{
-
-
-    //====================
-
+public interface ProteinEnricher extends InteractorEnricher<Protein>{
 
     /**
      * Sets the protein fetcher to be used for enrichment.
@@ -46,19 +42,6 @@ public interface ProteinEnricher extends MIEnricher<Protein>{
      */
     public ProteinEnricherListener getProteinEnricherListener();
 
-
-    /**
-     * The organism enricher which will be used to collect data about the organisms.
-     * @param organismEnricher  The organism enricher to be used.
-     */
-    public void setOrganismEnricher(OrganismEnricher organismEnricher);
-
-    /**
-     * The Enricher to use on the protein's organism.
-     * @return  The current organism enricher.
-     */
-    public OrganismEnricher getOrganismEnricher();
-
     /**
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.
      * @param proteinMapper   The remapper to use.
@@ -70,9 +53,4 @@ public interface ProteinEnricher extends MIEnricher<Protein>{
      * @return  The current remapper.
      */
     public ProteinMapper getProteinMapper();
-
-
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
-
-    public CvTermEnricher getCvTermEnricher();
 }

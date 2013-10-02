@@ -9,10 +9,10 @@ import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalFeatureEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Protein;
@@ -136,7 +136,7 @@ public class MinimumParticipantEnricherTest {
      */
     @Test
     public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_first(){
-        ProteinEnricher proteinEnricher = new MinimumProteinEnricher(null);
+        ProteinEnricher proteinEnricher = new MinimalProteinEnricher(null);
 
         participantEnricher.setProteinEnricher(proteinEnricher);
         assertNull(proteinEnricher.getProteinEnricherListener());
@@ -154,7 +154,7 @@ public class MinimumParticipantEnricherTest {
      */
     @Test
     public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_second(){
-        ProteinEnricher proteinEnricher = new MinimumProteinEnricher(null);
+        ProteinEnricher proteinEnricher = new MinimalProteinEnricher(null);
         FeatureEnricher featureEnricher = new MinimalFeatureEnricher();
 
         assertNull(participantEnricher.getProteinEnricher());
