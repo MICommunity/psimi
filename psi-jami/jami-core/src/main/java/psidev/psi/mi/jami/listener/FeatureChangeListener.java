@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.listener;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 
 /**
@@ -24,5 +25,5 @@ public interface FeatureChangeListener extends AnnotationsChangeListener<Feature
 
     public void onRemovedRange(Feature feature, Range removed);
 
-
+    public void onUpdatedRangePositions(Feature feature, Range range, Position oldStart, Position oldEnd);
 }
