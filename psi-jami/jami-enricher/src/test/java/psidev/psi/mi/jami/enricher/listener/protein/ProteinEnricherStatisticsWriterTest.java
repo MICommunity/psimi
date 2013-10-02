@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherStatisticsWriter;
@@ -36,7 +36,7 @@ public class ProteinEnricherStatisticsWriterTest {
 
     private File successFile , failFile;
 
-    private MinimumProteinEnricher proteinEnricher;
+    private MinimalProteinEnricher proteinEnricher;
     private MockProteinFetcher fetcher;
     ProteinEnricherStatisticsWriter logWriter;
 
@@ -52,7 +52,7 @@ public class ProteinEnricherStatisticsWriterTest {
     @Before
     public void initialiseFetcherAndEnricher() throws IOException {
         this.fetcher = new MockProteinFetcher();
-        this.proteinEnricher = new MinimumProteinEnricher(fetcher);
+        this.proteinEnricher = new MinimalProteinEnricher(fetcher);
 
 
         successFile = new File("success.txt");

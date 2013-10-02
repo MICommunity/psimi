@@ -67,6 +67,9 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
 
                 // Checksums
                 processChecksums(objectToEnrich, fetchedObject);
+
+                // other properties
+                processOtherProperties(objectToEnrich, fetchedObject);
             }
 
             onCompletedEnrichment(objectToEnrich);
@@ -85,6 +88,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
 
     protected boolean canEnrichInteractor(T objectToEnrich, T fetchedObject){
         return true;
+    }
+
+    protected void processOtherProperties(T bioactiveEntityToEnrich, T fetched) {
+        // do nothing by default. Only for sequences
     }
 
     protected void processShortLabel(T bioactiveEntityToEnrich, T fetched) {

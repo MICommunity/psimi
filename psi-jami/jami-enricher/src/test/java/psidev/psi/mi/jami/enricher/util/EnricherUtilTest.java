@@ -7,8 +7,8 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.MinimalFeatureEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
-import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherLogger;
@@ -34,7 +34,7 @@ public class EnricherUtilTest {
 
     @Before
     public void setup(){
-        proteinEnricher = new MinimumProteinEnricher(null);
+        proteinEnricher = new MinimalProteinEnricher(null);
         featureEnricher = new MinimalFeatureEnricher();
         proteinEnricherListener = new ProteinEnricherLogger();
         proteinEnricherListenerManager = new ProteinEnricherListenerManager();
