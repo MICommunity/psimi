@@ -25,26 +25,6 @@ public class BioactiveEntityEnricherLogger
         log.error("Enrichment error for bioactive entity "+object.toString()+", message: "+message, e);
     }
 
-    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) {
-        log.info("Updated CHEBI identifier of bioactive entity "+bioactiveEntity.toString()+" from "+oldId+
-                " to "+bioactiveEntity.getChebi());
-    }
-
-    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) {
-        log.info("Updated SMILE of bioactive entity "+bioactiveEntity.toString()+" from "+oldSmile+
-                " to "+bioactiveEntity.getSmile());
-    }
-
-    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) {
-        log.info("Updated standard InchI key of bioactive entity "+bioactiveEntity.toString()+" from "+oldKey+
-                " to "+bioactiveEntity.getStandardInchiKey());
-    }
-
-    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi) {
-        log.info("Updated standard inchi of bioactive entity "+bioactiveEntity.toString()+" from "+oldInchi+
-                " to "+bioactiveEntity.getStandardInchi());
-    }
-
     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName) {
         log.info("Updated shortName of bioactive entity "+interactor.toString()+" from "+oldShortName+
                 " to "+interactor.getShortName());

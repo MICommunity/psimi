@@ -27,30 +27,6 @@ public class GeneEnricherListenerManager
         super(listeners);
     }
 
-    public void onEnsemblUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : getListenersList()){
-            listener.onEnsemblUpdate( gene,  oldValue) ;
-        }
-    }
-
-    public void onEnsemblGenomeUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : getListenersList()){
-            listener.onEnsemblGenomeUpdate( gene, oldValue);
-        }
-    }
-
-    public void onEntrezGeneIdUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : getListenersList()){
-            listener.onEntrezGeneIdUpdate( gene, oldValue);
-        }
-    }
-
-    public void onRefseqUpdate(Gene gene, String oldValue) {
-        for(GeneEnricherListener listener : getListenersList()){
-            listener.onRefseqUpdate( gene, oldValue);
-        }
-    }
-
     public void onShortNameUpdate(Gene interactor, String oldShortName) {
         for(GeneEnricherListener listener : getListenersList()){
             listener.onShortNameUpdate(interactor, oldShortName);

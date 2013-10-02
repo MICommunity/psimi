@@ -59,26 +59,6 @@ public class GeneEnricherStatisticsWriter
 
     // ================================================================
 
-    public void onEnsemblUpdate(Gene gene, String oldValue) {
-        checkObject(gene);
-        incrementUpdateCount();
-    }
-
-    public void onEnsemblGenomeUpdate(Gene gene, String oldValue) {
-        checkObject(gene);
-        incrementUpdateCount();
-    }
-
-    public void onEntrezGeneIdUpdate(Gene gene, String oldValue) {
-        checkObject(gene);
-        incrementUpdateCount();
-    }
-
-    public void onRefseqUpdate(Gene gene, String oldValue) {
-        checkObject(gene);
-        incrementUpdateCount();
-    }
-
     public void onShortNameUpdate(Gene gene, String oldShortName) {
         checkObject(gene);
         incrementUpdateCount();

@@ -28,30 +28,6 @@ public class BioactiveEntityEnricherListenerManager extends EnricherListenerMana
         super(listeners);
     }
 
-    public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
-            listener.onChebiUpdate(bioactiveEntity, oldId);
-        }
-    }
-
-    public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
-            listener.onSmileUpdate(bioactiveEntity, oldSmile);
-        }
-    }
-
-    public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
-            listener.onStandardInchiKeyUpdate(bioactiveEntity, oldKey);
-        }
-    }
-
-    public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
-            listener.onStandardInchiUpdate(bioactiveEntity, oldInchi);
-        }
-    }
-
     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName) {
         for(BioactiveEntityEnricherListener listener : getListenersList()){
             listener.onShortNameUpdate(interactor, oldShortName);
