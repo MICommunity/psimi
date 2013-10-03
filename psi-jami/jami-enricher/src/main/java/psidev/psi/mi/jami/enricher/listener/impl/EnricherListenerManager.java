@@ -43,6 +43,10 @@ public abstract class EnricherListenerManager<O extends Object, T extends Enrich
         return listenersList;
     }
 
+    public void addListener(T listener){
+        listenersList.add(listener);
+    }
+
     public void onEnrichmentComplete(O object, EnrichmentStatus status, String message) {
         for(T listener : this.listenersList){
             listener.onEnrichmentComplete(object, status, message);

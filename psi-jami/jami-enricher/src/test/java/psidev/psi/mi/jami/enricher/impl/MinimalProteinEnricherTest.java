@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl.protein;
+package psidev.psi.mi.jami.enricher.impl;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
@@ -29,7 +30,7 @@ import java.util.Collection;
  * @since  23/05/13
  */
 
-public class MinimumProteinEnricherTest {
+public class MinimalProteinEnricherTest {
 
     private MinimalProteinEnricher proteinEnricher;
     private MockProteinFetcher mockProteinFetcher;
@@ -91,7 +92,7 @@ public class MinimumProteinEnricherTest {
         fetcher.addEntry(TEST_AC_HALF_PROT , proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
 
-        proteinEnricher.enrichProtein(proteinToEnrich);
+        proteinEnricher.enrich(proteinToEnrich);
 
         fail("Exception should be thrown before this point");
     }
@@ -99,7 +100,7 @@ public class MinimumProteinEnricherTest {
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         int timesToTry = 3;
-        assertTrue(timesToTry < MinimalProteinEnricher.RETRY_COUNT);
+        assertTrue(timesToTry < proteinEnricher.getRetryCount());
 
         FailingProteinFetcher fetcher = new FailingProteinFetcher(timesToTry);
 
@@ -110,7 +111,7 @@ public class MinimumProteinEnricherTest {
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT, proteinFetched);
         proteinEnricher.setProteinFetcher(fetcher);
-        proteinEnricher.enrichProtein(proteinToEnrich);
+        proteinEnricher.enrich(proteinToEnrich);
 
         assertEquals(TEST_FULLNAME , proteinToEnrich.getFullName() );
     }
@@ -128,7 +129,7 @@ public class MinimumProteinEnricherTest {
         persistentProtein = new DefaultProtein("name" , "namename");
         proteinEnricher.setProteinFetcher(null);
         assertNull(proteinEnricher.getProteinFetcher());
-        proteinEnricher.enrichProtein(persistentProtein);
+        proteinEnricher.enrich(persistentProtein);
         fail("Exception should be thrown before this point");
     }
 
@@ -139,7 +140,7 @@ public class MinimumProteinEnricherTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_exception_when_fetching_on_null_protein() throws EnricherException {
         Protein null_protein = null;
-        this.proteinEnricher.enrichProtein(null_protein);
+        this.proteinEnricher.enrich(null_protein);
     }
 
     // =====================================================
@@ -206,9 +207,20 @@ public class MinimumProteinEnricherTest {
             public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
             public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
             public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
         }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_SHORTNAME, persistentProtein.getShortName());
         assertNull(persistentProtein.getUniprotkb());
@@ -260,10 +272,21 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_SHORTNAME, persistentProtein.getShortName());
         assertNull(persistentProtein.getUniprotkb());
@@ -318,10 +341,21 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
 
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
@@ -376,10 +410,21 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_SHORTNAME, persistentProtein.getShortName());
         assertNull(persistentProtein.getUniprotkb());
@@ -445,10 +490,21 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
         assertNotNull(persistentProtein.getUniprotkb());
@@ -516,10 +572,21 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
         assertNotNull(persistentProtein.getUniprotkb());
         assertEquals(TEST_AC_HALF_PROT , persistentProtein.getUniprotkb());
@@ -572,9 +639,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        proteinEnricher.enrichProtein(persistentProtein);
+        proteinEnricher.enrich(persistentProtein);
         assertEquals(Gene.GENE,
                 persistentProtein.getInteractorType().getShortName());
         assertEquals(Gene.GENE_MI,
@@ -634,9 +712,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        proteinEnricher.enrichProtein(persistentProtein);
+        proteinEnricher.enrich(persistentProtein);
 
         assertEquals(1 , persistentInt);
     }
@@ -688,9 +777,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        proteinEnricher.enrichProtein(persistentProtein);
+        proteinEnricher.enrich(persistentProtein);
 
         assertEquals(1 , persistentInt);
     }
@@ -741,10 +841,21 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
 
-        proteinEnricher.enrichProtein(persistentProtein);
+        proteinEnricher.enrich(persistentProtein);
 
         assertTrue(persistentProtein.getInteractorType() == value); //Show they are the same instance
         assertEquals(Protein.PROTEIN,
@@ -803,9 +914,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        proteinEnricher.enrichProtein(persistentProtein);
+        proteinEnricher.enrich(persistentProtein);
 
         assertEquals(Protein.PROTEIN,
                 persistentProtein.getInteractorType().getShortName());
@@ -862,9 +984,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
         assertEquals(1 , persistentInt);
@@ -923,9 +1056,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_FULLNAME , persistentProtein.getFullName());
         assertEquals(1 , persistentInt);
@@ -980,9 +1124,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_FULLNAME , persistentProtein.getFullName());
         assertEquals(1 , persistentInt);
@@ -1043,9 +1198,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_SEQUENCE , persistentProtein.getSequence());
         assertEquals(1 , persistentInt);
@@ -1101,9 +1267,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
         assertEquals(1 , persistentInt);
@@ -1166,9 +1343,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(3 , persistentProtein.getIdentifiers().size());
 
@@ -1252,9 +1440,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(2 , persistentProtein.getAliases().size());
 
@@ -1330,9 +1529,20 @@ public class MinimumProteinEnricherTest {
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
+                    public void onAddedAnnotation(Protein o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Protein o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Protein object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }));
 
-        this.proteinEnricher.enrichProtein(persistentProtein);
+        this.proteinEnricher.enrich(persistentProtein);
 
         assertEquals(1 , persistentProtein.getXrefs().size());
 
@@ -1361,7 +1571,7 @@ public class MinimumProteinEnricherTest {
         protein_without_organism.setUniprotkb(TEST_AC_HALF_PROT);
         assertNull(protein_without_organism.getOrganism());
 
-        this.proteinEnricher.enrichProtein(protein_without_organism);
+        this.proteinEnricher.enrich(protein_without_organism);
 
         assertNotNull(protein_without_organism.getOrganism());
         assertEquals(-3 , protein_without_organism.getOrganism().getTaxId());

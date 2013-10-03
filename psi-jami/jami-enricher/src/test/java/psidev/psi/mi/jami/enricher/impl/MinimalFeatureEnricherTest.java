@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.enricher.impl.feature;
+package psidev.psi.mi.jami.enricher.impl;
 
 
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -10,12 +11,9 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalFeatureEnricher;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherLogger;
-import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
@@ -34,9 +32,9 @@ import static org.junit.Assert.assertNull;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public class MinimumFeatureEnricherTest {
+public class MinimalFeatureEnricherTest {
 
-    protected static final Logger log = LoggerFactory.getLogger(MinimumFeatureEnricherTest.class.getName());
+    protected static final Logger log = LoggerFactory.getLogger(MinimalFeatureEnricherTest.class.getName());
 
     private ParticipantEnricher participantEnricher;
     private ProteinEnricher proteinEnricher;
@@ -134,10 +132,17 @@ public class MinimumFeatureEnricherTest {
                     public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
                     public void onAddedRange(Feature feature, Range added)  {fail();}
                     public void onRemovedRange(Feature feature, Range removed)  {fail();}
+
+                    public void onUpdatedRangePositions(Feature feature, Range range, Position oldStart, Position oldEnd) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(Feature object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        featureEnricher.enrichFeature(persistentFeature);
+        featureEnricher.enrich(persistentFeature);
 
         assertNull(persistentFeature.getType());
         assertEquals(1 , persistentFeature.getRanges().size());
@@ -182,10 +187,16 @@ public class MinimumFeatureEnricherTest {
                     public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
                     public void onAddedRange(Feature feature, Range added)  {fail();}
                     public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                    public void onUpdatedRangePositions(Feature feature, Range range, Position oldStart, Position oldEnd) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(Feature object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        featureEnricher.enrichFeature(persistentFeature);
+        featureEnricher.enrich(persistentFeature);
 
 
         assertNotNull(persistentFeature.getType().getFullName());
@@ -241,10 +252,16 @@ public class MinimumFeatureEnricherTest {
                     public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
                     public void onAddedRange(Feature feature, Range added)  {fail();}
                     public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                    public void onUpdatedRangePositions(Feature feature, Range range, Position oldStart, Position oldEnd) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(Feature object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        participantEnricher.enrichParticipant(persistentParticipant);
+        participantEnricher.enrich(persistentParticipant);
 
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(1 , persistentFeature.getAnnotations().size());
@@ -292,9 +309,15 @@ public class MinimumFeatureEnricherTest {
                     public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
                     public void onAddedRange(Feature feature, Range added)  {fail();}
                     public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                    public void onUpdatedRangePositions(Feature feature, Range range, Position oldStart, Position oldEnd) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(Feature object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
-        participantEnricher.enrichParticipant(persistentParticipant);
+        participantEnricher.enrich(persistentParticipant);
 
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(1 , persistentFeature.getAnnotations().size());

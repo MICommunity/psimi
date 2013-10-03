@@ -67,18 +67,18 @@ public class BasicParticipantEnricher<P extends Participant , F extends Feature<
     }
 
     protected void processInteractor(P participantToEnrich) throws EnricherException {
-        boolean enrichProteins = getProteinEnricher() != null;
+        boolean enrichProtein = getProteinEnricher() != null;
         boolean enrichSmallMolecules = getBioactiveEntityEnricher() != null;
         boolean enrichGenes = getGeneEnricher() != null;
         boolean enrichBasicInteractors = getBasicInteractorEnricher() != null;
 
         Interactor interactor = participantToEnrich.getInteractor();
         // we can enrich interactors
-        if (enrichProteins || enrichSmallMolecules || enrichGenes || enrichBasicInteractors){
+        if (enrichProtein || enrichSmallMolecules || enrichGenes || enrichBasicInteractors){
             boolean isProtein = interactor instanceof Protein;
 
             if (isProtein){
-                if (enrichProteins){
+                if (enrichProtein){
                     getProteinEnricher().enrich((Protein)interactor);
                 }
                 else if (enrichBasicInteractors){

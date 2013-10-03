@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.*;
  * @since <pre>01/10/13</pre>
  */
 
-public class InteractorEnricherLogger implements InteractorEnricherListener {
+public class InteractorEnricherLogger implements InteractorEnricherListener<Interactor> {
 
     private static final Logger log = LoggerFactory.getLogger(InteractorEnricherLogger.class.getName());
 

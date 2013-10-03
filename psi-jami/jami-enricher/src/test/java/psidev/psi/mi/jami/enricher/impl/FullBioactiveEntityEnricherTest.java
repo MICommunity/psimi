@@ -1,20 +1,18 @@
-package psidev.psi.mi.jami.enricher.impl.bioactiveentity;
+package psidev.psi.mi.jami.enricher.impl;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.FullBioactiveEntityUpdater;
+import psidev.psi.mi.jami.enricher.impl.FullBioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherLogger;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.BioactiveEntity;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 
 import static junit.framework.Assert.*;
@@ -27,7 +25,8 @@ import static junit.framework.Assert.fail;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/08/13
  */
-public class MaximumBioactiveEntityUpdaterTest {
+public class FullBioactiveEntityEnricherTest {
+
 
 
     String CHEBI_ID = "TEST_ID";
@@ -42,7 +41,7 @@ public class MaximumBioactiveEntityUpdaterTest {
     @Before
     public void setUp(){
         fetcher = new MockBioactiveEntityFetcher();
-        enricher = new FullBioactiveEntityUpdater(fetcher);
+        enricher = new FullBioactiveEntityEnricher(fetcher);
 
         persistentBioactiveEntity = null;
         persistentInt = 0;
@@ -67,9 +66,9 @@ public class MaximumBioactiveEntityUpdaterTest {
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
-        enricher.setBioactiveEntityFetcher(fetcher);
+        enricher = new FullBioactiveEntityEnricher(fetcher);
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         fail("Exception should be thrown before this point");
     }
@@ -89,13 +88,13 @@ public class MaximumBioactiveEntityUpdaterTest {
         int timesToTry = 3;
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < FullBioactiveEntityUpdater.RETRY_COUNT);
+                timesToTry < 5);
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
-        enricher.setBioactiveEntityFetcher(fetcher);
+        enricher = new FullBioactiveEntityEnricher(fetcher);
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_FULLNAME, persistentBioactiveEntity.getFullName() );
     }
@@ -111,7 +110,7 @@ public class MaximumBioactiveEntityUpdaterTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTerm() throws EnricherException {
         BioactiveEntity nullBioactiveEntity = null;
-        enricher.enrichBioactiveEntity(nullBioactiveEntity);
+        enricher.enrich(nullBioactiveEntity);
         fail("Exception should be thrown before this point");
     }
 
@@ -120,16 +119,14 @@ public class MaximumBioactiveEntityUpdaterTest {
      * This should throw an illegal state exception.
      * @throws EnricherException
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         BioactiveEntity bioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME, TEST_FULLNAME);
         bioactiveEntity.setChebi(CHEBI_ID);
 
-        enricher.setBioactiveEntityFetcher(null);
-        assertNull(enricher.getBioactiveEntityFetcher());
-        enricher.enrichBioactiveEntity(bioactiveEntity);
-        fail("Exception should be thrown before this point");
+        enricher = new FullBioactiveEntityEnricher(null);
     }
+
 
     @Test
     public void test_enrichment_completes_as_failed_when_no_entry_fetched() throws EnricherException {
@@ -145,6 +142,7 @@ public class MaximumBioactiveEntityUpdaterTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt ++;
                     }
+
                     public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
                     public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
                     public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
@@ -161,10 +159,22 @@ public class MaximumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(1, persistentInt);
 

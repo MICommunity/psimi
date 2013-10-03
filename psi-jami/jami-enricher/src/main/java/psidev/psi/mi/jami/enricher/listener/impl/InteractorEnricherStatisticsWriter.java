@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 
 public class InteractorEnricherStatisticsWriter extends EnricherStatisticsWriter<Interactor>
-implements InteractorEnricherListener {
+implements InteractorEnricherListener<Interactor> {
 
 public static final String FILE_NAME = "interactor";
 

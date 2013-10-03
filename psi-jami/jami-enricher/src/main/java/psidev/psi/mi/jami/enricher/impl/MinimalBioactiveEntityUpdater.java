@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
+import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
+import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
@@ -10,7 +12,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<BioactiveEntity>{
+public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<BioactiveEntity> implements BioactiveEntityEnricher{
 
     /**
      * A constructor which initiates with a fetcher.
@@ -18,5 +20,21 @@ public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<Bio
      */
     public MinimalBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
         super(new MinimalBioactiveEntityEnricher(fetcher));
+    }
+
+    protected MinimalBioactiveEntityUpdater(AbstractInteractorEnricher<BioactiveEntity> interactorEnricher) {
+        super(interactorEnricher);
+    }
+
+    public BioactiveEntityFetcher getBioactiveEntityFetcher() {
+        return ((BioactiveEntityEnricher)getInteractorEnricher()).getBioactiveEntityFetcher();
+    }
+
+    public void setBioactiveEntityEnricherListener(BioactiveEntityEnricherListener listener) {
+        ((BioactiveEntityEnricher)getInteractorEnricher()).setBioactiveEntityEnricherListener(listener);
+    }
+
+    public BioactiveEntityEnricherListener getBioactiveEntityEnricherListener() {
+        return ((BioactiveEntityEnricher)getInteractorEnricher()).getBioactiveEntityEnricherListener();
     }
 }

@@ -33,30 +33,6 @@ public class ProteinEnricherListenerManager
 
     //============================================================================================
 
-    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-        for(ProteinEnricherListener l : getListenersList()){
-            l.onUniprotKbUpdate(protein, oldUniprot);
-        }
-    }
-
-    public void onRefseqUpdate(Protein protein, String oldRefseq) {
-        for(ProteinEnricherListener l : getListenersList()){
-            l.onRefseqUpdate(protein, oldRefseq);
-        }
-    }
-
-    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-        for(ProteinEnricherListener l : getListenersList()){
-            l.onGeneNameUpdate(protein, oldGeneName);
-        }
-    }
-
-    public void onRogidUpdate(Protein protein, String oldRogid) {
-        for(ProteinEnricherListener l : getListenersList()){
-            l.onRogidUpdate(protein, oldRogid);
-        }
-    }
-
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         for(ProteinEnricherListener l : getListenersList()){
             l.onSequenceUpdate(protein, oldSequence);

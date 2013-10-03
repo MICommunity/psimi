@@ -73,4 +73,8 @@ public class FeatureEnricherLogger
     public void onRemovedRange(Feature feature, Range removed) {
         log.info(feature+" has removed range "+removed.toString());
     }
+
+    public void onUpdatedRangePositions(Feature feature, Range range, Position position, Position position2) {
+        log.info(feature+" has updated range "+range.toString()+". It was " + position.toString()+"-"+position2.toString());
+    }
 }

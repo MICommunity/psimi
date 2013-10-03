@@ -1,18 +1,21 @@
-package psidev.psi.mi.jami.enricher.impl.organism;
+package psidev.psi.mi.jami.enricher.impl;
 
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalOrganismUpdater;
+import psidev.psi.mi.jami.enricher.impl.FullOrganismEnricher;
+import psidev.psi.mi.jami.enricher.impl.MinimalOrganismEnricher;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 
 import static junit.framework.Assert.*;
@@ -23,9 +26,9 @@ import static junit.framework.Assert.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  24/05/13
  */
-public class MinimumOrganismUpdaterTest {
+public class FullOrganismEnricherTest {
 
-    private OrganismEnricher organismEnricher;
+    private MinimalOrganismEnricher organismEnricher;
     private MockOrganismFetcher fetcher;
 
     private Organism mockOrganism;
@@ -43,18 +46,17 @@ public class MinimumOrganismUpdaterTest {
     public void initialiseFetcherAndEnricher() {
         persistentOrganism = null;
         this.fetcher = new MockOrganismFetcher();
-        this.organismEnricher = new MinimalOrganismUpdater();
+        this.organismEnricher = new FullOrganismEnricher();
         organismEnricher.setOrganismFetcher(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fullOrganism.getAliases().add(new DefaultAlias("TestAlias"));
-        fetcher.addEntry(Integer.toString(TEST_AC_FULL_ORG), fullOrganism);
+        fetcher.addEntry("" + TEST_AC_FULL_ORG, fullOrganism);
 
         Organism halfOrganism = new DefaultOrganism(TEST_AC_HALF_ORG);
-        fetcher.addEntry(Integer.toString(TEST_AC_HALF_ORG), halfOrganism);
+        fetcher.addEntry("" + TEST_AC_HALF_ORG, halfOrganism);
 
-
-        mockOrganism = new DefaultOrganism(1234 , "mock" , "mockus mockus");
+        mockOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG , "mock" , "mockus mockus");
     }
 
     // == RETRY ON FAILING FETCHER ============================================================
@@ -88,6 +90,7 @@ public class MinimumOrganismUpdaterTest {
     @Test
     public void test_bridgeFailure_does_not_throw_exception_when_not_persistent() throws EnricherException {
         persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+        assertNull(persistentOrganism.getScientificName());
 
         int timesToTry = 3;
 
@@ -100,8 +103,11 @@ public class MinimumOrganismUpdaterTest {
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
         organismEnricher.setOrganismFetcher(fetcher);
 
+        organismEnricher.setOrganismEnricherListener(new OrganismEnricherLogger()) ;
+
         organismEnricher.enrichOrganism(persistentOrganism);
 
+        assertEquals("mockus mockus", mockOrganism.getScientificName() );
         assertEquals("mockus mockus", persistentOrganism.getScientificName() );
     }
 
@@ -176,7 +182,7 @@ public class MinimumOrganismUpdaterTest {
     }
 
     @Test
-    public void test_set_scientificName_if_different() throws EnricherException {
+    public void test_do_not_update_scientificName_if_different() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -194,27 +200,21 @@ public class MinimumOrganismUpdaterTest {
 
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
 
-                    public void onScientificNameUpdate(Organism organism, String oldScientificName) {
-                        assertTrue(persistentOrganism == organism);
-                        assertEquals(TEST_OLD_SCIENTIFICNAME, oldScientificName);
-                        assertEquals(TEST_SCIENTIFICNAME , organism.getScientificName());
-                    }
-
+                    public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail();}
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
-
                 }
         ));
 
         this.organismEnricher.enrichOrganism(persistentOrganism);
 
         assertNotNull(persistentOrganism.getScientificName());
-        assertEquals(TEST_SCIENTIFICNAME, persistentOrganism.getScientificName());
+        assertEquals(TEST_OLD_SCIENTIFICNAME, persistentOrganism.getScientificName());
     }
 
     @Test
-    public void test_do_not_set_scientificName_if_same() throws EnricherException {
+    public void test_do_not_update_set_scientificName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setScientificName(TEST_SCIENTIFICNAME);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -287,7 +287,7 @@ public class MinimumOrganismUpdaterTest {
     }
 
     @Test
-    public void test_set_commonName_if_different() throws EnricherException {
+    public void test_do_not_update_commonName_if_different() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -303,11 +303,7 @@ public class MinimumOrganismUpdaterTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
 
-                    public void onCommonNameUpdate(Organism organism, String oldCommonName){
-                        assertTrue(persistentOrganism == organism);
-                        assertEquals(TEST_OLD_COMMONNAME, oldCommonName);
-                        assertEquals(TEST_COMMONNAME , organism.getCommonName());
-                    }
+                    public void onCommonNameUpdate(Organism organism, String oldCommonName){fail();}
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail("Should not reach this point");}
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
@@ -319,11 +315,11 @@ public class MinimumOrganismUpdaterTest {
         this.organismEnricher.enrichOrganism(persistentOrganism);
 
         assertNotNull(persistentOrganism.getCommonName());
-        assertEquals(TEST_COMMONNAME, persistentOrganism.getCommonName());
+        assertEquals(TEST_OLD_COMMONNAME, persistentOrganism.getCommonName());
     }
 
     @Test
-    public void test_do_not_set_commonName_if_same() throws EnricherException {
+    public void test_do_not_update_commonName_if_same() throws EnricherException {
         Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
         fetchOrganism.setCommonName(TEST_COMMONNAME);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
@@ -354,5 +350,88 @@ public class MinimumOrganismUpdaterTest {
         assertNotNull(persistentOrganism.getCommonName());
         assertEquals(TEST_COMMONNAME, persistentOrganism.getCommonName());
     }
+
+
+    // == ALIAS =========================================================================
+    @Test
+    public void test_add_alias() throws EnricherException {
+        Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+        //fetchOrganism.getAliases().add(new DefaultAlias("TestAlias"));
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+
+        persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+        fetchOrganism.getAliases().add(new DefaultAlias(TEST_COMMONNAME));
+
+
+        assertEquals(0, persistentOrganism.getAliases().size());
+
+        organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
+                // new OrganismEnricherLogger() ,
+                new OrganismEnricherListener() {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
+                        assertTrue(persistentOrganism == organism);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onCommonNameUpdate(Organism organism, String oldCommonName){fail();}
+
+                    public void onScientificNameUpdate(Organism organism, String oldScientificName){fail("Should not reach this point");}
+
+                    public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
+                    public void onAddedAlias(Organism organism, Alias added)  {
+                        assertTrue(persistentOrganism == organism);
+                        assertEquals(TEST_COMMONNAME , added.getName());
+                    }
+                    public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
+
+                }
+        ));
+
+        this.organismEnricher.enrichOrganism(persistentOrganism);
+        assertEquals(1 , persistentOrganism.getAliases().size());
+
+    }
+
+    @Test
+    public void test_add_without_removing_alias() throws EnricherException {
+        CvTerm term = new DefaultCvTerm("SHORT NAME");
+
+        Organism fetchOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+        fetchOrganism.getAliases().add(new DefaultAlias(term , TEST_COMMONNAME));
+        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG) , fetchOrganism);
+
+        persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
+        persistentOrganism.getAliases().add(new DefaultAlias(term , TEST_OLD_COMMONNAME));
+
+
+        assertEquals(1 , persistentOrganism.getAliases().size());
+
+        organismEnricher.setOrganismEnricherListener(new OrganismEnricherListenerManager(
+                // new OrganismEnricherLogger() ,
+                new OrganismEnricherListener() {
+                    public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
+                        assertTrue(persistentOrganism == organism);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+
+                    public void onCommonNameUpdate(Organism organism, String oldCommonName){fail();}
+
+                    public void onScientificNameUpdate(Organism organism, String oldScientificName){fail("Should not reach this point");}
+
+                    public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
+                    public void onAddedAlias(Organism organism, Alias added){
+                        assertTrue(persistentOrganism == organism);
+                        assertEquals(TEST_COMMONNAME , added.getName());
+                    }
+                    public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
+
+                }
+        ));
+
+        this.organismEnricher.enrichOrganism(persistentOrganism);
+        assertEquals(2 , persistentOrganism.getAliases().size());
+
+    }
+
 
 }

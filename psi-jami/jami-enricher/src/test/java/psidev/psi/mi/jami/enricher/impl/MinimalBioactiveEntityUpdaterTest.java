@@ -1,5 +1,6 @@
-package psidev.psi.mi.jami.enricher.impl.bioactiveentity;
+package psidev.psi.mi.jami.enricher.impl;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
@@ -11,10 +12,7 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherLogger;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.BioactiveEntity;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 
 import static junit.framework.Assert.*;
@@ -27,7 +25,7 @@ import static junit.framework.Assert.fail;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 09/08/13
  */
-public class MinimumBioactiveEntityUpdaterTest {
+public class MinimalBioactiveEntityUpdaterTest {
 
     String CHEBI_ID = "TEST_ID";
     String TEST_FULLNAME = "fullName";
@@ -68,9 +66,9 @@ public class MinimumBioactiveEntityUpdaterTest {
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
-        enricher.setBioactiveEntityFetcher(fetcher);
+        enricher = new MinimalBioactiveEntityUpdater(fetcher);
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         fail("Exception should be thrown before this point");
     }
@@ -90,13 +88,13 @@ public class MinimumBioactiveEntityUpdaterTest {
         int timesToTry = 3;
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < MinimalBioactiveEntityUpdater.RETRY_COUNT);
+                timesToTry < 5);
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
         fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
-        enricher.setBioactiveEntityFetcher(fetcher);
+        enricher = new MinimalBioactiveEntityUpdater(fetcher);
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_FULLNAME, persistentBioactiveEntity.getFullName() );
     }
@@ -112,7 +110,7 @@ public class MinimumBioactiveEntityUpdaterTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTerm() throws EnricherException {
         BioactiveEntity nullBioactiveEntity = null;
-        enricher.enrichBioactiveEntity(nullBioactiveEntity);
+        enricher.enrich(nullBioactiveEntity);
         fail("Exception should be thrown before this point");
     }
 
@@ -121,15 +119,12 @@ public class MinimumBioactiveEntityUpdaterTest {
      * This should throw an illegal state exception.
      * @throws EnricherException
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         BioactiveEntity bioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME, TEST_FULLNAME);
         bioactiveEntity.setChebi(CHEBI_ID);
 
-        enricher.setBioactiveEntityFetcher(null);
-        assertNull(enricher.getBioactiveEntityFetcher());
-        enricher.enrichBioactiveEntity(bioactiveEntity);
-        fail("Exception should be thrown before this point");
+        enricher = new MinimalBioactiveEntityUpdater(null);
     }
 
 
@@ -147,6 +142,7 @@ public class MinimumBioactiveEntityUpdaterTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt ++;
                     }
+
                     public void onChebiUpdate(BioactiveEntity bioactiveEntity, String oldId) { fail("failed"); }
                     public void onSmileUpdate(BioactiveEntity bioactiveEntity, String oldSmile) { fail("failed"); }
                     public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
@@ -163,10 +159,21 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(1, persistentInt);
 
@@ -215,10 +222,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getShortName());
         assertEquals(2 , persistentInt);
@@ -258,10 +275,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getShortName());
         assertEquals(1 , persistentInt);
@@ -311,10 +338,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getFullName());
         assertEquals(2 , persistentInt);
@@ -360,10 +397,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getFullName());
         assertEquals(2 , persistentInt);
@@ -405,10 +452,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getFullName());
         assertEquals(1 , persistentInt);
@@ -450,10 +507,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getFullName());
         assertEquals(1 , persistentInt);
@@ -502,10 +569,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
         assertEquals(2 , persistentInt);
@@ -551,10 +628,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
         assertEquals(2 , persistentInt);
@@ -596,10 +683,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
         assertEquals(1 , persistentInt);
@@ -641,10 +738,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
         assertEquals(1 , persistentInt);
@@ -692,10 +799,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
         assertEquals(2 , persistentInt);
@@ -741,10 +858,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
         assertEquals(2 , persistentInt);
@@ -786,10 +913,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
         assertEquals(1 , persistentInt);
@@ -831,10 +968,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
         assertEquals(1 , persistentInt);
@@ -883,10 +1030,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getSmile());
         assertEquals(2 , persistentInt);
@@ -932,10 +1089,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getSmile());
         assertEquals(2 , persistentInt);
@@ -977,10 +1144,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getSmile());
         assertEquals(1 , persistentInt);
@@ -1022,10 +1199,20 @@ public class MinimumBioactiveEntityUpdaterTest {
                     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) { fail("failed"); }
                     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) { fail("failed"); }
                     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) { fail("failed"); }
+                    public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
+                        Assert.fail();
+                    }
+                    public void onEnrichmentError(BioactiveEntity object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        enricher.enrichBioactiveEntity(persistentBioactiveEntity);
+        enricher.enrich(persistentBioactiveEntity);
 
         assertEquals(TEST_STRING, persistentBioactiveEntity.getSmile());
         assertEquals(1 , persistentInt);

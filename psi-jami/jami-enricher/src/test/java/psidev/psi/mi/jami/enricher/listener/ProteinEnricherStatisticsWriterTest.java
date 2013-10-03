@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.listener.protein;
+package psidev.psi.mi.jami.enricher.listener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -67,8 +67,8 @@ public class ProteinEnricherStatisticsWriterTest {
         logWriter = new ProteinEnricherStatisticsWriter(successFile , failFile);
         ProteinEnricherListenerManager manager = new ProteinEnricherListenerManager();
 
-        manager.addEnricherListener(logWriter);
-        manager.addEnricherListener(new ProteinEnricherLogger());
+        manager.addListener(logWriter);
+        manager.addListener(new ProteinEnricherLogger());
         proteinEnricher.setProteinEnricherListener(manager);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
@@ -94,12 +94,12 @@ public class ProteinEnricherStatisticsWriterTest {
         Protein term = new DefaultProtein(TEST_SHORTNAME);
         term.setUniprotkb(TEST_AC_FULL_PROT);
 
-        proteinEnricher.enrichProtein(term);
-        proteinEnricher.enrichProtein(term);
+        proteinEnricher.enrich(term);
+        proteinEnricher.enrich(term);
         term.setUniprotkb("FOO");
-        proteinEnricher.enrichProtein(term);
+        proteinEnricher.enrich(term);
         Protein test = new DefaultProtein("FOOOO", "BAHHH");
-        proteinEnricher.enrichProtein(test);
+        proteinEnricher.enrich(test);
 
         logWriter.close();
 

@@ -1,10 +1,12 @@
-package psidev.psi.mi.jami.enricher.impl.interaction;
+package psidev.psi.mi.jami.enricher.impl;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.FullInteractionEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
@@ -28,7 +30,7 @@ import static junit.framework.Assert.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 26/07/13
  */
-public class MinimumInteractionEnricherTest {
+public class MinimalInteractionEnricherTest {
 
     private InteractionEnricher interactionEnricher;
     MockCvTermFetcher mockCvTermFetcher;
@@ -62,9 +64,16 @@ public class MinimumInteractionEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS, status);
                         persistentInt++;
                     }
+
+                    public void onEnrichmentError(Interaction object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();                    }
                 }
         ));
-        interactionEnricher.enrichInteraction(persistentInteraction);
+        interactionEnricher.enrich(persistentInteraction);
         assertEquals(1 , persistentInt);
     }
 
@@ -83,9 +92,17 @@ public class MinimumInteractionEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++;
                     }
+
+                    public void onEnrichmentError(Interaction object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
                 }
         ));
-        interactionEnricher.enrichInteraction(persistentInteraction);
+        interactionEnricher.enrich(persistentInteraction);
 
         assertNull(persistentInteraction.getInteractionType());
         assertEquals(1 , persistentInt);
@@ -96,9 +113,7 @@ public class MinimumInteractionEnricherTest {
         mockCvTermFetcher = new MockCvTermFetcher();
         interactionEnricher.setCvTermEnricher(new MinimalCvTermEnricher(mockCvTermFetcher));
 
-        mockCvTermFetcher.addEntry("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
-        interactionEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
-
+        mockCvTermFetcher.addEntry("MI:0001", new DefaultCvTerm("ShortName", "FullName", "MI:0001"));
 
         persistentInteraction.setInteractionType(new DefaultCvTerm("ShortName" , "MI:0001"));
         assertNotNull(persistentInteraction.getInteractionType());
@@ -112,9 +127,17 @@ public class MinimumInteractionEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++;
                     }
+
+                    public void onEnrichmentError(Interaction object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
                 } )
         );
-        interactionEnricher.enrichInteraction(persistentInteraction);
+        interactionEnricher.enrich(persistentInteraction);
 
         assertNotNull(persistentInteraction.getInteractionType());
         assertNotNull(persistentInteraction.getInteractionType().getFullName());
@@ -136,9 +159,17 @@ public class MinimumInteractionEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS, status);
                         persistentInt++;
                     }
+
+                    public void onEnrichmentError(Interaction object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
                 }
         ));
-        interactionEnricher.enrichInteraction(persistentInteraction);
+        interactionEnricher.enrich(persistentInteraction);
 
         assertNull(persistentInteraction.getInteractionType());
         assertEquals(1 , persistentInt);
@@ -161,9 +192,17 @@ public class MinimumInteractionEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS, status);
                         persistentInt++;
                     }
+
+                    public void onEnrichmentError(Interaction object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
                 }
         ));
-        interactionEnricher.enrichInteraction(persistentInteraction);
+        interactionEnricher.enrich(persistentInteraction);
 
         assertNull(persistentInteraction.getInteractionType());
         assertEquals(1 , persistentInt);
