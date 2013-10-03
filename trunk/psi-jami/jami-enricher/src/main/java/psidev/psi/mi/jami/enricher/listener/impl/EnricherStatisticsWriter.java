@@ -84,6 +84,7 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
 
         successWriter = new BufferedWriter( new FileWriter(successFile) );
         successWriter.write("File Source"); successWriter.write(EnricherUtils.NEW_EVENT);
+        successWriter.write("Enrichment status"); successWriter.write(EnricherUtils.NEW_EVENT);
         successWriter.write("Updated"); successWriter.write(EnricherUtils.NEW_EVENT);
         successWriter.write("Removed"); successWriter.write(EnricherUtils.NEW_EVENT);
         successWriter.write("Added");
@@ -141,6 +142,14 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
                 case SUCCESS:
                     if(updateCount == 0 && removedCount == 0 && additionCount == 0)
                         break;
+                    if (obj instanceof FileSourceContext){
+                        FileSourceContext context = (FileSourceContext) obj;
+                        if (context.getSourceLocator() != null)
+                            fileSource = context.getSourceLocator().toString();
+                    }
+                    successWriter.write(fileSource);
+                    successWriter.write(EnricherUtils.NEW_EVENT);
+                    successWriter.write(status.toString());
                     successWriter.write(EnricherUtils.NEW_EVENT);
                     successWriter.write(Integer.toString(updateCount));
                     successWriter.write(EnricherUtils.NEW_EVENT);
@@ -148,12 +157,6 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
                     successWriter.write(EnricherUtils.NEW_EVENT);
                     successWriter.write(Integer.toString(additionCount));
                     successWriter.write(EnricherUtils.NEW_EVENT);
-                    if (obj instanceof FileSourceContext){
-                        FileSourceContext context = (FileSourceContext) obj;
-                        if (context.getSourceLocator() != null)
-                            fileSource = context.getSourceLocator().toString();
-                    }
-                    successWriter.write(fileSource);
                     successWriter.flush();
                     break;
 
