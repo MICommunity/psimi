@@ -14,86 +14,91 @@
     <import resource="base-enricher-spring.xml"/>
 
     <!-- listeners-->
-    <bean id="xmlProteinListenerUpdateManager" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager">
+    <bean id="xmlProteinListenerManager" class="psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager">
         <constructor-arg>
             <list>
                 <ref bean="proteinListener"/>
-                <ref bean="xmlFeatureUpdater"/>
+                <ref bean="xmlFeatureEnricher"/>
             </list>
         </constructor-arg>
     </bean>
 
     <!-- enrichers -->
-    <bean id="xmlCvTermUpdater" class="psidev.psi.mi.jami.enricher.impl.cvterm.MaximumCvTermUpdater">
+    <bean id="xmlCvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.FullCvTermUpdater">
         <constructor-arg ref="cvTermFetcher"/>
         <property name="cvTermEnricherListener" ref="cvTermListener"/>
     </bean>
 
-    <bean id="xmlOrganismUpdater" class="psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismUpdater">
+    <bean id="xmlOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.FullOrganismUpdater">
         <constructor-arg ref="organismFetcher"/>
         <property name="organismEnricherListener" ref="organismListener" />
     </bean>
 
-    <bean id="xmlProteinUpdater" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinUpdater">
+    <bean id="mockOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.FullOrganismUpdater">
+        <constructor-arg ref="mockOrganismFetcher"/>
+        <property name="organismEnricherListener" ref="organismListener" />
+    </bean>
+
+    <bean id="xmlProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.FullProteinUpdater">
         <constructor-arg ref="proteinFetcher"/>
-        <property name="organismEnricher" ref="xmlOrganismUpdater"/>
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="proteinMapper" ref="proteinMapper"/>
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater" />
-        <property name="proteinEnricherListener" ref="xmlProteinListenerUpdateManager"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
+        <property name="proteinEnricherListener" ref="xmlProteinListenerManager"/>
     </bean>
 
-    <bean id="xmlBioactiveEntityUpdater" class="psidev.psi.mi.jami.enricher.impl.bioactiveentity.MaximumBioactiveEntityUpdater">
+    <bean id="xmlBioactiveEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.FullBioactiveEntityUpdater">
         <constructor-arg ref="bioactiveEntityFetcher"/>
-        <property name="bioactiveEntityFetcher" ref="bioactiveEntityFetcher"/>
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater" />
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
         <property name="bioactiveEntityEnricherListener" ref="bioactiveEntityListener"/>
+        <property name="organismEnricher" ref="xmlOrganismEnricher"/>
     </bean>
 
-    <bean id="xmlGeneUpdater" class="psidev.psi.mi.jami.enricher.impl.gene.MaximumGeneUpdater">
+    <bean id="xmlGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.FullGeneUpdater">
         <constructor-arg ref="geneFetcher"/>
-        <property name="organismEnricher" ref="xmlOrganismUpdater"/>
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater" />
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
         <property name="geneEnricherListener" ref="geneListener"/>
     </bean>
 
-    <bean id="xmlFeatureUpdater" class="psidev.psi.mi.jami.enricher.impl.feature.MaximumFeatureEvidenceUpdater">
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater"/>
+    <bean id="xmlFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.FullFeatureEvidenceUpdater">
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricherListener" ref="featureListener"/>
     </bean>
 
-    <bean id="xmlParticipantUpdater" class="psidev.psi.mi.jami.enricher.impl.participant.MaximumParticipantEvidenceEnricher">
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater"/>
-        <property name="featureEnricher" ref="xmlFeatureUpdater"/>
-        <property name="proteinEnricher" ref="xmlProteinUpdater"/>
-        <property name="geneEnricher" ref="xmlGeneUpdater"/>
-        <property name="bioactiveEntityEnricher" ref="xmlBioactiveEntityUpdater"/>
+    <bean id="xmlParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.FullParticipantEvidenceEnricher">
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
+        <property name="featureEnricher" ref="xmlFeatureEnricher"/>
+        <property name="proteinEnricher" ref="xmlProteinEnricher"/>
+        <property name="geneEnricher" ref="xmlGeneEnricher"/>
+        <property name="bioactiveEntityEnricher" ref="xmlBioactiveEntityEnricher"/>
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
-    <bean id="xmlPublicationUpdater" class="psidev.psi.mi.jami.enricher.impl.publication.MaximumPublicationUpdater">
+    <bean id="xmlPublicationEnricher" class="psidev.psi.mi.jami.enricher.impl.FullPublicationUpdater">
         <constructor-arg ref="publicationFetcher"/>
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="publicationEnricherListener" ref="publicationListener"/>
     </bean>
 
 
-    <bean id="xmlExperimentUpdater" class="psidev.psi.mi.jami.enricher.impl.experiment.BasicExperimentEnricher">
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater"/>
-        <property name="publicationEnricher" ref="xmlPublicationUpdater"/>
-        <property name="organismEnricher" ref="xmlOrganismUpdater" />
+    <bean id="xmlExperimentEnricher" class="psidev.psi.mi.jami.enricher.impl.BasicExperimentEnricher">
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
+        <property name="publicationEnricher" ref="xmlPublicationEnricher"/>
         <property name="experimentEnricherListener" ref="experimentListener"/>
     </bean>
 
-    <bean id="xmlInteractionUpdater" class="psidev.psi.mi.jami.enricher.impl.interaction.BasicInteractionEvidenceEnricher">
-        <property name="experimentEnricher" ref="xmlExperimentUpdater"/>
-        <property name="cvTermEnricher" ref="xmlCvTermUpdater"/>
-        <property name="participantEnricher" ref="xmlParticipantUpdater"/>
+    <bean id="xmlInteractionEnricher" class="psidev.psi.mi.jami.enricher.impl.FullInteractionEvidenceUpdater">
+        <property name="experimentEnricher" ref="xmlExperimentEnricher"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
+        <property name="participantEnricher" ref="xmlParticipantEnricher"/>
         <property name="interactionEnricherListener" ref="interactionListener"/>
     </bean>
 
     <!-- processor -->
-    <bean id="xmlInteractionEvidenceUpdater" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
-        <property name="interactionEnricher" ref="xmlInteractionUpdater"/>
+    <bean id="xmlInteractionEvidenceEnricher" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
+        <property name="interactionEnricher" ref="xmlInteractionEnricher"/>
+        <property name="errorResource" ref="errorResource"/>
     </bean>
 
     <!-- interaction writer -->
@@ -117,7 +122,7 @@
             </batch:listeners>
 
             <batch:chunk reader="interactionEvidenceReader"
-                         processor="xmlInteractionEvidenceUpdater"
+                         processor="xmlInteractionEvidenceEnricher"
                          writer="xmlInteractionEvidenceWriter"
                          commit-interval="50">
                 <batch:streams>
