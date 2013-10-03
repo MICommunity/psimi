@@ -1,18 +1,19 @@
-package psidev.psi.mi.jami.enricher.impl.cvterm;
+package psidev.psi.mi.jami.enricher.impl;
 
-
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.FullCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherLogger;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
@@ -20,12 +21,10 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AliasUtils;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,10 +32,10 @@ import static junit.framework.Assert.assertEquals;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/07/13
  */
-public class MinimumCvTermEnricherTest {
+public class FullCvTermEnricherTest {
 
 
-    private MinimalCvTermEnricher cvTermEnricher;
+    private FullCvTermEnricher cvTermEnricher;
     private MockCvTermFetcher mockCvTermFetcher ;
 
     private CvTerm mockCvTerm;
@@ -59,11 +58,10 @@ public class MinimumCvTermEnricherTest {
     private int persistentInt;
 
 
-
     @Before
     public void setup() throws BridgeFailedException {
         mockCvTermFetcher = new MockCvTermFetcher();
-        cvTermEnricher = new MinimalCvTermEnricher(mockCvTermFetcher);
+        cvTermEnricher = new FullCvTermEnricher(mockCvTermFetcher);
 
         mockCvTerm = new DefaultCvTerm(short_name, full_name, MI_ID);
         mockCvTerm.getIdentifiers().add(new DefaultXref(
@@ -92,15 +90,16 @@ public class MinimumCvTermEnricherTest {
      */
     @Test(expected = EnricherException.class)
     public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
+
         persistentCvTerm = new DefaultCvTerm(short_name , MI_ID);
 
         int timesToTry = -1;
 
         FailingCvTermFetcher fetcher = new FailingCvTermFetcher(timesToTry);
         fetcher.addEntry(MI_ID , mockCvTerm);
-        cvTermEnricher.setCvTermFetcher(fetcher);
+        cvTermEnricher = new FullCvTermEnricher(fetcher);
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         fail("Exception should be thrown before this point");
     }
@@ -119,13 +118,13 @@ public class MinimumCvTermEnricherTest {
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < MinimalCvTermEnricher.RETRY_COUNT);
+                timesToTry < 5);
 
         FailingCvTermFetcher fetcher = new FailingCvTermFetcher(timesToTry);
         fetcher.addEntry(MI_ID , mockCvTerm);
-        cvTermEnricher.setCvTermFetcher(fetcher);
+        cvTermEnricher = new FullCvTermEnricher(mockCvTermFetcher);
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(full_name, persistentCvTerm.getFullName() );
     }
@@ -140,7 +139,7 @@ public class MinimumCvTermEnricherTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTerm() throws EnricherException {
         CvTerm nullCvTerm = null;
-        cvTermEnricher.enrichCvTerm(nullCvTerm);
+        cvTermEnricher.enrich(nullCvTerm);
         fail("Exception should be thrown before this point");
     }
 
@@ -149,13 +148,10 @@ public class MinimumCvTermEnricherTest {
      * This should throw an illegal state exception.
      * @throws EnricherException
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         CvTerm cvTerm = new DefaultCvTerm(short_name, MI_ID);
-        cvTermEnricher.setCvTermFetcher(null);
-        assertNull(cvTermEnricher.getCvTermFetcher());
-        cvTermEnricher.enrichCvTerm(cvTerm);
-        fail("Exception should be thrown before this point");
+        cvTermEnricher = new FullCvTermEnricher(null);
     }
 
 
@@ -171,6 +167,7 @@ public class MinimumCvTermEnricherTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt ++;
                     }
+
                     public void onShortNameUpdate(CvTerm cv, String oldShortName)  {fail("fail");}
                     public void onFullNameUpdate(CvTerm cv, String oldFullName) {fail("fail");}
                     public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail("fail");}
@@ -182,10 +179,30 @@ public class MinimumCvTermEnricherTest {
                     public void onRemovedXref(CvTerm cv, Xref removed)  {fail("fail");}
                     public void onAddedSynonym(CvTerm cv, Alias added)  {fail("fail");}
                     public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail("fail");}
+
+                    public void onEnrichmentError(CvTerm object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAlias(CvTerm o, Alias added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAlias(CvTerm o, Alias removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(CvTerm o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(1 , persistentInt);
     }
@@ -228,24 +245,48 @@ public class MinimumCvTermEnricherTest {
             public void onRemovedIdentifier(CvTerm cv, Xref removed)  {fail();}
             public void onAddedXref(CvTerm cv, Xref added)  {fail();}
             public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
-            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)   {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getName());
+                reportForEnrichment.add(synonymAddedKey);
+            }
             public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+            public void onEnrichmentError(CvTerm object, String message, Exception e) {
+                Assert.fail();
+            }
+
+            public void onAddedAlias(CvTerm o, Alias added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAlias(CvTerm o, Alias removed) {
+                Assert.fail();
+            }
+
+            public void onAddedAnnotation(CvTerm o, Annotation added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+                Assert.fail();
+            }
         });
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(other_short_name, persistentCvTerm.getShortName());
         assertEquals(full_name, persistentCvTerm.getFullName());
         assertEquals(2 , persistentCvTerm.getIdentifiers().size());
 
         // Show no change on maximum fields
-        assertEquals(0 , persistentCvTerm.getSynonyms().size());
+        assertEquals(1 , persistentCvTerm.getSynonyms().size());
         assertEquals(0, persistentCvTerm.getXrefs().size());
         assertEquals(0 , persistentCvTerm.getAnnotations().size());
 
         // Show events were fired
         assertTrue(reportForEnrichment.contains(fullNameUpdateKey));
         assertTrue(reportForEnrichment.contains(identifierAddedKey));
+        assertTrue(reportForEnrichment.contains(synonymAddedKey));
     }
 
 
@@ -288,27 +329,51 @@ public class MinimumCvTermEnricherTest {
                 reportForEnrichment.add(identifierAddedKey);
             }
             public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
-            public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
+            public void onAddedSynonym(CvTerm cv, Alias added)    {
+                assertTrue(cv == persistentCvTerm) ;
+                assertEquals(short_name , added.getName());
+                reportForEnrichment.add(synonymAddedKey);
+            }
             public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+            public void onEnrichmentError(CvTerm object, String message, Exception e) {
+                Assert.fail();
+            }
+
+            public void onAddedAlias(CvTerm o, Alias added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAlias(CvTerm o, Alias removed) {
+                Assert.fail();
+            }
+
+            public void onAddedAnnotation(CvTerm o, Annotation added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+                Assert.fail();
+            }
 
         });
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(other_short_name, persistentCvTerm.getShortName());
         assertEquals(other_full_name, persistentCvTerm.getFullName());
         assertEquals(2 , persistentCvTerm.getIdentifiers().size());
+        assertEquals(2 , persistentCvTerm.getSynonyms().size());
+       // assertEquals(short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
 
         // Show no change on maximum fields
-        assertEquals(1 , persistentCvTerm.getSynonyms().size());
         assertEquals(1 , persistentCvTerm.getXrefs().size());
         assertEquals(1 , persistentCvTerm.getAnnotations().size());
-        assertEquals(other_short_name, persistentCvTerm.getSynonyms().iterator().next().getName() );
         assertEquals(other_short_name, persistentCvTerm.getXrefs().iterator().next().getId());
         assertEquals(other_short_name, persistentCvTerm.getAnnotations().iterator().next().getValue() );
 
         // Show events were fired
         assertTrue(reportForEnrichment.contains(identifierAddedKey));
+        assertTrue(reportForEnrichment.contains(synonymAddedKey));
     }
 
 
@@ -348,10 +413,29 @@ public class MinimumCvTermEnricherTest {
             public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
             public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
             public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+            public void onEnrichmentError(CvTerm object, String message, Exception e) {
+                Assert.fail();
+            }
+
+            public void onAddedAlias(CvTerm o, Alias added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAlias(CvTerm o, Alias removed) {
+                Assert.fail();
+            }
+
+            public void onAddedAnnotation(CvTerm o, Annotation added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+                Assert.fail();
+            }
 
         });
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(short_name, persistentCvTerm.getShortName());
         assertEquals(full_name, persistentCvTerm.getFullName());
@@ -410,10 +494,29 @@ public class MinimumCvTermEnricherTest {
             public void onRemovedXref(CvTerm cv, Xref removed)  {fail();}
             public void onAddedSynonym(CvTerm cv, Alias added)  {fail();}
             public void onRemovedSynonym(CvTerm cv, Alias removed)  {fail();}
+            public void onEnrichmentError(CvTerm object, String message, Exception e) {
+                Assert.fail();
+            }
+
+            public void onAddedAlias(CvTerm o, Alias added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAlias(CvTerm o, Alias removed) {
+                Assert.fail();
+            }
+
+            public void onAddedAnnotation(CvTerm o, Annotation added) {
+                Assert.fail();
+            }
+
+            public void onRemovedAnnotation(CvTerm o, Annotation removed) {
+                Assert.fail();
+            }
 
         });
 
-        cvTermEnricher.enrichCvTerm(persistentCvTerm);
+        cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(other_short_name, persistentCvTerm.getShortName());
         assertEquals(other_full_name, persistentCvTerm.getFullName());

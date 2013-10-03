@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
-import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
  * Provides maximum updating of the BioactiveEntity.
@@ -12,7 +11,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since 07/08/13
  */
 public class FullBioactiveEntityUpdater
-        extends AbstractInteractorUpdater<BioactiveEntity> {
+        extends MinimalBioactiveEntityUpdater {
 
     /**
      * A constructor which initiates with a fetcher.

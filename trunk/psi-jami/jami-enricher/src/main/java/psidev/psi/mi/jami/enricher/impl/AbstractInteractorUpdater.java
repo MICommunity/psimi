@@ -135,4 +135,8 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     protected boolean canEnrichInteractor(T entityToEnrich, T fetchedEntity) {
         return interactorEnricher.canEnrichInteractor(entityToEnrich, fetchedEntity);
     }
+
+    protected AbstractInteractorEnricher<T> getInteractorEnricher() {
+        return interactorEnricher;
+    }
 }

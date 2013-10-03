@@ -1,5 +1,6 @@
-package psidev.psi.mi.jami.enricher.impl.participant;
+package psidev.psi.mi.jami.enricher.impl;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
@@ -7,6 +8,7 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.BasicParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalFeatureEnricher;
 import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
@@ -28,7 +30,7 @@ import static junit.framework.Assert.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 26/07/13
  */
-public class MinimumParticipantEnricherTest {
+public class BasicParticipantEnricherTest {
 
     private ParticipantEnricher participantEnricher;
 
@@ -57,9 +59,13 @@ public class MinimumParticipantEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;
                     }
+
+                    public void onEnrichmentError(Participant object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
-        participantEnricher.enrichParticipant(persistentParticipant);
+        participantEnricher.enrich(persistentParticipant);
         assertEquals(1 , persistentInt);
     }
 
@@ -84,10 +90,13 @@ public class MinimumParticipantEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;
                     }
+                    public void onEnrichmentError(Participant object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        participantEnricher.enrichParticipant(persistentParticipant);
+        participantEnricher.enrich(persistentParticipant);
 
         assertEquals(1 , persistentInt);
     }
@@ -102,8 +111,6 @@ public class MinimumParticipantEnricherTest {
         MockCvTermFetcher mockCvTermFetcher = new MockCvTermFetcher();
         participantEnricher.setCvTermEnricher(new MinimalCvTermEnricher(mockCvTermFetcher));
         mockCvTermFetcher.addEntry("MI:0001" , new DefaultCvTerm("ShortName" , "FullName" , "MI:0001"));
-        participantEnricher.getCvTermEnricher().setCvTermFetcher(mockCvTermFetcher);
-
 
         persistentParticipant.setBiologicalRole(new DefaultCvTerm("ShortName", "MI:0001"));
         assertNotNull(persistentParticipant.getBiologicalRole());
@@ -117,10 +124,14 @@ public class MinimumParticipantEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;
                     }
+
+                    public void onEnrichmentError(Participant object, String message, Exception e) {
+                        Assert.fail();
+                    }
                 }
         ));
 
-        participantEnricher.enrichParticipant(persistentParticipant);
+        participantEnricher.enrich(persistentParticipant);
 
         assertNotNull(persistentParticipant.getBiologicalRole());
         assertNotNull(persistentParticipant.getBiologicalRole().getFullName());

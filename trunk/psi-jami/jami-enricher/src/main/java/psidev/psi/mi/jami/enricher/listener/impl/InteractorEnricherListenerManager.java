@@ -11,8 +11,8 @@ import psidev.psi.mi.jami.model.*;
  * @since <pre>01/10/13</pre>
  */
 
-public class InteractorEnricherListenerManager extends EnricherListenerManager<Interactor, InteractorEnricherListener>
-    implements InteractorEnricherListener{
+public class InteractorEnricherListenerManager extends EnricherListenerManager<Interactor, InteractorEnricherListener<Interactor>>
+    implements InteractorEnricherListener<Interactor>{
         /**
          * A constructor to create a listener manager with no listeners.
          */

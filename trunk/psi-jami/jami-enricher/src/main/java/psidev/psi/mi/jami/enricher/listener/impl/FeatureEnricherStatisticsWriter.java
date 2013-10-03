@@ -120,5 +120,10 @@ public class FeatureEnricherStatisticsWriter
         incrementRemovedCount();
     }
 
+    public void onUpdatedRangePositions(Feature feature, Range range, Position position, Position position2) {
+        checkObject(feature);
+        incrementUpdateCount();
+    }
+
 
 }

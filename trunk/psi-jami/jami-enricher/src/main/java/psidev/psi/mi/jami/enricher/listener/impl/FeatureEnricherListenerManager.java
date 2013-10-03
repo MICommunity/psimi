@@ -105,4 +105,10 @@ public class FeatureEnricherListenerManager
             listener.onRemovedRange(feature, removed);
         }
     }
+
+    public void onUpdatedRangePositions(Feature feature, Range range, Position position, Position position2) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onUpdatedRangePositions(feature, range, position, position2);
+        }
+    }
 }

@@ -62,27 +62,6 @@ public class ProteinEnricherStatisticsWriter
 
     // ================================================================
 
-
-    public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
-    public void onRefseqUpdate(Protein protein, String oldRefseq) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
-    public void onGeneNameUpdate(Protein protein, String oldGeneName) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
-    public void onRogidUpdate(Protein protein, String oldRogid) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
     public void onSequenceUpdate(Protein protein, String oldSequence) {
         checkObject(protein);
         incrementUpdateCount();

@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.listener.cvterm;
+package psidev.psi.mi.jami.enricher.listener;
 
 import org.junit.After;
 import org.junit.Before;
@@ -61,8 +61,8 @@ public class CvTermEnricherStatisticsWriterTest {
         cvTermStatisticsWriter = new CvTermEnricherStatisticsWriter(successFile , failFile);
         CvTermEnricherListenerManager manager = new CvTermEnricherListenerManager();
 
-        manager.addEnricherListener(cvTermStatisticsWriter);
-        manager.addEnricherListener(new CvTermEnricherLogger());
+        manager.addListener(cvTermStatisticsWriter);
+        manager.addListener(new CvTermEnricherLogger());
         minimumCvTermEnricher.setCvTermEnricherListener(manager);
 
         CvTerm cvTermFull = new DefaultCvTerm( SHORT_NAME, FULL_NAME, MI_ID);
@@ -103,13 +103,13 @@ public class CvTermEnricherStatisticsWriterTest {
     public void test_log_is_written() throws EnricherException, IOException {
         CvTerm term = new DefaultCvTerm(SHORT_NAME,MI_ID);
 
-        minimumCvTermEnricher.enrichCvTerm(term);
-        minimumCvTermEnricher.enrichCvTerm(term);
+        minimumCvTermEnricher.enrich(term);
+        minimumCvTermEnricher.enrich(term);
         term.setMIIdentifier("FOO");
-        minimumCvTermEnricher.enrichCvTerm(term);
+        minimumCvTermEnricher.enrich(term);
 
         CvTerm test = new DefaultCvTerm("FOOOO", "BAHHH");
-        minimumCvTermEnricher.enrichCvTerm(test);
+        minimumCvTermEnricher.enrich(test);
 
         cvTermStatisticsWriter.close();
 
