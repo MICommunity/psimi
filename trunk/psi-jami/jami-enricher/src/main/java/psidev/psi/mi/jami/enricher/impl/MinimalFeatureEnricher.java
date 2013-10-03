@@ -540,4 +540,12 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         }
         return true;
     }
+
+    public void onEnrichmentComplete(Protein object, EnrichmentStatus status, String message) {
+        // do nothing
+    }
+
+    public void onEnrichmentError(Protein object, String message, Exception e) {
+        // do nothing
+    }
 }
