@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
-import com.sun.deploy.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
