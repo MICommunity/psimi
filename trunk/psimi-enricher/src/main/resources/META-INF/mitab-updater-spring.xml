@@ -14,86 +14,91 @@
     <import resource="base-enricher-spring.xml"/>
 
     <!-- listeners-->
-    <bean id="mitabProteinListenerUpdateManager" class="psidev.psi.mi.jami.enricher.listener.protein.ProteinEnricherListenerManager">
+    <bean id="mitabProteinListenerManager" class="psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager">
         <constructor-arg>
             <list>
                 <ref bean="proteinListener"/>
-                <ref bean="mitabFeatureUpdater"/>
+                <ref bean="mitabFeatureEnricher"/>
             </list>
         </constructor-arg>
     </bean>
 
     <!-- enrichers -->
-    <bean id="mitabCvTermUpdater" class="psidev.psi.mi.jami.enricher.impl.cvterm.MinimumCvTermUpdater">
+    <bean id="mitabCvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalCvTermUpdater">
         <constructor-arg ref="cvTermFetcher"/>
         <property name="cvTermEnricherListener" ref="cvTermListener"/>
     </bean>
 
-    <bean id="mitabOrganismUpdater" class="psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismUpdater">
+    <bean id="mitabOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalOrganismUpdater">
         <constructor-arg ref="organismFetcher"/>
         <property name="organismEnricherListener" ref="organismListener" />
     </bean>
 
-    <bean id="mitabProteinUpdater" class="psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinUpdater">
+    <bean id="mockOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalOrganismUpdater">
+        <constructor-arg ref="mockOrganismFetcher"/>
+        <property name="organismEnricherListener" ref="organismListener" />
+    </bean>
+
+    <bean id="mitabProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalProteinUpdater">
         <constructor-arg ref="proteinFetcher"/>
-        <property name="organismEnricher" ref="mitabOrganismUpdater"/>
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="proteinMapper" ref="proteinMapper"/>
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater" />
-        <property name="proteinEnricherListener" ref="mitabProteinListenerUpdateManager"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="proteinEnricherListener" ref="mitabProteinListenerManager"/>
     </bean>
 
-    <bean id="mitabBioactiveEntityUpdater" class="psidev.psi.mi.jami.enricher.impl.bioactiveentity.MinimumBioactiveEntityUpdater">
+    <bean id="mitabBioactiveEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalBioactiveEntityUpdater">
         <constructor-arg ref="bioactiveEntityFetcher"/>
-        <property name="bioactiveEntityFetcher" ref="bioactiveEntityFetcher"/>
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater" />
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
         <property name="bioactiveEntityEnricherListener" ref="bioactiveEntityListener"/>
+        <property name="organismEnricher" ref="mitabOrganismEnricher"/>
     </bean>
 
-    <bean id="mitabGeneUpdater" class="psidev.psi.mi.jami.enricher.impl.gene.MinimumGeneUpdater">
+    <bean id="mitabGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalGeneUpdater">
         <constructor-arg ref="geneFetcher"/>
-        <property name="organismEnricher" ref="mitabOrganismUpdater"/>
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater" />
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
         <property name="geneEnricherListener" ref="geneListener"/>
     </bean>
 
-    <bean id="mitabFeatureUpdater" class="psidev.psi.mi.jami.enricher.impl.feature.MinimumFeatureEvidenceUpdater">
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater"/>
+    <bean id="mitabFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalFeatureEvidenceUpdater">
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="featureEnricherListener" ref="featureListener"/>
     </bean>
 
-    <bean id="mitabParticipantUpdater" class="psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEvidenceEnricher">
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater"/>
-        <property name="featureEnricher" ref="mitabFeatureUpdater"/>
-        <property name="proteinEnricher" ref="mitabProteinUpdater"/>
-        <property name="geneEnricher" ref="mitabGeneUpdater"/>
-        <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityUpdater"/>
+    <bean id="mitabParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalParticipantEvidenceEnricher">
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="featureEnricher" ref="mitabFeatureEnricher"/>
+        <property name="proteinEnricher" ref="mitabProteinEnricher"/>
+        <property name="geneEnricher" ref="mitabGeneEnricher"/>
+        <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityEnricher"/>
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
-    <bean id="mitabPublicationUpdater" class="psidev.psi.mi.jami.enricher.impl.publication.MinimumPublicationUpdater">
+    <bean id="mitabPublicationEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalPublicationUpdater">
         <constructor-arg ref="publicationFetcher"/>
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="publicationEnricherListener" ref="publicationListener"/>
     </bean>
 
 
-    <bean id="mitabExperimentUpdater" class="psidev.psi.mi.jami.enricher.impl.experiment.BasicExperimentEnricher">
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater"/>
-        <property name="publicationEnricher" ref="mitabPublicationUpdater"/>
-        <property name="organismEnricher" ref="mitabOrganismUpdater" />
+    <bean id="mitabExperimentEnricher" class="psidev.psi.mi.jami.enricher.impl.BasicExperimentEnricher">
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="publicationEnricher" ref="mitabPublicationEnricher"/>
         <property name="experimentEnricherListener" ref="experimentListener"/>
     </bean>
 
-    <bean id="mitabInteractionUpdater" class="psidev.psi.mi.jami.enricher.impl.interaction.BasicInteractionEvidenceEnricher">
-        <property name="experimentEnricher" ref="mitabExperimentUpdater"/>
-        <property name="cvTermEnricher" ref="mitabCvTermUpdater"/>
-        <property name="participantEnricher" ref="mitabParticipantUpdater"/>
+    <bean id="mitabInteractionEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalInteractionEvidenceEnricher">
+        <property name="experimentEnricher" ref="mitabExperimentEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="participantEnricher" ref="mitabParticipantEnricher"/>
         <property name="interactionEnricherListener" ref="interactionListener"/>
     </bean>
 
     <!-- processor -->
-    <bean id="mitabInteractionEvidenceUpdater" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
-        <property name="interactionEnricher" ref="mitabInteractionUpdater"/>
+    <bean id="mitabInteractionEvidenceEnricher" class="psidev.psi.mi.enricher.batch.processor.InteractionEvidenceEnricherProcessor">
+        <property name="interactionEnricher" ref="mitabInteractionEnricher"/>
+        <property name="errorResource" ref="errorResource"/>
     </bean>
 
     <!-- interaction writer -->
@@ -122,11 +127,12 @@
             </batch:listeners>
 
             <batch:chunk reader="interactionEvidenceReader"
-                         processor="mitabInteractionEvidenceUpdater"
+                         processor="mitabInteractionEvidenceEnricher"
                          writer="mitabInteractionEvidenceWriter"
                          commit-interval="50">
                 <batch:streams>
                     <batch:stream ref="interactionEvidenceReader"/>
+                    <batch:stream ref="mitabInteractionEvidenceEnricher"/>
                     <batch:stream ref="mitabInteractionEvidenceWriter"/>
                 </batch:streams>
             </batch:chunk>
