@@ -4,11 +4,9 @@ import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Confidence;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.ModelledConfidence;
-import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceComparator;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -23,23 +21,24 @@ import java.util.Map;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "confidenceType", propOrder = {
-        "type",
-        "value"
+        "JAXBType",
+        "JAXBValue",
+        "JAXBExperimentRefList"
 })
-public class XmlConfidence implements Confidence, ModelledConfidence, FileSourceContext{
+public class XmlConfidence implements Confidence, FileSourceContext{
 
-    private XmlOpenCvTerm type;
+    private CvTerm type;
     private String value;
     private Map<Integer, Object> mapOfReferencedObjects;
-    private Collection<Integer> experimentRefList;
+    private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
-    private Collection<Publication> publications;
 
     private PsiXmLocator sourceLocator;
 
     public XmlConfidence() {
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlConfidence(XmlOpenCvTerm type, String value) {
@@ -51,6 +50,29 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
             throw new IllegalArgumentException("The confidence value is required and cannot be null");
         }
         this.value = value;
+        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
+    }
+
+    /**
+     * Gets the value of the type property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XmlOpenCvTerm }
+     *
+     */
+    public CvTerm getType() {
+        if (this.type == null){
+            this.type = new XmlOpenCvTerm();
+        }
+        return type;
+    }
+
+    public String getValue() {
+        if (value == null){
+            value = PsiXmlUtils.UNSPECIFIED;
+        }
+        return value;
     }
 
     /**
@@ -62,7 +84,7 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      *
      */
     @XmlElement(name = "unit", required = true)
-    public XmlOpenCvTerm getType() {
+    public CvTerm getJAXBType() {
         if (this.type == null){
             this.type = new XmlOpenCvTerm();
         }
@@ -77,7 +99,7 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      *     {@link XmlOpenCvTerm }
      *
      */
-    public void setType(XmlOpenCvTerm value) {
+    public void setJAXBType(XmlOpenCvTerm value) {
         this.type = value;
     }
 
@@ -89,8 +111,8 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      *     {@link String }
      *
      */
-    @XmlElement(required = true)
-    public String getValue() {
+    @XmlElement(name = "value", required = true)
+    public String getJAXBValue() {
         if (value == null){
             value = PsiXmlUtils.UNSPECIFIED;
         }
@@ -105,7 +127,7 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      *     {@link String }
      *
      */
-    public void setValue(String value) {
+    public void setJAXBValue(String value) {
         this.value = value;
     }
 
@@ -119,7 +141,7 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef")
-    public Collection<Integer> getExperimentRefList() {
+    public ArrayList<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }
 
@@ -131,7 +153,7 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
      *     {@link Integer }
      *
      */
-    public void setExperimentRefList(Collection<Integer> value) {
+    public void setJAXBExperimentRefList(ArrayList<Integer> value) {
         this.experimentRefList = value;
     }
 
@@ -197,13 +219,5 @@ public class XmlConfidence implements Confidence, ModelledConfidence, FileSource
     @Override
     public int hashCode() {
         return UnambiguousConfidenceComparator.hashCode(this);
-    }
-
-    @XmlTransient
-    public Collection<Publication> getPublications() {
-        if (publications == null){
-           publications = new ArrayList<Publication>();
-        }
-        return publications;
     }
 }
