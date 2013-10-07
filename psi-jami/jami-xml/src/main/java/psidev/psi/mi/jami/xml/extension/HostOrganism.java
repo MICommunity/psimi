@@ -16,9 +16,9 @@ import java.util.Map;
  * @version $Id$
  * @since <pre>22/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "hostOrganism", propOrder = {
-        "experimentRefList"
+        "JAXBExperimentRefList"
 })
 public class HostOrganism extends XmlOrganism{
 
@@ -70,7 +70,7 @@ public class HostOrganism extends XmlOrganism{
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef")
-    public Collection<Integer> getExperimentRefList() {
+    public Collection<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }
 
@@ -82,11 +82,10 @@ public class HostOrganism extends XmlOrganism{
      *     {@link Integer }
      *
      */
-    public void setExperimentRefList(Collection<Integer> value) {
+    public void setJAXBExperimentRefList(Collection<Integer> value) {
         this.experimentRefList = value;
     }
 
-    @XmlTransient
     public Collection<Experiment> getExperiments() {
         if (experiments == null){
             experiments = new ArrayList<Experiment>();

@@ -22,10 +22,10 @@ import java.util.*;
  * @since <pre>22/07/13</pre>
  */
 
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "bibref", propOrder = {
-        "attributes",
-        "xref"
+        "JAXBAttributes",
+        "JAXBXref"
 })
 public class BibRef
         implements Publication, FileSourceContext
@@ -149,19 +149,6 @@ public class BibRef
         }
     }
 
-    @XmlElement(name = "xref")
-    public PublicationXrefContainer getXref() {
-        if (xrefContainer != null && xrefContainer.isEmpty()){
-            return null;
-        }
-        return xrefContainer;
-    }
-
-    public void setXrefContainer(PublicationXrefContainer xrefContainer) {
-        this.xrefContainer = xrefContainer;
-    }
-
-    @XmlTransient
     public String getPubmedId() {
         return xrefContainer != null ? xrefContainer.getPubmedId() : null;
     }
@@ -173,7 +160,6 @@ public class BibRef
         xrefContainer.setPubmedId(pubmedId);
     }
 
-    @XmlTransient
     public String getDoi() {
         return xrefContainer != null ? xrefContainer.getDoi() : null;
     }
@@ -185,7 +171,6 @@ public class BibRef
         xrefContainer.setDoi(doi);
     }
 
-    @XmlTransient
     public Collection<Xref> getIdentifiers() {
         if (xrefContainer == null){
             xrefContainer = new PublicationXrefContainer();
@@ -193,7 +178,6 @@ public class BibRef
         return xrefContainer.getAllIdentifiers();
     }
 
-    @XmlTransient
     public String getImexId() {
         return this.xrefContainer != null ? this.xrefContainer.getImexId() : null;
     }
@@ -206,7 +190,6 @@ public class BibRef
         this.xrefContainer.assignImexId(identifier);
     }
 
-    @XmlTransient
     public String getTitle() {
         return this.title;
     }
@@ -215,7 +198,6 @@ public class BibRef
         this.title = title;
     }
 
-    @XmlTransient
     public String getJournal() {
         return this.journal;
     }
@@ -224,7 +206,6 @@ public class BibRef
         this.journal = journal;
     }
 
-    @XmlTransient
     public Date getPublicationDate() {
         return this.publicationDate;
     }
@@ -233,7 +214,6 @@ public class BibRef
         this.publicationDate = date;
     }
 
-    @XmlTransient
     public List<String> getAuthors() {
         if (authors == null){
             initialiseAuthors();
@@ -241,7 +221,6 @@ public class BibRef
         return this.authors;
     }
 
-    @XmlTransient
     public Collection<Xref> getXrefs() {
         if (xrefContainer == null){
             xrefContainer = new PublicationXrefContainer();
@@ -249,7 +228,6 @@ public class BibRef
         return xrefContainer.getAllIdentifiers();
     }
 
-    @XmlTransient
     public Collection<Annotation> getAnnotations() {
         if (annotations == null){
             initialiseAnnotations();
@@ -257,107 +235,6 @@ public class BibRef
         return this.annotations;
     }
 
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
-    public ArrayList<Annotation> getAttributes() {
-        // return null if we have Xref because schema does not allow attributes and xrefContainer
-        if (xrefContainer != null && !xrefContainer.isEmpty()){
-            return null;
-        }
-        else if (getAnnotations().isEmpty() && this.title == null && this.journal == null && this.publicationDate == null 
-                && getAuthors().isEmpty() && this.curationDepth == CurationDepth.undefined){
-            return  null;
-        }
-        else {
-            ArrayList<Annotation> annots = new ArrayList<Annotation>(getAnnotations().size());
-            annots.addAll(getAnnotations());
-
-            if (this.title != null){
-                annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.PUBLICATION_TITLE, Annotation.PUBLICATION_TITLE_MI), this.title));
-            }
-            if (this.journal != null){
-                annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.PUBLICATION_JOURNAL, Annotation.PUBLICATION_JOURNAL_MI), this.journal));
-            }
-            if (this.publicationDate != null){
-                annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI), PsiXmlUtils.YEAR_FORMAT.format(this.publicationDate)));
-            }
-            
-            switch (this.curationDepth){
-                case IMEx:
-                    annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.IMEX_CURATION, Annotation.IMEX_CURATION_MI)));
-                    break;
-                case MIMIx:
-                    annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.MIMIX_CURATION, Annotation.MIMIX_CURATION_MI)));
-                    break;
-                case rapid_curation:
-                    annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.RAPID_CURATION, Annotation.RAPID_CURATION_MI)));
-                    break;
-                default:
-                    break;
-            }
-            
-            if (!getAuthors().isEmpty()){
-               annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.AUTHOR, Annotation.AUTHOR_MI), StringUtils.join(getAuthors(), ",")));
-            }
-            
-            return annots;
-        }
-    }
-
-    public void setAttributes(ArrayList<Annotation> annotations) {
-        getAnnotations().clear();
-        if (annotations != null && !annotations.isEmpty()){
-            // we have a bibref. Some annotations can be processed
-            for (Annotation annot : annotations){
-                if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                    this.title = annot.getValue();
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                    this.journal = annot.getValue();
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                    if (annot.getValue() == null){
-                        this.publicationDate = null;
-                    }
-                    else {
-                        try {
-                            this.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            this.publicationDate = null;
-                            getAnnotations().add(annot);
-                        }
-                    }
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                    this.curationDepth = CurationDepth.IMEx;
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                    this.curationDepth = CurationDepth.MIMIx;
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                    this.curationDepth = CurationDepth.rapid_curation;
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                    if (annot.getValue() == null){
-                        getAuthors().clear();
-                    }
-                    else if (annot.getValue().contains(",")){
-                        getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
-                    }
-                    else {
-                        getAuthors().add(annot.getValue());
-                    }
-                }
-                else {
-                    getAnnotations().add(annot);
-                }
-            }
-        }
-    }
-
-    @XmlTransient
     public Collection<Experiment> getExperiments() {
         if (experiments == null){
             initialiseExperiments();
@@ -365,7 +242,6 @@ public class BibRef
         return this.experiments;
     }
 
-    @XmlTransient
     public CurationDepth getCurationDepth() {
         return this.curationDepth;
     }
@@ -387,7 +263,6 @@ public class BibRef
         }
     }
 
-    @XmlTransient
     public Date getReleasedDate() {
         return this.releasedDate;
     }
@@ -396,7 +271,6 @@ public class BibRef
         this.releasedDate = released;
     }
 
-    @XmlTransient
     public Source getSource() {
         return this.source;
     }
@@ -463,6 +337,118 @@ public class BibRef
         }
     }
 
+    @XmlElement(name = "xref")
+    public PublicationXrefContainer getJAXBXref() {
+        if (xrefContainer != null && xrefContainer.isEmpty()){
+            return null;
+        }
+        return xrefContainer;
+    }
+
+    public void setJAXBXref(PublicationXrefContainer xrefContainer) {
+        this.xrefContainer = xrefContainer;
+    }
+
+    @XmlElementWrapper(name="attributeList")
+    @XmlElement(name="attribute", required = true)
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    public ArrayList<Annotation> getJAXBAttributes() {
+        // return null if we have Xref because schema does not allow attributes and xrefContainer
+        if (xrefContainer != null && !xrefContainer.isEmpty()){
+            return null;
+        }
+        else if (getAnnotations().isEmpty() && this.title == null && this.journal == null && this.publicationDate == null 
+                && getAuthors().isEmpty() && this.curationDepth == CurationDepth.undefined){
+            return  null;
+        }
+        else {
+            ArrayList<Annotation> annots = new ArrayList<Annotation>(getAnnotations().size());
+            annots.addAll(getAnnotations());
+
+            if (this.title != null){
+                annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.PUBLICATION_TITLE, Annotation.PUBLICATION_TITLE_MI), this.title));
+            }
+            if (this.journal != null){
+                annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.PUBLICATION_JOURNAL, Annotation.PUBLICATION_JOURNAL_MI), this.journal));
+            }
+            if (this.publicationDate != null){
+                annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI), PsiXmlUtils.YEAR_FORMAT.format(this.publicationDate)));
+            }
+            
+            switch (this.curationDepth){
+                case IMEx:
+                    annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.IMEX_CURATION, Annotation.IMEX_CURATION_MI)));
+                    break;
+                case MIMIx:
+                    annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.MIMIX_CURATION, Annotation.MIMIX_CURATION_MI)));
+                    break;
+                case rapid_curation:
+                    annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.RAPID_CURATION, Annotation.RAPID_CURATION_MI)));
+                    break;
+                default:
+                    break;
+            }
+            
+            if (!getAuthors().isEmpty()){
+               annots.add(new XmlAnnotation(new DefaultCvTerm(Annotation.AUTHOR, Annotation.AUTHOR_MI), StringUtils.join(getAuthors(), ",")));
+            }
+            
+            return annots;
+        }
+    }
+
+    public void setJAXBAttributes(ArrayList<Annotation> annotations) {
+        getAnnotations().clear();
+        if (annotations != null && !annotations.isEmpty()){
+            // we have a bibref. Some annotations can be processed
+            for (Annotation annot : annotations){
+                if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+                    this.title = annot.getValue();
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+                    this.journal = annot.getValue();
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+                    if (annot.getValue() == null){
+                        this.publicationDate = null;
+                    }
+                    else {
+                        try {
+                            this.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            this.publicationDate = null;
+                            getAnnotations().add(annot);
+                        }
+                    }
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
+                    this.curationDepth = CurationDepth.IMEx;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
+                    this.curationDepth = CurationDepth.MIMIx;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
+                    this.curationDepth = CurationDepth.rapid_curation;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    if (annot.getValue() == null){
+                        getAuthors().clear();
+                    }
+                    else if (annot.getValue().contains(",")){
+                        getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
+                    }
+                    else {
+                        getAuthors().add(annot.getValue());
+                    }
+                }
+                else {
+                    getAnnotations().add(annot);
+                }
+            }
+        }
+    }
+
     @XmlLocation
     @XmlTransient
     public Locator getSaxLocator() {
@@ -473,7 +459,6 @@ public class BibRef
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

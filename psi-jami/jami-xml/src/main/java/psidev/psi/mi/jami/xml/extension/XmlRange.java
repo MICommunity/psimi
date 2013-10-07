@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.*;
         "JAXBEndStatus",
         "JAXBEndInterval",
         "JAXBEndPosition",
-        "link"
+        "JAXBLink"
 })
 public class XmlRange implements Range, FileSourceContext{
     private Position start;
@@ -72,6 +72,36 @@ public class XmlRange implements Range, FileSourceContext{
         this.participant = participant;
     }
 
+    public Position getStart() {
+        if (start == null){
+           start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
+        }
+        return start;
+    }
+
+    public Position getEnd() {
+        if (end == null){
+            end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
+        }
+        return this.end;
+    }
+
+    /**
+     * Gets the value of the isLink property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *
+     */
+    public boolean isLink() {
+        return false;
+    }
+
+    public void setLink(boolean link) {
+        this.isLink = link;
+    }
+
     /**
      * Gets the value of the startStatus property.
      *
@@ -101,23 +131,6 @@ public class XmlRange implements Range, FileSourceContext{
         else {
             this.start = createXmlPositionWithStatus(this.start, value);
         }
-    }
-
-    protected AbstractXmlPosition createXmlPositionWithStatus(Position pos, XmlCvTerm status){
-        if (pos.getEnd() != pos.getStart() || CvTermUtils.isCvTerm(status, Position.RANGE_MI, Position.RANGE)){
-            return new XmlInterval(status, pos.getStart(), pos.getEnd(), pos.isPositionUndetermined());
-        }
-        // we have xml position
-        else{
-            return  new XmlPosition(status, pos.getStart(), pos.isPositionUndetermined());
-        }
-    }
-
-    public Position getStart() {
-        if (start == null){
-           start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
-        }
-        return start;
     }
 
     /**
@@ -157,7 +170,7 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "begin")
-    public Position getJAXBBeginPosition() {
+    public XmlPosition getJAXBBeginPosition() {
         if (start instanceof XmlPosition){
             return (XmlPosition) start;
         }
@@ -263,13 +276,6 @@ public class XmlRange implements Range, FileSourceContext{
         this.end = value;
     }
 
-    public Position getEnd() {
-        if (end == null){
-            end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
-        }
-        return this.end;
-    }
-
     /**
      * Gets the value of the isLink property.
      *
@@ -279,11 +285,11 @@ public class XmlRange implements Range, FileSourceContext{
      *
      */
     @XmlElement(name = "isLink", defaultValue = "false")
-    public boolean isLink() {
+    public boolean isJAXBLink() {
         return false;
     }
 
-    public void setLink(boolean link) {
+    public void setJAXBLink(boolean link) {
         this.isLink = link;
     }
 
@@ -358,5 +364,15 @@ public class XmlRange implements Range, FileSourceContext{
     @Override
     public String toString() {
         return getStart().toString() + " - " + getEnd().toString() + (isLink ? "(linked)" : "");
+    }
+
+    protected AbstractXmlPosition createXmlPositionWithStatus(Position pos, XmlCvTerm status){
+        if (pos.getEnd() != pos.getStart() || CvTermUtils.isCvTerm(status, Position.RANGE_MI, Position.RANGE)){
+            return new XmlInterval(status, pos.getStart(), pos.getEnd(), pos.isPositionUndetermined());
+        }
+        // we have xml position
+        else{
+            return  new XmlPosition(status, pos.getStart(), pos.isPositionUndetermined());
+        }
     }
 }
