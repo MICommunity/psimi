@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature<P extends Participant, F extends Feature> {
+public interface Feature<P extends Entity, F extends Feature> {
 
     public static String BIOLOGICAL_FEATURE = "biological feature";
     public static String BIOLOGICAL_FEATURE_MI ="MI:0252";

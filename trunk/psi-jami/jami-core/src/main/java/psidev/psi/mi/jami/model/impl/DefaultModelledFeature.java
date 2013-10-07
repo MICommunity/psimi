@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -18,7 +19,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultModelledFeature extends AbstractFeature<ModelledParticipant, ModelledFeature> implements ModelledFeature {
+public class DefaultModelledFeature extends AbstractFeature<ModelledEntity, ModelledFeature> implements ModelledFeature {
 
     public DefaultModelledFeature(ModelledParticipant participant) {
         super(CvTermUtils.createBiologicalFeatureType());
