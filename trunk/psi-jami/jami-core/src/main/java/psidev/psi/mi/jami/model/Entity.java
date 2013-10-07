@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.model;
 
+import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
+
 import java.util.Collection;
 
 /**
@@ -105,4 +107,17 @@ public interface Entity<F extends Feature> {
      * @return the features
      */
     public <F2 extends F> Collection<F2> getFeatures();
+
+    /**
+     * The participant change listener if set, null otherwise.
+     * The participant change listener listen to changes in participant (interactor changes)
+     * @return the participant change listener
+     */
+    public ParticipantInteractorChangeListener getChangeListener();
+
+    /**
+     * Sets the participant change listener
+     * @param listener
+     */
+    public void setChangeListener(ParticipantInteractorChangeListener listener);
 }
