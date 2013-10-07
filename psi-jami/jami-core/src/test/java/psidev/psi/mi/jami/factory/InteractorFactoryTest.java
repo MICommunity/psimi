@@ -69,6 +69,12 @@ public class InteractorFactoryTest {
     }
 
     @Test
+    public void test_recognize_interactor_set(){
+        Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(new DefaultCvTerm("molecule set"), "test interactor")
+                instanceof DefaultInteractorSet);
+    }
+
+    @Test
     public void test_recognize_small_molecule_from_database(){
         Assert.assertTrue(interactorFactory.createInteractorFromDatabase(CvTermUtils.createMICvTerm("beilstein", "MI:1075"), "test interactor")
                 instanceof DefaultBioactiveEntity);
