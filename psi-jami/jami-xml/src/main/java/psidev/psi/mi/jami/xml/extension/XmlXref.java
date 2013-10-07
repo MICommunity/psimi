@@ -89,11 +89,15 @@ public class XmlXref
         return this.database;
     }
 
-    @XmlAttribute(name = "id", required = true)
     public String getId() {
         if (this.id == null){
             this.id = PsiXmlUtils.UNSPECIFIED;
         }
+        return this.id;
+    }
+
+    @XmlAttribute(name = "id", required = true)
+    public String getJAXBId() {
         return this.id;
     }
 
@@ -105,12 +109,16 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setId(String value) {
-        this.id = value != null ? (value.length() > 0 ? value : PsiXmlUtils.UNSPECIFIED) : PsiXmlUtils.UNSPECIFIED;
+    public void setJAXBId(String value) {
+        this.id = value;
+    }
+
+    public String getVersion() {
+        return this.version;
     }
 
     @XmlAttribute(name = "version")
-    public String getVersion() {
+    public String getJAXBVersion() {
         return this.version;
     }
 
@@ -122,7 +130,7 @@ public class XmlXref
      *     {@link String }
      *
      */
-    public void setVersion(String value) {
+    public void setJAXBVersion(String value) {
         this.version = value;
     }
 

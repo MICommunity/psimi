@@ -151,12 +151,20 @@ public class XmlSource extends XmlOpenCvTerm
         this.postalAddress = address;
     }
 
-    @XmlElement(name = "bibRef", type = BibRef.class)
     public Publication getPublication() {
         return this.bibRef;
     }
 
     public void setPublication(Publication ref) {
+        this.bibRef = ref;
+    }
+
+    @XmlElement(name = "bibRef", type = BibRef.class)
+    public Publication getJAXBBibRef() {
+        return this.bibRef;
+    }
+
+    public void setJAXBBibRef(Publication ref) {
         this.bibRef = ref;
     }
 

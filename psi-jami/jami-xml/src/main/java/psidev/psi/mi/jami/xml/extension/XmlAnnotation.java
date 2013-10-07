@@ -56,12 +56,20 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
         return this.topic;
     }
 
-    @XmlValue
     public String getValue() {
         return this.value;
     }
 
     public void setValue(String value) {
+        this.value = value;
+    }
+
+    @XmlValue
+    public String getJAXBValue() {
+        return this.value;
+    }
+
+    public void setJAXBValue(String value) {
         this.value = value;
     }
 

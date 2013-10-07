@@ -54,59 +54,6 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
         super(shortName, fullName, ontologyId);
     }
 
-    /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
-    @XmlElement(name = "names", required = true)
-    public NamesContainer getJAXBNames() {
-        return super.getNamesContainer();
-    }
-
-    /**
-     * Sets the value of the names property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link NamesContainer }
-     *
-     */
-    public void setJAXBNames(NamesContainer value) {
-        super.setNamesContainer(value);
-    }
-
-    /**
-     * Gets the value of the xrefContainer property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XrefContainer }
-     *
-     */
-    @XmlElement(name = "xref", required = true)
-    public CvTermXrefContainer getJAXBXref() {
-        if (super.getXrefContainer().isEmpty()){
-            return null;
-        }
-        return super.getXrefContainer();
-    }
-
-    /**
-     * Sets the value of the xrefContainer property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XrefContainer }
-     *
-     */
-    public void setJAXBXref(CvTermXrefContainer value) {
-        super.setXrefContainer(value);
-    }
-
     public String getShortName() {
         return getNamesContainer().getJAXBShortLabel();
     }
@@ -161,6 +108,59 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
 
     public Collection<Alias> getSynonyms() {
         return getNamesContainer().getJAXBAliases();
+    }
+
+    /**
+     * Gets the value of the names property.
+     *
+     * @return
+     *     possible object is
+     *     {@link NamesContainer }
+     *
+     */
+    @XmlElement(name = "names", required = true)
+    public NamesContainer getJAXBNames() {
+        return super.getNamesContainer();
+    }
+
+    /**
+     * Sets the value of the names property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link NamesContainer }
+     *
+     */
+    public void setJAXBNames(NamesContainer value) {
+        super.setNamesContainer(value);
+    }
+
+    /**
+     * Gets the value of the xrefContainer property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XrefContainer }
+     *
+     */
+    @XmlElement(name = "xref", required = true)
+    public CvTermXrefContainer getJAXBXref() {
+        if (super.getXrefContainer().isEmpty()){
+            return null;
+        }
+        return super.getXrefContainer();
+    }
+
+    /**
+     * Sets the value of the xrefContainer property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link XrefContainer }
+     *
+     */
+    public void setJAXBXref(CvTermXrefContainer value) {
+        super.setXrefContainer(value);
     }
 
     @XmlLocation

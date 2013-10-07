@@ -36,7 +36,6 @@ import java.util.Map;
 public class ExperimentalCvTerm
     extends XmlCvTerm
 {
-
     private Map<Integer, Object> mapOfReferencedObjects;
     private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
@@ -70,13 +69,23 @@ public class ExperimentalCvTerm
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
+    public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            experiments = new ArrayList<Experiment>();
+        }
+        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
+            resolveExperimentReferences();
+        }
+        return experiments;
+    }
+
     /**
      * Gets the value of the experimentRefList property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link Integer }
-     *     
+     *
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef")
@@ -86,24 +95,14 @@ public class ExperimentalCvTerm
 
     /**
      * Sets the value of the experimentRefList property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link Integer }
-     *     
+     *
      */
     public void setJAXBExperimentRefList(ArrayList<Integer> value) {
         this.experimentRefList = value;
-    }
-
-    public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
-        }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
-        return experiments;
     }
 
     private void resolveExperimentReferences() {
