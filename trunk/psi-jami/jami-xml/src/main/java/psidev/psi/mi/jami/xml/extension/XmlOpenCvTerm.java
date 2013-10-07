@@ -56,6 +56,58 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
         super(shortName, fullName, ontologyId);
     }
 
+    public String getShortName() {
+        return getNamesContainer().getJAXBShortLabel();
+    }
+
+    public void setShortName(String name) {
+        getNamesContainer().setJAXBShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
+    }
+
+    public String getFullName() {
+        return getNamesContainer().getJAXBFullName();
+    }
+
+    public void setFullName(String name) {
+        getNamesContainer().setJAXBFullName(name);
+    }
+
+    public Collection<Xref> getIdentifiers() {
+        return getXrefContainer().getAllIdentifiers();
+    }
+
+    public String getMIIdentifier() {
+        return getXrefContainer().getMIIdentifier();
+    }
+
+    public String getMODIdentifier() {
+        return getXrefContainer().getMODIdentifier();
+    }
+
+    public String getPARIdentifier() {
+        return getXrefContainer().getPARIdentifier();
+    }
+
+    public void setMIIdentifier(String mi) {
+        getXrefContainer().setMIIdentifier(mi);
+    }
+
+    public void setMODIdentifier(String mod) {
+        getXrefContainer().setMODIdentifier(mod);
+    }
+
+    public void setPARIdentifier(String par) {
+        getXrefContainer().setPARIdentifier(par);
+    }
+
+    public Collection<Xref> getXrefs() {
+        return getXrefContainer().getAllXrefs();
+    }
+
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
     /**
      * Gets the value of the names property.
      *
@@ -107,58 +159,6 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
      */
     public void setJAXBXref(CvTermXrefContainer value) {
         super.setXrefContainer(value);
-    }
-
-    public String getShortName() {
-        return getNamesContainer().getJAXBShortLabel();
-    }
-
-    public void setShortName(String name) {
-        getNamesContainer().setJAXBShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
-    }
-
-    public String getFullName() {
-        return getNamesContainer().getJAXBFullName();
-    }
-
-    public void setFullName(String name) {
-        getNamesContainer().setJAXBFullName(name);
-    }
-
-    public Collection<Xref> getIdentifiers() {
-        return getXrefContainer().getAllIdentifiers();
-    }
-
-    public String getMIIdentifier() {
-        return getXrefContainer().getMIIdentifier();
-    }
-
-    public String getMODIdentifier() {
-        return getXrefContainer().getMODIdentifier();
-    }
-
-    public String getPARIdentifier() {
-        return getXrefContainer().getPARIdentifier();
-    }
-
-    public void setMIIdentifier(String mi) {
-        getXrefContainer().setMIIdentifier(mi);
-    }
-
-    public void setMODIdentifier(String mod) {
-        getXrefContainer().setMODIdentifier(mod);
-    }
-
-    public void setPARIdentifier(String par) {
-        getXrefContainer().setPARIdentifier(par);
-    }
-
-    public Collection<Xref> getXrefs() {
-        return getXrefContainer().getAllXrefs();
-    }
-
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
     }
 
     @XmlElementWrapper(name="attributeList")
