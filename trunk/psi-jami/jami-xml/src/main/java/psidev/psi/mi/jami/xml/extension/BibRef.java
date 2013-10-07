@@ -397,7 +397,7 @@ public class BibRef
         }
     }
 
-    public void setJAXBAttributes(ArrayList<Annotation> annotations) {
+    public void setJAXBAttributes(ArrayList<XmlAnnotation> annotations) {
         getAnnotations().clear();
         if (annotations != null && !annotations.isEmpty()){
             // we have a bibref. Some annotations can be processed

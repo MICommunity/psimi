@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class NucleicAcidXrefContainer extends InteractorXrefContainer{
 
@@ -33,7 +32,6 @@ public class NucleicAcidXrefContainer extends InteractorXrefContainer{
         return ddbjEmblGenbank != null ? ddbjEmblGenbank : (refseq != null ? refseq : super.getPreferredIdentifier());
     }
 
-    @XmlTransient
     public String getDdbjEmblGenbank() {
         return this.ddbjEmblGenbank != null ? this.ddbjEmblGenbank.getId() : null;
     }
@@ -63,7 +61,6 @@ public class NucleicAcidXrefContainer extends InteractorXrefContainer{
         }
     }
 
-    @XmlTransient
     public String getRefseq() {
         return this.refseq != null ? this.refseq.getId() : null;
     }

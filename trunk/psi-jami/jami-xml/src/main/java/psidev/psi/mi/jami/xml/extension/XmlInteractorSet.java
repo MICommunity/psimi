@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.extension.XmlCvTerm;
-import psidev.psi.mi.jami.xml.extension.XmlInteractor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,11 +14,11 @@ import java.util.*;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
 
-     private Set<Molecule> interactors;
+     private Set<Interactor> interactors;
 
     public XmlInteractorSet(){
 
@@ -106,10 +104,10 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
         }
 
         protected void initialiseInteractorCandidatesSet(){
-            this.interactors = new HashSet<Molecule>();
+            this.interactors = new HashSet<Interactor>();
         }
 
-        protected void initialiseInteractorCandidatesSetWith(Set<Molecule> interactorCandidates){
+        protected void initialiseInteractorCandidatesSetWith(Set<Interactor> interactorCandidates){
             if (interactorCandidates == null){
                 this.interactors = Collections.EMPTY_SET;
             }
@@ -130,7 +128,7 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
             return interactors.contains(o);
         }
 
-        public Iterator<Molecule> iterator() {
+        public Iterator<Interactor> iterator() {
             return interactors.iterator();
         }
 
@@ -142,7 +140,7 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
             return interactors.toArray(ts);
         }
 
-        public boolean add(Molecule interactor) {
+        public boolean add(Interactor interactor) {
             return interactors.add(interactor);
         }
 
@@ -154,7 +152,7 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
             return interactors.containsAll(objects);
         }
 
-        public boolean addAll(Collection<? extends Molecule> interactors) {
+        public boolean addAll(Collection<? extends Interactor> interactors) {
             return this.interactors.addAll(interactors);
         }
 

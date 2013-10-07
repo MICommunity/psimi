@@ -22,14 +22,14 @@ import java.util.Map;
  * @version $Id$
  * @since <pre>23/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interactor", propOrder = {
-        "names",
-        "xref",
-        "interactorType",
-        "organism",
-        "sequence",
-        "attributes"
+        "JAXBNames",
+        "JAXBXref",
+        "JAXBInteractorType",
+        "JAXBOrganism",
+        "JAXBSequence",
+        "JAXBAttributes"
 })
 @XmlSeeAlso({
         XmlBioactiveEntity.class, XmlGene.class, XmlInteractorSet.class, XmlMolecule.class,
@@ -168,74 +168,6 @@ public class XmlInteractor implements Interactor, FileSourceContext{
     }
 
     /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
-    @XmlElement(name = "names", required = true)
-    public NamesContainer getNames() {
-        if (namesContainer == null){
-            initialiseNamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        return namesContainer;
-    }
-
-    /**
-     * Sets the value of the names property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link NamesContainer }
-     *
-     */
-    public void setNames(NamesContainer value) {
-        if (value == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        else {
-            this.namesContainer = value;
-            if (this.namesContainer.getShortLabel() == null){
-                namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-            }
-        }
-    }
-
-    /**
-     * Gets the value of the xrefContainer property.
-     *
-     * @return
-     *     possible object is
-     *     {@link InteractorXrefContainer }
-     *
-     */
-    @XmlElement(name = "xref")
-    public InteractorXrefContainer getXref() {
-        if (xrefContainer != null){
-            if (xrefContainer.isEmpty()){
-                return null;
-            }
-        }
-        return xrefContainer;
-    }
-
-    /**
-     * Sets the value of the xrefContainer property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link InteractorXrefContainer }
-     *
-     */
-    public void setXref(InteractorXrefContainer value) {
-        this.xrefContainer = value;
-    }
-
-    /**
      * Gets the value of the interactorType property.
      *
      * @return
@@ -243,7 +175,6 @@ public class XmlInteractor implements Interactor, FileSourceContext{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "interactorType", required = true, type = XmlCvTerm.class)
     public CvTerm getInteractorType() {
         if (this.interactorType == null){
             createDefaultInteractorType();
@@ -252,123 +183,16 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         return this.interactorType;
     }
 
-    protected void createDefaultInteractorType() {
-        this.interactorType = new XmlCvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
-    }
-
     public void setInteractorType(CvTerm interactorType) {
         this.interactorType = interactorType;
     }
 
-    @XmlElement(name = "organism", type = XmlOrganism.class)
     public psidev.psi.mi.jami.model.Organism getOrganism() {
         return this.organism;
     }
 
     public void setOrganism(psidev.psi.mi.jami.model.Organism organism) {
         this.organism = organism;
-    }
-
-
-    /**
-     * Gets the value of the sequence property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlElement(name = "sequence")
-    public String getSequence() {
-        return xmlSequence;
-    }
-
-    /**
-     * Sets the value of the sequence property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setSequence(String value) {
-        this.xmlSequence = value;
-    }
-
-    /**
-     * Gets the value of the id property.
-     *
-     */
-    @XmlAttribute(name = "id", required = true)
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     *
-     */
-    public void setId(int value) {
-        this.id = value;
-        this.mapOfReferencedObjects.put(this.id, this);
-        if (sourceLocator != null){
-            sourceLocator.setObjectId(this.id);
-        }
-    }
-
-    /**
-     * Gets the value of the attributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
-    public ArrayList<Annotation> getAttributes() {
-        if (getAnnotations().isEmpty() && getChecksums().isEmpty()){
-            return null;
-        }
-
-        ArrayList<Annotation> annots = new ArrayList<Annotation>(getAnnotations());
-        if (!getChecksums().isEmpty()){
-            for (Checksum c : getChecksums()){
-                annots.add(new XmlAnnotation(c.getMethod(), c.getValue()));
-            }
-        }
-        return annots;
-    }
-
-    /**
-     * Sets the value of the attributeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    public void setAttributes(ArrayList<Annotation> value) {
-        getAnnotations().clear();
-        if (value != null && !value.isEmpty()){
-            for (Annotation a : value){
-                if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.SMILE_MI, Checksum.SMILE)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.SMILE_SHORT)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_MI, Checksum.INCHI)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)){
-                    XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
-                    checksum.setSourceLocator(((FileSourceContext)a).getSourceLocator());
-                    getChecksums().add(checksum);
-                }
-                else {
-                    getAnnotations().add(a);
-                }
-            }
-        }
     }
 
     protected void initialiseAnnotations(){
@@ -397,33 +221,30 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         }
     }
 
-    @XmlTransient
     public String getShortName() {
-        return getNames().getShortLabel();
+        return getJAXBNames().getJAXBShortLabel();
     }
 
     public void setShortName(String name) {
         if (name == null || (name != null && name.length() == 0)){
             throw new IllegalArgumentException("The short name cannot be null or empty.");
         }
-        getNames().setShortLabel(name);
+        getJAXBNames().setJAXBShortLabel(name);
     }
 
-    @XmlTransient
     public String getFullName() {
-        return getNames().getFullName();
+        return getJAXBNames().getJAXBFullName();
     }
 
     public void setFullName(String name) {
-        getNames().setFullName(name);
+        getJAXBNames().setJAXBFullName(name);
     }
 
-    @XmlTransient
     public Collection<Xref> getIdentifiers() {
         if (xrefContainer == null){
             initialiseXrefContainer();
         }
-        return getXref().getAllIdentifiers();
+        return getJAXBXref().getAllIdentifiers();
     }
 
     protected void initialiseXrefContainer() {
@@ -438,12 +259,10 @@ public class XmlInteractor implements Interactor, FileSourceContext{
      *
      * @return the first identifier in the list of identifiers or null if the list is empty
      */
-    @XmlTransient
     public Xref getPreferredIdentifier() {
         return !getIdentifiers().isEmpty() ? getIdentifiers().iterator().next() : null;
     }
 
-    @XmlTransient
     public Collection<Checksum> getChecksums() {
         if (checksums == null){
             initialiseChecksums();
@@ -451,7 +270,6 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         return this.checksums;
     }
 
-    @XmlTransient
     public Collection<Xref> getXrefs() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -459,7 +277,6 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         return xrefContainer.getAllXrefs();
     }
 
-    @XmlTransient
     public Collection<Annotation> getAnnotations() {
         if (annotations == null){
             initialiseAnnotations();
@@ -467,9 +284,207 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         return this.annotations;
     }
 
-    @XmlTransient
     public Collection<Alias> getAliases() {
-        return getNames().getAliases();
+        return getJAXBNames().getJAXBAliases();
+    }
+
+    /**
+     * Gets the value of the names property.
+     *
+     * @return
+     *     possible object is
+     *     {@link NamesContainer }
+     *
+     */
+    @XmlElement(name = "names", required = true)
+    public NamesContainer getJAXBNames() {
+        if (namesContainer == null){
+            initialiseNamesContainer();
+            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+        }
+        return namesContainer;
+    }
+
+    /**
+     * Sets the value of the names property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link NamesContainer }
+     *
+     */
+    public void setJAXBNames(NamesContainer value) {
+        if (value == null){
+            namesContainer = new NamesContainer();
+            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+        }
+        else {
+            this.namesContainer = value;
+            if (this.namesContainer.getJAXBShortLabel() == null){
+                namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+            }
+        }
+    }
+
+    /**
+     * Gets the value of the xrefContainer property.
+     *
+     * @return
+     *     possible object is
+     *     {@link InteractorXrefContainer }
+     *
+     */
+    @XmlElement(name = "xref")
+    public InteractorXrefContainer getJAXBXref() {
+        if (xrefContainer != null){
+            if (xrefContainer.isEmpty()){
+                return null;
+            }
+        }
+        return xrefContainer;
+    }
+
+    /**
+     * Sets the value of the xrefContainer property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link InteractorXrefContainer }
+     *
+     */
+    public void setJAXBXref(InteractorXrefContainer value) {
+        this.xrefContainer = value;
+    }
+
+    /**
+     * Gets the value of the interactorType property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XmlCvTerm }
+     *
+     */
+    @XmlElement(name = "interactorType", required = true, type = XmlCvTerm.class)
+    public CvTerm getJAXBInteractorType() {
+        return getInteractorType();
+    }
+
+    public void setJAXBInteractorType(XmlCvTerm interactorType) {
+        this.interactorType = interactorType;
+    }
+
+    @XmlElement(name = "organism", type = XmlOrganism.class)
+    public psidev.psi.mi.jami.model.Organism getJAXBOrganism() {
+        return this.organism;
+    }
+
+    public void setJAXBOrganism(XmlOrganism organism) {
+        this.organism = organism;
+    }
+
+    /**
+     * Gets the value of the sequence property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    @XmlElement(name = "sequence")
+    public String getJAXBSequence() {
+        return xmlSequence;
+    }
+
+    /**
+     * Sets the value of the sequence property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setJAXBSequence(String value) {
+        this.xmlSequence = value;
+    }
+
+    /**
+     * Gets the value of the id property.
+     *
+     */
+    @XmlAttribute(name = "id", required = true)
+    public int getJAXBId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of the id property.
+     *
+     */
+    public void setJAXBId(int value) {
+        this.id = value;
+        this.mapOfReferencedObjects.put(this.id, this);
+        if (sourceLocator != null){
+            sourceLocator.setObjectId(this.id);
+        }
+    }
+
+    /**
+     * Gets the value of the attributeList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XmlAnnotation }
+     *
+     */
+    @XmlElementWrapper(name="attributeList")
+    @XmlElement(name="attribute", required = true)
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    public ArrayList<Annotation> getJAXBAttributes() {
+        if (getAnnotations().isEmpty() && getChecksums().isEmpty()){
+            return null;
+        }
+
+        ArrayList<Annotation> annots = new ArrayList<Annotation>(getAnnotations());
+        if (!getChecksums().isEmpty()){
+            for (Checksum c : getChecksums()){
+                annots.add(new XmlAnnotation(c.getMethod(), c.getValue()));
+            }
+        }
+        return annots;
+    }
+
+    /**
+     * Sets the value of the attributeList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link XmlAnnotation }
+     *
+     */
+    public void setJAXBAttributes(ArrayList<Annotation> value) {
+        getAnnotations().clear();
+        if (value != null && !value.isEmpty()){
+            for (Annotation a : value){
+                if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.SMILE_MI, Checksum.SMILE)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.SMILE_SHORT)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_MI, Checksum.INCHI)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)){
+                    XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
+                    checksum.setSourceLocator(((FileSourceContext)a).getSourceLocator());
+                    getChecksums().add(checksum);
+                }
+                else {
+                    getAnnotations().add(a);
+                }
+            }
+        }
+    }
+
+    protected void createDefaultInteractorType() {
+        this.interactorType = new XmlCvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
     }
 
     @Override

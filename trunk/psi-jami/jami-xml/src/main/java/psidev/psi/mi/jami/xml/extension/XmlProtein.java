@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
@@ -20,7 +19,7 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class XmlProtein extends XmlPolymer implements Protein{
 
@@ -94,44 +93,8 @@ public class XmlProtein extends XmlPolymer implements Protein{
     }
 
     @Override
-    public void setXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
-        }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new ProteinXrefContainer();
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().clear();
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-    }
-
-    @Override
-    public void initialiseXrefContainer() {
+    protected void initialiseXrefContainer() {
         this.xrefContainer = new ProteinXrefContainer();
-    }
-
-    @Override
-    public void setNames(NamesContainer value) {
-        if (value == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        else if (this.namesContainer == null){
-            this.namesContainer = new ProteinNamesContainer();
-            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
-            this.namesContainer.setFullName(value.getFullName());
-            this.namesContainer.getAliases().addAll(value.getAliases());
-        }
-        else {
-            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
-            this.namesContainer.setFullName(value.getFullName());
-            this.namesContainer.getAliases().addAll(value.getAliases());
-        }
     }
 
     @Override
@@ -139,7 +102,6 @@ public class XmlProtein extends XmlPolymer implements Protein{
         this.namesContainer = new ProteinNamesContainer();
     }
 
-    @XmlTransient
     public String getUniprotkb() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -154,7 +116,6 @@ public class XmlProtein extends XmlPolymer implements Protein{
         ((ProteinXrefContainer)xrefContainer).setUniprotkb(ac);
     }
 
-    @XmlTransient
     public String getRefseq() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -169,7 +130,6 @@ public class XmlProtein extends XmlPolymer implements Protein{
         ((ProteinXrefContainer)xrefContainer).setRefseq(ac);
     }
 
-    @XmlTransient
     public String getGeneName() {
         if (namesContainer == null){
             initialiseNamesContainer();
@@ -184,7 +144,6 @@ public class XmlProtein extends XmlPolymer implements Protein{
         ((ProteinNamesContainer)namesContainer).setGeneName(name);
     }
 
-    @XmlTransient
     public String getRogid() {
         return this.rogid != null ? this.rogid.getValue() : null;
     }
@@ -208,6 +167,41 @@ public class XmlProtein extends XmlPolymer implements Protein{
         }
     }
 
+    @Override
+    public void setJAXBXref(InteractorXrefContainer value) {
+        if (value == null){
+            this.xrefContainer = null;
+        }
+        else if (this.xrefContainer == null){
+            this.xrefContainer = new ProteinXrefContainer();
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
+        else {
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().clear();
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
+    }
+
+    @Override
+    public void setJAXBNames(NamesContainer value) {
+        if (value == null){
+            namesContainer = new NamesContainer();
+            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+        }
+        else if (this.namesContainer == null){
+            this.namesContainer = new ProteinNamesContainer();
+            this.namesContainer.setJAXBShortLabel(value.getJAXBShortLabel() != null ? value.getJAXBShortLabel() : PsiXmlUtils.UNSPECIFIED);
+            this.namesContainer.setJAXBFullName(value.getJAXBFullName());
+            this.namesContainer.getJAXBAliases().addAll(value.getJAXBAliases());
+        }
+        else {
+            this.namesContainer.setJAXBShortLabel(value.getJAXBShortLabel() != null ? value.getJAXBShortLabel() : PsiXmlUtils.UNSPECIFIED);
+            this.namesContainer.setJAXBFullName(value.getJAXBFullName());
+            this.namesContainer.getJAXBAliases().addAll(value.getJAXBAliases());
+        }
+    }
 
     @Override
     protected void createDefaultInteractorType() {

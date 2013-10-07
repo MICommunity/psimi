@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.model.Xref;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -16,9 +15,9 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
-public class XmlGene extends XmlInteractor implements Gene{
+public class XmlGene extends XmlMolecule implements Gene{
 
     public XmlGene() {
     }
@@ -78,28 +77,10 @@ public class XmlGene extends XmlInteractor implements Gene{
     }
 
     @Override
-    public void setXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
-        }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new GeneXrefContainer();
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().clear();
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-    }
-
-    @Override
-    public void initialiseXrefContainer() {
+    protected void initialiseXrefContainer() {
         this.xrefContainer = new GeneXrefContainer();
     }
 
-    @XmlTransient
     public String getEnsembl() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -111,7 +92,6 @@ public class XmlGene extends XmlInteractor implements Gene{
         ((GeneXrefContainer)xrefContainer).setEnsembl(ac);
     }
 
-    @XmlTransient
     public String getEnsemblGenome() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -126,7 +106,6 @@ public class XmlGene extends XmlInteractor implements Gene{
         ((GeneXrefContainer)xrefContainer).setEnsemblGenome(ac);
     }
 
-    @XmlTransient
     public String getEntrezGeneId() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -141,7 +120,6 @@ public class XmlGene extends XmlInteractor implements Gene{
         ((GeneXrefContainer)xrefContainer).setEntrezGeneId(id);
     }
 
-    @XmlTransient
     public String getRefseq() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -154,6 +132,23 @@ public class XmlGene extends XmlInteractor implements Gene{
             initialiseXrefContainer();
         }
         ((GeneXrefContainer)xrefContainer).setRefseq(ac);
+    }
+
+    @Override
+    public void setJAXBXref(InteractorXrefContainer value) {
+        if (value == null){
+            this.xrefContainer = null;
+        }
+        else if (this.xrefContainer == null){
+            this.xrefContainer = new GeneXrefContainer();
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
+        else {
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().clear();
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
     }
 
     @Override

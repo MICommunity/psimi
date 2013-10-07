@@ -14,7 +14,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>23/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 @XmlSeeAlso({
         BioactiveEntityXrefContainer.class, GeneXrefContainer.class, NucleicAcidXrefContainer.class, ProteinXrefContainer.class
@@ -41,7 +41,6 @@ public class InteractorXrefContainer extends XrefContainer {
         }
     }
 
-    @XmlTransient
     public Collection<Xref> getAllIdentifiers() {
         if (allIdentifiers == null){
             initialiseIdentifiers();
@@ -49,7 +48,6 @@ public class InteractorXrefContainer extends XrefContainer {
         return allIdentifiers;
     }
 
-    @XmlTransient
     public Xref getPreferredIdentifier() {
         return !getAllIdentifiers().isEmpty() ? allIdentifiers.iterator().next() : null;
     }
@@ -67,13 +65,13 @@ public class InteractorXrefContainer extends XrefContainer {
             primaryRef = added;
         }
         else{
-            ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
         }
     }
 
     protected void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
-            if (!getSecondaryRefs().isEmpty()){
+            if (!getJAXBSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
                 ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
             }
@@ -161,7 +159,7 @@ public class InteractorXrefContainer extends XrefContainer {
             primaryRef = null;
         }
 
-        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllIdentifiers());
     }
 
     protected void processAddedIdentifier(Xref added) {
@@ -197,7 +195,7 @@ public class InteractorXrefContainer extends XrefContainer {
         else{
             primaryRef = null;
         }
-        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllXrefs());
     }
 
     class FullIdentifierList extends AbstractListHavingProperties<Xref> {

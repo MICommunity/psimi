@@ -240,7 +240,7 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     @Override
-    public void setJAXBAttributes(ArrayList<Annotation> annotations){
+    public void setJAXBAttributes(ArrayList<XmlAnnotation> annotations){
         getAnnotations().clear();
         if (annotations != null){
             // we have a bibref. Some annotations can be processed

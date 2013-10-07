@@ -168,7 +168,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
         return super.getAttributes();
     }
 
-    public void setJAXBAttributes(ArrayList<Annotation> annot){
+    public void setJAXBAttributes(ArrayList<XmlAnnotation> annot){
         super.setAttributes(annot);
     }
 
