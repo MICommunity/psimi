@@ -600,7 +600,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *     {@link XmlConfidence }
      *
      */
-    public void setJAXBConfidenceList(ArrayList<XMLConfidence> value) {
+    public void setJAXBConfidenceList(ArrayList<XmlConfidence> value) {
         getConfidences().clear();
         if (value != null){
             getConfidences().addAll(value);
