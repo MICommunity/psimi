@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class GeneXrefContainer extends InteractorXrefContainer{
 
@@ -32,12 +31,10 @@ public class GeneXrefContainer extends InteractorXrefContainer{
      * the first entrez/gene id if provided, otherwise the first refseq id if provided
      * otherwise the first identifier in the list of identifiers
      */
-    @XmlTransient
     public Xref getPreferredIdentifier() {
         return ensembl != null ? ensembl : (ensemblGenome != null ? ensemblGenome : (entrezGeneId != null ? entrezGeneId : (refseq != null ? refseq : super.getPreferredIdentifier())));
     }
 
-    @XmlTransient
     public String getEnsembl() {
         return this.ensembl != null ? this.ensembl.getId() : null;
     }
@@ -67,7 +64,6 @@ public class GeneXrefContainer extends InteractorXrefContainer{
         }
     }
 
-    @XmlTransient
     public String getEnsembleGenome() {
         return this.ensemblGenome != null ? this.ensemblGenome.getId() : null;
     }
@@ -97,7 +93,6 @@ public class GeneXrefContainer extends InteractorXrefContainer{
         }
     }
 
-    @XmlTransient
     public String getEntrezGeneId() {
         return this.entrezGeneId != null ? this.entrezGeneId.getId() : null;
     }

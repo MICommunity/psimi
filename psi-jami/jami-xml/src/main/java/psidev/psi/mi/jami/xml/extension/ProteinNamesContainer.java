@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
@@ -20,19 +19,18 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class ProteinNamesContainer extends NamesContainer{
 
     private Alias geneName;
 
-    @XmlTransient
     public String getGeneName() {
         return this.geneName != null ? this.geneName.getName() : null;
     }
 
     public void setGeneName(String name) {
-        Collection<Alias> proteinAliases = getAliases();
+        Collection<Alias> proteinAliases = getJAXBAliases();
 
         // add new gene name if not null
         if (name != null){
@@ -60,7 +58,7 @@ public class ProteinNamesContainer extends NamesContainer{
 
     protected void processRemovedAliasEvent(Alias removed) {
         if (geneName != null && geneName.equals(removed)){
-            geneName = AliasUtils.collectFirstAliasWithType(getAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
+            geneName = AliasUtils.collectFirstAliasWithType(getJAXBAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
         }
     }
 

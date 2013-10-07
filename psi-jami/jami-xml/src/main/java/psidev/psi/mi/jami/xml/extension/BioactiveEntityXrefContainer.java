@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class BioactiveEntityXrefContainer extends InteractorXrefContainer{
 
@@ -31,7 +30,6 @@ public class BioactiveEntityXrefContainer extends InteractorXrefContainer{
         return chebi != null ? chebi : super.getPreferredIdentifier();
     }
 
-    @XmlTransient
     public String getChebi() {
         return chebi != null ? chebi.getId() : null;
     }

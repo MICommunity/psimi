@@ -13,9 +13,9 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
-public class XmlPolymer extends XmlInteractor implements Polymer{
+public class XmlPolymer extends XmlMolecule implements Polymer{
 
     public XmlPolymer() {
     }
@@ -87,5 +87,13 @@ public class XmlPolymer extends XmlInteractor implements Polymer{
     @Override
     protected void createDefaultInteractorType() {
         setInteractorType(new XmlCvTerm(Polymer.POLYMER, Polymer.POLYMER_MI));
+    }
+
+    public String getSequence() {
+        return getJAXBSequence();
+    }
+
+    public void setSequence(String sequence) {
+        setJAXBSequence(sequence);
     }
 }

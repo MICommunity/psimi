@@ -1,10 +1,12 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.NucleicAcid;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -14,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
 
@@ -86,23 +88,6 @@ public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
     }
 
     @Override
-    public void setXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
-        }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new NucleicAcidXrefContainer();
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().clear();
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-    }
-
-    @Override
     public void initialiseXrefContainer() {
         this.xrefContainer = new NucleicAcidXrefContainer();
     }
@@ -112,7 +97,6 @@ public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
         setInteractorType(new XmlCvTerm(NucleicAcid.NULCEIC_ACID, NucleicAcid.NULCEIC_ACID_MI));
     }
 
-    @XmlTransient
     public String getDdbjEmblGenbank() {
         if (xrefContainer == null){
            initialiseXrefContainer();
@@ -127,7 +111,6 @@ public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
         ((NucleicAcidXrefContainer)xrefContainer).setDdbjEmblGenbank(id);
     }
 
-    @XmlTransient
     public String getRefseq() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -140,5 +123,22 @@ public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
             initialiseXrefContainer();
         }
         ((NucleicAcidXrefContainer)xrefContainer).setRefseq(id);
+    }
+
+    @Override
+    public void setJAXBXref(InteractorXrefContainer value) {
+        if (value == null){
+            this.xrefContainer = null;
+        }
+        else if (this.xrefContainer == null){
+            this.xrefContainer = new NucleicAcidXrefContainer();
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
+        else {
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().clear();
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
     }
 }

@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
@@ -19,9 +18,9 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
-public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity{
+public class XmlBioactiveEntity extends XmlMolecule implements BioactiveEntity{
 
     private Checksum smile;
     private Checksum standardInchi;
@@ -139,28 +138,10 @@ public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity
     }
 
     @Override
-    public void setXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
-        }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new BioactiveEntityXrefContainer();
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setPrimaryRef(value.getPrimaryRef());
-            this.xrefContainer.getSecondaryRefs().clear();
-            this.xrefContainer.getSecondaryRefs().addAll(value.getSecondaryRefs());
-        }
-    }
-
-    @Override
-    public void initialiseXrefContainer() {
+    protected void initialiseXrefContainer() {
         this.xrefContainer = new BioactiveEntityXrefContainer();
     }
 
-    @XmlTransient
     public String getChebi() {
         if (xrefContainer == null){
             initialiseXrefContainer();
@@ -175,7 +156,6 @@ public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity
         ((BioactiveEntityXrefContainer)xrefContainer).setChebi(id);
     }
 
-    @XmlTransient
     public String getSmile() {
         return smile != null ? smile.getValue() : null;
     }
@@ -199,7 +179,6 @@ public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity
         }
     }
 
-    @XmlTransient
     public String getStandardInchiKey() {
         return standardInchiKey != null ? standardInchiKey.getValue() : null;
     }
@@ -223,7 +202,6 @@ public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity
         }
     }
 
-    @XmlTransient
     public String getStandardInchi() {
         return standardInchi != null ? standardInchi.getValue() : null;
     }
@@ -244,6 +222,23 @@ public class XmlBioactiveEntity extends XmlInteractor implements BioactiveEntity
         else if (!bioactiveEntityChecksums.isEmpty()) {
             ChecksumUtils.removeAllChecksumWithMethod(bioactiveEntityChecksums, Checksum.INCHI_MI, Checksum.INCHI);
             this.standardInchi = null;
+        }
+    }
+
+    @Override
+    public void setJAXBXref(InteractorXrefContainer value) {
+        if (value == null){
+            this.xrefContainer = null;
+        }
+        else if (this.xrefContainer == null){
+            this.xrefContainer = new BioactiveEntityXrefContainer();
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        }
+        else {
+            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
+            this.xrefContainer.getJAXBSecondaryRefs().clear();
+            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
         }
     }
 
