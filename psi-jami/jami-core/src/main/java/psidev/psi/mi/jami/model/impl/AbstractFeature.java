@@ -17,7 +17,7 @@ import java.util.Collections;
  * @since <pre>09/07/13</pre>
  */
 
-public abstract class AbstractFeature<P extends Participant, F extends Feature> implements Feature<P,F> {
+public abstract class AbstractFeature<P extends Entity, F extends Feature> implements Feature<P,F> {
     private String shortName;
     private String fullName;
     private Xref interpro;

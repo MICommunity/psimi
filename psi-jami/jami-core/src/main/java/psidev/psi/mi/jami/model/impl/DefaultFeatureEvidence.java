@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
@@ -21,7 +22,7 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultFeatureEvidence extends AbstractFeature<ParticipantEvidence, FeatureEvidence> implements FeatureEvidence {
+public class DefaultFeatureEvidence extends AbstractFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence {
     private Collection<CvTerm> detectionMethods;
 
     public DefaultFeatureEvidence(ParticipantEvidence participant) {

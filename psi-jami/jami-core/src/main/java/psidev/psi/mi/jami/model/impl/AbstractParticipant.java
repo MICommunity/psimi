@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 
-import java.util.Collection;
-
 /**
  * TAbstract class for Participant
  *
@@ -48,60 +46,6 @@ public abstract class AbstractParticipant<I extends Interaction, F extends Featu
 
     public void setInteraction(I interaction) {
         this.interaction = interaction;
-    }
-
-    public boolean addFeature(F feature) {
-
-        if (feature == null){
-            return false;
-        }
-
-        if (getFeatures().add(feature)){
-            feature.setParticipant(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeFeature(F feature) {
-
-        if (feature == null){
-            return false;
-        }
-
-        if (getFeatures().remove(feature)){
-            feature.setParticipant(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllFeatures(Collection<? extends F> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (F feature : features){
-            if (addFeature(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllFeatures(Collection<? extends F> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (F feature : features){
-            if (removeFeature(feature)){
-                added = true;
-            }
-        }
-        return added;
     }
 
     @Override

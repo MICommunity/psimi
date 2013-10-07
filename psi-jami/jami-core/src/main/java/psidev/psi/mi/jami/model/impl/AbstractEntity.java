@@ -195,6 +195,60 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
         this.changeListener = listener;
     }
 
+    public boolean addFeature(F feature) {
+
+        if (feature == null){
+            return false;
+        }
+
+        if (getFeatures().add(feature)){
+            feature.setParticipant(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeFeature(F feature) {
+
+        if (feature == null){
+            return false;
+        }
+
+        if (getFeatures().remove(feature)){
+            feature.setParticipant(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllFeatures(Collection<? extends F> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (F feature : features){
+            if (addFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllFeatures(Collection<? extends F> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (F feature : features){
+            if (removeFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
     @Override
     public String toString() {
         return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (stoichiometry != null ? ", stoichiometry: " + stoichiometry.toString() : "");
