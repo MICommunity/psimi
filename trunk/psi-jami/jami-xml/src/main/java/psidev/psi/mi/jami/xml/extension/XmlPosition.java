@@ -39,23 +39,19 @@ public class XmlPosition extends AbstractXmlPosition{
     }
 
     @Override
-    @XmlTransient
     public XmlCvTerm getStatus() {
         return super.getStatus();
     }
 
-    @XmlTransient
     public long getStart() {
         return pos != null ? pos.longValue() : 0;
     }
 
-    @XmlTransient
     public long getEnd() {
         return pos != null ? pos.longValue() : 0;
     }
 
     @Override
-    @XmlTransient
     public boolean isPositionUndetermined() {
         return super.isPositionUndetermined();
     }
@@ -69,7 +65,7 @@ public class XmlPosition extends AbstractXmlPosition{
      *
      */
     @XmlAttribute(name = "position", required = true)
-    public BigInteger getPosition() {
+    public BigInteger getJAXBPosition() {
         return pos;
     }
 
@@ -81,7 +77,7 @@ public class XmlPosition extends AbstractXmlPosition{
      *     {@link BigInteger }
      *
      */
-    public void setPosition(BigInteger value) {
+    public void setJAXBPosition(BigInteger value) {
         this.pos = value;
     }
 
@@ -96,7 +92,6 @@ public class XmlPosition extends AbstractXmlPosition{
     }
 
     @Override
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return super.getSourceLocator();
     }

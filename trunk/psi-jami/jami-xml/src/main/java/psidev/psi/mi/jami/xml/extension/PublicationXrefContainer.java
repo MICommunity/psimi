@@ -8,9 +8,11 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Xref container for a Publication
@@ -19,7 +21,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>22/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class PublicationXrefContainer extends XrefContainer {
 
@@ -54,7 +56,6 @@ public class PublicationXrefContainer extends XrefContainer {
         }
     }
 
-    @XmlTransient
     public Collection<Xref> getAllIdentifiers() {
         if (allIdentifiers == null){
             allIdentifiers = new FullIdentifierList();
@@ -62,7 +63,6 @@ public class PublicationXrefContainer extends XrefContainer {
         return allIdentifiers;
     }
 
-    @XmlTransient
     public String getPubmedId() {
         return this.pubmedId != null ? this.pubmedId.getId() : null;
     }
@@ -92,7 +92,6 @@ public class PublicationXrefContainer extends XrefContainer {
         }
     }
 
-    @XmlTransient
     public String getDoi() {
         return this.doi != null ? this.doi.getId() : null;
     }
@@ -121,7 +120,6 @@ public class PublicationXrefContainer extends XrefContainer {
         }
     }
 
-    @XmlTransient
     public String getImexId() {
         return this.imexId != null ? this.imexId.getId() : null;
     }
@@ -231,13 +229,13 @@ public class PublicationXrefContainer extends XrefContainer {
             primaryRef = added;
         }
         else{
-            ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
         }
     }
 
     private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
-            if (!getSecondaryRefs().isEmpty()){
+            if (!getJAXBSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
                 ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
             }
@@ -349,7 +347,7 @@ public class PublicationXrefContainer extends XrefContainer {
             primaryRef = null;
         }
 
-        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllIdentifiers());
         clearImexId();
     }
 
@@ -400,7 +398,7 @@ public class PublicationXrefContainer extends XrefContainer {
             else{
                 primaryRef = null;
             }
-            ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllXrefs());
             clearPropertiesLinkedToIdentifiers();
         }
     }

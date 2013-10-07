@@ -164,7 +164,7 @@ public class XmlSource extends XmlOpenCvTerm
         return this.bibRef;
     }
 
-    public void setJAXBBibRef(Publication ref) {
+    public void setJAXBBibRef(BibRef ref) {
         this.bibRef = ref;
     }
 

@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.util.*;
 
@@ -19,7 +18,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class CvTermXrefContainer extends XrefContainer{
 
@@ -50,7 +49,6 @@ public class CvTermXrefContainer extends XrefContainer{
         }
     }
 
-    @XmlTransient
     public Collection<Xref> getAllIdentifiers() {
         if (allIdentifiers == null){
             allIdentifiers = new FullIdentifierList();
@@ -58,17 +56,14 @@ public class CvTermXrefContainer extends XrefContainer{
         return allIdentifiers;
     }
 
-    @XmlTransient
     public String getMIIdentifier() {
         return this.miIdentifier != null ? this.miIdentifier.getId() : null;
     }
 
-    @XmlTransient
     public String getMODIdentifier() {
         return this.modIdentifier != null ? this.modIdentifier.getId() : null;
     }
 
-    @XmlTransient
     public String getPARIdentifier() {
         return this.parIdentifier != null ? this.parIdentifier.getId() : null;
     }
@@ -234,13 +229,13 @@ public class CvTermXrefContainer extends XrefContainer{
             primaryRef = added;
         }
         else{
-            ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
         }
     }
 
     private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
-            if (!getSecondaryRefs().isEmpty()){
+            if (!getJAXBSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
                 ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
             }
@@ -339,7 +334,7 @@ public class CvTermXrefContainer extends XrefContainer{
             primaryRef = null;
         }
 
-        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllIdentifiers());
     }
 
     private class FullIdentifierList extends AbstractListHavingProperties<Xref> {
@@ -389,7 +384,7 @@ public class CvTermXrefContainer extends XrefContainer{
             else{
                 primaryRef = null;
             }
-            ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllXrefs());
             clearPropertiesLinkedToIdentifiers();
         }
     }

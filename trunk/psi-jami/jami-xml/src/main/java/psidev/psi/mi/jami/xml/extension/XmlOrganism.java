@@ -19,12 +19,12 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>22/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "bioSource", propOrder = {
-        "names",
-        "cellType",
-        "compartment",
-        "tissue"
+        "JAXBNames",
+        "JAXBCellType",
+        "JAXBCompartment",
+        "JAXBTissue"
 })
 @XmlSeeAlso({
         HostOrganism.class
@@ -55,12 +55,12 @@ public class XmlOrganism implements Organism, FileSourceContext{
     public XmlOrganism(int taxId, String commonName){
         this(taxId);
         this.namesContainer = new NamesContainer();
-        this.namesContainer.setShortLabel(commonName);
+        this.namesContainer.setJAXBShortLabel(commonName);
     }
 
     public XmlOrganism(int taxId, String commonName, String scientificName){
         this(taxId, commonName);
-        this.namesContainer.setFullName(scientificName);
+        this.namesContainer.setJAXBFullName(scientificName);
     }
 
     public XmlOrganism(int taxId, CvTerm cellType, CvTerm tissue, CvTerm compartment){
@@ -84,35 +84,6 @@ public class XmlOrganism implements Organism, FileSourceContext{
         this.compartment = compartment;
     }
 
-    /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
-    @XmlElement(name = "names")
-    public NamesContainer getNames() {
-        if (namesContainer != null && namesContainer.isEmpty()){
-           return null;
-        }
-        return namesContainer;
-    }
-
-    /**
-     * Sets the value of the names property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link NamesContainer }
-     *
-     */
-    public void setNames(NamesContainer value) {
-        this.namesContainer = value;
-    }
-
-    @XmlElement(name = "cellType", type = XmlOpenCvTerm.class)
     public CvTerm getCellType() {
         return this.cellType;
     }
@@ -121,7 +92,6 @@ public class XmlOrganism implements Organism, FileSourceContext{
         this.cellType = cellType;
     }
 
-    @XmlElement(name = "compartment", type = XmlOpenCvTerm.class)
     public CvTerm getCompartment() {
         return this.compartment;
     }
@@ -130,7 +100,6 @@ public class XmlOrganism implements Organism, FileSourceContext{
         this.compartment = compartment;
     }
 
-    @XmlElement(name = "tissue", type = XmlOpenCvTerm.class)
     public CvTerm getTissue() {
         return this.tissue;
     }
@@ -139,7 +108,6 @@ public class XmlOrganism implements Organism, FileSourceContext{
         this.tissue = tissue;
     }
 
-    @XmlAttribute(name = "ncbiTaxId", required = true)
     public int getTaxId() {
         return this.taxId;
     }
@@ -153,36 +121,102 @@ public class XmlOrganism implements Organism, FileSourceContext{
         }
     }
 
-    @XmlTransient
     public String getCommonName() {
-        return this.namesContainer != null ? this.namesContainer.getShortLabel() : null;
+        return this.namesContainer != null ? this.namesContainer.getJAXBShortLabel() : null;
     }
 
     public void setCommonName(String name) {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setShortLabel(name);
+        this.namesContainer.setJAXBShortLabel(name);
     }
 
-    @XmlTransient
     public String getScientificName() {
-        return this.namesContainer != null ? this.namesContainer.getFullName() : null;
+        return this.namesContainer != null ? this.namesContainer.getJAXBFullName() : null;
     }
 
     public void setScientificName(String name) {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setFullName(name);
+        this.namesContainer.setJAXBFullName(name);
     }
 
-    @XmlTransient
     public Collection<Alias> getAliases() {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        return this.namesContainer.getAliases();
+        return this.namesContainer.getJAXBAliases();
+    }
+
+    /**
+     * Gets the value of the names property.
+     *
+     * @return
+     *     possible object is
+     *     {@link NamesContainer }
+     *
+     */
+    @XmlElement(name = "names")
+    public NamesContainer getJAXBNames() {
+        if (namesContainer != null && namesContainer.isEmpty()){
+            return null;
+        }
+        return namesContainer;
+    }
+
+    /**
+     * Sets the value of the names property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link NamesContainer }
+     *
+     */
+    public void setJAXBNames(NamesContainer value) {
+        this.namesContainer = value;
+    }
+
+    @XmlElement(name = "cellType", type = XmlOpenCvTerm.class)
+    public CvTerm getJAXBCellType() {
+        return this.cellType;
+    }
+
+    public void setJAXBCellType(XmlOpenCvTerm cellType) {
+        this.cellType = cellType;
+    }
+
+    @XmlElement(name = "compartment", type = XmlOpenCvTerm.class)
+    public CvTerm getJAXBCompartment() {
+        return this.compartment;
+    }
+
+    public void setJAXBCompartment(XmlOpenCvTerm compartment) {
+        this.compartment = compartment;
+    }
+
+    @XmlElement(name = "tissue", type = XmlOpenCvTerm.class)
+    public CvTerm getJAXBTissue() {
+        return this.tissue;
+    }
+
+    public void setJAXBTissue(XmlCvTerm tissue) {
+        this.tissue = tissue;
+    }
+
+    @XmlAttribute(name = "ncbiTaxId", required = true)
+    public int getJAXBTaxId() {
+        return this.taxId;
+    }
+
+    public void setJAXBTaxId(int id) {
+        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
+            this.taxId = id;
+        }
+        else {
+            throw new IllegalArgumentException("The taxId "+id+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
+        }
     }
 
     @XmlLocation
@@ -195,7 +229,6 @@ public class XmlOrganism implements Organism, FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

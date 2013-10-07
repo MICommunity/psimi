@@ -44,7 +44,7 @@ public class XrefContainer implements FileSourceContext{
      *     {@link XmlXref }
      *
      */
-    @XmlElement(required = true)
+    @XmlElement(name = "primaryRef",required = true)
     public XmlXref getJAXBPrimaryRef() {
         return primaryRef;
     }
