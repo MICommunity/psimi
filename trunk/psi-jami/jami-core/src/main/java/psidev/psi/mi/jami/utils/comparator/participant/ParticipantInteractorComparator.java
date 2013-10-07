@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
 import java.util.Comparator;
@@ -17,7 +17,7 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantInteractorComparator<T extends Participant> implements Comparator<T> {
+public class ParticipantInteractorComparator<T extends Entity> implements Comparator<T> {
 
     protected InteractorComparator interactorComparator;
 

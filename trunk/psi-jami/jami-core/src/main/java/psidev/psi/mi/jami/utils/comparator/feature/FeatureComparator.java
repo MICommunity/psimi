@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 /**
  * Generic feature comparator.
- * Component features come first, then Biological features come first and then experimental features.
+ * Entity features come first, then Biological features come first and then experimental features.
  * - It uses ModelledFeatureComparator to compare biological features
  * - It uses FeatureEvidenceComparator to compare experimental features
  * - It uses AbstractFeatureBaseComparator to compare basic feature properties

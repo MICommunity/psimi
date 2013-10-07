@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.participant.CustomizableModelledParticipantComparator;
@@ -38,7 +39,7 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
         }
-        this.participantCollectionComparator = new ParticipantCollectionComparator<ModelledParticipant>(participantComparator);
+        this.participantCollectionComparator = new ParticipantCollectionComparator<ModelledEntity>(participantComparator);
 
     }
 

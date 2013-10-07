@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 
 import java.util.Comparator;
 
@@ -13,9 +13,11 @@ import java.util.Comparator;
  * @since <pre>31/05/13</pre>
  */
 
-public interface CustomizableModelledParticipantComparator extends Comparator<ModelledParticipant> {
+public interface CustomizableModelledParticipantComparator extends Comparator<ModelledEntity> {
 
     public boolean isCheckComplexesAsInteractors();
 
     public void setCheckComplexesAsInteractors(boolean checkComplexesAsInteractors);
+
+    public void clearProcessedComplexes();
 }

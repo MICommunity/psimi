@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
  * @since <pre>30/05/13</pre>
  */
 
-public class UnambiguousExactModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledParticipant> implements CustomizableModelledParticipantComparator{
+public class UnambiguousExactModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledEntity> implements CustomizableModelledParticipantComparator{
 
     private static UnambiguousExactModelledParticipantInteractorComparator unambiguousExactParticipantInteractorComparator;
 
@@ -40,7 +40,7 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends Par
      *
      * This comparator will ignore all the other properties of a biological participant.
      */
-    public int compare(ModelledParticipant component1, ModelledParticipant component2) {
+    public int compare(ModelledEntity component1, ModelledEntity component2) {
         return checkComplexesAsInteractor ? super.compare(component1, component2) : 0;
     }
 
@@ -50,7 +50,7 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends Par
      * @param component2
      * @return true if the two biological participants are equal
      */
-    public static boolean areEquals(ModelledParticipant component1, ModelledParticipant component2){
+    public static boolean areEquals(ModelledEntity component1, ModelledEntity component2){
         if (unambiguousExactParticipantInteractorComparator == null){
             unambiguousExactParticipantInteractorComparator = new UnambiguousExactModelledParticipantInteractorComparator();
         }
@@ -64,5 +64,9 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends Par
 
     public void setCheckComplexesAsInteractors(boolean checkComplexesAsInteractors) {
         this.checkComplexesAsInteractor = checkComplexesAsInteractors;
+    }
+
+    public void clearProcessedComplexes() {
+        // do nothing
     }
 }

@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Stoichiometry;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
@@ -28,7 +25,7 @@ public class DefaultParticipantBaseComparator {
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Participant participant1, Participant participant2, boolean ignoreInteractors){
+    public static boolean areEquals(Entity participant1, Entity participant2, boolean ignoreInteractors){
 
         if (participant1 == null && participant2 == null){
             return true;

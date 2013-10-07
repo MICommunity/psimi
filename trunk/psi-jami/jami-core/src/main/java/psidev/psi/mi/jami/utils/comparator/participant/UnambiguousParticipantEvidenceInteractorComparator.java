@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorCompa
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousParticipantEvidenceInteractorComparator extends ParticipantInteractorComparator<ParticipantEvidence> {
+public class UnambiguousParticipantEvidenceInteractorComparator extends ParticipantInteractorComparator<ExperimentalEntity> {
     private static UnambiguousParticipantEvidenceInteractorComparator unambiguousExperimentalParticipantInteractorComparator;
 
     /**
@@ -37,7 +37,7 @@ public class UnambiguousParticipantEvidenceInteractorComparator extends Particip
      *
      * This comparator will ignore all the other properties of an experimental participant.
      */
-    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
+    public int compare(ExperimentalEntity experimentalParticipant1, ExperimentalEntity experimentalParticipant2) {
         return super.compare(experimentalParticipant1, experimentalParticipant2);
     }
 
@@ -47,7 +47,7 @@ public class UnambiguousParticipantEvidenceInteractorComparator extends Particip
      * @param component2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
+    public static boolean areEquals(ExperimentalEntity experimentalParticipant1, ExperimentalEntity component2){
         if (unambiguousExperimentalParticipantInteractorComparator == null){
             unambiguousExperimentalParticipantInteractorComparator = new UnambiguousParticipantEvidenceInteractorComparator();
         }

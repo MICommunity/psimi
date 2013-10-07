@@ -38,7 +38,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
      * @param experimentComparator : required to compare experiments
      * @param parameterComparator : required to compare parameters
      */
-    public InteractionEvidenceComparator(Comparator<ParticipantEvidence> participantComparator, Comparator<Interaction> interactionComparator, ExperimentComparator experimentComparator,
+    public InteractionEvidenceComparator(Comparator<ExperimentalEntity> participantComparator, Comparator<Interaction> interactionComparator, ExperimentComparator experimentComparator,
                                          ParameterComparator parameterComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
@@ -57,7 +57,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
         }
-        this.participantCollectionComparator = new ParticipantCollectionComparator<ParticipantEvidence>(participantComparator);
+        this.participantCollectionComparator = new ParticipantCollectionComparator<ExperimentalEntity>(participantComparator);
         this.variableParameterValueSetCollectionComparator = new VariableParameterValueSetCollectionComparator();
     }
 

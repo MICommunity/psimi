@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -23,7 +23,7 @@ public class DefaultParticipantEvidenceInteractorComparator {
      * @param participant2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ParticipantEvidence participant1, ParticipantEvidence participant2){
+    public static boolean areEquals(ExperimentalEntity participant1, ExperimentalEntity participant2){
         if (participant1 == null && participant2 == null){
             return true;
         }

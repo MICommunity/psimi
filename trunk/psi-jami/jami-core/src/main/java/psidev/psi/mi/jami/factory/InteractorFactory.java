@@ -160,16 +160,6 @@ public class InteractorFactory {
     }
 
     /**
-     * Creates a new InteractorSet with name and interactor type
-     * @param name
-     * @param type
-     * @return
-     */
-    public InteractorSet createInteractorSet(String name, CvTerm type){
-        return new DefaultInteractorSet(name, type);
-    }
-
-    /**
      * Creates a default interactor from the name and interactor type
      * @param name
      * @param type
@@ -256,8 +246,6 @@ public class InteractorFactory {
                 return createPolymer(name, type);
             case complex:
                 return createComplex(name, type);
-            case interactor_set:
-                return createInteractorSet(name, type);
             default:
                 return createInteractor(name, type);
         }

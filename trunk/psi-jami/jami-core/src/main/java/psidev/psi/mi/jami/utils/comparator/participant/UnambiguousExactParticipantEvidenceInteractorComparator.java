@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
  * @since <pre>30/05/13</pre>
  */
 
-public class UnambiguousExactParticipantEvidenceInteractorComparator extends ParticipantInteractorComparator<ParticipantEvidence> {
+public class UnambiguousExactParticipantEvidenceInteractorComparator extends ParticipantInteractorComparator<ExperimentalEntity> {
     private static UnambiguousExactParticipantEvidenceInteractorComparator unambiguousExactExperimentalParticipantInteractorComparator;
 
     /**
@@ -36,7 +36,7 @@ public class UnambiguousExactParticipantEvidenceInteractorComparator extends Par
      *
      * This comparator will ignore all the other properties of an experimental participant.
      */
-    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
+    public int compare(ExperimentalEntity experimentalParticipant1, ExperimentalEntity experimentalParticipant2) {
         return super.compare(experimentalParticipant1, experimentalParticipant2);
     }
 
@@ -48,7 +48,7 @@ public class UnambiguousExactParticipantEvidenceInteractorComparator extends Par
      * @param component2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
+    public static boolean areEquals(ExperimentalEntity experimentalParticipant1, ExperimentalEntity component2){
         if (unambiguousExactExperimentalParticipantInteractorComparator == null){
             unambiguousExactExperimentalParticipantInteractorComparator = new UnambiguousExactParticipantEvidenceInteractorComparator();
         }
