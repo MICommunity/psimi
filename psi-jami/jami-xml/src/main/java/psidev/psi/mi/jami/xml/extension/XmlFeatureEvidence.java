@@ -17,20 +17,21 @@ import java.util.List;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "feature", propOrder = {
-        "names",
-        "xref",
-        "type",
-        "featureDetectionMethod",
-        "experimentRefList",
-        "featureRanges",
-        "attributes"
+        "JAXBNames",
+        "JAXBXref",
+        "JAXBType",
+        "JAXBFeatureDetectionMethod",
+        "JAXBExperimentRefList",
+        "JAXBRanges",
+        "JAXBAttributes"
 })
-public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, FeatureEvidence> implements FeatureEvidence{
+public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
-    private Collection<Integer> experimentRefList;
+    private ArrayList<Integer> experimentRefList;
+    private Collection<Experiment> experiments;
 
     public XmlFeatureEvidence() {
     }
@@ -59,6 +60,41 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         super(shortName, fullName, type, interpro);
     }
 
+    public Collection<CvTerm> getDetectionMethods() {
+        return featureDetectionMethods;
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
+    @Override
+    public Collection<Range> getRanges() {
+        return super.getRanges();
+    }
+
+    @Override
+    public CvTerm getInteractionEffect() {
+        return super.getInteractionEffect();
+    }
+
+    @Override
+    @XmlTransient
+    public CvTerm getInteractionDependency() {
+        return super.getInteractionDependency();
+    }
+
+    @Override
+    public ExperimentalEntity getParticipant() {
+        return super.getParticipant();
+    }
+
+    @Override
+    public Collection<FeatureEvidence> getLinkedFeatures() {
+        return super.getLinkedFeatures();
+    }
+
     /**
      * Gets the value of the names property.
      *
@@ -69,20 +105,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      */
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getNames() {
-        return super.getNames();
-    }
-
-    @Override
-    @XmlTransient
-    public String getShortName() {
-        return super.getShortName();
-    }
-
-    @Override
-    @XmlTransient
-    public String getFullName() {
-        return super.getFullName();
+    public NamesContainer getJAXBNames() {
+        return super.getJAXBNames();
     }
 
     /**
@@ -95,31 +119,13 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      */
     @Override
     @XmlElement(name = "xref")
-    public FeatureXrefContainer getXref() {
-        return super.getXref();
-    }
-
-    @Override
-    @XmlTransient
-    public String getInterpro() {
-        return super.getInterpro();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Xref> getIdentifiers() {
-        return super.getIdentifiers();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Xref> getXrefs() {
-        return super.getXrefs();
+    public FeatureXrefContainer getJAXBXref() {
+        return super.getJAXBXref();
     }
 
     @Override
     @XmlElement(name = "featureType", type = XmlCvTerm.class)
-    public CvTerm getType() {
+    public CvTerm getJAXBType() {
         return super.getType();
     }
 
@@ -132,7 +138,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      *
      */
     @XmlElement(name = "featureDetectionMethod", type = XmlCvTerm.class)
-    public CvTerm getFeatureDetectionMethod() {
+    public CvTerm getJAXBFeatureDetectionMethod() {
         if (featureDetectionMethods == null){
             return null;
         }
@@ -147,7 +153,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      *     {@link XmlCvTerm }
      *
      */
-    public void setFeatureDetectionMethod(CvTerm value) {
+    public void setJAXBFeatureDetectionMethod(XmlCvTerm value) {
         if (featureDetectionMethods == null){
             this.featureDetectionMethods = new ArrayList<CvTerm>();
         }
@@ -157,11 +163,6 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         if (value != null){
             this.featureDetectionMethods.add(0, value);
         }
-    }
-
-    @XmlTransient
-    public Collection<CvTerm> getDetectionMethods() {
-        return featureDetectionMethods;
     }
 
     /**
@@ -174,7 +175,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef")
-    public Collection<Integer> getExperimentRefList() {
+    public ArrayList<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }
 
@@ -186,44 +187,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      *     {@link Integer }
      *
      */
-    public void setExperimentRefList(Collection<Integer> value) {
+    public void setJAXBExperimentRefList(ArrayList<Integer> value) {
         this.experimentRefList = value;
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Range> getRanges() {
-        return super.getRanges();
-    }
-
-    @Override
-    @XmlTransient
-    public CvTerm getInteractionEffect() {
-        return super.getInteractionEffect();
-    }
-
-    @Override
-    @XmlTransient
-    public CvTerm getInteractionDependency() {
-        return super.getInteractionDependency();
-    }
-
-    @Override
-    @XmlTransient
-    public ParticipantEvidence getParticipant() {
-        return super.getParticipant();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<FeatureEvidence> getLinkedFeatures() {
-        return super.getLinkedFeatures();
     }
 
     /**
@@ -238,8 +203,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlElement(name="featureRange", required = true)
     @XmlElementRefs({@XmlElementRef(type=XmlRange.class)})
     @Override
-    public ArrayList<Range> getFeatureRanges() {
-        return super.getFeatureRanges();
+    public ArrayList<Range> getJAXBRanges() {
+        return super.getJAXBRanges();
     }
 
     /**
@@ -254,8 +219,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlElement(name="attribute", required = true)
     @XmlElementRefs({@XmlElementRef(type=XmlAnnotation.class)})
     @Override
-    public ArrayList<Annotation> getAttributes() {
-        return super.getAttributes();
+    public ArrayList<Annotation> getJAXBAttributes() {
+        return super.getJAXBAttributes();
     }
 
     /**
@@ -264,8 +229,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
      */
     @Override
     @XmlAttribute(name = "id", required = true)
-    public int getId() {
-        return super.getId();
+    public int getJAXBId() {
+        return super.getJAXBId();
     }
 
     @XmlLocation
@@ -282,5 +247,26 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return super.getSourceLocator();
+    }
+
+    public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            experiments = new ArrayList<Experiment>();
+        }
+        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
+            resolveExperimentReferences();
+        }
+        return experiments;
+    }
+
+    private void resolveExperimentReferences() {
+        for (Integer id : this.experimentRefList){
+            if (getMapOfReferencedObjects().containsKey(id)){
+                Object o = getMapOfReferencedObjects().get(id);
+                if (o instanceof Experiment){
+                    this.experiments.add((Experiment)o);
+                }
+            }
+        }
     }
 }

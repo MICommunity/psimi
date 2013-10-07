@@ -15,7 +15,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>25/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class ExperimentXrefContainer extends XrefContainer{
 
@@ -23,12 +23,6 @@ public class ExperimentXrefContainer extends XrefContainer{
     private Publication publication;
     private List<Xref> allIdentifiers;
 
-    @Override
-    public XmlXref getPrimaryRef() {
-        return primaryRef;
-    }
-
-    @XmlTransient
     public Publication getPublication() {
         return publication;
     }
@@ -59,7 +53,6 @@ public class ExperimentXrefContainer extends XrefContainer{
         }
     }
 
-    @XmlTransient
     public Collection<Xref> getAllIdentifiers() {
         if (allIdentifiers == null){
             allIdentifiers = new FullIdentifierList();
@@ -102,13 +95,13 @@ public class ExperimentXrefContainer extends XrefContainer{
             primaryRef = added;
         }
         else{
-            ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
         }
     }
 
     private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
-            if (!getSecondaryRefs().isEmpty()){
+            if (!getJAXBSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
                 ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
             }
@@ -205,7 +198,7 @@ public class ExperimentXrefContainer extends XrefContainer{
             primaryRef = null;
         }
 
-        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllIdentifiers());
         clearImexId();
     }
 
@@ -254,7 +247,7 @@ public class ExperimentXrefContainer extends XrefContainer{
             else{
                 primaryRef = null;
             }
-            ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllXrefs());
         }
     }
 }
