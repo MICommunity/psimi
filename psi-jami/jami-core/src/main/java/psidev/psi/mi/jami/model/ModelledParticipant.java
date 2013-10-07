@@ -8,5 +8,5 @@ package psidev.psi.mi.jami.model;
  * @since <pre>13/02/13</pre>
  */
 
-public interface ModelledParticipant extends Participant<ModelledInteraction, ModelledFeature>{
+public interface ModelledParticipant extends Participant<ModelledInteraction, ModelledFeature>, ModelledEntity {
 }

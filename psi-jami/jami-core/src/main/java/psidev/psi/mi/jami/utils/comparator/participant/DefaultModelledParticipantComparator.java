@@ -1,12 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Default biological participant comparator.
@@ -27,7 +24,8 @@ public class DefaultModelledParticipantComparator {
      * @param bioParticipant2
      * @return true if the two components are equal
      */
-    public static boolean areEquals(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2, boolean checkComplexesAsInteractors){
+    public static boolean areEquals(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2, boolean checkComplexesAsInteractors){
+        Map<Complex, Set<Interactor>> processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
 
         if (bioParticipant1 == null && bioParticipant2 == null){
             return true;
@@ -38,20 +36,9 @@ public class DefaultModelledParticipantComparator {
         else {
             boolean ignoreInteractors = false;
             if (!checkComplexesAsInteractors){
-                // the bioparticipant 1 contains a complex that self interacts
-                if (bioParticipant1.getInteractor() == bioParticipant1.getInteraction()){
-                    // the bioparticipant 2 contains a complex that self interacts
-                    if (bioParticipant2.getInteractor() == bioParticipant2.getInteraction()){
-                        ignoreInteractors = true;
-                    }
-                    // the bioparticipant 2 is not self, it comes after the self participant
-                    else {
-                        return false;
-                    }
-                }
-                // the bioparticipant 2 contains a complex that self interacts, comes before
-                else if (bioParticipant2.getInteractor() == bioParticipant2.getInteraction()){
-                    return false;
+                if (checkIfComplexAlreadyProcessed(bioParticipant1, bioParticipant2, processedComplexes)
+                        || checkIfComplexAlreadyProcessed(bioParticipant2, bioParticipant1, processedComplexes)){
+                     ignoreInteractors = true;
                 }
             }
 
@@ -96,5 +83,26 @@ public class DefaultModelledParticipantComparator {
                 }
             }
         }
+    }
+
+    private static boolean checkIfComplexAlreadyProcessed(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2, Map<Complex, Set<Interactor>> processedComplexes) {
+        Complex complex = null;
+        if (bioParticipant1.getInteractor() instanceof Complex){
+            complex = (Complex) bioParticipant1.getInteractor();
+        }
+
+        // we already processed complex1 as first interactor
+        if (complex != null && processedComplexes.containsKey(complex)){
+            Set<Interactor> interactorSet = processedComplexes.get(complex);
+            // already processed this pair
+            if (interactorSet.contains(bioParticipant2.getInteractor())){
+                return true;
+            }
+            else{
+                interactorSet.add(bioParticipant2.getInteractor());
+            }
+        }
+
+        return false;
     }
 }

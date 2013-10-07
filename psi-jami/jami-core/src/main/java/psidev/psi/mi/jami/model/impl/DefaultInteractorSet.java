@@ -22,7 +22,7 @@ import java.util.*;
 
 public class DefaultInteractorSet extends DefaultInteractor implements InteractorSet {
 
-    private Set<Molecule> interactors;
+    private Set<Interactor> interactors;
 
     public DefaultInteractorSet(String name, CvTerm type) {
         super(name, type != null ? type : CvTermUtils.createMoleculeSetType());
@@ -105,10 +105,10 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
     }
 
     protected void initialiseInteractorCandidatesSet(){
-        this.interactors = new HashSet<Molecule>();
+        this.interactors = new HashSet<Interactor>();
     }
 
-    protected void initialiseInteractorCandidatesSetWith(Set<Molecule> interactorCandidates){
+    protected void initialiseInteractorCandidatesSetWith(Set<Interactor> interactorCandidates){
         if (interactorCandidates == null){
             this.interactors = Collections.EMPTY_SET;
         }
@@ -143,7 +143,7 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
         return interactors.contains(o);
     }
 
-    public Iterator<Molecule> iterator() {
+    public Iterator<Interactor> iterator() {
         return interactors.iterator();
     }
 
@@ -155,7 +155,7 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
         return interactors.toArray(ts);
     }
 
-    public boolean add(Molecule interactor) {
+    public boolean add(Interactor interactor) {
         return interactors.add(interactor);
     }
 
@@ -167,7 +167,7 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
         return interactors.containsAll(objects);
     }
 
-    public boolean addAll(Collection<? extends Molecule> interactors) {
+    public boolean addAll(Collection<? extends Interactor> interactors) {
         return this.interactors.addAll(interactors);
     }
 

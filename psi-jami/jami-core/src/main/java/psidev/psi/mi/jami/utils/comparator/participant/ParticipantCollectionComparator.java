@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Comparator;
@@ -13,7 +13,7 @@ import java.util.Comparator;
  * @since <pre>18/01/13</pre>
  */
 
-public class ParticipantCollectionComparator<T extends Participant>  extends CollectionComparator<T> {
+public class ParticipantCollectionComparator<T extends Entity>  extends CollectionComparator<T> {
 
     /**
      * Creates a new participant CollectionComparator. It requires a Comparator for the participants in the Collection

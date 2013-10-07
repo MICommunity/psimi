@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
@@ -51,7 +51,7 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
      *
      * This comparator will ignore all the other properties of a participant.
      */
-    public int compare(Participant participant1, Participant participant2) {
+    public int compare(Entity participant1, Entity participant2) {
         return super.compare(participant1, participant2);
     }
 
@@ -61,7 +61,7 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Participant participant1, Participant participant2){
+    public static boolean areEquals(Entity participant1, Entity participant2){
         if (unambiguousParticipantComparator == null){
             unambiguousParticipantComparator = new UnambiguousParticipantBaseComparator();
         }
@@ -74,7 +74,7 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
      * @param participant
      * @return the hashcode consistent with the equals method for this comparator
      */
-    public static int hashCode(Participant participant){
+    public static int hashCode(Entity participant){
         if (unambiguousParticipantComparator == null){
             unambiguousParticipantComparator = new UnambiguousParticipantBaseComparator();
         }

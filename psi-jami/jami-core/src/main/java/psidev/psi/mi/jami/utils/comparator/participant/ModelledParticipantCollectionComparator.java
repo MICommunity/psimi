@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 /**
@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
  * @since <pre>13/02/13</pre>
  */
 
-public class ModelledParticipantCollectionComparator extends CollectionComparator<ModelledParticipant> {
+public class ModelledParticipantCollectionComparator extends CollectionComparator<ModelledEntity> {
 
     /**
      * Creates a new component CollectionComparator. It requires a Comparator for the biological participants in the Collection

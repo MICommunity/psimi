@@ -1,11 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 
 /**
  * Unambiguous generic Participant comparator
  * Modelled participants come first and then experimental participants.
- * - It uses UnambiguousComponentComparator to compare components
+ * - It uses UnambiguousEntityComparator to compare components
+ * - It uses UnambiguousModelledParticipantComparator to compare components
  * - It uses UnambiguousParticipantEvidenceComparator to compare experimental participants
  * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
  *
@@ -44,12 +45,13 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
     @Override
     /**
      * Modelled participants come first and then experimental participants.
-     * - It uses UnambiguousComponentComparator to compare components
+     * - It uses UnambiguousEntityComparator to compare components
+     * - It uses UnambiguousModelledParticipantComparator to compare components
      * - It uses UnambiguousParticipantEvidenceComparator to compare experimental participants
      * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
      *
      */
-    public int compare(Participant participant1, Participant participant2) {
+    public int compare(Entity participant1, Entity participant2) {
         return super.compare(participant1, participant2);
     }
 
@@ -59,7 +61,7 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Participant participant1, Participant participant2){
+    public static boolean areEquals(Entity participant1, Entity participant2){
         if (unambiguousParticipantComparator == null){
             unambiguousParticipantComparator = new UnambiguousParticipantComparator();
         }

@@ -25,6 +25,5 @@ public interface StreamingInteractorSource extends MIDataSource {
     public Iterator<? extends NucleicAcid> getNucleicAcidsIterator() throws MIIOException;
     public Iterator<? extends Gene> getGenesIterator() throws MIIOException;
     public Iterator<? extends BioactiveEntity> getBioactiveEntitiesIterator() throws MIIOException;
-    public Iterator<? extends InteractorSet> getInteractorSetIterator() throws MIIOException;
     public Iterator<? extends Complex> getComplexesIterator() throws MIIOException;
 }

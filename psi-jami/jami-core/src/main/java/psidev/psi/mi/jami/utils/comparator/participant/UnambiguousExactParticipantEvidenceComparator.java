@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
@@ -48,7 +48,7 @@ public class UnambiguousExactParticipantEvidenceComparator extends ParticipantEv
      * look at the experimental preparations using UnambiguousCvTermComparator. If both experimental preparations are equals, it will
      * look at the expressed in organisms using UnambiguousOrganismComparator.
      */
-    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
+    public int compare(ExperimentalEntity experimentalParticipant1, ExperimentalEntity experimentalParticipant2) {
         return super.compare(experimentalParticipant1, experimentalParticipant2);
     }
 
@@ -58,7 +58,7 @@ public class UnambiguousExactParticipantEvidenceComparator extends ParticipantEv
      * @param component2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
+    public static boolean areEquals(ExperimentalEntity experimentalParticipant1, ExperimentalEntity component2){
         if (unambiguousExactExperimentalParticipantComparator == null){
             unambiguousExactExperimentalParticipantComparator = new UnambiguousExactParticipantEvidenceComparator();
         }

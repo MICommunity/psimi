@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
@@ -40,7 +40,7 @@ public class UnambiguousModelledParticipantComparator extends ModelledParticipan
      *
      * This comparator will ignore all the other properties of a biological participant.
      */
-    public int compare(ModelledParticipant component1, ModelledParticipant component2) {
+    public int compare(ModelledEntity component1, ModelledEntity component2) {
         return super.compare(component1, component2);
     }
 
@@ -50,7 +50,7 @@ public class UnambiguousModelledParticipantComparator extends ModelledParticipan
      * @param component2
      * @return true if the two biological participants are equal
      */
-    public static boolean areEquals(ModelledParticipant component1, ModelledParticipant component2){
+    public static boolean areEquals(ModelledEntity component1, ModelledEntity component2){
         if (unambiguousParticipantComparator == null){
             unambiguousParticipantComparator = new UnambiguousModelledParticipantComparator();
         }

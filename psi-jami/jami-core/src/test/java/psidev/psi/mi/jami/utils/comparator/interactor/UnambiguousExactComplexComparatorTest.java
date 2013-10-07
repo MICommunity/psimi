@@ -104,7 +104,7 @@ public class UnambiguousExactComplexComparatorTest {
     }
 
     @Test
-    public void test_complex_self_complex_before(){
+    public void test_complex_self_complex(){
         Complex complex1 = new DefaultComplex("test", new DefaultCvTerm("protein complex"));
         complex1.setInteractionType(new DefaultCvTerm("phosphorylation"));
         complex1.addParticipant(new DefaultModelledParticipant(complex1));
@@ -117,8 +117,8 @@ public class UnambiguousExactComplexComparatorTest {
         complex2.addParticipant(new DefaultModelledParticipant(new DefaultProtein("test protein",
                 XrefUtils.createUniprotIdentity("P12346"))));
 
-        Assert.assertTrue(comparator.compare(complex1, complex2) < 0);
-        Assert.assertTrue(comparator.compare(complex2, complex1) > 0);
+        Assert.assertTrue(comparator.compare(complex1, complex2) > 0);
+        Assert.assertTrue(comparator.compare(complex2, complex1) < 0);
 
         Assert.assertFalse(UnambiguousExactComplexComparator.areEquals(complex1, complex2));
     }

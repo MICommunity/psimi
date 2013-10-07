@@ -10,7 +10,7 @@ import java.util.Set;
  * @since <pre>11/01/13</pre>
  */
 
-public interface InteractorSet extends Interactor,Set<Molecule>{
+public interface InteractorSet extends Interactor,Set<Interactor>{
 
     public static final String MOLECULE_SET="molecule set";
     public static final String MOLECULE_SET_MI="MI:1304";

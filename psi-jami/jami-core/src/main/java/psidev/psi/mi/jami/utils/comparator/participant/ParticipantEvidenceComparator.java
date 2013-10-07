@@ -24,7 +24,7 @@ import java.util.Comparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class ParticipantEvidenceComparator implements Comparator<ParticipantEvidence> {
+public class ParticipantEvidenceComparator implements Comparator<ExperimentalEntity> {
 
     protected ParticipantBaseComparator participantBaseComparator;
     protected CvTermsCollectionComparator cvTermCollectionComparator;
@@ -91,7 +91,7 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
      * @param experimentalParticipant2
      * @return
      */
-    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
+    public int compare(ExperimentalEntity experimentalParticipant1, ExperimentalEntity experimentalParticipant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

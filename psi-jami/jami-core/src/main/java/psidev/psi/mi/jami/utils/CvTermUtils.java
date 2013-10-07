@@ -367,7 +367,7 @@ public class CvTermUtils {
     }
 
     public static CvTerm createMoleculeSetType(){
-        return createMICvTerm(InteractorSet.MOLECULE_SET, InteractorSet.MOLECULE_SET_MI);
+        return createMICvTerm(EntitySet.ENTITY_SET, EntitySet.ENTITY_SET_MI);
     }
 
     public static CvTerm createGeneNameAliasType(){

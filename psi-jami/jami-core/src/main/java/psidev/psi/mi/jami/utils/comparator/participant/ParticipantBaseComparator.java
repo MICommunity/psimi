@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Stoichiometry;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
 import java.util.Comparator;
@@ -22,7 +19,7 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantBaseComparator implements Comparator<Participant> {
+public class ParticipantBaseComparator implements Comparator<Entity> {
 
     protected Comparator<CvTerm> cvTermComparator;
     protected StoichiometryComparator stoichiometryComparator;
@@ -81,7 +78,7 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
      * @param participant2
      * @return
      */
-    public int compare(Participant participant1, Participant participant2) {
+    public int compare(Entity participant1, Entity participant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

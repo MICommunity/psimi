@@ -32,7 +32,7 @@ public class DefaultParticipantEvidenceComparator {
      * @param experimentalParticipant2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2){
+    public static boolean areEquals(ExperimentalEntity experimentalParticipant1, ExperimentalEntity experimentalParticipant2){
         if (experimentalParticipant1 == null && experimentalParticipant2 == null){
             return true;
         }

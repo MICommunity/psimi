@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
@@ -23,7 +23,7 @@ public class DefaultExactModelledParticipantInteractorComparator {
      * @param participant2
      * @return true if the two biological participants are equal
      */
-    public static boolean areEquals(ModelledParticipant participant1, ModelledParticipant participant2){
+    public static boolean areEquals(ModelledEntity participant1, ModelledEntity participant2){
 
         if (participant1 == null && participant2 == null){
             return true;

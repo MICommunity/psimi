@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
@@ -50,7 +50,7 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
      * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
      * will look at the stoichiometry (participant with lower stoichiometry will come first).
      */
-    public int compare(Participant participant1, Participant participant2) {
+    public int compare(Entity participant1, Entity participant2) {
         return super.compare(participant1, participant2);
     }
 
@@ -60,7 +60,7 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Participant participant1, Participant participant2){
+    public static boolean areEquals(Entity participant1, Entity participant2){
         if (unambiguousExactParticipantComparator == null){
             unambiguousExactParticipantComparator = new UnambiguousExactParticipantBaseComparator();
         }
@@ -73,7 +73,7 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
      * @param participant
      * @return the hashcode consistent with the equals method for this comparator
      */
-    public static int hashCode(Participant participant){
+    public static int hashCode(Entity participant){
         if (unambiguousExactParticipantComparator == null){
             unambiguousExactParticipantComparator = new UnambiguousExactParticipantBaseComparator();
         }
