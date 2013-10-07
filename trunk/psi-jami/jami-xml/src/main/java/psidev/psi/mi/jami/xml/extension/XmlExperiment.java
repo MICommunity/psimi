@@ -23,17 +23,17 @@ import java.util.*;
  * @version $Id$
  * @since <pre>25/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "experimentType", propOrder = {
-        "names",
-        "bibRef",
-        "xref",
-        "hostOrganisms",
-        "interactionDetectionMethod",
-        "participantIdentificationMethod",
-        "featureDetectionMethod",
-        "confidenceList",
-        "attributes"
+        "JAXBNames",
+        "JAXBBibRef",
+        "JAXBXref",
+        "JAXBHostOrganisms",
+        "JAXBInteractionDetectionMethod",
+        "JAXBParticipantIdentificationMethod",
+        "JAXBFeatureDetectionMethod",
+        "JAXBConfidenceList",
+        "JAXBAttributes"
 })
 public class XmlExperiment implements Experiment, FileSourceContext{
 
@@ -158,32 +158,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         }
     }
 
-    /**
-     * Gets the value of the namesContainer property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
-    @XmlElement(name = "names")
-    public NamesContainer getNames() {
-        return namesContainer;
-    }
-
-    /**
-     * Sets the value of the namesContainer property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link NamesContainer }
-     *
-     */
-    public void setNames(NamesContainer value) {
-        this.namesContainer = value;
-    }
-
-    @XmlTransient
     public Publication getPublication() {
         return this.publication;
     }
@@ -194,32 +168,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
             this.xrefContainer = new ExperimentXrefContainer();
         }
         this.xrefContainer.setPublication(this.publication);
-    }
-
-    @XmlElement(name = "bibref", required = true, type = BibRef.class)
-    public Publication getBibRef() {
-        return this.publication;
-    }
-
-    public void setBibRef(Publication publication) {
-        if (publication != null){
-            if (!publication.getIdentifiers().isEmpty()){
-                Xref firstIdentifier = publication.getIdentifiers().iterator().next();
-                if (mapOfPublications.containsKey(firstIdentifier)){
-                    setPublicationAndAddExperiment(mapOfPublications.get(firstIdentifier));
-                }
-                else {
-                    setPublicationAndAddExperiment(publication);
-                    mapOfPublications.put(firstIdentifier, publication);
-                }
-            }
-            else {
-                setPublicationAndAddExperiment(publication);
-            }
-        }
-        else {
-            setPublicationAndAddExperiment(publication);
-        }
     }
 
     public void setPublicationAndAddExperiment(Publication publication) {
@@ -237,46 +185,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         this.xrefContainer.setPublication(this.publication);
     }
 
-    /**
-     * Gets the value of the xref property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XrefContainer }
-     *
-     */
-    @XmlElement(name = "xref")
-    public ExperimentXrefContainer getXref() {
-        if (xrefContainer != null && xrefContainer.isEmpty()){
-           return null;
-        }
-        return xrefContainer;
-    }
-
-    /**
-     * Sets the value of the xref property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XrefContainer }
-     *
-     */
-    public void setXref(ExperimentXrefContainer value) {
-        if (value == null){
-            if (this.xrefContainer == null && this.publication != null){
-                this.xrefContainer.getSecondaryRefs().clear();
-                this.xrefContainer.setPrimaryRef(null);
-            }
-            else {
-                this.xrefContainer = null;
-            }
-        }
-        this.xrefContainer = value;
-        this.xrefContainer.setPublication(this.publication);
-
-    }
-
-    @XmlTransient
     public Collection<Xref> getXrefs() {
         if (this.xrefContainer == null){
             this.xrefContainer = new ExperimentXrefContainer();
@@ -285,7 +193,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         return this.xrefContainer.getAllXrefs();
     }
 
-    @XmlTransient
     public Organism getHostOrganism() {
         return (this.hostOrganisms != null && !this.hostOrganisms.isEmpty())? this.hostOrganisms.iterator().next() : null;
     }
@@ -307,36 +214,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     }
 
     /**
-     * Gets the value of the hostOrganismList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link HostOrganism }
-     *
-     */
-    @XmlElementWrapper(name="hostOrganismList")
-    @XmlElement(name="hostOrganism", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class)})
-    public ArrayList<Organism> getHostOrganisms() {
-        if (this.hostOrganisms != null && this.hostOrganisms.isEmpty()){
-            this.hostOrganisms = null;
-        }
-        return this.hostOrganisms;
-    }
-
-    /**
-     * Sets the value of the hostOrganismList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link HostOrganism }
-     *
-     */
-    public void setHostOrganisms(ArrayList<Organism> value) {
-        this.hostOrganisms = value;
-    }
-
-    /**
      * Gets the value of the interactionDetectionMethod property.
      *
      * @return
@@ -344,7 +221,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "interactionDetectionMethod", required = true, type = XmlCvTerm.class)
     public CvTerm getInteractionDetectionMethod() {
         return interactionDetectionMethod;
     }
@@ -366,6 +242,288 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         }
     }
 
+    public Collection<Confidence> getConfidences() {
+        if (confidences == null){
+            initialiseConfidences();
+        }
+        return confidences;
+    }
+
+    public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+            initialiseAnnotations();
+        }
+        return this.annotations;
+    }
+
+    public Collection<InteractionEvidence> getInteractionEvidences() {
+        if (interactions == null){
+            initialiseInteractions();
+        }
+        return this.interactions;
+    }
+
+    public boolean addInteractionEvidence(InteractionEvidence evidence) {
+        if (evidence == null){
+            return false;
+        }
+
+        if (getInteractionEvidences().add(evidence)){
+            evidence.setExperiment(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeInteractionEvidence(InteractionEvidence evidence) {
+        if (evidence == null){
+            return false;
+        }
+
+        if (getInteractionEvidences().remove(evidence)){
+            evidence.setExperiment(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
+        if (evidences == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (InteractionEvidence ev : evidences){
+            if (addInteractionEvidence(ev)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
+        if (evidences == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (InteractionEvidence ev : evidences){
+            if (removeInteractionEvidence(ev)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    public Collection<VariableParameter> getVariableParameters() {
+        if (variableParameters == null){
+            initialiseVariableParameters();
+        }
+        return variableParameters;
+    }
+
+    public boolean addVariableParameter(VariableParameter variableParameter) {
+        if (variableParameter == null){
+            return false;
+        }
+
+        if (getVariableParameters().add(variableParameter)){
+            variableParameter.setExperiment(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeVariableParameter(VariableParameter variableParameter) {
+        if (variableParameter == null){
+            return false;
+        }
+
+        if (getVariableParameters().remove(variableParameter)){
+            variableParameter.setExperiment(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
+        if (variableParameters == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (VariableParameter param : variableParameters){
+            if (addVariableParameter(param)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
+        if (variableParameters == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (VariableParameter param : variableParameters){
+            if (removeVariableParameter(param)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    /**
+     * Gets the value of the namesContainer property.
+     *
+     * @return
+     *     possible object is
+     *     {@link NamesContainer }
+     *
+     */
+    @XmlElement(name = "names")
+    public NamesContainer getJAXBNames() {
+        return namesContainer;
+    }
+
+    /**
+     * Sets the value of the namesContainer property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link NamesContainer }
+     *
+     */
+    public void setJAXBNames(NamesContainer value) {
+        this.namesContainer = value;
+    }
+
+    @XmlElement(name = "bibref", required = true, type = BibRef.class)
+    public Publication getJAXBBibRef() {
+        return this.publication;
+    }
+
+    public void setJAXBBibRef(BibRef publication) {
+        if (publication != null){
+            if (!publication.getIdentifiers().isEmpty()){
+                Xref firstIdentifier = publication.getIdentifiers().iterator().next();
+                if (mapOfPublications.containsKey(firstIdentifier)){
+                    setPublicationAndAddExperiment(mapOfPublications.get(firstIdentifier));
+                }
+                else {
+                    setPublicationAndAddExperiment(publication);
+                    mapOfPublications.put(firstIdentifier, publication);
+                }
+            }
+            else {
+                setPublicationAndAddExperiment(publication);
+            }
+        }
+        else {
+            setPublicationAndAddExperiment(publication);
+        }
+    }
+
+    /**
+     * Gets the value of the xref property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XrefContainer }
+     *
+     */
+    @XmlElement(name = "xref")
+    public ExperimentXrefContainer getJAXBXref() {
+        if (xrefContainer != null && xrefContainer.isEmpty()){
+            return null;
+        }
+        return xrefContainer;
+    }
+
+    /**
+     * Sets the value of the xref property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link XrefContainer }
+     *
+     */
+    public void setJAXBXref(ExperimentXrefContainer value) {
+        if (value == null){
+            if (this.xrefContainer == null && this.publication != null){
+                this.xrefContainer.getJAXBSecondaryRefs().clear();
+                this.xrefContainer.setJAXBPrimaryRef(null);
+            }
+            else {
+                this.xrefContainer = null;
+            }
+        }
+        this.xrefContainer = value;
+        this.xrefContainer.setPublication(this.publication);
+
+    }
+
+    /**
+     * Gets the value of the hostOrganismList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link HostOrganism }
+     *
+     */
+    @XmlElementWrapper(name="hostOrganismList")
+    @XmlElement(name="hostOrganism", required = true)
+    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class)})
+    public ArrayList<Organism> getJAXBHostOrganisms() {
+        if (this.hostOrganisms != null && this.hostOrganisms.isEmpty()){
+            this.hostOrganisms = null;
+        }
+        return this.hostOrganisms;
+    }
+
+    /**
+     * Sets the value of the hostOrganismList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link HostOrganism }
+     *
+     */
+    public void setJAXBHostOrganisms(ArrayList<Organism> value) {
+        this.hostOrganisms = value;
+    }
+
+    /**
+     * Gets the value of the interactionDetectionMethod property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XmlCvTerm }
+     *
+     */
+    @XmlElement(name = "interactionDetectionMethod", required = true, type = XmlCvTerm.class)
+    public CvTerm getJAXBInteractionDetectionMethod() {
+        return interactionDetectionMethod;
+    }
+
+    /**
+     * Sets the value of the interactionDetectionMethod property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link XmlCvTerm }
+     *
+     */
+    public void setJAXBInteractionDetectionMethod(XmlCvTerm value) {
+        if (value == null){
+            this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
+        }
+        else{
+            this.interactionDetectionMethod = value;
+        }
+    }
+
     /**
      * Gets the value of the participantIdentificationMethod property.
      *
@@ -375,7 +533,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlElement(name = "participantIdentificationMethod")
-    public XmlCvTerm getParticipantIdentificationMethod() {
+    public XmlCvTerm getJAXBParticipantIdentificationMethod() {
         return participantIdentificationMethod;
     }
 
@@ -387,7 +545,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *     {@link XmlCvTerm }
      *
      */
-    public void setParticipantIdentificationMethod(XmlCvTerm value) {
+    public void setJAXBParticipantIdentificationMethod(XmlCvTerm value) {
         this.participantIdentificationMethod = value;
     }
 
@@ -400,7 +558,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlElement(name = "featureDetectionMethod")
-    public XmlCvTerm getFeatureDetectionMethod() {
+    public XmlCvTerm getJAXBFeatureDetectionMethod() {
         return featureDetectionMethod;
     }
 
@@ -412,16 +570,8 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *     {@link XmlCvTerm }
      *
      */
-    public void setFeatureDetectionMethod(XmlCvTerm value) {
+    public void setJAXBFeatureDetectionMethod(XmlCvTerm value) {
         this.featureDetectionMethod = value;
-    }
-
-    @XmlTransient
-    public Collection<Confidence> getConfidences() {
-        if (confidences == null){
-            initialiseConfidences();
-        }
-        return confidences;
     }
 
     /**
@@ -435,9 +585,9 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     @XmlElementWrapper(name="confidenceList")
     @XmlElement(name="confidence", required = true)
     @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class)})
-    public ArrayList<Confidence> getConfidenceList() {
+    public ArrayList<Confidence> getJAXBConfidenceList() {
         if (getConfidences().isEmpty()){
-           return null;
+            return null;
         }
         return new ArrayList<Confidence>(getConfidences());
     }
@@ -450,25 +600,17 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *     {@link XmlConfidence }
      *
      */
-    public void setConfidenceList(ArrayList<Confidence> value) {
+    public void setJAXBConfidenceList(ArrayList<XMLConfidence> value) {
         getConfidences().clear();
         if (value != null){
             getConfidences().addAll(value);
         }
     }
 
-    @XmlTransient
-    public Collection<Annotation> getAnnotations() {
-        if (annotations == null){
-            initialiseAnnotations();
-        }
-        return this.annotations;
-    }
-
     @XmlElementWrapper(name="attributeList")
     @XmlElement(name="attribute", required = true)
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
-    public ArrayList<Annotation> getAttributes() {
+    public ArrayList<Annotation> getJAXBAttributes() {
         if ((this.publication == null && getAnnotations().isEmpty())
                 || (this.publication != null &&
                 ((this.publication.getAnnotations().isEmpty() && this.publication.getTitle() == null && this.publication.getJournal() == null && this.publication.getPublicationDate() == null
@@ -543,14 +685,14 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         }
     }
 
-    public void setAttributes(ArrayList<Annotation> annotations) {
+    public void setAttributes(ArrayList<XmlAnnotation> annotations) {
         getAnnotations().clear();
         if (annotations != null && !annotations.isEmpty()){
             // we have a bibref. Some annotations can be processed
             for (Annotation annot : annotations){
                 if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
                     if (this.publication == null){
-                       this.publication = new BibRef();
+                        this.publication = new BibRef();
                     }
                     this.publication.setTitle(annot.getValue());
                 }
@@ -642,126 +784,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }
-    }
-
-    @XmlTransient
-    public Collection<InteractionEvidence> getInteractionEvidences() {
-        if (interactions == null){
-            initialiseInteractions();
-        }
-        return this.interactions;
-    }
-
-    public boolean addInteractionEvidence(InteractionEvidence evidence) {
-        if (evidence == null){
-            return false;
-        }
-
-        if (getInteractionEvidences().add(evidence)){
-            evidence.setExperiment(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeInteractionEvidence(InteractionEvidence evidence) {
-        if (evidence == null){
-            return false;
-        }
-
-        if (getInteractionEvidences().remove(evidence)){
-            evidence.setExperiment(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
-        if (evidences == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (InteractionEvidence ev : evidences){
-            if (addInteractionEvidence(ev)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
-        if (evidences == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (InteractionEvidence ev : evidences){
-            if (removeInteractionEvidence(ev)){
-                removed = true;
-            }
-        }
-        return removed;
-    }
-
-    @XmlTransient
-    public Collection<VariableParameter> getVariableParameters() {
-        if (variableParameters == null){
-            initialiseVariableParameters();
-        }
-        return variableParameters;
-    }
-
-    public boolean addVariableParameter(VariableParameter variableParameter) {
-        if (variableParameter == null){
-            return false;
-        }
-
-        if (getVariableParameters().add(variableParameter)){
-            variableParameter.setExperiment(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeVariableParameter(VariableParameter variableParameter) {
-        if (variableParameter == null){
-            return false;
-        }
-
-        if (getVariableParameters().remove(variableParameter)){
-            variableParameter.setExperiment(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
-        if (variableParameters == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (VariableParameter param : variableParameters){
-            if (addVariableParameter(param)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
-        if (variableParameters == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (VariableParameter param : variableParameters){
-            if (removeVariableParameter(param)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     @Override

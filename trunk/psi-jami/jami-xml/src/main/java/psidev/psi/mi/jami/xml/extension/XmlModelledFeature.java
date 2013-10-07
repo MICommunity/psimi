@@ -16,15 +16,15 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>25/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "feature", propOrder = {
-        "names",
-        "xref",
-        "type",
-        "featureRanges",
-        "attributes"
+        "JAXBNames",
+        "JAXBXref",
+        "JAXBType",
+        "JAXBRanges",
+        "JAXBAttributes"
 })
-public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, ModelledFeature> implements ModelledFeature {
+public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, ModelledFeature> implements ModelledFeature {
 
     public XmlModelledFeature() {
     }
@@ -53,6 +53,61 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
         super(shortName, fullName, type, interpro);
     }
 
+    @Override
+    public String getShortName() {
+        return super.getShortName();
+    }
+
+    @Override
+    public String getFullName() {
+        return super.getFullName();
+    }
+
+    @Override
+    public String getInterpro() {
+        return super.getInterpro();
+    }
+
+    @Override
+    public Collection<Xref> getIdentifiers() {
+        return super.getIdentifiers();
+    }
+
+    @Override
+    public Collection<Xref> getXrefs() {
+        return super.getXrefs();
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
+    @Override
+    public Collection<Range> getRanges() {
+        return super.getRanges();
+    }
+
+    @Override
+    public CvTerm getInteractionEffect() {
+        return super.getInteractionEffect();
+    }
+
+    @Override
+    public CvTerm getInteractionDependency() {
+        return super.getInteractionDependency();
+    }
+
+    @Override
+    public ModelledEntity getParticipant() {
+        return super.getParticipant();
+    }
+
+    @Override
+    public Collection<ModelledFeature> getLinkedFeatures() {
+        return super.getLinkedFeatures();
+    }
+
     /**
      * Gets the value of the names property.
      *
@@ -63,20 +118,8 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
      */
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getNames() {
-        return super.getNames();
-    }
-
-    @Override
-    @XmlTransient
-    public String getShortName() {
-        return super.getShortName();
-    }
-
-    @Override
-    @XmlTransient
-    public String getFullName() {
-        return super.getFullName();
+    public NamesContainer getJAXBNames() {
+        return super.getJAXBNames();
     }
 
     /**
@@ -84,73 +127,19 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
      *
      * @return
      *     possible object is
-     *     {@link psidev.psi.mi.jami.model.Xref }
+     *     {@link Xref }
      *
      */
     @Override
     @XmlElement(name = "xref")
-    public FeatureXrefContainer getXref() {
-        return super.getXref();
-    }
-
-    @Override
-    @XmlTransient
-    public String getInterpro() {
-        return super.getInterpro();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Xref> getIdentifiers() {
-        return super.getIdentifiers();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Xref> getXrefs() {
-        return super.getXrefs();
+    public FeatureXrefContainer getJAXBXref() {
+        return super.getJAXBXref();
     }
 
     @Override
     @XmlElement(name = "featureType", type = XmlCvTerm.class)
-    public CvTerm getType() {
+    public CvTerm getJAXBType() {
         return super.getType();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<Range> getRanges() {
-        return super.getRanges();
-    }
-
-    @Override
-    @XmlTransient
-    public CvTerm getInteractionEffect() {
-        return super.getInteractionEffect();
-    }
-
-    @Override
-    @XmlTransient
-    public CvTerm getInteractionDependency() {
-        return super.getInteractionDependency();
-    }
-
-    @Override
-    @XmlTransient
-    public ModelledParticipant getParticipant() {
-        return super.getParticipant();
-    }
-
-    @Override
-    @XmlTransient
-    public Collection<ModelledFeature> getLinkedFeatures() {
-        return super.getLinkedFeatures();
     }
 
     /**
@@ -165,8 +154,8 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
     @XmlElement(name="featureRange", required = true)
     @XmlElementRefs({@XmlElementRef(type=XmlRange.class)})
     @Override
-    public ArrayList<Range> getFeatureRanges() {
-        return super.getFeatureRanges();
+    public ArrayList<Range> getJAXBRanges() {
+        return super.getJAXBRanges();
     }
 
     /**
@@ -181,8 +170,8 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
     @XmlElement(name="attribute", required = true)
     @XmlElementRefs({@XmlElementRef(type=XmlAnnotation.class)})
     @Override
-    public ArrayList<Annotation> getAttributes() {
-        return super.getAttributes();
+    public ArrayList<Annotation> getJAXBAttributes() {
+        return super.getJAXBAttributes();
     }
 
     /**
@@ -191,8 +180,8 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
      */
     @Override
     @XmlAttribute(name = "id", required = true)
-    public int getId() {
-        return super.getId();
+    public int getJAXBId() {
+        return super.getJAXBId();
     }
 
     @XmlLocation

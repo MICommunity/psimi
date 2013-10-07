@@ -20,7 +20,7 @@ import java.util.Map;
  * @since <pre>25/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlFeature<P extends Participant, F extends Feature> implements Feature<P,F>, FileSourceContext{
+public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements Feature<P,F>, FileSourceContext{
 
     private Collection<Annotation> annotations;
     private Collection<Range> ranges;
@@ -46,8 +46,8 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     public AbstractXmlFeature(String shortName, String fullName){
         this();
         this.namesContainer = new NamesContainer();
-        this.namesContainer.setShortLabel(shortName);
-        this.namesContainer.setFullName(fullName);
+        this.namesContainer.setJAXBShortLabel(shortName);
+        this.namesContainer.setJAXBFullName(fullName);
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
@@ -120,7 +120,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         }
     }
 
-    public NamesContainer getNames() {
+    public NamesContainer getJAXBNames() {
         if (namesContainer != null && namesContainer.isEmpty()){
             return null;
         }
@@ -135,12 +135,12 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
      *     {@link NamesContainer }
      *
      */
-    public void setNames(NamesContainer value) {
+    public void setJAXBNames(NamesContainer value) {
         this.namesContainer = value;
     }
 
     public String getShortName() {
-        return this.namesContainer != null ? this.namesContainer.getShortLabel() : null;
+        return this.namesContainer != null ? this.namesContainer.getJAXBShortLabel() : null;
 
     }
 
@@ -148,11 +148,11 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setShortLabel(name);
+        this.namesContainer.setJAXBShortLabel(name);
     }
 
     public String getFullName() {
-        return this.namesContainer != null ? this.namesContainer.getFullName() : null;
+        return this.namesContainer != null ? this.namesContainer.getJAXBFullName() : null;
 
     }
 
@@ -160,10 +160,10 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setFullName(name);
+        this.namesContainer.setJAXBFullName(name);
     }
 
-    public FeatureXrefContainer getXref() {
+    public FeatureXrefContainer getJAXBXref() {
         if (this.xrefContainer != null && this.xrefContainer.isEmpty()){
             return null;
         }
@@ -178,7 +178,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
      *     {@link FeatureXrefContainer }
      *
      */
-    public void setXref(FeatureXrefContainer value) {
+    public void setJAXBXref(FeatureXrefContainer value) {
         this.xrefContainer = value;
     }
 
@@ -214,14 +214,14 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         return this.annotations;
     }
 
-    public ArrayList<Annotation> getAttributes() {
+    public ArrayList<Annotation> getJAXBAttributes() {
         if (annotations == null || annotations.isEmpty()){
             return null;
         }
         return new ArrayList<Annotation>(this.annotations);
     }
 
-    public void setAttributes(ArrayList<Annotation> attributes) {
+    public void setJAXBAttributes(ArrayList<XmlAnnotation> attributes) {
         getAnnotations().clear();
         if (attributes != null){
             getAnnotations().addAll(attributes);
@@ -236,6 +236,14 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         this.type = type;
     }
 
+    public CvTerm getJAXBType() {
+        return this.type;
+    }
+
+    public void setJAXBType(XmlCvTerm type) {
+        this.type = type;
+    }
+
     public Collection<Range> getRanges() {
         if (ranges == null){
             initialiseRanges();
@@ -243,14 +251,14 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         return this.ranges;
     }
 
-    public ArrayList<Range> getFeatureRanges() {
+    public ArrayList<Range> getJAXBRanges() {
         if (ranges == null || ranges.isEmpty()){
             return null;
         }
         return new ArrayList<Range>(this.ranges);
     }
 
-    public void setFeatureRanges(ArrayList<Range> ranges) {
+    public void setJAXBRanges(ArrayList<XmlRange> ranges) {
         getRanges().clear();
         if (ranges != null){
             getRanges().addAll(ranges);
@@ -323,7 +331,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
      * Gets the value of the id property.
      *
      */
-    public int getId() {
+    public int getJAXBId() {
         return id;
     }
 
@@ -332,11 +340,15 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
      * Adds this object in the mapOfReferencedObjects of this entry
      *
      */
-    public void setId(int value) {
+    public void setJAXBId(int value) {
         this.id = value;
         this.mapOfReferencedObjects.put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }
+    }
+
+    protected Map<Integer, Object> getMapOfReferencedObjects() {
+        return mapOfReferencedObjects;
     }
 }
