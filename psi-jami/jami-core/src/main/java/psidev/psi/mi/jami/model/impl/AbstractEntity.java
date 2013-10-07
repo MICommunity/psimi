@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
+import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
@@ -25,6 +26,7 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
     private Stoichiometry stoichiometry;
     private CausalRelationship causalRelationship;
     private Collection<F> features;
+    private ParticipantInteractorChangeListener changeListener;
 
     public AbstractEntity(Interactor interactor){
         if (interactor == null){
@@ -112,7 +114,11 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
         if (interactor == null){
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
+        Interactor oldInteractor = this.interactor;
         this.interactor = interactor;
+        if (this.changeListener != null){
+            this.changeListener.onInteractorUpdate(this, oldInteractor);
+        }
     }
 
     public CvTerm getBiologicalRole() {
@@ -179,6 +185,14 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
             initialiseFeatures();
         }
         return this.features;
+    }
+
+    public ParticipantInteractorChangeListener getChangeListener() {
+        return this.changeListener;
+    }
+
+    public void setChangeListener(ParticipantInteractorChangeListener listener) {
+        this.changeListener = listener;
     }
 
     @Override

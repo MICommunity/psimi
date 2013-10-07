@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
+import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
@@ -13,7 +14,7 @@ import java.util.*;
  * @since <pre>04/10/13</pre>
  */
 
-public abstract class AbstractEntitySet<I extends Interaction, F extends Feature, C extends Entity> extends AbstractParticipant<I,F> implements EntitySet<I,F,C> {
+public abstract class AbstractEntitySet<I extends Interaction, F extends Feature, C extends Entity> extends AbstractParticipant<I,F> implements EntitySet<I,F,C>, ParticipantInteractorChangeListener {
 
     private Set<C> components;
     private CvTerm type;
@@ -105,6 +106,7 @@ public abstract class AbstractEntitySet<I extends Interaction, F extends Feature
 
     public boolean add(C interactor) {
         if (components.add(interactor)){
+            interactor.setChangeListener(this);
             getInteractor().add(interactor.getInteractor());
             return true;
         }
@@ -113,7 +115,9 @@ public abstract class AbstractEntitySet<I extends Interaction, F extends Feature
 
     public boolean remove(Object o) {
         if (components.remove(o)){
-            getInteractor().remove(((Entity)o).getInteractor());
+            Entity entity = (Entity)o;
+            entity.setChangeListener(null);
+            getInteractor().remove(entity.getInteractor());
             return true;
         }
         return false;
@@ -127,6 +131,7 @@ public abstract class AbstractEntitySet<I extends Interaction, F extends Feature
         boolean added = this.components.addAll(interactors);
         if (added){
             for (C entity : this){
+                entity.setChangeListener(this);
                 getInteractor().add(entity.getInteractor());
             }
         }
@@ -150,7 +155,9 @@ public abstract class AbstractEntitySet<I extends Interaction, F extends Feature
         if (remove){
             Collection<Interactor> interactors = new ArrayList<Interactor>(objects.size());
             for (Object o : objects){
-                interactors.add(((Entity)o).getInteractor());
+                Entity entity = (Entity)o;
+                entity.setChangeListener(null);
+                interactors.add(entity.getInteractor());
             }
             // check if an interactor is not in another entity that is kept.
             // remove any interactors that are kept with other entities
@@ -163,7 +170,31 @@ public abstract class AbstractEntitySet<I extends Interaction, F extends Feature
     }
 
     public void clear() {
+        for (C entity : this){
+            entity.setChangeListener(null);
+        }
         components.clear();
         getInteractor().clear();
+    }
+
+    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+        // check that the listener still makes sensr
+        if (contains(entity)){
+            boolean needsToRemoveOldInteractor = true;
+            // check if an interactor is not in another entity that is kept.
+            // remove any interactors that are kept with other entities
+            for (C e : this){
+                // we want to check if an interactor is the same as old interactor in another entry
+                if (e != entity){
+                    if (oldInteractor.equals(e.getInteractor())){
+                        needsToRemoveOldInteractor = false;
+                    }
+                }
+            }
+            if (!needsToRemoveOldInteractor){
+                getInteractor().remove(oldInteractor);
+            }
+            getInteractor().add(entity.getInteractor());
+        }
     }
 }
