@@ -108,7 +108,7 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
                     this.interactor = (Interactor) object;
                 }
                 else {
-                    this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
+                    initialiseUnspecifiedInteractor();
                 }
             }
             else if (this.interactionRef != null && this.mapOfReferencedObjects.containsKey(this.interactionRef)){
@@ -122,7 +122,7 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
                 }
             }
             else {
-                this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
+                initialiseUnspecifiedInteractor();
             }
         }
         return this.interactor;
@@ -585,5 +585,9 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
     @Override
     public String toString() {
         return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (stoichiometry != null ? ", stoichiometry: " + stoichiometry.toString() : "");
+    }
+
+    protected void initialiseUnspecifiedInteractor() {
+        this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
     }
 }

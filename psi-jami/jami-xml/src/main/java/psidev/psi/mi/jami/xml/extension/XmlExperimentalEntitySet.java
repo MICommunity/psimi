@@ -8,14 +8,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Xml implementation of ParticipantEvidence
+ * XML implementation of a set of ExperimentalEntity that form a single participant evidence
+ * Notes: The equals and hashcode methods have NOT been overridden because the XmlExperimentalEntitySet object is a complex object.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>08/10/13</pre>
+ * @since <pre>04/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "participantEvidence", propOrder = {
+@XmlType(name = "participantEvidenceSet", propOrder = {
         "JAXBNames",
         "JAXBXref",
         "JAXBInteractionRef",
@@ -32,7 +33,8 @@ import java.util.Collections;
         "JAXBParameters",
         "JAXBAttributes"
 })
-public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements ParticipantEvidence{
+public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEvidence, FeatureEvidence, ExperimentalEntity> implements ExperimentalEntitySet {
+
     private Collection<CvTerm> identificationMethods;
     private Collection<CvTerm> experimentalPreparations;
     private Collection<Confidence> confidences;
@@ -42,23 +44,133 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     private ArrayList<ExperimentalInteractor> experimentalInteractors;
     private ArrayList<Organism> hostOrganisms;
 
-    public XmlParticipantEvidence() {
+    public XmlExperimentalEntitySet() {
+        super();
     }
 
-    public XmlParticipantEvidence(Interactor interactor) {
-        super(interactor);
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName));
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
     }
 
-    public XmlParticipantEvidence(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm bioRole, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
     }
 
-    public XmlParticipantEvidence(Interactor interactor, Stoichiometry stoichiometry) {
-        super(interactor, stoichiometry);
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), stoichiometry);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
     }
 
-    public XmlParticipantEvidence(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole, stoichiometry);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
+    }
+
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
+    }
+
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole, stoichiometry);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
+    }
+
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole);
+        setExpressedInOrganism(expressedIn);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
+    }
+
+    public XmlExperimentalEntitySet(InteractionEvidence interaction, String interactorSetName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole, stoichiometry);
+        setExpressedInOrganism(expressedIn);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+        setInteraction(interaction);
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName));
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, CvTerm bioRole, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), stoichiometry);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole, stoichiometry);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole);
+        setExpressedInOrganism(expressedIn);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(new XmlInteractorSet(interactorSetName), bioRole, stoichiometry);
+        setExpressedInOrganism(expressedIn);
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName) {
+        super(new XmlInteractorSet(interactorSetName));
+    }
+
+    public XmlExperimentalEntitySet(String interactorSetName, Stoichiometry stoichiometry) {
+        super(new XmlInteractorSet(interactorSetName), stoichiometry);
     }
 
     protected void initialiseExperimentalPreparations() {
