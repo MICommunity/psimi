@@ -1,13 +1,14 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.util.Map;
 
 /**
@@ -37,7 +38,7 @@ import java.util.Map;
         "JAXBParticipantFeatureRef",
         "JAXBParticipantRef"
 })
-public class InferredInteractionParticipant
+public class InferredInteractionParticipant implements FileSourceContext
 {
 
     private Integer participantFeatureRef;
@@ -47,6 +48,7 @@ public class InferredInteractionParticipant
     private Entity participant;
 
     private Map<Integer, Object> mapOfReferencedObjects;
+    private PsiXmLocator sourceLocator;
 
     public InferredInteractionParticipant(){
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
@@ -114,6 +116,24 @@ public class InferredInteractionParticipant
             resolveParticipantReferences();
         }
         return participant;
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator getSaxLocator() {
+        return sourceLocator;
+    }
+
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 
     private void resolveFeatureReferences() {

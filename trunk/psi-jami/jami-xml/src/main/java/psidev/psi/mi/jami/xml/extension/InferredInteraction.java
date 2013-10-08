@@ -1,10 +1,13 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +39,7 @@ import java.util.Map;
         "JAXBExperimentRefList"
 })
 public class InferredInteraction
-        implements Serializable
+        implements FileSourceContext
 {
 
     @XmlElement(name = "participant", required = true)
@@ -44,6 +47,8 @@ public class InferredInteraction
     private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
     private Map<Integer, Object> mapOfReferencedObjects;
+
+    private PsiXmLocator sourceLocator;
 
     public InferredInteraction() {
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
@@ -125,5 +130,23 @@ public class InferredInteraction
                 }
             }
         }
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator getSaxLocator() {
+        return sourceLocator;
+    }
+
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 }

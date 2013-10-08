@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
@@ -39,7 +43,7 @@ import java.util.Map;
         "JAXBInteractorRef",
         "JAXBExperimentRefList"
 })
-public class ExperimentalInteractor
+public class ExperimentalInteractor implements FileSourceContext
 {
 
     private XmlInteractor xmlInteractor;
@@ -51,6 +55,7 @@ public class ExperimentalInteractor
 
     private Map<Integer, Object> mapOfReferencedObjects;
     private XmlInteractorFactory interactorFactory;
+    private PsiXmLocator sourceLocator;
 
     public ExperimentalInteractor() {
         mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
@@ -172,5 +177,23 @@ public class ExperimentalInteractor
                 }
             }
         }
+    }
+
+    @XmlLocation
+    @XmlTransient
+    public Locator getSaxLocator() {
+        return sourceLocator;
+    }
+
+    public void setSaxLocator(Locator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
     }
 }
