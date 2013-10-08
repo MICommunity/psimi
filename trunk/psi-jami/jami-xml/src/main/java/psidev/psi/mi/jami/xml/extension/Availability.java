@@ -5,6 +5,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
 import java.util.Map;

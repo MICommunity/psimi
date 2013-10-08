@@ -32,10 +32,10 @@ public class XmlInteractorFactory extends InteractorFactory{
         return new XmlGene(name);
     }
 
-    /*@Override
-    public C createComplex(String name, CvTerm type) {
-        return new MitabComplex(name, type);
-    }*/
+    @Override
+    public XmlComplex createComplex(String name, CvTerm type) {
+        return new XmlComplex(name, type);
+    }
 
     @Override
     public XmlBioactiveEntity createBioactiveEntity(String name, CvTerm type) {

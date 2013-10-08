@@ -33,7 +33,7 @@ import java.util.Map;
 })
 @XmlSeeAlso({
         XmlBioactiveEntity.class, XmlGene.class, XmlInteractorSet.class, XmlMolecule.class,
-        XmlPolymer.class, XmlNucleciAcid.class, XmlProtein.class
+        XmlPolymer.class, XmlNucleciAcid.class, XmlProtein.class, XmlComplex.class
 })
 public class XmlInteractor implements Interactor, FileSourceContext{
 
