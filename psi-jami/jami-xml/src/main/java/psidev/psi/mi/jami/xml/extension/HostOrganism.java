@@ -69,7 +69,7 @@ public class HostOrganism extends XmlOrganism{
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef")
+    @XmlElement(name="experimentRef", required = true)
     public Collection<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }

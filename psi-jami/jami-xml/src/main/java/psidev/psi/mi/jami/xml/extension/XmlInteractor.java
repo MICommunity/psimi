@@ -461,7 +461,7 @@ public class XmlInteractor implements Interactor, FileSourceContext{
      *     {@link XmlAnnotation }
      *
      */
-    public void setJAXBAttributes(ArrayList<Annotation> value) {
+    public void setJAXBAttributes(ArrayList<XmlAnnotation> value) {
         getAnnotations().clear();
         if (value != null && !value.isEmpty()){
             for (Annotation a : value){
@@ -471,7 +471,8 @@ public class XmlInteractor implements Interactor, FileSourceContext{
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_MI, Checksum.INCHI)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)){
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)){
                     XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
                     checksum.setSourceLocator(((FileSourceContext)a).getSourceLocator());
                     getChecksums().add(checksum);
@@ -502,7 +503,6 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

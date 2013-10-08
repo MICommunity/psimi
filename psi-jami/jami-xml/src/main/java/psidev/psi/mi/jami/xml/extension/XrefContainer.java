@@ -26,7 +26,7 @@ import java.util.List;
 })
 @XmlSeeAlso({
         CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class,
-        ExperimentXrefContainer.class
+        ExperimentXrefContainer.class, InteractionXrefContainer.class
 })
 public class XrefContainer implements FileSourceContext{
 
