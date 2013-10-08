@@ -88,7 +88,7 @@ public class ExperimentalCvTerm
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef")
+    @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }

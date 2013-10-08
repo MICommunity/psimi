@@ -157,7 +157,7 @@ public class XmlProtein extends XmlPolymer implements Protein{
             if (this.rogid != null){
                 proteinChecksums.remove(this.rogid);
             }
-            this.rogid = new DefaultChecksum(rogidMethod, rogid);
+            this.rogid = new XmlChecksum(rogidMethod, rogid);
             proteinChecksums.add(this.rogid);
         }
         // remove all smiles if the collection is not empty

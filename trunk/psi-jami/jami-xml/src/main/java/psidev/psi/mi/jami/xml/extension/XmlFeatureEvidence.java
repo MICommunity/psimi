@@ -142,7 +142,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef")
+    @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
         return experimentRefList;
     }

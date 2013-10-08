@@ -410,9 +410,9 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      *
      */
     public void setJAXBFeatures(ArrayList<F> value) {
-        getFeatures().clear();
+        removeAllFeatures(getFeatures());
         if (value != null && !value.isEmpty()){
-            getFeatures().addAll(value);
+            addAllFeatures(value);
         }
     }
 
