@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
@@ -100,5 +102,12 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
+    }
+
+    @Override
+    @XmlLocation
+    @XmlTransient
+    public Locator getSaxLocator() {
+        return super.getSaxLocator();
     }
 }

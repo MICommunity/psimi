@@ -4,15 +4,13 @@ import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Confidence;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceComparator;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * Xml implementation of confidence
@@ -24,21 +22,19 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "confidenceType", propOrder = {
         "JAXBType",
-        "JAXBValue",
-        "JAXBExperimentRefList"
+        "JAXBValue"
+})
+@XmlSeeAlso({
+        ModelledConfidence.class
 })
 public class XmlConfidence implements Confidence, FileSourceContext{
 
     private CvTerm type;
     private String value;
-    private Map<Integer, Object> mapOfReferencedObjects;
-    private ArrayList<Integer> experimentRefList;
-    private Collection<Experiment> experiments;
 
     private PsiXmLocator sourceLocator;
 
     public XmlConfidence() {
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public XmlConfidence(XmlOpenCvTerm type, String value) {
@@ -50,7 +46,6 @@ public class XmlConfidence implements Confidence, FileSourceContext{
             throw new IllegalArgumentException("The confidence value is required and cannot be null");
         }
         this.value = value;
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     /**
@@ -131,54 +126,6 @@ public class XmlConfidence implements Confidence, FileSourceContext{
         this.value = value;
     }
 
-    /**
-     * Gets the value of the experimentRefList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef", required = true)
-    public ArrayList<Integer> getJAXBExperimentRefList() {
-        return experimentRefList;
-    }
-
-    /**
-     * Sets the value of the experimentRefList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        this.experimentRefList = value;
-    }
-
-    @XmlTransient
-    public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
-        }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
-        return experiments;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (this.mapOfReferencedObjects.containsKey(id)){
-                Object o = this.mapOfReferencedObjects.get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
-            }
-        }
-    }
-
     @XmlLocation
     @XmlTransient
     public Locator getSaxLocator() {
@@ -189,7 +136,6 @@ public class XmlConfidence implements Confidence, FileSourceContext{
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

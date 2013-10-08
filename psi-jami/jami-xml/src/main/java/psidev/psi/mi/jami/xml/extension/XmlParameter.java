@@ -4,15 +4,16 @@ import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Parameter;
+import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -22,15 +23,14 @@ import java.util.Map;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "parameterType", propOrder = {
-        "experimentRefList"})
-public class XmlParameter implements Parameter, ModelledParameter, FileSourceContext{
+        "JAXBExperimentRef"})
+@XmlSeeAlso({
+        XmlModelledParameter.class
+})
+public class XmlParameter implements Parameter, FileSourceContext{
 
-    private Collection<Publication> publications;
-    private Map<Integer, Object> mapOfReferencedObjects;
-    private Collection<Integer> experimentRefList;
-    private Collection<Experiment> experiments;
     private CvTerm type;
     private BigDecimal uncertainty;
     private CvTerm unit;
@@ -73,25 +73,15 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
         this.uncertainty = value;
     }
 
-    @XmlTransient
     public CvTerm getUnit() {
         return this.unit;
     }
 
-    @XmlTransient
     public ParameterValue getValue() {
         if (this.value == null){
             this.value = new ParameterValue(new BigDecimal(0));
         }
         return this.value;
-    }
-
-    @XmlTransient
-    public Collection<Publication> getPublications() {
-        if (publications == null){
-            publications = new ArrayList<Publication>();
-        }
-        return publications;
     }
 
     /**
@@ -103,7 +93,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *
      */
     @XmlAttribute(name = "term", required = true)
-    public String getTerm() {
+    public String getJAXBTerm() {
         return getType().getShortName();
     }
 
@@ -115,7 +105,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *     {@link String }
      *
      */
-    public void setTerm(String value) {
+    public void setJAXBTerm(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(value);
         }
@@ -133,7 +123,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *
      */
     @XmlAttribute(name = "termAc")
-    public String getTermAc() {
+    public String getJAXBTermAc() {
         return getType().getMIIdentifier();
     }
 
@@ -145,7 +135,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *     {@link String }
      *
      */
-    public void setTermAc(String value) {
+    public void setJAXBTermAc(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
         }
@@ -233,7 +223,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *
      */
     @XmlAttribute(name = "base")
-    public short getBase() {
+    public short getJAXBBase() {
         return getValue().getBase();
     }
 
@@ -245,7 +235,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *     {@link Short }
      *
      */
-    public void setBase(Short value) {
+    public void setJAXBBase(Short value) {
         this.value = new ParameterValue(getValue().getFactor(), value, getValue().getExponent());
     }
 
@@ -258,7 +248,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *
      */
     @XmlAttribute(name = "exponent")
-    public short getExponent() {
+    public short getJAXBExponent() {
         return getValue().getExponent();
     }
 
@@ -270,7 +260,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *     {@link Short }
      *
      */
-    public void setExponent(Short value) {
+    public void setJAXBExponent(Short value) {
         this.value = new ParameterValue(getValue().getFactor(), getValue().getBase(), value);
     }
 
@@ -283,7 +273,7 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *
      */
     @XmlAttribute(name = "factor", required = true)
-    public BigDecimal getFactor() {
+    public BigDecimal getJAXBFactor() {
         return getValue().getFactor();
     }
 
@@ -295,56 +285,8 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
      *     {@link BigDecimal }
      *
      */
-    public void setFactor(BigDecimal value) {
+    public void setJAXBFactor(BigDecimal value) {
         this.value = new ParameterValue(value != null ? value : new BigDecimal(0), getValue().getBase(), getValue().getExponent());
-    }
-
-    /**
-     * Gets the value of the experimentRefList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef")
-    public Collection<Integer> getExperimentRefList() {
-        return experimentRefList;
-    }
-
-    /**
-     * Sets the value of the experimentRefList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setExperimentRefList(Collection<Integer> value) {
-        this.experimentRefList = value;
-    }
-
-    @XmlTransient
-    public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
-        }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
-        return experiments;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (this.mapOfReferencedObjects.containsKey(id)){
-                Object o = this.mapOfReferencedObjects.get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
-            }
-        }
     }
 
     @XmlLocation
@@ -357,7 +299,6 @@ public class XmlParameter implements Parameter, ModelledParameter, FileSourceCon
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
     }
 
-    @XmlTransient
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }

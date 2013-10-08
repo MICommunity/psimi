@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.*;
 
 /**
@@ -30,13 +30,13 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     private ArrayList<InferredInteraction> inferredInteractions;
     private Boolean intraMolecular;
     private int id;
+    private ArrayList<CvTerm> interactionTypes;
 
     private Checksum rigid;
     private Collection<Checksum> checksums;
     private Collection<Annotation> annotations;
     private Date updatedDate;
     private Date createdDate;
-    private CvTerm interactionType;
     private Collection<T> participants;
 
     private Map<Integer, Object> mapOfReferencedObjects;
@@ -52,7 +52,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     public AbstractXmlInteraction(String shortName, CvTerm type){
         this(shortName);
-        this.interactionType = type;
+        setInteractionType(type);
     }
 
     protected void initialiseAnnotations(){
@@ -172,11 +172,23 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     }
 
     public CvTerm getInteractionType() {
-        return this.interactionType;
+        return (this.interactionTypes != null && !this.interactionTypes.isEmpty())? this.interactionTypes.iterator().next() : null;
     }
 
     public void setInteractionType(CvTerm term) {
-        this.interactionType = term;
+        if (this.interactionTypes == null && term != null){
+            this.interactionTypes = new ArrayList<CvTerm>();
+            this.interactionTypes.add(term);
+        }
+        else if (this.interactionTypes != null){
+            if (!this.interactionTypes.isEmpty() && term == null){
+                this.interactionTypes.remove(0);
+            }
+            else if (term != null){
+                this.interactionTypes.remove(0);
+                this.interactionTypes.add(0, term);
+            }
+        }
     }
 
     public Collection<T> getParticipants() {
@@ -298,7 +310,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link ArrayList<InferredInteraction> }
      *
      */
-    public ArrayList<InferredInteraction> getJAXBInferredInteractionList() {
+    public ArrayList<InferredInteraction> getJAXBInferredInteractions() {
         return inferredInteractions;
     }
 
@@ -310,7 +322,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link ArrayList<InferredInteraction> }
      *
      */
-    public void setJAXBInferredInteractionList(ArrayList<InferredInteraction> value) {
+    public void setJAXBInferredInteractions(ArrayList<InferredInteraction> value) {
         this.inferredInteractions = value;
     }
 
@@ -352,7 +364,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link Boolean }
      *
      */
-    public Boolean isJAXBIntraMolecular() {
+    public Boolean getJAXBIntraMolecular() {
         return intraMolecular;
     }
 
@@ -435,6 +447,33 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         }
     }
 
+    /**
+     * Gets the value of the interactionTypeList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XmlCvTerm }
+     *
+     */
+    public ArrayList<CvTerm> getJAXBInteractionTypes() {
+        if (this.interactionTypes != null && this.interactionTypes.isEmpty()){
+            this.interactionTypes = null;
+        }
+        return this.interactionTypes;
+    }
+
+    /**
+     * Sets the value of the interactionTypeList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link HostOrganism }
+     *
+     */
+    public void setJAXBInteractionTypes(ArrayList<CvTerm> value) {
+        this.interactionTypes = value;
+    }
+
     public Locator getSaxLocator() {
         return sourceLocator;
     }
@@ -453,7 +492,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     @Override
     public String toString() {
-        return (getShortName() != null ? getShortName()+", " : "") + (interactionType != null ? interactionType.toString() : "");
+        return (getShortName() != null ? getShortName()+", " : "") + (getInteractionType() != null ? getInteractionType().toString() : "");
     }
 
     protected void processAddedChecksumEvent(Checksum added) {
@@ -471,6 +510,10 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     protected void clearPropertiesLinkedToChecksums() {
         rigid = null;
+    }
+
+    protected Map<Integer, Object> getMapOfReferencedObjects() {
+        return mapOfReferencedObjects;
     }
 
     private class InteractionChecksumList extends AbstractListHavingProperties<Checksum> {
