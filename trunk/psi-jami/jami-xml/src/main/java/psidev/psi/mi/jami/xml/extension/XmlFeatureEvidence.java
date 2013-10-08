@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
@@ -62,37 +61,6 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
 
     public Collection<CvTerm> getDetectionMethods() {
         return featureDetectionMethods;
-    }
-
-    @Override
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
-    }
-
-    @Override
-    public Collection<Range> getRanges() {
-        return super.getRanges();
-    }
-
-    @Override
-    public CvTerm getInteractionEffect() {
-        return super.getInteractionEffect();
-    }
-
-    @Override
-    @XmlTransient
-    public CvTerm getInteractionDependency() {
-        return super.getInteractionDependency();
-    }
-
-    @Override
-    public ExperimentalEntity getParticipant() {
-        return super.getParticipant();
-    }
-
-    @Override
-    public Collection<FeatureEvidence> getLinkedFeatures() {
-        return super.getLinkedFeatures();
     }
 
     /**
@@ -241,12 +209,6 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
 
     public void setSaxLocator(Locator sourceLocator) {
         super.setSaxLocator(sourceLocator);
-    }
-
-    @Override
-    @XmlTransient
-    public FileSourceLocator getSourceLocator() {
-        return super.getSourceLocator();
     }
 
     public Collection<Experiment> getExperiments() {

@@ -15,7 +15,7 @@ import java.util.Collections;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "participant", propOrder = {
+@XmlType(name = "participantEvidence", propOrder = {
         "JAXBNames",
         "JAXBXref",
         "JAXBInteractionRef",
