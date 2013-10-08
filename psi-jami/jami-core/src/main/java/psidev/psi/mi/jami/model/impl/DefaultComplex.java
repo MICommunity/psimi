@@ -297,7 +297,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         }
         // remove all physical properties if the collection is not empty
         else if (!complexAnnotationList.isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, COMPLEX_MI, COMPLEX);
+            AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
             physicalProperties = null;
         }
     }
