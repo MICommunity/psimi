@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
 /**
- * The xml implementation of a modelledFeature
+ * Simple Xml implementation of a Feature
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>25/07/13</pre>
+ * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "feature", propOrder = {
@@ -22,32 +22,32 @@ import java.util.ArrayList;
         "JAXBRanges",
         "JAXBAttributes"
 })
-public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, ModelledFeature> implements ModelledFeature {
+public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
 
-    public XmlModelledFeature() {
+    public XmlFeature() {
     }
 
-    public XmlModelledFeature(String shortName, String fullName) {
+    public XmlFeature(String shortName, String fullName) {
         super(shortName, fullName);
     }
 
-    public XmlModelledFeature(CvTerm type) {
+    public XmlFeature(CvTerm type) {
         super(type);
     }
 
-    public XmlModelledFeature(String shortName, String fullName, CvTerm type) {
+    public XmlFeature(String shortName, String fullName, CvTerm type) {
         super(shortName, fullName, type);
     }
 
-    public XmlModelledFeature(String shortName, String fullName, String interpro) {
+    public XmlFeature(String shortName, String fullName, String interpro) {
         super(shortName, fullName, interpro);
     }
 
-    public XmlModelledFeature(CvTerm type, String interpro) {
+    public XmlFeature(CvTerm type, String interpro) {
         super(type, interpro);
     }
 
-    public XmlModelledFeature(String shortName, String fullName, CvTerm type, String interpro) {
+    public XmlFeature(String shortName, String fullName, CvTerm type, String interpro) {
         super(shortName, fullName, type, interpro);
     }
 
@@ -70,7 +70,7 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
      *
      * @return
      *     possible object is
-     *     {@link Xref }
+     *     {@link psidev.psi.mi.jami.model.Xref }
      *
      */
     @Override
