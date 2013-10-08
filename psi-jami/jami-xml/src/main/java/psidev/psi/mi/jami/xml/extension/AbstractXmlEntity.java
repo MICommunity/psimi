@@ -117,8 +117,7 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
                     this.interactor = (Interactor) object;
                 }
                 else {
-                    // TODO create complex here
-                    //this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
+                    this.interactor = new XmlComplex(PsiXmlUtils.UNSPECIFIED);
                 }
             }
             else {
