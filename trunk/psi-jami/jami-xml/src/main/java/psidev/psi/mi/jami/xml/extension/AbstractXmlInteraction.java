@@ -39,11 +39,9 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     private Date createdDate;
     private Collection<T> participants;
 
-    private Map<Integer, Object> mapOfReferencedObjects;
     private PsiXmLocator sourceLocator;
 
     public AbstractXmlInteraction(){
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlInteraction(String shortName){
@@ -441,7 +439,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      */
     public void setJAXBId(int value) {
         this.id = value;
-        this.mapOfReferencedObjects.put(this.id, this);
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }
@@ -510,10 +508,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     protected void clearPropertiesLinkedToChecksums() {
         rigid = null;
-    }
-
-    protected Map<Integer, Object> getMapOfReferencedObjects() {
-        return mapOfReferencedObjects;
     }
 
     private class InteractionChecksumList extends AbstractListHavingProperties<Checksum> {

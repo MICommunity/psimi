@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * Abstract class for Xml features
@@ -37,10 +36,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     private CvTerm type;
     private int id;
 
-    private Map<Integer, Object> mapOfReferencedObjects;
-
     public AbstractXmlFeature(){
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName){
@@ -48,37 +44,31 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         this.namesContainer = new NamesContainer();
         this.namesContainer.setJAXBShortLabel(shortName);
         this.namesContainer.setJAXBFullName(fullName);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(CvTerm type){
         this();
         this.type = type;
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName, CvTerm type){
         this(shortName, fullName);
         this.type =type;
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName, String interpro){
         this(shortName, fullName);
         setInterpro(interpro);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(CvTerm type, String interpro){
         this(type);
         setInterpro(interpro);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public AbstractXmlFeature(String shortName, String fullName, CvTerm type, String interpro){
         this(shortName, fullName, type);
         setInterpro(interpro);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     protected void initialiseAnnotations(){
@@ -342,13 +332,9 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
      */
     public void setJAXBId(int value) {
         this.id = value;
-        this.mapOfReferencedObjects.put(this.id, this);
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }
-    }
-
-    protected Map<Integer, Object> getMapOfReferencedObjects() {
-        return mapOfReferencedObjects;
     }
 }

@@ -6,7 +6,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.AbstractFeatureRef;
+import psidev.psi.mi.jami.xml.AbstractParticipantRef;
 
 import javax.xml.bind.annotation.*;
 import java.util.Map;
@@ -41,17 +42,12 @@ import java.util.Map;
 public class InferredInteractionParticipant implements FileSourceContext
 {
 
-    private Integer participantFeatureRef;
-    private Integer participantRef;
-
     private Feature feature;
     private Entity participant;
 
-    private Map<Integer, Object> mapOfReferencedObjects;
     private PsiXmLocator sourceLocator;
 
     public InferredInteractionParticipant(){
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     /**
@@ -64,7 +60,10 @@ public class InferredInteractionParticipant implements FileSourceContext
      */
     @XmlElement(name = "participantFeatureRef")
     public Integer getJAXBParticipantFeatureRef() {
-        return participantFeatureRef;
+        if (feature instanceof AbstractXmlFeature){
+            return ((AbstractXmlFeature) feature).getJAXBId();
+        }
+        return null;
     }
 
     /**
@@ -76,7 +75,19 @@ public class InferredInteractionParticipant implements FileSourceContext
      *
      */
     public void setJAXBParticipantFeatureRef(Integer value) {
-        this.participantFeatureRef = value;
+        if (value != null){
+           this.feature = new AbstractFeatureRef(value) {
+               public void resolve(Map<Integer, Object> parsedObjects) {
+                   if (parsedObjects.containsKey(this.ref)){
+                       Object obj = parsedObjects.get(this.ref);
+                       if (obj instanceof Feature){
+                           feature = (Feature)obj;
+                       }
+                       // TODO exception or syntax error if nothing?
+                   }
+               }
+           };
+        }
     }
 
     /**
@@ -89,7 +100,10 @@ public class InferredInteractionParticipant implements FileSourceContext
      */
     @XmlElement(name = "participantRef")
     public Integer getJAXBParticipantRef() {
-        return participantRef;
+        if (participant instanceof AbstractXmlEntity){
+            return ((AbstractXmlEntity) participant).getJAXBId();
+        }
+        return null;
     }
 
     /**
@@ -101,20 +115,26 @@ public class InferredInteractionParticipant implements FileSourceContext
      *
      */
     public void setJAXBParticipantRef(Integer value) {
-        this.participantRef = value;
+        if (value != null){
+            this.participant = new AbstractParticipantRef(value) {
+                public void resolve(Map<Integer, Object> parsedObjects) {
+                    if (parsedObjects.containsKey(this.ref)){
+                        Object obj = parsedObjects.get(this.ref);
+                        if (obj instanceof Entity){
+                            participant = (Entity)obj;
+                        }
+                        // TODO exception or syntax error if nothing?
+                    }
+                }
+            };
+        }
     }
 
     public Feature getFeature() {
-        if (feature == null && participantFeatureRef != null){
-            resolveFeatureReferences();
-        }
         return feature;
     }
 
     public Entity getParticipant() {
-        if (participant == null && participantRef != null){
-            resolveParticipantReferences();
-        }
         return participant;
     }
 
@@ -134,22 +154,5 @@ public class InferredInteractionParticipant implements FileSourceContext
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-    }
-
-    private void resolveFeatureReferences() {
-        if (this.mapOfReferencedObjects.containsKey(participantFeatureRef)){
-            Object o = this.mapOfReferencedObjects.get(participantFeatureRef);
-            if (o instanceof Feature){
-                this.feature = (Feature)o;
-            }
-        }
-    }
-    private void resolveParticipantReferences() {
-        if (this.mapOfReferencedObjects.containsKey(participantRef)){
-            Object o = this.mapOfReferencedObjects.get(participantRef);
-            if (o instanceof Entity){
-                this.participant = (Entity)o;
-            }
-        }
     }
 }

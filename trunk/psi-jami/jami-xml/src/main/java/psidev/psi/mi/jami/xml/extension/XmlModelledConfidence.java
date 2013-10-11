@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -22,28 +22,21 @@ import java.util.Map;
         "JAXBExperimentRefList"
 })
 public class XmlModelledConfidence extends XmlConfidence implements ModelledConfidence{
-    private Map<Integer, Object> mapOfReferencedObjects;
-    private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
     private Collection<Publication> publications;
 
     public XmlModelledConfidence() {
         super();
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
 
     }
 
     public XmlModelledConfidence(XmlOpenCvTerm type, String value) {
         super(type, value);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public Collection<Publication> getPublications() {
         if (publications == null){
             this.publications = new ArrayList<Publication>();
-        }
-        if (publications.isEmpty() && experimentRefList != null && !experimentRefList.isEmpty()){
-            resolveExperimentReferences();
         }
         return this.publications;
     }
@@ -59,8 +52,19 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
-        return experimentRefList;
-    }
+        if (experiments == null || experiments.isEmpty()){
+            return null;
+        }
+        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
+        for (Experiment exp : experiments){
+            if (exp instanceof XmlExperiment){
+                references.add(((XmlExperiment) exp).getId());
+            }
+        }
+        if (references.isEmpty()){
+            return null;
+        }
+        return references;    }
 
     /**
      * Sets the value of the experimentRefList property.
@@ -71,7 +75,26 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
      *
      */
     public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        this.experimentRefList = value;
+        if (value != null){
+            for (Integer val : value){
+                getExperiments().add(new AbstractExperimentRef(val) {
+                    public void resolve(Map<Integer, Object> parsedObjects) {
+                        if (parsedObjects.containsKey(this.ref)){
+                            Object obj = parsedObjects.get(this.ref);
+                            if (obj instanceof Experiment){
+                                Experiment exp = (Experiment)obj;
+                                experiments.remove(this);
+                                experiments.add(exp);
+                                if (exp.getPublication() != null){
+                                    publications.add(exp.getPublication());
+                                }
+                            }
+                            // TODO exception or syntax error if nothing?
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @XmlTransient
@@ -79,24 +102,6 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
         }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
         return experiments;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (this.mapOfReferencedObjects.containsKey(id)){
-                Object o = this.mapOfReferencedObjects.get(id);
-                if (o instanceof Experiment){
-                    Experiment exp = (Experiment)o;
-                    this.experiments.add(exp);
-                    if (exp.getPublication() != null){
-                        this.publications.add(exp.getPublication());
-                    }
-                }
-            }
-        }
     }
 }

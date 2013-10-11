@@ -7,7 +7,8 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.AbstractInteractorReference;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -45,20 +46,13 @@ import java.util.Map;
 })
 public class ExperimentalInteractor implements FileSourceContext
 {
-
-    private XmlInteractor xmlInteractor;
-    private Integer interactorRef;
-    private ArrayList<Integer> experimentRefList;
-
     private Interactor interactor;
     private Collection<Experiment> experiments;
 
-    private Map<Integer, Object> mapOfReferencedObjects;
     private XmlInteractorFactory interactorFactory;
     private PsiXmLocator sourceLocator;
 
     public ExperimentalInteractor() {
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -70,9 +64,9 @@ public class ExperimentalInteractor implements FileSourceContext
      *     {@link Interactor }
      *
      */
-    @XmlElement(name = "interactor")
-    public XmlInteractor getJAXBInteractor() {
-        return xmlInteractor;
+    @XmlElement(name = "interactor", type = XmlInteractor.class)
+    public Interactor getJAXBInteractor() {
+        return interactor;
     }
 
     /**
@@ -84,15 +78,19 @@ public class ExperimentalInteractor implements FileSourceContext
      *
      */
     public void setJAXBInteractor(XmlInteractor value) {
-        this.interactor = this.interactorFactory.createInteractorFromInteractorType(value.getJAXBInteractorType(), value.getShortName());
-        Xref primary = value.getPreferredIdentifier();
-        if (this.interactor == null && primary != null){
-            this.interactor = this.interactorFactory.createInteractorFromDatabase(primary.getDatabase(), value.getShortName());
+        if (value == null){
+            this.interactor = null;
         }
         else{
-            this.interactor = value;
+            this.interactor = this.interactorFactory.createInteractorFromInteractorType(value.getJAXBInteractorType(), value.getShortName());
+            Xref primary = value.getPreferredIdentifier();
+            if (this.interactor == null && primary != null){
+                this.interactor = this.interactorFactory.createInteractorFromDatabase(primary.getDatabase(), value.getShortName());
+            }
+            else{
+                this.interactor = value;
+            }
         }
-        this.xmlInteractor = (XmlInteractor) this.interactor;
     }
 
     /**
@@ -105,7 +103,10 @@ public class ExperimentalInteractor implements FileSourceContext
      */
     @XmlElement(name = "interactorRef")
     public Integer getJAXBInteractorRef() {
-        return interactorRef;
+        if (interactor instanceof XmlInteractor){
+           return ((XmlInteractor)interactor).getJAXBId();
+        }
+        return null;
     }
 
     /**
@@ -117,7 +118,20 @@ public class ExperimentalInteractor implements FileSourceContext
      *
      */
     public void setJAXBInteractorRef(Integer value) {
-        this.interactorRef = value;
+        if (value != null){
+            this.interactor = new AbstractInteractorReference(value) {
+                @Override
+                public void resolve(Map<Integer, Object> parsedObjects) {
+                    if (parsedObjects.containsKey(this.ref)){
+                        Object obj = parsedObjects.get(this.ref);
+                        if (obj instanceof Interactor){
+                            interactor = (Interactor) obj;
+                        }
+                        // TODO exception or syntax error if nothing?
+                    }
+                }
+            };
+        }
     }
 
     /**
@@ -131,7 +145,19 @@ public class ExperimentalInteractor implements FileSourceContext
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
-        return experimentRefList;
+        if (experiments == null || experiments.isEmpty()){
+            return null;
+        }
+        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
+        for (Experiment exp : experiments){
+            if (exp instanceof XmlExperiment){
+                references.add(((XmlExperiment) exp).getId());
+            }
+        }
+        if (references.isEmpty()){
+            return null;
+        }
+        return references;
     }
 
     /**
@@ -143,18 +169,25 @@ public class ExperimentalInteractor implements FileSourceContext
      *
      */
     public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        this.experimentRefList = value;
+        if (value != null){
+            for (Integer val : value){
+                getExperiments().add(new AbstractExperimentRef(val) {
+                    public void resolve(Map<Integer, Object> parsedObjects) {
+                        if (parsedObjects.containsKey(this.ref)){
+                            Object obj = parsedObjects.get(this.ref);
+                            if (obj instanceof Experiment){
+                                experiments.remove(this);
+                                experiments.add((Experiment)obj);
+                            }
+                            // TODO exception or syntax error if nothing?
+                        }
+                    }
+                });
+            }
+        }
     }
 
     public Interactor getInteractor() {
-        if (this.interactor == null){
-            if (this.interactorRef != null && this.mapOfReferencedObjects.containsKey(this.interactorRef)){
-                Object object = this.mapOfReferencedObjects.get(this.interactorRef);
-                if (object instanceof Interactor){
-                    this.interactor = (Interactor) object;
-                }
-            }
-        }
         return this.interactor;
     }
 
@@ -162,21 +195,7 @@ public class ExperimentalInteractor implements FileSourceContext
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
         }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
         return experiments;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (this.mapOfReferencedObjects.containsKey(id)){
-                Object o = this.mapOfReferencedObjects.get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
-            }
-        }
     }
 
     @XmlLocation

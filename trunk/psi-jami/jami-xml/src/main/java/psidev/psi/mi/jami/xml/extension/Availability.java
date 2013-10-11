@@ -5,10 +5,8 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
-import java.util.Map;
 
 /**
  * A text describing the availability of data, e.g. a copyright statement.
@@ -39,11 +37,9 @@ public class Availability implements FileSourceContext
     private String value;
     private int id;
 
-    private Map<Integer, Object> mapOfReferencedObjects;
     private PsiXmLocator sourceLocator;
 
     public Availability() {
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     /**
@@ -86,7 +82,7 @@ public class Availability implements FileSourceContext
      */
     public void setJAXBId(int value) {
         this.id = value;
-        this.mapOfReferencedObjects.put(this.id, this);
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }
