@@ -116,6 +116,18 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
                 if (object instanceof Interactor){
                     this.interactor = (Interactor) object;
                 }
+                // convert interaction evidence in a complex
+                else if (object instanceof InteractionEvidence){
+                    this.interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
+                }
+                // set the complex
+                else if (object instanceof Complex){
+                    this.interactor = (Complex)object;
+                }
+                // wrap modelled interaction
+                else if (object instanceof ModelledInteraction){
+                    this.interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
+                }
                 else {
                     this.interactor = new XmlComplex(PsiXmlUtils.UNSPECIFIED);
                 }
@@ -131,7 +143,12 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         if (interactor == null){
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
+        Interactor oldInteractor = this.interactor;
+
         this.interactor = interactor;
+        if (this.changeListener != null){
+            this.changeListener.onInteractorUpdate(this, oldInteractor);
+        }
     }
 
     public CausalRelationship getCausalRelationship() {

@@ -5,7 +5,6 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -14,7 +13,6 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
-import java.util.Map;
 
 /**
  * Xml implementation of Parameter
@@ -24,10 +22,9 @@ import java.util.Map;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "parameterType", propOrder = {
-        "JAXBExperimentRef"})
+@XmlType(name = "parameterType")
 @XmlSeeAlso({
-        XmlModelledParameter.class
+        XmlModelledParameter.class, XmlParameterWrapper.class
 })
 public class XmlParameter implements Parameter, FileSourceContext{
 
@@ -48,7 +45,6 @@ public class XmlParameter implements Parameter, FileSourceContext{
         this.unit = unit;
     }
 
-    @XmlTransient
     public CvTerm getType() {
         if (this.type == null){
             this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
@@ -56,21 +52,8 @@ public class XmlParameter implements Parameter, FileSourceContext{
         return this.type;
     }
 
-    @XmlAttribute(name = "uncertainty")
     public BigDecimal getUncertainty() {
         return this.uncertainty;
-    }
-
-    /**
-     * Sets the value of the uncertainty property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Double }
-     *
-     */
-    public void setUncertainty(BigDecimal value) {
-        this.uncertainty = value;
     }
 
     public CvTerm getUnit() {
@@ -305,6 +288,23 @@ public class XmlParameter implements Parameter, FileSourceContext{
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+    }
+
+    @XmlAttribute(name = "uncertainty")
+    public BigDecimal getJAXBUncertainty() {
+        return this.uncertainty;
+    }
+
+    /**
+     * Sets the value of the uncertainty property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *
+     */
+    public void setJAXBUncertainty(BigDecimal value) {
+        this.uncertainty = value;
     }
 
     @Override

@@ -25,6 +25,7 @@ import java.util.ArrayList;
         "JAXBFeatures",
         "JAXBAttributes"
 })
+@XmlSeeAlso(XmlParticipantEvidenceWrapper.class)
 public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
 
     public XmlModelledParticipant() {
