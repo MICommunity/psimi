@@ -48,31 +48,31 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
     }
 
     @Override
-    @XmlAttribute(name = "names")
+    @XmlElement(name = "names")
     public NamesContainer getJAXBNames() {
         return super.getJAXBNames();
     }
 
     @Override
-    @XmlAttribute(name = "xref")
+    @XmlElement(name = "xref")
     public XrefContainer getJAXBXref() {
         return super.getJAXBXref();
     }
 
     @Override
-    @XmlAttribute(name = "interactionRef")
+    @XmlElement(name = "interactionRef")
     public Integer getJAXBInteractionRef() {
         return super.getJAXBInteractionRef();
     }
 
     @Override
-    @XmlAttribute(name = "interactorRef")
+    @XmlElement(name = "interactorRef")
     public Integer getJAXBInteractorRef() {
         return super.getJAXBInteractorRef();
     }
 
     @Override
-    @XmlAttribute(name = "biologicalRole")
+    @XmlElement(name = "biologicalRole")
     public CvTerm getJAXBBiologicalRole() {
         return super.getJAXBBiologicalRole();
     }
@@ -86,8 +86,8 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
     }
 
     @Override
-    @XmlAttribute(name = "interactor")
-    public XmlInteractor getJAXBInteractor() {
+    @XmlElement(name = "interactor", type = XmlInteractor.class)
+    public Interactor getJAXBInteractor() {
         return super.getJAXBInteractor();
     }
 

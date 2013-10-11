@@ -3,11 +3,13 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Xml implementation of a Feature
@@ -30,7 +32,6 @@ import java.util.List;
 public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
-    private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
 
     public XmlFeatureEvidence() {
@@ -145,7 +146,19 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
-        return experimentRefList;
+        if (experiments == null || experiments.isEmpty()){
+            return null;
+        }
+        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
+        for (Experiment exp : experiments){
+            if (exp instanceof XmlExperiment){
+                references.add(((XmlExperiment) exp).getId());
+            }
+        }
+        if (references.isEmpty()){
+            return null;
+        }
+        return references;
     }
 
     /**
@@ -157,7 +170,22 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      *
      */
     public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        this.experimentRefList = value;
+        if (value != null){
+            for (Integer val : value){
+                getExperiments().add(new AbstractExperimentRef(val) {
+                    public void resolve(Map<Integer, Object> parsedObjects) {
+                        if (parsedObjects.containsKey(this.ref)){
+                            Object obj = parsedObjects.get(this.ref);
+                            if (obj instanceof Experiment){
+                                experiments.remove(this);
+                                experiments.add((Experiment)obj);
+                            }
+                            // TODO exception or syntax error if nothing?
+                        }
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -216,20 +244,6 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
         }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
         return experiments;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (getMapOfReferencedObjects().containsKey(id)){
-                Object o = getMapOfReferencedObjects().get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
-            }
-        }
     }
 }

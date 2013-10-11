@@ -8,6 +8,8 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.AbstractComplexReference;
+import psidev.psi.mi.jami.xml.AbstractInteractorReference;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -33,22 +35,16 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
     private CausalRelationship causalRelationship;
     private Collection<F> features;
 
-    private Map<Integer, Object> mapOfReferencedObjects;
-
     private PsiXmLocator sourceLocator;
 
     private NamesContainer namesContainer;
     private XrefContainer xrefContainer;
 
-    private Integer interactionRef;
-    private Integer interactorRef;
-    private XmlInteractor xmlInteractor;
     private XmlInteractorFactory interactorFactory;
     private ParticipantInteractorChangeListener changeListener;
     private int id;
 
     public AbstractXmlEntity(){
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -58,7 +54,6 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         }
         this.interactor = interactor;
         this.biologicalRole = CvTermUtils.createUnspecifiedRole();
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -68,21 +63,18 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         }
         this.interactor = interactor;
         this.biologicalRole = bioRole != null ? bioRole : CvTermUtils.createUnspecifiedRole();
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
     public AbstractXmlEntity(Interactor interactor, Stoichiometry stoichiometry){
         this(interactor);
         this.stoichiometry = stoichiometry;
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
     public AbstractXmlEntity(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry){
         this(interactor, bioRole);
         this.stoichiometry = stoichiometry;
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -102,39 +94,8 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
 
     public Interactor getInteractor() {
         if (this.interactor == null){
-            if (this.interactorRef != null && this.mapOfReferencedObjects.containsKey(this.interactorRef)){
-                Object object = this.mapOfReferencedObjects.get(this.interactorRef);
-                if (object instanceof Interactor){
-                    this.interactor = (Interactor) object;
-                }
-                else {
-                    initialiseUnspecifiedInteractor();
-                }
-            }
-            else if (this.interactionRef != null && this.mapOfReferencedObjects.containsKey(this.interactionRef)){
-                Object object = this.mapOfReferencedObjects.get(this.interactionRef);
-                if (object instanceof Interactor){
-                    this.interactor = (Interactor) object;
-                }
-                // convert interaction evidence in a complex
-                else if (object instanceof InteractionEvidence){
-                    this.interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
-                }
-                // set the complex
-                else if (object instanceof Complex){
-                    this.interactor = (Complex)object;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ModelledInteraction){
-                    this.interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
-                }
-                else {
-                    this.interactor = new XmlComplex(PsiXmlUtils.UNSPECIFIED);
-                }
-            }
-            else {
-                initialiseUnspecifiedInteractor();
-            }
+            // TODO if not initialised?
+            initialiseUnspecifiedInteractor();
         }
         return this.interactor;
     }
@@ -335,14 +296,11 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         this.xrefContainer = value;
     }
 
-    public XmlInteractor getJAXBInteractor() {
-        return this.xmlInteractor;
+    public Interactor getJAXBInteractor() {
+        return this.interactor;
     }
 
     public void setJAXBInteractor(XmlInteractor interactor) {
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
         this.interactor = this.interactorFactory.createInteractorFromInteractorType(interactor.getJAXBInteractorType(), interactor.getShortName());
         Xref primary = interactor.getPreferredIdentifier();
         if (this.interactor == null && primary != null){
@@ -351,7 +309,7 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         else{
             this.interactor = interactor;
         }
-        this.xmlInteractor = (XmlInteractor) this.interactor;
+        this.interactor = interactor;
     }
 
     /**
@@ -363,7 +321,10 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      *
      */
     public Integer getJAXBInteractionRef() {
-        return interactionRef;
+        if (interactor instanceof XmlInteraction){
+            return ((XmlInteraction)interactor).getJAXBId();
+        }
+        return null;
     }
 
     /**
@@ -375,7 +336,32 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      *
      */
     public void setJAXBInteractionRef(Integer value) {
-        this.interactionRef = value;
+        if (value != null){
+            this.interactor = new AbstractComplexReference(value) {
+                @Override
+                public void resolve(Map<Integer, Object> parsedObjects) {
+                    if (parsedObjects.containsKey(this.ref)){
+                        Object object = parsedObjects.get(this.ref);
+                        if (object instanceof Interactor){
+                            interactor = (Interactor) object;
+                        }
+                        // convert interaction evidence in a complex
+                        if (object instanceof InteractionEvidence){
+                            interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
+                        }
+                        // set the complex
+                        else if (object instanceof Complex){
+                            interactor = (Complex)object;
+                        }
+                        // wrap modelled interaction
+                        else if (object instanceof ModelledInteraction){
+                            interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
+                        }
+                        // TODO what if refrence not resolved?
+                    }
+                }
+            };
+        }
     }
 
     /**
@@ -387,7 +373,10 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      *
      */
     public Integer getJAXBInteractorRef() {
-        return interactorRef;
+        if (interactor instanceof XmlInteractor){
+           return ((XmlInteractor)interactor).getJAXBId();
+        }
+        return null;
     }
 
     /**
@@ -399,7 +388,20 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      *
      */
     public void setJAXBInteractorRef(Integer value) {
-        this.interactorRef = value;
+        if (value != null){
+            this.interactor = new AbstractInteractorReference(value) {
+                @Override
+                public void resolve(Map<Integer, Object> parsedObjects) {
+                    if (parsedObjects.containsKey(this.ref)){
+                        Object obj = parsedObjects.get(this.ref);
+                        if (obj instanceof Interactor){
+                            interactor = (Interactor) obj;
+                        }
+                        // TODO exception or syntax error if nothing?
+                    }
+                }
+            };
+        }
     }
 
     /**
@@ -576,7 +578,7 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      */
     public void setJAXBId(int value) {
         this.id = value;
-        this.mapOfReferencedObjects.put(this.id, this);
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }

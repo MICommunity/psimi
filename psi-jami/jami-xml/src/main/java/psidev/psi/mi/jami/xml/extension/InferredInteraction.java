@@ -5,7 +5,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -44,14 +44,11 @@ public class InferredInteraction
 
     @XmlElement(name = "participant", required = true)
     private List<InferredInteractionParticipant> participants;
-    private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
-    private Map<Integer, Object> mapOfReferencedObjects;
 
     private PsiXmLocator sourceLocator;
 
     public InferredInteraction() {
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
 
     }
 
@@ -96,7 +93,19 @@ public class InferredInteraction
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
-        return experimentRefList;
+        if (experiments == null || experiments.isEmpty()){
+            return null;
+        }
+        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
+        for (Experiment exp : experiments){
+            if (exp instanceof XmlExperiment){
+                references.add(((XmlExperiment) exp).getId());
+            }
+        }
+        if (references.isEmpty()){
+            return null;
+        }
+        return references;
     }
 
     /**
@@ -108,28 +117,29 @@ public class InferredInteraction
      *
      */
     public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        this.experimentRefList = value;
+        if (value != null){
+            for (Integer val : value){
+                getExperiments().add(new AbstractExperimentRef(val) {
+                    public void resolve(Map<Integer, Object> parsedObjects) {
+                        if (parsedObjects.containsKey(this.ref)){
+                            Object obj = parsedObjects.get(this.ref);
+                            if (obj instanceof Experiment){
+                                experiments.remove(this);
+                                experiments.add((Experiment)obj);
+                            }
+                            // TODO exception or syntax error if nothing?
+                        }
+                    }
+                });
+            }
+        }
     }
 
     public Collection<Experiment> getExperiments() {
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
         }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
-        }
         return experiments;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (this.mapOfReferencedObjects.containsKey(id)){
-                Object o = this.mapOfReferencedObjects.get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
-            }
-        }
     }
 
     @XmlLocation

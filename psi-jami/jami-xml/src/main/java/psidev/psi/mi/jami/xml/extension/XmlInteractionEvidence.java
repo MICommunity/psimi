@@ -3,12 +3,11 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.AbstractAvailabilityRef;
+import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Xml implementation of InteractionEvidence
@@ -38,7 +37,6 @@ import java.util.List;
 public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements InteractionEvidence{
 
     private Availability availability;
-    private Integer availabilityRef;
     private Collection<Parameter> parameters;
     private boolean isInferred = false;
     private Collection<Confidence> confidences;
@@ -46,8 +44,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     private Collection<VariableParameterValueSet> variableParameterValueSets;
     private List<Experiment> experiments;
-    private ArrayList<XmlExperiment> experimentDescriptions;
-    private ArrayList<Integer> experimentRefs;
     private Boolean modelled;
 
     public XmlInteractionEvidence() {
@@ -136,9 +132,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
         }
-        if (experiments.isEmpty() && this.experimentRefs != null && !this.experimentRefs.isEmpty()){
-            resolveExperimentReferences();
-        }
+        // TODO what if not resolved?
         return experiments;
     }
 
@@ -368,7 +362,10 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      */
     @XmlElement(name = "availabilityRef")
     public Integer getJAXBAvailabilityRef() {
-        return availabilityRef;
+        if (availability != null){
+            return availability.getJAXBId();
+        }
+        return null;
     }
 
     /**
@@ -380,15 +377,18 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public void setJAXBAvailabilityRef(Integer value) {
-        this.availabilityRef = value;
-    }
-
-    private void resolveAvailabilityReferences() {
-        if (getMapOfReferencedObjects().containsKey(availabilityRef)){
-            Object o = getMapOfReferencedObjects().get(availabilityRef);
-            if (o instanceof Availability){
-                this.availability = (Availability)o;
-            }
+        if (value != null){
+            this.availability = new AbstractAvailabilityRef(value) {
+                public void resolve(Map<Integer, Object> parsedObjects) {
+                    if (parsedObjects.containsKey(this.ref)){
+                        Object obj = parsedObjects.get(this.ref);
+                        if (obj instanceof Availability){
+                            availability = (Availability)obj;
+                        }
+                        // TODO exception or syntax error if nothing?
+                    }
+                }
+            };
         }
     }
 
@@ -401,9 +401,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="experimentList")
-    @XmlElement(name="experimentDescription", required = true)
-    public ArrayList<XmlExperiment> getJAXBExperimentDescriptions() {
-        return experimentDescriptions;
+    @XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)
+    public ArrayList<Experiment> getJAXBExperimentDescriptions() {
+        if (experiments == null || experiments.isEmpty()){
+           return null;
+        }
+        return new ArrayList<Experiment>(experiments);
     }
 
     /**
@@ -415,9 +418,13 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public void setJAXBExperimentDescriptions(ArrayList<XmlExperiment> value) {
-        this.experimentDescriptions = value;
-        if (this.experimentDescriptions != null){
-           this.experiments.addAll(experimentDescriptions);
+        getExperiments().clear();
+        if (value != null && !value.isEmpty()){
+            Iterator<Experiment> expIterator = experiments.iterator();
+            setExperimentAndAddInteractionEvidence(expIterator.next());
+            while(expIterator.hasNext()){
+                experiments.add(expIterator.next());
+            }
         }
     }
 
@@ -432,7 +439,16 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     @XmlElementWrapper(name="experimentList")
     @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefs() {
-        return experimentRefs;
+        if (experiments == null || experiments.isEmpty()){
+            return null;
+        }
+        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
+        for (Experiment exp : experiments){
+            if (exp instanceof XmlExperiment){
+                references.add(((XmlExperiment) exp).getId());
+            }
+        }
+        return references;
     }
 
     /**
@@ -444,7 +460,22 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public void setJAXBExperimentRefs(ArrayList<Integer> value) {
-        this.experimentRefs = value;
+        if (value != null){
+            for (Integer val : value){
+                getExperiments().add(new AbstractExperimentRef(val) {
+                    public void resolve(Map<Integer, Object> parsedObjects) {
+                        if (parsedObjects.containsKey(this.ref)){
+                            Object obj = parsedObjects.get(this.ref);
+                            if (obj instanceof Experiment){
+                                experiments.remove(this);
+                                experiments.add((Experiment)obj);
+                            }
+                            // TODO exception or syntax error if nothing?
+                        }
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -499,17 +530,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         }
         else{
             this.isNegative = value;
-        }
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefs){
-            if (getMapOfReferencedObjects().containsKey(id)){
-                Object o = getMapOfReferencedObjects().get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
-            }
         }
     }
 }

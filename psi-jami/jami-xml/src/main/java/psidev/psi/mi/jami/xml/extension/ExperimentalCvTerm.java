@@ -10,7 +10,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -36,45 +36,34 @@ import java.util.Map;
 public class ExperimentalCvTerm
     extends XmlCvTerm
 {
-    private Map<Integer, Object> mapOfReferencedObjects;
-    private ArrayList<Integer> experimentRefList;
     private Collection<Experiment> experiments;
 
     public ExperimentalCvTerm() {
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public ExperimentalCvTerm(String shortName, String miIdentifier) {
         super(shortName, miIdentifier);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public ExperimentalCvTerm(String shortName) {
         super(shortName);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public ExperimentalCvTerm(String shortName, String fullName, String miIdentifier) {
         super(shortName, fullName, miIdentifier);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public ExperimentalCvTerm(String shortName, Xref ontologyId) {
         super(shortName, ontologyId);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public ExperimentalCvTerm(String shortName, String fullName, Xref ontologyId) {
         super(shortName, fullName, ontologyId);
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
     }
 
     public Collection<Experiment> getExperiments() {
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
-        }
-        if (experiments.isEmpty() && this.experimentRefList != null && !this.experimentRefList.isEmpty()){
-            resolveExperimentReferences();
         }
         return experiments;
     }
@@ -90,7 +79,19 @@ public class ExperimentalCvTerm
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
     public ArrayList<Integer> getJAXBExperimentRefList() {
-        return experimentRefList;
+        if (experiments == null || experiments.isEmpty()){
+            return null;
+        }
+        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
+        for (Experiment exp : experiments){
+            if (exp instanceof XmlExperiment){
+                references.add(((XmlExperiment) exp).getId());
+            }
+        }
+        if (references.isEmpty()){
+            return null;
+        }
+        return references;
     }
 
     /**
@@ -102,16 +103,20 @@ public class ExperimentalCvTerm
      *
      */
     public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        this.experimentRefList = value;
-    }
-
-    private void resolveExperimentReferences() {
-        for (Integer id : this.experimentRefList){
-            if (this.mapOfReferencedObjects.containsKey(id)){
-                Object o = this.mapOfReferencedObjects.get(id);
-                if (o instanceof Experiment){
-                    this.experiments.add((Experiment)o);
-                }
+        if (value != null){
+            for (Integer val : value){
+                getExperiments().add(new AbstractExperimentRef(val) {
+                    public void resolve(Map<Integer, Object> parsedObjects) {
+                        if (parsedObjects.containsKey(this.ref)){
+                            Object obj = parsedObjects.get(this.ref);
+                            if (obj instanceof Experiment){
+                                experiments.remove(this);
+                                experiments.add((Experiment)obj);
+                            }
+                            // TODO exception or syntax error if nothing?
+                        }
+                    }
+                });
             }
         }
     }

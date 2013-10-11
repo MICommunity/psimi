@@ -39,8 +39,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
-    private Map<Integer, Object> mapOfReferencedObjects;
-    private Map<Xref, Publication> mapOfPublications;
     private ArrayList<Organism> hostOrganisms;
     private XmlCvTerm participantIdentificationMethod;
     private XmlCvTerm featureDetectionMethod;
@@ -49,7 +47,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     private PsiXmLocator sourceLocator;
 
     private Publication publication;
-    private Collection<Xref> xrefs;
     private Collection<Annotation> annotations;
     private CvTerm interactionDetectionMethod;
     private Collection<InteractionEvidence> interactions;
@@ -58,16 +55,12 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     private Collection<VariableParameter> variableParameters;
 
     public XmlExperiment(){
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
-        mapOfPublications = XmlEntryContext.getInstance().getMapOfPublications();
     }
 
     public XmlExperiment(Publication publication){
 
         this.publication = publication;
         this.interactionDetectionMethod = CvTermUtils.createUnspecifiedMethod();
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
-        mapOfPublications = XmlEntryContext.getInstance().getMapOfPublications();
     }
 
     public XmlExperiment(Publication publication, CvTerm interactionDetectionMethod){
@@ -79,8 +72,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         else {
             this.interactionDetectionMethod = interactionDetectionMethod;
         }
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
-        mapOfPublications = XmlEntryContext.getInstance().getMapOfPublications();
     }
 
     public XmlExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism){
@@ -89,12 +80,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
             this.hostOrganisms = new ArrayList<Organism>();
             this.hostOrganisms.add(organism);
         }
-        mapOfReferencedObjects = XmlEntryContext.getInstance().getMapOfReferencedObjects();
-        mapOfPublications = XmlEntryContext.getInstance().getMapOfPublications();
-    }
-
-    protected void initialiseXrefs(){
-        this.xrefs = new ArrayList<Xref>();
     }
 
     protected void initialiseAnnotations(){
@@ -103,15 +88,6 @@ public class XmlExperiment implements Experiment, FileSourceContext{
 
     protected void initialiseInteractions(){
         this.interactions = new ArrayList<InteractionEvidence>();
-    }
-
-    protected void initialiseXrefsWith(Collection<Xref> xrefs){
-        if (xrefs == null){
-            this.xrefs = Collections.EMPTY_LIST;
-        }
-        else{
-            this.xrefs = xrefs;
-        }
     }
 
     protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
@@ -408,6 +384,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         if (publication != null){
             if (!publication.getIdentifiers().isEmpty()){
                 Xref firstIdentifier = publication.getIdentifiers().iterator().next();
+                Map<Xref, Publication> mapOfPublications = XmlEntryContext.getInstance().getMapOfPublications();
                 if (mapOfPublications.containsKey(firstIdentifier)){
                     setPublicationAndAddExperiment(mapOfPublications.get(firstIdentifier));
                 }
@@ -780,7 +757,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      */
     public void setId(int value) {
         this.id = value;
-        this.mapOfReferencedObjects.put(this.id, this);
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (sourceLocator != null){
             sourceLocator.setObjectId(this.id);
         }
