@@ -33,7 +33,8 @@ import java.util.Map;
 })
 @XmlSeeAlso({
         XmlBioactiveEntity.class, XmlGene.class, XmlInteractorSet.class, XmlMolecule.class,
-        XmlPolymer.class, XmlNucleciAcid.class, XmlProtein.class, XmlComplex.class
+        XmlPolymer.class, XmlNucleciAcid.class, XmlProtein.class, XmlComplex.class, XmlModelledInteractionWrapper.class,
+        XmlInteractionEvidenceWrapper.class
 })
 public class XmlInteractor implements Interactor, FileSourceContext{
 
@@ -472,7 +473,8 @@ public class XmlInteractor implements Interactor, FileSourceContext{
                         || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)){
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
                     XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
                     checksum.setSourceLocator(((FileSourceContext)a).getSourceLocator());
                     getChecksums().add(checksum);

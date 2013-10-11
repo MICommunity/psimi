@@ -435,6 +435,11 @@ public class XmlComplex extends XmlInteractor implements Complex{
         }
     }
 
+    @Override
+    protected void createDefaultInteractorType() {
+        setInteractorType(new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI));
+    }
+
     private class ComplexAnnotationList extends AbstractListHavingProperties<Annotation> {
         public ComplexAnnotationList(){
             super();

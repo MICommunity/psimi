@@ -26,6 +26,7 @@ import java.util.List;
         "JAXBRanges",
         "JAXBAttributes"
 })
+@XmlSeeAlso(XmlFeatureEvidenceWrapper.class)
 public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
