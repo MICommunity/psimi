@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class XmlEntryContext {
     private Map<Integer, Object> mapOfReferencedObjects;
     private Map<Xref, Publication> mapOfPublications;
     private Collection<XmlIdReference> references;
+    private Source currentSource;
 
     private XmlEntryContext(){
         this.mapOfReferencedObjects = new HashMap<Integer, Object>();
@@ -55,5 +57,20 @@ public class XmlEntryContext {
 
     public static void remove(){
         instance.remove();
+    }
+
+    public void clear(){
+        this.mapOfPublications.clear();
+        this.mapOfReferencedObjects.clear();
+        this.references.clear();
+        this.currentSource = null;
+    }
+
+    public Source getCurrentSource() {
+        return currentSource;
+    }
+
+    public void setCurrentSource(Source source){
+        this.currentSource = source;
     }
 }
