@@ -301,15 +301,7 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
     }
 
     public void setJAXBInteractor(XmlInteractor interactor) {
-        this.interactor = this.interactorFactory.createInteractorFromInteractorType(interactor.getJAXBInteractorType(), interactor.getShortName());
-        Xref primary = interactor.getPreferredIdentifier();
-        if (this.interactor == null && primary != null){
-            this.interactor = this.interactorFactory.createInteractorFromDatabase(primary.getDatabase(), interactor.getShortName());
-        }
-        else{
-            this.interactor = interactor;
-        }
-        this.interactor = interactor;
+        this.interactor = this.interactorFactory.createInteractorFromXmlInteractorInstance(interactor);
     }
 
     /**

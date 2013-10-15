@@ -7,9 +7,7 @@ import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.XmlIdReference;
-import psidev.psi.mi.jami.xml.extension.Availability;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
+import psidev.psi.mi.jami.xml.extension.*;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -52,6 +50,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
     private Collection<T> loadedInteractions;
     private Unmarshaller unmarshaller;
     private Iterator<T> interactionIterator;
+    private XmlInteractorFactory interactorFactory;
 
     public PsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException {
         if (file == null){
@@ -65,6 +64,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         initializeXmlEventReader(xmlif, xmler);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
+        this.interactorFactory = new XmlInteractorFactory();
     }
 
     public PsiXml25Parser(InputStream inputStream) throws XMLStreamException {
@@ -79,6 +79,8 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         initializeXmlEventReader(xmlif, xmler);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
+        this.interactorFactory = new XmlInteractorFactory();
+
     }
 
     public PsiXml25Parser(URL url) throws IOException, XMLStreamException {
@@ -93,6 +95,8 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         initializeXmlEventReader(xmlif, xmler);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
+        this.interactorFactory = new XmlInteractorFactory();
+
     }
 
     public PsiXml25Parser(Reader reader) throws XMLStreamException {
@@ -106,6 +110,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         initializeXmlEventReader(xmlif, xmler);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
+        this.interactorFactory = new XmlInteractorFactory();
     }
 
     public T parseInteraction() throws IOException, XMLStreamException, JAXBException {
@@ -283,7 +288,8 @@ public abstract class PsiXml25Parser<T extends Interaction> {
                         nextEvt = (StartElement)this.eventReader.peek();
                         // load experimentDescription
                         while (nextEvt != null && PsiXmlUtils.INTERACTOR_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                            unmarshaller.unmarshal(this.eventReader);
+                            this.interactorFactory.
+                                    createInteractorFromXmlInteractorInstance((XmlInteractor)unmarshaller.unmarshal(this.eventReader));
                             if (this.eventReader.hasNext()){
                                 nextEvt = (StartElement)this.eventReader.peek();
                             }
