@@ -74,5 +74,5 @@ public abstract class AbstractInteractorReference extends AbstractXmlIdReference
         throw new IllegalStateException("The interactor reference is not resolved and we cannot set an interactor type for interactor id "+ref);
     }
 
-    public abstract void resolve(Map<Integer, Object> parsedObjects);
+    public abstract boolean resolve(Map<Integer, Object> parsedObjects);
 }

@@ -339,26 +339,30 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         if (value != null){
             this.interactor = new AbstractComplexReference(value) {
                 @Override
-                public void resolve(Map<Integer, Object> parsedObjects) {
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
                     if (parsedObjects.containsKey(this.ref)){
                         Object object = parsedObjects.get(this.ref);
                         if (object instanceof Interactor){
                             interactor = (Interactor) object;
+                            return true;
                         }
                         // convert interaction evidence in a complex
                         if (object instanceof InteractionEvidence){
                             interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
+                            return true;
                         }
                         // set the complex
                         else if (object instanceof Complex){
                             interactor = (Complex)object;
+                            return true;
                         }
                         // wrap modelled interaction
                         else if (object instanceof ModelledInteraction){
                             interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
+                            return true;
                         }
-                        // TODO what if refrence not resolved?
                     }
+                    return false;
                 }
             };
         }
@@ -391,14 +395,15 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
         if (value != null){
             this.interactor = new AbstractInteractorReference(value) {
                 @Override
-                public void resolve(Map<Integer, Object> parsedObjects) {
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
                     if (parsedObjects.containsKey(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof Interactor){
                             interactor = (Interactor) obj;
+                            return true;
                         }
-                        // TODO exception or syntax error if nothing?
                     }
+                    return false;
                 }
             };
         }

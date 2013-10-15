@@ -441,7 +441,9 @@ public abstract class PsiXml25Parser<T extends Interaction> {
 
         Iterator<XmlIdReference> refIterator = context.getReferences().iterator();
         while(refIterator.hasNext()){
-            refIterator.next().resolve(context.getMapOfReferencedObjects());
+            if (!refIterator.next().resolve(context.getMapOfReferencedObjects())){
+                // TODO syntax error
+            }
             refIterator.remove();
         }
     }

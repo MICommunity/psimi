@@ -132,7 +132,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         if (experiments == null){
             experiments = new ArrayList<Experiment>();
         }
-        // TODO what if not resolved?
         return experiments;
     }
 
@@ -379,14 +378,15 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     public void setJAXBAvailabilityRef(Integer value) {
         if (value != null){
             this.availability = new AbstractAvailabilityRef(value) {
-                public void resolve(Map<Integer, Object> parsedObjects) {
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
                     if (parsedObjects.containsKey(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof Availability){
                             availability = (Availability)obj;
+                            return true;
                         }
-                        // TODO exception or syntax error if nothing?
                     }
+                    return false;
                 }
             };
         }
@@ -463,15 +463,16 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         if (value != null){
             for (Integer val : value){
                 getExperiments().add(new AbstractExperimentRef(val) {
-                    public void resolve(Map<Integer, Object> parsedObjects) {
+                    public boolean resolve(Map<Integer, Object> parsedObjects) {
                         if (parsedObjects.containsKey(this.ref)){
                             Object obj = parsedObjects.get(this.ref);
                             if (obj instanceof Experiment){
                                 experiments.remove(this);
                                 experiments.add((Experiment)obj);
+                                return true;
                             }
-                            // TODO exception or syntax error if nothing?
                         }
+                        return false;
                     }
                 });
             }

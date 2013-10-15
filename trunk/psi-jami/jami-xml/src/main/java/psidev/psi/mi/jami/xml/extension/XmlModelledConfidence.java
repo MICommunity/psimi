@@ -78,7 +78,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
         if (value != null){
             for (Integer val : value){
                 getExperiments().add(new AbstractExperimentRef(val) {
-                    public void resolve(Map<Integer, Object> parsedObjects) {
+                    public boolean resolve(Map<Integer, Object> parsedObjects) {
                         if (parsedObjects.containsKey(this.ref)){
                             Object obj = parsedObjects.get(this.ref);
                             if (obj instanceof Experiment){
@@ -88,9 +88,10 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
                                 if (exp.getPublication() != null){
                                     publications.add(exp.getPublication());
                                 }
+                                return true;
                             }
-                            // TODO exception or syntax error if nothing?
                         }
+                        return false;
                     }
                 });
             }
