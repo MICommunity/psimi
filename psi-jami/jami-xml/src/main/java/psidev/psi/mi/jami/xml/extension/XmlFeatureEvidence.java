@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Xml implementation of a Feature
@@ -33,6 +30,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
 
     private List<CvTerm> featureDetectionMethods;
     private Collection<Experiment> experiments;
+    private boolean initialisedMethods = false;
 
     public XmlFeatureEvidence() {
     }
@@ -62,6 +60,9 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     }
 
     public Collection<CvTerm> getDetectionMethods() {
+        if (!initialisedMethods){
+            initialiseDetectionMethods();
+        }
         return featureDetectionMethods;
     }
 
@@ -245,5 +246,34 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             experiments = new ArrayList<Experiment>();
         }
         return experiments;
+    }
+
+    protected void initialiseDetectionMethods(){
+
+        if (this.featureDetectionMethods == null){
+            this.featureDetectionMethods = new ArrayList<CvTerm>();
+        }
+        else if (!this.featureDetectionMethods.isEmpty()){
+            return;
+        }
+
+        ExperimentalEntity participant = getParticipant();
+        if (participant != null && participant instanceof XmlParticipantEvidence){
+            XmlParticipantEvidence xmlPart = (XmlParticipantEvidence)participant;
+            InteractionEvidence interaction = xmlPart.getInteraction();
+            if (interaction != null && interaction instanceof XmlInteractionEvidence){
+                XmlInteractionEvidence xmlInteraction = (XmlInteractionEvidence)interaction;
+                for (Experiment exp : xmlInteraction.getExperiments()){
+                    if (exp instanceof XmlExperiment){
+                        XmlExperiment xmlExp = (XmlExperiment) exp;
+                        if (xmlExp.getJAXBFeatureDetectionMethod() != null){
+                            this.featureDetectionMethods.add(xmlExp.getJAXBFeatureDetectionMethod());
+                        }
+                    }
+                }
+            }
+        }
+
+        initialisedMethods = true;
     }
 }

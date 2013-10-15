@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,12 +24,14 @@ public class XmlEntryContext {
     private Map<Integer, Object> mapOfReferencedObjects;
     private Map<Xref, Publication> mapOfPublications;
     private Collection<XmlIdReference> references;
+    private Collection<InferredInteraction> inferredInteractions;
     private Source currentSource;
 
     private XmlEntryContext(){
         this.mapOfReferencedObjects = new HashMap<Integer, Object>();
         this.mapOfPublications = new HashMap<Xref, Publication>();
         this.references = new ArrayList<XmlIdReference>();
+        this.inferredInteractions = new ArrayList<InferredInteraction>();
     }
 
     public static XmlEntryContext getInstance() {
@@ -64,6 +67,7 @@ public class XmlEntryContext {
         this.mapOfReferencedObjects.clear();
         this.references.clear();
         this.currentSource = null;
+        this.inferredInteractions.clear();
     }
 
     public Source getCurrentSource() {
@@ -72,5 +76,9 @@ public class XmlEntryContext {
 
     public void setCurrentSource(Source source){
         this.currentSource = source;
+    }
+
+    public Collection<InferredInteraction> getInferredInteractions() {
+        return inferredInteractions;
     }
 }

@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class InferredInteraction
     private PsiXmLocator sourceLocator;
 
     public InferredInteraction() {
-
+        XmlEntryContext.getInstance().getInferredInteractions().add(this);
     }
 
     /**

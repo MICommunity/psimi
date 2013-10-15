@@ -44,6 +44,8 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     private ArrayList<ExperimentalInteractor> experimentalInteractors;
     private ArrayList<Organism> hostOrganisms;
 
+    private boolean initialisedMethods = false;
+
     public XmlParticipantEvidence() {
     }
 
@@ -75,8 +77,41 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         this.parameters = new ArrayList<Parameter>();
     }
 
+    /**
+     * This method should only be called when we have loaded all references because the parsing should not call this method
+     */
     protected void initialiseIdentificationMethods(){
-        this.identificationMethods = new ArrayList<CvTerm>();
+        Collection<Experiment> expToIgnore = Collections.EMPTY_LIST;
+
+        if (this.identificationMethods == null){
+            this.identificationMethods = new ArrayList<CvTerm>();
+        }
+        else if (!this.identificationMethods.isEmpty()){
+            expToIgnore = new ArrayList<Experiment>();
+            for (CvTerm part : this.identificationMethods){
+                if (part instanceof ExperimentalCvTerm){
+                    ExperimentalCvTerm expCv = (ExperimentalCvTerm)part;
+                    if (!expCv.getExperiments().isEmpty()){
+                        expToIgnore.addAll(expCv.getExperiments());
+                    }
+                }
+            }
+        }
+
+        InteractionEvidence interaction = getInteraction();
+        if (interaction != null && interaction instanceof XmlInteractionEvidence){
+            XmlInteractionEvidence xmlInteraction = (XmlInteractionEvidence)interaction;
+            for (Experiment exp : xmlInteraction.getExperiments()){
+                if (exp instanceof XmlExperiment){
+                    XmlExperiment xmlExp = (XmlExperiment) exp;
+                    if (xmlExp.getJAXBParticipantIdentificationMethod() != null && !expToIgnore.contains(xmlExp)){
+                        this.identificationMethods.add(xmlExp.getJAXBParticipantIdentificationMethod());
+                    }
+                }
+            }
+        }
+
+        initialisedMethods = true;
     }
 
     protected void initialiseIdentificationMethodsWith(Collection<CvTerm> methods){
@@ -142,7 +177,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     }
 
     public Collection<CvTerm> getIdentificationMethods() {
-        if (identificationMethods == null){
+        if (!initialisedMethods){
             initialiseIdentificationMethods();
         }
         return this.identificationMethods;
@@ -266,6 +301,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     public ArrayList<CvTerm> getJAXBParticipantIdentificationMethods() {
         if (this.identificationMethods != null && this.identificationMethods.isEmpty()){
             this.identificationMethods = null;
+            return null;
         }
         return new ArrayList<CvTerm>(this.identificationMethods);
     }
@@ -279,9 +315,11 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
      *
      */
     public void setJAXBParticipantIdentificationMethods(ArrayList<XmlCvTerm> value) {
-        getIdentificationMethods().clear();
         if (value != null && !value.isEmpty()){
-            getIdentificationMethods().addAll(value);
+            if (this.identificationMethods == null){
+                this.identificationMethods = new ArrayList<CvTerm>();
+            }
+            this.identificationMethods.addAll(value);
         }
     }
 
