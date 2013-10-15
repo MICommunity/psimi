@@ -2,6 +2,11 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.clone.InteractorCloner;
+
+import java.util.Collection;
 
 /**
  * Interactor factory for XML interactors
@@ -55,5 +60,40 @@ public class XmlInteractorFactory extends InteractorFactory{
     @Override
     public XmlInteractorSet createInteractorSet(String name, CvTerm type) {
         return new XmlInteractorSet(name, type);
+    }
+
+    @Override
+    public XmlInteractor createInteractorFromInteractorType(CvTerm type, String name) {
+        return (XmlInteractor) super.createInteractorFromInteractorType(type, name);
+    }
+
+    @Override
+    public XmlInteractor createInteractorFromDatabase(CvTerm database, String name) {
+        return (XmlInteractor)super.createInteractorFromDatabase(database, name);
+    }
+
+    @Override
+    public XmlInteractor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name) {
+        return (XmlInteractor)super.createInteractorFromIdentityXrefs(xrefs, name);
+    }
+
+    public Interactor createInteractorFromXmlInteractorInstance(XmlInteractor source){
+        XmlInteractor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getJAXBInteractorType(), source.getShortName());
+        Xref primary = source.getPreferredIdentifier();
+        if (reloadedInteractorDependingOnType == null && primary != null){
+            reloadedInteractorDependingOnType = createInteractorFromDatabase(primary.getDatabase(), source.getShortName());
+        }
+
+        if (reloadedInteractorDependingOnType != null){
+            InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
+            reloadedInteractorDependingOnType.setSourceLocator(source.getSourceLocator());
+            reloadedInteractorDependingOnType.setJAXBId(source.getJAXBId());
+            reloadedInteractorDependingOnType.setJAXBSequence(source.getJAXBSequence());
+
+            return reloadedInteractorDependingOnType;
+        }
+        else{
+            return source;
+        }
     }
 }
