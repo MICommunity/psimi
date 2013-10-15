@@ -94,7 +94,6 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
 
     public Interactor getInteractor() {
         if (this.interactor == null){
-            // TODO if not initialised?
             initialiseUnspecifiedInteractor();
         }
         return this.interactor;

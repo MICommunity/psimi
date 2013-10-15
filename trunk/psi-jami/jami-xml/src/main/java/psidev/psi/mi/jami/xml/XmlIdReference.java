@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+
 import java.util.Map;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Map;
  * @since <pre>11/10/13</pre>
  */
 
-public interface XmlIdReference {
+public interface XmlIdReference extends FileSourceContext{
 
     /**
      * Register itself as an id to resolve later

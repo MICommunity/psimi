@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
@@ -7,15 +9,14 @@ import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.XmlIdReference;
+import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.EventFilter;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.*;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -54,6 +55,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
     private Unmarshaller unmarshaller;
     private Iterator<T> interactionIterator;
     private XmlInteractorFactory interactorFactory;
+    private PsiXmlParserListener listener;
+    private boolean started = false;
 
     public AbstractPsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException {
         if (file == null){
@@ -117,7 +120,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         this.interactorFactory = new XmlInteractorFactory();
     }
 
-    public T parseInteraction() throws IOException, XMLStreamException, JAXBException {
+    public T parseNextInteraction() throws IOException, XMLStreamException, JAXBException {
         // Parse into typed objects
         //JAXBContext ctx = JAXBContext.newInstance("psidev.psi.mi.jami.xml.extension");
         //Unmarshaller um = ctx.createUnmarshaller();
@@ -129,6 +132,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
         // the eventreader does not have any new events
         if (!this.eventReader.hasNext()){
+            if (!started && listener != null){
+                listener.onInvalidSyntax(new DefaultFileSourceContext(new PsiXmLocator(1,1,null)), new PsiXmlParserException("EntrySet root term not found. PSI-XML is not valid."));
+            }
             return null;
         }
 
@@ -146,12 +152,21 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         }
         // entry set
         else if (PsiXmlUtils.ENTRYSET_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
+            started = true;
             // read the entrySet
             eventReader.nextEvent();
             return processEntry(entryContext);
         }
         else{
-            // TODO element not recognized, syntax mistake
+            FileSourceContext context = null;
+            if (start.getLocation() != null){
+                Location loc = start.getLocation();
+                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+            }
+            if(listener != null){
+                listener.onInvalidSyntax(context, new PsiXmlParserException("We found a tag " + start.getName().getLocalPart() + ". We only expected " +
+                        "interaction, entry or entrySet tag"));
+            }
 
         }
         return null;
@@ -177,6 +192,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
     }
 
     public void reInit() throws MIIOException{
+        loadedInteractions.clear();
+        this.interactionIterator = null;
+        this.started = false;
         // release the thread local
         XmlEntryContext.getInstance().clear();
         XmlEntryContext.remove();
@@ -262,6 +280,14 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         }
     }
 
+    public PsiXmlParserListener getListener() {
+        return listener;
+    }
+
+    public void setListener(PsiXmlParserListener listener) {
+        this.listener = listener;
+    }
+
     /**
      *
      * @return the unmarshaller with the class context
@@ -275,12 +301,19 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
      * @throws XMLStreamException
      * @throws JAXBException
      */
-    protected T processEntryAndLoadNextInteraction(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+    protected T processEntryAndLoadNextInteraction(XmlEntryContext entryContext, StartElement startEntry) throws XMLStreamException, JAXBException {
         T loadedInteraction = null;
 
         // process syntax error
         if (!this.eventReader.hasNext()){
-            //TODO process syntax error
+            if (listener != null){
+                FileSourceContext context = null;
+                if (startEntry.getLocation() != null){
+                   Location loc = startEntry.getLocation();
+                    context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                }
+                listener.onInvalidSyntax(context, new PsiXmlParserException("Entry element is empty. It should contain at least an interactionList. It can also contain a source, availabilityList, experimentList, interactorList and attributeList. PSI-XML is not valid."));
+            }
         }
         else{
             // get next event without parsing it until we could read an interaction and solve all its references
@@ -293,7 +326,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
                 // process availability
                 else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
                     // read availability list
-                    this.eventReader.nextEvent();
+                    StartElement startList = (StartElement)this.eventReader.nextEvent();
                     // load availability
                     if (this.eventReader.hasNext()){
                         XmlEntry entry = entryContext.getCurrentEntry();
@@ -310,15 +343,21 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
                             }
                         }
                     }
-                    // TODO deal with wrong syntax
                     else{
-
+                        if (listener != null){
+                            FileSourceContext context = null;
+                            if (startList.getLocation() != null){
+                                Location loc = startList.getLocation();
+                                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                            }
+                            listener.onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList element does not contain any availability node. PSI-XML is not valid."));
+                        }
                     }
                 }
                 // process experiments
                 else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
                     // read experiment list
-                    this.eventReader.nextEvent();
+                    StartElement experimentList = (StartElement)this.eventReader.nextEvent();
                     // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
                     if (this.eventReader.hasNext()){
                         nextEvt = (StartElement)this.eventReader.peek();
@@ -333,15 +372,21 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
                             }
                         }
                     }
-                    // TODO deal with wrong syntax
                     else{
-
+                        if (listener != null){
+                            FileSourceContext context = null;
+                            if (experimentList.getLocation() != null){
+                                Location loc = experimentList.getLocation();
+                                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                            }
+                            listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentList element does not contain any experimentDescription node. PSI-XML is not valid."));
+                        }
                     }
                 }
                 // process interactors. All interactors will be stored in entryContext so no need to do something else
                 else if (PsiXmlUtils.INTERACTORLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
                     // read experiment list
-                    this.eventReader.nextEvent();
+                    StartElement interactorList = (StartElement)this.eventReader.nextEvent();
                     // process interactors
                     if (this.eventReader.hasNext()){
                         nextEvt = (StartElement)this.eventReader.peek();
@@ -357,27 +402,75 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
                             }
                         }
                     }
-                    // TODO deal with wrong syntax
                     else{
-
+                        if (listener != null){
+                            FileSourceContext context = null;
+                            if (interactorList.getLocation() != null){
+                                Location loc = interactorList.getLocation();
+                                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                            }
+                            listener.onInvalidSyntax(context, new PsiXmlParserException("InteractorList element does not contain any interactor node. PSI-XML is not valid."));
+                        }
                     }
                 }
                 // process interaction
                 else if (PsiXmlUtils.INTERACTIONLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
                     // read experiment list
-                    this.eventReader.nextEvent();
+                    StartElement interactionList = (StartElement)this.eventReader.nextEvent();
                     // read interactions
                     if (this.eventReader.hasNext()){
                         loadedInteraction = parseInteractionTag(entryContext);
                     }
-                    // TODO deal with wrong syntax
                     else{
-
+                        if (listener != null){
+                            FileSourceContext context = null;
+                            if (interactionList.getLocation() != null){
+                                Location loc = interactionList.getLocation();
+                                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                            }
+                            listener.onInvalidSyntax(context, new PsiXmlParserException("InteractionList element does not contain any interaction node. PSI-XML is not valid."));
+                        }
                     }
                 }
-                // TODO deal with wrong syntax and attributList
-                else{
+                // read attributeList
+                else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
+                    // read attributeList
+                    StartElement attributeList = (StartElement)eventReader.nextEvent();
+                    // read attributes
+                    if (this.eventReader.hasNext()){
+                        XmlEntry currentEntry = entryContext.getCurrentEntry();
+                        nextEvt = (StartElement)this.eventReader.peek();
+                        // load attribute
+                        while (nextEvt != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
+                            currentEntry.getAnnotations().add((Annotation) this.unmarshaller.unmarshal(eventReader));
 
+                            if (this.eventReader.hasNext()){
+                                nextEvt = (StartElement)this.eventReader.peek();
+                            }
+                            else{
+                                nextEvt= null;
+                            }
+                        }                    }
+                    else{
+                        if (listener != null){
+                            FileSourceContext context = null;
+                            if (attributeList.getLocation() != null){
+                                Location loc = attributeList.getLocation();
+                                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                            }
+                            listener.onInvalidSyntax(context, new PsiXmlParserException("AttributeList element does not contain any attribute node. PSI-XML is not valid."));
+                        }
+                    }
+                }
+                else{
+                    if (listener != null){
+                        FileSourceContext context = null;
+                        if (nextEvt.getLocation() != null){
+                            Location loc = nextEvt.getLocation();
+                            context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                        }
+                        listener.onInvalidSyntax(context, new PsiXmlParserException("Entry contains a node "+nextEvt.getName().getLocalPart()+". In an entry, only a source, experimentList, interactorList, interactionList, attributeList and availabilityList are allowed. PSI-XML is not valid."));
+                    }
                 }
             }
         }
@@ -396,17 +489,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         // reset new entry
         entryContext.setCurrentSource(new XmlEntry());
         // read entry
-        this.eventReader.next();
+        StartElement startEntry = (StartElement)this.eventReader.next();
         // get next interaction if possible
-        if (this.eventReader.hasNext()){
-            // next element should be an entry
-            return processEntryAndLoadNextInteraction(entryContext);
-        }
-        // element is expected here
-        else{
-            //TODO syntax error
-        }
-        return null;
+        return processEntryAndLoadNextInteraction(entryContext, startEntry);
     }
 
     /**
@@ -415,7 +500,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
      * @throws XMLStreamException
      * @throws JAXBException
      */
-    protected void loadEntry(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+    protected void loadEntry(XmlEntryContext entryContext, T currentInteraction) throws XMLStreamException, JAXBException {
         // load the all entry
         // we already are parsing interactions
         StartElement evt = (StartElement) eventReader.peek();
@@ -430,32 +515,45 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         // get the current entry. It must exists
         XmlEntry currentEntry = entryContext.getCurrentEntry();
         if (currentEntry == null){
-            // TODO deals with syntax error
-            throw new IllegalStateException("Each interaction should be coming from an Entry");
-        }
-
-        // check entry attributes
-        if (evt != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(evt.getName().getLocalPart())){
-            // read attributeList
-            eventReader.nextEvent();
-
-            evt = (StartElement) eventReader.peek();
-            if (evt == null){
-                // TODO deals with syntax error
+            if (listener != null){
+                FileSourceContext context = null;
+                if (currentInteraction instanceof FileSourceContext){
+                    context = (FileSourceContext)currentEntry;
+                }
+                listener.onInvalidSyntax(context, new PsiXmlParserException("An interaction node was found outside an entry element. PSI-XML is not valid."));
             }
-            else{
-                boolean isReadingAttribute = PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+        }
+        else{
+            // check entry attributes
+            if (evt != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(evt.getName().getLocalPart())){
+                // read attributeList
+                StartElement attributeList = (StartElement)eventReader.nextEvent();
 
-                while(isReadingAttribute && this.eventReader.hasNext()){
-                    currentEntry.getAnnotations().add((Annotation)this.unmarshaller.unmarshal(eventReader));
+                evt = (StartElement) eventReader.peek();
+                if (evt == null){
+                    if (listener != null){
+                        FileSourceContext context = null;
+                        if (attributeList.getLocation() != null){
+                            Location loc = attributeList.getLocation();
+                            context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                        }
+                        listener.onInvalidSyntax(context, new PsiXmlParserException("The attributeList node did not contain any availability node. PSI-XML is not valid."));
+                    }
+                }
+                else{
+                    boolean isReadingAttribute = PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
 
-                    evt = (StartElement) eventReader.peek();
-                    isReadingAttribute = evt != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+                    while(isReadingAttribute && this.eventReader.hasNext()){
+                        currentEntry.getAnnotations().add((Annotation)this.unmarshaller.unmarshal(eventReader));
+
+                        evt = (StartElement) eventReader.peek();
+                        isReadingAttribute = evt != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+                    }
                 }
             }
-        }
 
-        this.interactionIterator = this.loadedInteractions.iterator();
+            this.interactionIterator = this.loadedInteractions.iterator();
+        }
     }
 
     /**
@@ -483,7 +581,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         }
         // we have references to resolve, loads the all entry and keep in cache
         else{
-            loadEntry(entryContext);
+            loadEntry(entryContext,interaction);
         }
 
         return interaction;
@@ -499,8 +597,11 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
         Iterator<XmlIdReference> refIterator = context.getReferences().iterator();
         while(refIterator.hasNext()){
-            if (!refIterator.next().resolve(context.getMapOfReferencedObjects())){
-                // TODO syntax error
+            XmlIdReference ref = refIterator.next();
+            if (!ref.resolve(context.getMapOfReferencedObjects())){
+                if (listener != null){
+                   listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
+                }
             }
             refIterator.remove();
         }
@@ -531,7 +632,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
                 }
             }
             else{
-                // TODO process syntax error
+                if (listener != null){
+                    listener.onInvalidSyntax(inferred, new PsiXmlParserException("InferredInteraction must have at least one inferredInteractionParticipant."));
+                }
             }
 
             inferredIterator.remove();
@@ -574,6 +677,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
         loadedInteractions.clear();
         this.interactionIterator = null;
+        this.started = false;
 
         // release the thread local
         XmlEntryContext.getInstance().clear();
