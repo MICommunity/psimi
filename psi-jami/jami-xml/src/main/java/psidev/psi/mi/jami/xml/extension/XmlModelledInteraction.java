@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.internal.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -37,14 +38,28 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     private Collection<CooperativeEffect> cooperativeEffects;
 
     public XmlModelledInteraction() {
+        super();
+        if (getEntry() != null){
+            this.source = getEntry().getSource();
+        }
     }
 
     public XmlModelledInteraction(String shortName) {
         super(shortName);
+        XmlEntryContext context = XmlEntryContext.getInstance();
+        setEntry(context.getCurrentEntry());
+        if (context.getCurrentEntry() != null){
+            this.source = context.getCurrentEntry().getSource();
+        }
     }
 
     public XmlModelledInteraction(String shortName, CvTerm type) {
         super(shortName, type);
+        XmlEntryContext context = XmlEntryContext.getInstance();
+        setEntry(context.getCurrentEntry());
+        if (context.getCurrentEntry() != null){
+            this.source = context.getCurrentEntry().getSource();
+        }
     }
 
     protected void initialiseInteractionEvidences(){
