@@ -27,4 +27,6 @@ public class PsiXmlUtils {
     public static final String SOURCE_TAG = "source";
     public static final String AVAILABILITYLIST_TAG = "availabilityList";
     public static final String AVAILABILITY_TAG = "availability";
+    public static final String ATTRIBUTELIST_TAG = "attributeList";
+    public static final String ATTRIBUTE_TAG = "attribute";
 }

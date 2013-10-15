@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -384,7 +385,13 @@ public class XmlExperiment implements Experiment, FileSourceContext{
         if (publication != null){
             if (!publication.getIdentifiers().isEmpty()){
                 Xref firstIdentifier = publication.getIdentifiers().iterator().next();
-                Map<Xref, Publication> mapOfPublications = XmlEntryContext.getInstance().getMapOfPublications();
+                XmlEntryContext context = XmlEntryContext.getInstance();
+                Map<Xref, Publication> mapOfPublications = context.getMapOfPublications();
+                XmlEntry entry = context.getCurrentEntry();
+                if (entry != null){
+                    publication.setSource(entry.getSource());
+                }
+
                 if (mapOfPublications.containsKey(firstIdentifier)){
                     setPublicationAndAddExperiment(mapOfPublications.get(firstIdentifier));
                 }

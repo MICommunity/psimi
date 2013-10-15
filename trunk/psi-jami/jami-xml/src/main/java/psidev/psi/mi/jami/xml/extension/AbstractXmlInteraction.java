@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
+import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -41,10 +42,16 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     private PsiXmLocator sourceLocator;
 
+    private XmlEntry entry;
+
     public AbstractXmlInteraction(){
+        XmlEntryContext context = XmlEntryContext.getInstance();
+        this.entry = context.getCurrentEntry();
     }
 
     public AbstractXmlInteraction(String shortName){
+        XmlEntryContext context = XmlEntryContext.getInstance();
+        this.entry = context.getCurrentEntry();
         setShortName(shortName);
     }
 
@@ -486,6 +493,14 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+    }
+
+    public XmlEntry getEntry() {
+        return entry;
+    }
+
+    public void setEntry(XmlEntry entry) {
+        this.entry = entry;
     }
 
     @Override

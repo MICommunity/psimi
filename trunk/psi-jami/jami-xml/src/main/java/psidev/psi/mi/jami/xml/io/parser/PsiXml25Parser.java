@@ -1,9 +1,15 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.XmlIdReference;
+import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -20,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Parser for PSI-XML 2.5
@@ -118,30 +125,21 @@ public abstract class PsiXml25Parser<T extends Interaction> {
 
         // get next event without parsing it
         StartElement start = (StartElement) eventReader.peek();
+        // get xml entry context
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
-
-        // reads the next interaction
+        // the next tag is an interaction, we parse the interaction.
         if (PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
             return parseInteractionTag(entryContext);
         }
-        // end of Entry because the Event filter only accepts all StartElements and the EndElement of entry
+        // we start a new entry
         else if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(start.getName().getLocalPart())) {
-            // read entry
-            this.eventReader.next();
-            // get next interaction if possible
-            if (this.eventReader.hasNext()){
-                // next element should be an entry
-                return processEntryAndLoadNextInteraction(entryContext);
-            }
+            return processEntry(entryContext);
         }
         // entry set
         else if (PsiXmlUtils.ENTRYSET_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
             // read the entrySet
             eventReader.nextEvent();
-            if (this.eventReader.hasNext()){
-                // next element should be an entry
-                return processEntryAndLoadNextInteraction(entryContext);
-            }
+            return processEntry(entryContext);
         }
         else{
             // TODO element not recognized, syntax mistake
@@ -163,6 +161,9 @@ public abstract class PsiXml25Parser<T extends Interaction> {
     }
 
     public boolean hasFinished(){
+        if (this.interactionIterator != null && this.interactionIterator.hasNext()){
+            return false;
+        }
         return !this.eventReader.hasNext();
     }
 
@@ -202,6 +203,10 @@ public abstract class PsiXml25Parser<T extends Interaction> {
 
         loadedInteractions.clear();
         this.interactionIterator = null;
+
+        // release the thread local
+        XmlEntryContext.getInstance().clear();
+        XmlEntryContext.remove();
     }
 
     protected abstract Unmarshaller createJAXBUnmarshaller();
@@ -209,98 +214,127 @@ public abstract class PsiXml25Parser<T extends Interaction> {
     protected T processEntryAndLoadNextInteraction(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         T loadedInteraction = null;
 
-        // get next event without parsing it until we could read an interaction and solve all its references
-        while(loadedInteraction == null && this.eventReader.hasNext()){
-            StartElement nextEvt = (StartElement) this.eventReader.peek();
-            // process source of entry
-            if (PsiXmlUtils.SOURCE_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                entryContext.setCurrentSource((Source)this.unmarshaller.unmarshal(eventReader));
-            }
-            // process availability
-            else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                // read availability list
-                this.eventReader.nextEvent();
-                if (this.eventReader.hasNext()){
-                    nextEvt = (StartElement)this.eventReader.peek();
+        // process syntax error
+        if (!this.eventReader.hasNext()){
+            //TODO process syntax error
+        }
+        else{
+            // get next event without parsing it until we could read an interaction and solve all its references
+            while(loadedInteraction == null && this.eventReader.hasNext()){
+                StartElement nextEvt = (StartElement) this.eventReader.peek();
+                // process source of entry
+                if (PsiXmlUtils.SOURCE_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
+                    entryContext.getCurrentEntry().setSource((Source) this.unmarshaller.unmarshal(eventReader));
+                }
+                // process availability
+                else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
+                    // read availability list
+                    this.eventReader.nextEvent();
                     // load availability
-                    while (nextEvt != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                        unmarshaller.unmarshal(this.eventReader);
-                        if (this.eventReader.hasNext()){
-                            nextEvt = (StartElement)this.eventReader.peek();
-                        }
-                        else{
-                            nextEvt= null;
+                    if (this.eventReader.hasNext()){
+                        XmlEntry entry = entryContext.getCurrentEntry();
+
+                        nextEvt = (StartElement)this.eventReader.peek();
+                        // load availability
+                        while (nextEvt != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
+                            entry.getAvailabilities().add((Availability)unmarshaller.unmarshal(this.eventReader));
+                            if (this.eventReader.hasNext()){
+                                nextEvt = (StartElement)this.eventReader.peek();
+                            }
+                            else{
+                                nextEvt= null;
+                            }
                         }
                     }
-                }
-                // TODO deal with wrong syntax
-                else{
+                    // TODO deal with wrong syntax
+                    else{
 
-                }
-            }
-            // process experiments
-            else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                // read experiment list
-                this.eventReader.nextEvent();
-                if (this.eventReader.hasNext()){
-                    nextEvt = (StartElement)this.eventReader.peek();
-                    // load experimentDescription
-                    while (nextEvt != null && PsiXmlUtils.EXPERIMENT_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                        unmarshaller.unmarshal(this.eventReader);
-                        if (this.eventReader.hasNext()){
-                            nextEvt = (StartElement)this.eventReader.peek();
-                        }
-                        else{
-                            nextEvt= null;
-                        }
                     }
                 }
-                // TODO deal with wrong syntax
-                else{
-
-                }
-            }
-            // process interactors
-            else if (PsiXmlUtils.INTERACTORLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                // read experiment list
-                this.eventReader.nextEvent();
-                if (this.eventReader.hasNext()){
-                    nextEvt = (StartElement)this.eventReader.peek();
-                    // load experimentDescription
-                    while (nextEvt != null && PsiXmlUtils.INTERACTOR_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                        unmarshaller.unmarshal(this.eventReader);
-                        if (this.eventReader.hasNext()){
-                            nextEvt = (StartElement)this.eventReader.peek();
-                        }
-                        else{
-                            nextEvt= null;
+                // process experiments
+                else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
+                    // read experiment list
+                    this.eventReader.nextEvent();
+                    // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
+                    if (this.eventReader.hasNext()){
+                        nextEvt = (StartElement)this.eventReader.peek();
+                        // load experimentDescription
+                        while (nextEvt != null && PsiXmlUtils.EXPERIMENT_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
+                            unmarshaller.unmarshal(this.eventReader);
+                            if (this.eventReader.hasNext()){
+                                nextEvt = (StartElement)this.eventReader.peek();
+                            }
+                            else{
+                                nextEvt= null;
+                            }
                         }
                     }
+                    // TODO deal with wrong syntax
+                    else{
+
+                    }
                 }
-                // TODO deal with wrong syntax
+                // process interactors. All interactors will be stored in entryContext so no need to do something else
+                else if (PsiXmlUtils.INTERACTORLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
+                    // read experiment list
+                    this.eventReader.nextEvent();
+                    // process interactors
+                    if (this.eventReader.hasNext()){
+                        nextEvt = (StartElement)this.eventReader.peek();
+                        // load experimentDescription
+                        while (nextEvt != null && PsiXmlUtils.INTERACTOR_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
+                            unmarshaller.unmarshal(this.eventReader);
+                            if (this.eventReader.hasNext()){
+                                nextEvt = (StartElement)this.eventReader.peek();
+                            }
+                            else{
+                                nextEvt= null;
+                            }
+                        }
+                    }
+                    // TODO deal with wrong syntax
+                    else{
+
+                    }
+                }
+                // process interaction
+                else if (PsiXmlUtils.INTERACTIONLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
+                    // read experiment list
+                    this.eventReader.nextEvent();
+                    // read interactions
+                    if (this.eventReader.hasNext()){
+                        loadedInteraction = parseInteractionTag(entryContext);
+                    }
+                    // TODO deal with wrong syntax
+                    else{
+
+                    }
+                }
+                // TODO deal with wrong syntax and attributList
                 else{
 
                 }
-            }
-            // process interaction
-            else if (PsiXmlUtils.INTERACTORLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                // read experiment list
-                this.eventReader.nextEvent();
-                if (this.eventReader.hasNext()){
-                    return parseInteractionTag(entryContext);
-                }
-                // TODO deal with wrong syntax
-                else{
-
-                }
-            }
-            // TODO deal with wrong syntax and attributList
-            else{
-
             }
         }
 
         return loadedInteraction;
+    }
+
+    protected T processEntry(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
+        // reset new entry
+        entryContext.setCurrentSource(new XmlEntry());
+        // read entry
+        this.eventReader.next();
+        // get next interaction if possible
+        if (this.eventReader.hasNext()){
+            // next element should be an entry
+            return processEntryAndLoadNextInteraction(entryContext);
+        }
+        // element is expected here
+        else{
+            //TODO syntax error
+        }
+        return null;
     }
 
     private void initializeXmlEventReader(XMLInputFactory xmlif, XMLEventReader xmler) throws XMLStreamException {
@@ -310,7 +344,11 @@ public abstract class PsiXml25Parser<T extends Interaction> {
                 if(event.isEndElement()){
                     EndElement end = (EndElement)event;
                     if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(end.getName().getLocalPart())){
-                        clearEntryReferences();
+                        XmlEntryContext context = XmlEntryContext.getInstance();
+                        if (context.getCurrentEntry() != null){
+                            context.getCurrentEntry().setHasLoadedFullEntry(true);
+                        }
+                        clearEntryReferences(context);
                     }
                 }
                 return event.isStartElement();
@@ -319,41 +357,47 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         this.eventReader = xmlif.createFilteredReader(xmler, filter);
     }
 
-    private void resolveInteractorAndExperimentRefs(){
-        // resolve experiment and interactor ref
-        // load participant identification method
-        // load feature detection method
-        // solve source pb
-
-    }
-
-    private void resolveInferredInteractionRefs(){
-        // resolve binding sites
-
-    }
-
     private void loadEntry(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         // load the all entry
         // we already are parsing interactions
         StartElement evt = (StartElement) eventReader.peek();
-        boolean isReading = PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
-        while(isReading && this.eventReader.hasNext()){
-            T interaction = (T)this.unmarshaller.unmarshal(eventReader);
-            this.loadedInteractions.add(interaction);
+        boolean isReadingInteraction = PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+        while(isReadingInteraction && this.eventReader.hasNext()){
+            this.loadedInteractions.add((T)this.unmarshaller.unmarshal(eventReader));
 
             evt = (StartElement) eventReader.peek();
-            isReading = evt != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+            isReadingInteraction = evt != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
         }
 
-        // resolve references
-        clearEntryReferences();
-        this.interactionIterator = this.loadedInteractions.iterator();
-    }
+        // get the current entry. It must exists
+        XmlEntry currentEntry = entryContext.getCurrentEntry();
+        if (currentEntry == null){
+            // TODO deals with syntax error
+            throw new IllegalStateException("Each interaction should be coming from an Entry");
+        }
 
-    private void clearEntryReferences(){
-        resolveInteractorAndExperimentRefs();
-        resolveInferredInteractionRefs();
-        XmlEntryContext.getInstance().clear();
+        // check entry attributes
+        if (evt != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(evt.getName().getLocalPart())){
+            // read attributeList
+            eventReader.nextEvent();
+
+            evt = (StartElement) eventReader.peek();
+            if (evt == null){
+                // TODO deals with syntax error
+            }
+            else{
+                boolean isReadingAttribute = PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+
+                while(isReadingAttribute && this.eventReader.hasNext()){
+                    currentEntry.getAnnotations().add((Annotation)this.unmarshaller.unmarshal(eventReader));
+
+                    evt = (StartElement) eventReader.peek();
+                    isReadingAttribute = evt != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+                }
+            }
+        }
+
+        this.interactionIterator = this.loadedInteractions.iterator();
     }
 
     /**
@@ -367,7 +411,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
     }
 
     /**
-     *
+     * The unmarshaller must be able to return the expected interaction type
      * @param entryContext
      * @return next interaction parsed in the interaction list. Will load the all entry if we have references to solve
      * @throws JAXBException
@@ -376,7 +420,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
     private T parseInteractionTag(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
         T interaction = (T)this.unmarshaller.unmarshal(eventReader);
         // no references, can return the interaction
-        if (entryContext.getReferences().isEmpty()){
+        if (entryContext.getReferences().isEmpty() && entryContext.getInferredInteractions().isEmpty()){
             return interaction;
         }
         // we have references to resolve, loads the all entry and keep in cache
@@ -385,5 +429,52 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         }
 
         return interaction;
+    }
+
+    private void clearEntryReferences(XmlEntryContext context){
+        resolveInteractorAndExperimentRefs(context);
+        resolveInferredInteractionRefs(context);
+        XmlEntryContext.getInstance().clear();
+    }
+
+    private void resolveInteractorAndExperimentRefs(XmlEntryContext context){
+
+        Iterator<XmlIdReference> refIterator = context.getReferences().iterator();
+        while(refIterator.hasNext()){
+            refIterator.next().resolve(context.getMapOfReferencedObjects());
+            refIterator.remove();
+        }
+    }
+
+    private void resolveInferredInteractionRefs(XmlEntryContext context){
+        Iterator<InferredInteraction> inferredIterator = context.getInferredInteractions().iterator();
+        while(inferredIterator.hasNext()){
+            InferredInteraction inferred = inferredIterator.next();
+            if (!inferred.getJAXBParticipants().isEmpty()){
+                Iterator<InferredInteractionParticipant> partIterator = inferred.getJAXBParticipants().iterator();
+                List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getJAXBParticipants());
+                int currentIndex = 0;
+
+                while (partIterator.hasNext()){
+                    currentIndex++;
+                    InferredInteractionParticipant p1 = partIterator.next();
+                    for (int i = currentIndex; i < partIterator2.size();i++){
+                        InferredInteractionParticipant p2 = partIterator2.get(i);
+
+                        if (p1.getFeature() != null && p2.getFeature() != null){
+                            p1.getFeature().getLinkedFeatures().add(p2.getFeature());
+                            if (p1.getFeature() != p2.getFeature()){
+                                p2.getFeature().getLinkedFeatures().add(p1.getFeature());
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                // TODO process syntax error
+            }
+
+            inferredIterator.remove();
+        }
     }
 }
