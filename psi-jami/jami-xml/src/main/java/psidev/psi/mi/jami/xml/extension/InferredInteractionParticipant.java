@@ -77,14 +77,15 @@ public class InferredInteractionParticipant implements FileSourceContext
     public void setJAXBParticipantFeatureRef(Integer value) {
         if (value != null){
            this.feature = new AbstractFeatureRef(value) {
-               public void resolve(Map<Integer, Object> parsedObjects) {
+               public boolean resolve(Map<Integer, Object> parsedObjects) {
                    if (parsedObjects.containsKey(this.ref)){
                        Object obj = parsedObjects.get(this.ref);
                        if (obj instanceof Feature){
                            feature = (Feature)obj;
+                           return true;
                        }
-                       // TODO exception or syntax error if nothing?
                    }
+                   return false;
                }
            };
         }
@@ -117,14 +118,15 @@ public class InferredInteractionParticipant implements FileSourceContext
     public void setJAXBParticipantRef(Integer value) {
         if (value != null){
             this.participant = new AbstractParticipantRef(value) {
-                public void resolve(Map<Integer, Object> parsedObjects) {
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
                     if (parsedObjects.containsKey(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof Entity){
                             participant = (Entity)obj;
+                            return true;
                         }
-                        // TODO exception or syntax error if nothing?
                     }
+                    return false;
                 }
             };
         }

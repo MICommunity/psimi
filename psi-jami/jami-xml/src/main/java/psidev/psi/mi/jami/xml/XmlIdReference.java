@@ -12,6 +12,15 @@ import java.util.Map;
 
 public interface XmlIdReference {
 
+    /**
+     * Register itself as an id to resolve later
+     */
     public void registerForResolution();
-    public void resolve(Map<Integer,Object> parsedObjects);
+
+    /**
+     * Resolve the references given a map of parsed objects
+     * @param parsedObjects
+     * @return true if the reference was solved. false otherwise
+     */
+    public boolean resolve(Map<Integer,Object> parsedObjects);
 }

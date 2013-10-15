@@ -121,14 +121,15 @@ public class ExperimentalInteractor implements FileSourceContext
         if (value != null){
             this.interactor = new AbstractInteractorReference(value) {
                 @Override
-                public void resolve(Map<Integer, Object> parsedObjects) {
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
                     if (parsedObjects.containsKey(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof Interactor){
                             interactor = (Interactor) obj;
+                            return true;
                         }
-                        // TODO exception or syntax error if nothing?
                     }
+                    return false;
                 }
             };
         }
@@ -172,15 +173,16 @@ public class ExperimentalInteractor implements FileSourceContext
         if (value != null){
             for (Integer val : value){
                 getExperiments().add(new AbstractExperimentRef(val) {
-                    public void resolve(Map<Integer, Object> parsedObjects) {
+                    public boolean resolve(Map<Integer, Object> parsedObjects) {
                         if (parsedObjects.containsKey(this.ref)){
                             Object obj = parsedObjects.get(this.ref);
                             if (obj instanceof Experiment){
                                 experiments.remove(this);
                                 experiments.add((Experiment)obj);
+                                return true;
                             }
-                            // TODO exception or syntax error if nothing?
                         }
+                        return false;
                     }
                 });
             }

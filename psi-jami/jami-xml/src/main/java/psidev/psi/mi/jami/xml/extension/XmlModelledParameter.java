@@ -69,17 +69,18 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
     public void setJAXBExperimentRef(Integer value) {
         if (value != null){
             this.experiment = new AbstractExperimentRef(value) {
-                public void resolve(Map<Integer, Object> parsedObjects) {
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
                     if (parsedObjects.containsKey(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof Experiment){
                             experiment = (Experiment)obj;
                             if (experiment.getPublication() != null){
                                 publications.add(experiment.getPublication());
+                                return true;
                             }
                         }
-                        // TODO exception or syntax error if nothing?
                     }
+                    return false;
                 }
             };
         }
