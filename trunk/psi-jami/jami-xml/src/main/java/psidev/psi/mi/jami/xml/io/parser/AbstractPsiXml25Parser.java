@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Parser for PSI-XML 2.5
@@ -39,8 +41,9 @@ import java.util.List;
  * @since <pre>14/10/13</pre>
  */
 
-public abstract class PsiXml25Parser<T extends Interaction> {
+public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
+    private static final Logger logger = Logger.getLogger("AbstractPsiXml25Parser");
     private XMLEventReader eventReader;
 
     private URL originalURL;
@@ -52,7 +55,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
     private Iterator<T> interactionIterator;
     private XmlInteractorFactory interactorFactory;
 
-    public PsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException {
+    public AbstractPsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
@@ -67,7 +70,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         this.interactorFactory = new XmlInteractorFactory();
     }
 
-    public PsiXml25Parser(InputStream inputStream) throws XMLStreamException {
+    public AbstractPsiXml25Parser(InputStream inputStream) throws XMLStreamException {
         if (inputStream == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
@@ -83,14 +86,15 @@ public abstract class PsiXml25Parser<T extends Interaction> {
 
     }
 
-    public PsiXml25Parser(URL url) throws IOException, XMLStreamException {
+    public AbstractPsiXml25Parser(URL url) throws IOException, XMLStreamException {
         if (url == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
         this.originalURL = url;
+        this.originalStream = url.openStream();
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        InputStreamReader fr = new InputStreamReader(url.openStream());
+        InputStreamReader fr = new InputStreamReader(this.originalStream);
         XMLEventReader xmler = xmlif.createXMLEventReader(fr);
         initializeXmlEventReader(xmlif, xmler);
         loadedInteractions = new ArrayList<T>();
@@ -99,7 +103,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
 
     }
 
-    public PsiXml25Parser(Reader reader) throws XMLStreamException {
+    public AbstractPsiXml25Parser(Reader reader) throws XMLStreamException {
         if (reader == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
@@ -172,50 +176,105 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         return !this.eventReader.hasNext();
     }
 
-    private void closeOriginalInputSources() {
-        if (this.originalStream != null){
-            try {
-                this.originalStream.close();
-            } catch (IOException e) {
-                throw new MIIOException("Impossible to close the original stream", e);
-            }
-            finally {
-                this.originalFile = null;
-                this.originalURL = null;
-                this.originalStream = null;
-                this.originalReader = null;
-            }
-        }
-        else if (this.originalReader != null){
-            try {
-                this.originalReader.close();
-            } catch (IOException e) {
-                throw new MIIOException("Impossible to close the original reader", e);
-            }
-            finally {
-                this.originalFile = null;
-                this.originalURL = null;
-                this.originalStream = null;
-                this.originalReader = null;
-            }
-        }
-        else{
-            this.originalFile = null;
-            this.originalURL = null;
-            this.originalStream = null;
-            this.originalReader = null;
-        }
-
-        loadedInteractions.clear();
-        this.interactionIterator = null;
-
+    public void reInit() throws MIIOException{
         // release the thread local
         XmlEntryContext.getInstance().clear();
         XmlEntryContext.remove();
+        if (this.eventReader != null){
+            try {
+                this.eventReader.close();
+            } catch (XMLStreamException e) {
+                logger.log(Level.SEVERE, "Could not close the eventReader.", e);
+            }
+        }
+        if (this.originalFile != null){
+            XMLInputFactory xmlif = XMLInputFactory.newInstance();
+            FileReader fr = null;
+            try {
+                fr = new FileReader(this.originalFile);
+                XMLEventReader xmler = xmlif.createXMLEventReader(fr);
+                initializeXmlEventReader(xmlif, xmler);
+            } catch (FileNotFoundException e) {
+                throw new MIIOException("File not found  " + this.originalFile.getName(), e);
+            } catch (XMLStreamException e) {
+                throw new MIIOException("We cannot open the file " + this.originalFile.getName(), e);
+            }
+        }
+        else if (this.originalURL != null){
+            // close the previous stream
+            if (this.originalStream != null){
+                try {
+                    this.originalStream.close();
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "Could not close the inputStream.", e);
+                }
+            }
+            // reinitialise the stream
+            try {
+                this.originalStream = originalURL.openStream();
+                XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                InputStreamReader fr = new InputStreamReader(this.originalStream);
+                XMLEventReader xmler = xmlif.createXMLEventReader(fr);
+                initializeXmlEventReader(xmlif, xmler);
+            }catch (XMLStreamException e) {
+                throw new MIIOException("We cannot open the URL " + this.originalURL.toString(), e);
+            } catch (IOException e) {
+                throw new MIIOException("We cannot open the URL  " + this.originalURL.toString(), e);
+            }
+        }
+        else if (this.originalStream != null){
+            // reinit parser if inputStream can be reset
+            if (this.originalStream.markSupported()){
+                try {
+                    this.originalStream.reset();
+                    XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                    InputStreamReader fr = new InputStreamReader(this.originalStream);
+                    XMLEventReader xmler = xmlif.createXMLEventReader(fr);
+                    initializeXmlEventReader(xmlif, xmler);
+
+                } catch (XMLStreamException e) {
+                    throw new MIIOException("We cannot open the inputStream ", e);
+                } catch (IOException e) {
+                    throw new MIIOException("We cannot read the inputStream  ", e);
+                }
+            }
+            else {
+                throw new MIIOException("The inputStream has been consumed and cannot be reset");
+            }
+        }
+        else if (this.originalReader != null){
+            // reinit line parser if reader can be reset
+            if (this.originalReader.markSupported()){
+                try {
+                    this.originalReader.reset();
+                    XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                    XMLEventReader xmler = xmlif.createXMLEventReader(this.originalReader);
+                    initializeXmlEventReader(xmlif, xmler);
+                } catch (XMLStreamException e) {
+                    throw new MIIOException("We cannot open the reader ", e);
+                } catch (IOException e) {
+                    throw new MIIOException("We cannot open the reader  ", e);
+                }
+            }
+            else {
+                throw new MIIOException("The reader has been consumed and cannot be reset");
+            }
+        }
     }
 
+    /**
+     *
+     * @return the unmarshaller with the class context
+     */
     protected abstract Unmarshaller createJAXBUnmarshaller();
 
+    /**
+     * Process an entry that is opened (source, experimentList, etc) and read the first interaction
+     * @param entryContext
+     * @return
+     * @throws XMLStreamException
+     * @throws JAXBException
+     */
     protected T processEntryAndLoadNextInteraction(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         T loadedInteraction = null;
 
@@ -326,6 +385,13 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         return loadedInteraction;
     }
 
+    /**
+     * Creates a new XmlEntry, parses the entry and return the next available interaction
+     * @param entryContext
+     * @return
+     * @throws JAXBException
+     * @throws XMLStreamException
+     */
     protected T processEntry(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
         // reset new entry
         entryContext.setCurrentSource(new XmlEntry());
@@ -343,27 +409,13 @@ public abstract class PsiXml25Parser<T extends Interaction> {
         return null;
     }
 
-    private void initializeXmlEventReader(XMLInputFactory xmlif, XMLEventReader xmler) throws XMLStreamException {
-        EventFilter filter = new EventFilter() {
-            public boolean accept(XMLEvent event) {
-                // clear entry when reach end of entry
-                if(event.isEndElement()){
-                    EndElement end = (EndElement)event;
-                    if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(end.getName().getLocalPart())){
-                        XmlEntryContext context = XmlEntryContext.getInstance();
-                        if (context.getCurrentEntry() != null){
-                            context.getCurrentEntry().setHasLoadedFullEntry(true);
-                        }
-                        clearEntryReferences(context);
-                    }
-                }
-                return event.isStartElement();
-            }
-        };
-        this.eventReader = xmlif.createFilteredReader(xmler, filter);
-    }
-
-    private void loadEntry(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+    /**
+     * Some interactions contains references and we want to load the remaining interactions until the end of the entry
+     * @param entryContext
+     * @throws XMLStreamException
+     * @throws JAXBException
+     */
+    protected void loadEntry(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         // load the all entry
         // we already are parsing interactions
         StartElement evt = (StartElement) eventReader.peek();
@@ -410,7 +462,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
      *
      * @return the next interaction preloaded in the interactionIterator. Deletes the returned interaction
      */
-    private T parseNextPreLoadedInteraction() {
+    protected T parseNextPreLoadedInteraction() {
         T interaction = this.interactionIterator.next();
         this.interactionIterator.remove();
         return interaction;
@@ -423,7 +475,7 @@ public abstract class PsiXml25Parser<T extends Interaction> {
      * @throws JAXBException
      * @throws XMLStreamException
      */
-    private T parseInteractionTag(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
+    protected T parseInteractionTag(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
         T interaction = (T)this.unmarshaller.unmarshal(eventReader);
         // no references, can return the interaction
         if (entryContext.getReferences().isEmpty() && entryContext.getInferredInteractions().isEmpty()){
@@ -484,5 +536,67 @@ public abstract class PsiXml25Parser<T extends Interaction> {
 
             inferredIterator.remove();
         }
+    }
+
+    private void closeOriginalInputSources() {
+        if (this.originalStream != null){
+            try {
+                this.originalStream.close();
+            } catch (IOException e) {
+                throw new MIIOException("Impossible to close the original stream", e);
+            }
+            finally {
+                this.originalFile = null;
+                this.originalURL = null;
+                this.originalStream = null;
+                this.originalReader = null;
+            }
+        }
+        else if (this.originalReader != null){
+            try {
+                this.originalReader.close();
+            } catch (IOException e) {
+                throw new MIIOException("Impossible to close the original reader", e);
+            }
+            finally {
+                this.originalFile = null;
+                this.originalURL = null;
+                this.originalStream = null;
+                this.originalReader = null;
+            }
+        }
+        else{
+            this.originalFile = null;
+            this.originalURL = null;
+            this.originalStream = null;
+            this.originalReader = null;
+        }
+
+        loadedInteractions.clear();
+        this.interactionIterator = null;
+
+        // release the thread local
+        XmlEntryContext.getInstance().clear();
+        XmlEntryContext.remove();
+    }
+
+    private void initializeXmlEventReader(XMLInputFactory xmlif, XMLEventReader xmler) throws XMLStreamException {
+        EventFilter filter = new EventFilter() {
+            public boolean accept(XMLEvent event) {
+                // clear entry when reach end of entry
+                if(event.isEndElement()){
+                    EndElement end = (EndElement)event;
+                    if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(end.getName().getLocalPart())){
+                        XmlEntryContext context = XmlEntryContext.getInstance();
+                        if (context.getCurrentEntry() != null){
+                            context.getCurrentEntry().setHasLoadedFullEntry(true);
+                        }
+                        clearEntryReferences(context);
+                    }
+                }
+                return event.isStartElement();
+            }
+        };
+        this.eventReader = xmlif.createFilteredReader(xmler, filter);
     }
 }
