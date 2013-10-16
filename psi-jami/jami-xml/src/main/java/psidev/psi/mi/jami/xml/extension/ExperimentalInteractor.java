@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.AbstractInteractorReference;
+import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

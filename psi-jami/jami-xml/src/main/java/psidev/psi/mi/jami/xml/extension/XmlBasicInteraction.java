@@ -26,17 +26,17 @@ import java.util.ArrayList;
         "JAXBIntraMolecular",
         "JAXBAttributes"
 })
-public class XmlInteraction extends AbstractXmlInteraction<Participant>{
+public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
-    public XmlInteraction() {
+    public XmlBasicInteraction() {
         super();
     }
 
-    public XmlInteraction(String shortName) {
+    public XmlBasicInteraction(String shortName) {
         super(shortName);
     }
 
-    public XmlInteraction(String shortName, CvTerm type) {
+    public XmlBasicInteraction(String shortName, CvTerm type) {
         super(shortName, type);
     }
 
