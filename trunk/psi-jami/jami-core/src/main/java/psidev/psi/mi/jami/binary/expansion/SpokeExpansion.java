@@ -1,13 +1,11 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.ParticipantUtils;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,11 +49,7 @@ public class SpokeExpansion extends AbstractSpokeExpansion<Interaction<? extends
 
     @Override
     protected BinaryInteraction createBinaryInteraction(Interaction interaction, Participant c1, Participant c2) {
-        BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
-        return binary;
+        return getBinaryInteractionFactory().createBasicBinaryInteractionFrom(interaction, c1, c2, getMethod());
     }
 
     @Override

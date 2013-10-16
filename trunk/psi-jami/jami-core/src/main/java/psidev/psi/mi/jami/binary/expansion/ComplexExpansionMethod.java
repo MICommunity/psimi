@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
 
@@ -48,4 +49,16 @@ public interface ComplexExpansionMethod<T extends Interaction, B extends BinaryI
      * @throws IllegalArgumentException if the interaction cannot be expanded with this method
      */
     public Collection<B> expand(T interaction);
+
+    /**
+     *
+     * @return the factory used to create new BinaryInteractions
+     */
+    public BinaryInteractionFactory getBinaryInteractionFactory();
+
+    /**
+     * Sets the binary interaction factory
+     * @param factory
+     */
+    public void setBinaryInteractionFactory(BinaryInteractionFactory factory);
 }
