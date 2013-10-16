@@ -1,10 +1,8 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,11 +31,7 @@ public class BipartiteExpansion extends AbstractBipartiteExpansion<Interaction<?
 
     @Override
     protected BinaryInteraction createBinaryInteraction(Interaction interaction, Participant c1, Participant c2) {
-        BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
-        return binary;
+        return getBinaryInteractionFactory().createBasicBinaryInteractionFrom(interaction, c2, c2, getMethod());
     }
 
     @Override
@@ -61,5 +55,4 @@ public class BipartiteExpansion extends AbstractBipartiteExpansion<Interaction<?
             return super.expand(interaction);
         }
     }
-
 }

@@ -1,13 +1,11 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,11 +51,7 @@ public class MatrixExpansion extends AbstractMatrixExpansion<Interaction<? exten
 
     @Override
     protected <P extends Participant> BinaryInteraction createBinaryInteraction(Interaction<? extends Participant> interaction, P c1, P c2) {
-        BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties((Interaction)interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
-        return binary;
+        return getBinaryInteractionFactory().createBasicBinaryInteractionFrom(interaction, c1, c2, getMethod());
     }
 
     @Override

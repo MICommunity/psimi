@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
+import psidev.psi.mi.jami.factory.DefaultBinaryInteractionFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionCategory;
@@ -21,6 +23,7 @@ import java.util.Collections;
 public abstract class AbstractComplexExpansionMethod<T extends Interaction<? extends Participant>, B extends BinaryInteraction> implements ComplexExpansionMethod<T,B> {
 
     private CvTerm method;
+    private BinaryInteractionFactory factory;
 
     public AbstractComplexExpansionMethod(CvTerm method){
         if (method == null){
@@ -60,12 +63,23 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction<? ext
         return Collections.EMPTY_LIST;
     }
 
+    public BinaryInteractionFactory getBinaryInteractionFactory() {
+        if (this.factory == null){
+            this.factory = new DefaultBinaryInteractionFactory();
+        }
+        return this.factory;
+    }
+
+    public void setBinaryInteractionFactory(BinaryInteractionFactory factory) {
+        this.factory = factory;
+    }
+
     protected Collection<B> createNewSelfBinaryInteractionsFrom(T interaction) {
-        return Collections.singletonList((B) InteractionUtils.createNewSelfBinaryInteractionFrom(interaction));
+        return Collections.singletonList((B) getBinaryInteractionFactory().createSelfBinaryInteractionFrom(interaction));
     }
 
     protected Collection<B> createBinaryInteractionsFrom(T interaction) {
-        return Collections.singletonList((B) InteractionUtils.createBinaryInteractionFrom(interaction));
+        return Collections.singletonList((B) getBinaryInteractionFactory().createBinaryInteractionWrapperFrom(interaction));
     }
 
     protected InteractionCategory findInteractionCategory(T interaction) {

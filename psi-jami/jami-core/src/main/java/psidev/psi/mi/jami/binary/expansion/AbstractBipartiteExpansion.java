@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.impl.DefaultComplex;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 
@@ -21,8 +21,21 @@ import java.util.Collection;
 
 public abstract class AbstractBipartiteExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
 
+    private InteractorFactory interactorFactory;
+
     public AbstractBipartiteExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.BIPARTITE_EXPANSION, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI));
+    }
+
+    public InteractorFactory getInteractorFactory() {
+        if (this.interactorFactory == null){
+            this.interactorFactory = new InteractorFactory();
+        }
+        return interactorFactory;
+    }
+
+    public void setInteractorFactory(InteractorFactory interactorFactory) {
+        this.interactorFactory = interactorFactory;
     }
 
     @Override
@@ -47,7 +60,7 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction<? extends
 
     protected Complex createComplexEntity(T interaction) {
         String complexName = generateComplexName(interaction);
-        Complex interactionAsComplex = new DefaultComplex(complexName);
+        Complex interactionAsComplex = getInteractorFactory().createComplex(complexName, null);
         InteractorCloner.copyAndOverrideBasicComplexPropertiesWithInteractionProperties(interaction, interactionAsComplex);
         return interactionAsComplex;
     }

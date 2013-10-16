@@ -1,14 +1,12 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.utils.InteractionUtils;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,12 +23,12 @@ public class InteractionEvidenceMatrixExpansion extends AbstractMatrixExpansion<
 
     @Override
     protected Collection<BinaryInteractionEvidence> createNewSelfBinaryInteractionsFrom(InteractionEvidence interaction) {
-        return Collections.singletonList(InteractionUtils.createAndAddNewSelfBinaryInteractionEvidence(interaction));
+        return Collections.singletonList(getBinaryInteractionFactory().createSelfBinaryInteractionEvidenceFrom(interaction));
     }
 
     @Override
     protected Collection<BinaryInteractionEvidence> createBinaryInteractionsFrom(InteractionEvidence interaction) {
-        return Collections.singletonList(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
+        return Collections.singletonList((BinaryInteractionEvidence)getBinaryInteractionFactory().createBinaryInteractionEvidenceWrapperFrom(interaction));
     }
 
     @Override
@@ -40,11 +38,7 @@ public class InteractionEvidenceMatrixExpansion extends AbstractMatrixExpansion<
 
     @Override
     protected <P extends Participant> BinaryInteractionEvidence createBinaryInteraction(InteractionEvidence interaction, P c1, P c2) {
-        BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence(getMethod());
-        InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, binary, false, true);
-        binary.setParticipantA((ParticipantEvidence)c1);
-        binary.setParticipantB((ParticipantEvidence)c2);
-        return binary;
+        return getBinaryInteractionFactory().createBinaryInteractionEvidenceFrom(interaction, (ParticipantEvidence)c1, (ParticipantEvidence)c2, getMethod());
     }
 
     @Override
