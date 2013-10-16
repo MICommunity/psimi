@@ -1,10 +1,11 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.factory;
 
 import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import java.util.Collection;
 

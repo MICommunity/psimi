@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.AbstractInteractorReference;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -312,8 +313,8 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
      *
      */
     public Integer getJAXBInteractionRef() {
-        if (interactor instanceof XmlInteraction){
-            return ((XmlInteraction)interactor).getJAXBId();
+        if (interactor instanceof XmlBasicInteraction){
+            return ((XmlBasicInteraction)interactor).getJAXBId();
         }
         return null;
     }
