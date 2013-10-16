@@ -508,6 +508,10 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         return (getShortName() != null ? getShortName()+", " : "") + (getInteractionType() != null ? getInteractionType().toString() : "");
     }
 
+    public void setJAXBIdOnly(int value) {
+        this.id = value;
+    }
+
     protected void processAddedChecksumEvent(Checksum added) {
         if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
             // the rigid is not set, we can set the rigid

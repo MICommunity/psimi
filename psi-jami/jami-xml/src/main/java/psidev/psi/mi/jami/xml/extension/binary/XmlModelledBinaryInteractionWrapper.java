@@ -21,16 +21,16 @@ import java.util.Date;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledInteractionWrapper extends XmlModelledBinaryInteraction implements ModelledBinaryInteraction{
+public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryInteraction implements ModelledBinaryInteraction{
     private XmlModelledInteraction wrappedInteraction;
     private ModelledBinaryInteractionWrapper binaryWrapper;
 
-    public XmlModelledInteractionWrapper(XmlModelledInteraction interaction){
+    public XmlModelledBinaryInteractionWrapper(XmlModelledInteraction interaction){
         this.wrappedInteraction = interaction;
         this.binaryWrapper = new ModelledBinaryInteractionWrapper(interaction);
     }
 
-    public XmlModelledInteractionWrapper(XmlModelledInteraction interaction, CvTerm complexExpansion){
+    public XmlModelledBinaryInteractionWrapper(XmlModelledInteraction interaction, CvTerm complexExpansion){
         this(interaction);
         this.binaryWrapper = new ModelledBinaryInteractionWrapper(interaction, complexExpansion);
     }
@@ -255,7 +255,12 @@ public class XmlModelledInteractionWrapper extends XmlModelledBinaryInteraction 
 
     @Override
     public void setJAXBId(int value) {
-        this.wrappedInteraction.setJAXBId(value);
+        this.wrappedInteraction.setJAXBIdOnly(value);
+    }
+
+    @Override
+    public void setJAXBIdOnly(int value) {
+        this.wrappedInteraction.setJAXBIdOnly(value);
     }
 
     @Override
