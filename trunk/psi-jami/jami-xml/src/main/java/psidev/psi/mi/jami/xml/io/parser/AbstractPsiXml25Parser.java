@@ -58,7 +58,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
     private PsiXmlParserListener listener;
     private boolean started = false;
 
-    public AbstractPsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException {
+    public AbstractPsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
@@ -73,7 +73,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         this.interactorFactory = new XmlInteractorFactory();
     }
 
-    public AbstractPsiXml25Parser(InputStream inputStream) throws XMLStreamException {
+    public AbstractPsiXml25Parser(InputStream inputStream) throws XMLStreamException, JAXBException {
         if (inputStream == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
@@ -89,7 +89,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
     }
 
-    public AbstractPsiXml25Parser(URL url) throws IOException, XMLStreamException {
+    public AbstractPsiXml25Parser(URL url) throws IOException, XMLStreamException, JAXBException {
         if (url == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
@@ -106,7 +106,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
     }
 
-    public AbstractPsiXml25Parser(Reader reader) throws XMLStreamException {
+    public AbstractPsiXml25Parser(Reader reader) throws XMLStreamException, JAXBException {
         if (reader == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
@@ -122,8 +122,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
 
     public T parseNextInteraction() throws IOException, XMLStreamException, JAXBException {
         // Parse into typed objects
-        //JAXBContext ctx = JAXBContext.newInstance("psidev.psi.mi.jami.xml.extension");
-        //Unmarshaller um = ctx.createUnmarshaller();
 
         // we have loaded interactions before because of references. We can use the cache and return next one until the cache is clear
         if (this.interactionIterator != null && this.interactionIterator.hasNext()){
@@ -292,7 +290,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
      *
      * @return the unmarshaller with the class context
      */
-    protected abstract Unmarshaller createJAXBUnmarshaller();
+    protected abstract Unmarshaller createJAXBUnmarshaller() throws JAXBException;
 
     /**
      * Process an entry that is opened (source, experimentList, etc) and read the first interaction
