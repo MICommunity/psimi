@@ -141,7 +141,7 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
             return false;
         }
         if (getParticipantB() != null && getParticipantA() != null){
-            throw new IllegalStateException("A ModelledBinaryInteraction cannot have more than two participants.");
+            throw new IllegalStateException("A BinaryInteraction cannot have more than two participants.");
         }
         else if (getParticipantA() != null){
             part.setInteraction(this);
@@ -192,7 +192,7 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
             return false;
         }
         if (participants.size() > 2){
-            throw new IllegalArgumentException("A ModelledBinaryInteraction cannot have more than two participants and we try to add " + participants.size() + " participants");
+            throw new IllegalArgumentException("A BinaryInteraction cannot have more than two participants and we try to add " + participants.size() + " participants");
         }
 
         boolean added = false;
