@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.datasource;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 
+import java.util.regex.Pattern;
+
 /**
  * Interface for molecular interaction datasources coming from a file
  *
@@ -12,6 +14,9 @@ import psidev.psi.mi.jami.listener.MIFileParserListener;
  */
 
 public interface MIFileDataSource extends MIDataSource{
+
+    public static final String FILE_URI_PREFIX = "file://";
+    public static final Pattern URL_PREFIX_REGEXP = Pattern.compile("\\w+?://");
 
     /**
      * The MIFileParserListener can be null if not initialised
