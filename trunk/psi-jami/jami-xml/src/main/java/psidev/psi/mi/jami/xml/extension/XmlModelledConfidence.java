@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
@@ -93,6 +94,19 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
                         }
                         return false;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "Experiment reference: "+ref+" in confidence "+(getConfidenceLocator() != null? getConfidenceLocator().toString():"") ;
+                    }
+
+                    public FileSourceLocator getSourceLocator() {
+                        return getConfidenceLocator();
+                    }
+
+                    public void setSourceLocator(FileSourceLocator locator) {
+                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                    }
                 });
             }
         }
@@ -104,5 +118,9 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
             experiments = new ArrayList<Experiment>();
         }
         return experiments;
+    }
+
+    private FileSourceLocator getConfidenceLocator(){
+        return getSourceLocator();
     }
 }

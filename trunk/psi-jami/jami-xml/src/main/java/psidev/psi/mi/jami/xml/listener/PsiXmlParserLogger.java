@@ -52,6 +52,6 @@ public class PsiXmlParserLogger implements PsiXmlParserListener {
     }
 
     public void onUnresolvedReference(XmlIdReference ref, String message) {
-        logger.log(Level.SEVERE, "Unresolved reference "+ref.toString()+ ", "+message);
+        logger.log(Level.SEVERE, "Unresolved reference: "+ref.toString()+ ", "+message);
     }
 }

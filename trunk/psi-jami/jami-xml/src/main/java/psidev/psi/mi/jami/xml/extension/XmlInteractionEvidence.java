@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractAvailabilityRef;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
@@ -388,6 +389,31 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                     }
                     return false;
                 }
+
+                @Override
+                public FileSourceLocator getSourceLocator() {
+                    return getInteractionLocator();
+                }
+
+                @Override
+                public void setSourceLocator(FileSourceLocator sourceLocator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator to an availability ref");
+                }
+
+                @Override
+                public Locator getSaxLocator() {
+                    return getInteractionSaxLocator();
+                }
+
+                @Override
+                public void setSaxLocator(Locator sourceLocator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of an availability ref");
+                }
+
+                @Override
+                public String toString() {
+                    return "Availability reference: "+ref+" in interaction "+(getInteractionLocator() != null? getInteractionLocator().toString():"") ;
+                }
             };
         }
     }
@@ -474,6 +500,19 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                         }
                         return false;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "Experiment reference: "+ref+" in interaction "+(getInteractionLocator() != null? getInteractionLocator().toString():"") ;
+                    }
+
+                    public FileSourceLocator getSourceLocator() {
+                        return getInteractionLocator();
+                    }
+
+                    public void setSourceLocator(FileSourceLocator locator) {
+                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                    }
                 });
             }
         }
@@ -533,4 +572,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
             this.isNegative = value;
         }
     }
+
+    private FileSourceLocator getInteractionLocator(){
+        return getSourceLocator();
+    }
+    private Locator getInteractionSaxLocator(){
+        return getSaxLocator();
+    }
+
 }

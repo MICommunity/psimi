@@ -38,7 +38,7 @@ public abstract class AbstractComplexReference extends AbstractInteractorReferen
         throw new IllegalStateException("The complex reference is not resolved and we cannot set the source for complex id "+ref);
     }
 
-    public <C extends ModelledConfidence> Collection<C> getModelledConfidences() {
+    public Collection<ModelledConfidence> getModelledConfidences() {
         throw new IllegalStateException("The complex reference is not resolved and we don't have modelled confidences for complex id "+ref);
     }
 
@@ -100,5 +100,25 @@ public abstract class AbstractComplexReference extends AbstractInteractorReferen
 
     public boolean removeAllParticipants(Collection<? extends ModelledParticipant> participants) {
         throw new IllegalStateException("The complex reference is not resolved and we cannot remove the participants for complex id "+ref);
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
+    @Override
+    public Collection<Checksum> getChecksums() {
+        return super.getChecksums();
+    }
+
+    @Override
+    public Collection<Xref> getXrefs() {
+        return super.getXrefs();
+    }
+
+    @Override
+    public Collection<Xref> getIdentifiers() {
+        return super.getIdentifiers();
     }
 }

@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -131,6 +131,19 @@ public class ExperimentalInteractor implements FileSourceContext
                     }
                     return false;
                 }
+
+                @Override
+                public String toString() {
+                    return "Interactor reference: "+ref+" in experimental interactor "+(getExperimentalInteractorLocator() != null? getExperimentalInteractorLocator().toString():"") ;
+                }
+
+                public FileSourceLocator getSourceLocator() {
+                    return getExperimentalInteractorLocator();
+                }
+
+                public void setSourceLocator(FileSourceLocator locator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of an interactor ref");
+                }
             };
         }
     }
@@ -184,6 +197,19 @@ public class ExperimentalInteractor implements FileSourceContext
                         }
                         return false;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "Experiment reference: "+ref+" in experimental interactor "+(getExperimentalInteractorLocator() != null? getExperimentalInteractorLocator().toString():"") ;
+                    }
+
+                    public FileSourceLocator getSourceLocator() {
+                        return getExperimentalInteractorLocator();
+                    }
+
+                    public void setSourceLocator(FileSourceLocator locator) {
+                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                    }
                 });
             }
         }
@@ -216,5 +242,9 @@ public class ExperimentalInteractor implements FileSourceContext
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+    }
+
+    private FileSourceLocator getExperimentalInteractorLocator(){
+        return getSourceLocator();
     }
 }
