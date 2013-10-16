@@ -28,7 +28,7 @@ public class InteractionEvidenceSpokeExpansion extends AbstractSpokeExpansion<In
 
     @Override
     protected Collection<BinaryInteractionEvidence> createBinaryInteractionsFrom(InteractionEvidence interaction) {
-        return Collections.singletonList((BinaryInteractionEvidence)getBinaryInteractionFactory().createBinaryInteractionEvidenceWrapperFrom(interaction));
+        return Collections.singletonList(getBinaryInteractionFactory().createBinaryInteractionEvidenceWrapperFrom(interaction));
     }
 
     @Override

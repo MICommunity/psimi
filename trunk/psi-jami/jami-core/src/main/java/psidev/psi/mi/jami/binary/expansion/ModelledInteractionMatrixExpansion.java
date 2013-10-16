@@ -28,7 +28,7 @@ public class ModelledInteractionMatrixExpansion extends AbstractMatrixExpansion<
 
     @Override
     protected Collection<ModelledBinaryInteraction> createBinaryInteractionsFrom(ModelledInteraction interaction) {
-        return Collections.singletonList((ModelledBinaryInteraction)getBinaryInteractionFactory().createModelledBinaryInteractionWrapperFrom(interaction));
+        return Collections.singletonList(getBinaryInteractionFactory().createModelledBinaryInteractionWrapperFrom(interaction));
     }
 
     @Override
