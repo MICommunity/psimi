@@ -3,9 +3,6 @@ package psidev.psi.mi.jami.factory;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.BinaryInteractionEvidenceWrapper;
-import psidev.psi.mi.jami.binary.impl.BinaryInteractionWrapper;
-import psidev.psi.mi.jami.binary.impl.ModelledBinaryInteractionWrapper;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -73,21 +70,21 @@ public interface BinaryInteractionFactory {
      * @param interaction
      * @return
      */
-    public BinaryInteractionWrapper createBinaryInteractionWrapperFrom(Interaction interaction);
+    public BinaryInteraction createBinaryInteractionWrapperFrom(Interaction interaction);
 
     /**
      * Creates a BinaryInteractionEvidence that wraps the given interaction
      * @param interaction
      * @return
      */
-    public BinaryInteractionEvidenceWrapper createBinaryInteractionEvidenceWrapperFrom(InteractionEvidence interaction);
+    public BinaryInteractionEvidence createBinaryInteractionEvidenceWrapperFrom(InteractionEvidence interaction);
 
     /**
      * Creates a ModelledBinaryInteraction that wraps the given interaction
      * @param interaction
      * @return
      */
-    public ModelledBinaryInteractionWrapper createModelledBinaryInteractionWrapperFrom(ModelledInteraction interaction);
+    public ModelledBinaryInteraction createModelledBinaryInteractionWrapperFrom(ModelledInteraction interaction);
 
     /**
      * Instantiate a new BinaryInteraction
