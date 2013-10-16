@@ -3,12 +3,14 @@ package psidev.psi.mi.jami.tab.io.parser;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
+import psidev.psi.mi.jami.datasource.SourceCategory;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
+import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -20,8 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * abstract class for Mitab datasource
@@ -46,8 +46,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
 
     private MitabParserListener parserListener;
     private MIFileParserListener defaultParserListener;
-    private static final String FILE_URI_PREFIX = "file://";
-    private static final Pattern URL_PREFIX_REGEXP = Pattern.compile("\\w+?://");
 
     /**
      * Empty constructor for the factory
@@ -107,30 +105,29 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
             // suspect a file/url path
             else if (input instanceof String){
                 String inputString = (String)input;
-                // file uri
-                if (inputString.startsWith(FILE_URI_PREFIX)){
-                    try {
-                        initialiseFile(new File(new URI(inputString)));
-                    } catch (URISyntaxException e) {
-                        throw new IllegalArgumentException("Impossible to open and read the file " + inputString, e);
-                    }
-                }
-                // check if url
-                else {
-                    Matcher matcher = URL_PREFIX_REGEXP.matcher(inputString);
-
+                SourceCategory category = MIFileDatasourceUtils.findSourceCategoryFromString(inputString);
+                switch (category){
+                    // file uri
+                    case file_URI:
+                        try {
+                            initialiseFile(new File(new URI(inputString)));
+                        } catch (URISyntaxException e) {
+                            throw new IllegalArgumentException("Impossible to open and read the file " + inputString, e);
+                        }
+                        break;
                     // we have a url
-                    if (matcher.find()){
+                    case URL:
                         try {
                             initialiseURL(new URL(inputString));
                         } catch (MalformedURLException e) {
                             throw new IllegalArgumentException("Impossible to open and read the URL " + inputString, e);
                         }
-                    }
+                        break;
                     // we have a file
-                    else{
+                    default:
                         initialiseFile(new File(inputString));
-                    }
+                        break;
+
                 }
             }
             else {
