@@ -150,4 +150,9 @@ public class XmlModelledBinaryInteraction extends XmlModelledInteraction impleme
     public boolean removeAllParticipants(Collection<? extends ModelledParticipant> participants) {
         return this.binaryWrapper.removeAllParticipants(participants);
     }
+
+    @Override
+    public void setJAXBId(int value) {
+        setJAXBIdOnly(value);
+    }
 }

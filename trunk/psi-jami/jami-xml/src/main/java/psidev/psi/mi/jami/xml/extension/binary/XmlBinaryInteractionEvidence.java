@@ -151,4 +151,9 @@ public class XmlBinaryInteractionEvidence extends XmlInteractionEvidence impleme
     public boolean removeAllParticipants(Collection<? extends ParticipantEvidence> participants) {
         return this.binaryWrapper.removeAllParticipants(participants);
     }
+
+    @Override
+    public void setJAXBId(int value) {
+        setJAXBIdOnly(value);
+    }
 }

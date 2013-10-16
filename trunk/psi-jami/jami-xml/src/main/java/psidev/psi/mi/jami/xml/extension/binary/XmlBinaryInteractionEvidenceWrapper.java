@@ -256,7 +256,11 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
 
     @Override
     public void setJAXBId(int value) {
-        this.wrappedInteraction.setJAXBId(value);
+        this.wrappedInteraction.setJAXBIdOnly(value);
+    }
+    @Override
+    public void setJAXBIdOnly(int value) {
+        this.wrappedInteraction.setJAXBIdOnly(value);
     }
 
     @Override

@@ -151,4 +151,9 @@ public class XmlBinaryInteraction extends XmlBasicInteraction implements BinaryI
     public boolean removeAllParticipants(Collection<? extends Participant> participants) {
         return this.binaryWrapper.removeAllParticipants(participants);
     }
+
+    @Override
+    public void setJAXBId(int value) {
+        setJAXBIdOnly(value);
+    }
 }
