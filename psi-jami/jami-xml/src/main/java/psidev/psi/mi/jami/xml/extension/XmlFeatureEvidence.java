@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
@@ -185,6 +186,19 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
                         }
                         return false;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "Experiment reference: "+ref+" in feature "+(getFeatureLocator() != null? getFeatureLocator().toString():"") ;
+                    }
+
+                    public FileSourceLocator getSourceLocator() {
+                        return getFeatureLocator();
+                    }
+
+                    public void setSourceLocator(FileSourceLocator locator) {
+                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                    }
                 });
             }
         }
@@ -276,5 +290,9 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         }
 
         initialisedMethods = true;
+    }
+
+    private FileSourceLocator getFeatureLocator(){
+        return getSourceLocator();
     }
 }

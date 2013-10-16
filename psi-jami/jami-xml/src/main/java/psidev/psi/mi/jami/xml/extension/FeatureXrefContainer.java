@@ -123,13 +123,13 @@ public class FeatureXrefContainer extends XrefContainer{
             primaryRef = added;
         }
         else{
-            ((SecondaryXrefList)getSecondaryRefs()).addOnly(added);
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
         }
     }
 
     private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
         if (primaryRef != null && removed.equals(primaryRef)){
-            if (!getSecondaryRefs().isEmpty()){
+            if (!getJAXBSecondaryRefs().isEmpty()){
                 primaryRef = secondaryRefs.iterator().next();
                 ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
             }
@@ -226,7 +226,7 @@ public class FeatureXrefContainer extends XrefContainer{
             primaryRef = null;
         }
 
-        ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllIdentifiers());
+        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllIdentifiers());
     }
 
     private class FullIdentifierList extends AbstractListHavingProperties<Xref> {
@@ -276,7 +276,7 @@ public class FeatureXrefContainer extends XrefContainer{
             else{
                 primaryRef = null;
             }
-            ((SecondaryXrefList)getSecondaryRefs()).retainAllOnly(getAllXrefs());
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllXrefs());
             clearPropertiesLinkedToIdentifiers();
         }
     }

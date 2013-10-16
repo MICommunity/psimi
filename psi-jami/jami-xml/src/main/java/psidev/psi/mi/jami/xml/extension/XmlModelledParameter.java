@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
@@ -82,11 +83,28 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
                     }
                     return false;
                 }
+
+                @Override
+                public String toString() {
+                    return "Experiment reference: "+ref+" in parameter "+(getParameterLocator() != null? getParameterLocator().toString():"") ;
+                }
+
+                public FileSourceLocator getSourceLocator() {
+                    return getParameterLocator();
+                }
+
+                public void setSourceLocator(FileSourceLocator locator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                }
             };
         }
     }
 
     public Experiment getExperiment() {
         return experiment;
+    }
+
+    private FileSourceLocator getParameterLocator(){
+        return getSourceLocator();
     }
 }

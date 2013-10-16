@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
@@ -100,9 +101,26 @@ public class HostOrganism extends XmlOrganism{
                         }
                         return false;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "Experiment reference: "+ref+" in host organism "+(getHostOrganismLocator() != null? getHostOrganismLocator().toString():"") ;
+                    }
+
+                    public FileSourceLocator getSourceLocator() {
+                        return getHostOrganismLocator();
+                    }
+
+                    public void setSourceLocator(FileSourceLocator locator) {
+                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                    }
                 });
             }
         }
+    }
+
+    private FileSourceLocator getHostOrganismLocator(){
+        return getSourceLocator();
     }
 
     public Collection<Experiment> getExperiments() {

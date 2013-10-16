@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -87,6 +87,19 @@ public class InferredInteractionParticipant implements FileSourceContext
                    }
                    return false;
                }
+
+               @Override
+               public String toString() {
+                   return "Feature reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
+               }
+
+               public FileSourceLocator getSourceLocator() {
+                   return getInferredParticipantLocator();
+               }
+
+               public void setSourceLocator(FileSourceLocator locator) {
+                   throw new UnsupportedOperationException("Cannot set the source locator of a feature ref");
+               }
            };
         }
     }
@@ -128,6 +141,19 @@ public class InferredInteractionParticipant implements FileSourceContext
                     }
                     return false;
                 }
+
+                @Override
+                public String toString() {
+                    return "Participant reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
+                }
+
+                public FileSourceLocator getSourceLocator() {
+                    return getInferredParticipantLocator();
+                }
+
+                public void setSourceLocator(FileSourceLocator locator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of a participant ref");
+                }
             };
         }
     }
@@ -156,5 +182,9 @@ public class InferredInteractionParticipant implements FileSourceContext
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+    }
+
+    private FileSourceLocator getInferredParticipantLocator(){
+        return sourceLocator;
     }
 }

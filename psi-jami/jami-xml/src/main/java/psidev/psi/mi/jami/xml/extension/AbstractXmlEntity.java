@@ -355,6 +355,19 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
                     }
                     return false;
                 }
+
+                @Override
+                public String toString() {
+                    return "Interaction reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
+                }
+
+                public FileSourceLocator getSourceLocator() {
+                    return getParticipantLocator();
+                }
+
+                public void setSourceLocator(FileSourceLocator locator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of an interaction ref");
+                }
             };
         }
     }
@@ -395,6 +408,19 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
                         }
                     }
                     return false;
+                }
+
+                @Override
+                public String toString() {
+                    return "Interactor reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
+                }
+
+                public FileSourceLocator getSourceLocator() {
+                    return getParticipantLocator();
+                }
+
+                public void setSourceLocator(FileSourceLocator locator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of an interactor ref");
                 }
             };
         }
@@ -603,5 +629,9 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
 
     protected void initialiseUnspecifiedInteractor() {
         this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
+    }
+
+    private FileSourceLocator getParticipantLocator(){
+        return getSourceLocator();
     }
 }

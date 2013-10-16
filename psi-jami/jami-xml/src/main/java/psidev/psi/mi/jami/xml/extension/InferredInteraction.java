@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -132,6 +132,19 @@ public class InferredInteraction
                         }
                         return false;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "Experiment reference: "+ref+" in inferred interaction "+(getInferredInteractionLocator() != null? getInferredInteractionLocator().toString():"") ;
+                    }
+
+                    public FileSourceLocator getSourceLocator() {
+                        return getInferredInteractionLocator();
+                    }
+
+                    public void setSourceLocator(FileSourceLocator locator) {
+                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                    }
                 });
             }
         }
@@ -160,5 +173,9 @@ public class InferredInteraction
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+    }
+
+    private FileSourceLocator getInferredInteractionLocator(){
+        return this.sourceLocator;
     }
 }
