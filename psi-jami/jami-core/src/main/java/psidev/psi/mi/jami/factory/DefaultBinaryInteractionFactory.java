@@ -66,15 +66,15 @@ public class DefaultBinaryInteractionFactory implements BinaryInteractionFactory
         return binary;
     }
 
-    public BinaryInteractionWrapper createBinaryInteractionWrapperFrom(Interaction interaction) {
+    public BinaryInteraction createBinaryInteractionWrapperFrom(Interaction interaction) {
         return new BinaryInteractionWrapper(interaction);
     }
 
-    public BinaryInteractionEvidenceWrapper createBinaryInteractionEvidenceWrapperFrom(InteractionEvidence interaction) {
+    public BinaryInteractionEvidence createBinaryInteractionEvidenceWrapperFrom(InteractionEvidence interaction) {
         return new BinaryInteractionEvidenceWrapper(interaction);
     }
 
-    public ModelledBinaryInteractionWrapper createModelledBinaryInteractionWrapperFrom(ModelledInteraction interaction) {
+    public ModelledBinaryInteraction createModelledBinaryInteractionWrapperFrom(ModelledInteraction interaction) {
         return new ModelledBinaryInteractionWrapper(interaction);
     }
 
