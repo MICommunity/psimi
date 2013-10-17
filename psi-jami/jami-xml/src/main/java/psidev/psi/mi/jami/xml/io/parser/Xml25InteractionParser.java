@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.JAXBContext;
@@ -18,7 +19,7 @@ import java.net.URL;
  * @since <pre>16/10/13</pre>
  */
 
-public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction>{
+public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<? extends Participant>>{
     public Xml25InteractionParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
         super(file);
     }
