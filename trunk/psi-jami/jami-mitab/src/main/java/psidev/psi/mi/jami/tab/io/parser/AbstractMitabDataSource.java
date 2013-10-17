@@ -234,10 +234,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
             return isValid;
         }
 
-        if (lineParser.hasFinished()){
-            reInit();
-        }
-
         // read the datasource
         Iterator<T> interactionIterator = getInteractionsIterator();
         while(interactionIterator.hasNext()){
