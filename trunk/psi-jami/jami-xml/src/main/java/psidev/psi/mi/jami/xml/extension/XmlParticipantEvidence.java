@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Xml implementation of ParticipantEvidence
@@ -43,8 +44,11 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     private ArrayList<CvTerm> experimentalRoles;
     private ArrayList<ExperimentalInteractor> experimentalInteractors;
     private ArrayList<Organism> hostOrganisms;
+    private ArrayList<ExperimentalCvTerm> originalIdentificationMethods;
 
     private boolean initialisedMethods = false;
+
+    private XmlInteractionEvidence originalInteraction;
 
     public XmlParticipantEvidence() {
     }
@@ -77,6 +81,11 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         this.parameters = new ArrayList<Parameter>();
     }
 
+    protected void setOriginalXmlInteraction(XmlInteractionEvidence i){
+        this.originalInteraction = i;
+        setInteraction(i);
+    }
+
     /**
      * This method should only be called when we have loaded all references because the parsing should not call this method
      */
@@ -86,26 +95,23 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         if (this.identificationMethods == null){
             this.identificationMethods = new ArrayList<CvTerm>();
         }
-        else if (!this.identificationMethods.isEmpty()){
+
+        if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()){
             expToIgnore = new ArrayList<Experiment>();
-            for (CvTerm part : this.identificationMethods){
-                if (part instanceof ExperimentalCvTerm){
-                    ExperimentalCvTerm expCv = (ExperimentalCvTerm)part;
-                    if (!expCv.getExperiments().isEmpty()){
-                        expToIgnore.addAll(expCv.getExperiments());
-                    }
+            for (ExperimentalCvTerm part : this.originalIdentificationMethods){
+                if (!part.getExperiments().isEmpty()){
+                    expToIgnore.addAll(part.getExperiments());
                 }
             }
+            this.originalIdentificationMethods = null;
         }
 
-        InteractionEvidence interaction = getInteraction();
-        if (interaction != null && interaction instanceof XmlInteractionEvidence){
-            XmlInteractionEvidence xmlInteraction = (XmlInteractionEvidence)interaction;
-            for (Experiment exp : xmlInteraction.getExperiments()){
-                if (exp instanceof XmlExperiment){
-                    XmlExperiment xmlExp = (XmlExperiment) exp;
-                    if (xmlExp.getJAXBParticipantIdentificationMethod() != null && !expToIgnore.contains(xmlExp)){
-                        this.identificationMethods.add(xmlExp.getJAXBParticipantIdentificationMethod());
+        if (originalInteraction != null){
+            List<XmlExperiment> originalExperiments = originalInteraction.getOriginalExperiments();
+            if (originalExperiments != null && !originalExperiments.isEmpty()){
+                for (XmlExperiment exp : originalExperiments){
+                    if (exp.getJAXBParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
+                        this.identificationMethods.add(exp.getJAXBParticipantIdentificationMethod());
                     }
                 }
             }
@@ -297,7 +303,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
      */
     @XmlElementWrapper(name="participantIdentificationMethodList")
     @XmlElement(name="participantIdentificationMethod", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlCvTerm.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalCvTerm.class)})
     public ArrayList<CvTerm> getJAXBParticipantIdentificationMethods() {
         if (this.identificationMethods != null && this.identificationMethods.isEmpty()){
             this.identificationMethods = null;
@@ -314,7 +320,8 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBParticipantIdentificationMethods(ArrayList<XmlCvTerm> value) {
+    public void setJAXBParticipantIdentificationMethods(ArrayList<ExperimentalCvTerm> value) {
+        this.originalIdentificationMethods = value;
         if (value != null && !value.isEmpty()){
             if (this.identificationMethods == null){
                 this.identificationMethods = new ArrayList<CvTerm>();
@@ -333,7 +340,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
      */
     @XmlElementWrapper(name="experimentalRoleList")
     @XmlElement(name="experimentalRole", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlCvTerm.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalCvTerm.class)})
     public ArrayList<CvTerm> getJAXBExperimentalRoles() {
         if (this.experimentalRoles != null && this.experimentalRoles.isEmpty()){
             this.experimentalRoles = null;
@@ -363,7 +370,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
      */
     @XmlElementWrapper(name="experimentalPreparationList")
     @XmlElement(name="experimentalPreparation", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlCvTerm.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalCvTerm.class)})
     public ArrayList<CvTerm> getJAXBExperimentalPreparations() {
         if (this.experimentalPreparations != null && this.experimentalPreparations.isEmpty()){
             return null;
@@ -379,7 +386,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBExperimentalPreparations(ArrayList<XmlCvTerm> value) {
+    public void setJAXBExperimentalPreparations(ArrayList<ExperimentalCvTerm> value) {
         getExperimentalPreparations().clear();
         if (value != null && !value.isEmpty()){
             this.experimentalRoles.addAll(value);
@@ -515,5 +522,34 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlTransient
     public Locator getSaxLocator() {
         return super.getSaxLocator();
+    }
+
+    @Override
+    public void setJAXBFeatures(ArrayList<FeatureEvidence> value) {
+        removeAllFeatures(getFeatures());
+        if (value != null && !value.isEmpty()){
+            addAllJAXBFeatures(value);
+        }
+    }
+
+    protected XmlInteractionEvidence getOriginalInteraction() {
+        return originalInteraction;
+    }
+
+    private void addAllJAXBFeatures(Collection<? extends FeatureEvidence> features) {
+        if (features != null){
+            for (FeatureEvidence feature : features){
+                addJAXBFeature((XmlFeatureEvidence) feature);
+            }
+        }
+    }
+
+    private void addJAXBFeature(XmlFeatureEvidence feature) {
+
+        if (feature != null){
+            if (getFeatures().add(feature)){
+                feature.setOriginalParticipant(this);
+            }
+        }
     }
 }

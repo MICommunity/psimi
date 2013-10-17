@@ -33,6 +33,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     private Collection<Experiment> experiments;
     private boolean initialisedMethods = false;
 
+    private XmlParticipantEvidence originalParticipant;
+
     public XmlFeatureEvidence() {
     }
 
@@ -273,23 +275,27 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         }
 
         ExperimentalEntity participant = getParticipant();
-        if (participant != null && participant instanceof XmlParticipantEvidence){
-            XmlParticipantEvidence xmlPart = (XmlParticipantEvidence)participant;
-            InteractionEvidence interaction = xmlPart.getInteraction();
-            if (interaction != null && interaction instanceof XmlInteractionEvidence){
-                XmlInteractionEvidence xmlInteraction = (XmlInteractionEvidence)interaction;
-                for (Experiment exp : xmlInteraction.getExperiments()){
-                    if (exp instanceof XmlExperiment){
-                        XmlExperiment xmlExp = (XmlExperiment) exp;
-                        if (xmlExp.getJAXBFeatureDetectionMethod() != null){
-                            this.featureDetectionMethods.add(xmlExp.getJAXBFeatureDetectionMethod());
+        if (originalParticipant != null){
+            XmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
+            if (interaction != null){
+                List<XmlExperiment> originalExperiments = interaction.getOriginalExperiments();
+                if (originalExperiments != null && !originalExperiments.isEmpty()){
+                    for (XmlExperiment exp : originalExperiments){
+                        if (exp.getJAXBFeatureDetectionMethod() != null){
+                            this.featureDetectionMethods.add(exp.getJAXBFeatureDetectionMethod());
                         }
                     }
                 }
             }
+            originalParticipant = null;
         }
 
         initialisedMethods = true;
+    }
+
+    protected void setOriginalParticipant(XmlParticipantEvidence p){
+        this.originalParticipant = p;
+        setParticipant(p);
     }
 
     private FileSourceLocator getFeatureLocator(){
