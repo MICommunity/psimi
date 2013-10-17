@@ -6,12 +6,12 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.extension.factory.XmlBinaryInteractionFactory;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -23,67 +23,35 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractPsiXml25Parser<T> {
+public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? extends Participant>, B extends BinaryInteraction> implements PsiXml25Parser<B>{
 
     private ComplexExpansionMethod<T,B> expansionMethod;
     private Collection<B> binaryInteractions;
     private Iterator<B> binaryInteractionIterator;
+    private PsiXml25Parser<T> delegateParser;
 
-    public AbstractPsixml25BinaryParser(File file, ComplexExpansionMethod<T, B> expansionMethod) throws FileNotFoundException, XMLStreamException, JAXBException {
-        super(file);
-        if (expansionMethod == null){
-            throw new IllegalArgumentException("The complex expansion method is required.");
+    public AbstractPsixml25BinaryParser(AbstractPsiXml25Parser<T> delegateParser) throws FileNotFoundException, XMLStreamException, JAXBException {
+        if (delegateParser == null){
+           throw new IllegalArgumentException("An AbstractPsiXml25Parser is required to parse Xml interactions");
         }
-        this.expansionMethod = expansionMethod;
-        this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
-        this.binaryInteractions = new ArrayList<B>();
-    }
-
-    public AbstractPsixml25BinaryParser(InputStream inputStream, ComplexExpansionMethod<T, B> expansionMethod) throws XMLStreamException, JAXBException {
-        super(inputStream);
-        if (expansionMethod == null){
-            throw new IllegalArgumentException("The complex expansion method is required.");
-        }
-        this.expansionMethod = expansionMethod;
-        this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
-        this.binaryInteractions = new ArrayList<B>();
-    }
-
-    public AbstractPsixml25BinaryParser(URL url, ComplexExpansionMethod<T, B> expansionMethod) throws IOException, XMLStreamException, JAXBException {
-        super(url);
-        if (expansionMethod == null){
-            throw new IllegalArgumentException("The complex expansion method is required.");
-        }
-        this.expansionMethod = expansionMethod;
-        this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
-        this.binaryInteractions = new ArrayList<B>();
-    }
-
-    public AbstractPsixml25BinaryParser(Reader reader, ComplexExpansionMethod<T, B> expansionMethod) throws XMLStreamException, JAXBException {
-        super(reader);
-        if (expansionMethod == null){
-            throw new IllegalArgumentException("The complex expansion method is required.");
-        }
-        this.expansionMethod = expansionMethod;
-        this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
-        this.binaryInteractions = new ArrayList<B>();
+        this.delegateParser = delegateParser;
     }
 
     @Override
-    public T parseNextInteraction() throws IOException, XMLStreamException, JAXBException {
+    public B parseNextInteraction() throws IOException, XMLStreamException, JAXBException {
         // first look at loaded interaction
         if (this.binaryInteractionIterator != null && this.binaryInteractionIterator.hasNext()){
             return processAndRemoveNextBinary();
         }
 
         // parse normal interaction
-        T interaction = super.parseNextInteraction();
-        if (interaction == null || !this.expansionMethod.isInteractionExpandable(interaction)){
+        T interaction = this.delegateParser.parseNextInteraction();
+        if (interaction == null || !getExpansionMethod().isInteractionExpandable(interaction)){
             return null;
         }
 
         // expand
-        this.binaryInteractions.addAll(this.expansionMethod.expand(interaction));
+        this.binaryInteractions.addAll(getExpansionMethod().expand(interaction));
         this.binaryInteractionIterator = this.binaryInteractions.iterator();
         if (this.binaryInteractionIterator.hasNext()){
             return processAndRemoveNextBinary();
@@ -98,26 +66,50 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
         if (this.binaryInteractionIterator != null && this.binaryInteractionIterator.hasNext()){
             return true;
         }
-        return super.hasFinished();
+        return delegateParser.hasFinished();
     }
 
     @Override
     public void reInit() throws MIIOException {
         this.binaryInteractionIterator = null;
         this.binaryInteractions.clear();
-        super.reInit();
+        this.delegateParser.reInit();
     }
 
     @Override
     public void close() {
         this.binaryInteractionIterator = null;
         this.binaryInteractions.clear();
-        super.close();
+        this.delegateParser.close();
     }
 
-    private T processAndRemoveNextBinary() {
+    @Override
+    public PsiXmlParserListener getListener() {
+        return delegateParser.getListener();
+    }
+
+    @Override
+    public void setListener(PsiXmlParserListener listener) {
+        delegateParser.getListener();
+    }
+
+    public void setExpansionMethod(ComplexExpansionMethod<T, B> expansionMethod) {
+        this.expansionMethod = expansionMethod;
+    }
+
+    protected ComplexExpansionMethod<T,B> getExpansionMethod(){
+        if (expansionMethod == null){
+            this.expansionMethod = initialiseDefaultExpansionMethod();
+            this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
+        }
+        return this.expansionMethod;
+    }
+
+    protected abstract ComplexExpansionMethod<T,B> initialiseDefaultExpansionMethod();
+
+    private B processAndRemoveNextBinary() {
         B binary = this.binaryInteractionIterator.next();
         this.binaryInteractionIterator.remove();
-        return (T)binary;
+        return binary;
     }
 }

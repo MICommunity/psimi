@@ -5,11 +5,8 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.extension.*;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
 import java.net.URL;
@@ -23,26 +20,24 @@ import java.net.URL;
  */
 
 public class Xml25BinaryInteractionParser extends AbstractPsixml25BinaryParser<Interaction<? extends Participant>,BinaryInteraction>{
-    public Xml25BinaryInteractionParser(File file, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws FileNotFoundException, XMLStreamException, JAXBException {
-        super(file, expansionMethod != null ? expansionMethod : new SpokeExpansion());
+    public Xml25BinaryInteractionParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
+        super(new Xml25InteractionParser(file));
     }
 
-    public Xml25BinaryInteractionParser(InputStream inputStream, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws XMLStreamException, JAXBException {
-        super(inputStream, expansionMethod != null ? expansionMethod : new SpokeExpansion());
+    public Xml25BinaryInteractionParser(InputStream inputStream) throws XMLStreamException, JAXBException, FileNotFoundException {
+        super(new Xml25InteractionParser(inputStream));
     }
 
-    public Xml25BinaryInteractionParser(URL url, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException, XMLStreamException, JAXBException {
-        super(url, expansionMethod != null ? expansionMethod : new SpokeExpansion());
+    public Xml25BinaryInteractionParser(URL url) throws IOException, XMLStreamException, JAXBException {
+        super(new Xml25InteractionParser(url));
     }
 
-    public Xml25BinaryInteractionParser(Reader reader, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws XMLStreamException, JAXBException {
-        super(reader, expansionMethod != null ? expansionMethod : new SpokeExpansion());
+    public Xml25BinaryInteractionParser(Reader reader) throws XMLStreamException, JAXBException, FileNotFoundException {
+        super(new Xml25InteractionParser(reader));
     }
 
     @Override
-    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(XmlBasicInteraction.class, XmlExperiment.class, XmlInteractor.class,
-                Availability.class, XmlSource.class, XmlAnnotation.class);
-        return ctx.createUnmarshaller();
+    protected ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> initialiseDefaultExpansionMethod() {
+        return new SpokeExpansion();
     }
 }

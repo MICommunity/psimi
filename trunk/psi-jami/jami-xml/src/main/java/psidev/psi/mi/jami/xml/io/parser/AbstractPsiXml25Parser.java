@@ -43,7 +43,7 @@ import java.util.logging.Logger;
  * @since <pre>14/10/13</pre>
  */
 
-public abstract class AbstractPsiXml25Parser<T extends Interaction> {
+public abstract class AbstractPsiXml25Parser<T extends Interaction> implements PsiXml25Parser<T>{
 
     private static final Logger logger = Logger.getLogger("AbstractPsiXml25Parser");
     private XMLEventReader eventReader;
@@ -171,7 +171,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> {
         return null;
     }
 
-    public void close(){
+    public void close() throws MIIOException{
         if (this.eventReader != null){
             try {
                 this.eventReader.close();
