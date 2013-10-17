@@ -47,6 +47,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     private List<Experiment> experiments;
     private Boolean modelled;
 
+    private ArrayList<XmlExperiment> originalExperiments;
+
     public XmlInteractionEvidence() {
         super();
     }
@@ -444,6 +446,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public void setJAXBExperimentDescriptions(ArrayList<XmlExperiment> value) {
+        this.originalExperiments = value;
         getExperiments().clear();
         if (value != null && !value.isEmpty()){
             Iterator<Experiment> expIterator = experiments.iterator();
@@ -486,13 +489,20 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public void setJAXBExperimentRefs(ArrayList<Integer> value) {
-        if (value != null){
+        if (value != null && !value.isEmpty()){
+            originalExperiments = new ArrayList<XmlExperiment>();
             for (Integer val : value){
                 getExperiments().add(new AbstractExperimentRef(val) {
                     public boolean resolve(Map<Integer, Object> parsedObjects) {
                         if (parsedObjects.containsKey(this.ref)){
                             Object obj = parsedObjects.get(this.ref);
-                            if (obj instanceof Experiment){
+                            if (obj instanceof XmlExperiment){
+                                experiments.remove(this);
+                                experiments.add((Experiment)obj);
+                                originalExperiments.add((XmlExperiment)obj);
+                                return true;
+                            }
+                            else if (obj instanceof Experiment){
                                 experiments.remove(this);
                                 experiments.add((Experiment)obj);
                                 return true;
@@ -570,6 +580,42 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         }
         else{
             this.isNegative = value;
+        }
+    }
+
+    /**
+     * Sets the value of the participantList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link ArrayList<Participant> }
+     *
+     */
+    @Override
+    public void setJAXBParticipants(ArrayList<ParticipantEvidence> value) {
+        removeAllParticipants(getParticipants());
+        if (value != null && !value.isEmpty()){
+            addAllJAXBParticipants(value);
+        }
+    }
+
+    protected List<XmlExperiment> getOriginalExperiments(){
+        return originalExperiments;
+    }
+
+    private void addAllJAXBParticipants(Collection<? extends ParticipantEvidence> participants) {
+        if (participants != null){
+            for (ParticipantEvidence p : participants){
+                addJAXBParticipant((XmlParticipantEvidence)p);
+            }
+        }
+    }
+
+    private void addJAXBParticipant(XmlParticipantEvidence part) {
+        if (part != null){
+            if (getParticipants().add(part)){
+                part.setOriginalXmlInteraction(this);
+            }
         }
     }
 
