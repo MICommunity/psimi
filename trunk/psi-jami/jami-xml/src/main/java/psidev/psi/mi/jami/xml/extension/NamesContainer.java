@@ -107,8 +107,7 @@ public class NamesContainer implements FileSourceContext{
      *
      *
      */
-    @XmlElement(name = "alias")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAlias.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAlias.class, name = "alias")})
     public Collection<Alias> getJAXBAliases() {
         if (aliases == null) {
             initialiseAliases();

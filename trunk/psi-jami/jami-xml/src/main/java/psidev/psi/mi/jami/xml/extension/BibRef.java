@@ -350,8 +350,7 @@ public class BibRef
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name = "attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         // return null if we have Xref because schema does not allow attributes and xrefContainer
         if (xrefContainer != null && !xrefContainer.isEmpty()){

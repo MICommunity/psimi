@@ -78,8 +78,7 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
 
     @Override
     @XmlElementWrapper(name="featureList")
-    @XmlElement(name="feature", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlFeature.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlFeature.class, name="feature", required = true)})
     public ArrayList<Feature> getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
@@ -98,8 +97,7 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }

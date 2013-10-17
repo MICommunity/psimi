@@ -94,8 +94,7 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
      *
      */
     @XmlElementWrapper(name="featureRangeList", required = true)
-    @XmlElement(name="featureRange", required = true)
-    @XmlElementRefs({@XmlElementRef(type=XmlRange.class)})
+    @XmlElementRefs({@XmlElementRef(type=XmlRange.class, name="featureRange", required = true)})
     @Override
     public ArrayList<Range> getJAXBRanges() {
         return super.getJAXBRanges();
@@ -110,8 +109,7 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({@XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({@XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     @Override
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();

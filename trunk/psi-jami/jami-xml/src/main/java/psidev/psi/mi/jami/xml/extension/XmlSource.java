@@ -39,7 +39,7 @@ import java.util.Collection;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "source", propOrder = {
     "JAXBNames",
-    "publication",
+    "JAXBBibRef",
     "JAXBXref",
     "JAXBAttributes"
 })
@@ -159,6 +159,18 @@ public class XmlSource extends XmlOpenCvTerm
         this.bibRef = ref;
     }
 
+    @Override
+    @XmlElement(name = "xref", required = true)
+    public CvTermXrefContainer getJAXBXref() {
+        return super.getJAXBXref();
+    }
+
+    @Override
+    @XmlElement(name = "names", required = true)
+    public NamesContainer getJAXBNames() {
+        return super.getJAXBNames();
+    }
+
     @XmlElement(name = "bibRef", type = BibRef.class)
     public Publication getJAXBBibRef() {
         return this.bibRef;
@@ -220,8 +232,7 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     @Override
     public ArrayList<Annotation> getJAXBAttributes() {
         if (getAnnotations().isEmpty() && this.postalAddress == null){

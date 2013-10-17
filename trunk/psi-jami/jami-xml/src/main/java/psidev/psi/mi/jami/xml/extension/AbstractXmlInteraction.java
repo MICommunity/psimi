@@ -347,21 +347,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     }
 
     /**
-     * Sets the value of the participantList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    public void setJAXBParticipants(ArrayList<T> value) {
-        removeAllParticipants(getParticipants());
-        if (value != null && !value.isEmpty()){
-            addAllParticipants(value);
-        }
-    }
-
-    /**
      * Gets the value of the intraMolecular property.
      *
      * @return
