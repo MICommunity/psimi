@@ -418,8 +418,7 @@ public class XmlInteractor implements Interactor, FileSourceContext{
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         if (getAnnotations().isEmpty() && getChecksums().isEmpty()){
             return null;

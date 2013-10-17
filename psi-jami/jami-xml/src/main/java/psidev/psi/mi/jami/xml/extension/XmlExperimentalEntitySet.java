@@ -338,8 +338,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
     @Override
     @XmlElementWrapper(name="featureList")
-    @XmlElement(name="feature", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlFeatureEvidence.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlFeatureEvidence.class, name="feature", required = true)})
     public ArrayList<FeatureEvidence> getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
@@ -358,8 +357,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
@@ -373,8 +371,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="participantIdentificationMethodList")
-    @XmlElement(name="participantIdentificationMethod", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlCvTerm.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalCvTerm.class, name="participantIdentificationMethod", required = true)})
     public ArrayList<CvTerm> getJAXBParticipantIdentificationMethods() {
         if (this.identificationMethods != null && this.identificationMethods.isEmpty()){
             this.identificationMethods = null;
@@ -390,7 +387,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBParticipantIdentificationMethods(ArrayList<XmlCvTerm> value) {
+    public void setJAXBParticipantIdentificationMethods(ArrayList<ExperimentalCvTerm> value) {
         getIdentificationMethods().clear();
         if (value != null && !value.isEmpty()){
             getIdentificationMethods().addAll(value);
@@ -406,8 +403,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="experimentalRoleList")
-    @XmlElement(name="experimentalRole", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlCvTerm.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalCvTerm.class, name="experimentalRole", required = true)})
     public ArrayList<CvTerm> getJAXBExperimentalRoles() {
         if (this.experimentalRoles != null && this.experimentalRoles.isEmpty()){
             this.experimentalRoles = null;
@@ -436,8 +432,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="experimentalPreparationList")
-    @XmlElement(name="experimentalPreparation", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlCvTerm.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalCvTerm.class, name="experimentalPreparation", required = true)})
     public ArrayList<CvTerm> getJAXBExperimentalPreparations() {
         if (this.experimentalPreparations != null && this.experimentalPreparations.isEmpty()){
             return null;
@@ -453,7 +448,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBExperimentalPreparations(ArrayList<XmlCvTerm> value) {
+    public void setJAXBExperimentalPreparations(ArrayList<ExperimentalCvTerm> value) {
         getExperimentalPreparations().clear();
         if (value != null && !value.isEmpty()){
             this.experimentalRoles.addAll(value);
@@ -470,8 +465,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="experimentalInteractorList")
-    @XmlElement(name="experimentalInteractor", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=ExperimentalInteractor.class)})
+    @XmlElementRefs({ @XmlElementRef(type=ExperimentalInteractor.class, name="experimentalInteractor", required = true)})
     public ArrayList<ExperimentalInteractor> getJAXBExperimentalInteractors() {
         return this.experimentalInteractors;
     }
@@ -497,8 +491,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="hostOrganismList")
-    @XmlElement(name="hostOrganism", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class)})
+    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class, name="hostOrganism", required = true)})
     public ArrayList<Organism> getJAXBHostOrganisms() {
         if (this.hostOrganisms != null && this.hostOrganisms.isEmpty()){
             this.hostOrganisms = null;
@@ -527,8 +520,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="parameterList")
-    @XmlElement(name="parameter", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlParameter.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlParameter.class, name="parameter", required = true)})
     public ArrayList<Parameter> getJAXBParameters() {
         if (this.parameters != null && this.parameters.isEmpty()){
             this.parameters = null;
@@ -560,8 +552,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElement(name="confidence", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class, name="confidence", required = true)})
     public ArrayList<Confidence> getJAXBConfidences() {
         if (this.confidences != null && this.confidences.isEmpty()){
             this.confidences = null;

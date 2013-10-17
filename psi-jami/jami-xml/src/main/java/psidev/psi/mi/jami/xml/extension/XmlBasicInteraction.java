@@ -60,8 +60,7 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name = "attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
@@ -74,8 +73,7 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @Override
     @XmlElementWrapper(name="participantList")
-    @XmlElement(name="participant", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlParticipant.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlParticipant.class, name = "participant", required = true)})
     public ArrayList<Participant> getJAXBParticipants() {
         return super.getJAXBParticipants();
     }
@@ -98,5 +96,20 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     @XmlTransient
     public Locator getSaxLocator() {
         return super.getSaxLocator();
+    }
+
+    /**
+     * Sets the value of the participantList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link ArrayList<Participant> }
+     *
+     */
+    public void setJAXBParticipants(ArrayList<XmlParticipant> value) {
+        removeAllParticipants(getParticipants());
+        if (value != null && !value.isEmpty()){
+            addAllParticipants(value);
+        }
     }
 }

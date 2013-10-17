@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "attribute", propOrder = {
-        "value"
+        "JAXBValue"
 })
 public class XmlAnnotation implements Annotation, FileSourceContext {
 

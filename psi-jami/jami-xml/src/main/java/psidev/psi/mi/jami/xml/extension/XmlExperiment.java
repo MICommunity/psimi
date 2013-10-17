@@ -457,8 +457,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlElementWrapper(name="hostOrganismList")
-    @XmlElement(name="hostOrganism", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class)})
+    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class, name="hostOrganism", required = true)})
     public ArrayList<Organism> getJAXBHostOrganisms() {
         if (this.hostOrganisms != null && this.hostOrganisms.isEmpty()){
             this.hostOrganisms = null;
@@ -567,8 +566,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElement(name="confidence", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class, name="confidence", required = true)})
     public ArrayList<Confidence> getJAXBConfidenceList() {
         if (getConfidences().isEmpty()){
             return null;
@@ -592,8 +590,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         if ((this.publication == null && getAnnotations().isEmpty())
                 || (this.publication != null &&

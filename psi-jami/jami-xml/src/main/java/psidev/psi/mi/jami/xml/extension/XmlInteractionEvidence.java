@@ -204,13 +204,13 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
-    @XmlAttribute(name = "names")
+    @XmlElement(name = "names")
     public NamesContainer getJAXBNames() {
         return super.getJAXBNames();
     }
 
     @Override
-    @XmlAttribute(name = "xref")
+    @XmlElement(name = "xref")
     public InteractionXrefContainer getJAXBXref() {
         return super.getJAXBXref();
     }
@@ -223,8 +223,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
@@ -237,11 +236,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     @Override
     @XmlElementWrapper(name="participantList")
-    @XmlElement(name="participant", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlParticipantEvidence.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlParticipantEvidence.class, name="participant", required = true)})
     public ArrayList<ParticipantEvidence> getJAXBParticipants() {
         return super.getJAXBParticipants();
     }
+
+
 
     @Override
     @XmlElementWrapper(name="inferredInteractionList")
@@ -251,7 +251,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
-    @XmlElement(name="interactionType")
+    @XmlElement(name="interactionType", type = XmlCvTerm.class)
     public ArrayList<CvTerm> getJAXBInteractionTypes() {
         return super.getJAXBInteractionTypes();
     }
@@ -272,8 +272,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElement(name="participant", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class, name="participant", required = true)})
     public ArrayList<Confidence> getJAXBConfidences() {
         if (this.confidences == null || this.confidences.isEmpty()){
             return null;
@@ -305,8 +304,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="parameterList")
-    @XmlElement(name="participant", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlParameter.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlParameter.class,name="participant", required = true)})
     public ArrayList<Parameter> getJAXBParameters() {
         if (this.parameters == null || this.parameters.isEmpty()){
             return null;
@@ -591,8 +589,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<Participant> }
      *
      */
-    @Override
-    public void setJAXBParticipants(ArrayList<ParticipantEvidence> value) {
+    public void setJAXBParticipants(ArrayList<XmlParticipantEvidence> value) {
         removeAllParticipants(getParticipants());
         if (value != null && !value.isEmpty()){
             addAllJAXBParticipants(value);

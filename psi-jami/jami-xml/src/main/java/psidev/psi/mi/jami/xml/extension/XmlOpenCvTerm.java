@@ -26,10 +26,7 @@ import java.util.Collection;
 @XmlType(name = "openCvType", propOrder = {
         "JAXBNames",
         "JAXBXref",
-        "attributes"
-})
-@XmlSeeAlso({
-        XmlSource.class
+        "JAXBAttributes"
 })
 public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
@@ -162,8 +159,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class)})
+    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getAttributes();
     }

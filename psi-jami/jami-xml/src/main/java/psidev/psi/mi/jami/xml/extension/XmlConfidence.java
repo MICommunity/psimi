@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.*;
         "JAXBValue"
 })
 @XmlSeeAlso({
-        ModelledConfidence.class
+        XmlModelledConfidence.class
 })
 public class XmlConfidence implements Confidence, FileSourceContext{
 
@@ -78,12 +77,9 @@ public class XmlConfidence implements Confidence, FileSourceContext{
      *     {@link XmlOpenCvTerm }
      *
      */
-    @XmlElement(name = "unit", required = true)
+    @XmlElement(name = "unit", required = true, type = XmlOpenCvTerm.class)
     public CvTerm getJAXBType() {
-        if (this.type == null){
-            this.type = new XmlOpenCvTerm();
-        }
-        return type;
+        return getType();
     }
 
     /**

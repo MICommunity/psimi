@@ -240,7 +240,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public void setJAXBParticipants(ArrayList<ParticipantEvidence> value) {
+    public void setJAXBParticipants(ArrayList<XmlParticipantEvidence> value) {
         this.wrappedInteraction.setJAXBParticipants(value);
     }
 

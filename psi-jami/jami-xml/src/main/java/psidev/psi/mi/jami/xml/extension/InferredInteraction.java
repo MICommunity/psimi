@@ -43,7 +43,6 @@ public class InferredInteraction
         implements FileSourceContext
 {
 
-    @XmlElement(name = "participant", required = true)
     private List<InferredInteractionParticipant> participants;
     private Collection<Experiment> experiments;
 

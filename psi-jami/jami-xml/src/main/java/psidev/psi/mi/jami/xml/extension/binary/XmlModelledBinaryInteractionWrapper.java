@@ -239,7 +239,7 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     }
 
     @Override
-    public void setJAXBParticipants(ArrayList<ModelledParticipant> value) {
+    public void setJAXBParticipants(ArrayList<XmlModelledParticipant> value) {
         this.wrappedInteraction.setJAXBParticipants(value);
     }
 
