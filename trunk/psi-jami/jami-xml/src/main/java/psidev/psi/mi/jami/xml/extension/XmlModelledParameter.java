@@ -54,7 +54,7 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
     @XmlElement(name="experimentRef")
     public Integer getJAXBExperimentRef() {
         if (experiment instanceof XmlExperiment){
-            return ((XmlExperiment) experiment).getId();
+            return ((XmlExperiment) experiment).getJAXBId();
         }
         return null;
     }

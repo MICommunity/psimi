@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "parameterType")
 @XmlSeeAlso({
-        XmlModelledParameter.class, XmlParameterWrapper.class
+        XmlModelledParameter.class
 })
 public class XmlParameter implements Parameter, FileSourceContext{
 

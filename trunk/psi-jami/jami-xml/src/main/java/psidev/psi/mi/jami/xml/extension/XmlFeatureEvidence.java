@@ -156,7 +156,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
         for (Experiment exp : experiments){
             if (exp instanceof XmlExperiment){
-                references.add(((XmlExperiment) exp).getId());
+                references.add(((XmlExperiment) exp).getJAXBId());
             }
         }
         if (references.isEmpty()){
