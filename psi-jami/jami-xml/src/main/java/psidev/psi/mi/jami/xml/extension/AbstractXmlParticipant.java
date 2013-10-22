@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>07/10/13</pre>
  */
 @XmlTransient
-public class AbstractXmlParticipant<I extends Interaction, F extends Feature> extends AbstractXmlEntity<F> implements Participant<I,F>{
+public abstract class AbstractXmlParticipant<I extends Interaction, F extends Feature> extends AbstractXmlEntity<F> implements Participant<I,F>{
 
     private I interaction;
 

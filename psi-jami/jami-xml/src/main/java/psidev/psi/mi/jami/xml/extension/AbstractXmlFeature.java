@@ -306,16 +306,24 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
+        }    }
 
     /**
      * Gets the value of the id property.

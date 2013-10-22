@@ -47,6 +47,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     private static final Logger logger = Logger.getLogger("AbstractPsiXml25Parser");
     private XMLEventReader eventReader;
+    private XMLEventReader subEventReader;
 
     private URL originalURL;
     private File originalFile;
@@ -173,8 +174,17 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     public void close() throws MIIOException{
         if (this.eventReader != null){
+            this.subEventReader = null;
             try {
                 this.eventReader.close();
+            } catch (XMLStreamException e) {
+                closeOriginalInputSources();
+                throw new MIIOException("Cannot close event reader",e);
+            }
+        }
+        else if (this.subEventReader != null){
+            try {
+                this.subEventReader.close();
             } catch (XMLStreamException e) {
                 closeOriginalInputSources();
                 throw new MIIOException("Cannot close event reader",e);
@@ -320,7 +330,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 StartElement nextEvt = (StartElement) this.eventReader.peek();
                 // process source of entry
                 if (PsiXmlUtils.SOURCE_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                    entryContext.getCurrentEntry().setSource((Source) this.unmarshaller.unmarshal(eventReader));
+                    entryContext.getCurrentEntry().setSource((Source) this.unmarshaller.unmarshal(subEventReader));
                 }
                 // process availability
                 else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
@@ -333,7 +343,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                         nextEvt = (StartElement)this.eventReader.peek();
                         // load availability
                         while (nextEvt != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                            entry.getAvailabilities().add((Availability)unmarshaller.unmarshal(this.eventReader));
+                            entry.getAvailabilities().add((Availability)unmarshaller.unmarshal(this.subEventReader));
                             if (this.eventReader.hasNext()){
                                 nextEvt = (StartElement)this.eventReader.peek();
                             }
@@ -362,7 +372,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                         nextEvt = (StartElement)this.eventReader.peek();
                         // load experimentDescription
                         while (nextEvt != null && PsiXmlUtils.EXPERIMENT_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                            unmarshaller.unmarshal(this.eventReader);
+                            unmarshaller.unmarshal(this.subEventReader);
                             if (this.eventReader.hasNext()){
                                 nextEvt = (StartElement)this.eventReader.peek();
                             }
@@ -392,7 +402,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                         // load experimentDescription
                         while (nextEvt != null && PsiXmlUtils.INTERACTOR_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
                             this.interactorFactory.
-                                    createInteractorFromXmlInteractorInstance((XmlInteractor)unmarshaller.unmarshal(this.eventReader));
+                                    createInteractorFromXmlInteractorInstance((XmlInteractor)unmarshaller.unmarshal(this.subEventReader));
                             if (this.eventReader.hasNext()){
                                 nextEvt = (StartElement)this.eventReader.peek();
                             }
@@ -441,7 +451,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                         nextEvt = (StartElement)this.eventReader.peek();
                         // load attribute
                         while (nextEvt != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                            currentEntry.getAnnotations().add((Annotation) this.unmarshaller.unmarshal(eventReader));
+                            currentEntry.getAnnotations().add((Annotation) this.unmarshaller.unmarshal(subEventReader));
 
                             if (this.eventReader.hasNext()){
                                 nextEvt = (StartElement)this.eventReader.peek();
@@ -505,7 +515,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         StartElement evt = (StartElement) eventReader.peek();
         boolean isReadingInteraction = PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
         while(isReadingInteraction && this.eventReader.hasNext()){
-            this.loadedInteractions.add((T)this.unmarshaller.unmarshal(eventReader));
+            this.loadedInteractions.add((T)this.unmarshaller.unmarshal(subEventReader));
 
             evt = (StartElement) eventReader.peek();
             isReadingInteraction = evt != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
@@ -543,7 +553,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     boolean isReadingAttribute = PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
 
                     while(isReadingAttribute && this.eventReader.hasNext()){
-                        currentEntry.getAnnotations().add((Annotation)this.unmarshaller.unmarshal(eventReader));
+                        currentEntry.getAnnotations().add((Annotation)this.unmarshaller.unmarshal(subEventReader));
 
                         evt = (StartElement) eventReader.peek();
                         isReadingAttribute = evt != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
@@ -573,7 +583,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
      * @throws XMLStreamException
      */
     protected T parseInteractionTag(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
-        T interaction = (T)this.unmarshaller.unmarshal(eventReader);
+        T interaction = (T)this.unmarshaller.unmarshal(subEventReader);
         // no references, can return the interaction
         if (entryContext.getReferences().isEmpty() && entryContext.getInferredInteractions().isEmpty()){
             return interaction;
@@ -684,6 +694,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     private void initializeXmlEventReader(XMLInputFactory xmlif, XMLEventReader xmler) throws XMLStreamException {
+        this.subEventReader = xmler;
         EventFilter filter = new EventFilter() {
             public boolean accept(XMLEvent event) {
                 // clear entry when reach end of entry

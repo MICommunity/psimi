@@ -159,12 +159,12 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({@XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getAttributes();
     }
 
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> annot){
+    public void setJAXBAttributes(ArrayList<Annotation> annot){
         super.setAttributes(annot);
     }
 

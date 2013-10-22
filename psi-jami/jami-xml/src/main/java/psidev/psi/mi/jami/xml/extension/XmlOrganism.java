@@ -113,7 +113,7 @@ public class XmlOrganism implements Organism, FileSourceContext{
     }
 
     public void setTaxId(int id) {
-        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
+        if (id == -1 || id == -2 || id == -3 || id == -4 || id > 0){
             this.taxId = id;
         }
         else {
@@ -211,12 +211,7 @@ public class XmlOrganism implements Organism, FileSourceContext{
     }
 
     public void setJAXBTaxId(int id) {
-        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
-            this.taxId = id;
-        }
-        else {
-            throw new IllegalArgumentException("The taxId "+id+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
-        }
+        this.taxId = id;
     }
 
     @XmlLocation
@@ -226,16 +221,24 @@ public class XmlOrganism implements Organism, FileSourceContext{
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }    }
 
     @Override
     public boolean equals(Object o) {

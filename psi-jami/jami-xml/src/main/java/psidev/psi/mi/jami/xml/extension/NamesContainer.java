@@ -107,7 +107,7 @@ public class NamesContainer implements FileSourceContext{
      *
      *
      */
-    @XmlElementRefs({ @XmlElementRef(type=XmlAlias.class, name = "alias")})
+    @XmlElements({ @XmlElement(type=XmlAlias.class, name = "alias")})
     public Collection<Alias> getJAXBAliases() {
         if (aliases == null) {
             initialiseAliases();
@@ -122,16 +122,24 @@ public class NamesContainer implements FileSourceContext{
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }    }
 
     public boolean isEmpty(){
         return (shortLabel == null && fullName == null && getJAXBAliases().isEmpty());

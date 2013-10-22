@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.*;
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
+@XmlRootElement(name = "attribute", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "attribute", propOrder = {
         "JAXBValue"
@@ -140,16 +141,24 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }    }
 
     @Override
     public int hashCode() {

@@ -28,7 +28,7 @@ import java.util.Map;
  * @since <pre>31/07/13</pre>
  */
 @XmlTransient
-public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSourceContext {
+public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSourceContext {
     private Interactor interactor;
     private CvTerm biologicalRole;
     private Collection<Annotation> annotations;
@@ -612,16 +612,24 @@ public class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSour
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }    }
 
     @Override
     public String toString() {

@@ -37,7 +37,7 @@ public class Xml25ModelledInteractionParser extends AbstractPsiXml25Parser<Model
 
     @Override
     protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(XmlModelledInteraction.class, XmlModelledParticipant.class, XmlExperiment.class, XmlInteractor.class,
+        JAXBContext ctx = JAXBContext.newInstance(XmlModelledInteraction.class, XmlExperiment.class, XmlInteractor.class,
                 Availability.class, XmlSource.class, XmlAnnotation.class);
         return ctx.createUnmarshaller();
     }

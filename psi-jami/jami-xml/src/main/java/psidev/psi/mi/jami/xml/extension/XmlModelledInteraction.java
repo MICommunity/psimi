@@ -17,6 +17,7 @@ import java.util.Collections;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
+@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "modelledInteraction", propOrder = {
         "JAXBNames",
@@ -170,7 +171,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
@@ -181,11 +182,13 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         return super.getJAXBIntraMolecular();
     }
 
-    @Override
     @XmlElementWrapper(name="participantList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlModelledParticipant.class, name="participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)})
     public ArrayList<ModelledParticipant> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+        if (getParticipants().isEmpty()){
+            return null;
+        }
+        return new ArrayList<ModelledParticipant>(getParticipants());
     }
 
     @Override
@@ -217,7 +220,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlModelledConfidence.class, name="participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)})
     public ArrayList<ModelledConfidence> getJAXBConfidences() {
         if (this.modelledConfidences == null || this.modelledConfidences.isEmpty()){
             return null;
@@ -249,7 +252,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      *
      */
     @XmlElementWrapper(name="parameterList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlModelledParameter.class, name="participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlModelledParameter.class, name="parameter", required = true)})
     public ArrayList<ModelledParameter> getJAXBParameters() {
         if (this.modelledParameters == null || this.modelledParameters.isEmpty()){
             return null;

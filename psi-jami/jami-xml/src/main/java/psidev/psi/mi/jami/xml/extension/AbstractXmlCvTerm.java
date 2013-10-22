@@ -64,7 +64,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
 
 
     protected CvTermXrefContainer getXrefContainer() {
-        if (xrefContainer != null){
+        if (xrefContainer == null){
             xrefContainer = new CvTermXrefContainer();
         }
         return xrefContainer;
@@ -109,7 +109,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
         return new ArrayList<Annotation>(this.annotations);
     }
 
-    protected void setAttributes(ArrayList<XmlAnnotation> annot){
+    protected void setAttributes(ArrayList<Annotation> annot){
         getAnnotations().clear();
         if (annot != null && !annot.isEmpty()){
             getAnnotations().addAll(annot);
@@ -121,7 +121,12 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -129,7 +134,12 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        if (sourceLocator == null){
+           this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }
     }
 
     @Override

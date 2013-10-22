@@ -24,6 +24,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>25/07/13</pre>
  */
+@XmlRootElement(name = "experimentDescription", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "experimentType", propOrder = {
         "JAXBNames",
@@ -457,7 +458,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlElementWrapper(name="hostOrganismList")
-    @XmlElementRefs({ @XmlElementRef(type=HostOrganism.class, name="hostOrganism", required = true)})
+    @XmlElements({ @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)})
     public ArrayList<Organism> getJAXBHostOrganisms() {
         if (this.hostOrganisms != null && this.hostOrganisms.isEmpty()){
             this.hostOrganisms = null;
@@ -566,7 +567,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class, name="confidence", required = true)})
+    @XmlElements({ @XmlElement(type=XmlConfidence.class, name="confidence", required = true)})
     public ArrayList<Confidence> getJAXBConfidenceList() {
         if (getConfidences().isEmpty()){
             return null;
@@ -590,7 +591,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         if ((this.publication == null && getAnnotations().isEmpty())
                 || (this.publication != null &&
@@ -779,8 +780,12 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
+        }    }
 
     @XmlTransient
     public FileSourceLocator getSourceLocator() {
@@ -788,6 +793,10 @@ public class XmlExperiment implements Experiment, FileSourceContext{
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        }    }
 }
