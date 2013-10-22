@@ -152,13 +152,13 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @Override
-    @XmlAttribute(name = "names")
+    @XmlElement(name = "names")
     public NamesContainer getJAXBNames() {
         return super.getJAXBNames();
     }
 
     @Override
-    @XmlAttribute(name = "xref")
+    @XmlElement(name = "xref")
     public InteractionXrefContainer getJAXBXref() {
         return super.getJAXBXref();
     }

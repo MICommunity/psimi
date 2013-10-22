@@ -16,7 +16,7 @@ import java.util.*;
  * @since <pre>25/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "experimentXrefContainer")
 public class ExperimentXrefContainer extends XrefContainer{
 
     private Xref imexId;

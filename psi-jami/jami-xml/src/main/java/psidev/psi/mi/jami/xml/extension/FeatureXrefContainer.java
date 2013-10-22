@@ -20,7 +20,7 @@ import java.util.*;
  * @since <pre>25/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-@XmlType(name = "")
+@XmlType(name = "featureXrefContainer")
 public class FeatureXrefContainer extends XrefContainer{
 
     private Xref interpro;

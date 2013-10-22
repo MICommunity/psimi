@@ -19,7 +19,7 @@ import java.util.*;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "cvTermXrefContainer")
 public class CvTermXrefContainer extends XrefContainer{
 
     private Xref miIdentifier;

@@ -15,7 +15,7 @@ import java.util.*;
  * @since <pre>23/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "interactorXrefContainer")
 @XmlSeeAlso({
         BioactiveEntityXrefContainer.class, GeneXrefContainer.class, NucleicAcidXrefContainer.class, ProteinXrefContainer.class
 })

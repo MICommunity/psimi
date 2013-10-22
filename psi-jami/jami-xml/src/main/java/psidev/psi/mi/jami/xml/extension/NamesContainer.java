@@ -43,7 +43,7 @@ public class NamesContainer implements FileSourceContext{
      *     {@link String }
      *
      */
-    @XmlAttribute(name = "shortLabel")
+    @XmlElement(name = "shortLabel")
     public String getJAXBShortLabel() {
         return shortLabel;
     }
@@ -68,7 +68,7 @@ public class NamesContainer implements FileSourceContext{
      *     {@link String }
      *
      */
-    @XmlAttribute(name = "fullName")
+    @XmlElement(name = "fullName")
     public String getJAXBFullName() {
         return fullName;
     }
@@ -107,7 +107,7 @@ public class NamesContainer implements FileSourceContext{
      *
      *
      */
-    @XmlElements({ @XmlElement(type=XmlAlias.class, name = "alias")})
+    @XmlElements({@XmlElement(type=XmlAlias.class, name = "alias")})
     public Collection<Alias> getJAXBAliases() {
         if (aliases == null) {
             initialiseAliases();
