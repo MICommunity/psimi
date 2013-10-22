@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "interactionXrefContainer")
 public class InteractionXrefContainer extends XrefContainer{
     private Xref imexId;
     private List<Xref> allIdentifiers;

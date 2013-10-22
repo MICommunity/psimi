@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>22/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "publicationXrefContainer")
 public class PublicationXrefContainer extends XrefContainer {
 
     private Xref pubmedId;

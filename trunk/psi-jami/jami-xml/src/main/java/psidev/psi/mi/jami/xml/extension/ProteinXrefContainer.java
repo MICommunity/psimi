@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "proteinXrefContainer")
 public class ProteinXrefContainer extends InteractorXrefContainer{
 
     private Xref uniprotkb;

@@ -20,7 +20,7 @@ import java.util.Collection;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlType(name = "proteinNamesContainer")
 public class ProteinNamesContainer extends NamesContainer{
 
     private Alias geneName;
