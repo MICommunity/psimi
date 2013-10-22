@@ -36,6 +36,7 @@ import java.util.Collection;
  * The JAXB binding is designed to be read-only and is not designed for writing
  * 
  */
+@XmlRootElement(name = "source", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "source", propOrder = {
     "JAXBNames",
@@ -232,7 +233,7 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({@XmlElement(type = XmlAnnotation.class, name = "attribute", required = true)})
     @Override
     public ArrayList<Annotation> getJAXBAttributes() {
         if (getAnnotations().isEmpty() && this.postalAddress == null){
@@ -251,7 +252,7 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     @Override
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> annotations){
+    public void setJAXBAttributes(ArrayList<Annotation> annotations){
         getAnnotations().clear();
         if (annotations != null){
             // we have a bibref. Some annotations can be processed
@@ -273,16 +274,24 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }    }
 
     protected void processAddedAnnotationEvent(Annotation added) {
         if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){

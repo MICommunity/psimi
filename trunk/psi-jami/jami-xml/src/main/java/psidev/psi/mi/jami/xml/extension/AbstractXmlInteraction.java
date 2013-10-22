@@ -332,21 +332,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     }
 
     /**
-     * Gets the value of the participantList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    public ArrayList<T> getJAXBParticipants() {
-        if (this.participants == null || this.participants.isEmpty()){
-            return null;
-        }
-        return new ArrayList<T>(getParticipants());
-    }
-
-    /**
      * Gets the value of the intraMolecular property.
      *
      * @return
@@ -469,16 +454,24 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        }    }
 
     public XmlEntry getEntry() {
         return entry;

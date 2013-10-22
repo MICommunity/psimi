@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
+@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interaction", propOrder = {
         "JAXBNames",
@@ -60,7 +61,7 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name = "attribute", required = true)})
+    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name = "attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
@@ -71,11 +72,13 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
         return super.getJAXBIntraMolecular();
     }
 
-    @Override
     @XmlElementWrapper(name="participantList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlParticipant.class, name = "participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlParticipant.class, name = "participant", required = true)})
     public ArrayList<Participant> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+        if (getParticipants().isEmpty()){
+            return null;
+        }
+        return new ArrayList<Participant>(getParticipants());
     }
 
     @Override

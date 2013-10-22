@@ -94,7 +94,7 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
      *
      */
     @XmlElementWrapper(name="featureRangeList", required = true)
-    @XmlElementRefs({@XmlElementRef(type=XmlRange.class, name="featureRange", required = true)})
+    @XmlElements({@XmlElement(type=XmlRange.class, name="featureRange", required = true)})
     @Override
     public ArrayList<Range> getJAXBRanges() {
         return super.getJAXBRanges();
@@ -109,7 +109,7 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({@XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({@XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     @Override
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();

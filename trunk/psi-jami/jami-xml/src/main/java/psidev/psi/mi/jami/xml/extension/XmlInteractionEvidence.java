@@ -17,6 +17,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
+@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interactionEvidence", propOrder = {
         "JAXBNames",
@@ -223,7 +224,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
@@ -234,14 +235,22 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         return super.getJAXBIntraMolecular();
     }
 
-    @Override
     @XmlElementWrapper(name="participantList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlParticipantEvidence.class, name="participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlParticipantEvidence.class, name="participant", required = true)})
+    /**
+     * Gets the value of the participantList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link ArrayList<Participant> }
+     *
+     */
     public ArrayList<ParticipantEvidence> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+        if (getParticipants().isEmpty()){
+            return null;
+        }
+        return new ArrayList<ParticipantEvidence>(getParticipants());
     }
-
-
 
     @Override
     @XmlElementWrapper(name="inferredInteractionList")
@@ -272,7 +281,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlConfidence.class, name="participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlConfidence.class, name="confidence", required = true)})
     public ArrayList<Confidence> getJAXBConfidences() {
         if (this.confidences == null || this.confidences.isEmpty()){
             return null;
@@ -304,7 +313,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="parameterList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlParameter.class,name="participant", required = true)})
+    @XmlElements({ @XmlElement(type=XmlParameter.class,name="parameter", required = true)})
     public ArrayList<Parameter> getJAXBParameters() {
         if (this.parameters == null || this.parameters.isEmpty()){
             return null;

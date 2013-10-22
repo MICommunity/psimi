@@ -27,6 +27,10 @@ public class XmlChecksum extends DefaultChecksum implements FileSourceContext{
     }
 
     public void setSourceLocator(FileSourceLocator locator) {
-        this.sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getCharNumber(), null);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        }    }
 }

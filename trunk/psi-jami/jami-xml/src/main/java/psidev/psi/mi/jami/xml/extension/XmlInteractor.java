@@ -21,6 +21,7 @@ import java.util.Collections;
  * @version $Id$
  * @since <pre>23/07/13</pre>
  */
+@XmlRootElement(name = "interactor", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interactor", propOrder = {
         "JAXBNames",
@@ -225,7 +226,7 @@ public class XmlInteractor implements Interactor, FileSourceContext{
         if (xrefContainer == null){
             initialiseXrefContainer();
         }
-        return getJAXBXref().getAllIdentifiers();
+        return xrefContainer.getAllIdentifiers();
     }
 
     protected void initialiseXrefContainer() {
@@ -418,7 +419,7 @@ public class XmlInteractor implements Interactor, FileSourceContext{
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         if (getAnnotations().isEmpty() && getChecksums().isEmpty()){
             return null;
@@ -481,14 +482,23 @@ public class XmlInteractor implements Interactor, FileSourceContext{
     }
 
     public void setSaxLocator(Locator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
-    }
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
+        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        }
     }
 }

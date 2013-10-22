@@ -80,7 +80,7 @@ public class XmlEntitySet extends AbstractXmlEntitySet<Interaction,Feature,Entit
 
     @Override
     @XmlElementWrapper(name="featureList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlFeature.class,name="feature", required = true)})
+    @XmlElements({ @XmlElement(type=XmlFeature.class,name="feature", required = true)})
     public ArrayList<Feature> getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
@@ -99,7 +99,7 @@ public class XmlEntitySet extends AbstractXmlEntitySet<Interaction,Feature,Entit
 
     @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElementRefs({ @XmlElementRef(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public ArrayList<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
