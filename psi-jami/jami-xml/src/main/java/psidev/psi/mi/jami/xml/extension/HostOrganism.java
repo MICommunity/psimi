@@ -69,7 +69,7 @@ public class HostOrganism extends XmlOrganism{
         ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
         for (Experiment exp : experiments){
             if (exp instanceof XmlExperiment){
-                references.add(((XmlExperiment) exp).getId());
+                references.add(((XmlExperiment) exp).getJAXBId());
             }
         }
         if (references.isEmpty()){

@@ -436,7 +436,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="experimentList")
-    @XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)
+    @XmlElements({@XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)})
     public ArrayList<Experiment> getJAXBExperimentDescriptions() {
         if (experiments == null || experiments.isEmpty()){
            return null;
@@ -473,7 +473,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="experimentList")
-    @XmlElement(name="experimentRef", required = true)
+    @XmlElements({@XmlElement(name="experimentRef", required = true)})
     public ArrayList<Integer> getJAXBExperimentRefs() {
         if (experiments == null || experiments.isEmpty()){
             return null;
@@ -481,7 +481,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
         for (Experiment exp : experiments){
             if (exp instanceof XmlExperiment){
-                references.add(((XmlExperiment) exp).getId());
+                references.add(((XmlExperiment) exp).getJAXBId());
             }
         }
         return references;

@@ -752,7 +752,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      *
      */
     @XmlAttribute(name = "id", required = true)
-    public int getId() {
+    public int getJAXBId() {
         return id;
     }
 
@@ -760,7 +760,7 @@ public class XmlExperiment implements Experiment, FileSourceContext{
      * Sets the value of the id property.
      *
      */
-    public void setId(int value) {
+    public void setJAXBId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (sourceLocator != null){
