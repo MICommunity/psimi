@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -28,7 +29,7 @@ import java.util.Map;
  * @since <pre>31/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSourceContext {
+public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSourceContext, Locatable {
     private Interactor interactor;
     private CvTerm biologicalRole;
     private Collection<Annotation> annotations;
@@ -607,17 +608,19 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         }
     }
 
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;

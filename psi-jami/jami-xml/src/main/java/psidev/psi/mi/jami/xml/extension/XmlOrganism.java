@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -29,7 +30,7 @@ import java.util.Collection;
 @XmlSeeAlso({
         HostOrganism.class
 })
-public class XmlOrganism implements Organism, FileSourceContext{
+public class XmlOrganism implements Organism, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private int taxId;
@@ -38,6 +39,9 @@ public class XmlOrganism implements Organism, FileSourceContext{
     private CvTerm tissue;
 
     private PsiXmLocator sourceLocator;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlOrganism(){
 
@@ -214,19 +218,20 @@ public class XmlOrganism implements Organism, FileSourceContext{
         this.taxId = id;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -238,7 +243,9 @@ public class XmlOrganism implements Organism, FileSourceContext{
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     @Override
     public boolean equals(Object o) {

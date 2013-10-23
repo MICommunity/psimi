@@ -20,6 +20,9 @@ import java.math.BigInteger;
 public class XmlPosition extends AbstractXmlPosition{
 
     private BigInteger pos;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlPosition() {
     }
@@ -81,14 +84,16 @@ public class XmlPosition extends AbstractXmlPosition{
         this.pos = value;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    @Override
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
-        super.setSaxLocator(sourceLocator);
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 
     @Override

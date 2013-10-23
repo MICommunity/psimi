@@ -149,8 +149,8 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public Locator getSaxLocator() {
-        return this.wrappedInteraction.getSaxLocator();
+    public Locator sourceLocation() {
+        return this.wrappedInteraction.sourceLocation();
     }
 
     @Override
@@ -268,8 +268,8 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public void setSaxLocator(Locator sourceLocator) {
-        this.wrappedInteraction.setSaxLocator(sourceLocator);
+    public void setSourceLocation(Locator sourceLocator) {
+        this.wrappedInteraction.setSourceLocation(sourceLocator);
     }
 
     @Override

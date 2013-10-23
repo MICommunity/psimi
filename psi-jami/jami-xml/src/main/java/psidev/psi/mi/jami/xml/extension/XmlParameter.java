@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -26,7 +27,7 @@ import java.math.BigDecimal;
 @XmlSeeAlso({
         XmlModelledParameter.class
 })
-public class XmlParameter implements Parameter, FileSourceContext{
+public class XmlParameter implements Parameter, FileSourceContext, Locatable{
 
     private CvTerm type;
     private BigDecimal uncertainty;
@@ -34,6 +35,9 @@ public class XmlParameter implements Parameter, FileSourceContext{
     private ParameterValue value;
 
     private PsiXmLocator sourceLocator;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlParameter() {
     }
@@ -272,19 +276,20 @@ public class XmlParameter implements Parameter, FileSourceContext{
         this.value = new ParameterValue(value != null ? value : new BigDecimal(0), getValue().getBase(), getValue().getExponent());
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -296,7 +301,9 @@ public class XmlParameter implements Parameter, FileSourceContext{
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     @XmlAttribute(name = "uncertainty")
     public BigDecimal getJAXBUncertainty() {

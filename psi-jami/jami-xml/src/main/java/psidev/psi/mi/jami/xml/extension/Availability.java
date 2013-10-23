@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -32,11 +33,15 @@ import javax.xml.bind.annotation.*;
 @XmlType(name = "availability", propOrder = {
         "JAXBValue"
 })
-public class Availability implements FileSourceContext
+public class Availability implements FileSourceContext, Locatable
 {
 
     private String value;
     private int id;
+
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     private PsiXmLocator sourceLocator;
 
@@ -89,19 +94,20 @@ public class Availability implements FileSourceContext
         }
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -113,5 +119,7 @@ public class Availability implements FileSourceContext
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 }

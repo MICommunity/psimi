@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
@@ -45,6 +46,9 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     private ArrayList<ExperimentalInteractor> experimentalInteractors;
     private ArrayList<Organism> hostOrganisms;
     private ArrayList<ExperimentalCvTerm> originalIdentificationMethods;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     private boolean initialisedMethods = false;
 
@@ -509,10 +513,15 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     }
 
     @Override
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
+    }
+
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 
     @Override

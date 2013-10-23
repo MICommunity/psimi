@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
@@ -30,6 +31,10 @@ import java.util.Collection;
         ExperimentalCvTerm.class
 })
 public class XmlCvTerm extends AbstractXmlCvTerm{
+
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlCvTerm() {
     }
@@ -163,13 +168,15 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
         super.setXrefContainer(value);
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    @Override
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
-        super.setSaxLocator(sourceLocator);
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 }

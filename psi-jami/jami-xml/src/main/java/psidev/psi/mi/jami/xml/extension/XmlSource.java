@@ -8,10 +8,6 @@
 
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.bind.annotation.XmlLocation;
-import org.xml.sax.Locator;
-import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -45,7 +41,7 @@ import java.util.Collection;
     "JAXBAttributes"
 })
 public class XmlSource extends XmlOpenCvTerm
-    implements Source, FileSourceContext
+    implements Source
 {
 
     private Annotation url;
@@ -53,8 +49,6 @@ public class XmlSource extends XmlOpenCvTerm
     private Publication bibRef;
     private String release;
     private XMLGregorianCalendar releaseDate;
-
-    private PsiXmLocator sourceLocator;
 
     public XmlSource(){
         super();
@@ -266,32 +260,6 @@ public class XmlSource extends XmlOpenCvTerm
             }
         }
     }
-
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return sourceLocator;
-    }
-
-    public void setSaxLocator(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
-
-    public FileSourceLocator getSourceLocator() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
 
     protected void processAddedAnnotationEvent(Annotation added) {
         if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){

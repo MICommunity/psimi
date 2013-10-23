@@ -20,6 +20,10 @@ public class XmlInterval extends AbstractXmlPosition{
     private BigInteger start;
     private BigInteger end;
 
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
+
     public XmlInterval() {
     }
 
@@ -107,18 +111,15 @@ public class XmlInterval extends AbstractXmlPosition{
         this.end = value;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
-    }
-
-    public void setSaxLocator(Locator sourceLocator) {
-        super.setSaxLocator(sourceLocator);
+    @Override
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
     }
 
     @Override
-    public FileSourceLocator getSourceLocator() {
-        return super.getSourceLocator();
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 }

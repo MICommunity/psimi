@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -24,16 +25,17 @@ import java.util.Collections;
         "JAXBFullName",
         "JAXBAliases"
 })
-@XmlSeeAlso({
-        ProteinNamesContainer.class
-})
-public class NamesContainer implements FileSourceContext{
+public class NamesContainer implements FileSourceContext, Locatable{
 
     private String shortLabel;
     private String fullName;
     private Collection<Alias> aliases;
 
     private PsiXmLocator sourceLocator;
+
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     /**
      * Gets the value of the shortLabel property.
@@ -115,19 +117,20 @@ public class NamesContainer implements FileSourceContext{
         return this.aliases;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -139,7 +142,9 @@ public class NamesContainer implements FileSourceContext{
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public boolean isEmpty(){
         return (shortLabel == null && fullName == null && getJAXBAliases().isEmpty());

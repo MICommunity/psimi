@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
@@ -37,6 +38,9 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlModelledInteraction() {
         super();
@@ -205,10 +209,15 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @Override
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
+    }
+
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 
     /**

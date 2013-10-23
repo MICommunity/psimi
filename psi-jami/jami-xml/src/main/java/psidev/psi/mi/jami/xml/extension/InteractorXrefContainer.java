@@ -16,9 +16,6 @@ import java.util.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interactorXrefContainer")
-@XmlSeeAlso({
-        BioactiveEntityXrefContainer.class, GeneXrefContainer.class, NucleicAcidXrefContainer.class, ProteinXrefContainer.class
-})
 public class InteractorXrefContainer extends XrefContainer {
 
     List<Xref> allIdentifiers;
