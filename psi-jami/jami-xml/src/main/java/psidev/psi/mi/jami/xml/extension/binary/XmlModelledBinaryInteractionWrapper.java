@@ -269,11 +269,6 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     }
 
     @Override
-    public void setSourceLocation(Locator sourceLocator) {
-        this.wrappedInteraction.setSourceLocation(sourceLocator);
-    }
-
-    @Override
     public FileSourceLocator getSourceLocator() {
         return this.wrappedInteraction.getSourceLocator();
     }
