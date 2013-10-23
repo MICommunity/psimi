@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -26,11 +27,14 @@ import javax.xml.bind.annotation.*;
 @XmlType(name = "attribute", propOrder = {
         "JAXBValue"
 })
-public class XmlAnnotation implements Annotation, FileSourceContext {
+public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
 
     private CvTerm topic;
     private String value;
     private PsiXmLocator sourceLocator;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlAnnotation() {
     }
@@ -134,19 +138,20 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
         }
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -158,7 +163,9 @@ public class XmlAnnotation implements Annotation, FileSourceContext {
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     @Override
     public int hashCode() {

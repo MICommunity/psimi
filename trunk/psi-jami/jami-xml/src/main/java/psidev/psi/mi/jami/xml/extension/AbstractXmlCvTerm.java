@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -22,7 +23,7 @@ import java.util.Collections;
  * @since <pre>19/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
+public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Locatable{
     private CvTermXrefContainer xrefContainer;
     private NamesContainer namesContainer;
     private Collection<Annotation> annotations;
@@ -116,11 +117,12 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext{
         }
     }
 
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }

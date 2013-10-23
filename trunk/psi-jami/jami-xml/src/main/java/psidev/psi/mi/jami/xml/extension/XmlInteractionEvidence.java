@@ -47,6 +47,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     private Collection<VariableParameterValueSet> variableParameterValueSets;
     private List<Experiment> experiments;
     private Boolean modelled;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     private ArrayList<XmlExperiment> originalExperiments;
 
@@ -266,10 +269,15 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
+    }
+
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 
     /**
@@ -410,12 +418,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                 }
 
                 @Override
-                public Locator getSaxLocator() {
+                public Locator sourceLocation() {
                     return getInteractionSaxLocator();
                 }
 
                 @Override
-                public void setSaxLocator(Locator sourceLocator) {
+                public void setSourceLocation(Locator sourceLocator) {
                     throw new UnsupportedOperationException("Cannot set the source locator of an availability ref");
                 }
 
@@ -629,7 +637,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         return getSourceLocator();
     }
     private Locator getInteractionSaxLocator(){
-        return getSaxLocator();
+        return sourceLocation();
     }
 
 }

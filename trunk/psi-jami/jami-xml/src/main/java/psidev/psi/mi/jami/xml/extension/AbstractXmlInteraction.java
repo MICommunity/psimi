@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -24,7 +25,7 @@ import java.util.*;
  * @since <pre>09/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlInteraction<T extends Participant> implements Interaction<T>, FileSourceContext{
+public abstract class AbstractXmlInteraction<T extends Participant> implements Interaction<T>, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private InteractionXrefContainer xrefContainer;
@@ -449,11 +450,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         this.interactionTypes = value;
     }
 
-    public Locator getSaxLocator() {
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }

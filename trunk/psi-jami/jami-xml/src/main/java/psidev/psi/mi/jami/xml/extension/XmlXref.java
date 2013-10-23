@@ -8,6 +8,7 @@
 
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
     "JAXBAttributes"
 })
 public class XmlXref
-    implements Xref, FileSourceContext
+    implements Xref, FileSourceContext, Locatable
 {
 
     private CvTerm database;
@@ -50,6 +51,9 @@ public class XmlXref
     private ArrayList<XmlAnnotation> annotations;
 
     private PsiXmLocator sourceLocator;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlXref() {
     }
@@ -313,19 +317,20 @@ public class XmlXref
         this.annotations = annotations;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -337,7 +342,9 @@ public class XmlXref
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -45,13 +46,17 @@ import java.util.Map;
         "JAXBInteractorRef",
         "JAXBExperimentRefList"
 })
-public class ExperimentalInteractor implements FileSourceContext
+public class ExperimentalInteractor implements FileSourceContext, Locatable
 {
     private Interactor interactor;
     private Collection<Experiment> experiments;
 
     private XmlInteractorFactory interactorFactory;
     private PsiXmLocator sourceLocator;
+
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public ExperimentalInteractor() {
         this.interactorFactory = new XmlInteractorFactory();
@@ -227,19 +232,21 @@ public class ExperimentalInteractor implements FileSourceContext
         return experiments;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -251,7 +258,9 @@ public class ExperimentalInteractor implements FileSourceContext
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     private FileSourceLocator getExperimentalInteractorLocator(){
         return getSourceLocator();

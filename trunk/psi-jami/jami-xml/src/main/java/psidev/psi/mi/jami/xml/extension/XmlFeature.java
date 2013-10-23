@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
@@ -23,6 +24,10 @@ import java.util.ArrayList;
         "JAXBAttributes"
 })
 public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
+
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlFeature() {
     }
@@ -125,13 +130,15 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
         return super.getJAXBId();
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    @Override
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
-        super.setSaxLocator(sourceLocator);
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 }

@@ -26,7 +26,6 @@ import java.util.*;
         "JAXBRanges",
         "JAXBAttributes"
 })
-@XmlSeeAlso(XmlFeatureEvidenceWrapper.class)
 public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
@@ -34,6 +33,10 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     private boolean initialisedMethods = false;
 
     private XmlParticipantEvidence originalParticipant;
+
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     public XmlFeatureEvidence() {
     }
@@ -246,14 +249,16 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         return super.getJAXBId();
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
-        return super.getSaxLocator();
+    @Override
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        super.setSourceLocator(sourceLocator);
+        this.locator = sourceLocation();
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
-        super.setSaxLocator(sourceLocator);
+    @Override
+    public void setSourceLocation(Locator sourceLocator) {
+        super.setSourceLocation(sourceLocator);
+        this.locator = sourceLocation();
     }
 
     public Collection<Experiment> getExperiments() {

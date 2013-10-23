@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>19/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlPosition implements Position, FileSourceContext {
+public abstract class AbstractXmlPosition implements Position, FileSourceContext, Locatable {
 
     private XmlCvTerm status;
     private boolean isPositionUndetermined;
@@ -47,11 +48,12 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
         return this.isPositionUndetermined;
     }
 
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }

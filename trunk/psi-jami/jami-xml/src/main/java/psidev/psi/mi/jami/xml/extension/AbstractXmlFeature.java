@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -19,7 +20,7 @@ import java.util.Collections;
  * @since <pre>25/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements Feature<P,F>, FileSourceContext{
+public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements Feature<P,F>, FileSourceContext, Locatable{
 
     private Collection<Annotation> annotations;
     private Collection<Range> ranges;
@@ -301,11 +302,12 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         return type != null ? type.toString() : (!ranges.isEmpty() ? "("+ranges.iterator().next().toString()+"...)" : " (-)");
     }
 
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }

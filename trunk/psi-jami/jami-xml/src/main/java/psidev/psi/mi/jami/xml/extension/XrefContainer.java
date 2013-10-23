@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
@@ -28,13 +29,16 @@ import java.util.List;
         CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class,
         ExperimentXrefContainer.class, InteractionXrefContainer.class
 })
-public class XrefContainer implements FileSourceContext{
+public class XrefContainer implements FileSourceContext, Locatable{
 
     XmlXref primaryRef;
     Collection<XmlXref> secondaryRefs;
     List<Xref> allXrefs;
 
     private PsiXmLocator sourceLocator;
+    @XmlLocation
+    @XmlTransient
+    protected Locator locator;
 
     /**
      * Gets the value of the primaryRef property.
@@ -112,19 +116,20 @@ public class XrefContainer implements FileSourceContext{
         return false;
     }
 
-    @XmlLocation
-    @XmlTransient
-    public Locator getSaxLocator() {
+    @Override
+    public Locator sourceLocation() {
         return sourceLocator;
     }
 
-    public void setSaxLocator(Locator sourceLocator) {
+    public void setSourceLocation(Locator sourceLocator) {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
@@ -136,7 +141,9 @@ public class XrefContainer implements FileSourceContext{
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+        this.locator = this.sourceLocator;
+    }
 
     protected void initialiseXrefs(){
         this.allXrefs = new FullXrefList();
