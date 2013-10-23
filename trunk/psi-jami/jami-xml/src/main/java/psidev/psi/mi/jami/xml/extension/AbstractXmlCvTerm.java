@@ -119,16 +119,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }
+        return (Locator)getSourceLocator();
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -136,12 +127,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-           this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }
+        this.sourceLocator = (PsiXmLocator)sourceLocator;
     }
 
     @Override

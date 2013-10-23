@@ -513,15 +513,21 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     }
 
     @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        super.setSourceLocator(sourceLocator);
-        this.locator = sourceLocation();
+    public FileSourceLocator getSourceLocator() {
+        if (super.getSourceLocator() == null && locator != null){
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+        }
+        return super.getSourceLocator();
     }
 
     @Override
-    public void setSourceLocation(Locator sourceLocator) {
-        super.setSourceLocation(sourceLocator);
-        this.locator = sourceLocation();
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        if (sourceLocator == null){
+            super.setSourceLocator(null);
+        }
+        else{
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+        }
     }
 
     @Override

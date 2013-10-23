@@ -41,7 +41,7 @@ public class Availability implements FileSourceContext, Locatable
 
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     private PsiXmLocator sourceLocator;
 
@@ -89,27 +89,20 @@ public class Availability implements FileSourceContext, Locatable
     public void setJAXBId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
-        if (sourceLocator != null){
+        if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
     }
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
-        }
-        this.locator = this.sourceLocator;
+        return (Locator)getSourceLocator();
     }
 
     public FileSourceLocator getSourceLocator() {
+        if (sourceLocator == null && locator != null){
+           sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), id);
+        }
         return sourceLocator;
     }
 
@@ -120,6 +113,5 @@ public class Availability implements FileSourceContext, Locatable
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
         }
-        this.locator = this.sourceLocator;
     }
 }

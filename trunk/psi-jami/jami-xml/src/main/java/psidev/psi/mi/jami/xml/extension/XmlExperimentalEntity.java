@@ -22,7 +22,6 @@ public class XmlExperimentalEntity extends AbstractXmlEntity<FeatureEvidence> im
     private Collection<Parameter> parameters;
 
     private ArrayList<CvTerm> experimentalRoles;
-    private ArrayList<ExperimentalInteractor> experimentalInteractors;
     private ArrayList<Organism> hostOrganisms;
 
     public XmlExperimentalEntity() {

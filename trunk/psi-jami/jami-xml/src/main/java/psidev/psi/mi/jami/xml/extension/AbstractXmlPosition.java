@@ -50,28 +50,16 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
+        return (Locator)getSourceLocator();
     }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        this.sourceLocator = (PsiXmLocator)sourceLocator;
+    }
 
     @Override
     public boolean equals(Object o) {
