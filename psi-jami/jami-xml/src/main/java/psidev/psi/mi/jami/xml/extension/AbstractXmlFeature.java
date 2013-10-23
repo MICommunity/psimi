@@ -304,28 +304,16 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
+        return (Locator)getSourceLocator();
     }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), this.id);
-        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
-        }    }
+        this.sourceLocator = (PsiXmLocator)sourceLocator;
+    }
 
     /**
      * Gets the value of the id property.
@@ -343,7 +331,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     public void setJAXBId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
-        if (sourceLocator != null){
+        if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
     }

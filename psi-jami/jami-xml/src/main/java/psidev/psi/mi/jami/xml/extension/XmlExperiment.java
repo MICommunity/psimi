@@ -780,20 +780,13 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
-        }
-        this.locator = this.sourceLocator;
+        return (Locator)getSourceLocator();
     }
 
     public FileSourceLocator getSourceLocator() {
+        if (sourceLocator == null && locator != null){
+            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), id);
+        }
         return sourceLocator;
     }
 
@@ -804,6 +797,5 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
         }
-        this.locator = this.sourceLocator;
     }
 }

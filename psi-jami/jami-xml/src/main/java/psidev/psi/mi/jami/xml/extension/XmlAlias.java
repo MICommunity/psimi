@@ -141,20 +141,13 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }
-        this.locator = this.sourceLocator;
+        return (Locator)getSourceLocator();
     }
 
     public FileSourceLocator getSourceLocator() {
+        if (sourceLocator == null && locator != null){
+            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+        }
         return sourceLocator;
     }
 
@@ -165,7 +158,6 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
-        this.locator = this.sourceLocator;
     }
 
     @Override

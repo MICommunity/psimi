@@ -603,23 +603,14 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     public void setJAXBId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
-        if (sourceLocator != null){
-            sourceLocator.setObjectId(this.id);
+        if (getSourceLocator() != null){
+            this.sourceLocator.setObjectId(this.id);
         }
     }
 
     @Override
     public Locator sourceLocation() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }
+        return (Locator)getSourceLocator();
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -627,12 +618,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        this.sourceLocator = (PsiXmLocator)sourceLocator;
+    }
 
     @Override
     public String toString() {

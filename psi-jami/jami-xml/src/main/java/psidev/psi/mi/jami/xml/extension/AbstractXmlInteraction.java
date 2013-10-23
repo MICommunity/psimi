@@ -418,7 +418,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     public void setJAXBId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
-        if (sourceLocator != null){
+        if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
     }
@@ -450,29 +450,18 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         this.interactionTypes = value;
     }
 
+    @Override
     public Locator sourceLocation() {
-        return sourceLocator;
+        return (Locator)getSourceLocator();
     }
-
-    public void setSourceLocation(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), id);
-        }    }
 
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
-        }    }
+        this.sourceLocator = (PsiXmLocator)sourceLocator;
+    }
 
     public XmlEntry getEntry() {
         return entry;
