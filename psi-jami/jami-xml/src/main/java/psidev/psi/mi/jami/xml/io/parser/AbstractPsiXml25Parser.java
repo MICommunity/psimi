@@ -467,7 +467,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                                 Location loc = attributeList.getLocation();
                                 context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
                             }
-                            listener.onInvalidSyntax(context, new PsiXmlParserException("AttributeList element does not contain any attribute node. PSI-XML is not valid."));
+                            listener.onInvalidSyntax(context, new PsiXmlParserException("JAXBFeatureList element does not contain any attribute node. PSI-XML is not valid."));
                         }
                     }
                 }
@@ -620,9 +620,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         Iterator<InferredInteraction> inferredIterator = context.getInferredInteractions().iterator();
         while(inferredIterator.hasNext()){
             InferredInteraction inferred = inferredIterator.next();
-            if (!inferred.getJAXBParticipants().isEmpty()){
-                Iterator<InferredInteractionParticipant> partIterator = inferred.getJAXBParticipants().iterator();
-                List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getJAXBParticipants());
+            if (!inferred.getParticipants().isEmpty()){
+                Iterator<InferredInteractionParticipant> partIterator = inferred.getParticipants().iterator();
+                List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getParticipants());
                 int currentIndex = 0;
 
                 while (partIterator.hasNext()){

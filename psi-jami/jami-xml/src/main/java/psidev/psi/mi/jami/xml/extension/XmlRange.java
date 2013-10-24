@@ -34,14 +34,12 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     private Position start;
     private Position end;
     private boolean isLink;
-
     private ResultingSequence resultingSequence;
     private Participant participant;
-
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlRange(){
 
@@ -127,13 +125,13 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBStartStatus(XmlCvTerm value) {
-        if (getStart() instanceof AbstractXmlPosition){
+    public void setJAXBStartStatus(CvTerm value) {
+        if (start != null){
             AbstractXmlPosition pos = (AbstractXmlPosition) start;
-            pos.setStatus(value);
+            pos.setStatus((XmlCvTerm)value);
         }
         else {
-            this.start = createXmlPositionWithStatus(this.start, value);
+            this.start = createXmlPositionWithStatus(this.start, (XmlCvTerm)value);
         }
     }
 
@@ -214,13 +212,13 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBEndStatus(XmlCvTerm value) {
-        if (getEnd() instanceof AbstractXmlPosition){
+    public void setJAXBEndStatus(CvTerm value) {
+        if (end != null){
             AbstractXmlPosition pos = (AbstractXmlPosition) end;
-            pos.setStatus(value);
+            pos.setStatus((XmlCvTerm)value);
         }
         else {
-            this.end = createXmlPositionWithStatus(this.end, value);
+            this.end = createXmlPositionWithStatus(this.end, (XmlCvTerm)value);
         }
     }
 

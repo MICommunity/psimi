@@ -45,122 +45,12 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 
     private Feature feature;
     private Entity participant;
-
     private PsiXmLocator sourceLocator;
-
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public InferredInteractionParticipant(){
-    }
-
-    /**
-     * Gets the value of the participantFeatureRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElement(name = "participantFeatureRef")
-    public Integer getJAXBParticipantFeatureRef() {
-        if (feature instanceof AbstractXmlFeature){
-            return ((AbstractXmlFeature) feature).getJAXBId();
-        }
-        return null;
-    }
-
-    /**
-     * Sets the value of the participantFeatureRef property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBParticipantFeatureRef(Integer value) {
-        if (value != null){
-           this.feature = new AbstractFeatureRef(value) {
-               public boolean resolve(Map<Integer, Object> parsedObjects) {
-                   if (parsedObjects.containsKey(this.ref)){
-                       Object obj = parsedObjects.get(this.ref);
-                       if (obj instanceof Feature){
-                           feature = (Feature)obj;
-                           return true;
-                       }
-                   }
-                   return false;
-               }
-
-               @Override
-               public String toString() {
-                   return "Feature reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
-               }
-
-               public FileSourceLocator getSourceLocator() {
-                   return getInferredParticipantLocator();
-               }
-
-               public void setSourceLocator(FileSourceLocator locator) {
-                   throw new UnsupportedOperationException("Cannot set the source locator of a feature ref");
-               }
-           };
-        }
-    }
-
-    /**
-     * Gets the value of the participantRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElement(name = "participantRef")
-    public Integer getJAXBParticipantRef() {
-        if (participant instanceof AbstractXmlEntity){
-            return ((AbstractXmlEntity) participant).getJAXBId();
-        }
-        return null;
-    }
-
-    /**
-     * Sets the value of the participantRef property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBParticipantRef(Integer value) {
-        if (value != null){
-            this.participant = new AbstractParticipantRef(value) {
-                public boolean resolve(Map<Integer, Object> parsedObjects) {
-                    if (parsedObjects.containsKey(this.ref)){
-                        Object obj = parsedObjects.get(this.ref);
-                        if (obj instanceof Entity){
-                            participant = (Entity)obj;
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public String toString() {
-                    return "Participant reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
-                }
-
-                public FileSourceLocator getSourceLocator() {
-                    return getInferredParticipantLocator();
-                }
-
-                public void setSourceLocator(FileSourceLocator locator) {
-                    throw new UnsupportedOperationException("Cannot set the source locator of a participant ref");
-                }
-            };
-        }
     }
 
     public Feature getFeature() {
@@ -192,7 +82,129 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         }
     }
 
+    /**
+     * Gets the value of the participantFeatureRef property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *
+     */
+    @XmlElement(name = "participantFeatureRef")
+    public Integer getJAXBParticipantFeatureRef() {
+        if (feature instanceof InferredInteractionParticipant.FeatureRef){
+            return ((InferredInteractionParticipant.FeatureRef) feature).getRef();
+        }
+        return null;
+    }
+
+    /**
+     * Sets the value of the participantFeatureRef property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *
+     */
+    public void setJAXBParticipantFeatureRef(Integer value) {
+        if (value != null){
+            this.feature = new FeatureRef(value);
+        }
+    }
+
+    /**
+     * Gets the value of the participantRef property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *
+     */
+    @XmlElement(name = "participantRef")
+    public Integer getJAXBParticipantRef() {
+        if (participant instanceof InferredInteractionParticipant.ParticipantRef){
+            return ((InferredInteractionParticipant.ParticipantRef) participant).getRef();
+        }
+        return null;
+    }
+
+    /**
+     * Sets the value of the participantRef property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *
+     */
+    public void setJAXBParticipantRef(Integer value) {
+        if (value != null){
+            this.participant = new ParticipantRef(value);
+        }
+    }
+
     private FileSourceLocator getInferredParticipantLocator(){
         return sourceLocator;
+    }
+
+    ////////////////////////////////////////////////////////////////// classes
+
+    private class ParticipantRef extends AbstractParticipantRef{
+        public ParticipantRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Entity){
+                    participant = (Entity)obj;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Participant reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getInferredParticipantLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of a participant ref");
+        }
+    }
+
+    private class FeatureRef extends AbstractFeatureRef{
+        public FeatureRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Feature){
+                    feature = (Feature)obj;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Feature reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getInferredParticipantLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of a feature ref");
+        }
     }
 }

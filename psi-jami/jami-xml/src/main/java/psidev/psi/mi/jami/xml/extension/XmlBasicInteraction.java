@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 
@@ -32,7 +31,7 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlBasicInteraction() {
         super();
@@ -47,13 +46,13 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     }
 
     @Override
-    @XmlAttribute(name = "names")
+    @XmlElement(name = "names")
     public NamesContainer getJAXBNames() {
         return super.getJAXBNames();
     }
 
     @Override
-    @XmlAttribute(name = "xref")
+    @XmlElement(name = "xref")
     public InteractionXrefContainer getJAXBXref() {
         return super.getJAXBXref();
     }
@@ -67,7 +66,7 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     @Override
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name = "attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 
@@ -79,11 +78,8 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @XmlElementWrapper(name="participantList")
     @XmlElements({ @XmlElement(type=XmlParticipant.class, name = "participant", required = true)})
-    public ArrayList<Participant> getJAXBParticipants() {
-        if (getParticipants().isEmpty()){
-            return null;
-        }
-        return new ArrayList<Participant>(getParticipants());
+    public JAXBParticipantList getJAXBParticipants() {
+        return super.getJAXBParticipants();
     }
 
     @Override
@@ -94,7 +90,7 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     }
 
     @Override
-    @XmlElement(name="interactionType")
+    @XmlElements({@XmlElement(name="interactionType", type = XmlCvTerm.class)})
     public ArrayList<CvTerm> getJAXBInteractionTypes() {
         return super.getJAXBInteractionTypes();
     }
@@ -114,21 +110,6 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
         }
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
-        }
-    }
-
-    /**
-     * Sets the value of the participantList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    public void setJAXBParticipants(ArrayList<XmlParticipant> value) {
-        removeAllParticipants(getParticipants());
-        if (value != null && !value.isEmpty()){
-            addAllParticipants(value);
         }
     }
 }

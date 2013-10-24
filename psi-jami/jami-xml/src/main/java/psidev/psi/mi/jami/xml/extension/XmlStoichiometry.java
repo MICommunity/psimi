@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
@@ -27,18 +26,6 @@ public class XmlStoichiometry extends DefaultStoichiometry implements FileSource
         super(minValue, maxValue);
     }
 
-    public Locator getSaxLocator() {
-        return sourceLocator;
-    }
-
-    public void setSaxLocator(Locator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }    }
-
     public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
@@ -49,5 +36,10 @@ public class XmlStoichiometry extends DefaultStoichiometry implements FileSource
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-        }    }
+        }
+    }
+
+    public void setSourceLocator(PsiXmLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
 }

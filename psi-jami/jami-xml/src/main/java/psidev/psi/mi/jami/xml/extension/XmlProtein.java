@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
@@ -188,18 +187,18 @@ public class XmlProtein extends XmlPolymer implements Protein{
     public void setJAXBNames(NamesContainer value) {
         if (value == null){
             namesContainer = new NamesContainer();
-            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
         else if (this.namesContainer == null){
             this.namesContainer = new ProteinNamesContainer();
-            this.namesContainer.setJAXBShortLabel(value.getJAXBShortLabel() != null ? value.getJAXBShortLabel() : PsiXmlUtils.UNSPECIFIED);
-            this.namesContainer.setJAXBFullName(value.getJAXBFullName());
-            this.namesContainer.getJAXBAliases().addAll(value.getJAXBAliases());
+            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
+            this.namesContainer.setFullName(value.getFullName());
+            this.namesContainer.getAliases().addAll(value.getAliases());
         }
         else {
-            this.namesContainer.setJAXBShortLabel(value.getJAXBShortLabel() != null ? value.getJAXBShortLabel() : PsiXmlUtils.UNSPECIFIED);
-            this.namesContainer.setJAXBFullName(value.getJAXBFullName());
-            this.namesContainer.getJAXBAliases().addAll(value.getJAXBAliases());
+            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
+            this.namesContainer.setFullName(value.getFullName());
+            this.namesContainer.getAliases().addAll(value.getAliases());
         }
     }
 

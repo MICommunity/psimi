@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractAvailabilityRef;
@@ -24,8 +26,7 @@ import java.util.*;
         "JAXBXref",
         "JAXBAvailability",
         "JAXBAvailabilityRef",
-        "JAXBExperimentDescriptions",
-        "JAXBExperimentRefs",
+        "JAXBExperimentList",
         "JAXBParticipants",
         "JAXBInferredInteractions",
         "JAXBInteractionTypes",
@@ -43,15 +44,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     private boolean isInferred = false;
     private Collection<Confidence> confidences;
     private boolean isNegative;
-
     private Collection<VariableParameterValueSet> variableParameterValueSets;
-    private List<Experiment> experiments;
     private Boolean modelled;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
-
-    private ArrayList<XmlExperiment> originalExperiments;
+    private Locator locator;
+    private JAXBExperimentList jaxbExperimentList;
 
     public XmlInteractionEvidence() {
         super();
@@ -63,45 +61,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     public XmlInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
-    }
-
-    protected void initialiseExperimentalConfidences(){
-        this.confidences = new ArrayList<Confidence>();
-    }
-
-    protected void initialiseExperimentalConfidencesWith(Collection<Confidence> confidences){
-        if (confidences == null){
-            this.confidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.confidences = confidences;
-        }
-    }
-
-    protected void initialiseVariableParameterValueSets(){
-        this.variableParameterValueSets = new ArrayList<VariableParameterValueSet>();
-    }
-
-    protected void initialiseVariableParameterValueSetsWith(Collection<VariableParameterValueSet> variableValues){
-        if (variableValues == null){
-            this.variableParameterValueSets = Collections.EMPTY_LIST;
-        }
-        else {
-            this.variableParameterValueSets = variableValues;
-        }
-    }
-
-    protected void initialiseExperimentalParameters(){
-        this.parameters = new ArrayList<Parameter>();
-    }
-
-    protected void initialiseExperimentalParametersWith(Collection<Parameter> parameters){
-        if (parameters == null){
-            this.parameters = Collections.EMPTY_LIST;
-        }
-        else {
-            this.parameters = parameters;
-        }
     }
 
     public String getImexId() {
@@ -116,30 +75,25 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public Experiment getExperiment() {
-        return (this.getExperiments() != null && !this.experiments.isEmpty())? this.experiments.iterator().next() : null;
+        List<Experiment> experiments = getExperiments();
+        return (!experiments.isEmpty())? experiments.iterator().next() : null;
     }
 
     public void setExperiment(Experiment experiment) {
-        if (getExperiments() == null && experiment != null){
-            this.experiments = new ArrayList<Experiment>();
-            this.experiments.add(experiment);
+        List<Experiment> experiments = getExperiments();
+        if (!experiments.isEmpty()){
+            experiments.remove(0);
         }
-        else if (this.experiments != null){
-            if (!this.experiments.isEmpty() && experiment == null){
-                this.experiments.remove(0);
-            }
-            else if (experiment != null){
-                this.experiments.remove(0);
-                this.experiments.add(0, experiment);
-            }
+        if (experiment != null){
+           experiments.add(0, experiment);
         }
     }
 
     public List<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
+        if (jaxbExperimentList == null){
+            jaxbExperimentList = new JAXBExperimentList();
         }
-        return experiments;
+        return jaxbExperimentList.experiments;
     }
 
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
@@ -169,14 +123,14 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public String getAvailability() {
-        return this.availability!= null ? this.availability.getJAXBValue() : null;
+        return this.availability!= null ? this.availability.getValue() : null;
     }
 
     public void setAvailability(String availability) {
         if (this.availability == null && this.availability != null){
             this.availability = new Availability();
         }
-        this.availability.setJAXBValue(availability);
+        this.availability.setValue(availability);
     }
 
     public boolean isNegative() {
@@ -228,7 +182,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     @Override
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 
@@ -248,22 +202,19 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<Participant> }
      *
      */
-    public ArrayList<ParticipantEvidence> getJAXBParticipants() {
-        if (getParticipants().isEmpty()){
-            return null;
-        }
-        return new ArrayList<ParticipantEvidence>(getParticipants());
+    public JAXBParticipantList getJAXBParticipants() {
+        return super.getJAXBParticipants();
     }
 
     @Override
     @XmlElementWrapper(name="inferredInteractionList")
-    @XmlElement(name="inferredInteraction", required = true)
+    @XmlElements({@XmlElement(name="inferredInteraction", required = true)})
     public ArrayList<InferredInteraction> getJAXBInferredInteractions() {
         return super.getJAXBInferredInteractions();
     }
 
     @Override
-    @XmlElement(name="interactionType", type = XmlCvTerm.class)
+    @XmlElements({@XmlElement(name="interactionType", type = XmlCvTerm.class)})
     public ArrayList<CvTerm> getJAXBInteractionTypes() {
         return super.getJAXBInteractionTypes();
     }
@@ -297,10 +248,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     @XmlElementWrapper(name="confidenceList")
     @XmlElements({ @XmlElement(type=XmlConfidence.class, name="confidence", required = true)})
     public ArrayList<Confidence> getJAXBConfidences() {
-        if (this.confidences == null || this.confidences.isEmpty()){
-            return null;
-        }
-        return new ArrayList<Confidence>(getConfidences());
+        return (ArrayList<Confidence>)confidences;
     }
 
     /**
@@ -311,11 +259,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<Confidence> }
      *
      */
-    public void setJAXBConfidences(ArrayList<XmlConfidence> value) {
-        getConfidences().clear();
-        if (value != null && !value.isEmpty()){
-            getConfidences().addAll(value);
-        }
+    public void setJAXBConfidences(ArrayList<Confidence> value) {
+        this.confidences = value;
     }
 
     /**
@@ -329,10 +274,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     @XmlElementWrapper(name="parameterList")
     @XmlElements({ @XmlElement(type=XmlParameter.class,name="parameter", required = true)})
     public ArrayList<Parameter> getJAXBParameters() {
-        if (this.parameters == null || this.parameters.isEmpty()){
-            return null;
-        }
-        return new ArrayList<Parameter>(getParameters());
+        return (ArrayList<Parameter>)parameters;
     }
 
     /**
@@ -343,11 +285,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<ModelledParameter> }
      *
      */
-    public void setJAXBParameters(ArrayList<XmlParameter> value) {
-        getParameters().clear();
-        if (value != null && !value.isEmpty()){
-            getParameters().addAll(value);
-        }
+    public void setJAXBParameters(ArrayList<Parameter> value) {
+        this.parameters = value;
     }
 
     /**
@@ -385,8 +324,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      */
     @XmlElement(name = "availabilityRef")
     public Integer getJAXBAvailabilityRef() {
-        if (availability != null){
-            return availability.getJAXBId();
+        if (availability instanceof AvailabilityRef){
+            return ((AvailabilityRef)availability).getRef();
         }
         return null;
     }
@@ -401,38 +340,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      */
     public void setJAXBAvailabilityRef(Integer value) {
         if (value != null){
-            this.availability = new AbstractAvailabilityRef(value) {
-                public boolean resolve(Map<Integer, Object> parsedObjects) {
-                    if (parsedObjects.containsKey(this.ref)){
-                        Object obj = parsedObjects.get(this.ref);
-                        if (obj instanceof Availability){
-                            availability = (Availability)obj;
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public FileSourceLocator getSourceLocator() {
-                    return getInteractionLocator();
-                }
-
-                @Override
-                public void setSourceLocator(FileSourceLocator sourceLocator) {
-                    throw new UnsupportedOperationException("Cannot set the source locator to an availability ref");
-                }
-
-                @Override
-                public Locator sourceLocation() {
-                    return getInteractionSaxLocator();
-                }
-
-                @Override
-                public String toString() {
-                    return "Availability reference: "+ref+" in interaction "+(getInteractionLocator() != null? getInteractionLocator().toString():"") ;
-                }
-            };
+            this.availability = new AvailabilityRef(value);
         }
     }
 
@@ -444,13 +352,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<XmlExperiment> }
      *
      */
-    @XmlElementWrapper(name="experimentList")
-    @XmlElements({@XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)})
-    public ArrayList<Experiment> getJAXBExperimentDescriptions() {
-        if (experiments == null || experiments.isEmpty()){
-           return null;
-        }
-        return new ArrayList<Experiment>(experiments);
+    @XmlElement(name="experimentList")
+    public JAXBExperimentList getJAXBExperimentList() {
+        return this.jaxbExperimentList;
     }
 
     /**
@@ -461,87 +365,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<XmlExperiment> }
      *
      */
-    public void setJAXBExperimentDescriptions(ArrayList<XmlExperiment> value) {
-        this.originalExperiments = value;
-        getExperiments().clear();
-        if (value != null && !value.isEmpty()){
-            Iterator<Experiment> expIterator = experiments.iterator();
-            setExperimentAndAddInteractionEvidence(expIterator.next());
-            while(expIterator.hasNext()){
-                experiments.add(expIterator.next());
-            }
-        }
-    }
-
-    /**
-     * Gets the value of the experimentList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<Integer> }
-     *
-     */
-    @XmlElementWrapper(name="experimentList")
-    @XmlElements({@XmlElement(name="experimentRef", required = true)})
-    public ArrayList<Integer> getJAXBExperimentRefs() {
-        if (experiments == null || experiments.isEmpty()){
-            return null;
-        }
-        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
-        for (Experiment exp : experiments){
-            if (exp instanceof XmlExperiment){
-                references.add(((XmlExperiment) exp).getJAXBId());
-            }
-        }
-        return references;
-    }
-
-    /**
-     * Sets the value of the experimentList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<Integer> }
-     *
-     */
-    public void setJAXBExperimentRefs(ArrayList<Integer> value) {
-        if (value != null && !value.isEmpty()){
-            originalExperiments = new ArrayList<XmlExperiment>();
-            for (Integer val : value){
-                getExperiments().add(new AbstractExperimentRef(val) {
-                    public boolean resolve(Map<Integer, Object> parsedObjects) {
-                        if (parsedObjects.containsKey(this.ref)){
-                            Object obj = parsedObjects.get(this.ref);
-                            if (obj instanceof XmlExperiment){
-                                experiments.remove(this);
-                                experiments.add((Experiment)obj);
-                                originalExperiments.add((XmlExperiment)obj);
-                                return true;
-                            }
-                            else if (obj instanceof Experiment){
-                                experiments.remove(this);
-                                experiments.add((Experiment)obj);
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public String toString() {
-                        return "Experiment reference: "+ref+" in interaction "+(getInteractionLocator() != null? getInteractionLocator().toString():"") ;
-                    }
-
-                    public FileSourceLocator getSourceLocator() {
-                        return getInteractionLocator();
-                    }
-
-                    public void setSourceLocator(FileSourceLocator locator) {
-                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-                    }
-                });
-            }
-        }
+    public void setJAXBExperimentList(JAXBExperimentList value) {
+        this.jaxbExperimentList = value;
+        this.jaxbExperimentList.parent = this;
     }
 
     /**
@@ -577,7 +403,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
-    @XmlElement(name = "negative")
+    @XmlElement(name = "negative", defaultValue = "false")
     public Boolean getJAXBNegative() {
         return isNegative;
     }
@@ -599,39 +425,26 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         }
     }
 
-    /**
-     * Sets the value of the participantList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    public void setJAXBParticipants(ArrayList<XmlParticipantEvidence> value) {
-        removeAllParticipants(getParticipants());
-        if (value != null && !value.isEmpty()){
-            addAllJAXBParticipants(value);
-        }
-    }
-
     protected List<XmlExperiment> getOriginalExperiments(){
-        return originalExperiments;
+        return jaxbExperimentList != null ? jaxbExperimentList.originalExperiments : Collections.EMPTY_LIST;
     }
 
-    private void addAllJAXBParticipants(Collection<? extends ParticipantEvidence> participants) {
-        if (participants != null){
-            for (ParticipantEvidence p : participants){
-                addJAXBParticipant((XmlParticipantEvidence)p);
-            }
-        }
+    protected void initialiseExperimentalConfidences(){
+        this.confidences = new ArrayList<Confidence>();
     }
 
-    private void addJAXBParticipant(XmlParticipantEvidence part) {
-        if (part != null){
-            if (getParticipants().add(part)){
-                part.setOriginalXmlInteraction(this);
-            }
-        }
+
+    protected void initialiseVariableParameterValueSets(){
+        this.variableParameterValueSets = new ArrayList<VariableParameterValueSet>();
+    }
+
+    protected void initialiseExperimentalParameters(){
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    @Override
+    protected void processAddedParticipant(ParticipantEvidence participant) {
+        ((XmlParticipantEvidence)participant).setOriginalXmlInteraction(this);
     }
 
     private FileSourceLocator getInteractionLocator(){
@@ -641,4 +454,316 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         return sourceLocation();
     }
 
+    ////////////////////////////////////////////////////////////////////////// classes
+
+    private class AvailabilityRef extends AbstractAvailabilityRef{
+        public AvailabilityRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Availability){
+                    availability = (Availability)obj;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public FileSourceLocator getSourceLocator() {
+            return getInteractionLocator();
+        }
+
+        @Override
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            throw new UnsupportedOperationException("Cannot set the source locator to an availability ref");
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return getInteractionSaxLocator();
+        }
+
+        @Override
+        public String toString() {
+            return "Availability reference: "+ref+" in interaction "+(getInteractionLocator() != null? getInteractionLocator().toString():"") ;
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name = "experimentListType", propOrder = {
+            "JAXBExperimentRefs",
+            "JAXBExperimentDescriptions"
+    })
+    public static class JAXBExperimentList implements Locatable, FileSourceContext{
+
+        private List<Experiment> experiments;
+        private ArrayList<XmlExperiment> originalExperiments;
+        private JAXBExperimentRefList jaxbExperimentRefList;
+        private XmlInteractionEvidence parent;
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+
+        @XmlElements({@XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)})
+        public JAXBExperimentDescriptionList getJAXBExperimentDescriptions() {
+            if (originalExperiments == null || originalExperiments.isEmpty()){
+                return null;
+            }
+            return originalExperiments instanceof JAXBExperimentDescriptionList ? (JAXBExperimentDescriptionList)originalExperiments : null;
+        }
+
+        /**
+         * Sets the value of the experimentList property.
+         *
+         * @param value
+         *     allowed object is
+         *     {@link ArrayList<XmlExperiment> }
+         *
+         */
+        public void setJAXBExperimentDescriptions(JAXBExperimentDescriptionList value) {
+            this.originalExperiments = value;
+        }
+
+        @XmlElements({@XmlElement(name="experimentRef", required = true)})
+        public JAXBExperimentRefList getJAXBExperimentRefs() {
+            return jaxbExperimentRefList;
+        }
+
+        /**
+         * Sets the value of the experimentList property.
+         *
+         * @param value
+         *     allowed object is
+         *     {@link ArrayList<Integer> }
+         *
+         */
+        public void setJAXBExperimentRefs(JAXBExperimentRefList value) {
+            this.jaxbExperimentRefList = value;
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        private FileSourceLocator getListLocator(){
+            return getSourceLocator();
+        }
+
+        ////////////////////////////////////////////////// Inner classes of ExperimentList
+        /**
+         * The experiment ref list used by JAXB to populate experiment refs
+         */
+        public class JAXBExperimentDescriptionList extends ArrayList<XmlExperiment>{
+
+            public JAXBExperimentDescriptionList(){
+                super();
+                experiments = new ArrayList<Experiment>();
+            }
+
+            public JAXBExperimentDescriptionList(int initialCapacity) {
+                super();
+                experiments = new ArrayList<Experiment>(initialCapacity);
+            }
+
+            public JAXBExperimentDescriptionList(Collection<? extends XmlExperiment> c) {
+                super();
+                experiments = new ArrayList<Experiment>(c.size());
+                addAll(c);
+            }
+
+            @Override
+            public boolean add(XmlExperiment val) {
+                if (val == null){
+                    return false;
+                }
+                if(experiments.add(val)){
+                    val.getInteractionEvidences().add(parent);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends XmlExperiment> c) {
+                if (c == null){
+                    return false;
+                }
+                boolean added = false;
+
+                for (XmlExperiment a : c){
+                    if (add(a)){
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            @Override
+            public void add(int index, XmlExperiment element) {
+                addToSpecificIndex(index, element);
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends XmlExperiment> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (XmlExperiment a : c){
+                    if (addToSpecificIndex(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
+            }
+
+            private boolean addToSpecificIndex(int index, XmlExperiment val) {
+                if (val == null){
+                    return false;
+                }
+                experiments.add(index, val);
+                val.getInteractionEvidences().add(parent);
+                return true;
+            }
+        }
+        /**
+         * The experiment ref list used by JAXB to populate experiment refs
+         */
+        public class JAXBExperimentRefList extends ArrayList<Integer>{
+
+            public JAXBExperimentRefList(){
+                experiments = new ArrayList<Experiment>();
+            }
+
+            public JAXBExperimentRefList(int initialCapacity) {
+                experiments = new ArrayList<Experiment>(initialCapacity);
+            }
+
+            public JAXBExperimentRefList(Collection<? extends Integer> c) {
+                experiments = new ArrayList<Experiment>(c.size());
+                addAll(c);
+            }
+
+            @Override
+            public boolean add(Integer val) {
+                if (val == null){
+                    return false;
+                }
+                return experiments.add(new ExperimentRef(val));
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Integer> c) {
+                if (c == null){
+                    return false;
+                }
+                boolean added = false;
+
+                for (Integer a : c){
+                    if (add(a)){
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            @Override
+            public void add(int index, Integer element) {
+                addToSpecificIndex(index, element);
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Integer> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (Integer a : c){
+                    if (addToSpecificIndex(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
+            }
+
+            private boolean addToSpecificIndex(int index, Integer val) {
+                if (val == null){
+                    return false;
+                }
+                ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+                return true;
+            }
+        }
+
+        /**
+         * Experiment ref for experimental interactor
+         */
+        private class ExperimentRef extends AbstractExperimentRef{
+            public ExperimentRef(int ref) {
+                super(ref);
+            }
+
+            public boolean resolve(Map<Integer, Object> parsedObjects) {
+                if (parsedObjects.containsKey(this.ref)){
+                    Object obj = parsedObjects.get(this.ref);
+                    if (obj instanceof XmlExperiment){
+                        XmlExperiment exp = (XmlExperiment)obj;
+                        experiments.remove(this);
+                        experiments.add(exp);
+                        originalExperiments.add(exp);
+                        exp.getInteractionEvidences().add(parent);
+
+                        return true;
+                    }
+                    else if (obj instanceof Experiment){
+                        Experiment exp = (Experiment)obj;
+                        experiments.remove(this);
+                        experiments.add(exp);
+                        exp.getInteractionEvidences().add(parent);
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public String toString() {
+                return "Experiment reference: "+ref+" in interaction "+(getListLocator() != null? getListLocator().toString():"") ;
+            }
+
+            public FileSourceLocator getSourceLocator() {
+                return getListLocator();
+            }
+
+            public void setSourceLocator(FileSourceLocator locator) {
+                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            }
+        }
+    }
 }

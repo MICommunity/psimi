@@ -20,4 +20,8 @@ public abstract class AbstractAvailabilityRef extends Availability implements Xm
     public void registerForResolution() {
         XmlEntryContext.getInstance().getReferences().add(this);
     }
+
+    public int getRef() {
+        return ref;
+    }
 }

@@ -37,9 +37,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     private Collection<Checksum> checksums;
     private psidev.psi.mi.jami.model.Organism organism;
     private CvTerm interactorType;
-
     private PsiXmLocator sourceLocator;
-
     NamesContainer namesContainer;
     InteractorXrefContainer xrefContainer;
     private String xmlSequence;
@@ -47,7 +45,8 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     private Collection<Annotation> annotations;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
+    private JAXBAttributeList jaxbAttributeList;
 
     public XmlInteractor(){
     }
@@ -177,7 +176,12 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     }
 
     protected void initialiseAnnotations(){
-        this.annotations = new ArrayList<Annotation>();
+        if (jaxbAttributeList != null){
+            this.annotations = new ArrayList<Annotation>(jaxbAttributeList);
+            this.jaxbAttributeList = null;
+        }else{
+            this.annotations = new ArrayList<Annotation>();
+        }
     }
 
     protected void initialiseChecksums(){
@@ -203,22 +207,22 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     }
 
     public String getShortName() {
-        return getJAXBNames().getJAXBShortLabel();
+        return getJAXBNames().getShortLabel();
     }
 
     public void setShortName(String name) {
         if (name == null || (name != null && name.length() == 0)){
             throw new IllegalArgumentException("The short name cannot be null or empty.");
         }
-        getJAXBNames().setJAXBShortLabel(name);
+        getJAXBNames().setShortLabel(name);
     }
 
     public String getFullName() {
-        return getJAXBNames().getJAXBFullName();
+        return getJAXBNames().getFullName();
     }
 
     public void setFullName(String name) {
-        getJAXBNames().setJAXBFullName(name);
+        getJAXBNames().setFullName(name);
     }
 
     public Collection<Xref> getIdentifiers() {
@@ -266,7 +270,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     }
 
     public Collection<Alias> getAliases() {
-        return getJAXBNames().getJAXBAliases();
+        return getJAXBNames().getAliases();
     }
 
     /**
@@ -281,7 +285,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     public NamesContainer getJAXBNames() {
         if (namesContainer == null){
             initialiseNamesContainer();
-            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
         return namesContainer;
     }
@@ -297,12 +301,12 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     public void setJAXBNames(NamesContainer value) {
         if (value == null){
             namesContainer = new NamesContainer();
-            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
         else {
             this.namesContainer = value;
-            if (this.namesContainer.getJAXBShortLabel() == null){
-                namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
+            if (this.namesContainer.getShortLabel() == null){
+                namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
             }
         }
     }
@@ -350,16 +354,16 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
         return getInteractorType();
     }
 
-    public void setJAXBInteractorType(XmlCvTerm interactorType) {
+    public void setJAXBInteractorType(CvTerm interactorType) {
         this.interactorType = interactorType;
     }
 
     @XmlElement(name = "organism", type = XmlOrganism.class)
-    public psidev.psi.mi.jami.model.Organism getJAXBOrganism() {
+    public Organism getJAXBOrganism() {
         return this.organism;
     }
 
-    public void setJAXBOrganism(XmlOrganism organism) {
+    public void setJAXBOrganism(Organism organism) {
         this.organism = organism;
     }
 
@@ -404,7 +408,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     public void setJAXBId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
-        if (sourceLocator != null){
+        if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
     }
@@ -419,18 +423,8 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
      */
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
-        if (getAnnotations().isEmpty() && getChecksums().isEmpty()){
-            return null;
-        }
-
-        ArrayList<Annotation> annots = new ArrayList<Annotation>(getAnnotations());
-        if (!getChecksums().isEmpty()){
-            for (Checksum c : getChecksums()){
-                annots.add(new XmlAnnotation(c.getMethod(), c.getValue()));
-            }
-        }
-        return annots;
+    public JAXBAttributeList getJAXBAttributes() {
+        return this.jaxbAttributeList;
     }
 
     /**
@@ -441,28 +435,8 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
      *     {@link XmlAnnotation }
      *
      */
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> value) {
-        getAnnotations().clear();
-        if (value != null && !value.isEmpty()){
-            for (Annotation a : value){
-                if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.SMILE_MI, Checksum.SMILE)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.SMILE_SHORT)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_MI, Checksum.INCHI)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
-                    XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
-                    checksum.setSourceLocator(((FileSourceContext)a).getSourceLocator());
-                    getChecksums().add(checksum);
-                }
-                else {
-                    getAnnotations().add(a);
-                }
-            }
-        }
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        this.jaxbAttributeList = value;
     }
 
     protected void createDefaultInteractorType() {
@@ -492,6 +466,113 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
         }
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        }
+    }
+
+    public void setSourceLocation(PsiXmLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
+
+    ////////////////////////////////////////////////////////////////// classes
+
+    /**
+     * The attribute list used by JAXB to populate interactor annotations
+     */
+    public class JAXBAttributeList extends ArrayList<Annotation>{
+
+        public JAXBAttributeList(){
+        }
+
+        public JAXBAttributeList(int initialCapacity) {
+            super(initialCapacity);
+        }
+
+        public JAXBAttributeList(Collection<? extends Annotation> c) {
+            super(c);
+        }
+
+        @Override
+        public boolean add(Annotation a) {
+            if (a == null){
+                return false;
+            }
+            if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.SMILE_MI, Checksum.SMILE)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.SMILE_SHORT)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_MI, Checksum.INCHI)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
+                XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
+                checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
+                getChecksums().add(checksum);
+                return false;
+            }
+            else {
+                return super.add(a);
+            }
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Annotation> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Annotation a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Annotation element) {
+            addToSpecificIndex(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Annotation> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Annotation a : c){
+                if (addToSpecificIndex(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        private boolean addToSpecificIndex(int index, Annotation a) {
+            if (a == null){
+                return false;
+            }
+            if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.SMILE_MI, Checksum.SMILE)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.SMILE_SHORT)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_MI, Checksum.INCHI)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)
+                    || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
+                XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
+                checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
+                getChecksums().add(checksum);
+                return false;
+            }
+            else {
+                super.add(index, a);
+                return true;
+            }
         }
     }
 }

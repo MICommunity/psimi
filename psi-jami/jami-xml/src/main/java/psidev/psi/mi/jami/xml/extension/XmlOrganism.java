@@ -37,11 +37,10 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
     private CvTerm cellType;
     private CvTerm compartment;
     private CvTerm tissue;
-
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlOrganism(){
 
@@ -59,12 +58,12 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
     public XmlOrganism(int taxId, String commonName){
         this(taxId);
         this.namesContainer = new NamesContainer();
-        this.namesContainer.setJAXBShortLabel(commonName);
+        this.namesContainer.setShortLabel(commonName);
     }
 
     public XmlOrganism(int taxId, String commonName, String scientificName){
         this(taxId, commonName);
-        this.namesContainer.setJAXBFullName(scientificName);
+        this.namesContainer.setFullName(scientificName);
     }
 
     public XmlOrganism(int taxId, CvTerm cellType, CvTerm tissue, CvTerm compartment){
@@ -126,32 +125,32 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
     }
 
     public String getCommonName() {
-        return this.namesContainer != null ? this.namesContainer.getJAXBShortLabel() : null;
+        return this.namesContainer != null ? this.namesContainer.getShortLabel() : null;
     }
 
     public void setCommonName(String name) {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setJAXBShortLabel(name);
+        this.namesContainer.setShortLabel(name);
     }
 
     public String getScientificName() {
-        return this.namesContainer != null ? this.namesContainer.getJAXBFullName() : null;
+        return this.namesContainer != null ? this.namesContainer.getFullName() : null;
     }
 
     public void setScientificName(String name) {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setJAXBFullName(name);
+        this.namesContainer.setFullName(name);
     }
 
     public Collection<Alias> getAliases() {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        return this.namesContainer.getJAXBAliases();
+        return this.namesContainer.getAliases();
     }
 
     /**
@@ -187,7 +186,7 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
         return this.cellType;
     }
 
-    public void setJAXBCellType(XmlOpenCvTerm cellType) {
+    public void setJAXBCellType(CvTerm cellType) {
         this.cellType = cellType;
     }
 
@@ -196,7 +195,7 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
         return this.compartment;
     }
 
-    public void setJAXBCompartment(XmlOpenCvTerm compartment) {
+    public void setJAXBCompartment(CvTerm compartment) {
         this.compartment = compartment;
     }
 
@@ -205,7 +204,7 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
         return this.tissue;
     }
 
-    public void setJAXBTissue(XmlCvTerm tissue) {
+    public void setJAXBTissue(CvTerm tissue) {
         this.tissue = tissue;
     }
 
@@ -215,7 +214,12 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
     }
 
     public void setJAXBTaxId(int id) {
-        this.taxId = id;
+        if (id == -1 || id == -2 || id == -3 || id == -4 || id > 0){
+            this.taxId = id;
+        }
+        else {
+            this.taxId = -3;
+        }
     }
 
     @Override

@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.XmlSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class XmlEntry {
 
-    private Source source;
+    private XmlSource source;
     private Collection<Annotation> annotations;
     private Collection<Availability> availabilities;
     private boolean hasLoadedFullEntry = false;
@@ -25,11 +25,11 @@ public class XmlEntry {
     public XmlEntry(){
     }
 
-    public Source getSource() {
+    public XmlSource getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(XmlSource source) {
         this.source = source;
     }
 

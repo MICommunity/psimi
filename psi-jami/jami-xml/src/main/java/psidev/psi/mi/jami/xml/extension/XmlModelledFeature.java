@@ -27,7 +27,7 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
 
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlModelledFeature() {
     }

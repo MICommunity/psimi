@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "confidenceType", propOrder = {
         "JAXBType",
-        "JAXBValue"
+        "value"
 })
 @XmlSeeAlso({
         XmlModelledConfidence.class
@@ -31,11 +31,10 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
 
     private CvTerm type;
     private String value;
-
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlConfidence() {
     }
@@ -66,11 +65,24 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
         return type;
     }
 
+    @XmlElement(name = "value", required = true)
     public String getValue() {
         if (value == null){
             value = PsiXmlUtils.UNSPECIFIED;
         }
         return value;
+    }
+
+    /**
+     * Sets the value of the value property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setValue(String value) {
+        this.value = value;
     }
 
     /**
@@ -94,36 +106,8 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
      *     {@link XmlOpenCvTerm }
      *
      */
-    public void setJAXBType(XmlOpenCvTerm value) {
+    public void setJAXBType(CvTerm value) {
         this.type = value;
-    }
-
-    /**
-     * Gets the value of the value property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlElement(name = "value", required = true)
-    public String getJAXBValue() {
-        if (value == null){
-            value = PsiXmlUtils.UNSPECIFIED;
-        }
-        return value;
-    }
-
-    /**
-     * Sets the value of the value property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setJAXBValue(String value) {
-        this.value = value;
     }
 
     @Override

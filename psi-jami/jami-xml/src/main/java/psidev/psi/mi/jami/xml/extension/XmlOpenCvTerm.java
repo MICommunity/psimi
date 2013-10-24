@@ -59,19 +59,19 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     public String getShortName() {
-        return getNamesContainer().getJAXBShortLabel();
+        return getNamesContainer().getShortLabel();
     }
 
     public void setShortName(String name) {
-        getNamesContainer().setJAXBShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
+        getNamesContainer().setShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
     }
 
     public String getFullName() {
-        return getNamesContainer().getJAXBFullName();
+        return getNamesContainer().getFullName();
     }
 
     public void setFullName(String name) {
-        getNamesContainer().setJAXBFullName(name);
+        getNamesContainer().setFullName(name);
     }
 
     public Collection<Xref> getIdentifiers() {
@@ -174,7 +174,7 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     public Collection<Alias> getSynonyms() {
-        return getNamesContainer().getJAXBAliases();
+        return getNamesContainer().getAliases();
     }
 
     @Override

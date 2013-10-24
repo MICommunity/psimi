@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 
 /**
  * Default XML implementation for Entity set
@@ -31,7 +30,7 @@ public class XmlEntitySet extends AbstractXmlEntitySet<Interaction,Feature,Entit
 
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlEntitySet() {
         super();
@@ -86,13 +85,13 @@ public class XmlEntitySet extends AbstractXmlEntitySet<Interaction,Feature,Entit
     @Override
     @XmlElementWrapper(name="featureList")
     @XmlElements({ @XmlElement(type=XmlFeature.class,name="feature", required = true)})
-    public ArrayList<Feature> getJAXBFeatures() {
+    public JAXBFeatureList getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
 
     @Override
-    @XmlElement(name = "interactor", type = XmlInteractor.class)
-    public Interactor getJAXBInteractor() {
+    @XmlElement(name = "interactor")
+    public XmlInteractor getJAXBInteractor() {
         return super.getJAXBInteractor();
     }
 
@@ -105,7 +104,7 @@ public class XmlEntitySet extends AbstractXmlEntitySet<Interaction,Feature,Entit
     @Override
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 

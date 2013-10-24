@@ -87,7 +87,7 @@ public class XmlInteractorFactory extends InteractorFactory{
 
         if (reloadedInteractorDependingOnType != null){
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
-            reloadedInteractorDependingOnType.setSourceLocator(source.getSourceLocator());
+            reloadedInteractorDependingOnType.setSourceLocation((PsiXmLocator)source.getSourceLocator());
             reloadedInteractorDependingOnType.setJAXBId(source.getJAXBId());
             reloadedInteractorDependingOnType.setJAXBSequence(source.getJAXBSequence());
 

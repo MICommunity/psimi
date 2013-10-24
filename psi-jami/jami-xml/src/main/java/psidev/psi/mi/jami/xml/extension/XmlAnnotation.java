@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "attribute", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "attribute", propOrder = {
-        "JAXBValue"
+        "value"
 })
 public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
 
@@ -61,20 +61,13 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
         return this.topic;
     }
 
+    @XmlValue
+
     public String getValue() {
         return this.value;
     }
 
     public void setValue(String value) {
-        this.value = value;
-    }
-
-    @XmlValue
-    public String getJAXBValue() {
-        return this.value;
-    }
-
-    public void setJAXBValue(String value) {
         this.value = value;
     }
 

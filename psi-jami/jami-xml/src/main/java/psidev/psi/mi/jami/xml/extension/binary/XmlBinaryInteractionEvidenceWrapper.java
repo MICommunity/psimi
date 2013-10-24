@@ -125,7 +125,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return this.wrappedInteraction.getJAXBAttributes();
     }
 
@@ -135,7 +135,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public ArrayList<ParticipantEvidence> getJAXBParticipants() {
+    public JAXBParticipantList getJAXBParticipants() {
         return this.wrappedInteraction.getJAXBParticipants();
     }
 
@@ -240,7 +240,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public void setJAXBParticipants(ArrayList<XmlParticipantEvidence> value) {
+    public void setJAXBParticipants(JAXBParticipantList value) {
         this.wrappedInteraction.setJAXBParticipants(value);
     }
 
@@ -250,7 +250,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> value) {
+    public void setJAXBAttributes(JAXBAttributeList value) {
         this.wrappedInteraction.setJAXBAttributes(value);
     }
 
@@ -374,7 +374,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public void setJAXBConfidences(ArrayList<XmlConfidence> value) {
+    public void setJAXBConfidences(ArrayList<Confidence> value) {
         this.wrappedInteraction.setJAXBConfidences(value);
     }
 
@@ -384,7 +384,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public void setJAXBParameters(ArrayList<XmlParameter> value) {
+    public void setJAXBParameters(ArrayList<Parameter> value) {
         this.wrappedInteraction.setJAXBParameters(value);
     }
 
@@ -409,23 +409,13 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public ArrayList<Experiment> getJAXBExperimentDescriptions() {
-        return this.wrappedInteraction.getJAXBExperimentDescriptions();
+    public JAXBExperimentList getJAXBExperimentList() {
+        return this.wrappedInteraction.getJAXBExperimentList();
     }
 
     @Override
-    public void setJAXBExperimentDescriptions(ArrayList<XmlExperiment> value) {
-        this.wrappedInteraction.setJAXBExperimentDescriptions(value);
-    }
-
-    @Override
-    public ArrayList<Integer> getJAXBExperimentRefs() {
-        return this.wrappedInteraction.getJAXBExperimentRefs();
-    }
-
-    @Override
-    public void setJAXBExperimentRefs(ArrayList<Integer> value) {
-        this.wrappedInteraction.setJAXBExperimentRefs(value);
+    public void setJAXBExperimentList(JAXBExperimentList value) {
+        this.wrappedInteraction.setJAXBExperimentList(value);
     }
 
     @Override

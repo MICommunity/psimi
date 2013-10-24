@@ -31,12 +31,11 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     private List<CvTerm> featureDetectionMethods;
     private Collection<Experiment> experiments;
     private boolean initialisedMethods = false;
-
     private XmlParticipantEvidence originalParticipant;
-
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
+    private JAXBExperimentRefList jaxbExperimentRefList;
 
     public XmlFeatureEvidence() {
     }
@@ -70,6 +69,13 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             initialiseDetectionMethods();
         }
         return featureDetectionMethods;
+    }
+
+    public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            experiments = new ArrayList<Experiment>();
+        }
+        return experiments;
     }
 
     /**
@@ -130,7 +136,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBFeatureDetectionMethod(XmlCvTerm value) {
+    public void setJAXBFeatureDetectionMethod(CvTerm value) {
         if (featureDetectionMethods == null){
             this.featureDetectionMethods = new ArrayList<CvTerm>();
         }
@@ -152,20 +158,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
-    public ArrayList<Integer> getJAXBExperimentRefList() {
-        if (experiments == null || experiments.isEmpty()){
-            return null;
-        }
-        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
-        for (Experiment exp : experiments){
-            if (exp instanceof XmlExperiment){
-                references.add(((XmlExperiment) exp).getJAXBId());
-            }
-        }
-        if (references.isEmpty()){
-            return null;
-        }
-        return references;
+    public JAXBExperimentRefList getJAXBExperimentRefList() {
+        return jaxbExperimentRefList;
     }
 
     /**
@@ -176,37 +170,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      *     {@link Integer }
      *
      */
-    public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        if (value != null){
-            for (Integer val : value){
-                getExperiments().add(new AbstractExperimentRef(val) {
-                    public boolean resolve(Map<Integer, Object> parsedObjects) {
-                        if (parsedObjects.containsKey(this.ref)){
-                            Object obj = parsedObjects.get(this.ref);
-                            if (obj instanceof Experiment){
-                                experiments.remove(this);
-                                experiments.add((Experiment)obj);
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public String toString() {
-                        return "Experiment reference: "+ref+" in feature "+(getFeatureLocator() != null? getFeatureLocator().toString():"") ;
-                    }
-
-                    public FileSourceLocator getSourceLocator() {
-                        return getFeatureLocator();
-                    }
-
-                    public void setSourceLocator(FileSourceLocator locator) {
-                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-                    }
-                });
-            }
-        }
+    public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
+        this.jaxbExperimentRefList = value;
     }
 
     /**
@@ -267,13 +232,6 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         }
     }
 
-    public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
-        }
-        return experiments;
-    }
-
     protected void initialiseDetectionMethods(){
 
         if (this.featureDetectionMethods == null){
@@ -283,15 +241,14 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             return;
         }
 
-        ExperimentalEntity participant = getParticipant();
         if (originalParticipant != null){
             XmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
             if (interaction != null){
                 List<XmlExperiment> originalExperiments = interaction.getOriginalExperiments();
                 if (originalExperiments != null && !originalExperiments.isEmpty()){
                     for (XmlExperiment exp : originalExperiments){
-                        if (exp.getJAXBFeatureDetectionMethod() != null){
-                            this.featureDetectionMethods.add(exp.getJAXBFeatureDetectionMethod());
+                        if (exp.getFeatureDetectionMethod() != null){
+                            this.featureDetectionMethods.add(exp.getFeatureDetectionMethod());
                         }
                     }
                 }
@@ -309,5 +266,112 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
 
     private FileSourceLocator getFeatureLocator(){
         return getSourceLocator();
+    }
+
+    ////////////////////////////////////////////////////////////////// classes
+
+    /**
+     * The experiment ref list used by JAXB to populate experiment refs
+     */
+    public class JAXBExperimentRefList extends ArrayList<Integer>{
+
+        public JAXBExperimentRefList(){
+            experiments = new ArrayList<Experiment>();
+        }
+
+        public JAXBExperimentRefList(int initialCapacity) {
+            experiments = new ArrayList<Experiment>(initialCapacity);
+        }
+
+        public JAXBExperimentRefList(Collection<? extends Integer> c) {
+            experiments = new ArrayList<Experiment>(c.size());
+            addAll(c);
+        }
+
+        @Override
+        public boolean add(Integer val) {
+            if (val == null){
+                return false;
+            }
+            return experiments.add(new ExperimentRef(val));
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Integer> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Integer a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Integer element) {
+            addToSpecificIndex(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Integer> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Integer a : c){
+                if (addToSpecificIndex(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        private boolean addToSpecificIndex(int index, Integer val) {
+            if (val == null){
+                return false;
+            }
+            ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+            return true;
+        }
+    }
+
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    experiments.remove(this);
+                    experiments.add((Experiment)obj);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in feature "+(getFeatureLocator() != null? getFeatureLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getFeatureLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+        }
     }
 }

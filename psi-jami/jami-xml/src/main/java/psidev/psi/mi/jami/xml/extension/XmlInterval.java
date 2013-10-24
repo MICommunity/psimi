@@ -19,10 +19,9 @@ import java.math.BigInteger;
 public class XmlInterval extends AbstractXmlPosition{
     private BigInteger start;
     private BigInteger end;
-
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlInterval() {
     }

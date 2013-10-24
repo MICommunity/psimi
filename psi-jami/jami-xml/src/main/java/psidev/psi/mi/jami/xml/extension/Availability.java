@@ -31,18 +31,16 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "availability", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "availability", propOrder = {
-        "JAXBValue"
+        "value"
 })
 public class Availability implements FileSourceContext, Locatable
 {
 
     private String value;
     private int id;
-
     @XmlLocation
     @XmlTransient
     private Locator locator;
-
     private PsiXmLocator sourceLocator;
 
     public Availability() {
@@ -57,7 +55,7 @@ public class Availability implements FileSourceContext, Locatable
      *
      */
     @XmlValue
-    public String getJAXBValue() {
+    public String getValue() {
         return value;
     }
 
@@ -69,7 +67,7 @@ public class Availability implements FileSourceContext, Locatable
      *     {@link String }
      *
      */
-    public void setJAXBValue(String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -78,7 +76,7 @@ public class Availability implements FileSourceContext, Locatable
      *
      */
     @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
+    public int getId() {
         return id;
     }
 
@@ -86,7 +84,7 @@ public class Availability implements FileSourceContext, Locatable
      * Sets the value of the id property.
      *
      */
-    public void setJAXBId(int value) {
+    public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (getSourceLocator() != null){

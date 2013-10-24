@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
@@ -8,7 +7,6 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -108,71 +106,6 @@ public class XmlComplex extends XmlInteractor implements Complex{
 
     public XmlComplex(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, organism, uniqueId);
-    }
-
-    protected void initialiseInteractionEvidences(){
-        this.interactionEvidences = new ArrayList<InteractionEvidence>();
-    }
-
-    protected void initialiseCooperativeEffects(){
-        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
-    }
-
-    protected void initialiseCooperativeEffectsWith(Collection<CooperativeEffect> cooperativeEffects){
-        if (cooperativeEffects == null){
-            this.cooperativeEffects = Collections.EMPTY_LIST;
-        }
-        else{
-            this.cooperativeEffects = cooperativeEffects;
-        }
-    }
-
-    protected void initialiseModelledConfidences(){
-        this.modelledConfidences = new ArrayList<ModelledConfidence>();
-    }
-
-    protected void initialiseParticipants(){
-        this.participants = new ArrayList<ModelledParticipant>();
-    }
-
-    protected void initialiseParticipantsWith(Collection<ModelledParticipant> components){
-        if (components == null){
-            this.participants = Collections.EMPTY_LIST;
-        }
-        else{
-            this.participants = components;
-        }
-    }
-
-    protected void initialiseModelledConfidencesWith(Collection<ModelledConfidence> confidences){
-        if (confidences == null){
-            this.modelledConfidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledConfidences = confidences;
-        }
-    }
-
-    protected void initialiseInteractionEvidencesWith(Collection<InteractionEvidence> evidences){
-        if (evidences == null){
-            this.interactionEvidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.interactionEvidences = evidences;
-        }
-    }
-
-    protected void initialiseModelledParameters(){
-        this.modelledParameters = new ArrayList<ModelledParameter>();
-    }
-
-    protected void initialiseModelledParametersWith(Collection<ModelledParameter> parameters){
-        if (parameters == null){
-            this.modelledParameters = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledParameters = parameters;
-        }
     }
 
     public Collection<InteractionEvidence> getInteractionEvidences() {
@@ -417,21 +350,50 @@ public class XmlComplex extends XmlInteractor implements Complex{
         return removed;
     }
 
-    @Override
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> value) {
-        getAnnotations().clear();
-        if (value != null && !value.isEmpty()){
-            for (Annotation a : value){
-                if (AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
-                    XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
-                    checksum.setSourceLocator(((FileSourceContext)a).getSourceLocator());
-                    getChecksums().add(checksum);
-                }
-                else {
-                    getAnnotations().add(a);
-                }
-            }
+    protected void initialiseInteractionEvidences(){
+        this.interactionEvidences = new ArrayList<InteractionEvidence>();
+    }
+
+    protected void initialiseCooperativeEffects(){
+        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+    }
+
+    protected void initialiseModelledConfidences(){
+        this.modelledConfidences = new ArrayList<ModelledConfidence>();
+    }
+
+    protected void initialiseParticipants(){
+        this.participants = new ArrayList<ModelledParticipant>();
+    }
+
+    protected void initialiseParticipantsWith(Collection<ModelledParticipant> components){
+        if (components == null){
+            this.participants = Collections.EMPTY_LIST;
+        }
+        else{
+            this.participants = components;
+        }
+    }
+
+    protected void initialiseModelledConfidencesWith(Collection<ModelledConfidence> confidences){
+        if (confidences == null){
+            this.modelledConfidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.modelledConfidences = confidences;
+        }
+    }
+
+    protected void initialiseModelledParameters(){
+        this.modelledParameters = new ArrayList<ModelledParameter>();
+    }
+
+    protected void initialiseModelledParametersWith(Collection<ModelledParameter> parameters){
+        if (parameters == null){
+            this.modelledParameters = Collections.EMPTY_LIST;
+        }
+        else {
+            this.modelledParameters = parameters;
         }
     }
 
@@ -439,6 +401,8 @@ public class XmlComplex extends XmlInteractor implements Complex{
     protected void createDefaultInteractorType() {
         setInteractorType(new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI));
     }
+
+    //////////////////////////////////////////////////////////////////////////// classes
 
     private class ComplexAnnotationList extends AbstractListHavingProperties<Annotation> {
         public ComplexAnnotationList(){

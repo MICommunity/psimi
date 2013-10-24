@@ -21,21 +21,19 @@ import java.util.Collections;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "names", propOrder = {
-        "JAXBShortLabel",
-        "JAXBFullName",
-        "JAXBAliases"
+        "shortLabel",
+        "fullName",
+        "aliases"
 })
 public class NamesContainer implements FileSourceContext, Locatable{
 
     private String shortLabel;
     private String fullName;
     private Collection<Alias> aliases;
-
     private PsiXmLocator sourceLocator;
-
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     /**
      * Gets the value of the shortLabel property.
@@ -46,7 +44,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *
      */
     @XmlElement(name = "shortLabel")
-    public String getJAXBShortLabel() {
+    public String getShortLabel() {
         return shortLabel;
     }
 
@@ -58,7 +56,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *     {@link String }
      *
      */
-    public void setJAXBShortLabel(String value) {
+    public void setShortLabel(String value) {
         this.shortLabel = value;
     }
 
@@ -71,7 +69,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *
      */
     @XmlElement(name = "fullName")
-    public String getJAXBFullName() {
+    public String getFullName() {
         return fullName;
     }
 
@@ -83,7 +81,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *     {@link String }
      *
      */
-    public void setJAXBFullName(String value) {
+    public void setFullName(String value) {
         this.fullName = value;
     }
 
@@ -110,7 +108,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *
      */
     @XmlElements({@XmlElement(type=XmlAlias.class, name = "alias")})
-    public Collection<Alias> getJAXBAliases() {
+    public Collection<Alias> getAliases() {
         if (aliases == null) {
             initialiseAliases();
         }
@@ -139,7 +137,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
     }
 
     public boolean isEmpty(){
-        return (shortLabel == null && fullName == null && getJAXBAliases().isEmpty());
+        return (shortLabel == null && fullName == null && getAliases().isEmpty());
     }
 
     protected void initialiseAliases(){

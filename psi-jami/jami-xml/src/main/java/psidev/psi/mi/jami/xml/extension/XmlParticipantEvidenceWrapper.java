@@ -94,7 +94,7 @@ public class XmlParticipantEvidenceWrapper extends XmlModelledParticipant{
 
     @Override
     protected void initialiseFeatures() {
-        Collection<ModelledFeature> modelledFeatures = new ArrayList<ModelledFeature>(this.participant.getFeatures().size());
+        ArrayList<ModelledFeature> modelledFeatures = new ArrayList<ModelledFeature>(this.participant.getFeatures().size());
         for (FeatureEvidence part : this.participant.getFeatures()){
             modelledFeatures.add(new XmlFeatureEvidenceWrapper(part, this));
         }

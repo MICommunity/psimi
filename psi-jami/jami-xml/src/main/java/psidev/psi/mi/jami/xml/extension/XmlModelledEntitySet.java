@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 
 /**
  * Xml implementation of a set of ModelledEntity that form a single modelled participant
@@ -30,7 +29,7 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
 
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlModelledEntitySet() {
         super();
@@ -77,7 +76,7 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
     }
 
     @Override
-    @XmlElement(name = "biologicalRole")
+    @XmlElement(name = "biologicalRole", type = XmlCvTerm.class)
     public CvTerm getJAXBBiologicalRole() {
         return super.getJAXBBiologicalRole();
     }
@@ -85,13 +84,13 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
     @Override
     @XmlElementWrapper(name="featureList")
     @XmlElements({ @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)})
-    public ArrayList<ModelledFeature> getJAXBFeatures() {
+    public JAXBFeatureList getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
 
     @Override
-    @XmlElement(name = "interactor", type = XmlInteractor.class)
-    public Interactor getJAXBInteractor() {
+    @XmlElement(name = "interactor")
+    public XmlInteractor getJAXBInteractor() {
         return super.getJAXBInteractor();
     }
 
@@ -104,7 +103,7 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
     @Override
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 

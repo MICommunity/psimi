@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Xml implementation of ModelledInteraction
@@ -40,7 +39,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     private Collection<CooperativeEffect> cooperativeEffects;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlModelledInteraction() {
         super();
@@ -75,48 +74,12 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         this.cooperativeEffects = new ArrayList<CooperativeEffect>();
     }
 
-    protected void initialiseCooperativeEffectsWith(Collection<CooperativeEffect> cooperativeEffects){
-        if (cooperativeEffects == null){
-            this.cooperativeEffects = Collections.EMPTY_LIST;
-        }
-        else{
-            this.cooperativeEffects = cooperativeEffects;
-        }
-    }
-
     protected void initialiseModelledConfidences(){
         this.modelledConfidences = new ArrayList<ModelledConfidence>();
     }
 
-    protected void initialiseModelledConfidencesWith(Collection<ModelledConfidence> confidences){
-        if (confidences == null){
-            this.modelledConfidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledConfidences = confidences;
-        }
-    }
-
-    protected void initialiseInteractionEvidencesWith(Collection<InteractionEvidence> evidences){
-        if (evidences == null){
-            this.interactionEvidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.interactionEvidences = evidences;
-        }
-    }
-
     protected void initialiseModelledParameters(){
         this.modelledParameters = new ArrayList<ModelledParameter>();
-    }
-
-    protected void initialiseModelledParametersWith(Collection<ModelledParameter> parameters){
-        if (parameters == null){
-            this.modelledParameters = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledParameters = parameters;
-        }
     }
 
     public Collection<InteractionEvidence> getInteractionEvidences() {
@@ -176,7 +139,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @Override
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 
@@ -188,11 +151,8 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @XmlElementWrapper(name="participantList")
     @XmlElements({ @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)})
-    public ArrayList<ModelledParticipant> getJAXBParticipants() {
-        if (getParticipants().isEmpty()){
-            return null;
-        }
-        return new ArrayList<ModelledParticipant>(getParticipants());
+    public JAXBParticipantList getJAXBParticipants() {
+        return super.getJAXBParticipants();
     }
 
     @Override
@@ -203,7 +163,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @Override
-    @XmlElement(name="interactionType")
+    @XmlElements({@XmlElement(name="interactionType", type = XmlCvTerm.class)})
     public ArrayList<CvTerm> getJAXBInteractionTypes() {
         return super.getJAXBInteractionTypes();
     }
@@ -237,10 +197,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlElementWrapper(name="confidenceList")
     @XmlElements({ @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)})
     public ArrayList<ModelledConfidence> getJAXBConfidences() {
-        if (this.modelledConfidences == null || this.modelledConfidences.isEmpty()){
-            return null;
-        }
-        return new ArrayList<ModelledConfidence>(getModelledConfidences());
+        return (ArrayList<ModelledConfidence>)modelledConfidences;
     }
 
     /**
@@ -251,11 +208,8 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      *     {@link ArrayList<Confidence> }
      *
      */
-    public void setJAXBConfidences(ArrayList<XmlModelledConfidence> value) {
-        getModelledConfidences().clear();
-        if (value != null && !value.isEmpty()){
-            getModelledConfidences().addAll(value);
-        }
+    public void setJAXBConfidences(ArrayList<ModelledConfidence> value) {
+        this.modelledConfidences = value;
     }
 
     /**
@@ -269,10 +223,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlElementWrapper(name="parameterList")
     @XmlElements({ @XmlElement(type=XmlModelledParameter.class, name="parameter", required = true)})
     public ArrayList<ModelledParameter> getJAXBParameters() {
-        if (this.modelledParameters == null || this.modelledParameters.isEmpty()){
-            return null;
-        }
-        return new ArrayList<ModelledParameter>(getModelledParameters());
+        return (ArrayList<ModelledParameter>)this.modelledParameters;
     }
 
     /**
@@ -283,25 +234,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      *     {@link ArrayList<ModelledParameter> }
      *
      */
-    public void setJAXBParameters(ArrayList<XmlModelledParameter> value) {
-        getModelledParameters().clear();
-        if (value != null && !value.isEmpty()){
-            getModelledParameters().addAll(value);
-        }
-    }
-
-    /**
-     * Sets the value of the participantList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    public void setJAXBParticipants(ArrayList<XmlModelledParticipant> value) {
-        removeAllParticipants(getParticipants());
-        if (value != null && !value.isEmpty()){
-            addAllParticipants(value);
-        }
+    public void setJAXBParameters(ArrayList<ModelledParameter> value) {
+        this.modelledParameters = value;
     }
 }
