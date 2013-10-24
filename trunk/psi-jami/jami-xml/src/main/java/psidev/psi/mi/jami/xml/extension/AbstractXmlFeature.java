@@ -43,8 +43,8 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     public AbstractXmlFeature(String shortName, String fullName){
         this();
         this.namesContainer = new NamesContainer();
-        this.namesContainer.setJAXBShortLabel(shortName);
-        this.namesContainer.setJAXBFullName(fullName);
+        this.namesContainer.setShortLabel(shortName);
+        this.namesContainer.setFullName(fullName);
     }
 
     public AbstractXmlFeature(CvTerm type){
@@ -80,24 +80,6 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         this.ranges = new ArrayList<Range>();
     }
 
-    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
-        if (annotations == null){
-            this.annotations = Collections.EMPTY_LIST;
-        }
-        else {
-            this.annotations = annotations;
-        }
-    }
-
-    protected void initialiseRangesWith(Collection<Range> ranges){
-        if (ranges == null){
-            this.ranges = Collections.EMPTY_LIST;
-        }
-        else {
-            this.ranges = ranges;
-        }
-    }
-
     protected void initialiseLinkedFeatures(){
         this.linkedFeatures = new ArrayList<F>();
     }
@@ -131,7 +113,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     }
 
     public String getShortName() {
-        return this.namesContainer != null ? this.namesContainer.getJAXBShortLabel() : null;
+        return this.namesContainer != null ? this.namesContainer.getShortLabel() : null;
 
     }
 
@@ -139,11 +121,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setJAXBShortLabel(name);
+        this.namesContainer.setShortLabel(name);
     }
 
     public String getFullName() {
-        return this.namesContainer != null ? this.namesContainer.getJAXBFullName() : null;
+        return this.namesContainer != null ? this.namesContainer.getFullName() : null;
 
     }
 
@@ -151,7 +133,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
-        this.namesContainer.setJAXBFullName(name);
+        this.namesContainer.setFullName(name);
     }
 
     public FeatureXrefContainer getJAXBXref() {
@@ -206,17 +188,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     }
 
     public ArrayList<Annotation> getJAXBAttributes() {
-        if (annotations == null || annotations.isEmpty()){
-            return null;
-        }
-        return new ArrayList<Annotation>(this.annotations);
+        return (ArrayList<Annotation>)this.annotations;
     }
 
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> attributes) {
-        getAnnotations().clear();
-        if (attributes != null){
-            getAnnotations().addAll(attributes);
-        }
+    public void setJAXBAttributes(ArrayList<Annotation> attributes) {
+        this.annotations = attributes;
     }
 
     public CvTerm getType() {
@@ -231,7 +207,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         return this.type;
     }
 
-    public void setJAXBType(XmlCvTerm type) {
+    public void setJAXBType(CvTerm type) {
         this.type = type;
     }
 
@@ -243,17 +219,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     }
 
     public ArrayList<Range> getJAXBRanges() {
-        if (ranges == null || ranges.isEmpty()){
-            return null;
-        }
-        return new ArrayList<Range>(this.ranges);
+        return (ArrayList<Range>)this.ranges;
     }
 
-    public void setJAXBRanges(ArrayList<XmlRange> ranges) {
-        getRanges().clear();
-        if (ranges != null){
-            getRanges().addAll(ranges);
-        }
+    public void setJAXBRanges(ArrayList<Range> ranges) {
+        this.ranges = ranges;
     }
 
     public CvTerm getInteractionEffect() {

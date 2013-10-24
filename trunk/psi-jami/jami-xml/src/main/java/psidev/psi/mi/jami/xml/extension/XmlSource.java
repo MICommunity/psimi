@@ -10,14 +10,12 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -229,36 +227,12 @@ public class XmlSource extends XmlOpenCvTerm
     @XmlElementWrapper(name="attributeList")
     @XmlElements({@XmlElement(type = XmlAnnotation.class, name = "attribute", required = true)})
     @Override
-    public ArrayList<Annotation> getJAXBAttributes() {
-        if (getAnnotations().isEmpty() && this.postalAddress == null){
-            return  null;
-        }
-        else {
-            Collection<Annotation> annots = new ArrayList<Annotation>(getAnnotations().size());
-            annots.addAll(getAnnotations());
-
-            if (this.postalAddress != null){
-                annots.add(new XmlAnnotation(new DefaultCvTerm("postaladdress"), this.postalAddress));
-            }
-
-            return new ArrayList<Annotation>(annots);
-        }
+    public SourceAnnotationList getJAXBAttributes() {
+        return (SourceAnnotationList) super.getAttributes();
     }
 
-    @Override
-    public void setJAXBAttributes(ArrayList<Annotation> annotations){
-        getAnnotations().clear();
-        if (annotations != null){
-            // we have a bibref. Some annotations can be processed
-            for (Annotation annot : annotations){
-                if (AnnotationUtils.doesAnnotationHaveTopic(annot, null, "postaladdress")){
-                    this.postalAddress = annot.getValue();
-                }
-                else {
-                    getAnnotations().add(annot);
-                }
-            }
-        }
+    public void setJAXBAttributes(SourceAnnotationList annotations){
+        initialiseAnnotationsWith(annotations);
     }
 
     protected void processAddedAnnotationEvent(Annotation added) {
@@ -277,7 +251,7 @@ public class XmlSource extends XmlOpenCvTerm
         url = null;
     }
 
-    private class SourceAnnotationList extends AbstractListHavingProperties<Annotation> {
+    public class SourceAnnotationList extends AbstractListHavingProperties<Annotation> {
         public SourceAnnotationList(){
             super();
         }

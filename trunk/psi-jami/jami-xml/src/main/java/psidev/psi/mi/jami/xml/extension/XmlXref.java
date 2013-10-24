@@ -46,14 +46,12 @@ public class XmlXref
     private CvTerm qualifier;
     private String id;
     private String version;
-
     private String secondary;
     private ArrayList<XmlAnnotation> annotations;
-
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlXref() {
     }
@@ -308,7 +306,7 @@ public class XmlXref
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute")
+    @XmlElements({@XmlElement(name="attribute")})
     public ArrayList<XmlAnnotation> getJAXBAttributes() {
         return this.annotations;
     }

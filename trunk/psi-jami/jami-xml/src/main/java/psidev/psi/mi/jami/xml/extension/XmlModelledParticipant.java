@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 
 /**
  * XML implementation of ModelledParticipant
@@ -84,13 +83,13 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @Override
     @XmlElementWrapper(name="featureList")
     @XmlElements({ @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)})
-    public ArrayList<ModelledFeature> getJAXBFeatures() {
+    public JAXBFeatureList getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
 
     @Override
-    @XmlElement(name = "interactor", type = XmlInteractor.class)
-    public Interactor getJAXBInteractor() {
+    @XmlElement(name = "interactor")
+    public XmlInteractor getJAXBInteractor() {
         return super.getJAXBInteractor();
     }
 
@@ -103,7 +102,7 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @Override
     @XmlElementWrapper(name="attributeList")
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 

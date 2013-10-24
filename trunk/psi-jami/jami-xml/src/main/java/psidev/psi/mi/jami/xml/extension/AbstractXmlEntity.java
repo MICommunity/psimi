@@ -16,10 +16,7 @@ import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Abstract class for entity
@@ -36,15 +33,15 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     private Stoichiometry stoichiometry;
     private CausalRelationship causalRelationship;
     private Collection<F> features;
-
     private PsiXmLocator sourceLocator;
-
     private NamesContainer namesContainer;
     private XrefContainer xrefContainer;
-
     private XmlInteractorFactory interactorFactory;
     private ParticipantInteractorChangeListener changeListener;
     private int id;
+
+    private JAXBAttributeList jaxbAttributeList;
+    private JAXBFeatureList jaxbFeatureList;
 
     public AbstractXmlEntity(){
         this.interactorFactory = new XmlInteractorFactory();
@@ -84,7 +81,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         if (namesContainer == null){
             namesContainer = new NamesContainer();
         }
-        return this.namesContainer.getJAXBAliases();
+        return this.namesContainer.getAliases();
     }
 
     public Collection<Xref> getXrefs() {
@@ -297,12 +294,20 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         this.xrefContainer = value;
     }
 
-    public Interactor getJAXBInteractor() {
-        return this.interactor;
+    public XmlInteractor getJAXBInteractor() {
+        if (this.interactor instanceof XmlInteractor){
+            return (XmlInteractor)this.interactor;
+        }
+        return null;
     }
 
     public void setJAXBInteractor(XmlInteractor interactor) {
-        this.interactor = this.interactorFactory.createInteractorFromXmlInteractorInstance(interactor);
+        if (interactor == null){
+           this.interactor = null;
+        }
+        else{
+            this.interactor = this.interactorFactory.createInteractorFromXmlInteractorInstance(interactor);
+        }
     }
 
     /**
@@ -314,8 +319,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *
      */
     public Integer getJAXBInteractionRef() {
-        if (interactor instanceof XmlBasicInteraction){
-            return ((XmlBasicInteraction)interactor).getJAXBId();
+        if (interactor instanceof AbstractXmlEntity.InteractionRef){
+            return ((AbstractXmlEntity.InteractionRef)interactor).getRef();
         }
         return null;
     }
@@ -330,47 +335,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      */
     public void setJAXBInteractionRef(Integer value) {
         if (value != null){
-            this.interactor = new AbstractComplexReference(value) {
-                @Override
-                public boolean resolve(Map<Integer, Object> parsedObjects) {
-                    if (parsedObjects.containsKey(this.ref)){
-                        Object object = parsedObjects.get(this.ref);
-                        if (object instanceof Interactor){
-                            interactor = (Interactor) object;
-                            return true;
-                        }
-                        // convert interaction evidence in a complex
-                        if (object instanceof InteractionEvidence){
-                            interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
-                            return true;
-                        }
-                        // set the complex
-                        else if (object instanceof Complex){
-                            interactor = (Complex)object;
-                            return true;
-                        }
-                        // wrap modelled interaction
-                        else if (object instanceof ModelledInteraction){
-                            interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public String toString() {
-                    return "Interaction reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
-                }
-
-                public FileSourceLocator getSourceLocator() {
-                    return getParticipantLocator();
-                }
-
-                public void setSourceLocator(FileSourceLocator locator) {
-                    throw new UnsupportedOperationException("Cannot set the source locator of an interaction ref");
-                }
-            };
+            this.interactor = new InteractionRef(value);
         }
     }
 
@@ -383,8 +348,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *
      */
     public Integer getJAXBInteractorRef() {
-        if (interactor instanceof XmlInteractor){
-           return ((XmlInteractor)interactor).getJAXBId();
+        if (interactor instanceof AbstractXmlEntity.InteractorRef){
+            return ((AbstractXmlEntity.InteractorRef)interactor).getRef();
         }
         return null;
     }
@@ -399,32 +364,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      */
     public void setJAXBInteractorRef(Integer value) {
         if (value != null){
-            this.interactor = new AbstractInteractorReference(value) {
-                @Override
-                public boolean resolve(Map<Integer, Object> parsedObjects) {
-                    if (parsedObjects.containsKey(this.ref)){
-                        Object obj = parsedObjects.get(this.ref);
-                        if (obj instanceof Interactor){
-                            interactor = (Interactor) obj;
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public String toString() {
-                    return "Interactor reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
-                }
-
-                public FileSourceLocator getSourceLocator() {
-                    return getParticipantLocator();
-                }
-
-                public void setSourceLocator(FileSourceLocator locator) {
-                    throw new UnsupportedOperationException("Cannot set the source locator of an interactor ref");
-                }
-            };
+            this.interactor = new InteractorRef(value);
         }
     }
 
@@ -436,11 +376,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *     {@link AbstractXmlFeature }
      *
      */
-    public ArrayList<F> getJAXBFeatures() {
-        if (this.features == null || (this.features != null && this.features.isEmpty())){
-            return null;
-        }
-        return new ArrayList<F>(this.features);
+    public JAXBFeatureList getJAXBFeatures() {
+        return this.jaxbFeatureList;
     }
 
     /**
@@ -451,11 +388,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *     {@link AbstractXmlFeature }
      *
      */
-    public void setJAXBFeatures(ArrayList<F> value) {
-        removeAllFeatures(getFeatures());
-        if (value != null && !value.isEmpty()){
-            addAllFeatures(value);
-        }
+    public void setJAXBFeatures(JAXBFeatureList value) {
+        this.jaxbFeatureList = value;
     }
 
     /**
@@ -478,114 +412,32 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBBiologicalRole(XmlCvTerm bioRole) {
+    public void setJAXBBiologicalRole(CvTerm bioRole) {
         setBiologicalRole(bioRole);
     }
 
-    protected void initialiseAnnotations() {
-        this.annotations = new ArrayList<Annotation>();
-    }
-
-    protected void initialiseFeatures(){
-        this.features = new ArrayList<F>();
-    }
-
-    protected void initialiseFeaturesWith(Collection<F> features) {
-        if (features == null){
-            this.features = Collections.EMPTY_LIST;
-        }
-        else {
-            this.features = features;
-        }
-    }
-
-    protected void initialiseAnnotationsWith(Collection<Annotation> annotations) {
-        if (annotations == null){
-            this.annotations = Collections.EMPTY_LIST;
-        }
-        else {
-            this.annotations = annotations;
-        }
-    }
-
     /**
-     * Gets the value of the attributeList property.
+     * Gets the value of the jaxbAttributeList property.
      *
      * @return
      *     possible object is
      *     {@link XmlAnnotation }
      *
      */
-    public ArrayList<Annotation> getJAXBAttributes() {
-        if (this.annotations == null || (this.annotations != null && this.annotations.isEmpty())){
-            return null;
-        }
-
-        ArrayList<Annotation> annots = new ArrayList<Annotation>(this.annotations);
-
-        if (stoichiometry != null){
-            if (stoichiometry.getMaxValue() == stoichiometry.getMinValue()){
-                annots.add(new XmlAnnotation(new XmlCvTerm(Annotation.COMMENT, Annotation.COMMENT_MI), Long.toString(stoichiometry.getMinValue())));
-            }
-            else {
-                annots.add(new XmlAnnotation(new XmlCvTerm(Annotation.COMMENT, Annotation.COMMENT_MI), Long.toString(stoichiometry.getMinValue()) + "-" + Long.toString(stoichiometry.getMaxValue())));
-            }
-        }
-        return annots;
+    public JAXBAttributeList getJAXBAttributes() {
+        return this.jaxbAttributeList;
     }
 
     /**
-     * Sets the value of the attributeList property.
+     * Sets the value of the jaxbAttributeList property.
      *
      * @param value
      *     allowed object is
      *     {@link XmlAnnotation }
      *
      */
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> value) {
-        getAnnotations().clear();
-        if (value != null && !value.isEmpty()){
-            for (Annotation annot : annotations){
-                // we have stoichiometry
-                if(AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.COMMENT_MI, Annotation.COMMENT)
-                        && annot.getValue() != null && annot.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
-                    String stc = annot.getValue().substring(annot.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
-
-                    // we have stoichiometry range
-                    if (stc.contains("-") && !stc.startsWith("-")){
-                        String [] stcs = stc.split("-");
-                        // we recognize the stoichiometry range
-                        if (stcs.length == 2){
-                            try{
-                                this.stoichiometry = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
-                            }
-                            catch (NumberFormatException e){
-                                e.printStackTrace();
-                                getAnnotations().add(annot);
-                            }
-                        }
-                        // we cannot recognize the stoichiometry range, we add that as a simple annotation
-                        else {
-                            getAnnotations().add(annot);
-                        }
-                    }
-                    // simple stoichiometry
-                    else {
-                        try{
-                            this.stoichiometry = new XmlStoichiometry(Long.parseLong(stc));
-                        }
-                        // not a number, keep the annotation as annotation
-                        catch (NumberFormatException e){
-                            e.printStackTrace();
-                            getAnnotations().add(annot);
-                        }
-                    }
-                }
-                else{
-                    getAnnotations().add(annot);
-                }
-            }
-        }
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        this.jaxbAttributeList = value;
     }
 
     /**
@@ -630,7 +482,345 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
     }
 
+    protected void initialiseAnnotations() {
+        if (jaxbAttributeList != null){
+            this.annotations = new ArrayList<Annotation>(jaxbAttributeList);
+            this.jaxbAttributeList = null;
+        }else{
+            this.annotations = new ArrayList<Annotation>();
+        }
+    }
+
+    protected void initialiseFeatures(){
+        if (jaxbFeatureList != null){
+            this.features = new ArrayList<F>(jaxbFeatureList);
+            this.jaxbFeatureList = null;
+        }else{
+            this.features = new ArrayList<F>();
+        }
+    }
+
+    protected void initialiseFeaturesWith(ArrayList<F> features) {
+        if (features == null){
+            this.features = Collections.EMPTY_LIST;
+        }
+        else {
+            this.features = features;
+        }
+    }
+
+    protected void processAddedFeature(F feature){
+        feature.setParticipant(this);
+    }
+
+    private AbstractXmlEntity<F> getCurrentInstance(){
+        return this;
+    }
+
     private FileSourceLocator getParticipantLocator(){
         return getSourceLocator();
+    }
+
+    ////////////////////////////////////////////////////////////////// classes
+
+    /**
+     * The attribute list used by JAXB to populate participant annotations
+     */
+    public class JAXBAttributeList extends ArrayList<Annotation>{
+
+        public JAXBAttributeList(){
+        }
+
+        public JAXBAttributeList(int initialCapacity) {
+            super(initialCapacity);
+        }
+
+        public JAXBAttributeList(Collection<? extends Annotation> c) {
+            super(c);
+        }
+
+        @Override
+        public boolean add(Annotation annotation) {
+            if (annotation == null){
+                return false;
+            }
+            // we have stoichiometry
+            if(AnnotationUtils.doesAnnotationHaveTopic(annotation, Annotation.COMMENT_MI, Annotation.COMMENT)
+                    && annotation.getValue() != null && annotation.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
+                String stc = annotation.getValue().substring(annotation.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
+
+                // we have stoichiometry range
+                if (stc.contains("-") && !stc.startsWith("-")){
+                    String [] stcs = stc.split("-");
+                    // we recognize the stoichiometry range
+                    if (stcs.length == 2){
+                        try{
+                            XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
+                            s.setSourceLocator((PsiXmLocator)getSourceLocator());
+                            stoichiometry = s;
+                            return false;
+                        }
+                        catch (NumberFormatException e){
+                            e.printStackTrace();
+                            return super.add(annotation);
+                        }
+                    }
+                    // we cannot recognize the stoichiometry range, we add that as a simple annotation
+                    else {
+                        return super.add(annotation);
+                    }
+                }
+                // simple stoichiometry
+                else {
+                    try{
+                        XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
+                        s.setSourceLocator((PsiXmLocator)getSourceLocator());
+                        stoichiometry = s;
+                        return false;
+                    }
+                    // not a number, keep the annotation as annotation
+                    catch (NumberFormatException e){
+                        e.printStackTrace();
+                        return super.add(annotation);
+                    }
+                }
+            }
+            else{
+                return super.add(annotation);
+            }
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Annotation> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Annotation a : c){
+                if (add(a)){
+                   added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Annotation element) {
+            addToSpecificIndex(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Annotation> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Annotation a : c){
+                if (addToSpecificIndex(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        private boolean addToSpecificIndex(int index, Annotation element) {
+            if (element != null){
+                // we have stoichiometry
+                if(AnnotationUtils.doesAnnotationHaveTopic(element, Annotation.COMMENT_MI, Annotation.COMMENT)
+                        && element.getValue() != null && element.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
+                    String stc = element.getValue().substring(element.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
+
+                    // we have stoichiometry range
+                    if (stc.contains("-") && !stc.startsWith("-")){
+                        String [] stcs = stc.split("-");
+                        // we recognize the stoichiometry range
+                        if (stcs.length == 2){
+                            try{
+                                XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
+                                s.setSourceLocator((PsiXmLocator)getSourceLocator());
+                                stoichiometry = s;
+                                return false;
+                            }
+                            catch (NumberFormatException e){
+                                e.printStackTrace();
+                                super.add(index, element);
+                                return true;
+                            }
+                        }
+                        // we cannot recognize the stoichiometry range, we add that as a simple annotation
+                        else {
+                            super.add(index, element);
+                            return true;
+                        }
+                    }
+                    // simple stoichiometry
+                    else {
+                        try{
+                            XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
+                            s.setSourceLocator((PsiXmLocator)getSourceLocator());
+                            stoichiometry = s;
+                            return false;
+                        }
+                        // not a number, keep the annotation as annotation
+                        catch (NumberFormatException e){
+                            e.printStackTrace();
+                            super.add(index, element);
+                            return true;
+                        }
+                    }
+                }
+                else{
+                    super.add(index, element);
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    /**
+     * The feature list used by JAXB to populate participant features
+     */
+    public class JAXBFeatureList extends ArrayList<F>{
+
+        public JAXBFeatureList(){
+        }
+
+        public JAXBFeatureList(int initialCapacity) {
+            super(initialCapacity);
+        }
+
+        public JAXBFeatureList(Collection<? extends F> c) {
+            super(c);
+        }
+
+        @Override
+        public boolean add(F feature) {
+            if (feature == null){
+                return false;
+            }
+
+            if (super.add(feature)){
+                processAddedFeature(feature);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends F> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (F a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, F element) {
+            super.add(index, element);
+            element.setParticipant(getCurrentInstance());
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends F> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (F a : c){
+                add(newIndex, a);
+                newIndex++;
+                add = true;
+            }
+            return add;
+        }
+    }
+
+    private class InteractionRef extends AbstractComplexReference{
+        public InteractionRef(int ref) {
+            super(ref);
+        }
+
+        @Override
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object object = parsedObjects.get(this.ref);
+                if (object instanceof Interactor){
+                    interactor = (Interactor) object;
+                    return true;
+                }
+                // convert interaction evidence in a complex
+                if (object instanceof InteractionEvidence){
+                    interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
+                    return true;
+                }
+                // set the complex
+                else if (object instanceof Complex){
+                    interactor = (Complex)object;
+                    return true;
+                }
+                // wrap modelled interaction
+                else if (object instanceof ModelledInteraction){
+                    interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Interaction reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getParticipantLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an interaction ref");
+        }
+    }
+
+    private class InteractorRef extends AbstractInteractorReference{
+        public InteractorRef(int ref) {
+            super(ref);
+        }
+
+        @Override
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Interactor){
+                    interactor = (Interactor) obj;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Interactor reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getParticipantLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an interactor ref");
+        }
     }
 }

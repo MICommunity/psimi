@@ -2,10 +2,9 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.*;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Xml implementation of experimental entity
@@ -41,58 +40,6 @@ public class XmlExperimentalEntity extends AbstractXmlEntity<FeatureEvidence> im
 
     public XmlExperimentalEntity(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
-    }
-
-    protected void initialiseExperimentalPreparations() {
-        this.experimentalPreparations = new ArrayList<CvTerm>();
-    }
-
-    protected void initialiseConfidences() {
-        this.confidences = new ArrayList<Confidence>();
-    }
-
-    protected void initialiseParameters() {
-        this.parameters = new ArrayList<Parameter>();
-    }
-
-    protected void initialiseIdentificationMethods(){
-        this.identificationMethods = new ArrayList<CvTerm>();
-    }
-
-    protected void initialiseIdentificationMethodsWith(Collection<CvTerm> methods){
-        if (methods == null){
-            this.identificationMethods = Collections.EMPTY_LIST;
-        }
-        else {
-            this.identificationMethods = methods;
-        }
-    }
-
-    protected void initialiseExperimentalPreparationsWith(Collection<CvTerm> expPreparations) {
-        if (expPreparations == null){
-            this.experimentalPreparations = Collections.EMPTY_LIST;
-        }
-        else {
-            this.experimentalPreparations = expPreparations;
-        }
-    }
-
-    protected void initialiseConfidencesWith(Collection<Confidence> confidences) {
-        if (confidences == null){
-            this.confidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.confidences = confidences;
-        }
-    }
-
-    protected void initialiseParametersWith(Collection<Parameter> parameters) {
-        if (parameters == null){
-            this.parameters = Collections.EMPTY_LIST;
-        }
-        else {
-            this.parameters = parameters;
-        }
     }
 
     public CvTerm getExperimentalRole() {
@@ -171,5 +118,21 @@ public class XmlExperimentalEntity extends AbstractXmlEntity<FeatureEvidence> im
     @Override
     public String toString() {
         return super.toString() + (getExperimentalRole() != null ? ", " + getExperimentalRole().toString() : "") + (getExpressedInOrganism() != null ? ", " + getExpressedInOrganism().toString() : "");
+    }
+
+    protected void initialiseExperimentalPreparations() {
+        this.experimentalPreparations = new ArrayList<CvTerm>();
+    }
+
+    protected void initialiseConfidences() {
+        this.confidences = new ArrayList<Confidence>();
+    }
+
+    protected void initialiseParameters() {
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    protected void initialiseIdentificationMethods(){
+        this.identificationMethods = new ArrayList<CvTerm>();
     }
 }

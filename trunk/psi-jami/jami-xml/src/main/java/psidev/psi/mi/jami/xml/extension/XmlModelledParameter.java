@@ -53,8 +53,8 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
      */
     @XmlElement(name="experimentRef")
     public Integer getJAXBExperimentRef() {
-        if (experiment instanceof XmlExperiment){
-            return ((XmlExperiment) experiment).getJAXBId();
+        if (experiment instanceof XmlModelledParameter.ExperimentRef){
+            return ((XmlModelledParameter.ExperimentRef) experiment).getRef();
         }
         return null;
     }
@@ -69,34 +69,7 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
      */
     public void setJAXBExperimentRef(Integer value) {
         if (value != null){
-            this.experiment = new AbstractExperimentRef(value) {
-                public boolean resolve(Map<Integer, Object> parsedObjects) {
-                    if (parsedObjects.containsKey(this.ref)){
-                        Object obj = parsedObjects.get(this.ref);
-                        if (obj instanceof Experiment){
-                            experiment = (Experiment)obj;
-                            if (experiment.getPublication() != null){
-                                publications.add(experiment.getPublication());
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public String toString() {
-                    return "Experiment reference: "+ref+" in parameter "+(getParameterLocator() != null? getParameterLocator().toString():"") ;
-                }
-
-                public FileSourceLocator getSourceLocator() {
-                    return getParameterLocator();
-                }
-
-                public void setSourceLocator(FileSourceLocator locator) {
-                    throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-                }
-            };
+            this.experiment = new ExperimentRef(value);
         }
     }
 
@@ -106,5 +79,43 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
 
     private FileSourceLocator getParameterLocator(){
         return getSourceLocator();
+    }
+
+    ///////////////////////////////////////////////////////// classes
+
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    experiment = (Experiment)obj;
+                    if (experiment.getPublication() != null){
+                        publications.add(experiment.getPublication());
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in parameter "+(getParameterLocator() != null? getParameterLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getParameterLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+        }
     }
 }

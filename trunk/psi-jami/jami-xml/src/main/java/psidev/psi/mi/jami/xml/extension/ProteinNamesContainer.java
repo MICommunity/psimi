@@ -30,7 +30,7 @@ public class ProteinNamesContainer extends NamesContainer{
     }
 
     public void setGeneName(String name) {
-        Collection<Alias> proteinAliases = getJAXBAliases();
+        Collection<Alias> proteinAliases = getAliases();
 
         // add new gene name if not null
         if (name != null){
@@ -58,7 +58,7 @@ public class ProteinNamesContainer extends NamesContainer{
 
     protected void processRemovedAliasEvent(Alias removed) {
         if (geneName != null && geneName.equals(removed)){
-            geneName = AliasUtils.collectFirstAliasWithType(getJAXBAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
+            geneName = AliasUtils.collectFirstAliasWithType(getAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
         }
     }
 

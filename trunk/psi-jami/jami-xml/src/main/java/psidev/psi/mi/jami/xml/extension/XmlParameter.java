@@ -33,11 +33,10 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     private BigDecimal uncertainty;
     private CvTerm unit;
     private ParameterValue value;
-
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlParameter() {
     }

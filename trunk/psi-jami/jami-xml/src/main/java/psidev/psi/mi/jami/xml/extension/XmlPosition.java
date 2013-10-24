@@ -22,7 +22,7 @@ public class XmlPosition extends AbstractXmlPosition{
     private BigInteger pos;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlPosition() {
     }

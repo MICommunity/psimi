@@ -4,6 +4,7 @@ import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -63,37 +64,56 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         setFullName(fullName);
     }
 
-
-    protected CvTermXrefContainer getXrefContainer() {
-        if (xrefContainer == null){
-            xrefContainer = new CvTermXrefContainer();
-        }
-        return xrefContainer;
+    public String getShortName() {
+        return getNamesContainer().getShortLabel();
     }
 
-    protected void setXrefContainer(CvTermXrefContainer value) {
-        this.xrefContainer = value;
+    public void setShortName(String name) {
+        getNamesContainer().setShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
     }
 
-    protected NamesContainer getNamesContainer() {
-        if (namesContainer == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        return namesContainer;
+    public String getFullName() {
+        return getNamesContainer().getFullName();
     }
 
-    protected void setNamesContainer(NamesContainer value) {
-        if (value == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        else {
-            this.namesContainer = value;
-            if (this.namesContainer.getJAXBShortLabel() == null){
-                namesContainer.setJAXBShortLabel(PsiXmlUtils.UNSPECIFIED);
-            }
-        }
+    public void setFullName(String name) {
+        getNamesContainer().setFullName(name);
+    }
+
+    public Collection<Xref> getIdentifiers() {
+        return getXrefContainer().getAllIdentifiers();
+    }
+
+    public String getMIIdentifier() {
+        return getXrefContainer().getMIIdentifier();
+    }
+
+    public String getMODIdentifier() {
+        return getXrefContainer().getMODIdentifier();
+    }
+
+    public String getPARIdentifier() {
+        return getXrefContainer().getPARIdentifier();
+    }
+
+    public void setMIIdentifier(String mi) {
+        getXrefContainer().setMIIdentifier(mi);
+    }
+
+    public void setMODIdentifier(String mod) {
+        getXrefContainer().setMODIdentifier(mod);
+    }
+
+    public void setPARIdentifier(String par) {
+        getXrefContainer().setPARIdentifier(par);
+    }
+
+    public Collection<Xref> getXrefs() {
+        return getXrefContainer().getAllXrefs();
+    }
+
+    public Collection<Alias> getSynonyms() {
+        return getNamesContainer().getAliases();
     }
 
     public Collection<Annotation> getAnnotations() {
@@ -101,20 +121,6 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
             initialiseAnnotations();
         }
         return this.annotations;
-    }
-
-    protected ArrayList<Annotation> getAttributes() {
-        if (getAnnotations().isEmpty()){
-            return null;
-        }
-        return new ArrayList<Annotation>(this.annotations);
-    }
-
-    protected void setAttributes(ArrayList<Annotation> annot){
-        getAnnotations().clear();
-        if (annot != null && !annot.isEmpty()){
-            getAnnotations().addAll(annot);
-        }
     }
 
     @Override
@@ -158,16 +164,56 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         }
     }
 
-    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
+    protected void initialiseAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
+    }
+
+    protected CvTermXrefContainer getXrefContainer() {
+        if (xrefContainer == null){
+            xrefContainer = new CvTermXrefContainer();
+        }
+        return xrefContainer;
+    }
+
+    protected void setXrefContainer(CvTermXrefContainer value) {
+        this.xrefContainer = value;
+    }
+
+    protected NamesContainer getNamesContainer() {
+        if (namesContainer == null){
+            namesContainer = new NamesContainer();
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+        }
+        return namesContainer;
+    }
+
+    protected void setNamesContainer(NamesContainer value) {
+        if (value == null){
+            namesContainer = new NamesContainer();
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+        }
+        else {
+            this.namesContainer = value;
+            if (this.namesContainer.getShortLabel() == null){
+                namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+            }
+        }
+    }
+
+    protected ArrayList<Annotation> getAttributes() {
+        return (ArrayList<Annotation>)this.annotations;
+    }
+
+    protected void setAttributes(ArrayList<Annotation> annot){
+        this.annotations = annot;
+    }
+
+    protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations){
         if (annotations == null){
             this.annotations = Collections.EMPTY_LIST;
         }
         else {
             this.annotations = annotations;
         }
-    }
-
-    protected void initialiseAnnotations(){
-        this.annotations = new ArrayList<Annotation>();
     }
 }

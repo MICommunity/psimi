@@ -1,9 +1,10 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.Confidence;
-import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A wrapper for confidences
@@ -13,9 +14,10 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlConfidenceWrapper extends XmlModelledConfidence{
+public class XmlConfidenceWrapper implements ModelledConfidence{
 
     private Confidence confidence;
+    private Collection<Publication> publications;
 
     public XmlConfidenceWrapper(Confidence conf){
         if (conf == null){
@@ -32,5 +34,13 @@ public class XmlConfidenceWrapper extends XmlModelledConfidence{
     @Override
     public String getValue() {
         return this.confidence.getValue();
+    }
+
+    @Override
+    public Collection<Publication> getPublications() {
+        if (publications == null){
+            this.publications = new ArrayList<Publication>();
+        }
+        return this.publications;
     }
 }

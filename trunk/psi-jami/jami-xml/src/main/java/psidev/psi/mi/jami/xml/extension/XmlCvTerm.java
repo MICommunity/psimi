@@ -3,13 +3,9 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.util.Collection;
 
 /**
  * Xml implementation of CvTerm.
@@ -34,7 +30,7 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
 
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlCvTerm() {
     }
@@ -59,62 +55,6 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
         super(shortName, fullName, ontologyId);
     }
 
-    public String getShortName() {
-        return getNamesContainer().getJAXBShortLabel();
-    }
-
-    public void setShortName(String name) {
-        getNamesContainer().setJAXBShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
-    }
-
-    public String getFullName() {
-        return getNamesContainer().getJAXBFullName();
-    }
-
-    public void setFullName(String name) {
-        getNamesContainer().setJAXBFullName(name);
-    }
-
-    public Collection<Xref> getIdentifiers() {
-        return getXrefContainer().getAllIdentifiers();
-    }
-
-    public String getMIIdentifier() {
-        return getXrefContainer().getMIIdentifier();
-    }
-
-    public String getMODIdentifier() {
-        return getXrefContainer().getMODIdentifier();
-    }
-
-    public String getPARIdentifier() {
-        return getXrefContainer().getPARIdentifier();
-    }
-
-    public void setMIIdentifier(String mi) {
-        getXrefContainer().setMIIdentifier(mi);
-    }
-
-    public void setMODIdentifier(String mod) {
-        getXrefContainer().setMODIdentifier(mod);
-    }
-
-    public void setPARIdentifier(String par) {
-        getXrefContainer().setPARIdentifier(par);
-    }
-
-    public Collection<Xref> getXrefs() {
-        return getXrefContainer().getAllXrefs();
-    }
-
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
-    }
-
-    public Collection<Alias> getSynonyms() {
-        return getNamesContainer().getJAXBAliases();
-    }
-
     /**
      * Gets the value of the names property.
      *
@@ -126,18 +66,6 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
     @XmlElement(name = "names", required = true)
     public NamesContainer getJAXBNames() {
         return super.getNamesContainer();
-    }
-
-    /**
-     * Sets the value of the names property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link NamesContainer }
-     *
-     */
-    public void setJAXBNames(NamesContainer value) {
-        super.setNamesContainer(value);
     }
 
     /**
@@ -154,18 +82,6 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
             return null;
         }
         return super.getXrefContainer();
-    }
-
-    /**
-     * Sets the value of the xrefContainer property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XrefContainer }
-     *
-     */
-    public void setJAXBXref(CvTermXrefContainer value) {
-        super.setXrefContainer(value);
     }
 
     @Override

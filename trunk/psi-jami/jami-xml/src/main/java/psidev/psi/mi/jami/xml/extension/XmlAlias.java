@@ -33,7 +33,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     public XmlAlias() {
     }

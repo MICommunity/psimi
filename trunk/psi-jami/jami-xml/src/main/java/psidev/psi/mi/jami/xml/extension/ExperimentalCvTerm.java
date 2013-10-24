@@ -32,12 +32,13 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "experimentalPreparation", propOrder = {
-    "JAXBExperimentRefList"
+    "JAXBExperimentRefs"
 })
 public class ExperimentalCvTerm
     extends XmlCvTerm
 {
     private Collection<Experiment> experiments;
+    private JAXBExperimentRefList jaxbExperimentRefs;
 
     public ExperimentalCvTerm() {
     }
@@ -63,9 +64,6 @@ public class ExperimentalCvTerm
     }
 
     public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
-        }
         return experiments;
     }
 
@@ -79,20 +77,8 @@ public class ExperimentalCvTerm
      */
     @XmlElementWrapper(name="experimentRefList")
     @XmlElement(name="experimentRef", required = true)
-    public ArrayList<Integer> getJAXBExperimentRefList() {
-        if (experiments == null || experiments.isEmpty()){
-            return null;
-        }
-        ArrayList<Integer> references = new ArrayList<Integer>(experiments.size());
-        for (Experiment exp : experiments){
-            if (exp instanceof XmlExperiment){
-                references.add(((XmlExperiment) exp).getJAXBId());
-            }
-        }
-        if (references.isEmpty()){
-            return null;
-        }
-        return references;
+    public JAXBExperimentRefList getJAXBExperimentRefs() {
+        return jaxbExperimentRefs;
     }
 
     /**
@@ -103,40 +89,118 @@ public class ExperimentalCvTerm
      *     {@link Integer }
      *
      */
-    public void setJAXBExperimentRefList(ArrayList<Integer> value) {
-        if (value != null){
-            for (Integer val : value){
-                getExperiments().add(new AbstractExperimentRef(val) {
-                    public boolean resolve(Map<Integer, Object> parsedObjects) {
-                        if (parsedObjects.containsKey(this.ref)){
-                            Object obj = parsedObjects.get(this.ref);
-                            if (obj instanceof Experiment){
-                                experiments.remove(this);
-                                experiments.add((Experiment)obj);
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public String toString() {
-                        return "Experiment reference: "+ref+" in experimental CvTerm "+(getCvTermSourceLocator() != null? getCvTermSourceLocator().toString():"") ;
-                    }
-
-                    public FileSourceLocator getSourceLocator() {
-                        return getCvTermSourceLocator();
-                    }
-
-                    public void setSourceLocator(FileSourceLocator locator) {
-                        throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-                    }
-                });
-            }
-        }
+    public void setJAXBExperimentRefs(JAXBExperimentRefList value) {
+        this.jaxbExperimentRefs = value;
     }
 
     private FileSourceLocator getCvTermSourceLocator(){
         return getSourceLocator();
+    }
+
+    ////////////////////////////////////////////////////////////////// classes
+
+    /**
+     * The experiment ref list used by JAXB to populate experiment refs
+     */
+    public class JAXBExperimentRefList extends ArrayList<Integer>{
+
+        public JAXBExperimentRefList(){
+            experiments = new ArrayList<Experiment>();
+        }
+
+        public JAXBExperimentRefList(int initialCapacity) {
+            experiments = new ArrayList<Experiment>(initialCapacity);
+        }
+
+        public JAXBExperimentRefList(Collection<? extends Integer> c) {
+            experiments = new ArrayList<Experiment>(c.size());
+            addAll(c);
+        }
+
+        @Override
+        public boolean add(Integer val) {
+            if (val == null){
+                return false;
+            }
+            return experiments.add(new ExperimentRef(val));
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Integer> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Integer a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Integer element) {
+            addToSpecificIndex(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Integer> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Integer a : c){
+                if (addToSpecificIndex(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        private boolean addToSpecificIndex(int index, Integer val) {
+            if (val == null){
+                return false;
+            }
+            ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+            return true;
+        }
+    }
+
+    /**
+     * Experiment ref for experimental cv term
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    experiments.remove(this);
+                    experiments.add((Experiment)obj);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in experimental CvTerm "+(getCvTermSourceLocator() != null? getCvTermSourceLocator().toString():"") ;
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getCvTermSourceLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+        }
     }
 }

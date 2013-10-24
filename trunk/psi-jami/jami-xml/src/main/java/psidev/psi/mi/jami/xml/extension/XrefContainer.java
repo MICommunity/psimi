@@ -38,7 +38,7 @@ public class XrefContainer implements FileSourceContext, Locatable{
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
-    protected Locator locator;
+    private Locator locator;
 
     /**
      * Gets the value of the primaryRef property.

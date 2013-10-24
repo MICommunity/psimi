@@ -124,7 +124,7 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public JAXBAttributeList getJAXBAttributes() {
         return this.wrappedInteraction.getJAXBAttributes();
     }
 
@@ -134,7 +134,7 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public ArrayList<Participant> getJAXBParticipants() {
+    public JAXBParticipantList getJAXBParticipants() {
         return this.wrappedInteraction.getJAXBParticipants();
     }
 
@@ -239,7 +239,7 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public void setJAXBParticipants(ArrayList<XmlParticipant> value) {
+    public void setJAXBParticipants(JAXBParticipantList value) {
         this.wrappedInteraction.setJAXBParticipants(value);
     }
 
@@ -249,7 +249,7 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> value) {
+    public void setJAXBAttributes(JAXBAttributeList value) {
         this.wrappedInteraction.setJAXBAttributes(value);
     }
 
