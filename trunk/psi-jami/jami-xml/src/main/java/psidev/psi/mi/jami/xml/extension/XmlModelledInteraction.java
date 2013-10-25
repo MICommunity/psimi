@@ -144,6 +144,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @Override
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        super.setJAXBAttributes(value);
+    }
+
+    @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
     public Boolean getJAXBIntraMolecular() {
         return super.getJAXBIntraMolecular();
@@ -151,8 +156,13 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @XmlElementWrapper(name="participantList")
     @XmlElements({ @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)})
-    public JAXBParticipantList getJAXBParticipants() {
+    public JAXBParticipantList<ModelledParticipant> getJAXBParticipants() {
         return super.getJAXBParticipants();
+    }
+
+    @Override
+    public void setJAXBParticipants(JAXBParticipantList<ModelledParticipant> jaxbParticipantList) {
+        super.setJAXBParticipants(jaxbParticipantList);
     }
 
     @Override

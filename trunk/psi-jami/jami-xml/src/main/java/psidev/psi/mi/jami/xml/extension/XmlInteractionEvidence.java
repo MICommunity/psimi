@@ -187,6 +187,11 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        super.setJAXBAttributes(value);
+    }
+
+    @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
     public Boolean getJAXBIntraMolecular() {
         return super.getJAXBIntraMolecular();
@@ -202,8 +207,13 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<Participant> }
      *
      */
-    public JAXBParticipantList getJAXBParticipants() {
+    public JAXBParticipantList<ParticipantEvidence> getJAXBParticipants() {
         return super.getJAXBParticipants();
+    }
+
+    @Override
+    public void setJAXBParticipants(JAXBParticipantList<ParticipantEvidence> jaxbParticipantList) {
+        super.setJAXBParticipants(jaxbParticipantList);
     }
 
     @Override
@@ -367,7 +377,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      */
     public void setJAXBExperimentList(JAXBExperimentList value) {
         this.jaxbExperimentList = value;
-        this.jaxbExperimentList.parent = this;
+        if (value != null){
+            this.jaxbExperimentList.parent = this;
+        }
     }
 
     /**
@@ -527,6 +539,10 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
          */
         public void setJAXBExperimentDescriptions(JAXBExperimentDescriptionList value) {
             this.originalExperiments = value;
+            if (value != null){
+               experiments = new ArrayList<Experiment>();
+               value.parent = this;
+            }
         }
 
         @XmlElements({@XmlElement(name="experimentRef", required = true)})
@@ -544,6 +560,10 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
          */
         public void setJAXBExperimentRefs(JAXBExperimentRefList value) {
             this.jaxbExperimentRefList = value;
+            if (value != null){
+                experiments = new ArrayList<Experiment>();
+                value.parent = this;
+            }
         }
 
         @Override
@@ -575,21 +595,20 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         /**
          * The experiment ref list used by JAXB to populate experiment refs
          */
-        public class JAXBExperimentDescriptionList extends ArrayList<XmlExperiment>{
+        public static class JAXBExperimentDescriptionList extends ArrayList<XmlExperiment>{
+
+            private JAXBExperimentList parent;
 
             public JAXBExperimentDescriptionList(){
                 super();
-                experiments = new ArrayList<Experiment>();
             }
 
             public JAXBExperimentDescriptionList(int initialCapacity) {
                 super();
-                experiments = new ArrayList<Experiment>(initialCapacity);
             }
 
             public JAXBExperimentDescriptionList(Collection<? extends XmlExperiment> c) {
                 super();
-                experiments = new ArrayList<Experiment>(c.size());
                 addAll(c);
             }
 
@@ -598,8 +617,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                 if (val == null){
                     return false;
                 }
-                if(experiments.add(val)){
-                    val.getInteractionEvidences().add(parent);
+                if(parent.experiments.add(val)){
+                    val.getInteractionEvidences().add(parent.parent);
                     return true;
                 }
                 return false;
@@ -645,26 +664,24 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                 if (val == null){
                     return false;
                 }
-                experiments.add(index, val);
-                val.getInteractionEvidences().add(parent);
+                parent.experiments.add(index, val);
+                val.getInteractionEvidences().add(parent.parent);
                 return true;
             }
         }
         /**
          * The experiment ref list used by JAXB to populate experiment refs
          */
-        public class JAXBExperimentRefList extends ArrayList<Integer>{
+        public static class JAXBExperimentRefList extends ArrayList<Integer>{
+            private JAXBExperimentList parent;
 
             public JAXBExperimentRefList(){
-                experiments = new ArrayList<Experiment>();
             }
 
             public JAXBExperimentRefList(int initialCapacity) {
-                experiments = new ArrayList<Experiment>(initialCapacity);
             }
 
             public JAXBExperimentRefList(Collection<? extends Integer> c) {
-                experiments = new ArrayList<Experiment>(c.size());
                 addAll(c);
             }
 
@@ -673,7 +690,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                 if (val == null){
                     return false;
                 }
-                return experiments.add(new ExperimentRef(val));
+                return parent.experiments.add(new ExperimentRef(val));
             }
 
             @Override
@@ -716,53 +733,53 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                 if (val == null){
                     return false;
                 }
-                ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+                ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
                 return true;
             }
-        }
 
-        /**
-         * Experiment ref for experimental interactor
-         */
-        private class ExperimentRef extends AbstractExperimentRef{
-            public ExperimentRef(int ref) {
-                super(ref);
-            }
-
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof XmlExperiment){
-                        XmlExperiment exp = (XmlExperiment)obj;
-                        experiments.remove(this);
-                        experiments.add(exp);
-                        originalExperiments.add(exp);
-                        exp.getInteractionEvidences().add(parent);
-
-                        return true;
-                    }
-                    else if (obj instanceof Experiment){
-                        Experiment exp = (Experiment)obj;
-                        experiments.remove(this);
-                        experiments.add(exp);
-                        exp.getInteractionEvidences().add(parent);
-                        return true;
-                    }
+            /**
+             * Experiment ref for experimental interactor
+             */
+            private class ExperimentRef extends AbstractExperimentRef{
+                public ExperimentRef(int ref) {
+                    super(ref);
                 }
-                return false;
-            }
 
-            @Override
-            public String toString() {
-                return "Experiment reference: "+ref+" in interaction "+(getListLocator() != null? getListLocator().toString():"") ;
-            }
+                public boolean resolve(Map<Integer, Object> parsedObjects) {
+                    if (parsedObjects.containsKey(this.ref)){
+                        Object obj = parsedObjects.get(this.ref);
+                        if (obj instanceof XmlExperiment){
+                            XmlExperiment exp = (XmlExperiment)obj;
+                            parent.experiments.remove(this);
+                            parent.experiments.add(exp);
+                            parent.originalExperiments.add(exp);
+                            exp.getInteractionEvidences().add(parent.parent);
 
-            public FileSourceLocator getSourceLocator() {
-                return getListLocator();
-            }
+                            return true;
+                        }
+                        else if (obj instanceof Experiment){
+                            Experiment exp = (Experiment)obj;
+                            parent.experiments.remove(this);
+                            parent.experiments.add(exp);
+                            exp.getInteractionEvidences().add(parent.parent);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
 
-            public void setSourceLocator(FileSourceLocator locator) {
-                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                @Override
+                public String toString() {
+                    return "Experiment reference: "+ref+" in interaction "+(parent.getListLocator() != null? parent.getListLocator().toString():"") ;
+                }
+
+                public FileSourceLocator getSourceLocator() {
+                    return parent.getListLocator();
+                }
+
+                public void setSourceLocator(FileSourceLocator locator) {
+                    throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+                }
             }
         }
     }

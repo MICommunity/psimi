@@ -339,6 +339,9 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      */
     public void setJAXBAttributes(JAXBAttributeList  value) {
         this.jaxbAttributeList = value;
+        if (value != null){
+            this.jaxbAttributeList.parent = this;
+        }
     }
 
     /**
@@ -393,12 +396,15 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link ArrayList<Participant> }
      *
      */
-    public JAXBParticipantList getJAXBParticipants() {
+    public JAXBParticipantList<T> getJAXBParticipants() {
         return jaxbParticipantList;
     }
 
-    public void setJAXBParticipants(JAXBParticipantList jaxbParticipantList) {
+    public void setJAXBParticipants(JAXBParticipantList<T> jaxbParticipantList) {
         this.jaxbParticipantList = jaxbParticipantList;
+        if (jaxbParticipantList != null){
+            this.jaxbParticipantList.parent = this;
+        }
     }
 
     @Override
@@ -483,7 +489,9 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     /**
      * The attribute list used by JAXB to populate interaction annotations
      */
-    public class JAXBAttributeList extends ArrayList<Annotation>{
+    public static class JAXBAttributeList extends ArrayList<Annotation>{
+
+        private AbstractXmlInteraction parent;
 
         public JAXBAttributeList(){
         }
@@ -505,7 +513,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
                     || AnnotationUtils.doesAnnotationHaveTopic(annotation, null, Checksum.RIGID)){
                 XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXmlUtils.UNSPECIFIED);
                 checksum.setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                getChecksums().add(checksum);
+                parent.getChecksums().add(checksum);
                 return false;
             }
             else {
@@ -557,7 +565,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
                     || AnnotationUtils.doesAnnotationHaveTopic(element, null, Checksum.RIGID)){
                 XmlChecksum checksum = new XmlChecksum(element.getTopic(), element.getValue() != null ? element.getValue() : PsiXmlUtils.UNSPECIFIED);
                 checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)element).getSourceLocator());
-                getChecksums().add(checksum);
+                parent.getChecksums().add(checksum);
                 return false;
             }
             else {
@@ -570,7 +578,9 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     /**
      * The participant list used by JAXB to populate interaction participants
      */
-    public class JAXBParticipantList extends ArrayList<T>{
+    public static class JAXBParticipantList<T extends Participant> extends ArrayList<T>{
+
+        private AbstractXmlInteraction<T> parent;
 
         public JAXBParticipantList(){
         }
@@ -590,7 +600,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
             }
 
             if (super.add(participant)){
-                processAddedParticipant(participant);
+                parent.processAddedParticipant(participant);
                 return true;
             }
             return false;
@@ -614,7 +624,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         @Override
         public void add(int index, T element) {
             super.add(index, element);
-            processAddedParticipant(element);
+            parent.processAddedParticipant(element);
         }
 
         @Override

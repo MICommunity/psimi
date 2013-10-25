@@ -321,6 +321,9 @@ public class BibRef
 
     public void setJAXBAttributes(JAXBAttributeList annotations) {
         this.jaxbAttributeList = annotations;
+        if (annotations != null){
+            this.jaxbAttributeList.parent = this;
+        }
     }
 
     @Override
@@ -366,7 +369,9 @@ public class BibRef
     /**
      * The attribute list used by JAXB to populate participant annotations
      */
-    public class JAXBAttributeList extends ArrayList<Annotation>{
+    public static class JAXBAttributeList extends ArrayList<Annotation>{
+
+        private BibRef parent;
 
         public JAXBAttributeList(){
         }
@@ -385,50 +390,50 @@ public class BibRef
                 return false;
             }
             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                title = annot.getValue();
+                parent.title = annot.getValue();
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                journal = annot.getValue();
+                parent.journal = annot.getValue();
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
                 if (annot.getValue() == null){
-                    publicationDate = null;
+                    parent.publicationDate = null;
                     return false;
                 }
                 else {
                     try {
-                        publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                        parent.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
                         return false;
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        publicationDate = null;
+                        parent.publicationDate = null;
                         return super.add(annot);
                     }
                 }
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                curationDepth = CurationDepth.IMEx;
+                parent.curationDepth = CurationDepth.IMEx;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                curationDepth = CurationDepth.MIMIx;
+                parent.curationDepth = CurationDepth.MIMIx;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                curationDepth = CurationDepth.rapid_curation;
+                parent.curationDepth = CurationDepth.rapid_curation;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
                 if (annot.getValue() == null){
-                    getAuthors().clear();
+                    parent.getAuthors().clear();
                 }
                 else if (annot.getValue().contains(",")){
-                    getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
+                    parent.getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
                 }
                 else {
-                    getAuthors().add(annot.getValue());
+                    parent.getAuthors().add(annot.getValue());
                 }
                 return false;
             }
@@ -478,51 +483,51 @@ public class BibRef
                 return false;
             }
             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                title = annot.getValue();
+                parent.title = annot.getValue();
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                journal = annot.getValue();
+                parent.journal = annot.getValue();
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
                 if (annot.getValue() == null){
-                    publicationDate = null;
+                    parent.publicationDate = null;
                     return false;
                 }
                 else {
                     try {
-                        publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                        parent.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
                         return false;
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        publicationDate = null;
+                        parent.publicationDate = null;
                         super.add(index, annot);
                         return true;
                     }
                 }
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                curationDepth = CurationDepth.IMEx;
+                parent.curationDepth = CurationDepth.IMEx;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                curationDepth = CurationDepth.MIMIx;
+                parent.curationDepth = CurationDepth.MIMIx;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                curationDepth = CurationDepth.rapid_curation;
+                parent.curationDepth = CurationDepth.rapid_curation;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
                 if (annot.getValue() == null){
-                    getAuthors().clear();
+                    parent.getAuthors().clear();
                 }
                 else if (annot.getValue().contains(",")){
-                    getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
+                    parent.getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
                 }
                 else {
-                    getAuthors().add(annot.getValue());
+                    parent.getAuthors().add(annot.getValue());
                 }
                 return false;
             }

@@ -437,6 +437,9 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
      */
     public void setJAXBAttributes(JAXBAttributeList value) {
         this.jaxbAttributeList = value;
+        if (value != null){
+           this.jaxbAttributeList.parent = this;
+        }
     }
 
     protected void createDefaultInteractorType() {
@@ -478,7 +481,9 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     /**
      * The attribute list used by JAXB to populate interactor annotations
      */
-    public class JAXBAttributeList extends ArrayList<Annotation>{
+    public static class JAXBAttributeList extends ArrayList<Annotation>{
+
+        private XmlInteractor parent;
 
         public JAXBAttributeList(){
         }
@@ -507,7 +512,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
                     || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
                 XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
                 checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
-                getChecksums().add(checksum);
+                parent.getChecksums().add(checksum);
                 return false;
             }
             else {
@@ -566,7 +571,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
                     || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
                 XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
                 checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
-                getChecksums().add(checksum);
+                parent.getChecksums().add(checksum);
                 return false;
             }
             else {

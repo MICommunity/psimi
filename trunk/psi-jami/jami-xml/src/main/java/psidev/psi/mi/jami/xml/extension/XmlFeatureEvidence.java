@@ -172,6 +172,10 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      */
     public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
         this.jaxbExperimentRefList = value;
+        if (value != null){
+            experiments = new ArrayList<Experiment>();
+            this.jaxbExperimentRefList.parent = this;
+        }
     }
 
     /**
@@ -273,18 +277,17 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     /**
      * The experiment ref list used by JAXB to populate experiment refs
      */
-    public class JAXBExperimentRefList extends ArrayList<Integer>{
+    public static class JAXBExperimentRefList extends ArrayList<Integer>{
+
+        private XmlFeatureEvidence parent;
 
         public JAXBExperimentRefList(){
-            experiments = new ArrayList<Experiment>();
         }
 
         public JAXBExperimentRefList(int initialCapacity) {
-            experiments = new ArrayList<Experiment>(initialCapacity);
         }
 
         public JAXBExperimentRefList(Collection<? extends Integer> c) {
-            experiments = new ArrayList<Experiment>(c.size());
             addAll(c);
         }
 
@@ -293,7 +296,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             if (val == null){
                 return false;
             }
-            return experiments.add(new ExperimentRef(val));
+            return parent.experiments.add(new ExperimentRef(val));
         }
 
         @Override
@@ -336,42 +339,43 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             if (val == null){
                 return false;
             }
-            ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+            ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
             return true;
         }
-    }
+        ////////////////////////////////////////////////// classes
 
-    /**
-     * Experiment ref for experimental interactor
-     */
-    private class ExperimentRef extends AbstractExperimentRef{
-        public ExperimentRef(int ref) {
-            super(ref);
-        }
-
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Experiment){
-                    experiments.remove(this);
-                    experiments.add((Experiment)obj);
-                    return true;
-                }
+        /**
+         * Experiment ref for experimental interactor
+         */
+        private class ExperimentRef extends AbstractExperimentRef{
+            public ExperimentRef(int ref) {
+                super(ref);
             }
-            return false;
-        }
 
-        @Override
-        public String toString() {
-            return "Experiment reference: "+ref+" in feature "+(getFeatureLocator() != null? getFeatureLocator().toString():"") ;
-        }
+            public boolean resolve(Map<Integer, Object> parsedObjects) {
+                if (parsedObjects.containsKey(this.ref)){
+                    Object obj = parsedObjects.get(this.ref);
+                    if (obj instanceof Experiment){
+                        parent.experiments.remove(this);
+                        parent.experiments.add((Experiment)obj);
+                        return true;
+                    }
+                }
+                return false;
+            }
 
-        public FileSourceLocator getSourceLocator() {
-            return getFeatureLocator();
-        }
+            @Override
+            public String toString() {
+                return "Experiment reference: "+ref+" in feature "+(parent.getFeatureLocator() != null? parent.getFeatureLocator().toString():"") ;
+            }
 
-        public void setSourceLocator(FileSourceLocator locator) {
-            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            public FileSourceLocator getSourceLocator() {
+                return parent.getFeatureLocator();
+            }
+
+            public void setSourceLocator(FileSourceLocator locator) {
+                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            }
         }
     }
 }

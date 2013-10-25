@@ -239,7 +239,7 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     }
 
     @Override
-    public void setJAXBParticipants(ArrayList<XmlModelledParticipant> value) {
+    public void setJAXBParticipants(JAXBParticipantList value) {
         this.wrappedInteraction.setJAXBParticipants(value);
     }
 
@@ -329,7 +329,7 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     }
 
     @Override
-    public void setJAXBConfidences(ArrayList<XmlModelledConfidence> value) {
+    public void setJAXBConfidences(ArrayList<ModelledConfidence> value) {
         this.wrappedInteraction.setJAXBConfidences(value);
     }
 
@@ -339,7 +339,7 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     }
 
     @Override
-    public void setJAXBParameters(ArrayList<XmlModelledParameter> value) {
+    public void setJAXBParameters(ArrayList<ModelledParameter> value) {
         this.wrappedInteraction.setJAXBParameters(value);
     }
 }
