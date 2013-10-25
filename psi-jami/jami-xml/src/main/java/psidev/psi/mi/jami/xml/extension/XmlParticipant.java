@@ -83,8 +83,18 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
     @Override
     @XmlElementWrapper(name="featureList")
     @XmlElements({ @XmlElement(type=XmlFeature.class, name="feature", required = true)})
-    public JAXBFeatureList getJAXBFeatures() {
+    public JAXBFeatureList<Feature> getJAXBFeatures() {
         return super.getJAXBFeatures();
+    }
+
+    @Override
+    public void setJAXBFeatures(JAXBFeatureList<Feature> value) {
+        super.setJAXBFeatures(value);
+    }
+
+    @Override
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        super.setJAXBAttributes(value);
     }
 
     @Override

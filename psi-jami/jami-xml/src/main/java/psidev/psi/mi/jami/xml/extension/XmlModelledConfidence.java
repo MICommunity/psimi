@@ -74,6 +74,10 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
      */
     public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
         this.jaxbExperimentRefList = value;
+        if (value != null){
+            experiments = new ArrayList<Experiment>();
+            this.jaxbExperimentRefList.parent = this;
+        }
     }
 
     private FileSourceLocator getConfidenceLocator(){
@@ -83,18 +87,17 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
     /**
      * The experiment ref list used by JAXB to populate experiment refs
      */
-    public class JAXBExperimentRefList extends ArrayList<Integer>{
+    public static class JAXBExperimentRefList extends ArrayList<Integer>{
+
+        private XmlModelledConfidence parent;
 
         public JAXBExperimentRefList(){
-            experiments = new ArrayList<Experiment>();
         }
 
         public JAXBExperimentRefList(int initialCapacity) {
-            experiments = new ArrayList<Experiment>(initialCapacity);
         }
 
         public JAXBExperimentRefList(Collection<? extends Integer> c) {
-            experiments = new ArrayList<Experiment>(c.size());
             addAll(c);
         }
 
@@ -103,7 +106,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
             if (val == null){
                 return false;
             }
-            return experiments.add(new ExperimentRef(val));
+            return parent.experiments.add(new ExperimentRef(val));
         }
 
         @Override
@@ -146,46 +149,46 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
             if (val == null){
                 return false;
             }
-            ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+            ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
             return true;
         }
-    }
 
-    /**
-     * Experiment ref for experimental interactor
-     */
-    private class ExperimentRef extends AbstractExperimentRef{
-        public ExperimentRef(int ref) {
-            super(ref);
-        }
-
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Experiment){
-                    Experiment exp = (Experiment)obj;
-                    experiments.remove(this);
-                    experiments.add(exp);
-                    if (exp.getPublication() != null){
-                        publications.add(exp.getPublication());
-                    }
-                    return true;
-                }
+        /**
+         * Experiment ref for experimental interactor
+         */
+        private class ExperimentRef extends AbstractExperimentRef{
+            public ExperimentRef(int ref) {
+                super(ref);
             }
-            return false;
-        }
 
-        @Override
-        public String toString() {
-            return "Experiment reference: "+ref+" in confidence "+(getConfidenceLocator() != null? getConfidenceLocator().toString():"") ;
-        }
+            public boolean resolve(Map<Integer, Object> parsedObjects) {
+                if (parsedObjects.containsKey(this.ref)){
+                    Object obj = parsedObjects.get(this.ref);
+                    if (obj instanceof Experiment){
+                        Experiment exp = (Experiment)obj;
+                        parent.experiments.remove(this);
+                        parent.experiments.add(exp);
+                        if (exp.getPublication() != null){
+                            parent.publications.add(exp.getPublication());
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
 
-        public FileSourceLocator getSourceLocator() {
-            return getConfidenceLocator();
-        }
+            @Override
+            public String toString() {
+                return "Experiment reference: "+ref+" in confidence "+(parent.getConfidenceLocator() != null? parent.getConfidenceLocator().toString():"") ;
+            }
 
-        public void setSourceLocator(FileSourceLocator locator) {
-            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            public FileSourceLocator getSourceLocator() {
+                return parent.getConfidenceLocator();
+            }
+
+            public void setSourceLocator(FileSourceLocator locator) {
+                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            }
         }
     }
 }

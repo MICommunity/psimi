@@ -536,6 +536,9 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
     public void setJAXBAttributes(JAXBAttributeList annotations) {
         this.jaxbAttributeList = annotations;
+        if (annotations != null){
+            this.jaxbAttributeList.parent = this;
+        }
     }
 
     /**
@@ -611,7 +614,9 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     /**
      * The attribute list used by JAXB to populate experiment annotations
      */
-    public class JAXBAttributeList extends ArrayList<Annotation>{
+    public static class JAXBAttributeList extends ArrayList<Annotation>{
+
+        private XmlExperiment parent;
 
         public JAXBAttributeList(){
         }
@@ -629,6 +634,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
             if (annot == null){
                 return false;
             }
+            Publication publication = parent.getPublication();
             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
                 if (publication == null){
                     publication = new BibRef();
@@ -752,6 +758,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
             if (annot == null){
                 return false;
             }
+            Publication publication = parent.getPublication();
             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
                 if (publication == null){
                     publication = new BibRef();

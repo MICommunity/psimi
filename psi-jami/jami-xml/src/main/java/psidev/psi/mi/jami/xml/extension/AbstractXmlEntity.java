@@ -376,7 +376,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *     {@link AbstractXmlFeature }
      *
      */
-    public JAXBFeatureList getJAXBFeatures() {
+    public JAXBFeatureList<F> getJAXBFeatures() {
         return this.jaxbFeatureList;
     }
 
@@ -388,8 +388,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      *     {@link AbstractXmlFeature }
      *
      */
-    public void setJAXBFeatures(JAXBFeatureList value) {
+    public void setJAXBFeatures(JAXBFeatureList<F> value) {
         this.jaxbFeatureList = value;
+        if (value != null){
+            this.jaxbFeatureList.parent = this;
+        }
     }
 
     /**
@@ -438,6 +441,9 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      */
     public void setJAXBAttributes(JAXBAttributeList value) {
         this.jaxbAttributeList = value;
+        if (value != null){
+            this.jaxbAttributeList.parent = this;
+        }
     }
 
     /**
@@ -513,10 +519,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         feature.setParticipant(this);
     }
 
-    private AbstractXmlEntity<F> getCurrentInstance(){
-        return this;
-    }
-
     private FileSourceLocator getParticipantLocator(){
         return getSourceLocator();
     }
@@ -526,7 +528,9 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     /**
      * The attribute list used by JAXB to populate participant annotations
      */
-    public class JAXBAttributeList extends ArrayList<Annotation>{
+    public static class JAXBAttributeList extends ArrayList<Annotation>{
+
+        private AbstractXmlEntity parent;
 
         public JAXBAttributeList(){
         }
@@ -556,8 +560,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
                     if (stcs.length == 2){
                         try{
                             XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
-                            s.setSourceLocator((PsiXmLocator)getSourceLocator());
-                            stoichiometry = s;
+                            s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
+                            parent.stoichiometry = s;
                             return false;
                         }
                         catch (NumberFormatException e){
@@ -574,8 +578,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
                 else {
                     try{
                         XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
-                        s.setSourceLocator((PsiXmLocator)getSourceLocator());
-                        stoichiometry = s;
+                        s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
+                        parent.stoichiometry = s;
                         return false;
                     }
                     // not a number, keep the annotation as annotation
@@ -640,8 +644,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
                         if (stcs.length == 2){
                             try{
                                 XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
-                                s.setSourceLocator((PsiXmLocator)getSourceLocator());
-                                stoichiometry = s;
+                                s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
+                                parent.stoichiometry = s;
                                 return false;
                             }
                             catch (NumberFormatException e){
@@ -660,8 +664,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
                     else {
                         try{
                             XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
-                            s.setSourceLocator((PsiXmLocator)getSourceLocator());
-                            stoichiometry = s;
+                            s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
+                            parent.stoichiometry = s;
                             return false;
                         }
                         // not a number, keep the annotation as annotation
@@ -684,7 +688,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     /**
      * The feature list used by JAXB to populate participant features
      */
-    public class JAXBFeatureList extends ArrayList<F>{
+    public static class JAXBFeatureList<F extends Feature> extends ArrayList<F>{
+        private AbstractXmlEntity<F> parent;
 
         public JAXBFeatureList(){
         }
@@ -704,7 +709,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
             }
 
             if (super.add(feature)){
-                processAddedFeature(feature);
+                parent.processAddedFeature(feature);
                 return true;
             }
             return false;
@@ -728,7 +733,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         @Override
         public void add(int index, F element) {
             super.add(index, element);
-            element.setParticipant(getCurrentInstance());
+            element.setParticipant(parent);
         }
 
         @Override

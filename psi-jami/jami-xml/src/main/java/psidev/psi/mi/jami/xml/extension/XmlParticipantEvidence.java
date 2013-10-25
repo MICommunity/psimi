@@ -185,7 +185,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @Override
     @XmlElementWrapper(name="featureList")
     @XmlElements({ @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true)})
-    public JAXBFeatureList getJAXBFeatures() {
+    public JAXBFeatureList<FeatureEvidence> getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
 
@@ -206,6 +206,16 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
+    }
+
+    @Override
+    public void setJAXBFeatures(JAXBFeatureList<FeatureEvidence> value) {
+        super.setJAXBFeatures(value);
+    }
+
+    @Override
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        super.setJAXBAttributes(value);
     }
 
     /**

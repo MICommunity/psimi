@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.XmlIdReference;
@@ -330,7 +329,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 StartElement nextEvt = (StartElement) this.eventReader.peek();
                 // process source of entry
                 if (PsiXmlUtils.SOURCE_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                    entryContext.getCurrentEntry().setSource((Source) this.unmarshaller.unmarshal(subEventReader));
+                    entryContext.getCurrentEntry().setSource((XmlSource) this.unmarshaller.unmarshal(subEventReader));
                 }
                 // process availability
                 else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){

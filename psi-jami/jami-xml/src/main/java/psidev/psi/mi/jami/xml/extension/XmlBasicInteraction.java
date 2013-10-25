@@ -71,6 +71,11 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     }
 
     @Override
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        super.setJAXBAttributes(value);
+    }
+
+    @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
     public Boolean getJAXBIntraMolecular() {
         return super.getJAXBIntraMolecular();
@@ -78,8 +83,13 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @XmlElementWrapper(name="participantList")
     @XmlElements({ @XmlElement(type=XmlParticipant.class, name = "participant", required = true)})
-    public JAXBParticipantList getJAXBParticipants() {
+    public JAXBParticipantList<Participant> getJAXBParticipants() {
         return super.getJAXBParticipants();
+    }
+
+    @Override
+    public void setJAXBParticipants(JAXBParticipantList<Participant> jaxbParticipantList) {
+        super.setJAXBParticipants(jaxbParticipantList);
     }
 
     @Override

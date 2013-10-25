@@ -83,7 +83,7 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @Override
     @XmlElementWrapper(name="featureList")
     @XmlElements({ @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)})
-    public JAXBFeatureList getJAXBFeatures() {
+    public JAXBFeatureList<ModelledFeature> getJAXBFeatures() {
         return super.getJAXBFeatures();
     }
 
@@ -104,6 +104,16 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
     public JAXBAttributeList getJAXBAttributes() {
         return super.getJAXBAttributes();
+    }
+
+    @Override
+    public void setJAXBAttributes(JAXBAttributeList value) {
+        super.setJAXBAttributes(value);
+    }
+
+    @Override
+    public void setJAXBFeatures(JAXBFeatureList<ModelledFeature> value) {
+        super.setJAXBFeatures(value);
     }
 
     @Override
