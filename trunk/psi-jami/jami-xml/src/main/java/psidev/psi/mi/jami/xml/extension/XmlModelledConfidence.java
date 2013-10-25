@@ -59,7 +59,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElements({@XmlElement(name="experimentRef", required = true)})
+    @XmlElement(name="experimentRef", required = true)
     public JAXBExperimentRefList getJAXBExperimentRefList() {
         return jaxbExperimentRefList;
     }

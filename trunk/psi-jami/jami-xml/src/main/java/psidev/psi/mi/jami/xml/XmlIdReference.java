@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import java.util.Map;
 
 /**
- * A XML reference to an object having an id
+ * A XML reference to an parent having an id
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

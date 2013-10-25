@@ -405,7 +405,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *
      */
     @XmlElementWrapper(name="hostOrganismList")
-    @XmlElements({ @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)})
+    @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)
     public ArrayList<Organism> getJAXBHostOrganisms() {
         return this.hostOrganisms;
     }
@@ -511,7 +511,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElements({ @XmlElement(type=XmlConfidence.class, name="confidence", required = true)})
+    @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
     public ArrayList<Confidence> getJAXBConfidenceList() {
         return (ArrayList<Confidence>)confidences;
     }
@@ -529,7 +529,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     public JAXBAttributeList getJAXBAttributes() {
         return jaxbAttributeList;
     }

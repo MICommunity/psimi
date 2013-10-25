@@ -4,8 +4,11 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.AbstractEntityAttributeList;
+import psidev.psi.mi.jami.xml.AbstractEntityFeatureList;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 
 /**
  * XML implementation of ModelledParticipant
@@ -30,6 +33,8 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @XmlLocation
     @XmlTransient
     protected Locator locator;
+    private JAXBAttributeList jaxbAttributeList;
+    private JAXBFeatureList jaxbFeatureList;
 
     public XmlModelledParticipant() {
     }
@@ -80,11 +85,25 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
         return super.getJAXBBiologicalRole();
     }
 
-    @Override
     @XmlElementWrapper(name="featureList")
-    @XmlElements({ @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)})
-    public JAXBFeatureList<ModelledFeature> getJAXBFeatures() {
-        return super.getJAXBFeatures();
+    @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)
+    public JAXBFeatureList getJAXBFeatures() {
+        return this.jaxbFeatureList;
+    }
+
+    /**
+     * Sets the value of the featureList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link AbstractXmlFeature }
+     *
+     */
+    public void setJAXBFeatures(JAXBFeatureList value) {
+        this.jaxbFeatureList = value;
+        if (value != null){
+            this.jaxbFeatureList.setParent(this);
+        }
     }
 
     @Override
@@ -99,21 +118,25 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
         return super.getJAXBId();
     }
 
-    @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     public JAXBAttributeList getJAXBAttributes() {
-        return super.getJAXBAttributes();
+        return this.jaxbAttributeList;
     }
 
-    @Override
+    /**
+     * Sets the value of the jaxbAttributeList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link XmlAnnotation }
+     *
+     */
     public void setJAXBAttributes(JAXBAttributeList value) {
-        super.setJAXBAttributes(value);
-    }
-
-    @Override
-    public void setJAXBFeatures(JAXBFeatureList<ModelledFeature> value) {
-        super.setJAXBFeatures(value);
+        this.jaxbAttributeList = value;
+        if (value != null){
+            this.jaxbAttributeList.setParent(this);
+        }
     }
 
     @Override
@@ -131,6 +154,46 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
         }
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+        }
+    }
+
+    @Override
+    protected void initialiseAnnotations() {
+        if (jaxbAttributeList != null){
+            super.initialiseAnnotationsWith(new ArrayList<Annotation>(jaxbAttributeList));
+            this.jaxbAttributeList = null;
+        }else{
+            super.initialiseAnnotations();
+        }
+    }
+
+    @Override
+    protected void initialiseFeatures(){
+        if (jaxbFeatureList != null){
+            super.initialiseFeaturesWith(new ArrayList<ModelledFeature>(jaxbFeatureList));
+            this.jaxbFeatureList = null;
+        }else{
+            super.initialiseFeatures();
+        }
+    }
+
+    /**
+     * The attribute list used by JAXB to populate participant annotations
+     */
+    public static class JAXBAttributeList extends AbstractEntityAttributeList<XmlModelledParticipant> {
+
+        public JAXBAttributeList(){
+            super();
+        }
+    }
+
+    /**
+     * The feature list used by JAXB to populate participant features
+     */
+    public static class JAXBFeatureList extends AbstractEntityFeatureList<ModelledFeature, XmlModelledParticipant> {
+
+        public JAXBFeatureList(){
+            super();
         }
     }
 }

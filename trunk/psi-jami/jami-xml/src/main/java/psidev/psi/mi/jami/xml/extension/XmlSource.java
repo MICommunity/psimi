@@ -225,7 +225,7 @@ public class XmlSource extends XmlOpenCvTerm
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({@XmlElement(type = XmlAnnotation.class, name = "attribute", required = true)})
+    @XmlElement(type = XmlAnnotation.class, name = "attribute", required = true)
     @Override
     public SourceAnnotationList getJAXBAttributes() {
         return (SourceAnnotationList) super.getAttributes();

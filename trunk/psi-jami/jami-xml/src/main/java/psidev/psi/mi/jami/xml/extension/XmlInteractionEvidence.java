@@ -8,6 +8,8 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractAvailabilityRef;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.AbstractInteractionAttributeList;
+import psidev.psi.mi.jami.xml.AbstractInteractionParticipantList;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;
@@ -50,6 +52,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     @XmlTransient
     private Locator locator;
     private JAXBExperimentList jaxbExperimentList;
+    private JAXBAttributeList jaxbAttributeList;
+    private JAXBParticipantList jaxbParticipantList;
 
     public XmlInteractionEvidence() {
         super();
@@ -179,16 +183,25 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         return super.getJAXBId();
     }
 
-    @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     public JAXBAttributeList getJAXBAttributes() {
-        return super.getJAXBAttributes();
+        return jaxbAttributeList;
     }
 
-    @Override
-    public void setJAXBAttributes(JAXBAttributeList value) {
-        super.setJAXBAttributes(value);
+    /**
+     * Sets the value of the attributeList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link ArrayList< psidev.psi.mi.jami.model.Annotation >  }
+     *
+     */
+    public void setJAXBAttributes(JAXBAttributeList  value) {
+        this.jaxbAttributeList = value;
+        if (value != null){
+            this.jaxbAttributeList.setParent(this);
+        }
     }
 
     @Override
@@ -198,7 +211,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @XmlElementWrapper(name="participantList")
-    @XmlElements({ @XmlElement(type=XmlParticipantEvidence.class, name="participant", required = true)})
+    @XmlElement(type=XmlParticipantEvidence.class, name="participant", required = true)
     /**
      * Gets the value of the participantList property.
      *
@@ -207,18 +220,20 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<Participant> }
      *
      */
-    public JAXBParticipantList<ParticipantEvidence> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+    public JAXBParticipantList getJAXBParticipants() {
+        return jaxbParticipantList;
     }
 
-    @Override
-    public void setJAXBParticipants(JAXBParticipantList<ParticipantEvidence> jaxbParticipantList) {
-        super.setJAXBParticipants(jaxbParticipantList);
+    public void setJAXBParticipants(JAXBParticipantList jaxbParticipantList) {
+        this.jaxbParticipantList = jaxbParticipantList;
+        if (jaxbParticipantList != null){
+            this.jaxbParticipantList.setParent(this);
+        }
     }
 
     @Override
     @XmlElementWrapper(name="inferredInteractionList")
-    @XmlElements({@XmlElement(name="inferredInteraction", required = true)})
+    @XmlElement(name="inferredInteraction", required = true)
     public ArrayList<InferredInteraction> getJAXBInferredInteractions() {
         return super.getJAXBInferredInteractions();
     }
@@ -256,7 +271,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElements({ @XmlElement(type=XmlConfidence.class, name="confidence", required = true)})
+    @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
     public ArrayList<Confidence> getJAXBConfidences() {
         return (ArrayList<Confidence>)confidences;
     }
@@ -282,7 +297,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     @XmlElementWrapper(name="parameterList")
-    @XmlElements({ @XmlElement(type=XmlParameter.class,name="parameter", required = true)})
+    @XmlElement(type=XmlParameter.class,name="parameter", required = true)
     public ArrayList<Parameter> getJAXBParameters() {
         return (ArrayList<Parameter>)parameters;
     }
@@ -455,7 +470,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
-    protected void processAddedParticipant(ParticipantEvidence participant) {
+    public void processAddedParticipant(ParticipantEvidence participant) {
         ((XmlParticipantEvidence)participant).setOriginalXmlInteraction(this);
     }
 
@@ -466,7 +481,47 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         return sourceLocation();
     }
 
+    @Override
+    protected void initialiseAnnotations(){
+        if (jaxbAttributeList != null){
+            super.initialiseAnnotationsWith(new ArrayList<Annotation>(jaxbAttributeList));
+            this.jaxbAttributeList = null;
+        }else{
+            super.initialiseAnnotations();
+        }
+    }
+
+    @Override
+    protected void initialiseParticipants(){
+        if (jaxbParticipantList != null){
+            super.initialiseParticipantsWith(new ArrayList<ParticipantEvidence>(jaxbParticipantList));
+            this.jaxbParticipantList = null;
+        }else{
+            super.initialiseParticipants();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////// classes
+
+    /**
+     * The attribute list used by JAXB to populate interaction annotations
+     */
+    public static class JAXBAttributeList extends AbstractInteractionAttributeList<XmlInteractionEvidence> {
+
+        public JAXBAttributeList(){
+            super();
+        }
+    }
+
+    /**
+     * The participant list used by JAXB to populate interaction participants
+     */
+    public static class JAXBParticipantList<T extends Participant> extends AbstractInteractionParticipantList<ParticipantEvidence, XmlInteractionEvidence> {
+
+        public JAXBParticipantList(){
+            super();
+        }
+    }
 
     private class AvailabilityRef extends AbstractAvailabilityRef{
         public AvailabilityRef(int ref) {

@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.AbstractInteractorReference;
@@ -16,7 +15,10 @@ import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Abstract class for entity
@@ -39,9 +41,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     private XmlInteractorFactory interactorFactory;
     private ParticipantInteractorChangeListener changeListener;
     private int id;
-
-    private JAXBAttributeList jaxbAttributeList;
-    private JAXBFeatureList jaxbFeatureList;
 
     public AbstractXmlEntity(){
         this.interactorFactory = new XmlInteractorFactory();
@@ -369,33 +368,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     }
 
     /**
-     * Gets the value of the featureList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link AbstractXmlFeature }
-     *
-     */
-    public JAXBFeatureList<F> getJAXBFeatures() {
-        return this.jaxbFeatureList;
-    }
-
-    /**
-     * Sets the value of the featureList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link AbstractXmlFeature }
-     *
-     */
-    public void setJAXBFeatures(JAXBFeatureList<F> value) {
-        this.jaxbFeatureList = value;
-        if (value != null){
-            this.jaxbFeatureList.parent = this;
-        }
-    }
-
-    /**
      * Gets the value of the biologicalRole property.
      *
      * @return
@@ -417,33 +389,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      */
     public void setJAXBBiologicalRole(CvTerm bioRole) {
         setBiologicalRole(bioRole);
-    }
-
-    /**
-     * Gets the value of the jaxbAttributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    public JAXBAttributeList getJAXBAttributes() {
-        return this.jaxbAttributeList;
-    }
-
-    /**
-     * Sets the value of the jaxbAttributeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    public void setJAXBAttributes(JAXBAttributeList value) {
-        this.jaxbAttributeList = value;
-        if (value != null){
-            this.jaxbAttributeList.parent = this;
-        }
     }
 
     /**
@@ -484,25 +429,28 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (stoichiometry != null ? ", stoichiometry: " + stoichiometry.toString() : "");
     }
 
+    public void processAddedFeature(F feature){
+        feature.setParticipant(this);
+    }
+
     protected void initialiseUnspecifiedInteractor() {
         this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
     }
 
     protected void initialiseAnnotations() {
-        if (jaxbAttributeList != null){
-            this.annotations = new ArrayList<Annotation>(jaxbAttributeList);
-            this.jaxbAttributeList = null;
-        }else{
-            this.annotations = new ArrayList<Annotation>();
-        }
+        this.annotations = new ArrayList<Annotation>();
     }
 
     protected void initialiseFeatures(){
-        if (jaxbFeatureList != null){
-            this.features = new ArrayList<F>(jaxbFeatureList);
-            this.jaxbFeatureList = null;
-        }else{
-            this.features = new ArrayList<F>();
+        this.features = new ArrayList<F>();
+    }
+
+    protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations) {
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
         }
     }
 
@@ -515,242 +463,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         }
     }
 
-    protected void processAddedFeature(F feature){
-        feature.setParticipant(this);
-    }
-
     private FileSourceLocator getParticipantLocator(){
         return getSourceLocator();
     }
 
     ////////////////////////////////////////////////////////////////// classes
-
-    /**
-     * The attribute list used by JAXB to populate participant annotations
-     */
-    public static class JAXBAttributeList extends ArrayList<Annotation>{
-
-        private AbstractXmlEntity parent;
-
-        public JAXBAttributeList(){
-        }
-
-        public JAXBAttributeList(int initialCapacity) {
-            super(initialCapacity);
-        }
-
-        public JAXBAttributeList(Collection<? extends Annotation> c) {
-            super(c);
-        }
-
-        @Override
-        public boolean add(Annotation annotation) {
-            if (annotation == null){
-                return false;
-            }
-            // we have stoichiometry
-            if(AnnotationUtils.doesAnnotationHaveTopic(annotation, Annotation.COMMENT_MI, Annotation.COMMENT)
-                    && annotation.getValue() != null && annotation.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
-                String stc = annotation.getValue().substring(annotation.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
-
-                // we have stoichiometry range
-                if (stc.contains("-") && !stc.startsWith("-")){
-                    String [] stcs = stc.split("-");
-                    // we recognize the stoichiometry range
-                    if (stcs.length == 2){
-                        try{
-                            XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
-                            s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
-                            parent.stoichiometry = s;
-                            return false;
-                        }
-                        catch (NumberFormatException e){
-                            e.printStackTrace();
-                            return super.add(annotation);
-                        }
-                    }
-                    // we cannot recognize the stoichiometry range, we add that as a simple annotation
-                    else {
-                        return super.add(annotation);
-                    }
-                }
-                // simple stoichiometry
-                else {
-                    try{
-                        XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
-                        s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
-                        parent.stoichiometry = s;
-                        return false;
-                    }
-                    // not a number, keep the annotation as annotation
-                    catch (NumberFormatException e){
-                        e.printStackTrace();
-                        return super.add(annotation);
-                    }
-                }
-            }
-            else{
-                return super.add(annotation);
-            }
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends Annotation> c) {
-            if (c == null){
-                return false;
-            }
-            boolean added = false;
-
-            for (Annotation a : c){
-                if (add(a)){
-                   added = true;
-                }
-            }
-            return added;
-        }
-
-        @Override
-        public void add(int index, Annotation element) {
-            addToSpecificIndex(index, element);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends Annotation> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (Annotation a : c){
-                if (addToSpecificIndex(newIndex, a)){
-                    newIndex++;
-                    add = true;
-                }
-            }
-            return add;
-        }
-
-        private boolean addToSpecificIndex(int index, Annotation element) {
-            if (element != null){
-                // we have stoichiometry
-                if(AnnotationUtils.doesAnnotationHaveTopic(element, Annotation.COMMENT_MI, Annotation.COMMENT)
-                        && element.getValue() != null && element.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
-                    String stc = element.getValue().substring(element.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
-
-                    // we have stoichiometry range
-                    if (stc.contains("-") && !stc.startsWith("-")){
-                        String [] stcs = stc.split("-");
-                        // we recognize the stoichiometry range
-                        if (stcs.length == 2){
-                            try{
-                                XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
-                                s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
-                                parent.stoichiometry = s;
-                                return false;
-                            }
-                            catch (NumberFormatException e){
-                                e.printStackTrace();
-                                super.add(index, element);
-                                return true;
-                            }
-                        }
-                        // we cannot recognize the stoichiometry range, we add that as a simple annotation
-                        else {
-                            super.add(index, element);
-                            return true;
-                        }
-                    }
-                    // simple stoichiometry
-                    else {
-                        try{
-                            XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
-                            s.setSourceLocator((PsiXmLocator)parent.getSourceLocator());
-                            parent.stoichiometry = s;
-                            return false;
-                        }
-                        // not a number, keep the annotation as annotation
-                        catch (NumberFormatException e){
-                            e.printStackTrace();
-                            super.add(index, element);
-                            return true;
-                        }
-                    }
-                }
-                else{
-                    super.add(index, element);
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
-    /**
-     * The feature list used by JAXB to populate participant features
-     */
-    public static class JAXBFeatureList<F extends Feature> extends ArrayList<F>{
-        private AbstractXmlEntity<F> parent;
-
-        public JAXBFeatureList(){
-        }
-
-        public JAXBFeatureList(int initialCapacity) {
-            super(initialCapacity);
-        }
-
-        public JAXBFeatureList(Collection<? extends F> c) {
-            super(c);
-        }
-
-        @Override
-        public boolean add(F feature) {
-            if (feature == null){
-                return false;
-            }
-
-            if (super.add(feature)){
-                parent.processAddedFeature(feature);
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends F> c) {
-            if (c == null){
-                return false;
-            }
-            boolean added = false;
-
-            for (F a : c){
-                if (add(a)){
-                    added = true;
-                }
-            }
-            return added;
-        }
-
-        @Override
-        public void add(int index, F element) {
-            super.add(index, element);
-            element.setParticipant(parent);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends F> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (F a : c){
-                add(newIndex, a);
-                newIndex++;
-                add = true;
-            }
-            return add;
-        }
-    }
 
     private class InteractionRef extends AbstractComplexReference{
         public InteractionRef(int ref) {

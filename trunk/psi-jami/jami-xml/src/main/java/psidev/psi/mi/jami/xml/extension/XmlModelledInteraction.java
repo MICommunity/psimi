@@ -4,6 +4,8 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.AbstractInteractionAttributeList;
+import psidev.psi.mi.jami.xml.AbstractInteractionParticipantList;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
@@ -40,6 +42,8 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlLocation
     @XmlTransient
     private Locator locator;
+    private JAXBAttributeList jaxbAttributeList;
+    private JAXBParticipantList jaxbParticipantList;
 
     public XmlModelledInteraction() {
         super();
@@ -136,16 +140,25 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         return super.getJAXBId();
     }
 
-    @Override
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     public JAXBAttributeList getJAXBAttributes() {
-        return super.getJAXBAttributes();
+        return jaxbAttributeList;
     }
 
-    @Override
-    public void setJAXBAttributes(JAXBAttributeList value) {
-        super.setJAXBAttributes(value);
+    /**
+     * Sets the value of the attributeList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link ArrayList< psidev.psi.mi.jami.model.Annotation >  }
+     *
+     */
+    public void setJAXBAttributes(JAXBAttributeList  value) {
+        this.jaxbAttributeList = value;
+        if (value != null){
+            this.jaxbAttributeList.setParent(this);
+        }
     }
 
     @Override
@@ -155,14 +168,16 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @XmlElementWrapper(name="participantList")
-    @XmlElements({ @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)})
-    public JAXBParticipantList<ModelledParticipant> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+    @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)
+    public JAXBParticipantList getJAXBParticipants() {
+        return jaxbParticipantList;
     }
 
-    @Override
-    public void setJAXBParticipants(JAXBParticipantList<ModelledParticipant> jaxbParticipantList) {
-        super.setJAXBParticipants(jaxbParticipantList);
+    public void setJAXBParticipants(JAXBParticipantList jaxbParticipantList) {
+        this.jaxbParticipantList = jaxbParticipantList;
+        if (jaxbParticipantList != null){
+            this.jaxbParticipantList.setParent(this);
+        }
     }
 
     @Override
@@ -205,7 +220,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      *
      */
     @XmlElementWrapper(name="confidenceList")
-    @XmlElements({ @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)})
+    @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)
     public ArrayList<ModelledConfidence> getJAXBConfidences() {
         return (ArrayList<ModelledConfidence>)modelledConfidences;
     }
@@ -231,7 +246,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      *
      */
     @XmlElementWrapper(name="parameterList")
-    @XmlElements({ @XmlElement(type=XmlModelledParameter.class, name="parameter", required = true)})
+    @XmlElement(type=XmlModelledParameter.class, name="parameter", required = true)
     public ArrayList<ModelledParameter> getJAXBParameters() {
         return (ArrayList<ModelledParameter>)this.modelledParameters;
     }
@@ -246,5 +261,47 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
      */
     public void setJAXBParameters(ArrayList<ModelledParameter> value) {
         this.modelledParameters = value;
+    }
+
+    @Override
+    protected void initialiseAnnotations(){
+        if (jaxbAttributeList != null){
+            super.initialiseAnnotationsWith(new ArrayList<Annotation>(jaxbAttributeList));
+            this.jaxbAttributeList = null;
+        }else{
+            super.initialiseAnnotations();
+        }
+    }
+
+    @Override
+    protected void initialiseParticipants(){
+        if (jaxbParticipantList != null){
+            super.initialiseParticipantsWith(new ArrayList<ModelledParticipant>(jaxbParticipantList));
+            this.jaxbParticipantList = null;
+        }else{
+            super.initialiseParticipants();
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////// classes
+
+    /**
+     * The attribute list used by JAXB to populate interaction annotations
+     */
+    public static class JAXBAttributeList extends AbstractInteractionAttributeList<XmlModelledInteraction> {
+
+        public JAXBAttributeList(){
+            super();
+        }
+    }
+
+    /**
+     * The participant list used by JAXB to populate interaction participants
+     */
+    public static class JAXBParticipantList<T extends Participant> extends AbstractInteractionParticipantList<ModelledParticipant, XmlModelledInteraction> {
+
+        public JAXBParticipantList(){
+            super();
+        }
     }
 }
