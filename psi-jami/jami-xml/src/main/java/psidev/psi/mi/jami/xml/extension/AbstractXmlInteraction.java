@@ -6,16 +6,17 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import javax.xml.bind.annotation.*;
-import java.util.*;
+import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 
 /**
  * Abstract class for xml interactions
@@ -41,9 +42,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     private Collection<T> participants;
     private PsiXmLocator sourceLocator;
     private XmlEntry entry;
-
-    private JAXBAttributeList jaxbAttributeList;
-    private JAXBParticipantList jaxbParticipantList;
 
     public AbstractXmlInteraction(){
         XmlEntryContext context = XmlEntryContext.getInstance();
@@ -318,33 +316,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     }
 
     /**
-     * Gets the value of the attributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<Annotation> }
-     *
-     */
-    public JAXBAttributeList getJAXBAttributes() {
-        return jaxbAttributeList;
-    }
-
-    /**
-     * Sets the value of the attributeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<Annotation>  }
-     *
-     */
-    public void setJAXBAttributes(JAXBAttributeList  value) {
-        this.jaxbAttributeList = value;
-        if (value != null){
-            this.jaxbAttributeList.parent = this;
-        }
-    }
-
-    /**
      * Gets the value of the id property.
      *
      */
@@ -388,25 +359,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         this.interactionTypes = value;
     }
 
-    /**
-     * Gets the value of the participantList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    public JAXBParticipantList<T> getJAXBParticipants() {
-        return jaxbParticipantList;
-    }
-
-    public void setJAXBParticipants(JAXBParticipantList<T> jaxbParticipantList) {
-        this.jaxbParticipantList = jaxbParticipantList;
-        if (jaxbParticipantList != null){
-            this.jaxbParticipantList.parent = this;
-        }
-    }
-
     @Override
     public Locator sourceLocation() {
         return (Locator)getSourceLocator();
@@ -437,6 +389,10 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         this.id = value;
     }
 
+    public void processAddedParticipant(T participant) {
+        participant.setInteraction(getCurrentInstance());
+    }
+
     protected void processAddedChecksumEvent(Checksum added) {
         if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
             // the rigid is not set, we can set the rigid
@@ -454,30 +410,34 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         rigid = null;
     }
 
-    protected void initialiseAnnotations(){
-        if (jaxbAttributeList != null){
-            this.annotations = new ArrayList<Annotation>(jaxbAttributeList);
-            this.jaxbAttributeList = null;
-        }else{
-            this.annotations = new ArrayList<Annotation>();
-        }
-    }
-
-    protected void initialiseParticipants(){
-        if (jaxbParticipantList != null){
-            this.participants = new ArrayList<T>(jaxbParticipantList);
-            this.jaxbParticipantList = null;
-        }else{
-            this.participants = new ArrayList<T>();
-        }
-    }
-
     protected void initialiseChecksums(){
         this.checksums = new InteractionChecksumList();
     }
 
-    protected void processAddedParticipant(T participant) {
-        participant.setInteraction(getCurrentInstance());
+    protected void initialiseAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
+    }
+
+    protected void initialiseParticipants(){
+        this.participants = new ArrayList<T>();
+    }
+
+    protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations) {
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initialiseParticipantsWith(ArrayList<T> participants) {
+        if (participants == null){
+            this.participants = Collections.EMPTY_LIST;
+        }
+        else {
+            this.participants = participants;
+        }
     }
 
     private AbstractXmlInteraction<T> getCurrentInstance(){
@@ -485,163 +445,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     }
 
     ////////////////////////////////////////////////////////////////// classes
-
-    /**
-     * The attribute list used by JAXB to populate interaction annotations
-     */
-    public static class JAXBAttributeList extends ArrayList<Annotation>{
-
-        private AbstractXmlInteraction parent;
-
-        public JAXBAttributeList(){
-        }
-
-        public JAXBAttributeList(int initialCapacity) {
-            super(initialCapacity);
-        }
-
-        public JAXBAttributeList(Collection<? extends Annotation> c) {
-            super(c);
-        }
-
-        @Override
-        public boolean add(Annotation annotation) {
-            if (annotation == null){
-                return false;
-            }
-            if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
-                    || AnnotationUtils.doesAnnotationHaveTopic(annotation, null, Checksum.RIGID)){
-                XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXmlUtils.UNSPECIFIED);
-                checksum.setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                parent.getChecksums().add(checksum);
-                return false;
-            }
-            else {
-                return super.add(annotation);
-            }
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends Annotation> c) {
-            if (c == null){
-                return false;
-            }
-            boolean added = false;
-
-            for (Annotation a : c){
-                if (add(a)){
-                    added = true;
-                }
-            }
-            return added;
-        }
-
-        @Override
-        public void add(int index, Annotation element) {
-            addToSpecificIndex(index, element);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends Annotation> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (Annotation a : c){
-                if (addToSpecificIndex(newIndex, a)){
-                    newIndex++;
-                    add = true;
-                }
-            }
-            return add;
-        }
-
-        private boolean addToSpecificIndex(int index, Annotation element) {
-            if (element == null){
-                return false;
-            }
-            if (AnnotationUtils.doesAnnotationHaveTopic(element, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
-                    || AnnotationUtils.doesAnnotationHaveTopic(element, null, Checksum.RIGID)){
-                XmlChecksum checksum = new XmlChecksum(element.getTopic(), element.getValue() != null ? element.getValue() : PsiXmlUtils.UNSPECIFIED);
-                checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)element).getSourceLocator());
-                parent.getChecksums().add(checksum);
-                return false;
-            }
-            else {
-                super.add(index, element);
-                return true;
-            }
-        }
-    }
-
-    /**
-     * The participant list used by JAXB to populate interaction participants
-     */
-    public static class JAXBParticipantList<T extends Participant> extends ArrayList<T>{
-
-        private AbstractXmlInteraction<T> parent;
-
-        public JAXBParticipantList(){
-        }
-
-        public JAXBParticipantList(int initialCapacity) {
-            super(initialCapacity);
-        }
-
-        public JAXBParticipantList(Collection<? extends T> c) {
-            super(c);
-        }
-
-        @Override
-        public boolean add(T participant) {
-            if (participant == null){
-                return false;
-            }
-
-            if (super.add(participant)){
-                parent.processAddedParticipant(participant);
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends T> c) {
-            if (c == null){
-                return false;
-            }
-            boolean added = false;
-
-            for (T a : c){
-                if (add(a)){
-                    added = true;
-                }
-            }
-            return added;
-        }
-
-        @Override
-        public void add(int index, T element) {
-            super.add(index, element);
-            parent.processAddedParticipant(element);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends T> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (T a : c){
-                add(newIndex, a);
-                newIndex++;
-                add = true;
-            }
-            return add;
-        }
-    }
 
     private class InteractionChecksumList extends AbstractListHavingProperties<Checksum> {
         public InteractionChecksumList(){

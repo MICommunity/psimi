@@ -422,7 +422,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({ @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)})
+    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     public JAXBAttributeList getJAXBAttributes() {
         return this.jaxbAttributeList;
     }

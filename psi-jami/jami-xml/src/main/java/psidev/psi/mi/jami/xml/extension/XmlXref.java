@@ -306,7 +306,7 @@ public class XmlXref
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElements({@XmlElement(name="attribute")})
+    @XmlElement(name="attribute", required = true)
     public ArrayList<XmlAnnotation> getJAXBAttributes() {
         return this.annotations;
     }
