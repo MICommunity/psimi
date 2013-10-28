@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.AbstractInteractorReference;
@@ -14,11 +15,8 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import javax.xml.bind.annotation.*;
+import java.util.*;
 
 /**
  * Abstract class for entity
@@ -41,6 +39,9 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     private XmlInteractorFactory interactorFactory;
     private ParticipantInteractorChangeListener changeListener;
     private int id;
+
+    private JAXBAttributeList jaxbAttributeList;
+    private JAXBFeatureList jaxbFeatureList;
 
     public AbstractXmlEntity(){
         this.interactorFactory = new XmlInteractorFactory();
@@ -125,6 +126,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     }
 
     public Stoichiometry getStoichiometry() {
+        // the stoichiometry is not set but may be in the list of parsed annotations.
+        // that is why, we need to initialise annotations
+        if (stoichiometry == null && this.jaxbAttributeList != null){
+            initialiseAnnotations();
+        }
         return this.stoichiometry;
     }
 
@@ -411,6 +417,21 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         }
     }
 
+    /**
+     * Gets the value of the jaxbAttributeList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link XmlAnnotation }
+     *
+     */
+    public List<Annotation> getJAXBAttributes() {
+        if (this.jaxbAttributeList == null){
+            this.jaxbAttributeList = new JAXBAttributeList();
+        }
+        return this.jaxbAttributeList;
+    }
+
     @Override
     public Locator sourceLocation() {
         return (Locator)getSourceLocator();
@@ -429,7 +450,22 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (stoichiometry != null ? ", stoichiometry: " + stoichiometry.toString() : "");
     }
 
-    public void processAddedFeature(F feature){
+    /**
+     * Gets the value of the featureList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link AbstractXmlFeature }
+     *
+     */
+    public List<F> getJAXBFeatures() {
+        if (this.jaxbFeatureList == null){
+           this.jaxbFeatureList = new JAXBFeatureList();
+        }
+        return this.jaxbFeatureList;
+    }
+
+    protected void processAddedFeature(F feature){
         feature.setParticipant(this);
     }
 
@@ -445,15 +481,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         this.features = new ArrayList<F>();
     }
 
-    protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations) {
-        if (annotations == null){
-            this.annotations = Collections.EMPTY_LIST;
-        }
-        else {
-            this.annotations = annotations;
-        }
-    }
-
     protected void initialiseFeaturesWith(ArrayList<F> features) {
         if (features == null){
             this.features = Collections.EMPTY_LIST;
@@ -467,7 +494,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         return getSourceLocator();
     }
 
-    ////////////////////////////////////////////////////////////////// classes
+    //////////////////////////////////////////////////////////// classes
 
     private class InteractionRef extends AbstractComplexReference{
         public InteractionRef(int ref) {
@@ -543,6 +570,183 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
 
         public void setSourceLocator(FileSourceLocator locator) {
             throw new UnsupportedOperationException("Cannot set the source locator of an interactor ref");
+        }
+    }
+
+    private class JAXBAttributeList extends ArrayList<Annotation> {
+
+        public JAXBAttributeList(){
+            super();
+            annotations = new ArrayList<Annotation>();
+        }
+
+        @Override
+        public boolean add(Annotation annotation) {
+            if (annotation == null){
+                return false;
+            }
+            return processAnnotation(null, annotation);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Annotation> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Annotation a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Annotation element) {
+            processAnnotation(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Annotation> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Annotation a : c){
+                if (processAnnotation(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        protected boolean addAnnotation(Integer index, Annotation annotation) {
+            if (index == null){
+                return annotations.add(annotation);
+            }
+            ((List<Annotation>)annotations).add(index, annotation);
+            return true;
+        }
+
+        private boolean processAnnotation(Integer index, Annotation annotation) {
+            // we have stoichiometry
+            if(AnnotationUtils.doesAnnotationHaveTopic(annotation, Annotation.COMMENT_MI, Annotation.COMMENT)
+                    && annotation.getValue() != null && annotation.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
+                String stc = annotation.getValue().substring(annotation.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
+
+                // we have stoichiometry range
+                if (stc.contains("-") && !stc.startsWith("-")){
+                    String [] stcs = stc.split("-");
+                    // we recognize the stoichiometry range
+                    if (stcs.length == 2){
+                        try{
+                            XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
+                            s.setSourceLocator(sourceLocator);
+                            stoichiometry = s;
+                            return false;
+                        }
+                        catch (NumberFormatException e){
+                            e.printStackTrace();
+                            return addAnnotation(index, annotation);
+                        }
+                    }
+                    // we cannot recognize the stoichiometry range, we add that as a simple annotation
+                    else {
+                        return addAnnotation(index, annotation);
+                    }
+                }
+                // simple stoichiometry
+                else {
+                    try{
+                        XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
+                        s.setSourceLocator(sourceLocator);
+                        stoichiometry = s;
+                        return false;
+                    }
+                    // not a number, keep the annotation as annotation
+                    catch (NumberFormatException e){
+                        e.printStackTrace();
+                        return addAnnotation(index, annotation);
+                    }
+                }
+            }
+            else{
+                return addAnnotation(null, annotation);
+            }
+        }
+    }
+
+    /**
+     * The attribute list used by JAXB to populate participant features
+     */
+    private class JAXBFeatureList extends ArrayList<F>{
+        public JAXBFeatureList(){
+            super();
+            features = new ArrayList<F>();
+        }
+
+        @Override
+        public boolean add(F feature) {
+            if (feature == null){
+                return false;
+            }
+            return processFeature(null, feature);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends F> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (F a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, F element) {
+            processFeature(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends F> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (F a : c){
+                if (processFeature(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        protected boolean addFeature(Integer index, F feature) {
+            if (index == null){
+                return features.add(feature);
+            }
+            ((List<F>)features).add(index, feature);
+            return true;
+        }
+
+        private boolean processFeature(Integer index, F feature) {
+            if(addFeature(index, feature)){
+                processAddedFeature(feature);
+                return true;
+            }
+            return false;
         }
     }
 }

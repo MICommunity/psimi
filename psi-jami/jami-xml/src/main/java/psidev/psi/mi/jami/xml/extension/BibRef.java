@@ -314,16 +314,12 @@ public class BibRef
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name = "attribute", required = true)
-    public ArrayList<Annotation> getJAXBAttributes() {
-        return this.jaxbAttributeList;
-    }
-
-    public void setJAXBAttributes(JAXBAttributeList annotations) {
-        this.jaxbAttributeList = annotations;
-        if (annotations != null){
-            this.jaxbAttributeList.parent = this;
+    @XmlElement(name = "attribute", type = XmlAnnotation.class, required = true)
+    public List<Annotation> getJAXBAttributes() {
+        if (this.jaxbAttributeList == null){
+            this.jaxbAttributeList = new JAXBAttributeList();
         }
+        return this.jaxbAttributeList;
     }
 
     @Override
@@ -352,12 +348,7 @@ public class BibRef
     }
 
     protected void initialiseAnnotations(){
-        if (jaxbAttributeList != null){
-            this.annotations = new ArrayList<Annotation>(jaxbAttributeList);
-            this.jaxbAttributeList = null;
-        }else{
-            this.annotations = new ArrayList<Annotation>();
-        }
+        this.annotations = new ArrayList<Annotation>();
     }
 
     protected void initialiseExperiments(){
@@ -366,80 +357,21 @@ public class BibRef
 
     ////////////////////////////////////////////////////////////////// classes
 
+    /////////////////////////////////////////////////
+
     /**
      * The attribute list used by JAXB to populate participant annotations
      */
-    public static class JAXBAttributeList extends ArrayList<Annotation>{
-
-        private BibRef parent;
+    private class JAXBAttributeList extends ArrayList<Annotation>{
 
         public JAXBAttributeList(){
-        }
-
-        public JAXBAttributeList(int initialCapacity) {
-            super(initialCapacity);
-        }
-
-        public JAXBAttributeList(Collection<? extends Annotation> c) {
-            super(c);
+            super();
+            annotations = new ArrayList<Annotation>();
         }
 
         @Override
         public boolean add(Annotation annot) {
-            if (annot == null){
-                return false;
-            }
-            if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                parent.title = annot.getValue();
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                parent.journal = annot.getValue();
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                if (annot.getValue() == null){
-                    parent.publicationDate = null;
-                    return false;
-                }
-                else {
-                    try {
-                        parent.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
-                        return false;
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        parent.publicationDate = null;
-                        return super.add(annot);
-                    }
-                }
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                parent.curationDepth = CurationDepth.IMEx;
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                parent.curationDepth = CurationDepth.MIMIx;
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                parent.curationDepth = CurationDepth.rapid_curation;
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                if (annot.getValue() == null){
-                    parent.getAuthors().clear();
-                }
-                else if (annot.getValue().contains(",")){
-                    parent.getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
-                }
-                else {
-                    parent.getAuthors().add(annot.getValue());
-                }
-                return false;
-            }
-            else {
-                return super.add(annot);
-            }
+            return processAnnotation(null, annot);
         }
 
         @Override
@@ -459,7 +391,7 @@ public class BibRef
 
         @Override
         public void add(int index, Annotation element) {
-            addToSpecificIndex(index, element);
+            processAnnotation(index, element);
         }
 
         @Override
@@ -470,7 +402,7 @@ public class BibRef
             }
             boolean add = false;
             for (Annotation a : c){
-                if (addToSpecificIndex(newIndex, a)){
+                if (processAnnotation(newIndex, a)){
                     newIndex++;
                     add = true;
                 }
@@ -478,63 +410,69 @@ public class BibRef
             return add;
         }
 
-        private boolean addToSpecificIndex(int index, Annotation annot) {
+        private boolean processAnnotation(Integer index, Annotation annot) {
             if (annot == null){
                 return false;
             }
             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                parent.title = annot.getValue();
+                title = annot.getValue();
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                parent.journal = annot.getValue();
+                journal = annot.getValue();
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
                 if (annot.getValue() == null){
-                    parent.publicationDate = null;
+                    publicationDate = null;
                     return false;
                 }
                 else {
                     try {
-                        parent.publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                        publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
                         return false;
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        parent.publicationDate = null;
-                        super.add(index, annot);
-                        return true;
+                        publicationDate = null;
+                        return addAnnotation(index, annot);
                     }
                 }
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                parent.curationDepth = CurationDepth.IMEx;
+                curationDepth = CurationDepth.IMEx;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                parent.curationDepth = CurationDepth.MIMIx;
+                curationDepth = CurationDepth.MIMIx;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                parent.curationDepth = CurationDepth.rapid_curation;
+                curationDepth = CurationDepth.rapid_curation;
                 return false;
             }
             else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
                 if (annot.getValue() == null){
-                    parent.getAuthors().clear();
+                    getAuthors().clear();
                 }
                 else if (annot.getValue().contains(",")){
-                    parent.getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
+                    getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
                 }
                 else {
-                    parent.getAuthors().add(annot.getValue());
+                    getAuthors().add(annot.getValue());
                 }
                 return false;
             }
             else {
-                super.add(index, annot);
-                return true;
+                return addAnnotation(index, annot);
             }
+        }
+
+        private boolean addAnnotation(Integer index, Annotation annot) {
+            if (index == null){
+                return annotations.add(annot);
+            }
+            ((List<Annotation>)annotations).add(index, annot);
+            return true;
         }
     }
 }

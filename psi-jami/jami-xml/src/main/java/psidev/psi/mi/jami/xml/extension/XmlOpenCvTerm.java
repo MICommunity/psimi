@@ -9,8 +9,8 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Xml implementation of CvTerm.
@@ -165,12 +165,8 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
     @XmlElementWrapper(name="attributeList")
     @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public List<Annotation> getJAXBAttributes() {
         return super.getAttributes();
-    }
-
-    public void setJAXBAttributes(ArrayList<Annotation> annot){
-        super.setAttributes(annot);
     }
 
     public Collection<Alias> getSynonyms() {

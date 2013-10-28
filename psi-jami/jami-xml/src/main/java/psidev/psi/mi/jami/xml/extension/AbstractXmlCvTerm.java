@@ -201,11 +201,10 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     protected ArrayList<Annotation> getAttributes() {
+        if (annotations == null){
+            initialiseAnnotations();
+        }
         return (ArrayList<Annotation>)this.annotations;
-    }
-
-    protected void setAttributes(ArrayList<Annotation> annot){
-        this.annotations = annot;
     }
 
     protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations){

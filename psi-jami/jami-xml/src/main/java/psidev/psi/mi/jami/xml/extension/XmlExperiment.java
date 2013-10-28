@@ -14,10 +14,7 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Xml im
@@ -43,7 +40,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
-    private ArrayList<Organism> hostOrganisms;
+    private List<Organism> hostOrganisms;
     private XmlCvTerm participantIdentificationMethod;
     private XmlCvTerm featureDetectionMethod;
     private int id;
@@ -406,20 +403,11 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      */
     @XmlElementWrapper(name="hostOrganismList")
     @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)
-    public ArrayList<Organism> getJAXBHostOrganisms() {
+    public List<Organism> getJAXBHostOrganisms() {
+        if (this.hostOrganisms == null){
+           this.hostOrganisms = new ArrayList<Organism>();
+        }
         return this.hostOrganisms;
-    }
-
-    /**
-     * Sets the value of the hostOrganismList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link HostOrganism }
-     *
-     */
-    public void setJAXBHostOrganisms(ArrayList<Organism> value) {
-        this.hostOrganisms = value;
     }
 
     /**
@@ -512,33 +500,17 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      */
     @XmlElementWrapper(name="confidenceList")
     @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
-    public ArrayList<Confidence> getJAXBConfidenceList() {
-        return (ArrayList<Confidence>)confidences;
-    }
-
-    /**
-     * Sets the value of the confidenceList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlConfidence }
-     *
-     */
-    public void setJAXBConfidenceList(ArrayList<Confidence> value) {
-        this.confidences = value;
+    public List<Confidence> getJAXBConfidenceList() {
+        return (List<Confidence>)confidences;
     }
 
     @XmlElementWrapper(name="attributeList")
     @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     public JAXBAttributeList getJAXBAttributes() {
-        return jaxbAttributeList;
-    }
-
-    public void setJAXBAttributes(JAXBAttributeList annotations) {
-        this.jaxbAttributeList = annotations;
-        if (annotations != null){
-            this.jaxbAttributeList.parent = this;
+        if (this.jaxbAttributeList == null){
+           this.jaxbAttributeList = new JAXBAttributeList();
         }
+        return jaxbAttributeList;
     }
 
     /**
@@ -589,12 +561,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     }
 
     protected void initialiseAnnotations(){
-        if (jaxbAttributeList != null){
-            this.annotations = new ArrayList<Annotation>(jaxbAttributeList);
-            this.jaxbAttributeList = null;
-        }else{
-            this.annotations = new ArrayList<Annotation>();
-        }
+        this.annotations = new ArrayList<Annotation>();
     }
 
     protected void initialiseInteractions(){
@@ -614,11 +581,11 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     /**
      * The attribute list used by JAXB to populate experiment annotations
      */
-    public static class JAXBAttributeList extends ArrayList<Annotation>{
-
-        private XmlExperiment parent;
+    private class JAXBAttributeList extends ArrayList<Annotation>{
 
         public JAXBAttributeList(){
+            super();
+            annotations = new ArrayList<Annotation>();
         }
 
         public JAXBAttributeList(int initialCapacity) {
@@ -631,91 +598,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
         @Override
         public boolean add(Annotation annot) {
-            if (annot == null){
-                return false;
-            }
-            Publication publication = parent.getPublication();
-            if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setTitle(annot.getValue());
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setJournal(annot.getValue());
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                if (annot.getValue() == null){
-                    if (publication != null){
-                        publication.setPublicationDate(null);
-                    }
-                    return false;
-                }
-                else {
-                    if (publication == null){
-                        publication = new BibRef();
-                    }
-                    try {
-                        publication.setPublicationDate(PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        publication.setPublicationDate(null);
-                        publication.getAnnotations().add(annot);
-                    }
-                    return false;
-                }
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setCurationDepth(CurationDepth.IMEx);
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setCurationDepth(CurationDepth.MIMIx);
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setCurationDepth(CurationDepth.rapid_curation);
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                if (annot.getValue() == null){
-                    if (publication != null){
-                        publication.getAuthors().clear();
-                    }
-                    return false;
-                }
-                else if (annot.getValue().contains(",")){
-                    if (publication == null){
-                        publication = new BibRef();
-                    }
-                    publication.getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
-                    return false;
-                }
-                else {
-                    if (publication == null){
-                        publication = new BibRef();
-                    }
-                    publication.getAuthors().add(annot.getValue());
-                    return false;
-                }
-            }
-            else {
-                return super.add(annot);
-            }
+            return processAnnotation(null, annot);
         }
 
         @Override
@@ -735,7 +618,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
         @Override
         public void add(int index, Annotation element) {
-            addToSpecificIndex(index, element);
+            processAnnotation(index, element);
         }
 
         @Override
@@ -746,7 +629,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
             }
             boolean add = false;
             for (Annotation a : c){
-                if (addToSpecificIndex(newIndex, a)){
+                if (processAnnotation(newIndex, a)){
                     newIndex++;
                     add = true;
                 }
@@ -754,11 +637,10 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
             return add;
         }
 
-        private boolean addToSpecificIndex(int index, Annotation annot) {
+        private boolean processAnnotation(Integer index, Annotation annot) {
             if (annot == null){
                 return false;
             }
-            Publication publication = parent.getPublication();
             if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
                 if (publication == null){
                     publication = new BibRef();
@@ -838,7 +720,16 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
                 }
             }
             else {
-                super.add(index, annot);
+                return addAnnotation(index, annot);
+            }
+        }
+
+        private boolean addAnnotation(Integer index, Annotation annot) {
+            if (index == null){
+                return annotations.add(annot);
+            }
+            else{
+                ((List<Annotation>)annotations).add(index, annot);
                 return true;
             }
         }

@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,46 +60,22 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef", required = true)
-    public JAXBExperimentRefList getJAXBExperimentRefList() {
-        return jaxbExperimentRefList;
-    }
-
-    /**
-     * Sets the value of the experimentRefList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
-        this.jaxbExperimentRefList = value;
-        if (value != null){
-            experiments = new ArrayList<Experiment>();
-            this.jaxbExperimentRefList.parent = this;
+    @XmlElement(name="experimentRef", required = true, type = Integer.class)
+    public List<Integer> getJAXBExperimentRefList() {
+        if (this.jaxbExperimentRefList == null){
+           this.jaxbExperimentRefList = new JAXBExperimentRefList();
         }
-    }
-
-    private FileSourceLocator getConfidenceLocator(){
-        return getSourceLocator();
+        return jaxbExperimentRefList;
     }
 
     /**
      * The experiment ref list used by JAXB to populate experiment refs
      */
-    public static class JAXBExperimentRefList extends ArrayList<Integer>{
-
-        private XmlModelledConfidence parent;
+    private class JAXBExperimentRefList extends ArrayList<Integer>{
 
         public JAXBExperimentRefList(){
-        }
-
-        public JAXBExperimentRefList(int initialCapacity) {
-        }
-
-        public JAXBExperimentRefList(Collection<? extends Integer> c) {
-            addAll(c);
+            super();
+            experiments = new ArrayList<Experiment>();
         }
 
         @Override
@@ -106,7 +83,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
             if (val == null){
                 return false;
             }
-            return parent.experiments.add(new ExperimentRef(val));
+            return experiments.add(new ExperimentRef(val));
         }
 
         @Override
@@ -149,46 +126,45 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
             if (val == null){
                 return false;
             }
-            ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
+            ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
             return true;
         }
+    }
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
 
-        /**
-         * Experiment ref for experimental interactor
-         */
-        private class ExperimentRef extends AbstractExperimentRef{
-            public ExperimentRef(int ref) {
-                super(ref);
-            }
-
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof Experiment){
-                        Experiment exp = (Experiment)obj;
-                        parent.experiments.remove(this);
-                        parent.experiments.add(exp);
-                        if (exp.getPublication() != null){
-                            parent.publications.add(exp.getPublication());
-                        }
-                        return true;
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    Experiment exp = (Experiment)obj;
+                    experiments.remove(this);
+                    experiments.add(exp);
+                    if (exp.getPublication() != null){
+                        publications.add(exp.getPublication());
                     }
+                    return true;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            public String toString() {
-                return "Experiment reference: "+ref+" in confidence "+(parent.getConfidenceLocator() != null? parent.getConfidenceLocator().toString():"") ;
-            }
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in confidence "+(XmlModelledConfidence.this.getSourceLocator() != null? XmlModelledConfidence.this.getSourceLocator().toString():"") ;
+        }
 
-            public FileSourceLocator getSourceLocator() {
-                return parent.getConfidenceLocator();
-            }
+        public FileSourceLocator getSourceLocator() {
+            return XmlModelledConfidence.this.getSourceLocator();
+        }
 
-            public void setSourceLocator(FileSourceLocator locator) {
-                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-            }
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
         }
     }
 }

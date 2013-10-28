@@ -107,7 +107,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *
      *
      */
-    @XmlElements({@XmlElement(type=XmlAlias.class, name = "alias")})
+    @XmlElement(type=XmlAlias.class, name = "alias")
     public Collection<Alias> getAliases() {
         if (aliases == null) {
             initialiseAliases();

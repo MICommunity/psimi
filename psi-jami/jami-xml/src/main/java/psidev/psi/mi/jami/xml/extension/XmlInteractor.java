@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * The Xml implementation of Interactor
@@ -423,23 +424,11 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
      */
     @XmlElementWrapper(name="attributeList")
     @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public JAXBAttributeList getJAXBAttributes() {
-        return this.jaxbAttributeList;
-    }
-
-    /**
-     * Sets the value of the attributeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    public void setJAXBAttributes(JAXBAttributeList value) {
-        this.jaxbAttributeList = value;
-        if (value != null){
-           this.jaxbAttributeList.parent = this;
+    public List<Annotation> getJAXBAttributes() {
+        if (this.jaxbAttributeList == null){
+           this.jaxbAttributeList = new JAXBAttributeList();
         }
+        return this.jaxbAttributeList;
     }
 
     protected void createDefaultInteractorType() {
@@ -481,19 +470,11 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
     /**
      * The attribute list used by JAXB to populate interactor annotations
      */
-    public static class JAXBAttributeList extends ArrayList<Annotation>{
-
-        private XmlInteractor parent;
+    private class JAXBAttributeList extends ArrayList<Annotation>{
 
         public JAXBAttributeList(){
-        }
-
-        public JAXBAttributeList(int initialCapacity) {
-            super(initialCapacity);
-        }
-
-        public JAXBAttributeList(Collection<? extends Annotation> c) {
-            super(c);
+            super();
+            annotations = new ArrayList<Annotation>();
         }
 
         @Override
@@ -512,7 +493,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
                     || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
                 XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
                 checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
-                parent.getChecksums().add(checksum);
+                getChecksums().add(checksum);
                 return false;
             }
             else {
@@ -571,7 +552,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable{
                     || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
                 XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
                 checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
-                parent.getChecksums().add(checksum);
+                getChecksums().add(checksum);
                 return false;
             }
             else {

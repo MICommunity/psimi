@@ -14,11 +14,11 @@ import java.math.BigDecimal;
  * @since <pre>11/10/13</pre>
  */
 
-public class XmlParameterWrapper extends XmlModelledParameter{
+public class XmlModelledParameterWrapper extends XmlModelledParameter{
 
     private Parameter parameter;
 
-    public XmlParameterWrapper(Parameter param){
+    public XmlModelledParameterWrapper(Parameter param){
         if (param == null){
             throw new IllegalArgumentException("A parameter wrapper needs a non null Parameter");
         }

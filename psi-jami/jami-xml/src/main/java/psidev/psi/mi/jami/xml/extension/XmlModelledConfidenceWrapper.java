@@ -14,12 +14,12 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlConfidenceWrapper implements ModelledConfidence{
+public class XmlModelledConfidenceWrapper implements ModelledConfidence{
 
     private Confidence confidence;
     private Collection<Publication> publications;
 
-    public XmlConfidenceWrapper(Confidence conf){
+    public XmlModelledConfidenceWrapper(Confidence conf){
         if (conf == null){
            throw new IllegalArgumentException("A confidence wrapper needs a non null Confidence");
         }

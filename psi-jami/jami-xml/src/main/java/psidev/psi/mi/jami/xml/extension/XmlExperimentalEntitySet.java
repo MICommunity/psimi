@@ -4,12 +4,11 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.AbstractEntityAttributeList;
-import psidev.psi.mi.jami.xml.AbstractEntityFeatureList;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * XML implementation of a set of ExperimentalEntity that form a single participant evidence
@@ -44,15 +43,13 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
     private Collection<Confidence> confidences;
     private Collection<Parameter> parameters;
 
-    private ArrayList<CvTerm> experimentalRoles;
-    private ArrayList<ExperimentalInteractor> experimentalInteractors;
-    private ArrayList<Organism> hostOrganisms;
+    private List<CvTerm> experimentalRoles;
+    private List<ExperimentalInteractor> experimentalInteractors;
+    private List<Organism> hostOrganisms;
 
     @XmlLocation
     @XmlTransient
     private Locator locator;
-    private JAXBAttributeList jaxbAttributeList;
-    private JAXBFeatureList jaxbFeatureList;
 
     public XmlExperimentalEntitySet() {
         super();
@@ -308,27 +305,6 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         return super.getJAXBBiologicalRole();
     }
 
-    @XmlElementWrapper(name="featureList")
-    @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true)
-    public JAXBFeatureList getJAXBFeatures() {
-        return this.jaxbFeatureList;
-    }
-
-    /**
-     * Sets the value of the featureList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link AbstractXmlFeature }
-     *
-     */
-    public void setJAXBFeatures(JAXBFeatureList value) {
-        this.jaxbFeatureList = value;
-        if (value != null){
-            this.jaxbFeatureList.setParent(this);
-        }
-    }
-
     @Override
     @XmlElement(name = "interactor", type = XmlInteractor.class)
     public XmlInteractor getJAXBInteractor() {
@@ -341,25 +317,32 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         return super.getJAXBId();
     }
 
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public JAXBAttributeList getJAXBAttributes() {
-        return this.jaxbAttributeList;
-    }
-
     /**
-     * Sets the value of the jaxbAttributeList property.
+     * Gets the value of the jaxbAttributeList property.
      *
-     * @param value
-     *     allowed object is
+     * @return
+     *     possible object is
      *     {@link XmlAnnotation }
      *
      */
-    public void setJAXBAttributes(JAXBAttributeList value) {
-        this.jaxbAttributeList = value;
-        if (value != null){
-            this.jaxbAttributeList.setParent(this);
-        }
+    @XmlElementWrapper(name="attributeList")
+    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+    public List<Annotation> getJAXBAttributes() {
+        return super.getJAXBAttributes();
+    }
+
+    /**
+     * Gets the value of the featureList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link AbstractXmlFeature }
+     *
+     */
+    @XmlElementWrapper(name = "featureList")
+    @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true)
+    public List<FeatureEvidence> getJAXBFeatures() {
+        return super.getJAXBFeatures();
     }
 
     /**
@@ -372,20 +355,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="participantIdentificationMethodList")
     @XmlElement(type=ExperimentalCvTerm.class, name="participantIdentificationMethod", required = true)
-    public ArrayList<CvTerm> getJAXBParticipantIdentificationMethods() {
-        return (ArrayList<CvTerm>)this.identificationMethods;
-    }
-
-    /**
-     * Sets the value of the participantIdentificationMethodList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBParticipantIdentificationMethods(ArrayList<CvTerm> value) {
-        this.identificationMethods = value;
+    public List<CvTerm> getJAXBParticipantIdentificationMethods() {
+        if (this.identificationMethods == null){
+            initialiseIdentificationMethods();
+        }
+        return (List<CvTerm>)this.identificationMethods;
     }
 
     /**
@@ -398,20 +372,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="experimentalRoleList")
     @XmlElement(type=ExperimentalCvTerm.class, name="experimentalRole", required = true)
-    public ArrayList<CvTerm> getJAXBExperimentalRoles() {
+    public List<CvTerm> getJAXBExperimentalRoles() {
+        if (this.experimentalRoles == null){
+            this.experimentalRoles = new ArrayList<CvTerm>();
+        }
         return this.experimentalRoles;
-    }
-
-    /**
-     * Sets the value of the experimentalRoleList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBExperimentalRoles(ArrayList<CvTerm> value) {
-        this.experimentalRoles = value;
     }
 
     /**
@@ -424,20 +389,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="experimentalPreparationList")
     @XmlElement(type=ExperimentalCvTerm.class, name="experimentalPreparation", required = true)
-    public ArrayList<CvTerm> getJAXBExperimentalPreparations() {
-        return (ArrayList<CvTerm>)this.experimentalPreparations;
-    }
-
-    /**
-     * Sets the value of the experimentalRoleList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBExperimentalPreparations(ArrayList<CvTerm> value) {
-        this.experimentalPreparations = value;
+    public List<CvTerm> getJAXBExperimentalPreparations() {
+        if (this.experimentalPreparations == null){
+           initialiseExperimentalPreparations();
+        }
+        return (List<CvTerm>)this.experimentalPreparations;
     }
 
     /**
@@ -450,20 +406,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="experimentalInteractorList")
     @XmlElement(type=ExperimentalInteractor.class, name="experimentalInteractor", required = true)
-    public ArrayList<ExperimentalInteractor> getExperimentalInteractors() {
+    public List<ExperimentalInteractor> getExperimentalInteractors() {
+        if (this.experimentalInteractors == null){
+            this.experimentalInteractors = new ArrayList<ExperimentalInteractor>();
+        }
         return this.experimentalInteractors;
-    }
-
-    /**
-     * Sets the value of the experimentalRoleList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setExperimentalInteractors(ArrayList<ExperimentalInteractor> value) {
-        this.experimentalInteractors = value;
     }
 
     /**
@@ -476,20 +423,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="hostOrganismList")
     @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)
-    public ArrayList<Organism> getJAXBHostOrganisms() {
+    public List<Organism> getJAXBHostOrganisms() {
+        if (this.hostOrganisms == null){
+            this.hostOrganisms = new ArrayList<Organism>();
+        }
         return this.hostOrganisms;
-    }
-
-    /**
-     * Sets the value of the hostOrganismList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link HostOrganism }
-     *
-     */
-    public void setJAXBHostOrganisms(ArrayList<Organism> value) {
-        this.hostOrganisms = value;
     }
 
     /**
@@ -502,20 +440,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="parameterList")
     @XmlElement(type=XmlParameter.class, name="parameter", required = true)
-    public ArrayList<Parameter> getJAXBParameters() {
-        return (ArrayList<Parameter>)this.parameters;
-    }
-
-    /**
-     * Sets the value of the parameterList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlParameter }
-     *
-     */
-    public void setJAXBParameters(ArrayList<Parameter> value) {
-        this.parameters = value;
+    public List<Parameter> getJAXBParameters() {
+        if (this.parameters == null){
+           initialiseParameters();
+        }
+        return (List<Parameter>)this.parameters;
     }
 
     /**
@@ -528,20 +457,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
      */
     @XmlElementWrapper(name="confidenceList")
     @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
-    public ArrayList<Confidence> getJAXBConfidences() {
-        return (ArrayList<Confidence>)this.confidences;
-    }
-
-    /**
-     * Sets the value of the confidenceList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlConfidence }
-     *
-     */
-    public void setJAXBConfidences(ArrayList<Confidence> value) {
-        this.confidences = value;
+    public List<Confidence> getJAXBConfidences() {
+        if (this.confidences == null){
+            initialiseConfidences();
+        }
+        return (List<Confidence>)this.confidences;
     }
 
     @Override
@@ -559,46 +479,6 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         }
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
-        }
-    }
-
-    @Override
-    protected void initialiseAnnotations() {
-        if (jaxbAttributeList != null){
-            super.initialiseAnnotationsWith(new ArrayList<Annotation>(jaxbAttributeList));
-            this.jaxbAttributeList = null;
-        }else{
-            super.initialiseAnnotations();
-        }
-    }
-
-    @Override
-    protected void initialiseFeatures(){
-        if (jaxbFeatureList != null){
-            super.initialiseFeaturesWith(new ArrayList<FeatureEvidence>(jaxbFeatureList));
-            this.jaxbFeatureList = null;
-        }else{
-            super.initialiseFeatures();
-        }
-    }
-
-    /**
-     * The attribute list used by JAXB to populate participant annotations
-     */
-    public static class JAXBAttributeList extends AbstractEntityAttributeList<XmlExperimentalEntitySet> {
-
-        public JAXBAttributeList(){
-            super();
-        }
-    }
-
-    /**
-     * The feature list used by JAXB to populate participant features
-     */
-    public static class JAXBFeatureList extends AbstractEntityFeatureList<FeatureEvidence, XmlExperimentalEntitySet> {
-
-        public JAXBFeatureList(){
-            super();
         }
     }
 }

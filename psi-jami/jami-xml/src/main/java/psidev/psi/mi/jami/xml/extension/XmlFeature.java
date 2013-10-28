@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple Xml implementation of a Feature
@@ -101,7 +101,7 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
     @XmlElementWrapper(name="featureRangeList", required = true)
     @XmlElement(type=XmlRange.class, name="featureRange", required = true)
     @Override
-    public ArrayList<Range> getJAXBRanges() {
+    public List<Range> getJAXBRanges() {
         return super.getJAXBRanges();
     }
 
@@ -116,7 +116,7 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
     @XmlElementWrapper(name="attributeList")
     @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     @Override
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public List<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 
