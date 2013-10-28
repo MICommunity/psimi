@@ -17,6 +17,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -227,12 +228,8 @@ public class XmlSource extends XmlOpenCvTerm
     @XmlElementWrapper(name="attributeList")
     @XmlElement(type = XmlAnnotation.class, name = "attribute", required = true)
     @Override
-    public SourceAnnotationList getJAXBAttributes() {
-        return (SourceAnnotationList) super.getAttributes();
-    }
-
-    public void setJAXBAttributes(SourceAnnotationList annotations){
-        initialiseAnnotationsWith(annotations);
+    public List<Annotation> getJAXBAttributes() {
+        return super.getAttributes();
     }
 
     protected void processAddedAnnotationEvent(Annotation added) {

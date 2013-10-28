@@ -14,10 +14,10 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlFeatureEvidenceWrapper extends XmlModelledFeature{
+public class XmlModelledFeatureWrapper extends XmlModelledFeature{
     private FeatureEvidence feature;
 
-    public XmlFeatureEvidenceWrapper(FeatureEvidence part, XmlParticipantEvidenceWrapper wrapper){
+    public XmlModelledFeatureWrapper(FeatureEvidence part, XmlModelledParticipantWrapper wrapper){
         if (part == null){
             throw new IllegalArgumentException("A feature evidence wrapper needs a non null feature");
         }
@@ -115,18 +115,18 @@ public class XmlFeatureEvidenceWrapper extends XmlModelledFeature{
                     ParticipantEvidence partEvidence = (ParticipantEvidence) entityEvidence;
                     if (partEvidence.getInteraction() != null){
                         InteractionEvidence interaction = partEvidence.getInteraction();
-                        modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, new XmlParticipantEvidenceWrapper(partEvidence, new XmlInteractionEvidenceWrapper(interaction))));
+                        modelledFeatures.add(new XmlModelledFeatureWrapper(feature, new XmlModelledParticipantWrapper(partEvidence, new XmlInteractionEvidenceWrapper(interaction))));
                     }
                     else{
-                        modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, new XmlParticipantEvidenceWrapper(partEvidence, null)));
+                        modelledFeatures.add(new XmlModelledFeatureWrapper(feature, new XmlModelledParticipantWrapper(partEvidence, null)));
                     }
                 }
                 else{
-                    modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, null));
+                    modelledFeatures.add(new XmlModelledFeatureWrapper(feature, null));
                 }
             }
             else{
-                modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, null));
+                modelledFeatures.add(new XmlModelledFeatureWrapper(feature, null));
             }
         }
         super.initialiseLinkedFeaturesWith(modelledFeatures);

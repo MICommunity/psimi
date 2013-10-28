@@ -157,25 +157,12 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef", required = true)
+    @XmlElement(name="experimentRef", required = true, type = Integer.class)
     public JAXBExperimentRefList getJAXBExperimentRefList() {
-        return jaxbExperimentRefList;
-    }
-
-    /**
-     * Sets the value of the experimentRefList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
-        this.jaxbExperimentRefList = value;
-        if (value != null){
-            experiments = new ArrayList<Experiment>();
-            this.jaxbExperimentRefList.parent = this;
+        if (this.jaxbExperimentRefList == null){
+           this.jaxbExperimentRefList = new JAXBExperimentRefList();
         }
+        return jaxbExperimentRefList;
     }
 
     /**
@@ -189,7 +176,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     @XmlElementWrapper(name="featureRangeList", required = true)
     @XmlElement(type=XmlRange.class, name="featureRange", required = true)
     @Override
-    public ArrayList<Range> getJAXBRanges() {
+    public List<Range> getJAXBRanges() {
         return super.getJAXBRanges();
     }
 
@@ -204,7 +191,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     @XmlElementWrapper(name="attributeList")
     @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     @Override
-    public ArrayList<Annotation> getJAXBAttributes() {
+    public List<Annotation> getJAXBAttributes() {
         return super.getJAXBAttributes();
     }
 
@@ -277,18 +264,11 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     /**
      * The experiment ref list used by JAXB to populate experiment refs
      */
-    public static class JAXBExperimentRefList extends ArrayList<Integer>{
-
-        private XmlFeatureEvidence parent;
+    private class JAXBExperimentRefList extends ArrayList<Integer>{
 
         public JAXBExperimentRefList(){
-        }
-
-        public JAXBExperimentRefList(int initialCapacity) {
-        }
-
-        public JAXBExperimentRefList(Collection<? extends Integer> c) {
-            addAll(c);
+            super();
+            experiments = new ArrayList<Experiment>();
         }
 
         @Override
@@ -296,7 +276,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             if (val == null){
                 return false;
             }
-            return parent.experiments.add(new ExperimentRef(val));
+            return experiments.add(new ExperimentRef(val));
         }
 
         @Override
@@ -339,43 +319,44 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             if (val == null){
                 return false;
             }
-            ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
+            ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
             return true;
         }
-        ////////////////////////////////////////////////// classes
+    }
 
-        /**
-         * Experiment ref for experimental interactor
-         */
-        private class ExperimentRef extends AbstractExperimentRef{
-            public ExperimentRef(int ref) {
-                super(ref);
-            }
+    ////////////////////////////////////////////////// classes
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof Experiment){
-                        parent.experiments.remove(this);
-                        parent.experiments.add((Experiment)obj);
-                        return true;
-                    }
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    experiments.remove(this);
+                    experiments.add((Experiment)obj);
+                    return true;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            public String toString() {
-                return "Experiment reference: "+ref+" in feature "+(parent.getFeatureLocator() != null? parent.getFeatureLocator().toString():"") ;
-            }
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in feature "+(XmlFeatureEvidence.this.getSourceLocator() != null? XmlFeatureEvidence.this.getSourceLocator().toString():"") ;
+        }
 
-            public FileSourceLocator getSourceLocator() {
-                return parent.getFeatureLocator();
-            }
+        public FileSourceLocator getSourceLocator() {
+            return XmlFeatureEvidence.this.getSourceLocator();
+        }
 
-            public void setSourceLocator(FileSourceLocator locator) {
-                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-            }
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
         }
     }
 }

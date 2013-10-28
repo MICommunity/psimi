@@ -120,7 +120,7 @@ public class XmlInteractionEvidenceWrapper extends XmlComplex implements Complex
     protected void initialiseModelledParameters(){
         Collection<ModelledParameter> modelledParameters = new ArrayList<ModelledParameter>(this.interactionEvidence.getParameters().size());
         for (Parameter param : this.interactionEvidence.getParameters()){
-            modelledParameters.add(new XmlParameterWrapper(param));
+            modelledParameters.add(new XmlModelledParameterWrapper(param));
         }
         super.initialiseModelledParametersWith(modelledParameters);
     }
@@ -129,7 +129,7 @@ public class XmlInteractionEvidenceWrapper extends XmlComplex implements Complex
     protected void initialiseModelledConfidences(){
         Collection<ModelledConfidence> modelledConfidences = new ArrayList<ModelledConfidence>(this.interactionEvidence.getConfidences().size());
         for (Confidence conf : this.interactionEvidence.getConfidences()){
-            modelledConfidences.add(new XmlConfidenceWrapper(conf));
+            modelledConfidences.add(new XmlModelledConfidenceWrapper(conf));
         }
         super.initialiseModelledConfidencesWith(modelledConfidences);
     }
@@ -138,7 +138,7 @@ public class XmlInteractionEvidenceWrapper extends XmlComplex implements Complex
     protected void initialiseParticipants(){
         Collection<ModelledParticipant> modelledParticipants = new ArrayList<ModelledParticipant>(this.interactionEvidence.getParticipants().size());
         for (ParticipantEvidence part : this.interactionEvidence.getParticipants()){
-            modelledParticipants.add(new XmlParticipantEvidenceWrapper(part, this));
+            modelledParticipants.add(new XmlModelledParticipantWrapper(part, this));
         }
         super.initialiseParticipantsWith(modelledParticipants);
     }

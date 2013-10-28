@@ -20,7 +20,7 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -47,7 +47,7 @@ public class XmlXref
     private String id;
     private String version;
     private String secondary;
-    private ArrayList<XmlAnnotation> annotations;
+    private List<XmlAnnotation> annotations;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -306,13 +306,9 @@ public class XmlXref
      *
      */
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true)
-    public ArrayList<XmlAnnotation> getJAXBAttributes() {
+    @XmlElement(name="attribute", required = true, type = XmlAnnotation.class)
+    public List<XmlAnnotation> getJAXBAttributes() {
         return this.annotations;
-    }
-
-    public void setJAXBAttributes(ArrayList<XmlAnnotation> annotations) {
-        this.annotations = annotations;
     }
 
     @Override

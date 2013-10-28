@@ -6,17 +6,19 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Abstract class for xml interactions
@@ -30,7 +32,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
 
     private NamesContainer namesContainer;
     private InteractionXrefContainer xrefContainer;
-    private ArrayList<InferredInteraction> inferredInteractions;
     private Boolean intraMolecular;
     private int id;
     private ArrayList<CvTerm> interactionTypes;
@@ -42,6 +43,10 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
     private Collection<T> participants;
     private PsiXmLocator sourceLocator;
     private XmlEntry entry;
+    private List<InferredInteraction> inferredInteractions;
+
+    private JAXBAttributeList jaxbAttributeList;
+    private JAXBParticipantList jaxbParticipantList;
 
     public AbstractXmlInteraction(){
         XmlEntryContext context = XmlEntryContext.getInstance();
@@ -275,20 +280,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link ArrayList<InferredInteraction> }
      *
      */
-    public ArrayList<InferredInteraction> getJAXBInferredInteractions() {
+    public List<InferredInteraction> getJAXBInferredInteractions() {
+        if (this.inferredInteractions == null){
+            this.inferredInteractions = new ArrayList<InferredInteraction>();
+        }
         return inferredInteractions;
-    }
-
-    /**
-     * Sets the value of the inferredInteractionList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList<InferredInteraction> }
-     *
-     */
-    public void setJAXBInferredInteractions(ArrayList<InferredInteraction> value) {
-        this.inferredInteractions = value;
     }
 
     /**
@@ -343,20 +339,25 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link XmlCvTerm }
      *
      */
-    public ArrayList<CvTerm> getJAXBInteractionTypes() {
+    public List<CvTerm> getJAXBInteractionTypes() {
+        if (this.interactionTypes == null){
+           this.interactionTypes = new ArrayList<CvTerm>();
+        }
         return this.interactionTypes;
     }
 
-    /**
-     * Sets the value of the interactionTypeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link HostOrganism }
-     *
-     */
-    public void setJAXBInteractionTypes(ArrayList<CvTerm> value) {
-        this.interactionTypes = value;
+    public List<Annotation> getJAXBAttributes() {
+        if (this.jaxbAttributeList == null){
+           this.jaxbAttributeList = new JAXBAttributeList();
+        }
+        return jaxbAttributeList;
+    }
+
+    public List<T> getJAXBParticipants() {
+        if (this.jaxbParticipantList == null){
+           this.jaxbParticipantList = new JAXBParticipantList();
+        }
+        return jaxbParticipantList;
     }
 
     @Override
@@ -389,7 +390,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         this.id = value;
     }
 
-    public void processAddedParticipant(T participant) {
+    protected void processAddedParticipant(T participant) {
         participant.setInteraction(getCurrentInstance());
     }
 
@@ -422,29 +423,154 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
         this.participants = new ArrayList<T>();
     }
 
-    protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations) {
-        if (annotations == null){
-            this.annotations = Collections.EMPTY_LIST;
-        }
-        else {
-            this.annotations = annotations;
-        }
-    }
-
-    protected void initialiseParticipantsWith(ArrayList<T> participants) {
-        if (participants == null){
-            this.participants = Collections.EMPTY_LIST;
-        }
-        else {
-            this.participants = participants;
-        }
-    }
-
     private AbstractXmlInteraction<T> getCurrentInstance(){
         return this;
     }
 
     ////////////////////////////////////////////////////////////////// classes
+
+    private class JAXBAttributeList extends ArrayList<Annotation> {
+
+        public JAXBAttributeList(){
+            super();
+            annotations = new ArrayList<Annotation>();
+        }
+
+        @Override
+        public boolean add(Annotation annotation) {
+            if (annotation == null){
+                return false;
+            }
+            return processAnnotation(null, annotation);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Annotation> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Annotation a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Annotation element) {
+            processAnnotation(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Annotation> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Annotation a : c){
+                if (processAnnotation(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        private boolean processAnnotation(Integer index, Annotation annotation) {
+            if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
+                    || AnnotationUtils.doesAnnotationHaveTopic(annotation, null, Checksum.RIGID)){
+                XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXmlUtils.UNSPECIFIED);
+                checksum.setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
+                getChecksums().add(checksum);
+                return false;
+            }
+            else {
+                return addAnnotation(index, annotation);
+            }
+        }
+
+        private boolean addAnnotation(Integer index, Annotation annotation) {
+            if (index == null){
+                return annotations.add(annotation);
+            }
+            ((List<Annotation>)annotations).add(index, annotation);
+            return true;
+        }
+    }
+
+    /**
+     * The participant list used by JAXB to populate interaction participants
+     */
+    private class JAXBParticipantList extends ArrayList<T> {
+
+        public JAXBParticipantList(){
+            super();
+            participants = new ArrayList<T>();
+        }
+
+        @Override
+        public boolean add(T participant) {
+            if (participant == null){
+                return false;
+            }
+            return addElement(participant);
+
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends T> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (T a : c){
+                if (add(a)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, T element) {
+            addToSpecificIndex(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends T> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (T a : c){
+                if (addToSpecificIndex(newIndex, a)){
+                    newIndex++;
+                    add = true;
+                }
+            }
+            return add;
+        }
+
+        private boolean addToSpecificIndex(int index, T element) {
+            ((List<T>)participants).add(index, element);
+            processAddedParticipant(element);
+            return true;
+        }
+
+        private boolean addElement(T element) {
+            if (participants.add(element)){
+                processAddedParticipant(element);
+                return true;
+            }
+            return false;
+        }
+    }
 
     private class InteractionChecksumList extends AbstractListHavingProperties<Checksum> {
         public InteractionChecksumList(){

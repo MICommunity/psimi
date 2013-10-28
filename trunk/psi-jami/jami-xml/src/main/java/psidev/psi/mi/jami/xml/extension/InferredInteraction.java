@@ -106,7 +106,7 @@ public class InferredInteraction
      *
      *
      */
-    @XmlElement(name="participant", required = true)
+    @XmlElement(name="participant", type = InferredInteractionParticipant.class, required = true)
     public List<InferredInteractionParticipant> getParticipants() {
         if (participants == null) {
             participants = new ArrayList<InferredInteractionParticipant>();
@@ -123,48 +123,25 @@ public class InferredInteraction
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef", required = true)
-    public JAXBExperimentRefList getJAXBExperimentRefList() {
-        return this.jaxbExperimentRefList;
-    }
-
-    /**
-     * Sets the value of the experimentRefList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
-        this.jaxbExperimentRefList = value;
-        if (value != null){
-            experiments = new ArrayList<Experiment>();
-           this.jaxbExperimentRefList.parent = this;
+    @XmlElement(name="experimentRef", type = Integer.class, required = true)
+    public List<Integer> getJAXBExperimentRefList() {
+        if (this.jaxbExperimentRefList == null){
+           this.jaxbExperimentRefList = new JAXBExperimentRefList();
         }
-    }
-
-    private FileSourceLocator getInferredInteractionLocator(){
-        return this.sourceLocator;
+        return this.jaxbExperimentRefList;
     }
 
     ////////////////////////////////////////////////////////////////// classes
 
+    //////////////////////////////////////////////////////////////
     /**
      * The experiment ref list used by JAXB to populate experiment refs
      */
-    public static class JAXBExperimentRefList extends ArrayList<Integer>{
-
-        private InferredInteraction parent;
+    private class JAXBExperimentRefList extends ArrayList<Integer>{
 
         public JAXBExperimentRefList(){
-        }
-
-        public JAXBExperimentRefList(int initialCapacity) {
-        }
-
-        public JAXBExperimentRefList(Collection<? extends Integer> c) {
-            addAll(c);
+            super();
+            experiments = new ArrayList<Experiment>();
         }
 
         @Override
@@ -172,7 +149,7 @@ public class InferredInteraction
             if (val == null){
                 return false;
             }
-            return parent.experiments.add(new ExperimentRef(val));
+            return experiments.add(new ExperimentRef(val));
         }
 
         @Override
@@ -215,43 +192,43 @@ public class InferredInteraction
             if (val == null){
                 return false;
             }
-            ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
+            ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
             return true;
         }
+    }
 
-        ///////////////////////////////////////////
-        /**
-         * Experiment ref for experimental interactor
-         */
-        private class ExperimentRef extends AbstractExperimentRef{
-            public ExperimentRef(int ref) {
-                super(ref);
-            }
+    ///////////////////////////////////////////
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof Experiment){
-                        parent.experiments.remove(this);
-                        parent.experiments.add((Experiment)obj);
-                        return true;
-                    }
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    experiments.remove(this);
+                    experiments.add((Experiment)obj);
+                    return true;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            public String toString() {
-                return "Experiment reference: "+ref+" in inferred interaction "+(parent.getInferredInteractionLocator() != null? parent.getInferredInteractionLocator().toString():"") ;
-            }
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in inferred interaction "+(InferredInteraction.this.sourceLocator != null? InferredInteraction.this.sourceLocator.toString():"") ;
+        }
 
-            public FileSourceLocator getSourceLocator() {
-                return parent.getInferredInteractionLocator();
-            }
+        public FileSourceLocator getSourceLocator() {
+            return InferredInteraction.this.sourceLocator;
+        }
 
-            public void setSourceLocator(FileSourceLocator locator) {
-                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-            }
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
         }
     }
 }

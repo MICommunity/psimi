@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract class for Xml features
@@ -187,12 +188,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         return this.annotations;
     }
 
-    public ArrayList<Annotation> getJAXBAttributes() {
-        return (ArrayList<Annotation>)this.annotations;
-    }
-
-    public void setJAXBAttributes(ArrayList<Annotation> attributes) {
-        this.annotations = attributes;
+    public List<Annotation> getJAXBAttributes() {
+        if (this.annotations == null){
+            initialiseAnnotations();
+        }
+        return (List<Annotation>)this.annotations;
     }
 
     public CvTerm getType() {
@@ -218,12 +218,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         return this.ranges;
     }
 
-    public ArrayList<Range> getJAXBRanges() {
-        return (ArrayList<Range>)this.ranges;
-    }
-
-    public void setJAXBRanges(ArrayList<Range> ranges) {
-        this.ranges = ranges;
+    public List<Range> getJAXBRanges() {
+        if (ranges == null){
+            initialiseRanges();
+        }
+        return (List<Range>)this.ranges;
     }
 
     public CvTerm getInteractionEffect() {

@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -125,7 +124,7 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public JAXBAttributeList getJAXBAttributes() {
+    public List<Annotation> getJAXBAttributes() {
         return this.wrappedInteraction.getJAXBAttributes();
     }
 
@@ -135,17 +134,17 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public JAXBParticipantList getJAXBParticipants() {
+    public List<ParticipantEvidence> getJAXBParticipants() {
         return this.wrappedInteraction.getJAXBParticipants();
     }
 
     @Override
-    public ArrayList<InferredInteraction> getJAXBInferredInteractions() {
+    public List<InferredInteraction> getJAXBInferredInteractions() {
         return this.wrappedInteraction.getJAXBInferredInteractions();
     }
 
     @Override
-    public ArrayList<CvTerm> getJAXBInteractionTypes() {
+    public List<CvTerm> getJAXBInteractionTypes() {
         return this.wrappedInteraction.getJAXBInteractionTypes();
     }
 
@@ -235,23 +234,8 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public void setJAXBInferredInteractions(ArrayList<InferredInteraction> value) {
-        super.setJAXBInferredInteractions(value);
-    }
-
-    @Override
-    public void setJAXBParticipants(JAXBParticipantList value) {
-        this.wrappedInteraction.setJAXBParticipants(value);
-    }
-
-    @Override
     public void setJAXBIntraMolecular(Boolean value) {
         this.wrappedInteraction.setJAXBIntraMolecular(value);
-    }
-
-    @Override
-    public void setJAXBAttributes(JAXBAttributeList value) {
-        this.wrappedInteraction.setJAXBAttributes(value);
     }
 
     @Override
@@ -261,11 +245,6 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     @Override
     public void setJAXBIdOnly(int value) {
         this.wrappedInteraction.setJAXBIdOnly(value);
-    }
-
-    @Override
-    public void setJAXBInteractionTypes(ArrayList<CvTerm> value) {
-        this.wrappedInteraction.setJAXBInteractionTypes(value);
     }
 
     @Override
@@ -369,23 +348,13 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public ArrayList<Confidence> getJAXBConfidences() {
+    public List<Confidence> getJAXBConfidences() {
         return this.wrappedInteraction.getJAXBConfidences();
     }
 
     @Override
-    public void setJAXBConfidences(ArrayList<Confidence> value) {
-        this.wrappedInteraction.setJAXBConfidences(value);
-    }
-
-    @Override
-    public ArrayList<Parameter> getJAXBParameters() {
+    public List<Parameter> getJAXBParameters() {
         return this.wrappedInteraction.getJAXBParameters();
-    }
-
-    @Override
-    public void setJAXBParameters(ArrayList<Parameter> value) {
-        this.wrappedInteraction.setJAXBParameters(value);
     }
 
     @Override

@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,48 +70,25 @@ public class HostOrganism extends XmlOrganism{
      *
      */
     @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef", required = true)
-    public JAXBExperimentRefList getJAXBExperimentRefList() {
-        return this.jaxbExperimentRefList;
-    }
-
-    /**
-     * Sets the value of the experimentRefList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBExperimentRefList(JAXBExperimentRefList value) {
-        this.jaxbExperimentRefList = value;
-        if (value != null){
-            experiments = new ArrayList<Experiment>();
-            this.jaxbExperimentRefList.parent = this;
+    @XmlElement(name = "experimentRef", type = Integer.class, required = true)
+    public List<Integer> getJAXBExperimentRefList() {
+        if (this.jaxbExperimentRefList == null){
+           this.jaxbExperimentRefList = new JAXBExperimentRefList();
         }
-    }
-
-    private FileSourceLocator getHostOrganismLocator(){
-        return getSourceLocator();
+        return this.jaxbExperimentRefList;
     }
 
     ////////////////////////////////////////////////////////////////// classes
 
+    //////////////////////////////////////////////////////////////
     /**
      * The experiment ref list used by JAXB to populate experiment refs
      */
-    public static class JAXBExperimentRefList extends ArrayList<Integer>{
-
-        private HostOrganism parent;
+    private class JAXBExperimentRefList extends ArrayList<Integer>{
 
         public JAXBExperimentRefList(){
-        }
-
-        public JAXBExperimentRefList(int initialCapacity) {
-        }
-
-        public JAXBExperimentRefList(Collection<? extends Integer> c) {
-            addAll(c);
+            super();
+            experiments = new ArrayList<Experiment>();
         }
 
         @Override
@@ -118,7 +96,7 @@ public class HostOrganism extends XmlOrganism{
             if (val == null){
                 return false;
             }
-            return parent.experiments.add(new ExperimentRef(val));
+            return experiments.add(new ExperimentRef(val));
         }
 
         @Override
@@ -161,43 +139,43 @@ public class HostOrganism extends XmlOrganism{
             if (val == null){
                 return false;
             }
-            ((ArrayList<Experiment>)parent.experiments).add(index, new ExperimentRef(val));
+            ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
             return true;
         }
+    }
 
-        ////////////////////////////////////////////////////// classes
-        /**
-         * Experiment ref for experimental interactor
-         */
-        private class ExperimentRef extends AbstractExperimentRef{
-            public ExperimentRef(int ref) {
-                super(ref);
-            }
+    ////////////////////////////////////////////////////// classes
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef{
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof Experiment){
-                        parent.experiments.remove(this);
-                        parent.experiments.add((Experiment)obj);
-                        return true;
-                    }
+        public boolean resolve(Map<Integer, Object> parsedObjects) {
+            if (parsedObjects.containsKey(this.ref)){
+                Object obj = parsedObjects.get(this.ref);
+                if (obj instanceof Experiment){
+                    experiments.remove(this);
+                    experiments.add((Experiment)obj);
+                    return true;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            public String toString() {
-                return "Experiment reference: "+ref+" in host organism "+(parent.getHostOrganismLocator() != null? parent.getHostOrganismLocator().toString():"") ;
-            }
+        @Override
+        public String toString() {
+            return "Experiment reference: "+ref+" in host organism "+(HostOrganism.this.getSourceLocator() != null? HostOrganism.this.getSourceLocator().toString():"") ;
+        }
 
-            public FileSourceLocator getSourceLocator() {
-                return parent.getHostOrganismLocator();
-            }
+        public FileSourceLocator getSourceLocator() {
+            return HostOrganism.this.getSourceLocator();
+        }
 
-            public void setSourceLocator(FileSourceLocator locator) {
-                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
-            }
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
         }
     }
 }

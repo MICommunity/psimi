@@ -6,11 +6,9 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.AbstractInteractionAttributeList;
-import psidev.psi.mi.jami.xml.AbstractInteractionParticipantList;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Xml implementation of interaction
@@ -35,8 +33,6 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     @XmlLocation
     @XmlTransient
     private Locator locator;
-    private JAXBAttributeList jaxbAttributeList;
-    private JAXBParticipantList jaxbParticipantList;
 
     public XmlBasicInteraction() {
         super();
@@ -69,24 +65,9 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     }
 
     @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name = "attribute", required = true)
-    public JAXBAttributeList getJAXBAttributes() {
-        return jaxbAttributeList;
-    }
-
-    /**
-     * Sets the value of the attributeList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ArrayList< psidev.psi.mi.jami.model.Annotation >  }
-     *
-     */
-    public void setJAXBAttributes(JAXBAttributeList  value) {
-        this.jaxbAttributeList = value;
-        if (value != null){
-            this.jaxbAttributeList.setParent(this);
-        }
+    @XmlElement(name = "attribute", type = XmlAnnotation.class, required = true)
+    public List<Annotation> getJAXBAttributes() {
+        return super.getJAXBAttributes();
     }
 
     @Override
@@ -95,29 +76,22 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
         return super.getJAXBIntraMolecular();
     }
 
-    @XmlElementWrapper(name="participantList")
-    @XmlElement(type=XmlParticipant.class, name = "participant", required = true)
-    public JAXBParticipantList getJAXBParticipants() {
-        return jaxbParticipantList;
-    }
-
-    public void setJAXBParticipants(JAXBParticipantList jaxbParticipantList) {
-        this.jaxbParticipantList = jaxbParticipantList;
-        if (jaxbParticipantList != null){
-            this.jaxbParticipantList.setParent(this);
-        }
+    @XmlElementWrapper(name="participantList", required = true)
+    @XmlElement(name = "participant", type = XmlParticipant.class, required = true)
+    public List<Participant> getJAXBParticipants() {
+        return super.getJAXBParticipants();
     }
 
     @Override
     @XmlElementWrapper(name="inferredInteractionList")
-    @XmlElement(name="inferredInteraction", required = true)
-    public ArrayList<InferredInteraction> getJAXBInferredInteractions() {
+    @XmlElement(name="inferredInteraction", type = InferredInteraction.class, required = true)
+    public List<InferredInteraction> getJAXBInferredInteractions() {
         return super.getJAXBInferredInteractions();
     }
 
     @Override
-    @XmlElements({@XmlElement(name="interactionType", type = XmlCvTerm.class)})
-    public ArrayList<CvTerm> getJAXBInteractionTypes() {
+    @XmlElement(name="interactionType", type = XmlCvTerm.class)
+    public List<CvTerm> getJAXBInteractionTypes() {
         return super.getJAXBInteractionTypes();
     }
 
@@ -136,46 +110,6 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
         }
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
-        }
-    }
-
-    @Override
-    protected void initialiseAnnotations(){
-        if (jaxbAttributeList != null){
-            super.initialiseAnnotationsWith(new ArrayList<Annotation>(jaxbAttributeList));
-            this.jaxbAttributeList = null;
-        }else{
-            super.initialiseAnnotations();
-        }
-    }
-
-    @Override
-    protected void initialiseParticipants(){
-        if (jaxbParticipantList != null){
-            super.initialiseParticipantsWith(new ArrayList<Participant>(jaxbParticipantList));
-            this.jaxbParticipantList = null;
-        }else{
-            super.initialiseParticipants();
-        }
-    }
-
-    /**
-     * The attribute list used by JAXB to populate interaction annotations
-     */
-    public static class JAXBAttributeList extends AbstractInteractionAttributeList<XmlBasicInteraction>{
-
-        public JAXBAttributeList(){
-            super();
-        }
-    }
-
-    /**
-     * The participant list used by JAXB to populate interaction participants
-     */
-    public static class JAXBParticipantList<T extends Participant> extends AbstractInteractionParticipantList<Participant, XmlBasicInteraction>{
-
-        public JAXBParticipantList(){
-            super();
         }
     }
 }
