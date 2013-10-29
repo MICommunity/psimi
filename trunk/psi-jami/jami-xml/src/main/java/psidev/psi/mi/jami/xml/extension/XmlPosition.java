@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.CvTerm;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
@@ -16,7 +17,6 @@ import java.math.BigInteger;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "position")
 public class XmlPosition extends AbstractXmlPosition{
 
     private BigInteger pos;
@@ -42,7 +42,7 @@ public class XmlPosition extends AbstractXmlPosition{
     }
 
     @Override
-    public XmlCvTerm getStatus() {
+    public CvTerm getStatus() {
         return super.getStatus();
     }
 
@@ -60,19 +60,6 @@ public class XmlPosition extends AbstractXmlPosition{
     }
 
     /**
-     * Gets the value of the position property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    @XmlAttribute(name = "position", required = true)
-    public BigInteger getJAXBPosition() {
-        return pos;
-    }
-
-    /**
      * Sets the value of the position property.
      *
      * @param value
@@ -80,6 +67,7 @@ public class XmlPosition extends AbstractXmlPosition{
      *     {@link BigInteger }
      *
      */
+    @XmlAttribute(name = "position", required = true)
     public void setJAXBPosition(BigInteger value) {
         this.pos = value;
     }

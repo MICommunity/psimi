@@ -251,8 +251,8 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     }
 
     @XmlElement(name = "featureList")
-    public void setJAXBFeatureWrapper(AbstractXmlEntity.JAXBFeatureWrapper jaxbFeatureWrapper) {
-        super.setJAXBFeatureWrapper(jaxbFeatureWrapper);
+    public void setFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
+        super.setFeatureWrapper(jaxbFeatureWrapper);
     }
 
     @XmlElement(name="participantIdentificationMethodList")
@@ -331,12 +331,12 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
     @Override
     protected void initialiseFeatureWrapper() {
-        super.setJAXBFeatureWrapper(new JAXBFeatureWrapper());
+        super.setFeatureWrapper(new JAXBFeatureWrapper());
     }
 
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="participantEvidenceParameterWrapper")
+    @XmlType(name="participantEvidenceFeatureWrapper")
     public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<FeatureEvidence> {
 
         public JAXBFeatureWrapper(){

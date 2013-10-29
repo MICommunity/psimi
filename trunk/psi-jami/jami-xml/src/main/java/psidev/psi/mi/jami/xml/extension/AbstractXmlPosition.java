@@ -4,6 +4,7 @@ import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public abstract class AbstractXmlPosition implements Position, FileSourceContext, Locatable {
 
-    private XmlCvTerm status;
+    private CvTerm status;
     private boolean isPositionUndetermined;
 
     private PsiXmLocator sourceLocator;
@@ -33,14 +34,14 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
         isPositionUndetermined = positionUndetermined;
     }
 
-    public XmlCvTerm getStatus() {
+    public CvTerm getStatus() {
         if (status == null){
             this.status = new XmlCvTerm(PsiXmlUtils.UNSPECIFIED);
         }
         return this.status;
     }
 
-    public void setStatus(XmlCvTerm status) {
+    public void setJAXBStatus(CvTerm status) {
         this.status = status;
     }
 

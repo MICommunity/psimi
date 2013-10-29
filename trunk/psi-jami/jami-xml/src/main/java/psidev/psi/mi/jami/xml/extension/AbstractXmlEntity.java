@@ -364,26 +364,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (jaxbAttributeWrapper != null && jaxbAttributeWrapper.stoichiometry != null ? ", stoichiometry: " + jaxbAttributeWrapper.stoichiometry.toString() : "");
     }
 
-    /**
-     * Gets the value of the featureList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link AbstractXmlFeature }
-     *
-     */
-    public List<F> getJAXBFeatures() {
-        if (this.jaxbFeatureWrapper == null){
-           initialiseFeatureWrapper();
-        }
-        return this.jaxbFeatureWrapper.features;
-    }
-
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         this.jaxbAttributeWrapper = jaxbAttributeWrapper;
     }
 
-    public void setJAXBFeatureWrapper(JAXBFeatureWrapper<F> jaxbFeatureWrapper) {
+    public void setFeatureWrapper(JAXBFeatureWrapper<F> jaxbFeatureWrapper) {
         this.jaxbFeatureWrapper = jaxbFeatureWrapper;
         // initialise all features because of back references
         if (this.jaxbFeatureWrapper != null && !this.jaxbFeatureWrapper.features.isEmpty()){
@@ -391,20 +376,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
                 processAddedFeature(feature);
             }
         }
-    }
-
-    protected JAXBFeatureWrapper<F> getFeatureWrapper(){
-        if (this.jaxbFeatureWrapper == null){
-            initialiseFeatureWrapper();
-        }
-        return this.jaxbFeatureWrapper;
-    }
-
-    protected JAXBAttributeWrapper getAttributeWrapper(){
-        if (this.jaxbAttributeWrapper == null){
-            initialiseAnnotationWrapper();
-        }
-        return this.jaxbAttributeWrapper;
     }
 
     protected void processAddedFeature(F feature){
@@ -664,6 +635,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="featureWrapper")
     public static class JAXBFeatureWrapper<F extends Feature> implements Locatable, FileSourceContext{
         private PsiXmLocator sourceLocator;
         @XmlLocation
