@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.xml.extension.binary;
 
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.impl.ModelledBinaryInteractionWrapper;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntry;
@@ -22,7 +24,7 @@ import java.util.Date;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryInteraction implements ModelledBinaryInteraction{
+public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryInteraction, FileSourceContext, Locatable{
     private XmlModelledInteraction wrappedInteraction;
     private ModelledBinaryInteractionWrapper binaryWrapper;
 
@@ -109,7 +111,6 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
         return this.binaryWrapper.removeAllParticipants(participants);
     }
 
-    @Override
     public int getJAXBId() {
         return this.wrappedInteraction.getJAXBId();
     }
@@ -189,28 +190,23 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
         this.wrappedInteraction.setInteractionType(term);
     }
 
-    @Override
     public void setJAXBNames(NamesContainer value) {
         this.wrappedInteraction.setJAXBNames(value);
     }
 
-    @Override
     public void setJAXBXref(InteractionXrefContainer value) {
-        super.setJAXBXref(value);
+        this.wrappedInteraction.setJAXBXref(value);
     }
 
-    @Override
+    public Boolean getJAXBIntraMolecular(){
+        return this.wrappedInteraction.getJAXBIntraMolecular();
+    }
+
     public void setJAXBIntraMolecular(Boolean value) {
         this.wrappedInteraction.setJAXBIntraMolecular(value);
     }
 
-    @Override
     public void setJAXBId(int value) {
-        this.wrappedInteraction.setJAXBIdOnly(value);
-    }
-
-    @Override
-    public void setJAXBIdOnly(int value) {
         this.wrappedInteraction.setJAXBIdOnly(value);
     }
 
@@ -224,12 +220,10 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
         this.wrappedInteraction.setSourceLocator(sourceLocator);
     }
 
-    @Override
     public XmlEntry getEntry() {
         return this.wrappedInteraction.getEntry();
     }
 
-    @Override
     public void setEntry(XmlEntry entry) {
         this.wrappedInteraction.setEntry(entry);
     }
