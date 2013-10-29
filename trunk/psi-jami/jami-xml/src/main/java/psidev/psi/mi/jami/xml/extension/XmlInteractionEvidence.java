@@ -21,36 +21,20 @@ import java.util.*;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "interactionEvidence", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBAvailability",
-        "JAXBAvailabilityRef",
-        "JAXBExperimentList",
-        "JAXBParticipants",
-        "JAXBInferredInteractions",
-        "JAXBInteractionTypes",
-        "JAXBModelled",
-        "JAXBIntraMolecular",
-        "JAXBNegative",
-        "JAXBConfidences",
-        "JAXBParameters",
-        "JAXBAttributes"
-})
 public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements InteractionEvidence{
 
     private Availability availability;
-    private Collection<Parameter> parameters;
     private boolean isInferred = false;
-    private Collection<Confidence> confidences;
     private boolean isNegative;
     private Collection<VariableParameterValueSet> variableParameterValueSets;
     private Boolean modelled;
     @XmlLocation
     @XmlTransient
     private Locator locator;
-    private JAXBExperimentList jaxbExperimentList;
-    private List<Experiment> experiments;
+    private JAXBExperimentWrapper jaxbExperimentWrapper;
+
+    private JAXBConfidenceWrapper jaxbConfidenceWrapper;
+    private JAXBParameterWrapper jaxbParameterWrapper;
 
     public XmlInteractionEvidence() {
         super();
@@ -65,7 +49,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public String getImexId() {
-        return getJAXBXref() != null ? this.getJAXBXref().getImexId() : null;
+        return getJAXBXref() != null ? getJAXBXref().getImexId() : null;
     }
 
     public void assignImexId(String identifier) {
@@ -76,29 +60,35 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public Experiment getExperiment() {
-        if (this.experiments == null || this.experiments.isEmpty()){
+        if (this.jaxbExperimentWrapper == null || this.jaxbExperimentWrapper.experiments.isEmpty()){
             return null;
         }
-        return experiments.iterator().next();
+        return this.jaxbExperimentWrapper.experiments.iterator().next();
     }
 
     public void setExperiment(Experiment experiment) {
-        if (this.experiments == null){
-           this.experiments = new ArrayList<Experiment>();
+        if (this.jaxbExperimentWrapper == null && experiment != null){
+            this.jaxbExperimentWrapper = new JAXBExperimentWrapper();
+            this.jaxbExperimentWrapper.experiments.add(experiment);
         }
-        if (!experiments.isEmpty()){
-            experiments.remove(0);
+        else if (experiment != null){
+            if (!this.jaxbExperimentWrapper.experiments.isEmpty()){
+                this.jaxbExperimentWrapper.experiments.remove(0);
+            }
+            this.jaxbExperimentWrapper.experiments.add(0, experiment);
         }
-        if (experiment != null){
-           experiments.add(0, experiment);
+        else{
+            if (!this.jaxbExperimentWrapper.experiments.isEmpty()){
+                this.jaxbExperimentWrapper.experiments.remove(0);
+            }
         }
     }
 
     public List<Experiment> getExperiments() {
-        if (jaxbExperimentList == null){
-            jaxbExperimentList = new JAXBExperimentList();
+        if (jaxbExperimentWrapper == null){
+            jaxbExperimentWrapper = new JAXBExperimentWrapper();
         }
-        return jaxbExperimentList.experiments;
+        return jaxbExperimentWrapper.experiments;
     }
 
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
@@ -121,10 +111,10 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public Collection<Confidence> getConfidences() {
-        if (confidences == null){
-            initialiseExperimentalConfidences();
+        if (this.jaxbConfidenceWrapper == null){
+            initialiseConfidenceWrapper();
         }
-        return this.confidences;
+        return this.jaxbConfidenceWrapper.confidences;
     }
 
     public String getAvailability() {
@@ -147,10 +137,10 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public Collection<Parameter> getParameters() {
-        if (parameters == null){
-            initialiseExperimentalParameters();
+        if (jaxbParameterWrapper == null){
+            initialiseParameterWrapper();
         }
-        return this.parameters;
+        return this.jaxbParameterWrapper.parameters;
     }
 
     public boolean isInferred() {
@@ -168,53 +158,43 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
     @Override
     @XmlElement(name = "xref")
-    public InteractionXrefContainer getJAXBXref() {
-        return super.getJAXBXref();
-    }
-
-    @Override
-    @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
-    }
-
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
+    public void setJAXBXref(InteractionXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
-    public Boolean getJAXBIntraMolecular() {
-        return super.getJAXBIntraMolecular();
-    }
-
-    /**
-     * Gets the value of the participantList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<Participant> }
-     *
-     */
-    @XmlElementWrapper(name="participantList")
-    @XmlElement(type=XmlParticipantEvidence.class, name="participant", required = true)
-    public List<ParticipantEvidence> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+    public void setJAXBIntraMolecular(Boolean value) {
+        super.setJAXBIntraMolecular(value);
     }
 
     @Override
-    @XmlElementWrapper(name="inferredInteractionList")
-    @XmlElement(name="inferredInteraction", required = true, type = InferredInteraction.class)
-    public List<InferredInteraction> getJAXBInferredInteractions() {
-        return super.getJAXBInferredInteractions();
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int value) {
+        super.setJAXBId(value);
+    }
+
+    @Override
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
+    }
+
+    @XmlElement(name="participantList", required = true)
+    public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
+        super.setParticipantWrapper(jaxbParticipantWrapper);
+    }
+
+    @Override
+    @XmlElement(name="inferredInteractionList")
+    public void setJAXBInferredInteractionWrapper(JAXBInferredInteractionWrapper jaxbInferredWrapper) {
+        super.setJAXBInferredInteractionWrapper(jaxbInferredWrapper);
     }
 
     @Override
@@ -249,13 +229,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<Confidence> }
      *
      */
-    @XmlElementWrapper(name="confidenceList")
-    @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
-    public List<Confidence> getJAXBConfidences() {
-        if (this.confidences == null){
-            this.confidences = new ArrayList<Confidence>();
-        }
-        return (List<Confidence>)confidences;
+    @XmlElement(name="confidenceList")
+    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
+        this.jaxbConfidenceWrapper = wrapper;
     }
 
     /**
@@ -266,26 +242,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<ModelledParameter> }
      *
      */
-    @XmlElementWrapper(name="parameterList")
-    @XmlElement(type=XmlParameter.class,name="parameter", required = true)
-    public List<Parameter> getJAXBParameters() {
-        if (this.parameters == null){
-            this.parameters = new ArrayList<Parameter>();
-        }
-        return (List<Parameter>)parameters;
-    }
-
-    /**
-     * Gets the value of the availability property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Availability }
-     *
-     */
-    @XmlElement(name = "availability")
-    public Availability getJAXBAvailability() {
-        return availability;
+    @XmlElement(name="parameterList")
+    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
+        this.jaxbParameterWrapper = wrapper;
     }
 
     /**
@@ -296,24 +255,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Availability }
      *
      */
+    @XmlElement(name = "availability")
     public void setJAXBAvailability(Availability value) {
         this.availability = value;
-    }
-
-    /**
-     * Gets the value of the availabilityRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElement(name = "availabilityRef")
-    public Integer getJAXBAvailabilityRef() {
-        if (availability instanceof AvailabilityRef){
-            return ((AvailabilityRef)availability).getRef();
-        }
-        return null;
     }
 
     /**
@@ -324,23 +268,11 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Integer }
      *
      */
+    @XmlElement(name = "availabilityRef")
     public void setJAXBAvailabilityRef(Integer value) {
         if (value != null){
             this.availability = new AvailabilityRef(value);
         }
-    }
-
-    /**
-     * Gets the value of the experimentList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<XmlExperiment> }
-     *
-     */
-    @XmlElement(name="experimentList")
-    public JAXBExperimentList getJAXBExperimentList() {
-        return this.jaxbExperimentList;
     }
 
     /**
@@ -351,20 +283,19 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link ArrayList<XmlExperiment> }
      *
      */
-    public void setJAXBExperimentList(JAXBExperimentList value) {
-        this.jaxbExperimentList = value;
+    @XmlElement(name="experimentList")
+    public void setJAXBExperimentWrapper(JAXBExperimentWrapper value) {
+        this.jaxbExperimentWrapper = value;
         // experiment list is set. Because we use back references, we need to post process.
-        if (this.jaxbExperimentList != null){
-            this.jaxbExperimentList.parent = this;
-            // we have experiment refs, will be resolved later
-            if (this.jaxbExperimentList.jaxbExperimentRefList != null){
-                this.experiments = this.jaxbExperimentList.experiments;
-            }
-            // we have experiment descriptions
-            if (this.jaxbExperimentList.jaxbExperiments != null){
-                this.experiments = new ArrayList<Experiment>(this.jaxbExperimentList.jaxbExperiments.size());
-                for (XmlExperiment exp : this.jaxbExperimentList.jaxbExperiments){
-                    experiments.add(exp);
+        if (this.jaxbExperimentWrapper != null){
+            // set the parent for future references
+            this.jaxbExperimentWrapper.parent = this;
+            // we don't have experiment refs, need to prepare each loaded experiment
+            if (this.jaxbExperimentWrapper.jaxbExperimentRefList == null &&
+                    this.jaxbExperimentWrapper.jaxbExperiments != null &&
+                    !this.jaxbExperimentWrapper.jaxbExperiments.isEmpty()){
+                for (Experiment exp : this.jaxbExperimentWrapper.jaxbExperiments){
+                    jaxbExperimentWrapper.experiments.add(exp);
                     exp.getInteractionEvidences().add(this);
                 }
             }
@@ -379,8 +310,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
-    @XmlElement(name = "modelled", defaultValue = "false")
-    public Boolean getJAXBModelled() {
+    public Boolean getModelled() {
         return modelled;
     }
 
@@ -392,21 +322,9 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
-    public void setJAXBModelled(Boolean value) {
+    @XmlElement(name = "modelled", defaultValue = "false")
+    public void setModelled(Boolean value) {
         this.modelled = value;
-    }
-
-    /**
-     * Gets the value of the negative property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    @XmlElement(name = "negative", defaultValue = "false")
-    public Boolean getJAXBNegative() {
-        return isNegative;
     }
 
     /**
@@ -417,6 +335,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
+    @XmlElement(name = "negative", defaultValue = "false")
     public void setJAXBNegative(Boolean value) {
         if (value == null){
             this.isNegative = false;
@@ -426,12 +345,28 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         }
     }
 
-    protected List<XmlExperiment> getOriginalExperiments(){
-        return jaxbExperimentList != null ? jaxbExperimentList.jaxbExperiments : Collections.EMPTY_LIST;
+    public JAXBConfidenceWrapper getJAXBConfidenceWrapper() {
+        return jaxbConfidenceWrapper;
     }
 
-    protected void initialiseExperimentalConfidences(){
-        this.confidences = new ArrayList<Confidence>();
+    public JAXBParameterWrapper getJAXBParameterWrapper() {
+        return jaxbParameterWrapper;
+    }
+
+    public Availability getJAXBAvailability() {
+        return availability;
+    }
+
+    public JAXBExperimentWrapper getJAXBExperimentWrapper() {
+        return jaxbExperimentWrapper;
+    }
+
+    protected List<XmlExperiment> getOriginalExperiments(){
+        return jaxbExperimentWrapper != null ? jaxbExperimentWrapper.jaxbExperiments : Collections.EMPTY_LIST;
+    }
+
+    protected void initialiseConfidenceWrapper(){
+        this.jaxbConfidenceWrapper = new JAXBConfidenceWrapper();
     }
 
 
@@ -439,8 +374,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         this.variableParameterValueSets = new ArrayList<VariableParameterValueSet>();
     }
 
-    protected void initialiseExperimentalParameters(){
-        this.parameters = new ArrayList<Parameter>();
+    protected void initialiseParameterWrapper(){
+        this.jaxbParameterWrapper = new JAXBParameterWrapper();
     }
 
     @Override
@@ -455,7 +390,114 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         return sourceLocation();
     }
 
+    @Override
+    protected void initialiseParticipantWrapper() {
+        super.setParticipantWrapper(new JAXBParticipantWrapper());
+    }
+
     ////////////////////////////////////////////////////////////////////////// classes
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceWrapper")
+    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<ParticipantEvidence> {
+
+        public JAXBParticipantWrapper(){
+            super();
+        }
+
+        @XmlElement(type=XmlParticipantEvidence.class, name="participant", required = true)
+        public List<ParticipantEvidence> getJAXBParticipants() {
+            return super.getJAXBParticipants();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="experimentalConfidenceWrapper")
+    public static class JAXBConfidenceWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Confidence> confidences;
+
+        public JAXBConfidenceWrapper(){
+            initialiseConfidences();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
+        public List<Confidence> getJAXBConfidences() {
+            return this.confidences;
+        }
+
+        protected void initialiseConfidences(){
+            this.confidences = new ArrayList<Confidence>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="experimentalParameterWrapper")
+    public static class JAXBParameterWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Parameter> parameters;
+
+        public JAXBParameterWrapper(){
+            initialiseParameters();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlParameter.class, name="parameter", required = true)
+        public List<Parameter> getJAXBParameters() {
+            return this.parameters;
+        }
+
+        protected void initialiseParameters(){
+            this.parameters = new ArrayList<Parameter>();
+        }
+    }
 
     private class AvailabilityRef extends AbstractAvailabilityRef{
         public AvailabilityRef(int ref) {
@@ -495,11 +537,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name = "experimentListType", propOrder = {
-            "JAXBExperimentRefs",
-            "JAXBExperimentDescriptions"
-    })
-    public static class JAXBExperimentList implements Locatable, FileSourceContext{
+    @XmlType(name = "experimentListType")
+    public static class JAXBExperimentWrapper implements Locatable, FileSourceContext{
 
         private List<XmlExperiment> jaxbExperiments;
         private PsiXmLocator sourceLocator;
@@ -509,6 +548,10 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         private List<Experiment> experiments;
         private JAXBExperimentRefList jaxbExperimentRefList;
         private XmlInteractionEvidence parent;
+
+        public JAXBExperimentWrapper(){
+            this.experiments = new ArrayList<Experiment>();
+        }
 
         @XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)
         public List<XmlExperiment> getJAXBExperimentDescriptions() {
@@ -557,7 +600,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
             public JAXBExperimentRefList(){
                 super();
                 jaxbExperiments = new ArrayList<XmlExperiment>();
-                experiments = new ArrayList<Experiment>();
             }
 
             @Override

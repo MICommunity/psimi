@@ -109,38 +109,8 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public NamesContainer getJAXBNames() {
-        return this.wrappedInteraction.getJAXBNames();
-    }
-
-    @Override
-    public InteractionXrefContainer getJAXBXref() {
-        return this.wrappedInteraction.getJAXBXref();
-    }
-
-    @Override
     public int getJAXBId() {
         return this.wrappedInteraction.getJAXBId();
-    }
-
-    @Override
-    public List<Annotation> getJAXBAttributes() {
-        return this.wrappedInteraction.getJAXBAttributes();
-    }
-
-    @Override
-    public Boolean getJAXBIntraMolecular() {
-        return this.wrappedInteraction.getJAXBIntraMolecular();
-    }
-
-    @Override
-    public List<ParticipantEvidence> getJAXBParticipants() {
-        return this.wrappedInteraction.getJAXBParticipants();
-    }
-
-    @Override
-    public List<InferredInteraction> getJAXBInferredInteractions() {
-        return this.wrappedInteraction.getJAXBInferredInteractions();
     }
 
     @Override
@@ -348,28 +318,8 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public List<Confidence> getJAXBConfidences() {
-        return this.wrappedInteraction.getJAXBConfidences();
-    }
-
-    @Override
-    public List<Parameter> getJAXBParameters() {
-        return this.wrappedInteraction.getJAXBParameters();
-    }
-
-    @Override
-    public Availability getJAXBAvailability() {
-        return this.wrappedInteraction.getJAXBAvailability();
-    }
-
-    @Override
     public void setJAXBAvailability(Availability value) {
         this.wrappedInteraction.setJAXBAvailability(value);
-    }
-
-    @Override
-    public Integer getJAXBAvailabilityRef() {
-        return this.wrappedInteraction.getJAXBAvailabilityRef();
     }
 
     @Override
@@ -378,28 +328,13 @@ public class XmlBinaryInteractionEvidenceWrapper extends XmlInteractionEvidence 
     }
 
     @Override
-    public JAXBExperimentList getJAXBExperimentList() {
-        return this.wrappedInteraction.getJAXBExperimentList();
+    public void setJAXBExperimentWrapper(JAXBExperimentWrapper value) {
+        this.wrappedInteraction.setJAXBExperimentWrapper(value);
     }
 
     @Override
-    public void setJAXBExperimentList(JAXBExperimentList value) {
-        this.wrappedInteraction.setJAXBExperimentList(value);
-    }
-
-    @Override
-    public Boolean getJAXBModelled() {
-        return this.wrappedInteraction.getJAXBModelled();
-    }
-
-    @Override
-    public void setJAXBModelled(Boolean value) {
-        this.wrappedInteraction.setJAXBModelled(value);
-    }
-
-    @Override
-    public Boolean getJAXBNegative() {
-        return this.wrappedInteraction.getJAXBNegative();
+    public void setModelled(Boolean value) {
+        this.wrappedInteraction.setModelled(value);
     }
 
     @Override

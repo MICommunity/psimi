@@ -514,6 +514,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         @XmlTransient
         private Locator locator;
         private List<Annotation> annotations;
+        private JAXBAttributeList jaxbAttributeList;
         private Stoichiometry stoichiometry;
 
         public JAXBAttributeWrapper(){
@@ -543,12 +544,15 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         }
 
         protected void initialiseAnnotations(){
-            annotations = new JAXBAttributeList();
+            annotations = new ArrayList<Annotation>();
         }
 
         @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
         public List<Annotation> getJAXBAttributes() {
-            return annotations;
+            if (this.jaxbAttributeList == null){
+                this.jaxbAttributeList = new JAXBAttributeList();
+            }
+            return this.jaxbAttributeList;
         }
 
         private class JAXBAttributeList extends ArrayList<Annotation> {

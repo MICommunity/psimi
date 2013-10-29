@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.binary.impl.BinaryInteractionWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.InteractionXrefContainer;
 import psidev.psi.mi.jami.xml.extension.NamesContainer;
 import psidev.psi.mi.jami.xml.extension.XmlBasicInteraction;
@@ -112,38 +111,8 @@ public class XmlBinaryInteractionWrapper extends XmlBasicInteraction implements 
     }
 
     @Override
-    public NamesContainer getJAXBNames() {
-        return this.wrappedInteraction.getJAXBNames();
-    }
-
-    @Override
-    public InteractionXrefContainer getJAXBXref() {
-        return this.wrappedInteraction.getJAXBXref();
-    }
-
-    @Override
     public int getJAXBId() {
         return this.wrappedInteraction.getJAXBId();
-    }
-
-    @Override
-    public List<Annotation> getJAXBAttributes() {
-        return this.wrappedInteraction.getJAXBAttributes();
-    }
-
-    @Override
-    public Boolean getJAXBIntraMolecular() {
-        return this.wrappedInteraction.getJAXBIntraMolecular();
-    }
-
-    @Override
-    public List<Participant> getJAXBParticipants() {
-        return this.wrappedInteraction.getJAXBParticipants();
-    }
-
-    @Override
-    public List<InferredInteraction> getJAXBInferredInteractions() {
-        return this.wrappedInteraction.getJAXBInferredInteractions();
     }
 
     @Override

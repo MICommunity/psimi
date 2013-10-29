@@ -112,16 +112,15 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         binary.setJAXBNames(xmlSource.getJAXBNames());
         binary.setJAXBXref(xmlSource.getJAXBXref());
         binary.setJAXBAvailability(xmlSource.getJAXBAvailability());
-        binary.setJAXBAvailabilityRef(xmlSource.getJAXBAvailabilityRef());
         binary.setJAXBId(xmlSource.getJAXBId());
-        binary.getConfidences().addAll(xmlSource.getConfidences());
-        binary.getParameters().addAll(xmlSource.getParameters());
-        binary.getExperiments().addAll(xmlSource.getExperiments());
-        binary.getJAXBInferredInteractions().addAll(xmlSource.getJAXBInferredInteractions());
+        binary.setJAXBConfidenceWrapper(xmlSource.getJAXBConfidenceWrapper());
+        binary.setJAXBParameterWrapper(xmlSource.getJAXBParameterWrapper());
+        binary.setJAXBExperimentWrapper(xmlSource.getJAXBExperimentWrapper());
+        binary.setJAXBInferredInteractionWrapper(xmlSource.getJAXBInferredInteractionWrapper());
         binary.getJAXBInteractionTypes().addAll(xmlSource.getJAXBInteractionTypes());
-        binary.setJAXBModelled(xmlSource.getJAXBModelled());
+        binary.setModelled(xmlSource.getModelled());
         binary.setJAXBIntraMolecular(xmlSource.getJAXBIntraMolecular());
-        binary.setJAXBNegative(xmlSource.getJAXBNegative());
+        binary.setJAXBNegative(xmlSource.isNegative());
         binary.getAnnotations().addAll(xmlSource.getAnnotations());
         binary.setSourceLocator(xmlSource.getSourceLocator());
         binary.setEntry(xmlSource.getEntry());
@@ -133,13 +132,12 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         binary.setJAXBNames(xmlSource.getJAXBNames());
         binary.setJAXBXref(xmlSource.getJAXBXref());
         binary.setJAXBId(xmlSource.getJAXBId());
-        binary.getJAXBInferredInteractions().addAll(xmlSource.getJAXBInferredInteractions());
+        binary.setJAXBInferredInteractionWrapper(xmlSource.getJAXBInferredInteractionWrapper());
         binary.getJAXBInteractionTypes().addAll(xmlSource.getJAXBInteractionTypes());
         binary.setJAXBIntraMolecular(xmlSource.getJAXBIntraMolecular());
-        binary.getAnnotations().addAll(xmlSource.getAnnotations());
+        binary.setJAXBAttributeWrapper(xmlSource.getJAXBAttributeWrapper());
         binary.setSourceLocator(xmlSource.getSourceLocator());
         binary.setEntry(xmlSource.getEntry());
-        binary.getChecksums().addAll(xmlSource.getChecksums());
     }
 
     private void copyXmlModelledInteractionProperties(ModelledInteraction interaction, XmlModelledBinaryInteraction binary) {
@@ -147,16 +145,15 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         binary.setJAXBNames(xmlSource.getJAXBNames());
         binary.setJAXBXref(xmlSource.getJAXBXref());
         binary.setJAXBId(xmlSource.getJAXBId());
-        binary.getModelledConfidences().addAll(xmlSource.getModelledConfidences());
-        binary.getModelledParameters().addAll(xmlSource.getModelledParameters());
-        binary.getJAXBInferredInteractions().addAll(xmlSource.getJAXBInferredInteractions());
+        binary.setJAXBConfidenceWrapper(xmlSource.getJAXBConfidenceWrapper());
+        binary.setJAXBParameterWrapper(xmlSource.getJAXBParameterWrapper());
+        binary.setJAXBInferredInteractionWrapper(xmlSource.getJAXBInferredInteractionWrapper());
         binary.getJAXBInteractionTypes().addAll(xmlSource.getJAXBInteractionTypes());
         binary.setJAXBIntraMolecular(xmlSource.getJAXBIntraMolecular());
-        binary.getAnnotations().addAll(xmlSource.getAnnotations());
+        binary.setJAXBAttributeWrapper(xmlSource.getJAXBAttributeWrapper());
         binary.setSourceLocator(xmlSource.getSourceLocator());
         binary.setEntry(xmlSource.getEntry());
         binary.setSource(xmlSource.getSource());
-        binary.getChecksums().addAll(xmlSource.getChecksums());
         binary.getCooperativeEffects().addAll(xmlSource.getCooperativeEffects());
         binary.getInteractionEvidences().addAll(xmlSource.getInteractionEvidences());
     }

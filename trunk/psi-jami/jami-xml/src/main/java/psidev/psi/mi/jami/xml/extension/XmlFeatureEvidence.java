@@ -240,7 +240,6 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
 
             public JAXBExperimentRefList(){
                 super();
-                experiments = new ArrayList<Experiment>();
             }
 
             @Override

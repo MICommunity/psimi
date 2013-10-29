@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 
@@ -19,15 +18,6 @@ import java.util.List;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "interaction", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBParticipants",
-        "JAXBInferredInteractions",
-        "JAXBInteractionTypes",
-        "JAXBIntraMolecular",
-        "JAXBAttributes"
-})
 public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @XmlLocation
@@ -48,45 +38,43 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
 
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
     @Override
     @XmlElement(name = "xref")
-    public InteractionXrefContainer getJAXBXref() {
-        return super.getJAXBXref();
-    }
-
-    @Override
-    @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
-    }
-
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(name = "attribute", type = XmlAnnotation.class, required = true)
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
+    public void setJAXBXref(InteractionXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
-    public Boolean getJAXBIntraMolecular() {
-        return super.getJAXBIntraMolecular();
-    }
-
-    @XmlElementWrapper(name="participantList", required = true)
-    @XmlElement(name = "participant", type = XmlParticipant.class, required = true)
-    public List<Participant> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+    public void setJAXBIntraMolecular(Boolean value) {
+        super.setJAXBIntraMolecular(value);
     }
 
     @Override
-    @XmlElementWrapper(name="inferredInteractionList")
-    @XmlElement(name="inferredInteraction", type = InferredInteraction.class, required = true)
-    public List<InferredInteraction> getJAXBInferredInteractions() {
-        return super.getJAXBInferredInteractions();
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int value) {
+        super.setJAXBId(value);
+    }
+
+    @Override
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
+    }
+
+    @XmlElement(name="participantList", required = true)
+    public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
+        super.setParticipantWrapper(jaxbParticipantWrapper);
+    }
+
+    @Override
+    @XmlElement(name="inferredInteractionList")
+    public void setJAXBInferredInteractionWrapper(JAXBInferredInteractionWrapper jaxbInferredWrapper) {
+        super.setJAXBInferredInteractionWrapper(jaxbInferredWrapper);
     }
 
     @Override
@@ -110,6 +98,26 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
         }
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+        }
+    }
+
+    @Override
+    protected void initialiseParticipantWrapper() {
+        super.setParticipantWrapper(new JAXBParticipantWrapper());
+    }
+
+    ////////////////////////////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="basicParticipantWrapper")
+    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<Participant> {
+
+        public JAXBParticipantWrapper(){
+            super();
+        }
+
+        @XmlElement(type=XmlParticipant.class, name="participant", required = true)
+        public List<Participant> getJAXBParticipants() {
+            return super.getJAXBParticipants();
         }
     }
 }
