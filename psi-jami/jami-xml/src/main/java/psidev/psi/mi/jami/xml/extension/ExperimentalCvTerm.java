@@ -17,10 +17,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -90,6 +87,7 @@ public class ExperimentalCvTerm
     ////////////////////////////////////////////////////////////////// classes
 
     @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name = "cvExperimentRefList")
     public static class JAXBExperimentRefWrapper implements Locatable, FileSourceContext {
         private PsiXmLocator sourceLocator;
         @XmlLocation

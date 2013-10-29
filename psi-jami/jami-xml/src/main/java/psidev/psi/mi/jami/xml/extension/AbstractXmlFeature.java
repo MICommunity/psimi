@@ -1,13 +1,14 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.Locatable;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,20 +24,18 @@ import java.util.List;
 @XmlTransient
 public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements Feature<P,F>, FileSourceContext, Locatable{
 
-    private Collection<Annotation> annotations;
-    private Collection<Range> ranges;
-
     private CvTerm interactionEffect;
     private CvTerm interactionDependency;
-
     private P participant;
     private Collection<F> linkedFeatures;
-
     private PsiXmLocator sourceLocator;
     private NamesContainer namesContainer;
     private FeatureXrefContainer xrefContainer;
     private CvTerm type;
     private int id;
+
+    private JAXBAttributeWrapper jaxbAttributeWrapper;
+    private JAXBRangeWrapper jaxbRangeWrapper;
 
     public AbstractXmlFeature(){
     }
@@ -73,12 +72,12 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         setInterpro(interpro);
     }
 
-    protected void initialiseAnnotations(){
-        this.annotations = new ArrayList<Annotation>();
+    protected void initialiseAnnotationWrapper(){
+        this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
     }
 
-    protected void initialiseRanges(){
-        this.ranges = new ArrayList<Range>();
+    protected void initialiseRangeWrapper(){
+        this.jaxbRangeWrapper = new JAXBRangeWrapper();
     }
 
     protected void initialiseLinkedFeatures(){
@@ -92,13 +91,6 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         else {
             this.linkedFeatures = features;
         }
-    }
-
-    public NamesContainer getJAXBNames() {
-        if (namesContainer != null && namesContainer.isEmpty()){
-            return null;
-        }
-        return namesContainer;
     }
 
     /**
@@ -115,7 +107,6 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     public String getShortName() {
         return this.namesContainer != null ? this.namesContainer.getShortLabel() : null;
-
     }
 
     public void setShortName(String name) {
@@ -135,13 +126,6 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
             this.namesContainer = new NamesContainer();
         }
         this.namesContainer.setFullName(name);
-    }
-
-    public FeatureXrefContainer getJAXBXref() {
-        if (this.xrefContainer != null && this.xrefContainer.isEmpty()){
-            return null;
-        }
-        return xrefContainer;
     }
 
     /**
@@ -182,17 +166,10 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     }
 
     public Collection<Annotation> getAnnotations() {
-        if (annotations == null){
-            initialiseAnnotations();
+        if (this.jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
         }
-        return this.annotations;
-    }
-
-    public List<Annotation> getJAXBAttributes() {
-        if (this.annotations == null){
-            initialiseAnnotations();
-        }
-        return (List<Annotation>)this.annotations;
+        return this.jaxbAttributeWrapper.annotations;
     }
 
     public CvTerm getType() {
@@ -203,26 +180,15 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         this.type = type;
     }
 
-    public CvTerm getJAXBType() {
-        return this.type;
-    }
-
     public void setJAXBType(CvTerm type) {
         this.type = type;
     }
 
     public Collection<Range> getRanges() {
-        if (ranges == null){
-            initialiseRanges();
+        if (this.jaxbRangeWrapper == null){
+            initialiseRangeWrapper();
         }
-        return this.ranges;
-    }
-
-    public List<Range> getJAXBRanges() {
-        if (ranges == null){
-            initialiseRanges();
-        }
-        return (List<Range>)this.ranges;
+        return this.jaxbRangeWrapper.ranges;
     }
 
     public CvTerm getInteractionEffect() {
@@ -268,7 +234,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     @Override
     public String toString() {
-        return type != null ? type.toString() : (!ranges.isEmpty() ? "("+ranges.iterator().next().toString()+"...)" : " (-)");
+        return type != null ? type.toString() : (jaxbRangeWrapper != null && !jaxbRangeWrapper.ranges.isEmpty() ? "("+jaxbRangeWrapper.ranges.iterator().next().toString()+"...)" : " (-)");
     }
 
     @Override
@@ -302,6 +268,117 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
+        }
+    }
+
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        this.jaxbAttributeWrapper = jaxbAttributeWrapper;
+    }
+
+    public void setJAXBRangeWrapper(JAXBRangeWrapper jaxbRangeWrapper) {
+        this.jaxbRangeWrapper = jaxbRangeWrapper;
+    }
+
+    protected JAXBRangeWrapper getJAXBRangeWrapper() {
+        if (this.jaxbRangeWrapper == null){
+            initialiseRangeWrapper();
+        }
+        return this.jaxbRangeWrapper;
+    }
+
+    protected JAXBAttributeWrapper getJAXBAttributeWrapper() {
+        if (this.jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
+        }
+        return this.jaxbAttributeWrapper;
+    }
+
+    //////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="featureAttributeWrapper")
+    public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Annotation> annotations;
+
+        public JAXBAttributeWrapper(){
+            initialiseAnnotations();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseAnnotations(){
+            annotations = new ArrayList<Annotation>();
+        }
+
+        @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+        public List<Annotation> getJAXBAttributes() {
+            return annotations;
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="featureRangeWrapper")
+    public static class JAXBRangeWrapper implements Locatable, FileSourceContext{
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Range> ranges;
+
+        public JAXBRangeWrapper(){
+            initialiseRanges();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseRanges(){
+            ranges = new ArrayList<Range>();
+        }
+
+        @XmlElement(type=XmlRange.class, name="featureRange", required = true)
+        public List<Range> getJAXBRanges() {
+            return ranges;
         }
     }
 }

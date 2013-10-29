@@ -3,10 +3,11 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ModelledEntity;
+import psidev.psi.mi.jami.model.ModelledFeature;
 
 import javax.xml.bind.annotation.*;
-import java.util.List;
 
 /**
  * The xml implementation of a modelledFeature
@@ -16,13 +17,6 @@ import java.util.List;
  * @since <pre>25/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "modelledFeature", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBType",
-        "JAXBRanges",
-        "JAXBAttributes"
-})
 public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, ModelledFeature> implements ModelledFeature {
 
     @XmlLocation
@@ -56,68 +50,34 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
         super(shortName, fullName, type, interpro);
     }
 
-    /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
-    /**
-     * Gets the value of the xref property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Xref }
-     *
-     */
     @Override
     @XmlElement(name = "xref")
-    public FeatureXrefContainer getJAXBXref() {
-        return super.getJAXBXref();
+    public void setJAXBXref(FeatureXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
     @XmlElement(name = "featureType", type = XmlCvTerm.class)
-    public CvTerm getJAXBType() {
-        return super.getType();
+    public void setJAXBType(CvTerm type) {
+        super.setJAXBType(type);
     }
 
-    /**
-     * Gets the value of the featureRangeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlRange }
-     *
-     */
-    @XmlElementWrapper(name="featureRangeList", required = true)
-    @XmlElement(type=XmlRange.class, name="featureRange", required = true)
     @Override
-    public List<Range> getJAXBRanges() {
-        return super.getJAXBRanges();
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
     }
 
-    /**
-     * Gets the value of the attributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
     @Override
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
+    @XmlElement(name="featureRangeList", required = true)
+    public void setJAXBRangeWrapper(JAXBRangeWrapper jaxbRangeWrapper) {
+        super.setJAXBRangeWrapper(jaxbRangeWrapper);
     }
 
     /**
@@ -126,8 +86,8 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
      */
     @Override
     @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
+    public void setJAXBId(int id) {
+        super.setJAXBId(id);
     }
 
     @Override

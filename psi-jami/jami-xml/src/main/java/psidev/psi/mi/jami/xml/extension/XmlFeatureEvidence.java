@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
@@ -17,25 +19,15 @@ import java.util.*;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "featureEvidence", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBType",
-        "JAXBFeatureDetectionMethod",
-        "JAXBExperimentRefList",
-        "JAXBRanges",
-        "JAXBAttributes"
-})
 public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
-    private Collection<Experiment> experiments;
     private boolean initialisedMethods = false;
     private XmlParticipantEvidence originalParticipant;
     @XmlLocation
     @XmlTransient
     private Locator locator;
-    private JAXBExperimentRefList jaxbExperimentRefList;
+    private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
 
     public XmlFeatureEvidence() {
     }
@@ -72,60 +64,50 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     }
 
     public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
+        if (jaxbExperimentRefWrapper == null){
+            jaxbExperimentRefWrapper = new JAXBExperimentRefWrapper();
         }
-        return experiments;
+        return jaxbExperimentRefWrapper.experiments;
     }
 
-    /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
-    /**
-     * Gets the value of the xref property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Xref }
-     *
-     */
     @Override
     @XmlElement(name = "xref")
-    public FeatureXrefContainer getJAXBXref() {
-        return super.getJAXBXref();
+    public void setJAXBXref(FeatureXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
     @XmlElement(name = "featureType", type = XmlCvTerm.class)
-    public CvTerm getJAXBType() {
-        return super.getType();
+    public void setJAXBType(CvTerm type) {
+        super.setJAXBType(type);
+    }
+
+    @Override
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
+    }
+
+    @Override
+    @XmlElement(name="featureRangeList", required = true)
+    public void setJAXBRangeWrapper(JAXBRangeWrapper jaxbRangeWrapper) {
+        super.setJAXBRangeWrapper(jaxbRangeWrapper);
     }
 
     /**
-     * Gets the value of the featureDetectionMethod property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
+     * Gets the value of the id property.
      *
      */
-    @XmlElement(name = "featureDetectionMethod", type = XmlCvTerm.class)
-    public CvTerm getJAXBFeatureDetectionMethod() {
-        if (featureDetectionMethods == null){
-            return null;
-        }
-        return featureDetectionMethods.iterator().next();
+    @Override
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int id) {
+        super.setJAXBId(id);
     }
 
     /**
@@ -136,6 +118,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      *     {@link XmlCvTerm }
      *
      */
+    @XmlElement(name = "featureDetectionMethod", type = XmlCvTerm.class)
     public void setJAXBFeatureDetectionMethod(CvTerm value) {
         if (featureDetectionMethods == null){
             this.featureDetectionMethods = new ArrayList<CvTerm>();
@@ -148,61 +131,9 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         }
     }
 
-    /**
-     * Gets the value of the experimentRefList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name="experimentRef", required = true, type = Integer.class)
-    public JAXBExperimentRefList getJAXBExperimentRefList() {
-        if (this.jaxbExperimentRefList == null){
-           this.jaxbExperimentRefList = new JAXBExperimentRefList();
-        }
-        return jaxbExperimentRefList;
-    }
-
-    /**
-     * Gets the value of the featureRangeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlRange }
-     *
-     */
-    @XmlElementWrapper(name="featureRangeList", required = true)
-    @XmlElement(type=XmlRange.class, name="featureRange", required = true)
-    @Override
-    public List<Range> getJAXBRanges() {
-        return super.getJAXBRanges();
-    }
-
-    /**
-     * Gets the value of the attributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    @Override
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
-    }
-
-    /**
-     * Gets the value of the id property.
-     *
-     */
-    @Override
-    @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
+    @XmlElement(name="experimentRefList")
+    public void setJAXBExperimentRefWrapper(JAXBExperimentRefWrapper wrapper) {
+        this.jaxbExperimentRefWrapper = wrapper;
     }
 
     @Override
@@ -229,6 +160,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             this.featureDetectionMethods = new ArrayList<CvTerm>();
         }
         else if (!this.featureDetectionMethods.isEmpty()){
+            initialisedMethods = true;
             return;
         }
 
@@ -255,108 +187,149 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         setParticipant(p);
     }
 
-    private FileSourceLocator getFeatureLocator(){
-        return getSourceLocator();
-    }
-
     ////////////////////////////////////////////////////////////////// classes
 
-    /**
-     * The experiment ref list used by JAXB to populate experiment refs
-     */
-    private class JAXBExperimentRefList extends ArrayList<Integer>{
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name = "featureExperimentRefList")
+    public static class JAXBExperimentRefWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private JAXBExperimentRefList jaxbExperimentRefs;
+        private Collection<Experiment> experiments;
 
-        public JAXBExperimentRefList(){
-            super();
+        public JAXBExperimentRefWrapper(){
             experiments = new ArrayList<Experiment>();
         }
 
         @Override
-        public boolean add(Integer val) {
-            if (val == null){
-                return false;
-            }
-            return experiments.add(new ExperimentRef(val));
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends Integer> c) {
-            if (c == null){
-                return false;
-            }
-            boolean added = false;
-
-            for (Integer a : c){
-                if (add(a)){
-                    added = true;
-                }
-            }
-            return added;
-        }
-
-        @Override
-        public void add(int index, Integer element) {
-            addToSpecificIndex(index, element);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends Integer> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (Integer a : c){
-                if (addToSpecificIndex(newIndex, a)){
-                    newIndex++;
-                    add = true;
-                }
-            }
-            return add;
-        }
-
-        private boolean addToSpecificIndex(int index, Integer val) {
-            if (val == null){
-                return false;
-            }
-            ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
-            return true;
-        }
-    }
-
-    ////////////////////////////////////////////////// classes
-
-    /**
-     * Experiment ref for experimental interactor
-     */
-    private class ExperimentRef extends AbstractExperimentRef{
-        public ExperimentRef(int ref) {
-            super(ref);
-        }
-
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Experiment){
-                    experiments.remove(this);
-                    experiments.add((Experiment)obj);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return "Experiment reference: "+ref+" in feature "+(XmlFeatureEvidence.this.getSourceLocator() != null? XmlFeatureEvidence.this.getSourceLocator().toString():"") ;
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
         }
 
         public FileSourceLocator getSourceLocator() {
-            return XmlFeatureEvidence.this.getSourceLocator();
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
         }
 
-        public void setSourceLocator(FileSourceLocator locator) {
-            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(name = "experimentRef", type = Integer.class, required = true)
+        public List<Integer> getJAXBExperimentRefs() {
+            if (this.jaxbExperimentRefs == null){
+                this.jaxbExperimentRefs = new JAXBExperimentRefList();
+            }
+            return jaxbExperimentRefs;
+        }
+
+        //////////////////////////////////////////////////////////////
+        /**
+         * The experiment ref list used by JAXB to populate experiment refs
+         */
+        private class JAXBExperimentRefList extends ArrayList<Integer>{
+
+            public JAXBExperimentRefList(){
+                super();
+                experiments = new ArrayList<Experiment>();
+            }
+
+            @Override
+            public boolean add(Integer val) {
+                if (val == null){
+                    return false;
+                }
+                return experiments.add(new ExperimentRef(val));
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Integer> c) {
+                if (c == null){
+                    return false;
+                }
+                boolean added = false;
+
+                for (Integer a : c){
+                    if (add(a)){
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            @Override
+            public void add(int index, Integer element) {
+                addToSpecificIndex(index, element);
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Integer> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (Integer a : c){
+                    if (addToSpecificIndex(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
+            }
+
+            private boolean addToSpecificIndex(int index, Integer val) {
+                if (val == null){
+                    return false;
+                }
+                ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
+                return true;
+            }
+        }
+
+        ////////////////////////////////////////////////// classes
+
+        /**
+         * Experiment ref
+         */
+        private class ExperimentRef extends AbstractExperimentRef{
+            public ExperimentRef(int ref) {
+                super(ref);
+            }
+
+            public boolean resolve(Map<Integer, Object> parsedObjects) {
+                if (parsedObjects.containsKey(this.ref)){
+                    Object obj = parsedObjects.get(this.ref);
+                    if (obj instanceof Experiment){
+                        experiments.remove(this);
+                        experiments.add((Experiment)obj);
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public String toString() {
+                return "Experiment reference: "+ref+" in feature "+(sourceLocator != null? sourceLocator.toString():"") ;
+            }
+
+            public FileSourceLocator getSourceLocator() {
+                return sourceLocator;
+            }
+
+            public void setSourceLocator(FileSourceLocator locator) {
+                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            }
         }
     }
 }
