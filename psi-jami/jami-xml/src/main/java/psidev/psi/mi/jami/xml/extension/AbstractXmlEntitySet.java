@@ -50,15 +50,6 @@ public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feat
         this.components = new HashSet<C>();
     }
 
-    protected void initialiseInteractorCandidatesSetWith(Set<C> interactorCandidates){
-        if (interactorCandidates == null){
-            this.components = Collections.EMPTY_SET;
-        }
-        else {
-            this.components = interactorCandidates;
-        }
-    }
-
     @Override
     public InteractorSet getInteractor() {
         return (InteractorSet) super.getInteractor();

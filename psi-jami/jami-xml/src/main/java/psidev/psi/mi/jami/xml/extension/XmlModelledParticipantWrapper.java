@@ -93,11 +93,11 @@ public class XmlModelledParticipantWrapper extends XmlModelledParticipant{
     }
 
     @Override
-    protected void initialiseFeatures() {
+    protected void initialiseFeatureWrapper() {
         ArrayList<ModelledFeature> modelledFeatures = new ArrayList<ModelledFeature>(this.participant.getFeatures().size());
         for (FeatureEvidence part : this.participant.getFeatures()){
             modelledFeatures.add(new XmlModelledFeatureWrapper(part, this));
         }
-        super.initialiseFeaturesWith(modelledFeatures);
+        super.setJAXBFeatureWrapper(new XmlModelledParticipant.JAXBFeatureWrapper(modelledFeatures));
     }
 }

@@ -16,16 +16,6 @@ import java.util.List;
  * @since <pre>04/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "modelledParticipantSet", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBInteractionRef",
-        "JAXBInteractor",
-        "JAXBInteractorRef",
-        "JAXBBiologicalRole",
-        "JAXBFeatures",
-        "JAXBAttributes"
-})
 public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteraction, ModelledFeature, ModelledEntity> implements ModelledEntitySet {
 
     @XmlLocation
@@ -54,72 +44,55 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
 
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
     @Override
     @XmlElement(name = "xref")
-    public XrefContainer getJAXBXref() {
-        return super.getJAXBXref();
-    }
-
-    @Override
-    @XmlElement(name = "interactionRef")
-    public Integer getJAXBInteractionRef() {
-        return super.getJAXBInteractionRef();
-    }
-
-    @Override
-    @XmlElement(name = "interactorRef")
-    public Integer getJAXBInteractorRef() {
-        return super.getJAXBInteractorRef();
-    }
-
-    @Override
-    @XmlElement(name = "biologicalRole", type = XmlCvTerm.class)
-    public CvTerm getJAXBBiologicalRole() {
-        return super.getJAXBBiologicalRole();
+    public void setJAXBXref(XrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
     @XmlElement(name = "interactor")
-    public XmlInteractor getJAXBInteractor() {
-        return super.getJAXBInteractor();
+    public void setJAXBInteractor(XmlInteractor interactor) {
+        super.setJAXBInteractor(interactor);
+    }
+
+    @Override
+    @XmlElement(name = "interactionRef")
+    public void setJAXBInteractionRef(Integer value) {
+        super.setJAXBInteractionRef(value);
+    }
+
+    @Override
+    @XmlElement(name = "interactorRef")
+    public void setJAXBInteractorRef(Integer value) {
+        super.setJAXBInteractorRef(value);
+    }
+
+    @Override
+    @XmlElement(name = "biologicalRole", type = XmlCvTerm.class)
+    public void setJAXBBiologicalRole(CvTerm bioRole) {
+        super.setJAXBBiologicalRole(bioRole);
     }
 
     @Override
     @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
+    public void setJAXBId(int value) {
+        super.setJAXBId(value);
     }
 
-    /**
-     * Gets the value of the jaxbAttributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
+    @Override
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
     }
 
-    /**
-     * Gets the value of the featureList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link AbstractXmlFeature }
-     *
-     */
-    @XmlElementWrapper(name = "featureList")
-    @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)
-    public List<ModelledFeature> getJAXBFeatures() {
-        return super.getJAXBFeatures();
+    @XmlElement(name = "featureList")
+    public void setJAXBFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
+        super.setJAXBFeatureWrapper(jaxbFeatureWrapper);
     }
 
     @Override
@@ -137,6 +110,26 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
         }
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+        }
+    }
+
+    @Override
+    protected void initialiseFeatureWrapper() {
+        super.setJAXBFeatureWrapper(new JAXBFeatureWrapper());
+    }
+
+    ////////////////////////////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="modelledEntityFeatureWrapper")
+    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<ModelledFeature> {
+
+        public JAXBFeatureWrapper(){
+            super();
+        }
+
+        @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)
+        public List<ModelledFeature> getJAXBFeatures() {
+            return super.getJAXBFeatures();
         }
     }
 }
