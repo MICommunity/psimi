@@ -559,7 +559,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
             }
         }
 
-        @XmlElement(type=XmlOrganism.class, name="hostOrganism", required = true)
+        @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)
         public List<Organism> getJAXBHostOrganisms() {
             return this.hostOrganisms;
         }

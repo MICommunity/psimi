@@ -20,10 +20,6 @@ import javax.xml.bind.annotation.*;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "confidenceType", propOrder = {
-        "JAXBType",
-        "value"
-})
 @XmlSeeAlso({
         XmlModelledConfidence.class
 })
@@ -65,11 +61,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
         return type;
     }
 
-    @XmlElement(name = "value", required = true)
     public String getValue() {
-        if (value == null){
-            value = PsiXmlUtils.UNSPECIFIED;
-        }
         return value;
     }
 
@@ -81,21 +73,9 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
      *     {@link String }
      *
      */
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Gets the value of the type property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlOpenCvTerm }
-     *
-     */
-    @XmlElement(name = "unit", required = true, type = XmlOpenCvTerm.class)
-    public CvTerm getJAXBType() {
-        return getType();
+    @XmlElement(name = "value", required = true)
+    public void setJAXBValue(String value) {
+        this.value = value != null ? value : PsiXmlUtils.UNSPECIFIED;
     }
 
     /**
@@ -106,6 +86,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
      *     {@link XmlOpenCvTerm }
      *
      */
+    @XmlElement(name = "unit", required = true, type = XmlOpenCvTerm.class)
     public void setJAXBType(CvTerm value) {
         this.type = value;
     }

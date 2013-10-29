@@ -20,11 +20,6 @@ import java.util.Collections;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "names", propOrder = {
-        "shortLabel",
-        "fullName",
-        "aliases"
-})
 public class NamesContainer implements FileSourceContext, Locatable{
 
     private String shortLabel;
@@ -43,7 +38,6 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *     {@link String }
      *
      */
-    @XmlElement(name = "shortLabel")
     public String getShortLabel() {
         return shortLabel;
     }
@@ -56,6 +50,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *     {@link String }
      *
      */
+    @XmlElement(name = "shortLabel")
     public void setShortLabel(String value) {
         this.shortLabel = value;
     }
@@ -68,7 +63,6 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *     {@link String }
      *
      */
-    @XmlElement(name = "fullName")
     public String getFullName() {
         return fullName;
     }
@@ -81,6 +75,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *     {@link String }
      *
      */
+    @XmlElement(name = "fullName")
     public void setFullName(String value) {
         this.fullName = value;
     }

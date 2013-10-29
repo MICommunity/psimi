@@ -36,10 +36,6 @@ import java.util.Map;
  *
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "inferredInteractionParticipant", propOrder = {
-        "JAXBParticipantFeatureRef",
-        "JAXBParticipantRef"
-})
 public class InferredInteractionParticipant implements FileSourceContext, Locatable
 {
 
@@ -83,22 +79,6 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
     }
 
     /**
-     * Gets the value of the participantFeatureRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElement(name = "participantFeatureRef")
-    public Integer getJAXBParticipantFeatureRef() {
-        if (feature instanceof InferredInteractionParticipant.FeatureRef){
-            return ((InferredInteractionParticipant.FeatureRef) feature).getRef();
-        }
-        return null;
-    }
-
-    /**
      * Sets the value of the participantFeatureRef property.
      *
      * @param value
@@ -106,26 +86,11 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
      *     {@link Integer }
      *
      */
+    @XmlElement(name = "participantFeatureRef")
     public void setJAXBParticipantFeatureRef(Integer value) {
         if (value != null){
             this.feature = new FeatureRef(value);
         }
-    }
-
-    /**
-     * Gets the value of the participantRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElement(name = "participantRef")
-    public Integer getJAXBParticipantRef() {
-        if (participant instanceof InferredInteractionParticipant.ParticipantRef){
-            return ((InferredInteractionParticipant.ParticipantRef) participant).getRef();
-        }
-        return null;
     }
 
     /**
@@ -136,6 +101,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
      *     {@link Integer }
      *
      */
+    @XmlElement(name = "participantRef")
     public void setJAXBParticipantRef(Integer value) {
         if (value != null){
             this.participant = new ParticipantRef(value);

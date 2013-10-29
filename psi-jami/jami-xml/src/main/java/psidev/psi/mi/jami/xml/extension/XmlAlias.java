@@ -23,9 +23,6 @@ import javax.xml.bind.annotation.*;
  * @since <pre>18/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "alias", propOrder = {
-        "name"
-})
 public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     private String name;
@@ -57,7 +54,6 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
         return null;
     }
 
-    @XmlValue
     public String getName() {
         if (name == null){
             name = PsiXmlUtils.UNSPECIFIED;
@@ -65,21 +61,9 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
         return name;
     }
 
-    public void setName(String name) {
+    @XmlValue
+    public void setJAXBName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Gets the value of the typeAc property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "typeAc")
-    public String getJAXBTypeAc() {
-        return this.type != null ? this.type.getMIIdentifier() : null;
     }
 
     /**
@@ -90,6 +74,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "typeAc")
     public void setJAXBTypeAc(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
@@ -105,19 +90,6 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
     }
 
     /**
-     * Gets the value of the type property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "type")
-    public String getJAXBTypeName() {
-        return this.type != null ? this.type.getShortName() : null;
-    }
-
-    /**
      * Sets the value of the type property.
      *
      * @param value
@@ -125,6 +97,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "type")
     public void setJAXBTypeName(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(value);

@@ -94,7 +94,7 @@ public class ExperimentalCvTerm
         @XmlTransient
         private Locator locator;
         private JAXBExperimentRefList jaxbExperimentRefs;
-        private Collection<Experiment> experiments;
+        private List<Experiment> experiments;
 
         public JAXBExperimentRefWrapper(){
             experiments = new ArrayList<Experiment>();
@@ -187,7 +187,7 @@ public class ExperimentalCvTerm
                 if (val == null){
                     return false;
                 }
-                ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
+                experiments.add(index, new ExperimentRef(val));
                 return true;
             }
         }

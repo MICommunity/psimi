@@ -28,7 +28,7 @@ public class InteractionXrefContainer extends XrefContainer{
     private List<Xref> allIdentifiers;
 
     @Override
-    protected void processRemovedPrimaryRef(XmlXref removed) {
+    protected void processRemovedPrimaryRef(Xref removed) {
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
             // if it is not an identifier
             if (((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef)){
@@ -128,7 +128,7 @@ public class InteractionXrefContainer extends XrefContainer{
 
 
     @Override
-    protected void processAddedSecondaryXref(XmlXref added) {
+    protected void processAddedSecondaryXref(Xref added) {
         // it is an identifier
         if (XrefUtils.isXrefAnIdentifier(added) || XrefUtils.doesXrefHaveQualifier(this.primaryRef, Xref.PRIMARY_MI, Xref.PRIMARY)){
             ((FullIdentifierList)getAllIdentifiers()).addOnly(added);
@@ -141,7 +141,7 @@ public class InteractionXrefContainer extends XrefContainer{
     }
 
     @Override
-    protected void processRemovedSecondaryXref(XmlXref removed) {
+    protected void processRemovedSecondaryXref(Xref removed) {
         // if it is an identifier
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(removed)){
             // if it is not an identifier
