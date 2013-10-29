@@ -252,7 +252,7 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
 
     @XmlElement(name="attributeList")
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper wrapper){
-        super.setJAXBAttributeWrapper(wrapper);
+        super.setAttributeWrapper(wrapper);
     }
 
     @Override
@@ -280,15 +280,13 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
 
     @Override
     protected void initialiseAnnotationWrapper() {
-        super.setJAXBAttributeWrapper(new JAXBAttributeWrapper());
+        super.setAttributeWrapper(new JAXBAttributeWrapper());
     }
 
     //////////////////////////////// class wrapper
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name = "sourceAttributes", propOrder = {
-            "JAXBAttributes"
-    })
+    @XmlType(name="sourceAnnotationWrapper")
     public static class JAXBAttributeWrapper extends AbstractXmlCvTerm.JAXBAttributeWrapper implements Locatable, FileSourceContext {
         private Annotation url;
         private Annotation postalAddress;

@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 
@@ -19,40 +21,23 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "participantEvidence", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBInteractionRef",
-        "JAXBInteractor",
-        "JAXBInteractorRef",
-        "JAXBParticipantIdentificationMethods",
-        "JAXBBiologicalRole",
-        "JAXBExperimentalRoles",
-        "JAXBExperimentalPreparations",
-        "JAXBExperimentalInteractors",
-        "JAXBFeatures",
-        "JAXBHostOrganisms",
-        "JAXBConfidences",
-        "JAXBParameters",
-        "JAXBAttributes"
-})
 public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements ParticipantEvidence{
-    private Collection<CvTerm> identificationMethods;
-    private Collection<CvTerm> experimentalPreparations;
-    private Collection<Confidence> confidences;
-    private Collection<Parameter> parameters;
-    private ArrayList<CvTerm> experimentalRoles;
-    private ArrayList<ExperimentalInteractor> experimentalInteractors;
-    private ArrayList<Organism> hostOrganisms;
-    private ArrayList<ExperimentalCvTerm> originalIdentificationMethods;
+
     @XmlLocation
     @XmlTransient
     private Locator locator;
     private boolean initialisedMethods = false;
     private XmlInteractionEvidence originalInteraction;
+    private JAXBParticipantIdentificationWrapper jaxbParticipantionIdentificationWrapper;
+    private JAXBExperimentalPreparationWrapper jaxbExperimentalPreparationWrapper;
+    private JAXBExperimentalRoleWrapper jaxbExperimentalRoleWrapper;
+    private JAXBExperimentalInteractorWrapper jaxbExperimentalInteractorWrapper;
+    private JAXBHostOrganismWrapper jaxbHostOrganismWrapper;
+    private JAXBConfidenceWrapper jaxbConfidenceWrapper;
+    private JAXBParameterWrapper jaxbParameterWrapper;
+    private List<ExperimentalCvTerm> originalIdentificationMethods;
 
     public XmlParticipantEvidence() {
-        System.out.println("Coucou");
     }
 
     public XmlParticipantEvidence(Interactor interactor) {
@@ -71,78 +56,145 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         super(interactor, bioRole, stoichiometry);
     }
 
+    protected void initialiseExperimentalPreparationWrapper() {
+        this.jaxbExperimentalPreparationWrapper = new JAXBExperimentalPreparationWrapper();
+    }
+
+    protected void initialiseExperimentalRoleWrapper() {
+        this.jaxbExperimentalRoleWrapper = new JAXBExperimentalRoleWrapper();
+    }
+
+    protected void initialiseConfidenceWrapper() {
+        this.jaxbConfidenceWrapper = new JAXBConfidenceWrapper();
+    }
+
+    protected void initialiseParameterWrapper() {
+        this.jaxbParameterWrapper = new JAXBParameterWrapper();
+    }
+
+    protected void initialiseIdentificationMethodWrapper(){
+        Collection<Experiment> expToIgnore = Collections.EMPTY_LIST;
+
+        if (this.jaxbParticipantionIdentificationWrapper == null){
+            this.jaxbParticipantionIdentificationWrapper = new JAXBParticipantIdentificationWrapper();
+        }
+
+        if (originalInteraction != null){
+
+            List<XmlExperiment> originalExperiments = originalInteraction.getOriginalExperiments();
+            if (originalExperiments != null && !originalExperiments.isEmpty()){
+                if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()){
+                    expToIgnore = new ArrayList<Experiment>(originalIdentificationMethods.size());
+                    for (ExperimentalCvTerm part : this.originalIdentificationMethods){
+                        if (!part.getExperiments().isEmpty()){
+                            expToIgnore.addAll(part.getExperiments());
+                        }
+                    }
+                    this.originalIdentificationMethods = null;
+                }
+
+                for (XmlExperiment exp : originalExperiments){
+                    if (exp.getParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
+                        this.jaxbParticipantionIdentificationWrapper.identificationMethods.add(exp.getParticipantIdentificationMethod());
+                    }
+                }
+            }
+        }
+
+        initialisedMethods = true;
+    }
+
+    protected void initialiseHostOrganismWrapper() {
+        this.jaxbHostOrganismWrapper = new JAXBHostOrganismWrapper();
+    }
+
+    protected void initialiseExperimentalInteractorWrapper() {
+        this.jaxbExperimentalInteractorWrapper = new JAXBExperimentalInteractorWrapper();
+    }
+
     public CvTerm getExperimentalRole() {
-        if (this.experimentalRoles == null){
-            this.experimentalRoles = new ArrayList<CvTerm>();
+        if (this.jaxbExperimentalRoleWrapper == null){
+            initialiseExperimentalRoleWrapper();
         }
-        if (this.experimentalRoles.isEmpty()){
-            this.experimentalRoles.add(new XmlCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI));
+        if (this.jaxbExperimentalRoleWrapper.experimentalRoles.isEmpty()){
+            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(new XmlCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI));
         }
-        return this.experimentalRoles.get(0);
+        return this.jaxbExperimentalRoleWrapper.experimentalRoles.get(0);
     }
 
     public void setExperimentalRole(CvTerm expRole) {
-        if (this.experimentalRoles == null && expRole != null){
-            this.experimentalRoles = new ArrayList<CvTerm>();
-            this.experimentalRoles.add(expRole);
+        if (this.jaxbExperimentalRoleWrapper == null && expRole != null){
+            initialiseExperimentalRoleWrapper();
+            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(expRole);
         }
-        else if (this.experimentalRoles != null){
-            if (!this.experimentalRoles.isEmpty() && expRole == null){
-                this.experimentalRoles.remove(0);
+        else if (expRole != null){
+            if (!this.jaxbExperimentalRoleWrapper.experimentalRoles.isEmpty()){
+                this.jaxbExperimentalRoleWrapper.experimentalRoles.remove(0);
             }
-            else if (expRole != null){
-                this.experimentalRoles.remove(0);
-                this.experimentalRoles.add(0, expRole);
+            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(0, expRole);
+        }
+        else{
+            if (!this.jaxbExperimentalRoleWrapper.experimentalRoles.isEmpty()){
+                this.jaxbExperimentalRoleWrapper.experimentalRoles.remove(0);
             }
         }
     }
 
     public Collection<CvTerm> getIdentificationMethods() {
         if (!initialisedMethods){
-            initialiseIdentificationMethods();
+            initialiseIdentificationMethodWrapper();
         }
-        return this.identificationMethods;
+        return this.jaxbParticipantionIdentificationWrapper.identificationMethods;
     }
 
     public Collection<CvTerm> getExperimentalPreparations() {
-        if (experimentalPreparations == null){
-            initialiseExperimentalPreparations();
+        if (jaxbExperimentalPreparationWrapper == null){
+            initialiseExperimentalPreparationWrapper();
         }
-        return this.experimentalPreparations;
+        return this.jaxbExperimentalPreparationWrapper.experimentalPreparations;
     }
 
     public Organism getExpressedInOrganism() {
-        return (this.hostOrganisms != null && !this.hostOrganisms.isEmpty())? this.hostOrganisms.iterator().next() : null;
+        return (this.jaxbHostOrganismWrapper != null && !this.jaxbHostOrganismWrapper.hostOrganisms.isEmpty())? this.jaxbHostOrganismWrapper.hostOrganisms.iterator().next() : null;
     }
 
     public void setExpressedInOrganism(Organism organism) {
-        if (this.hostOrganisms == null && organism != null){
-            this.hostOrganisms = new ArrayList<Organism>();
-            this.hostOrganisms.add(organism);
+        if (this.jaxbHostOrganismWrapper == null && organism != null){
+            initialiseHostOrganismWrapper();
+            this.jaxbHostOrganismWrapper.hostOrganisms.add(organism);
         }
-        else if (this.hostOrganisms != null){
-            if (!this.hostOrganisms.isEmpty() && organism == null){
-                this.hostOrganisms.remove(0);
+        else if (organism != null){
+            if (!this.jaxbHostOrganismWrapper.hostOrganisms.isEmpty()){
+                this.jaxbHostOrganismWrapper.hostOrganisms.remove(0);
             }
-            else if (organism != null){
-                this.hostOrganisms.remove(0);
-                this.hostOrganisms.add(0, organism);
+            this.jaxbHostOrganismWrapper.hostOrganisms.add(0, organism);
+        }
+        else{
+            if (!this.jaxbHostOrganismWrapper.hostOrganisms.isEmpty()){
+                this.jaxbHostOrganismWrapper.hostOrganisms.remove(0);
             }
         }
     }
 
     public Collection<Confidence> getConfidences() {
-        if (confidences == null){
-            initialiseConfidences();
+        if (jaxbConfidenceWrapper == null){
+            initialiseConfidenceWrapper();
         }
-        return this.confidences;
+        return this.jaxbConfidenceWrapper.confidences;
     }
 
     public Collection<Parameter> getParameters() {
-        if (parameters == null){
-            initialiseParameters();
+        if (this.jaxbParameterWrapper == null){
+            initialiseParameterWrapper();
         }
-        return this.parameters;
+        return this.jaxbParameterWrapper.parameters;
+    }
+
+    public Collection<ExperimentalInteractor> getExperimentalInteractors() {
+        if (this.jaxbExperimentalInteractorWrapper == null){
+            initialiseExperimentalInteractorWrapper();
+        }
+        return this.jaxbExperimentalInteractorWrapper.experimentalInteractors;
     }
 
     @Override
@@ -152,258 +204,97 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
     @Override
     @XmlElement(name = "xref")
-    public XrefContainer getJAXBXref() {
-        return super.getJAXBXref();
+    public void setJAXBXref(XrefContainer value) {
+        super.setJAXBXref(value);
+    }
+
+    @Override
+    @XmlElement(name = "interactor")
+    public void setJAXBInteractor(XmlInteractor interactor) {
+        super.setJAXBInteractor(interactor);
     }
 
     @Override
     @XmlElement(name = "interactionRef")
-    public Integer getJAXBInteractionRef() {
-        return super.getJAXBInteractionRef();
+    public void setJAXBInteractionRef(Integer value) {
+        super.setJAXBInteractionRef(value);
     }
 
     @Override
     @XmlElement(name = "interactorRef")
-    public Integer getJAXBInteractorRef() {
-        return super.getJAXBInteractorRef();
+    public void setJAXBInteractorRef(Integer value) {
+        super.setJAXBInteractorRef(value);
     }
 
     @Override
     @XmlElement(name = "biologicalRole", type = XmlCvTerm.class)
-    public CvTerm getJAXBBiologicalRole() {
-        return super.getJAXBBiologicalRole();
-    }
-
-    @Override
-    @XmlElement(name = "interactor", type = XmlInteractor.class)
-    public XmlInteractor getJAXBInteractor() {
-        return super.getJAXBInteractor();
+    public void setJAXBBiologicalRole(CvTerm bioRole) {
+        super.setJAXBBiologicalRole(bioRole);
     }
 
     @Override
     @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
+    public void setJAXBId(int value) {
+        super.setJAXBId(value);
     }
 
-    /**
-     * Gets the value of the jaxbAttributeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlAnnotation }
-     *
-     */
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
+    @Override
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
     }
 
-    /**
-     * Gets the value of the featureList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link AbstractXmlFeature }
-     *
-     */
-    @XmlElementWrapper(name = "featureList")
-    @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true)
-    public List<FeatureEvidence> getJAXBFeatures() {
-        return super.getJAXBFeatures();
+    @XmlElement(name = "featureList")
+    public void setJAXBFeatureWrapper(AbstractXmlEntity.JAXBFeatureWrapper jaxbFeatureWrapper) {
+        super.setJAXBFeatureWrapper(jaxbFeatureWrapper);
     }
 
-    /**
-     * Gets the value of the participantIdentificationMethodList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElementWrapper(name="participantIdentificationMethodList")
-    @XmlElement(type=ExperimentalCvTerm.class, name="participantIdentificationMethod", required = true)
-    public ArrayList<CvTerm> getJAXBParticipantIdentificationMethods() {
-        return (ArrayList<CvTerm>)this.identificationMethods;
-    }
-
-    /**
-     * Sets the value of the participantIdentificationMethodList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBParticipantIdentificationMethods(ArrayList<CvTerm> value) {
-        this.originalIdentificationMethods = new ArrayList<ExperimentalCvTerm>(value.size());
-        for (CvTerm v : value){
-           this.originalIdentificationMethods.add((ExperimentalCvTerm)v);
+    @XmlElement(name="participantIdentificationMethodList")
+    public void setJAXBParticipantIdentificationMethodWrapper(JAXBParticipantIdentificationWrapper wrapper) {
+        this.jaxbParticipantionIdentificationWrapper = wrapper;
+        // needs to initialise originalIdentificationMethods
+        if (this.jaxbParticipantionIdentificationWrapper != null && !this.jaxbParticipantionIdentificationWrapper.identificationMethods.isEmpty()){
+            this.originalIdentificationMethods = new ArrayList<ExperimentalCvTerm>(this.jaxbParticipantionIdentificationWrapper.identificationMethods.size());
+            for (CvTerm v : this.jaxbParticipantionIdentificationWrapper.identificationMethods){
+                this.originalIdentificationMethods.add((ExperimentalCvTerm)v);
+            }
         }
-        this.identificationMethods = value;
     }
 
-    /**
-     * Gets the value of the experimentalRoleList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElementWrapper(name="experimentalRoleList")
-    @XmlElement(type=ExperimentalCvTerm.class, name="experimentalRole", required = true)
-    public ArrayList<CvTerm> getJAXBExperimentalRoles() {
-        return this.experimentalRoles;
+    @XmlElement(name="experimentalRoleList")
+    public void setJAXBExperimentalRoleWrapper(JAXBExperimentalRoleWrapper wrapper) {
+        this.jaxbExperimentalRoleWrapper = wrapper;
     }
 
-    /**
-     * Sets the value of the experimentalRoleList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBExperimentalRoles(ArrayList<CvTerm> value) {
-        this.experimentalRoles = value;
+    @XmlElement(name="experimentalPreparationList")
+    public void setJAXBExperimentalPreparationWrapper(JAXBExperimentalPreparationWrapper wrapper) {
+        this.jaxbExperimentalPreparationWrapper = wrapper;
     }
 
-    /**
-     * Gets the value of the experimentalRoleList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElementWrapper(name="experimentalPreparationList")
-    @XmlElement(type=ExperimentalCvTerm.class, name="experimentalPreparation", required = true)
-    public ArrayList<CvTerm> getJAXBExperimentalPreparations() {
-        return (ArrayList<CvTerm>)this.experimentalPreparations;
+    @XmlElement(name="experimentalInteractorList")
+    public void setExperimentalInteractorWrapper(JAXBExperimentalInteractorWrapper wrapper) {
+        this.jaxbExperimentalInteractorWrapper = wrapper;
     }
 
-    /**
-     * Sets the value of the experimentalRoleList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBExperimentalPreparations(ArrayList<CvTerm> value) {
-        this.experimentalPreparations = value;
+    @XmlElement(name="hostOrganismList")
+    public void setJAXBHostOrganismWrapper(JAXBHostOrganismWrapper wrapper) {
+        this.jaxbHostOrganismWrapper = wrapper;
     }
 
-    /**
-     * Gets the value of the experimentalInteractorList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ExperimentalInteractor }
-     *
-     */
-    @XmlElementWrapper(name="experimentalInteractorList")
-    @XmlElements({ @XmlElement(type=ExperimentalInteractor.class, name="experimentalInteractor", required = true)})
-    public ArrayList<ExperimentalInteractor> getJAXBExperimentalInteractors() {
-        return this.experimentalInteractors;
+    @XmlElement(name="parameterList")
+    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
+        this.jaxbParameterWrapper = wrapper;
     }
 
-    /**
-     * Sets the value of the experimentalRoleList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public void setJAXBExperimentalInteractors(ArrayList<ExperimentalInteractor> value) {
-        this.experimentalInteractors = value;
-    }
-
-    /**
-     * Gets the value of the hostOrganismList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link HostOrganism }
-     *
-     */
-    @XmlElementWrapper(name="hostOrganismList")
-    @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)
-    public ArrayList<Organism> getJAXBHostOrganisms() {
-        return this.hostOrganisms;
-    }
-
-    /**
-     * Sets the value of the hostOrganismList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link HostOrganism }
-     *
-     */
-    public void setJAXBHostOrganisms(ArrayList<Organism> value) {
-        this.hostOrganisms = value;
-    }
-
-    /**
-     * Gets the value of the parameterList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlParameter }
-     *
-     */
-    @XmlElementWrapper(name="parameterList")
-    @XmlElement(type=XmlParameter.class, name="parameter", required = true)
-    public ArrayList<Parameter> getJAXBParameters() {
-        return (ArrayList<Parameter>)this.parameters;
-    }
-
-    /**
-     * Sets the value of the parameterList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlParameter }
-     *
-     */
-    public void setJAXBParameters(ArrayList<Parameter> value) {
-        this.parameters = value;
-    }
-
-    /**
-     * Gets the value of the confidenceList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlConfidence }
-     *
-     */
-    @XmlElementWrapper(name="confidenceList")
-    @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
-    public ArrayList<Confidence> getJAXBConfidences() {
-        return (ArrayList<Confidence>)this.confidences;
-    }
-
-    /**
-     * Sets the value of the confidenceList property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlConfidence }
-     *
-     */
-    public void setJAXBConfidences(ArrayList<Confidence> value) {
-        this.confidences = value;
+    @XmlElement(name="confidenceList")
+    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
+        this.jaxbConfidenceWrapper = wrapper;
     }
 
     @Override
@@ -429,58 +320,340 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         ((XmlFeatureEvidence)feature).setOriginalParticipant(this);
     }
 
-    protected void initialiseExperimentalPreparations() {
-        this.experimentalPreparations = new ArrayList<CvTerm>();
-    }
-
-    protected void initialiseConfidences() {
-        this.confidences = new ArrayList<Confidence>();
-    }
-
-    protected void initialiseParameters() {
-        this.parameters = new ArrayList<Parameter>();
-    }
-
     protected void setOriginalXmlInteraction(XmlInteractionEvidence i){
         this.originalInteraction = i;
         setInteraction(i);
     }
 
-    /**
-     * This method should only be called when we have loaded all references because the parsing should not call this method
-     */
-    protected void initialiseIdentificationMethods(){
-        Collection<Experiment> expToIgnore = Collections.EMPTY_LIST;
-
-        if (this.identificationMethods == null){
-            this.identificationMethods = new ArrayList<CvTerm>();
-        }
-
-        if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()){
-            expToIgnore = new ArrayList<Experiment>();
-            for (ExperimentalCvTerm part : this.originalIdentificationMethods){
-                if (!part.getExperiments().isEmpty()){
-                    expToIgnore.addAll(part.getExperiments());
-                }
-            }
-            this.originalIdentificationMethods = null;
-        }
-
-        if (originalInteraction != null){
-            List<XmlExperiment> originalExperiments = originalInteraction.getOriginalExperiments();
-            if (originalExperiments != null && !originalExperiments.isEmpty()){
-                for (XmlExperiment exp : originalExperiments){
-                    if (exp.getParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
-                        this.identificationMethods.add(exp.getParticipantIdentificationMethod());
-                    }
-                }
-            }
-        }
-
-        initialisedMethods = true;
-    }
-
     protected XmlInteractionEvidence getOriginalInteraction() {
         return originalInteraction;
+    }
+
+    @Override
+    protected void initialiseFeatureWrapper() {
+        super.setJAXBFeatureWrapper(new JAXBFeatureWrapper());
+    }
+
+    ////////////////////////////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceParameterWrapper")
+    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<FeatureEvidence> {
+
+        public JAXBFeatureWrapper(){
+            super();
+        }
+
+        @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true)
+        public List<FeatureEvidence> getJAXBFeatures() {
+            return super.getJAXBFeatures();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceIdentificationWrapper")
+    public static class JAXBParticipantIdentificationWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<CvTerm> identificationMethods;
+
+        public JAXBParticipantIdentificationWrapper(){
+            initialiseIdentificationMethods();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=ExperimentalCvTerm.class, name="participantIdentificationMethod", required = true)
+        public List<CvTerm> getJAXBParticipantIdentificationMethods() {
+            return this.identificationMethods;
+        }
+
+        protected void initialiseIdentificationMethods(){
+            this.identificationMethods = new ArrayList<CvTerm>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidencePreparationWrapper")
+    public static class JAXBExperimentalPreparationWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<CvTerm> experimentalPreparations;
+
+        public JAXBExperimentalPreparationWrapper(){
+            initialiseExperimentalPreparations();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=ExperimentalCvTerm.class, name="experimentalPreparation", required = true)
+        public List<CvTerm> getJAXBExperimentalPreparations() {
+            return this.experimentalPreparations;
+        }
+
+        protected void initialiseExperimentalPreparations(){
+            this.experimentalPreparations = new ArrayList<CvTerm>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceRoleWrapper")
+    public static class JAXBExperimentalRoleWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<CvTerm> experimentalRoles;
+
+        public JAXBExperimentalRoleWrapper(){
+            initialiseExperimentalRoles();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=ExperimentalCvTerm.class, name="experimentalRole", required = true)
+        public List<CvTerm> getJAXBExperimentalRoles() {
+            return this.experimentalRoles;
+        }
+
+        protected void initialiseExperimentalRoles(){
+            this.experimentalRoles = new ArrayList<CvTerm>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceInteractorWrapper")
+    public static class JAXBExperimentalInteractorWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<ExperimentalInteractor> experimentalInteractors;
+
+        public JAXBExperimentalInteractorWrapper(){
+            initialiseExperimentalIneteractors();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=ExperimentalInteractor.class, name="experimentalInteractor", required = true)
+        public List<ExperimentalInteractor> getJAXBExperimentalInteractors() {
+            return this.experimentalInteractors;
+        }
+
+        protected void initialiseExperimentalIneteractors(){
+            this.experimentalInteractors = new ArrayList<ExperimentalInteractor>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceOrganismWrapper")
+    public static class JAXBHostOrganismWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Organism> hostOrganisms;
+
+        public JAXBHostOrganismWrapper(){
+            initialiseHostOrganisms();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlOrganism.class, name="hostOrganism", required = true)
+        public List<Organism> getJAXBHostOrganisms() {
+            return this.hostOrganisms;
+        }
+
+        protected void initialiseHostOrganisms(){
+            this.hostOrganisms = new ArrayList<Organism>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceConfidenceWrapper")
+    public static class JAXBConfidenceWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Confidence> confidences;
+
+        public JAXBConfidenceWrapper(){
+            initialiseConfidences();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
+        public List<Confidence> getJAXBConfidences() {
+            return this.confidences;
+        }
+
+        protected void initialiseConfidences(){
+            this.confidences = new ArrayList<Confidence>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceParameterWrapper")
+    public static class JAXBParameterWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Parameter> parameters;
+
+        public JAXBParameterWrapper(){
+            initialiseParameters();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlParameter.class, name="parameter", required = true)
+        public List<Parameter> getJAXBParameters() {
+            return this.parameters;
+        }
+
+        protected void initialiseParameters(){
+            this.parameters = new ArrayList<Parameter>();
+        }
     }
 }

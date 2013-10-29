@@ -25,7 +25,7 @@ import java.util.List;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlTransient
 public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Locatable{
     private CvTermXrefContainer xrefContainer;
     private NamesContainer namesContainer;
@@ -206,13 +206,14 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         return this.jaxbAttributeWrapper;
     }
 
-    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+    protected void setAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         this.jaxbAttributeWrapper = jaxbAttributeWrapper;
     }
 
     //////////////////////////////// class wrapper
 
     @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="cvAnnotationWrapper")
     public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
         private PsiXmLocator sourceLocator;
         @XmlLocation

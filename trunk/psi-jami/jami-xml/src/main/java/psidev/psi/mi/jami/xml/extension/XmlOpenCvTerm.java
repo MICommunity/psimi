@@ -78,8 +78,8 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
     }
 
     @XmlElement(name="attributeList")
-    public void setJAXBAttributes(JAXBAttributeWrapper wrapper){
-        super.setJAXBAttributeWrapper(wrapper);
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper wrapper){
+        super.setAttributeWrapper(wrapper);
     }
 
     @Override
