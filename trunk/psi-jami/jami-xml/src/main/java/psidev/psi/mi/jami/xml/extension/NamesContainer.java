@@ -7,10 +7,13 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * A container for aliases, shortname and fullname
@@ -24,7 +27,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
 
     private String shortLabel;
     private String fullName;
-    private Collection<Alias> aliases;
+    private List<Alias> aliases;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -103,7 +106,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
      *
      */
     @XmlElement(type=XmlAlias.class, name = "alias")
-    public Collection<Alias> getAliases() {
+    public List<Alias> getAliases() {
         if (aliases == null) {
             initialiseAliases();
         }
@@ -139,7 +142,7 @@ public class NamesContainer implements FileSourceContext, Locatable{
         this.aliases = new ArrayList<Alias>();
     }
 
-    protected void initialiseAliasesWith(Collection<Alias> aliases){
+    protected void initialiseAliasesWith(List<Alias> aliases){
         if (aliases == null){
             this.aliases = Collections.EMPTY_LIST;
         }

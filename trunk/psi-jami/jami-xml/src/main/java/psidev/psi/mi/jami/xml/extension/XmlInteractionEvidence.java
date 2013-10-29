@@ -21,10 +21,10 @@ import java.util.*;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements InteractionEvidence{
+public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements ExtendedPsi25InteractionEvidence{
 
     private Availability availability;
-    private boolean isInferred = false;
+    private boolean isInferred;
     private boolean isNegative;
     private Collection<VariableParameterValueSet> variableParameterValueSets;
     private Boolean modelled;
@@ -176,8 +176,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     @Override
     @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int value) {
-        super.setJAXBId(value);
+    public void setId(int value) {
+        super.setId(value);
     }
 
     @Override
@@ -199,14 +199,14 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
     @Override
     @XmlElement(name="interactionType", type = XmlCvTerm.class)
-    public List<CvTerm> getJAXBInteractionTypes() {
-        return super.getJAXBInteractionTypes();
+    public List<CvTerm> getInteractionTypes() {
+        return super.getInteractionTypes();
     }
 
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
     }
@@ -217,7 +217,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
     }
 
@@ -310,8 +310,18 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
-    public Boolean getModelled() {
-        return modelled;
+    public boolean isModelled() {
+        return modelled != null ? modelled : false;
+    }
+
+    @Override
+    public Availability getXmlAvailability() {
+        return this.availability;
+    }
+
+    @Override
+    public void setXmlAvailability(Availability availability) {
+        this.availability = availability;
     }
 
     /**

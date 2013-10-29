@@ -1,12 +1,10 @@
 package psidev.psi.mi.jami.xml.extension.binary;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultModelledBinaryInteraction;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.xml.extension.XmlModelledInteraction;
+import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -17,142 +15,105 @@ import java.util.Collection;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledBinaryInteraction extends XmlModelledInteraction implements ModelledBinaryInteraction{
-    private ModelledBinaryInteraction binaryWrapper;
+public class XmlModelledBinaryInteraction extends AbstractXmlBinaryInteraction<ModelledParticipant> implements ModelledBinaryInteraction{
+    private Collection<InteractionEvidence> interactionEvidences;
+    private Source source;
+    private Collection<ModelledConfidence> modelledConfidences;
+    private Collection<ModelledParameter> modelledParameters;
+    private Collection<CooperativeEffect> cooperativeEffects;
 
-    public XmlModelledBinaryInteraction(){
-        super();
-        this.binaryWrapper = new DefaultModelledBinaryInteraction();
+    public XmlModelledBinaryInteraction() {
     }
 
-    public XmlModelledBinaryInteraction(String shortName){
+    public XmlModelledBinaryInteraction(String shortName, CvTerm type) {
+        super(shortName, type);
+    }
+
+    public XmlModelledBinaryInteraction(String shortName) {
         super(shortName);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction();
     }
 
-    public XmlModelledBinaryInteraction(String shortName, CvTerm type){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction();
+    public XmlModelledBinaryInteraction(ModelledParticipant participantA, ModelledParticipant participantB) {
+        super(participantA, participantB);
     }
 
-    public XmlModelledBinaryInteraction(ModelledParticipant participantA, ModelledParticipant participantB){
-        super();
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(participantA, participantB);
-
+    public XmlModelledBinaryInteraction(String shortName, ModelledParticipant participantA, ModelledParticipant participantB) {
+        super(shortName, participantA, participantB);
     }
 
-    public XmlModelledBinaryInteraction(String shortName, ModelledParticipant participantA, ModelledParticipant participantB){
-        super(shortName);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(participantA, participantB);
+    public XmlModelledBinaryInteraction(String shortName, CvTerm type, ModelledParticipant participantA, ModelledParticipant participantB) {
+        super(shortName, type, participantA, participantB);
     }
 
-    public XmlModelledBinaryInteraction(String shortName, CvTerm type, ModelledParticipant participantA, ModelledParticipant participantB){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(participantA, participantB);
+    public XmlModelledBinaryInteraction(CvTerm complexExpansion) {
+        super(complexExpansion);
     }
 
-    public XmlModelledBinaryInteraction(CvTerm complexExpansion){
-        super();
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(complexExpansion);
+    public XmlModelledBinaryInteraction(String shortName, CvTerm type, CvTerm complexExpansion) {
+        super(shortName, type, complexExpansion);
     }
 
-    public XmlModelledBinaryInteraction(String shortName, CvTerm type, CvTerm complexExpansion){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(complexExpansion);
-
+    public XmlModelledBinaryInteraction(ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion) {
+        super(participantA, participantB, complexExpansion);
     }
 
-    public XmlModelledBinaryInteraction(ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion){
-        super();
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(participantA, participantB, complexExpansion);
-
+    public XmlModelledBinaryInteraction(String shortName, ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion) {
+        super(shortName, participantA, participantB, complexExpansion);
     }
 
-    public XmlModelledBinaryInteraction(String shortName, ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion){
-        super(shortName);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(participantA, participantB, complexExpansion);
+    public XmlModelledBinaryInteraction(String shortName, CvTerm type, ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion) {
+        super(shortName, type, participantA, participantB, complexExpansion);
     }
 
-    public XmlModelledBinaryInteraction(String shortName, CvTerm type, ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultModelledBinaryInteraction(participantA, participantB, complexExpansion);
+    protected void initialiseInteractionEvidences(){
+        this.interactionEvidences = new ArrayList<InteractionEvidence>();
     }
 
-    public ModelledParticipant getParticipantA() {
-        return this.binaryWrapper.getParticipantA();
+    protected void initialiseCooperativeEffects(){
+        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
     }
 
-    public ModelledParticipant getParticipantB() {
-        return this.binaryWrapper.getParticipantB();
+    protected void initialiseModelledConfidences(){
+        this.modelledConfidences = new ArrayList<ModelledConfidence>();
     }
 
-    public void setParticipantA(ModelledParticipant participantA) {
-        this.binaryWrapper.setParticipantA(participantA);
+    protected void initialiseModelledParameters(){
+        this.modelledParameters = new ArrayList<ModelledParameter>();
     }
 
-    public void setParticipantB(ModelledParticipant participantB) {
-        this.binaryWrapper.setParticipantB(participantB);
+    public Collection<InteractionEvidence> getInteractionEvidences() {
+        if (interactionEvidences == null){
+            initialiseInteractionEvidences();
+        }
+        return this.interactionEvidences;
     }
 
-    public CvTerm getComplexExpansion() {
-        return this.binaryWrapper.getComplexExpansion();
+    public Source getSource() {
+        return this.source;
     }
 
-    public void setComplexExpansion(CvTerm expansion) {
-        this.binaryWrapper.setComplexExpansion(expansion);
+    public void setSource(Source source) {
+        this.source = source;
     }
 
-    /**
-     * The collection of participants for this binary interaction.
-     * It cannot be changed.
-     * @return
-     */
-    @Override
-    public Collection<ModelledParticipant> getParticipants() {
-        return this.binaryWrapper.getParticipants();
+    public Collection<ModelledConfidence> getModelledConfidences() {
+        if (modelledConfidences == null){
+            initialiseModelledConfidences();
+        }
+        return this.modelledConfidences;
     }
 
-    /**
-     * Adds a new Participant and set the Interaction of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param part
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants
-     */
-    @Override
-    public boolean addParticipant(ModelledParticipant part) {
-        return this.binaryWrapper.addParticipant(part);
+    public Collection<ModelledParameter> getModelledParameters() {
+        if (modelledParameters == null){
+            initialiseModelledParameters();
+        }
+        return this.modelledParameters;
     }
 
-    /**
-     * Removes the Participant from this binary interaction
-     * @param part
-     * @return
-     */
-    @Override
-    public boolean removeParticipant(ModelledParticipant part) {
-        return this.binaryWrapper.removeParticipant(part);
-    }
-
-    /**
-     * Adds the participants and set the Interaction of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param participants
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
-     */
-    @Override
-    public boolean addAllParticipants(Collection<? extends ModelledParticipant> participants) {
-        return this.binaryWrapper.addAllParticipants(participants);
-    }
-
-    @Override
-    public boolean removeAllParticipants(Collection<? extends ModelledParticipant> participants) {
-        return this.binaryWrapper.removeAllParticipants(participants);
-    }
-
-    @Override
-    public void setJAXBId(int value) {
-        setJAXBIdOnly(value);
+    public Collection<CooperativeEffect> getCooperativeEffects() {
+        if (cooperativeEffects == null){
+            initialiseCooperativeEffects();
+        }
+        return this.cooperativeEffects;
     }
 }
