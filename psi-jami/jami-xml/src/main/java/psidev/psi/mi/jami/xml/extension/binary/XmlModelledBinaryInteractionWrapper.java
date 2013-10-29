@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.binary.impl.ModelledBinaryInteractionWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.InteractionXrefContainer;
 import psidev.psi.mi.jami.xml.extension.NamesContainer;
 import psidev.psi.mi.jami.xml.extension.XmlModelledInteraction;
@@ -14,7 +13,6 @@ import psidev.psi.mi.jami.xml.extension.XmlModelledInteraction;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Wrapper for Xml binary interactions
@@ -112,38 +110,8 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     }
 
     @Override
-    public NamesContainer getJAXBNames() {
-        return this.wrappedInteraction.getJAXBNames();
-    }
-
-    @Override
-    public InteractionXrefContainer getJAXBXref() {
-        return this.wrappedInteraction.getJAXBXref();
-    }
-
-    @Override
     public int getJAXBId() {
         return this.wrappedInteraction.getJAXBId();
-    }
-
-    @Override
-    public List<Annotation> getJAXBAttributes() {
-        return this.wrappedInteraction.getJAXBAttributes();
-    }
-
-    @Override
-    public Boolean getJAXBIntraMolecular() {
-        return this.wrappedInteraction.getJAXBIntraMolecular();
-    }
-
-    @Override
-    public List<ModelledParticipant> getJAXBParticipants() {
-        return this.wrappedInteraction.getJAXBParticipants();
-    }
-
-    @Override
-    public List<InferredInteraction> getJAXBInferredInteractions() {
-        return this.wrappedInteraction.getJAXBInferredInteractions();
     }
 
     @Override
@@ -299,15 +267,5 @@ public class XmlModelledBinaryInteractionWrapper extends XmlModelledBinaryIntera
     @Override
     public Collection<CooperativeEffect> getCooperativeEffects() {
         return this.wrappedInteraction.getCooperativeEffects();
-    }
-
-    @Override
-    public List<ModelledConfidence> getJAXBConfidences() {
-        return this.wrappedInteraction.getJAXBConfidences();
-    }
-
-    @Override
-    public List<ModelledParameter> getJAXBParameters() {
-        return this.wrappedInteraction.getJAXBParameters();
     }
 }

@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
@@ -20,27 +22,16 @@ import java.util.List;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "modelledInteraction", propOrder = {
-        "JAXBNames",
-        "JAXBXref",
-        "JAXBParticipants",
-        "JAXBInferredInteractions",
-        "JAXBInteractionTypes",
-        "JAXBIntraMolecular",
-        "JAXBConfidences",
-        "JAXBParameters",
-        "JAXBAttributes"
-})
 public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParticipant> implements ModelledInteraction{
 
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
-    private Collection<ModelledConfidence> modelledConfidences;
-    private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
     @XmlLocation
     @XmlTransient
     private Locator locator;
+    private JAXBConfidenceWrapper jaxbConfidenceWrapper;
+    private JAXBParameterWrapper jaxbParameterWrapper;
 
     public XmlModelledInteraction() {
         super();
@@ -75,12 +66,12 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         this.cooperativeEffects = new ArrayList<CooperativeEffect>();
     }
 
-    protected void initialiseModelledConfidences(){
-        this.modelledConfidences = new ArrayList<ModelledConfidence>();
+    protected void initialiseModelledConfidenceWrapper(){
+        this.jaxbConfidenceWrapper = new JAXBConfidenceWrapper();
     }
 
-    protected void initialiseModelledParameters(){
-        this.modelledParameters = new ArrayList<ModelledParameter>();
+    protected void initialiseModelledParameterWrapper(){
+        this.jaxbParameterWrapper = new JAXBParameterWrapper();
     }
 
     public Collection<InteractionEvidence> getInteractionEvidences() {
@@ -99,17 +90,17 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     public Collection<ModelledConfidence> getModelledConfidences() {
-        if (modelledConfidences == null){
-            initialiseModelledConfidences();
+        if (this.jaxbConfidenceWrapper == null){
+            initialiseModelledConfidenceWrapper();
         }
-        return this.modelledConfidences;
+        return this.jaxbConfidenceWrapper.confidences;
     }
 
     public Collection<ModelledParameter> getModelledParameters() {
-        if (modelledParameters == null){
-            initialiseModelledParameters();
+        if (jaxbParameterWrapper == null){
+            initialiseModelledParameterWrapper();
         }
-        return this.modelledParameters;
+        return this.jaxbParameterWrapper.parameters;
     }
 
     public Collection<CooperativeEffect> getCooperativeEffects() {
@@ -121,45 +112,43 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @Override
     @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
     @Override
     @XmlElement(name = "xref")
-    public InteractionXrefContainer getJAXBXref() {
-        return super.getJAXBXref();
-    }
-
-    @Override
-    @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
-        return super.getJAXBId();
-    }
-
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public List<Annotation> getJAXBAttributes() {
-        return super.getJAXBAttributes();
+    public void setJAXBXref(InteractionXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
-    public Boolean getJAXBIntraMolecular() {
-        return super.getJAXBIntraMolecular();
-    }
-
-    @XmlElementWrapper(name="participantList")
-    @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)
-    public List<ModelledParticipant> getJAXBParticipants() {
-        return super.getJAXBParticipants();
+    public void setJAXBIntraMolecular(Boolean value) {
+        super.setJAXBIntraMolecular(value);
     }
 
     @Override
-    @XmlElementWrapper(name="inferredInteractionList")
-    @XmlElement(name="inferredInteraction", required = true)
-    public List<InferredInteraction> getJAXBInferredInteractions() {
-        return super.getJAXBInferredInteractions();
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int value) {
+        super.setJAXBId(value);
+    }
+
+    @Override
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
+    }
+
+    @XmlElement(name="participantList", required = true)
+    public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
+        super.setParticipantWrapper(jaxbParticipantWrapper);
+    }
+
+    @Override
+    @XmlElement(name="inferredInteractionList")
+    public void setJAXBInferredInteractionWrapper(JAXBInferredInteractionWrapper jaxbInferredWrapper) {
+        super.setJAXBInferredInteractionWrapper(jaxbInferredWrapper);
     }
 
     @Override
@@ -186,37 +175,129 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         }
     }
 
-    /**
-     * Gets the value of the confidenceList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<Confidence> }
-     *
-     */
-    @XmlElementWrapper(name="confidenceList")
-    @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)
-    public List<ModelledConfidence> getJAXBConfidences() {
-        if (this.modelledConfidences == null){
-            initialiseModelledConfidences();
-        }
-        return (List<ModelledConfidence>)modelledConfidences;
+    @XmlElement(name="confidenceList")
+    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
+        this.jaxbConfidenceWrapper = wrapper;
     }
 
-    /**
-     * Gets the value of the parameterList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ArrayList<ModelledParameter> }
-     *
-     */
-    @XmlElementWrapper(name="parameterList")
-    @XmlElement(type=XmlModelledParameter.class, name="parameter", required = true)
-    public List<ModelledParameter> getJAXBParameters() {
-        if (this.modelledParameters == null){
-            initialiseModelledParameters();
+    @XmlElement(name="parameterList")
+    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
+        this.jaxbParameterWrapper = wrapper;
+    }
+
+    public JAXBConfidenceWrapper getJAXBConfidenceWrapper() {
+        return jaxbConfidenceWrapper;
+    }
+
+    public JAXBParameterWrapper getJAXBParameterWrapper() {
+        return jaxbParameterWrapper;
+    }
+
+    @Override
+    protected void initialiseParticipantWrapper() {
+        super.setParticipantWrapper(new JAXBParticipantWrapper());
+    }
+
+    ////////////////////////////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="modelledParticipantWrapper")
+    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<ModelledParticipant> {
+
+        public JAXBParticipantWrapper(){
+            super();
         }
-        return (List<ModelledParameter>)this.modelledParameters;
+
+        @XmlElement(type=XmlModelledParticipant.class, name="participant", required = true)
+        public List<ModelledParticipant> getJAXBParticipants() {
+            return super.getJAXBParticipants();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="modelledConfidenceWrapper")
+    public static class JAXBConfidenceWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<ModelledConfidence> confidences;
+
+        public JAXBConfidenceWrapper(){
+            initialiseConfidences();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)
+        public List<ModelledConfidence> getJAXBConfidences() {
+            return this.confidences;
+        }
+
+        protected void initialiseConfidences(){
+            this.confidences = new ArrayList<ModelledConfidence>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="modelledParameterWrapper")
+    public static class JAXBParameterWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<ModelledParameter> parameters;
+
+        public JAXBParameterWrapper(){
+            initialiseParameters();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlModelledParameter.class, name="parameter", required = true)
+        public List<ModelledParameter> getJAXBParameters() {
+            return this.parameters;
+        }
+
+        protected void initialiseParameters(){
+            this.parameters = new ArrayList<ModelledParameter>();
+        }
     }
 }

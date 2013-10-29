@@ -123,7 +123,7 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
                 sourceAnnotationList.removeOnly(urlAnnot);
             }
             getAttributeWrapper().url = new DefaultAnnotation(urlTopic, url);
-            sourceAnnotationList.addOnly(urlAnnot);
+            sourceAnnotationList.addOnly(getAttributeWrapper().url);
         }
         // remove all url if the collection is not empty
         else if (!sourceAnnotationList.isEmpty()) {
@@ -149,7 +149,7 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
                 sourceAnnotationList.removeOnly(postalAnnot);
             }
             getAttributeWrapper().postalAddress = new DefaultAnnotation(postalTopic, address);
-            sourceAnnotationList.addOnly(postalAnnot);
+            sourceAnnotationList.addOnly(getAttributeWrapper().postalAddress);
         }
         // remove all url if the collection is not empty
         else if (!sourceAnnotationList.isEmpty()) {
