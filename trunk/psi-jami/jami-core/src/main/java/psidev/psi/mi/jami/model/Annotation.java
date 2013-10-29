@@ -75,6 +75,7 @@ public interface Annotation {
     public static final String SEARCH_URL_MI = "MI:0615";
     public static final String VALIDATION_REGEXP = "id-validation-regexp";
     public static final String VALIDATION_REGEXP_MI = "MI:0628";
+    public static final String POSTAL_ADDRESS = "postaladdress";
 
     /**
      * The annotation topic is a controlled vocabulary term and it cannot be null.
