@@ -128,7 +128,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     public void setJAXBStartStatus(CvTerm value) {
         if (start != null){
             AbstractXmlPosition pos = (AbstractXmlPosition) start;
-            pos.setStatus((XmlCvTerm)value);
+            pos.setJAXBStatus((XmlCvTerm)value);
         }
         else {
             this.start = createXmlPositionWithStatus(this.start, (XmlCvTerm)value);
@@ -215,7 +215,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     public void setJAXBEndStatus(CvTerm value) {
         if (end != null){
             AbstractXmlPosition pos = (AbstractXmlPosition) end;
-            pos.setStatus((XmlCvTerm)value);
+            pos.setJAXBStatus((XmlCvTerm)value);
         }
         else {
             this.end = createXmlPositionWithStatus(this.end, (XmlCvTerm)value);

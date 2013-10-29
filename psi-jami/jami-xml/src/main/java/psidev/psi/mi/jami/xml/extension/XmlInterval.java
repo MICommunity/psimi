@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.CvTerm;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
@@ -15,7 +16,6 @@ import java.math.BigInteger;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "interval")
 public class XmlInterval extends AbstractXmlPosition{
     private BigInteger start;
     private BigInteger end;
@@ -43,7 +43,7 @@ public class XmlInterval extends AbstractXmlPosition{
     }
 
     @Override
-    public XmlCvTerm getStatus() {
+    public CvTerm getStatus() {
         return super.getStatus();
     }
 
@@ -61,19 +61,6 @@ public class XmlInterval extends AbstractXmlPosition{
     }
 
     /**
-     * Gets the value of the begin property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    @XmlAttribute(name = "begin", required = true)
-    public BigInteger getJAXBBeginPosition() {
-        return start;
-    }
-
-    /**
      * Sets the value of the begin property.
      *
      * @param value
@@ -81,21 +68,9 @@ public class XmlInterval extends AbstractXmlPosition{
      *     {@link BigInteger }
      *
      */
+    @XmlAttribute(name = "begin", required = true)
     public void setJAXBBeginPosition(BigInteger value) {
         this.start = value;
-    }
-
-    /**
-     * Gets the value of the end property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    @XmlAttribute(name = "end", required = true)
-    public BigInteger getJAXBEndPosition() {
-        return end;
     }
 
     /**
@@ -106,6 +81,7 @@ public class XmlInterval extends AbstractXmlPosition{
      *     {@link BigInteger }
      *
      */
+    @XmlAttribute(name = "end", required = true)
     public void setJAXBEndPosition(BigInteger value) {
         this.end = value;
     }

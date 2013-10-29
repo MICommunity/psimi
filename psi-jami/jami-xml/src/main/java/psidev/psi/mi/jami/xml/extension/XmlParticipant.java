@@ -91,7 +91,7 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
 
     @XmlElement(name = "featureList")
     public void setJAXBFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
-        super.setJAXBFeatureWrapper(jaxbFeatureWrapper);
+        super.setFeatureWrapper(jaxbFeatureWrapper);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
 
     @Override
     protected void initialiseFeatureWrapper() {
-        super.setJAXBFeatureWrapper(new JAXBFeatureWrapper());
+        super.setFeatureWrapper(new JAXBFeatureWrapper());
     }
 
     ////////////////////////////////////////////////////// classes

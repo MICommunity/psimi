@@ -332,7 +332,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
     @XmlElement(name = "featureList")
     public void setJAXBFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
-        super.setJAXBFeatureWrapper(jaxbFeatureWrapper);
+        super.setFeatureWrapper(jaxbFeatureWrapper);
     }
 
     @XmlElement(name="participantIdentificationMethodList")
@@ -390,7 +390,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
     @Override
     protected void initialiseFeatureWrapper() {
-        super.setJAXBFeatureWrapper(new JAXBFeatureWrapper());
+        super.setFeatureWrapper(new JAXBFeatureWrapper());
     }
 
     ////////////////////////////////////////////////////// classes
