@@ -249,7 +249,7 @@ public class GeneXrefContainer extends InteractorXrefContainer{
     }
 
     @Override
-    protected void processRemovedPrimaryRef(XmlXref removed) {
+    protected void processRemovedPrimaryRef(Xref removed) {
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
             // if it is not an identifier
             ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);

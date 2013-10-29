@@ -23,7 +23,6 @@ import java.math.BigDecimal;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "parameterType")
 @XmlSeeAlso({
         XmlModelledParameter.class
 })
@@ -71,19 +70,6 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the term property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "term", required = true)
-    public String getJAXBTerm() {
-        return getType().getShortName();
-    }
-
-    /**
      * Sets the value of the term property.
      *
      * @param value
@@ -91,6 +77,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "term", required = true)
     public void setJAXBTerm(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(value);
@@ -101,19 +88,6 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the termAc property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "termAc")
-    public String getJAXBTermAc() {
-        return getType().getMIIdentifier();
-    }
-
-    /**
      * Sets the value of the termAc property.
      *
      * @param value
@@ -121,6 +95,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "termAc")
     public void setJAXBTermAc(String value) {
         if (this.type == null && value != null){
             this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
@@ -131,19 +106,6 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the unit property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "unit")
-    public String getJAXBUnit() {
-        return unit != null ? unit.getShortName() : null;
-    }
-
-    /**
      * Sets the value of the unit property.
      *
      * @param value
@@ -151,6 +113,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "unit")
     public void setJAXBUnit(String value) {
         if (this.unit == null && value != null){
             this.unit = new DefaultCvTerm(value);
@@ -166,19 +129,6 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the unitAc property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "unitAc")
-    public String getUnitAc() {
-        return unit != null ? unit.getMIIdentifier() : null;
-    }
-
-    /**
      * Sets the value of the unitAc property.
      *
      * @param value
@@ -186,6 +136,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "unitAc")
     public void setUnitAc(String value) {
         if (this.unit == null && value != null){
             this.unit = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
@@ -201,19 +152,6 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the base property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Short }
-     *
-     */
-    @XmlAttribute(name = "base")
-    public short getJAXBBase() {
-        return getValue().getBase();
-    }
-
-    /**
      * Sets the value of the base property.
      *
      * @param value
@@ -221,21 +159,9 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link Short }
      *
      */
+    @XmlAttribute(name = "base")
     public void setJAXBBase(Short value) {
         this.value = new ParameterValue(getValue().getFactor(), value, getValue().getExponent());
-    }
-
-    /**
-     * Gets the value of the exponent property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Short }
-     *
-     */
-    @XmlAttribute(name = "exponent")
-    public short getJAXBExponent() {
-        return getValue().getExponent();
     }
 
     /**
@@ -246,21 +172,9 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link Short }
      *
      */
+    @XmlAttribute(name = "exponent")
     public void setJAXBExponent(Short value) {
         this.value = new ParameterValue(getValue().getFactor(), getValue().getBase(), value);
-    }
-
-    /**
-     * Gets the value of the factor property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *
-     */
-    @XmlAttribute(name = "factor", required = true)
-    public BigDecimal getJAXBFactor() {
-        return getValue().getFactor();
     }
 
     /**
@@ -271,6 +185,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link BigDecimal }
      *
      */
+    @XmlAttribute(name = "factor", required = true)
     public void setJAXBFactor(BigDecimal value) {
         this.value = new ParameterValue(value != null ? value : new BigDecimal(0), getValue().getBase(), getValue().getExponent());
     }
@@ -296,11 +211,6 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
         }
     }
 
-    @XmlAttribute(name = "uncertainty")
-    public BigDecimal getJAXBUncertainty() {
-        return this.uncertainty;
-    }
-
     /**
      * Sets the value of the uncertainty property.
      *
@@ -309,6 +219,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
      *     {@link Double }
      *
      */
+    @XmlAttribute(name = "uncertainty")
     public void setJAXBUncertainty(BigDecimal value) {
         this.uncertainty = value;
     }

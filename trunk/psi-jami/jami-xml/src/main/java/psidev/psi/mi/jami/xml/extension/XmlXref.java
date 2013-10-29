@@ -35,9 +35,6 @@ import java.util.List;
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "dbReference", propOrder = {
-    "JAXBAttributes"
-})
 public class XmlXref
     implements Xref, FileSourceContext, Locatable
 {
@@ -98,11 +95,6 @@ public class XmlXref
         return this.id;
     }
 
-    @XmlAttribute(name = "id", required = true)
-    public String getJAXBId() {
-        return this.id;
-    }
-
     /**
      * Sets the value of the id property.
      *
@@ -111,16 +103,12 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "id", required = true)
     public void setJAXBId(String value) {
         this.id = value;
     }
 
     public String getVersion() {
-        return this.version;
-    }
-
-    @XmlAttribute(name = "version")
-    public String getJAXBVersion() {
         return this.version;
     }
 
@@ -132,25 +120,13 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "version")
     public void setJAXBVersion(String value) {
         this.version = value;
     }
 
     public CvTerm getQualifier() {
         return this.qualifier;
-    }
-
-    /**
-     * Gets the value of the db property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "db", required = true)
-    public String getJAXBDb() {
-        return getDatabase().getShortName();
     }
 
     /**
@@ -161,6 +137,7 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "db", required = true)
     public void setJAXBDb(String value) {
         if (this.database == null && value != null){
             this.database = new DefaultCvTerm(value);
@@ -171,19 +148,6 @@ public class XmlXref
     }
 
     /**
-     * Gets the value of the dbAc property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "dbAc")
-    public String getJAXBDbAc() {
-        return getDatabase().getMIIdentifier();
-    }
-
-    /**
      * Sets the value of the dbAc property.
      *
      * @param value
@@ -191,6 +155,7 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "dbAc")
     public void setJAXBDbAc(String value) {
         if (this.database == null && value != null){
             this.database = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
@@ -201,19 +166,6 @@ public class XmlXref
     }
 
     /**
-     * Gets the value of the refType property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "refType")
-    public String getJAXBRefType() {
-        return this.qualifier != null ? this.qualifier.getShortName() : null;
-    }
-
-    /**
      * Sets the value of the refType property.
      *
      * @param value
@@ -221,6 +173,7 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "refType")
     public void setJAXBRefType(String value) {
         if (this.qualifier == null && value != null){
             this.qualifier = new DefaultCvTerm(value);
@@ -236,19 +189,6 @@ public class XmlXref
     }
 
     /**
-     * Gets the value of the refTypeAc property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "refTypeAc")
-    public String getJAXBRefTypeAc() {
-        return this.qualifier != null ? this.qualifier.getMIIdentifier() : null;
-    }
-
-    /**
      * Sets the value of the refTypeAc property.
      *
      * @param value
@@ -256,6 +196,7 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "refTypeAc")
     public void setJAXBRefTypeAc(String value) {
         if (this.qualifier == null && value != null){
             this.qualifier = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
@@ -270,20 +211,6 @@ public class XmlXref
         }
     }
 
-
-    /**
-     * Gets the value of the secondary property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "secondary")
-    public String getJAXBSecondary() {
-        return secondary;
-    }
-
     /**
      * Sets the value of the secondary property.
      *
@@ -292,6 +219,7 @@ public class XmlXref
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "secondary")
     public void setJAXBSecondary(String value) {
         this.secondary = value;
     }

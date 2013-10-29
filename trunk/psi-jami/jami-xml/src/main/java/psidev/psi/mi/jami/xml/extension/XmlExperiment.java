@@ -25,22 +25,10 @@ import java.util.*;
  */
 @XmlRootElement(name = "experimentDescription", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "experimentType", propOrder = {
-        "names",
-        "JAXBPublication",
-        "JAXBXref",
-        "JAXBHostOrganisms",
-        "JAXBInteractionDetectionMethod",
-        "participantIdentificationMethod",
-        "featureDetectionMethod",
-        "JAXBConfidenceList",
-        "JAXBAttributes"
-})
 public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
-    private List<Organism> hostOrganisms;
     private XmlCvTerm participantIdentificationMethod;
     private XmlCvTerm featureDetectionMethod;
     private int id;
@@ -49,12 +37,13 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     private Locator locator;
     private PsiXmLocator sourceLocator;
     private Publication publication;
-    private Collection<Annotation> annotations;
     private CvTerm interactionDetectionMethod;
     private Collection<InteractionEvidence> interactions;
-    private Collection<Confidence> confidences;
     private Collection<VariableParameter> variableParameters;
-    private JAXBAttributeList jaxbAttributeList;
+
+    private JAXBAttributeWrapper jaxbAttributeWrapper;
+    private JAXBHostOrganismWrapper jaxbHostOrganismWrapper;
+    private JAXBConfidenceWrapper jaxbConfidenceWrapper;
 
     public XmlExperiment(){
     }
@@ -79,8 +68,8 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     public XmlExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism){
         this(publication, interactionDetectionMethod);
         if (organism != null){
-            this.hostOrganisms = new ArrayList<Organism>();
-            this.hostOrganisms.add(organism);
+            this.jaxbHostOrganismWrapper = new JAXBHostOrganismWrapper();
+            this.jaxbHostOrganismWrapper.hostOrganisms.add(organism);
         }
     }
 
@@ -120,21 +109,23 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     }
 
     public Organism getHostOrganism() {
-        return (this.hostOrganisms != null && !this.hostOrganisms.isEmpty())? this.hostOrganisms.iterator().next() : null;
+        return (this.jaxbHostOrganismWrapper != null && !this.jaxbHostOrganismWrapper.hostOrganisms.isEmpty())? this.jaxbHostOrganismWrapper.hostOrganisms.iterator().next() : null;
     }
 
     public void setHostOrganism(Organism organism) {
-        if (this.hostOrganisms == null && organism != null){
-            this.hostOrganisms = new ArrayList<Organism>();
-            this.hostOrganisms.add(organism);
+        if (this.jaxbHostOrganismWrapper == null && organism != null){
+            this.jaxbHostOrganismWrapper = new JAXBHostOrganismWrapper();
+            this.jaxbHostOrganismWrapper.hostOrganisms.add(organism);
         }
-        else if (this.hostOrganisms != null){
-            if (!this.hostOrganisms.isEmpty() && organism == null){
-                this.hostOrganisms.remove(0);
+        else if (organism != null){
+            if (!this.jaxbHostOrganismWrapper.hostOrganisms.isEmpty()){
+                this.jaxbHostOrganismWrapper.hostOrganisms.remove(0);
             }
-            else if (organism != null){
-                this.hostOrganisms.remove(0);
-                this.hostOrganisms.add(0, organism);
+            this.jaxbHostOrganismWrapper.hostOrganisms.add(0, organism);
+        }
+        else{
+            if (!this.jaxbHostOrganismWrapper.hostOrganisms.isEmpty()){
+                this.jaxbHostOrganismWrapper.hostOrganisms.remove(0);
             }
         }
     }
@@ -169,17 +160,17 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     }
 
     public Collection<Confidence> getConfidences() {
-        if (confidences == null){
-            initialiseConfidences();
+        if (jaxbConfidenceWrapper == null){
+            initialiseConfidenceWrapper();
         }
-        return confidences;
+        return this.jaxbConfidenceWrapper.confidences;
     }
 
     public Collection<Annotation> getAnnotations() {
-        if (annotations == null){
-            initialiseAnnotations();
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
         }
-        return this.annotations;
+        return this.jaxbAttributeWrapper.annotations;
     }
 
     public Collection<InteractionEvidence> getInteractionEvidences() {
@@ -308,7 +299,6 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link NamesContainer }
      *
      */
-    @XmlElement(name = "names")
     public NamesContainer getNames() {
         return namesContainer;
     }
@@ -321,15 +311,12 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link NamesContainer }
      *
      */
+    @XmlElement(name = "names")
     public void setNames(NamesContainer value) {
         this.namesContainer = value;
     }
 
     @XmlElement(name = "bibref", required = true, type = BibRef.class)
-    public Publication getJAXBPublication() {
-        return this.publication;
-    }
-
     public void setJAXBPublication(Publication publication) {
         if (publication != null){
             if (!publication.getIdentifiers().isEmpty()){
@@ -363,22 +350,6 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the xref property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XrefContainer }
-     *
-     */
-    @XmlElement(name = "xref")
-    public ExperimentXrefContainer getJAXBXref() {
-        if (xrefContainer != null && xrefContainer.isEmpty()){
-            return null;
-        }
-        return xrefContainer;
-    }
-
-    /**
      * Sets the value of the xref property.
      *
      * @param value
@@ -386,6 +357,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link XrefContainer }
      *
      */
+    @XmlElement(name = "xref")
     public void setJAXBXref(ExperimentXrefContainer value) {
         this.xrefContainer = value;
         if (value != null){
@@ -393,34 +365,9 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
         }
     }
 
-    /**
-     * Gets the value of the hostOrganismList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link HostOrganism }
-     *
-     */
-    @XmlElementWrapper(name="hostOrganismList")
-    @XmlElement(type=HostOrganism.class, name="hostOrganism", required = true)
-    public List<Organism> getJAXBHostOrganisms() {
-        if (this.hostOrganisms == null){
-           this.hostOrganisms = new ArrayList<Organism>();
-        }
-        return this.hostOrganisms;
-    }
-
-    /**
-     * Gets the value of the interactionDetectionMethod property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElement(name = "interactionDetectionMethod", required = true, type = XmlCvTerm.class)
-    public CvTerm getJAXBInteractionDetectionMethod() {
-        return interactionDetectionMethod;
+    @XmlElement(name="hostOrganismList")
+    public void setJAXBHostOrganismWrapper(JAXBHostOrganismWrapper wrapper) {
+        this.jaxbHostOrganismWrapper = wrapper;
     }
 
     /**
@@ -431,6 +378,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
+    @XmlElement(name = "interactionDetectionMethod", required = true, type = XmlCvTerm.class)
     public void setJAXBInteractionDetectionMethod(CvTerm value) {
         if (value == null){
             this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
@@ -448,7 +396,6 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "participantIdentificationMethod")
     public XmlCvTerm getParticipantIdentificationMethod() {
         return participantIdentificationMethod;
     }
@@ -461,6 +408,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
+    @XmlElement(name = "participantIdentificationMethod")
     public void setParticipantIdentificationMethod(XmlCvTerm value) {
         this.participantIdentificationMethod = value;
     }
@@ -473,7 +421,6 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "featureDetectionMethod")
     public XmlCvTerm getFeatureDetectionMethod() {
         return featureDetectionMethod;
     }
@@ -486,31 +433,36 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
+    @XmlElement(name = "featureDetectionMethod")
     public void setFeatureDetectionMethod(XmlCvTerm value) {
         this.featureDetectionMethod = value;
     }
 
-    /**
-     * Gets the value of the confidenceList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlConfidence }
-     *
-     */
-    @XmlElementWrapper(name="confidenceList")
-    @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
-    public List<Confidence> getJAXBConfidenceList() {
-        return (List<Confidence>)confidences;
+    @XmlElement(name="confidenceList")
+    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
+        this.jaxbConfidenceWrapper = wrapper;
     }
 
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
-    public JAXBAttributeList getJAXBAttributes() {
-        if (this.jaxbAttributeList == null){
-           this.jaxbAttributeList = new JAXBAttributeList();
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper wrapper) {
+        this.jaxbAttributeWrapper = wrapper;
+        // in case we have publication annotations, we can update publication
+        if (this.jaxbAttributeWrapper != null){
+            if (publication == null){
+               publication = new BibRef();
+            }
+            this.curationDepth != CurationDepth.undefined || !this.authors.isEmpty()
+                    || this.title != null || this.journal != null || this.publicationDate != null;
+            // set curation depth
+            if (this.jaxbAttributeWrapper.curationDepth != CurationDepth.undefined){
+                if (publication.getCurationDepth() == CurationDepth.undefined){
+                    publication.setCurationDepth(this.jaxbAttributeWrapper.curationDepth);
+                }
+                else {
+                    this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(Annotation.))
+                }
+            }
         }
-        return jaxbAttributeList;
     }
 
     /**
@@ -560,16 +512,16 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
         }
     }
 
-    protected void initialiseAnnotations(){
-        this.annotations = new ArrayList<Annotation>();
+    protected void initialiseAnnotationWrapper(){
+        this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
     }
 
     protected void initialiseInteractions(){
         this.interactions = new ArrayList<InteractionEvidence>();
     }
 
-    protected void initialiseConfidences(){
-        this.confidences = new ArrayList<Confidence>();
+    protected void initialiseConfidenceWrapper(){
+        this.jaxbConfidenceWrapper = new JAXBConfidenceWrapper();
     }
 
     protected void initialiseVariableParameters(){
@@ -578,160 +530,289 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
 
     ////////////////////////////////////////////////////////////////// classes
 
-    /**
-     * The attribute list used by JAXB to populate experiment annotations
-     */
-    private class JAXBAttributeList extends ArrayList<Annotation>{
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="experimentAttributeWrapper")
+    public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Annotation> annotations;
+        private JAXBAttributeList jaxbAttributeList;
+        private String title;
+        private String journal;
+        private Date publicationDate;
+        private List<String> authors;
+        private CurationDepth curationDepth;
 
-        public JAXBAttributeList(){
-            super();
+        public JAXBAttributeWrapper(){
+            initialiseAnnotations();
+            initialiseAuthors();
+            this.curationDepth = CurationDepth.undefined;
+            this.title = null;
+            this.journal = null;
+            this.publicationDate = null;
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        public boolean containsPublicationAnnotations(){
+            return this.curationDepth != CurationDepth.undefined || !this.authors.isEmpty()
+                    || this.title != null || this.journal != null || this.publicationDate != null;
+        }
+
+        protected void initialiseAnnotations(){
             annotations = new ArrayList<Annotation>();
         }
 
-        public JAXBAttributeList(int initialCapacity) {
-            super(initialCapacity);
+        protected void initialiseAuthors(){
+            this.authors = new ArrayList<String>();
         }
 
-        public JAXBAttributeList(Collection<? extends Annotation> c) {
-            super(c);
+        @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+        public List<Annotation> getJAXBAttributes() {
+            if (this.jaxbAttributeList == null){
+                this.jaxbAttributeList = new JAXBAttributeList();
+            }
+            return this.jaxbAttributeList;
         }
 
-        @Override
-        public boolean add(Annotation annot) {
-            return processAnnotation(null, annot);
-        }
+        /**
+         * The attribute list used by JAXB to populate experiment annotations
+         */
+        private class JAXBAttributeList extends ArrayList<Annotation>{
 
-        @Override
-        public boolean addAll(Collection<? extends Annotation> c) {
-            if (c == null){
-                return false;
+            public JAXBAttributeList(){
+                super();
+                annotations = new ArrayList<Annotation>();
             }
-            boolean added = false;
 
-            for (Annotation a : c){
-                if (add(a)){
-                    added = true;
-                }
+            public JAXBAttributeList(int initialCapacity) {
+                super(initialCapacity);
             }
-            return added;
-        }
 
-        @Override
-        public void add(int index, Annotation element) {
-            processAnnotation(index, element);
-        }
+            public JAXBAttributeList(Collection<? extends Annotation> c) {
+                super(c);
+            }
 
-        @Override
-        public boolean addAll(int index, Collection<? extends Annotation> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
+            @Override
+            public boolean add(Annotation annot) {
+                return processAnnotation(null, annot);
             }
-            boolean add = false;
-            for (Annotation a : c){
-                if (processAnnotation(newIndex, a)){
-                    newIndex++;
-                    add = true;
-                }
-            }
-            return add;
-        }
 
-        private boolean processAnnotation(Integer index, Annotation annot) {
-            if (annot == null){
-                return false;
-            }
-            if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setTitle(annot.getValue());
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setJournal(annot.getValue());
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                if (annot.getValue() == null){
-                    if (publication != null){
-                        publication.setPublicationDate(null);
-                    }
+            @Override
+            public boolean addAll(Collection<? extends Annotation> c) {
+                if (c == null){
                     return false;
+                }
+                boolean added = false;
+
+                for (Annotation a : c){
+                    if (add(a)){
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            @Override
+            public void add(int index, Annotation element) {
+                processAnnotation(index, element);
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Annotation> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (Annotation a : c){
+                    if (processAnnotation(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
+            }
+
+            private boolean processAnnotation(Integer index, Annotation annot) {
+                if (annot == null){
+                    return false;
+                }
+                if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+                    title = annot.getValue();
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+                    journal = annot.getValue();
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+                    if (annot.getValue() == null){
+                        publicationDate = null;
+                        return false;
+                    }
+                    else {
+                        try {
+                            publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                            return false;
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            publicationDate = null;
+                            addAnnotation(index, annot);
+                            return true;
+                        }
+                    }
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
+                    curationDepth = CurationDepth.IMEx;
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
+                    curationDepth = CurationDepth.MIMIx;
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
+                    curationDepth = CurationDepth.rapid_curation;
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    if (annot.getValue() == null){
+                        authors.clear();
+                        return false;
+                    }
+                    else if (annot.getValue().contains(",")){
+                        authors.addAll(Arrays.asList(annot.getValue().split(",")));
+                        return false;
+                    }
+                    else {
+                        authors.add(annot.getValue());
+                        return false;
+                    }
                 }
                 else {
-                    if (publication == null){
-                        publication = new BibRef();
-                    }
-                    try {
-                        publication.setPublicationDate(PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        publication.setPublicationDate(null);
-                        publication.getAnnotations().add(annot);
-                    }
-                    return false;
+                    return addAnnotation(index, annot);
                 }
             }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                if (publication == null){
-                    publication = new BibRef();
+
+            private boolean addAnnotation(Integer index, Annotation annot) {
+                if (index == null){
+                    return annotations.add(annot);
                 }
-                publication.setCurationDepth(CurationDepth.IMEx);
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                if (publication == null){
-                    publication = new BibRef();
+                else{
+                    annotations.add(index, annot);
+                    return true;
                 }
-                publication.setCurationDepth(CurationDepth.MIMIx);
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                if (publication == null){
-                    publication = new BibRef();
-                }
-                publication.setCurationDepth(CurationDepth.rapid_curation);
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                if (annot.getValue() == null){
-                    if (publication != null){
-                        publication.getAuthors().clear();
-                    }
-                    return false;
-                }
-                else if (annot.getValue().contains(",")){
-                    if (publication == null){
-                        publication = new BibRef();
-                    }
-                    publication.getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
-                    return false;
-                }
-                else {
-                    if (publication == null){
-                        publication = new BibRef();
-                    }
-                    publication.getAuthors().add(annot.getValue());
-                    return false;
-                }
-            }
-            else {
-                return addAnnotation(index, annot);
             }
         }
 
-        private boolean addAnnotation(Integer index, Annotation annot) {
-            if (index == null){
-                return annotations.add(annot);
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="experimentOrganismWrapper")
+    public static class JAXBHostOrganismWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Organism> hostOrganisms;
+
+        public JAXBHostOrganismWrapper(){
+            initialiseHostOrganisms();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
             }
             else{
-                ((List<Annotation>)annotations).add(index, annot);
-                return true;
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
+        }
+
+        @XmlElement(type=XmlOrganism.class, name="hostOrganism", required = true)
+        public List<Organism> getJAXBHostOrganisms() {
+            return this.hostOrganisms;
+        }
+
+        protected void initialiseHostOrganisms(){
+            this.hostOrganisms = new ArrayList<Organism>();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="experimentConfidenceWrapper")
+    public static class JAXBConfidenceWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Confidence> confidences;
+
+        public JAXBConfidenceWrapper(){
+            initialiseConfidences();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)
+        public List<Confidence> getJAXBConfidences() {
+            return this.confidences;
+        }
+
+        protected void initialiseConfidences(){
+            this.confidences = new ArrayList<Confidence>();
         }
     }
 }

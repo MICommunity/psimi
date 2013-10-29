@@ -21,37 +21,20 @@ import java.util.List;
  * @since <pre>18/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "xrefContainer", propOrder = {
-        "JAXBPrimaryRef",
-        "JAXBSecondaryRefs"
-})
 @XmlSeeAlso({
         CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class,
         ExperimentXrefContainer.class, InteractionXrefContainer.class
 })
 public class XrefContainer implements FileSourceContext, Locatable{
 
-    XmlXref primaryRef;
-    Collection<XmlXref> secondaryRefs;
+    Xref primaryRef;
+    Collection<Xref> secondaryRefs;
     List<Xref> allXrefs;
 
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
-
-    /**
-     * Gets the value of the primaryRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlXref }
-     *
-     */
-    @XmlElement(name = "primaryRef",required = true)
-    public XmlXref getJAXBPrimaryRef() {
-        return primaryRef;
-    }
 
     /**
      * Sets the value of the primaryRef property.
@@ -61,7 +44,8 @@ public class XrefContainer implements FileSourceContext, Locatable{
      *     {@link XmlXref }
      *
      */
-    public void setJAXBPrimaryRef(XmlXref value) {
+    @XmlElement(name = "primaryRef",required = true, type = XmlXref.class)
+    public void setJAXBPrimaryRef(Xref value) {
         if (this.primaryRef != null){
             processRemovedPrimaryRef(this.primaryRef);
         }
@@ -94,8 +78,8 @@ public class XrefContainer implements FileSourceContext, Locatable{
      *
      *
      */
-    @XmlElement(name = "secondaryRef")
-    public Collection<XmlXref> getJAXBSecondaryRefs() {
+    @XmlElement(name = "secondaryRef", type = XmlXref.class)
+    public Collection<Xref> getJAXBSecondaryRefs() {
         if (secondaryRefs == null) {
             secondaryRefs = new SecondaryXrefList();
         }
@@ -145,15 +129,15 @@ public class XrefContainer implements FileSourceContext, Locatable{
         ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
     }
 
-    protected void processRemovedPrimaryRef(XmlXref removed) {
+    protected void processRemovedPrimaryRef(Xref removed) {
         ((FullXrefList)getAllXrefs()).removeOnly(removed);
     }
 
-    protected void processAddedSecondaryXref(XmlXref added) {
+    protected void processAddedSecondaryXref(Xref added) {
         ((FullXrefList)getAllXrefs()).addOnly(added);
     }
 
-    protected void processRemovedSecondaryXref(XmlXref removed) {
+    protected void processRemovedSecondaryXref(Xref removed) {
         ((FullXrefList)getAllXrefs()).removeOnly(removed);
     }
 
@@ -168,13 +152,11 @@ public class XrefContainer implements FileSourceContext, Locatable{
 
     protected void processAddedXref(Xref added) {
         // it is a XML instance so it can be converted with jaxb
-        if (added instanceof XmlXref){
-            if (primaryRef == null){
-                primaryRef = (XmlXref)added;
-            }
-            else{
-                ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly((XmlXref)added);
-            }
+        if (primaryRef == null){
+            primaryRef = (XmlXref)added;
+        }
+        else{
+            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
         }
     }
 
@@ -223,20 +205,20 @@ public class XrefContainer implements FileSourceContext, Locatable{
         }
     }
 
-    class SecondaryXrefList extends AbstractListHavingProperties<XmlXref> {
+    class SecondaryXrefList extends AbstractListHavingProperties<Xref> {
         public SecondaryXrefList(){
             super();
         }
 
         @Override
-        protected void processAddedObjectEvent(XmlXref added) {
+        protected void processAddedObjectEvent(Xref added) {
             if (added != null){
                 processAddedSecondaryXref(added);
             }
         }
 
         @Override
-        protected void processRemovedObjectEvent(XmlXref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (removed != null){
                 processRemovedSecondaryXref(removed);
             }

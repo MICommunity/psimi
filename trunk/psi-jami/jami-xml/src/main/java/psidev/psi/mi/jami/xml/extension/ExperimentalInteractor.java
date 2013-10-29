@@ -41,22 +41,16 @@ import java.util.Map;
  *
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "experimentalInteractor", propOrder = {
-        "JAXBInteractor",
-        "JAXBInteractorRef",
-        "JAXBExperimentRefList"
-})
 public class ExperimentalInteractor implements FileSourceContext, Locatable
 {
     private Interactor interactor;
-    private Collection<Experiment> experiments;
     private XmlInteractorFactory interactorFactory;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    private JAXBExperimentRefList jaxbExperimentRefList;
+    private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
 
     public ExperimentalInteractor() {
         this.interactorFactory = new XmlInteractorFactory();
@@ -67,10 +61,10 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
     }
 
     public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            experiments = new ArrayList<Experiment>();
+        if (jaxbExperimentRefWrapper == null){
+            jaxbExperimentRefWrapper = new JAXBExperimentRefWrapper();
         }
-        return experiments;
+        return jaxbExperimentRefWrapper.experiments;
     }
 
     @Override
@@ -95,22 +89,6 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
     }
 
     /**
-     * Gets the value of the interactor property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Interactor }
-     *
-     */
-    @XmlElement(name = "interactor")
-    public XmlInteractor getJAXBInteractor() {
-        if (interactor instanceof XmlInteractor){
-            return (XmlInteractor)interactor;
-        }
-        return null;
-    }
-
-    /**
      * Sets the value of the interactor property.
      *
      * @param value
@@ -118,6 +96,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
      *     {@link Interactor }
      *
      */
+    @XmlElement(name = "interactor")
     public void setJAXBInteractor(XmlInteractor value) {
         if (value == null){
             this.interactor = null;
@@ -128,22 +107,6 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
     }
 
     /**
-     * Gets the value of the interactorRef property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *
-     */
-    @XmlElement(name = "interactorRef")
-    public Integer getJAXBInteractorRef() {
-        if (interactor instanceof ExperimentalInteractor.InteractorRef){
-            return ((ExperimentalInteractor.InteractorRef)interactor).getRef();
-        }
-        return null;
-    }
-
-    /**
      * Sets the value of the interactorRef property.
      *
      * @param value
@@ -151,6 +114,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
      *     {@link Integer }
      *
      */
+    @XmlElement(name = "interactorRef")
     public void setJAXBInteractorRef(Integer value) {
         if (value != null){
             this.interactor = new InteractorRef(value);
@@ -165,115 +129,152 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
      *     {@link ArrayList<Integer> }
      *
      */
-    @XmlElementWrapper(name="experimentRefList")
-    @XmlElement(name = "experimentRef", type = Integer.class, required = true)
-    public List<Integer> getJAXBExperimentRefList() {
-        if (this.jaxbExperimentRefList == null){
-           this.jaxbExperimentRefList = new JAXBExperimentRefList();
-        }
-        return this.jaxbExperimentRefList;
+    @XmlElement(name="experimentRefList")
+    public void setJAXBExperimentRefWrapper(JAXBExperimentRefWrapper wrapper) {
+        this.jaxbExperimentRefWrapper = wrapper;
     }
 
     ////////////////////////////////////////////////////////////////// classes
 
-    //////////////////////////////////////////////////////////////
-    /**
-     * The experiment ref list used by JAXB to populate experiment refs
-     */
-    /**
-     * The experiment ref list used by JAXB to populate experiment refs
-     */
-    private class JAXBExperimentRefList extends ArrayList<Integer>{
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name = "interactorExperimentRefList")
+    public static class JAXBExperimentRefWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private JAXBExperimentRefList jaxbExperimentRefs;
+        private List<Experiment> experiments;
 
-        public JAXBExperimentRefList(){
-            super();
+        public JAXBExperimentRefWrapper(){
             experiments = new ArrayList<Experiment>();
         }
 
         @Override
-        public boolean add(Integer val) {
-            if (val == null){
-                return false;
-            }
-            return experiments.add(new ExperimentRef(val));
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends Integer> c) {
-            if (c == null){
-                return false;
-            }
-            boolean added = false;
-
-            for (Integer a : c){
-                if (add(a)){
-                    added = true;
-                }
-            }
-            return added;
-        }
-
-        @Override
-        public void add(int index, Integer element) {
-            addToSpecificIndex(index, element);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends Integer> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (Integer a : c){
-                if (addToSpecificIndex(newIndex, a)){
-                    newIndex++;
-                    add = true;
-                }
-            }
-            return add;
-        }
-
-        private boolean addToSpecificIndex(int index, Integer val) {
-            if (val == null){
-                return false;
-            }
-            ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
-            return true;
-        }
-    }
-
-    /**
-     * Experiment ref for experimental interactor
-     */
-    private class ExperimentRef extends AbstractExperimentRef{
-        public ExperimentRef(int ref) {
-            super(ref);
-        }
-
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Experiment){
-                    experiments.remove(this);
-                    experiments.add((Experiment)obj);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return "Experiment reference: "+ref+" in experimental interactor "+(ExperimentalInteractor.this.sourceLocator != null? ExperimentalInteractor.this.sourceLocator.toString():"") ;
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
         }
 
         public FileSourceLocator getSourceLocator() {
-            return ExperimentalInteractor.this.sourceLocator;
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
         }
 
-        public void setSourceLocator(FileSourceLocator locator) {
-            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(name = "experimentRef", type = Integer.class, required = true)
+        public List<Integer> getJAXBExperimentRefs() {
+            if (this.jaxbExperimentRefs == null){
+                this.jaxbExperimentRefs = new JAXBExperimentRefList();
+            }
+            return jaxbExperimentRefs;
+        }
+
+        //////////////////////////////////////////////////////////////
+        /**
+         * The experiment ref list used by JAXB to populate experiment refs
+         */
+        private class JAXBExperimentRefList extends ArrayList<Integer>{
+
+            public JAXBExperimentRefList(){
+                super();
+                experiments = new ArrayList<Experiment>();
+            }
+
+            @Override
+            public boolean add(Integer val) {
+                if (val == null){
+                    return false;
+                }
+                return experiments.add(new ExperimentRef(val));
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Integer> c) {
+                if (c == null){
+                    return false;
+                }
+                boolean added = false;
+
+                for (Integer a : c){
+                    if (add(a)){
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            @Override
+            public void add(int index, Integer element) {
+                addToSpecificIndex(index, element);
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Integer> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (Integer a : c){
+                    if (addToSpecificIndex(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
+            }
+
+            private boolean addToSpecificIndex(int index, Integer val) {
+                if (val == null){
+                    return false;
+                }
+                experiments.add(index, new ExperimentRef(val));
+                return true;
+            }
+        }
+
+        /**
+         * Experiment ref for experimental interactor
+         */
+        private class ExperimentRef extends AbstractExperimentRef{
+            public ExperimentRef(int ref) {
+                super(ref);
+            }
+
+            public boolean resolve(Map<Integer, Object> parsedObjects) {
+                if (parsedObjects.containsKey(this.ref)){
+                    Object obj = parsedObjects.get(this.ref);
+                    if (obj instanceof Experiment){
+                        experiments.remove(this);
+                        experiments.add((Experiment)obj);
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public String toString() {
+                return "Experiment reference: "+ref+" in experimental interactor "+(sourceLocator != null? sourceLocator.toString():"") ;
+            }
+
+            public FileSourceLocator getSourceLocator() {
+                return sourceLocator;
+            }
+
+            public void setSourceLocator(FileSourceLocator locator) {
+                throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+            }
         }
     }
 

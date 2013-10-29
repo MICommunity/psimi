@@ -30,9 +30,6 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "availability", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "availability", propOrder = {
-        "value"
-})
 public class Availability implements FileSourceContext, Locatable
 {
 
@@ -54,7 +51,6 @@ public class Availability implements FileSourceContext, Locatable
      *     {@link String }
      *
      */
-    @XmlValue
     public String getValue() {
         return value;
     }
@@ -67,6 +63,7 @@ public class Availability implements FileSourceContext, Locatable
      *     {@link String }
      *
      */
+    @XmlValue
     public void setValue(String value) {
         this.value = value;
     }
@@ -75,7 +72,6 @@ public class Availability implements FileSourceContext, Locatable
      * Gets the value of the id property.
      *
      */
-    @XmlAttribute(name = "id", required = true)
     public int getId() {
         return id;
     }
@@ -84,6 +80,7 @@ public class Availability implements FileSourceContext, Locatable
      * Sets the value of the id property.
      *
      */
+    @XmlAttribute(name = "id", required = true)
     public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);

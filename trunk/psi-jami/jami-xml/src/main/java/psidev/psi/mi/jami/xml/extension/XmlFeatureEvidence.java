@@ -197,7 +197,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         @XmlTransient
         private Locator locator;
         private JAXBExperimentRefList jaxbExperimentRefs;
-        private Collection<Experiment> experiments;
+        private List<Experiment> experiments;
 
         public JAXBExperimentRefWrapper(){
             experiments = new ArrayList<Experiment>();
@@ -290,7 +290,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
                 if (val == null){
                     return false;
                 }
-                ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
+                experiments.add(index, new ExperimentRef(val));
                 return true;
             }
         }

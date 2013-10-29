@@ -22,10 +22,6 @@ import java.util.*;
  */
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "bibref", propOrder = {
-        "JAXBAttributes",
-        "JAXBXref"
-})
 public class BibRef
         implements Publication, FileSourceContext, Locatable
 {
@@ -35,20 +31,13 @@ public class BibRef
     @XmlTransient
     private Locator locator;
     private PsiXmLocator sourceLocator;
-    private String title;
-    private String journal;
-    private Date publicationDate;
-    private List<String> authors;
-    private Collection<Annotation> annotations;
     private Collection<Experiment> experiments;
-    private CurationDepth curationDepth;
     private Date releasedDate;
     private Source source;
 
-    private JAXBAttributeList jaxbAttributeList;
+    private JAXBAttributeWrapper jaxbAttributeWrapper;
 
     public BibRef(){
-        this.curationDepth = CurationDepth.undefined;
     }
 
     public BibRef(Xref identifier){
@@ -62,7 +51,7 @@ public class BibRef
     public BibRef(Xref identifier, CurationDepth curationDepth, Source source){
         this(identifier);
         if (curationDepth != null){
-            this.curationDepth = curationDepth;
+            setCurationDepth(curationDepth);
         }
         this.source = source;
     }
@@ -73,7 +62,6 @@ public class BibRef
     }
 
     public BibRef(String pubmed){
-        this.curationDepth = CurationDepth.undefined;
 
         if (pubmed != null){
             setPubmedId(pubmed);
@@ -83,7 +71,7 @@ public class BibRef
     public BibRef(String pubmed, CurationDepth curationDepth, Source source){
         this(pubmed);
         if (curationDepth != null){
-            this.curationDepth = curationDepth;
+            setCurationDepth(curationDepth);
         }
         this.source = source;
     }
@@ -94,17 +82,14 @@ public class BibRef
     }
 
     public BibRef(String title, String journal, Date publicationDate){
-        this.title = title;
-        this.journal = journal;
-        this.publicationDate = publicationDate;
-        this.curationDepth = CurationDepth.undefined;
+        setTitle(title);
+        setJournal(journal);
+        setPublicationDate(publicationDate);
     }
 
     public BibRef(String title, String journal, Date publicationDate, CurationDepth curationDepth, Source source){
         this(title, journal, publicationDate);
-        if (curationDepth != null){
-            this.curationDepth = curationDepth;
-        }
+        setCurationDepth(curationDepth);
         this.source = source;
     }
 
@@ -149,40 +134,49 @@ public class BibRef
     public void assignImexId(String identifier) {
         if (xrefContainer == null && identifier != null){
             xrefContainer = new PublicationXrefContainer();
-            this.curationDepth = CurationDepth.IMEx;
+            setCurationDepth(CurationDepth.IMEx);
         }
         this.xrefContainer.assignImexId(identifier);
     }
 
     public String getTitle() {
-        return this.title;
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.title : null;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
+        }
+        this.jaxbAttributeWrapper.title = title;
     }
 
     public String getJournal() {
-        return this.journal;
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.journal : null;
     }
 
     public void setJournal(String journal) {
-        this.journal = journal;
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
+        }
+        this.jaxbAttributeWrapper.journal = journal;
     }
 
     public Date getPublicationDate() {
-        return this.publicationDate;
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.publicationDate : null;
     }
 
     public void setPublicationDate(Date date) {
-        this.publicationDate = date;
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
+        }
+        this.jaxbAttributeWrapper.publicationDate = date;
     }
 
     public List<String> getAuthors() {
-        if (authors == null){
-            initialiseAuthors();
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
         }
-        return this.authors;
+        return this.jaxbAttributeWrapper.authors;
     }
 
     public Collection<Xref> getXrefs() {
@@ -193,10 +187,10 @@ public class BibRef
     }
 
     public Collection<Annotation> getAnnotations() {
-        if (annotations == null){
-            initialiseAnnotations();
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
         }
-        return this.annotations;
+        return this.jaxbAttributeWrapper.annotations;
     }
 
     public Collection<Experiment> getExperiments() {
@@ -207,7 +201,7 @@ public class BibRef
     }
 
     public CurationDepth getCurationDepth() {
-        return this.curationDepth;
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.curationDepth : CurationDepth.undefined;
     }
 
     public void setCurationDepth(CurationDepth curationDepth) {
@@ -218,12 +212,14 @@ public class BibRef
         else if (getImexId() != null && curationDepth == null){
             throw new IllegalArgumentException("The curationDepth cannot be null/not specified because the publication has an IMEx id so it has IMEx curation depth.");
         }
-
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
+        }
         if (curationDepth == null) {
-            this.curationDepth = CurationDepth.undefined;
+            this.jaxbAttributeWrapper.curationDepth = CurationDepth.undefined;
         }
         else {
-            this.curationDepth = curationDepth;
+            this.jaxbAttributeWrapper.curationDepth = curationDepth;
         }
     }
 
@@ -302,24 +298,13 @@ public class BibRef
     }
 
     @XmlElement(name = "xref")
-    public PublicationXrefContainer getJAXBXref() {
-        if (xrefContainer != null && xrefContainer.isEmpty()){
-            return null;
-        }
-        return xrefContainer;
-    }
-
     public void setJAXBXref(PublicationXrefContainer xrefContainer) {
         this.xrefContainer = xrefContainer;
     }
 
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(name = "attribute", type = XmlAnnotation.class, required = true)
-    public List<Annotation> getJAXBAttributes() {
-        if (this.jaxbAttributeList == null){
-            this.jaxbAttributeList = new JAXBAttributeList();
-        }
-        return this.jaxbAttributeList;
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper wrapper) {
+        this.jaxbAttributeWrapper = wrapper;
     }
 
     @Override
@@ -343,12 +328,8 @@ public class BibRef
         }
     }
 
-    protected void initialiseAuthors(){
-        this.authors = new ArrayList<String>();
-    }
-
-    protected void initialiseAnnotations(){
-        this.annotations = new ArrayList<Annotation>();
+    protected void initialiseAnnotationWrapper(){
+        this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
     }
 
     protected void initialiseExperiments(){
@@ -357,122 +338,181 @@ public class BibRef
 
     ////////////////////////////////////////////////////////////////// classes
 
-    /////////////////////////////////////////////////
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="bibrefAttributeWrapper")
+    public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Annotation> annotations;
+        private JAXBAttributeList jaxbAttributeList;
+        private String title;
+        private String journal;
+        private Date publicationDate;
+        private List<String> authors;
+        private CurationDepth curationDepth;
 
-    /**
-     * The attribute list used by JAXB to populate participant annotations
-     */
-    private class JAXBAttributeList extends ArrayList<Annotation>{
+        public JAXBAttributeWrapper(){
+            initialiseAnnotations();
+            initialiseAuthors();
+            this.curationDepth = CurationDepth.undefined;
+            this.title = null;
+            this.journal = null;
+            this.publicationDate = null;
+        }
 
-        public JAXBAttributeList(){
-            super();
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseAnnotations(){
             annotations = new ArrayList<Annotation>();
         }
 
-        @Override
-        public boolean add(Annotation annot) {
-            return processAnnotation(null, annot);
+        protected void initialiseAuthors(){
+            this.authors = new ArrayList<String>();
         }
 
-        @Override
-        public boolean addAll(Collection<? extends Annotation> c) {
-            if (c == null){
-                return false;
+        @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+        public List<Annotation> getJAXBAttributes() {
+            if (this.jaxbAttributeList == null){
+                this.jaxbAttributeList = new JAXBAttributeList();
             }
-            boolean added = false;
+            return this.jaxbAttributeList;
+        }
 
-            for (Annotation a : c){
-                if (add(a)){
-                    added = true;
+        /**
+         * The attribute list used by JAXB to populate participant annotations
+         */
+        private class JAXBAttributeList extends ArrayList<Annotation>{
+
+            public JAXBAttributeList(){
+                super();
+            }
+
+            @Override
+            public boolean add(Annotation annot) {
+                return processAnnotation(null, annot);
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Annotation> c) {
+                if (c == null){
+                    return false;
                 }
-            }
-            return added;
-        }
+                boolean added = false;
 
-        @Override
-        public void add(int index, Annotation element) {
-            processAnnotation(index, element);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends Annotation> c) {
-            int newIndex = index;
-            if (c == null){
-                return false;
-            }
-            boolean add = false;
-            for (Annotation a : c){
-                if (processAnnotation(newIndex, a)){
-                    newIndex++;
-                    add = true;
+                for (Annotation a : c){
+                    if (add(a)){
+                        added = true;
+                    }
                 }
+                return added;
             }
-            return add;
-        }
 
-        private boolean processAnnotation(Integer index, Annotation annot) {
-            if (annot == null){
-                return false;
+            @Override
+            public void add(int index, Annotation element) {
+                processAnnotation(index, element);
             }
-            if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                title = annot.getValue();
-                return false;
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Annotation> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (Annotation a : c){
+                    if (processAnnotation(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
             }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                journal = annot.getValue();
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                if (annot.getValue() == null){
-                    publicationDate = null;
+
+            private boolean processAnnotation(Integer index, Annotation annot) {
+                if (annot == null){
+                    return false;
+                }
+                if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+                    title = annot.getValue();
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+                    journal = annot.getValue();
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+                    if (annot.getValue() == null){
+                        publicationDate = null;
+                        return false;
+                    }
+                    else {
+                        try {
+                            publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                            return false;
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            publicationDate = null;
+                            return addAnnotation(index, annot);
+                        }
+                    }
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
+                    curationDepth = CurationDepth.IMEx;
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
+                    curationDepth = CurationDepth.MIMIx;
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
+                    curationDepth = CurationDepth.rapid_curation;
+                    return false;
+                }
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    if (annot.getValue() == null){
+                        authors.clear();
+                    }
+                    else if (annot.getValue().contains(",")){
+                        authors.addAll(Arrays.asList(annot.getValue().split(",")));
+                    }
+                    else {
+                        authors.add(annot.getValue());
+                    }
                     return false;
                 }
                 else {
-                    try {
-                        publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
-                        return false;
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        publicationDate = null;
-                        return addAnnotation(index, annot);
-                    }
+                    return addAnnotation(index, annot);
                 }
             }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                curationDepth = CurationDepth.IMEx;
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                curationDepth = CurationDepth.MIMIx;
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                curationDepth = CurationDepth.rapid_curation;
-                return false;
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                if (annot.getValue() == null){
-                    getAuthors().clear();
-                }
-                else if (annot.getValue().contains(",")){
-                    getAuthors().addAll(Arrays.asList(annot.getValue().split(",")));
-                }
-                else {
-                    getAuthors().add(annot.getValue());
-                }
-                return false;
-            }
-            else {
-                return addAnnotation(index, annot);
-            }
-        }
 
-        private boolean addAnnotation(Integer index, Annotation annot) {
-            if (index == null){
-                return annotations.add(annot);
+            private boolean addAnnotation(Integer index, Annotation annot) {
+                if (index == null){
+                    return annotations.add(annot);
+                }
+                annotations.add(index, annot);
+                return true;
             }
-            ((List<Annotation>)annotations).add(index, annot);
-            return true;
         }
     }
 }

@@ -27,7 +27,7 @@ public class FeatureXrefContainer extends XrefContainer{
     private List<Xref> allIdentifiers;
 
     @Override
-    protected void processRemovedPrimaryRef(XmlXref removed) {
+    protected void processRemovedPrimaryRef(Xref removed) {
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
             // if it is not an identifier
             ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);
@@ -140,7 +140,7 @@ public class FeatureXrefContainer extends XrefContainer{
     }
 
     @Override
-    protected void processAddedSecondaryXref(XmlXref added) {
+    protected void processAddedSecondaryXref(Xref added) {
         // it is an identifier
         if (XrefUtils.isXrefAnIdentifier(added)){
             ((FullIdentifierList)getAllIdentifiers()).addOnly(added);
@@ -153,7 +153,7 @@ public class FeatureXrefContainer extends XrefContainer{
     }
 
     @Override
-    protected void processRemovedSecondaryXref(XmlXref removed) {
+    protected void processRemovedSecondaryXref(Xref removed) {
         // if it is an identifier
         if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(removed)){
             // if it is not an identifier
@@ -167,7 +167,7 @@ public class FeatureXrefContainer extends XrefContainer{
     @Override
     protected void clearSecondaryXrefProperties() {
         if (primaryRef != null){
-            Collection<XmlXref> primary = Collections.singleton(primaryRef);
+            Collection<Xref> primary = Collections.singleton(primaryRef);
             List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
             identifiersToBeDeleted.remove(primaryRef);
 

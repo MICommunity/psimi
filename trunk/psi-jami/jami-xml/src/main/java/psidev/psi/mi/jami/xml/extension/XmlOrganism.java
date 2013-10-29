@@ -21,12 +21,6 @@ import java.util.Collection;
  * @since <pre>22/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "bioSource", propOrder = {
-        "JAXBNames",
-        "JAXBCellType",
-        "JAXBCompartment",
-        "JAXBTissue"
-})
 @XmlSeeAlso({
         HostOrganism.class
 })
@@ -154,22 +148,6 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
-    @XmlElement(name = "names")
-    public NamesContainer getJAXBNames() {
-        if (namesContainer != null && namesContainer.isEmpty()){
-            return null;
-        }
-        return namesContainer;
-    }
-
-    /**
      * Sets the value of the names property.
      *
      * @param value
@@ -177,42 +155,27 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
      *     {@link NamesContainer }
      *
      */
+    @XmlElement(name = "names")
     public void setJAXBNames(NamesContainer value) {
         this.namesContainer = value;
     }
 
     @XmlElement(name = "cellType", type = XmlOpenCvTerm.class)
-    public CvTerm getJAXBCellType() {
-        return this.cellType;
-    }
-
     public void setJAXBCellType(CvTerm cellType) {
         this.cellType = cellType;
     }
 
     @XmlElement(name = "compartment", type = XmlOpenCvTerm.class)
-    public CvTerm getJAXBCompartment() {
-        return this.compartment;
-    }
-
     public void setJAXBCompartment(CvTerm compartment) {
         this.compartment = compartment;
     }
 
     @XmlElement(name = "tissue", type = XmlOpenCvTerm.class)
-    public CvTerm getJAXBTissue() {
-        return this.tissue;
-    }
-
     public void setJAXBTissue(CvTerm tissue) {
         this.tissue = tissue;
     }
 
     @XmlAttribute(name = "ncbiTaxId", required = true)
-    public int getJAXBTaxId() {
-        return this.taxId;
-    }
-
     public void setJAXBTaxId(int id) {
         if (id == -1 || id == -2 || id == -3 || id == -4 || id > 0){
             this.taxId = id;

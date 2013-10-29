@@ -24,9 +24,6 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "attribute", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "attributeType", propOrder = {
-        "value"
-})
 public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
 
     private CvTerm topic;
@@ -61,27 +58,13 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
         return this.topic;
     }
 
-    @XmlValue
-
     public String getValue() {
         return this.value;
     }
 
+    @XmlValue
     public void setValue(String value) {
         this.value = value;
-    }
-
-    /**
-     * Gets the value of the name property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "name", required = true)
-    public String getJAXBName() {
-        return getTopic().getShortName();
     }
 
     /**
@@ -92,6 +75,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "name", required = true)
     public void setJAXBName(String value) {
         if (this.topic == null && value != null){
             this.topic = new DefaultCvTerm(value);
@@ -102,19 +86,6 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
     }
 
     /**
-     * Gets the value of the nameAc property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    @XmlAttribute(name = "nameAc")
-    public String getJAXBNameAc() {
-        return getTopic().getMIIdentifier();
-    }
-
-    /**
      * Sets the value of the nameAc property.
      *
      * @param value
@@ -122,6 +93,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
      *     {@link String }
      *
      */
+    @XmlAttribute(name = "nameAc")
     public void setJAXBNameAc(String value) {
         if (this.topic == null && value != null){
             this.topic = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
