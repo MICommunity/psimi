@@ -1,15 +1,13 @@
 package psidev.psi.mi.jami.xml.extension.binary;
 
-import com.sun.xml.bind.Locatable;
-import org.xml.sax.Locator;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.impl.BinaryInteractionWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.extension.InteractionXrefContainer;
-import psidev.psi.mi.jami.xml.extension.NamesContainer;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.XmlBasicInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -25,7 +23,7 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participant>, FileSourceContext, Locatable{
+public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participant>, FileSourceContext, ExtendedPsi25Interaction<Participant>{
     private XmlBasicInteraction wrappedInteraction;
     private BinaryInteractionWrapper binaryWrapper;
 
@@ -112,17 +110,59 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
         return this.binaryWrapper.removeAllParticipants(participants);
     }
 
-    public int getJAXBId() {
-        return this.wrappedInteraction.getJAXBId();
-    }
-
-    public List<CvTerm> getJAXBInteractionTypes() {
-        return this.wrappedInteraction.getJAXBInteractionTypes();
+    @Override
+    public String getFullName() {
+        return this.wrappedInteraction.getFullName();
     }
 
     @Override
-    public Locator sourceLocation() {
-        return this.wrappedInteraction.sourceLocation();
+    public void setFullName(String name) {
+        this.wrappedInteraction.setFullName(name);
+    }
+
+    @Override
+    public List<Alias> getAliases() {
+        return this.wrappedInteraction.getAliases();
+    }
+
+    @Override
+    public List<CvTerm> getInteractionTypes() {
+        return this.wrappedInteraction.getInteractionTypes();
+    }
+
+    @Override
+    public XmlEntry getEntry() {
+        return this.wrappedInteraction.getEntry();
+    }
+
+    @Override
+    public void setEntry(XmlEntry entry) {
+        this.wrappedInteraction.setEntry(entry);
+    }
+
+    @Override
+    public List<InferredInteraction> getInferredInteractions() {
+        return this.wrappedInteraction.getInferredInteractions();
+    }
+
+    @Override
+    public int getId() {
+        return this.wrappedInteraction.getId();
+    }
+
+    @Override
+    public void setId(int id) {
+        this.wrappedInteraction.setId(id);
+    }
+
+    @Override
+    public FileSourceLocator getSourceLocator() {
+        return this.wrappedInteraction.getSourceLocator();
+    }
+
+    @Override
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.wrappedInteraction.setSourceLocator(locator);
     }
 
     @Override
@@ -176,13 +216,13 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     }
 
     @Override
-    public void setCreatedDate(Date created) {
-        this.wrappedInteraction.setCreatedDate(created);
+    public Date getCreatedDate() {
+        return this.wrappedInteraction.getCreatedDate();
     }
 
     @Override
-    public Date getCreatedDate() {
-        return this.wrappedInteraction.getCreatedDate();
+    public void setCreatedDate(Date created) {
+        this.wrappedInteraction.setCreatedDate(created);
     }
 
     @Override
@@ -193,44 +233,6 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     @Override
     public void setInteractionType(CvTerm term) {
         this.wrappedInteraction.setInteractionType(term);
-    }
-
-    public void setJAXBNames(NamesContainer value) {
-        this.wrappedInteraction.setJAXBNames(value);
-    }
-
-    public void setJAXBXref(InteractionXrefContainer value) {
-        this.wrappedInteraction.setJAXBXref(value);
-    }
-
-    public Boolean getJAXBIntraMolecular(){
-        return this.wrappedInteraction.getJAXBIntraMolecular();
-    }
-
-    public void setJAXBIntraMolecular(Boolean value) {
-        this.wrappedInteraction.setJAXBIntraMolecular(value);
-    }
-
-    public void setJAXBId(int value) {
-        this.wrappedInteraction.setJAXBIdOnly(value);
-    }
-
-    @Override
-    public FileSourceLocator getSourceLocator() {
-        return this.wrappedInteraction.getSourceLocator();
-    }
-
-    @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.wrappedInteraction.setSourceLocator(sourceLocator);
-    }
-
-    public XmlEntry getEntry() {
-        return this.wrappedInteraction.getEntry();
-    }
-
-    public void setEntry(XmlEntry entry) {
-        this.wrappedInteraction.setEntry(entry);
     }
 
     @Override

@@ -1,14 +1,15 @@
 package psidev.psi.mi.jami.xml.extension.binary;
 
-import com.sun.xml.bind.Locatable;
-import org.xml.sax.Locator;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.impl.BinaryInteractionEvidenceWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.extension.*;
+import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.extension.XmlInteractionEvidence;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
@@ -23,7 +24,7 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvidence, Locatable, FileSourceContext{
+public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvidence,FileSourceContext,ExtendedPsi25InteractionEvidence{
     private XmlInteractionEvidence wrappedInteraction;
     private BinaryInteractionEvidenceWrapper binaryWrapper;
 
@@ -110,16 +111,59 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
         return this.binaryWrapper.removeAllParticipants(participants);
     }
 
-    public int getJAXBId() {
-        return this.wrappedInteraction.getJAXBId();
+    @Override
+    public String getFullName() {
+        return this.wrappedInteraction.getFullName();
     }
 
-    public List<CvTerm> getJAXBInteractionTypes() {
-        return this.wrappedInteraction.getJAXBInteractionTypes();
+    @Override
+    public void setFullName(String name) {
+        this.wrappedInteraction.setFullName(name);
     }
 
-    public Locator sourceLocation() {
-        return this.wrappedInteraction.sourceLocation();
+    @Override
+    public List<Alias> getAliases() {
+        return this.wrappedInteraction.getAliases();
+    }
+
+    @Override
+    public List<CvTerm> getInteractionTypes() {
+        return this.wrappedInteraction.getInteractionTypes();
+    }
+
+    @Override
+    public XmlEntry getEntry() {
+        return this.wrappedInteraction.getEntry();
+    }
+
+    @Override
+    public void setEntry(XmlEntry entry) {
+        this.wrappedInteraction.setEntry(entry);
+    }
+
+    @Override
+    public List<InferredInteraction> getInferredInteractions() {
+        return this.wrappedInteraction.getInferredInteractions();
+    }
+
+    @Override
+    public int getId() {
+        return this.wrappedInteraction.getId();
+    }
+
+    @Override
+    public void setId(int id) {
+        this.wrappedInteraction.setId(id);
+    }
+
+    @Override
+    public FileSourceLocator getSourceLocator() {
+        return this.wrappedInteraction.getSourceLocator();
+    }
+
+    @Override
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.wrappedInteraction.setSourceLocator(locator);
     }
 
     @Override
@@ -173,13 +217,13 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public void setCreatedDate(Date created) {
-        this.wrappedInteraction.setCreatedDate(created);
+    public Date getCreatedDate() {
+        return this.wrappedInteraction.getCreatedDate();
     }
 
     @Override
-    public Date getCreatedDate() {
-        return this.wrappedInteraction.getCreatedDate();
+    public void setCreatedDate(Date created) {
+        this.wrappedInteraction.setCreatedDate(created);
     }
 
     @Override
@@ -192,47 +236,34 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
         this.wrappedInteraction.setInteractionType(term);
     }
 
-    public void setJAXBNames(NamesContainer value) {
-        this.wrappedInteraction.setJAXBNames(value);
-    }
-
-    public void setJAXBXref(InteractionXrefContainer value) {
-        this.wrappedInteraction.setJAXBXref(value);
-    }
-
-    public Boolean getJAXBIntraMolecular(){
-        return this.wrappedInteraction.getJAXBIntraMolecular();
-    }
-
-    public void setJAXBIntraMolecular(Boolean value) {
-        this.wrappedInteraction.setJAXBIntraMolecular(value);
-    }
-
-    public void setJAXBId(int value) {
-        this.wrappedInteraction.setJAXBIdOnly(value);
-    }
-
-    @Override
-    public FileSourceLocator getSourceLocator() {
-        return this.wrappedInteraction.getSourceLocator();
-    }
-
-    @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.wrappedInteraction.setSourceLocator(sourceLocator);
-    }
-
-    public XmlEntry getEntry() {
-        return this.wrappedInteraction.getEntry();
-    }
-
-    public void setEntry(XmlEntry entry) {
-        this.wrappedInteraction.setEntry(entry);
-    }
-
     @Override
     public String toString() {
         return this.wrappedInteraction.toString();
+    }
+
+    @Override
+    public Availability getXmlAvailability() {
+        return this.wrappedInteraction.getXmlAvailability();
+    }
+
+    @Override
+    public void setXmlAvailability(Availability availability) {
+        this.wrappedInteraction.setXmlAvailability(availability);
+    }
+
+    @Override
+    public boolean isModelled() {
+        return this.wrappedInteraction.isModelled();
+    }
+
+    @Override
+    public void setModelled(Boolean modelled) {
+        this.wrappedInteraction.setModelled(modelled);
+    }
+
+    @Override
+    public List<Experiment> getExperiments() {
+        return this.wrappedInteraction.getExperiments();
     }
 
     @Override
@@ -255,10 +286,6 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
         this.wrappedInteraction.setExperiment(experiment);
     }
 
-    public List<Experiment> getExperiments() {
-        return this.wrappedInteraction.getExperiments();
-    }
-
     @Override
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
         this.wrappedInteraction.setExperimentAndAddInteractionEvidence(experiment);
@@ -270,11 +297,6 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public Collection<Confidence> getConfidences() {
-        return this.wrappedInteraction.getConfidences();
-    }
-
-    @Override
     public String getAvailability() {
         return this.wrappedInteraction.getAvailability();
     }
@@ -282,16 +304,6 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     @Override
     public void setAvailability(String availability) {
         this.wrappedInteraction.setAvailability(availability);
-    }
-
-    @Override
-    public boolean isNegative() {
-        return this.wrappedInteraction.isNegative();
-    }
-
-    @Override
-    public void setNegative(boolean negative) {
-        this.wrappedInteraction.setNegative(negative);
     }
 
     @Override
@@ -306,32 +318,21 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
 
     @Override
     public void setInferred(boolean inferred) {
-        this.wrappedInteraction.setInferred(inferred);
+        this.wrappedInteraction.setInferred(isInferred());
     }
 
-    public void setJAXBAvailability(Availability value) {
-        this.wrappedInteraction.setJAXBAvailability(value);
+    @Override
+    public Collection<Confidence> getConfidences() {
+        return this.wrappedInteraction.getConfidences();
     }
 
-    public void setJAXBAvailabilityRef(Integer value) {
-        this.wrappedInteraction.setJAXBAvailabilityRef(value);
+    @Override
+    public boolean isNegative() {
+        return this.wrappedInteraction.isNegative();
     }
 
-    public void setJAXBExperimentWrapper(XmlInteractionEvidence.JAXBExperimentWrapper value) {
-        this.wrappedInteraction.setJAXBExperimentWrapper(value);
+    @Override
+    public void setNegative(boolean negative) {
+        this.wrappedInteraction.setNegative(negative);
     }
-
-    public Boolean getModelled(){
-        return wrappedInteraction.getModelled();
-    }
-
-    public void setModelled(Boolean value) {
-        this.wrappedInteraction.setModelled(value);
-    }
-
-    public void setJAXBNegative(Boolean value) {
-        this.wrappedInteraction.setJAXBNegative(value);
-    }
-
-
 }

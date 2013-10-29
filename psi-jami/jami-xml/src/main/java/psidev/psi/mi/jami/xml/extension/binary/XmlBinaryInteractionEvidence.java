@@ -1,13 +1,18 @@
 package psidev.psi.mi.jami.xml.extension.binary;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.xml.extension.XmlInteractionEvidence;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
+import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Xml implementation of BinaryInteractionEvidence
@@ -17,143 +22,242 @@ import java.util.Collection;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionEvidence extends XmlInteractionEvidence implements BinaryInteractionEvidence{
+public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence, ExtendedPsi25InteractionEvidence{
+    private Xref imexId;
+    private Experiment experiment;
+    private String availability;
+    private Collection<Parameter> parameters;
+    private boolean isInferred = false;
+    private Collection<Confidence> confidences;
+    private boolean isNegative;
+    private Collection<VariableParameterValueSet> variableParameterValueSets;
+    private Availability xmlAvailability;
+    private Boolean isModelled;
+    private List<Experiment> experiments;
 
-    private BinaryInteractionEvidence binaryWrapper;
-
-    public XmlBinaryInteractionEvidence(){
-        super();
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence();
+    public XmlBinaryInteractionEvidence() {
     }
 
-    public XmlBinaryInteractionEvidence(String shortName){
+    public XmlBinaryInteractionEvidence(String shortName) {
         super(shortName);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence();
     }
 
-    public XmlBinaryInteractionEvidence(String shortName, CvTerm type){
+    public XmlBinaryInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence();
     }
 
-    public XmlBinaryInteractionEvidence(ParticipantEvidence participantA, ParticipantEvidence participantB){
-        super();
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(participantA, participantB);
-
+    public XmlBinaryInteractionEvidence(ParticipantEvidence participantA, ParticipantEvidence participantB) {
+        super(participantA, participantB);
     }
 
-    public XmlBinaryInteractionEvidence(String shortName, ParticipantEvidence participantA, ParticipantEvidence participantB){
-        super(shortName);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(participantA, participantB);
+    public XmlBinaryInteractionEvidence(String shortName, ParticipantEvidence participantA, ParticipantEvidence participantB) {
+        super(shortName, participantA, participantB);
     }
 
-    public XmlBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(participantA, participantB);
+    public XmlBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB) {
+        super(shortName, type, participantA, participantB);
     }
 
-    public XmlBinaryInteractionEvidence(CvTerm complexExpansion){
-        super();
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(complexExpansion);
+    public XmlBinaryInteractionEvidence(CvTerm complexExpansion) {
+        super(complexExpansion);
     }
 
-    public XmlBinaryInteractionEvidence(String shortName, CvTerm type, CvTerm complexExpansion){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(complexExpansion);
-
+    public XmlBinaryInteractionEvidence(String shortName, CvTerm type, CvTerm complexExpansion) {
+        super(shortName, type, complexExpansion);
     }
 
-    public XmlBinaryInteractionEvidence(ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion){
-        super();
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(participantA, participantB, complexExpansion);
-
+    public XmlBinaryInteractionEvidence(ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion) {
+        super(participantA, participantB, complexExpansion);
     }
 
-    public XmlBinaryInteractionEvidence(String shortName, ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion){
-        super(shortName);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(participantA, participantB, complexExpansion);
+    public XmlBinaryInteractionEvidence(String shortName, ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion) {
+        super(shortName, participantA, participantB, complexExpansion);
     }
 
-    public XmlBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion){
-        super(shortName, type);
-        this.binaryWrapper = new DefaultBinaryInteractionEvidence(participantA, participantB, complexExpansion);
+    public XmlBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion) {
+        super(shortName, type, participantA, participantB, complexExpansion);
     }
 
-    public ParticipantEvidence getParticipantA() {
-        return this.binaryWrapper.getParticipantA();
+    protected void initialiseExperimentalConfidences(){
+        this.confidences = new ArrayList<Confidence>();
     }
 
-    public ParticipantEvidence getParticipantB() {
-        return this.binaryWrapper.getParticipantB();
+    protected void initialiseVariableParameterValueSets(){
+        this.variableParameterValueSets = new ArrayList<VariableParameterValueSet>();
     }
 
-    public void setParticipantA(ParticipantEvidence participantA) {
-        this.binaryWrapper.setParticipantA(participantA);
+    protected void initialiseExperimentalParameters(){
+        this.parameters = new ArrayList<Parameter>();
     }
 
-    public void setParticipantB(ParticipantEvidence participantB) {
-        this.binaryWrapper.setParticipantB(participantB);
+    @Override
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new ExperimentalBinaryInteractionXrefList());
     }
 
-    public CvTerm getComplexExpansion() {
-        return this.binaryWrapper.getComplexExpansion();
+    public String getImexId() {
+        return this.imexId != null ? this.imexId.getId() : null;
     }
 
-    public void setComplexExpansion(CvTerm expansion) {
-        this.binaryWrapper.setComplexExpansion(expansion);
+    public void assignImexId(String identifier) {
+        // add new imex if not null
+        if (identifier != null){
+            ExperimentalBinaryInteractionXrefList interactionXrefs = (ExperimentalBinaryInteractionXrefList) getXrefs();
+            CvTerm imexDatabase = CvTermUtils.createImexDatabase();
+            CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
+            // first remove old doi if not null
+            if (this.imexId != null){
+                interactionXrefs.removeOnly(this.imexId);
+            }
+            this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
+            interactionXrefs.addOnly(this.imexId);
+        }
+        else {
+            throw new IllegalArgumentException("The imex id has to be non null.");
+        }
+    }
+
+    public Experiment getExperiment() {
+        return this.experiment;
+    }
+
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
+
+    public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
+        if (this.experiment != null){
+            this.experiment.removeInteractionEvidence(this);
+        }
+
+        if (experiment != null){
+            experiment.addInteractionEvidence(this);
+        }
+    }
+
+    public Collection<VariableParameterValueSet> getVariableParameterValues() {
+
+        if (variableParameterValueSets == null){
+            initialiseVariableParameterValueSets();
+        }
+        return this.variableParameterValueSets;
+    }
+
+    public Collection<Confidence> getConfidences() {
+        if (confidences == null){
+            initialiseExperimentalConfidences();
+        }
+        return this.confidences;
+    }
+
+    public String getAvailability() {
+        return this.availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
+
+    public boolean isNegative() {
+        return this.isNegative;
+    }
+
+    public void setNegative(boolean negative) {
+        this.isNegative = negative;
+    }
+
+    public Collection<Parameter> getParameters() {
+        if (parameters == null){
+            initialiseExperimentalParameters();
+        }
+        return this.parameters;
+    }
+
+    public boolean isInferred() {
+        return this.isInferred;
+    }
+
+    public void setInferred(boolean inferred) {
+        this.isInferred = inferred;
+    }
+
+    protected void processAddedXrefEvent(Xref added) {
+
+        // the added identifier is imex and the current imex is not set
+        if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+            // the added xref is imex-primary
+            if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
+                imexId = added;
+            }
+        }
+    }
+
+    protected void processRemovedXrefEvent(Xref removed) {
+        // the removed identifier is pubmed
+        if (imexId != null && imexId.equals(removed)){
+            imexId = null;
+        }
+    }
+
+    protected void clearPropertiesLinkedToXrefs() {
+        imexId = null;
+    }
+
+    @Override
+    public String toString() {
+        return imexId != null ? imexId.getId() : super.toString();
+    }
+
+    @Override
+    public Availability getXmlAvailability() {
+        return this.xmlAvailability;
+    }
+
+    @Override
+    public void setXmlAvailability(Availability availability) {
+        this.xmlAvailability = availability;
+    }
+
+    @Override
+    public boolean isModelled() {
+        return isModelled != null ? isModelled : false;
+    }
+
+    @Override
+    public void setModelled(Boolean modelled) {
+       isModelled = modelled;
+    }
+
+    @Override
+    public List<Experiment> getExperiments() {
+        if (experiments == null){
+           experiments = new ArrayList<Experiment>();
+        }
+        return experiments;
     }
 
     /**
-     * The collection of participants for this binary interaction.
-     * It cannot be changed.
-     * @return
+     * Experimental interaction Xref list
      */
-    @Override
-    public Collection<ParticipantEvidence> getParticipants() {
-        return this.binaryWrapper.getParticipants();
-    }
+    private class ExperimentalBinaryInteractionXrefList extends AbstractListHavingProperties<Xref> {
+        public ExperimentalBinaryInteractionXrefList(){
+            super();
+        }
 
-    /**
-     * Adds a new Participant and set the Interaction of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param part
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants
-     */
-    @Override
-    public boolean addParticipant(ParticipantEvidence part) {
-        return this.binaryWrapper.addParticipant(part);
-    }
+        @Override
+        protected void processAddedObjectEvent(Xref added) {
 
-    /**
-     * Removes the Participant from this binary interaction
-     * @param part
-     * @return
-     */
-    @Override
-    public boolean removeParticipant(ParticipantEvidence part) {
-        return this.binaryWrapper.removeParticipant(part);
-    }
+            processAddedXrefEvent(added);
+        }
 
-    /**
-     * Adds the participants and set the Interaction of this participant if added.
-     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param participants
-     * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
-     */
-    @Override
-    public boolean addAllParticipants(Collection<? extends ParticipantEvidence> participants) {
-        return this.binaryWrapper.addAllParticipants(participants);
-    }
+        @Override
+        protected void processRemovedObjectEvent(Xref removed) {
+            processRemovedXrefEvent(removed);
+        }
 
-    @Override
-    public boolean removeAllParticipants(Collection<? extends ParticipantEvidence> participants) {
-        return this.binaryWrapper.removeAllParticipants(participants);
-    }
-
-    @Override
-    public void setJAXBId(int value) {
-        setJAXBIdOnly(value);
+        @Override
+        protected void clearProperties() {
+            clearPropertiesLinkedToXrefs();
+        }
     }
 }

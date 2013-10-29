@@ -130,8 +130,8 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @Override
     @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int value) {
-        super.setJAXBId(value);
+    public void setId(int value) {
+        super.setId(value);
     }
 
     @Override
@@ -153,14 +153,14 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @Override
     @XmlElement(name="interactionType", type = XmlCvTerm.class)
-    public List<CvTerm> getJAXBInteractionTypes() {
-        return super.getJAXBInteractionTypes();
+    public List<CvTerm> getInteractionTypes() {
+        return super.getInteractionTypes();
     }
 
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
     }
@@ -171,7 +171,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
     }
 

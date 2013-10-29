@@ -28,7 +28,7 @@ import java.util.List;
  * @since <pre>09/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlInteraction<T extends Participant> implements Interaction<T>, FileSourceContext, Locatable{
+public abstract class AbstractXmlInteraction<T extends Participant> implements ExtendedPsi25Interaction<T>, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private InteractionXrefContainer xrefContainer;
@@ -69,6 +69,27 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
             this.namesContainer = new NamesContainer();
         }
         this.namesContainer.setShortLabel(name);
+    }
+
+    @Override
+    public List<Alias> getAliases() {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        return this.namesContainer.getAliases();
+    }
+
+    @Override
+    public void setFullName(String name) {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        this.namesContainer.setFullName(name);
+    }
+
+    @Override
+    public String getFullName() {
+        return this.namesContainer != null ? this.namesContainer.getFullName() : null;
     }
 
     public String getRigid() {
@@ -258,7 +279,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      * Gets the value of the id property.
      *
      */
-    public int getJAXBId() {
+    public int getId() {
         return id;
     }
 
@@ -266,7 +287,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      * Sets the value of the id property.
      *
      */
-    public void setJAXBId(int value) {
+    public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (getSourceLocator() != null){
@@ -282,11 +303,18 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements I
      *     {@link XmlCvTerm }
      *
      */
-    public List<CvTerm> getJAXBInteractionTypes() {
+    public List<CvTerm> getInteractionTypes() {
         if (this.interactionTypes == null){
            this.interactionTypes = new ArrayList<CvTerm>();
         }
         return this.interactionTypes;
+    }
+
+    public List<InferredInteraction> getInferredInteractions() {
+        if (this.jaxbInferredInteractionWrapper == null){
+            this.jaxbInferredInteractionWrapper = new JAXBInferredInteractionWrapper();
+        }
+        return this.jaxbInferredInteractionWrapper.inferredInteractions;
     }
 
     @Override
