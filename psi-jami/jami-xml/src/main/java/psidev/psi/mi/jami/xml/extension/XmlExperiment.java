@@ -341,7 +341,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
                 if (entry != null){
                     publication.setSource(entry.getSource());
                     if (entry.getSource() != null){
-                       publication.setReleasedDate(entry.getSource().getJAXBReleaseDate().toGregorianCalendar().getTime());
+                       publication.setReleasedDate(entry.getSource().getReleaseDate().toGregorianCalendar().getTime());
                     }
                 }
 

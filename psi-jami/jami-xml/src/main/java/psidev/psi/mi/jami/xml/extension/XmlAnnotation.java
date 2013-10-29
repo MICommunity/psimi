@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "attribute", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "attribute", propOrder = {
+@XmlType(name = "attributeType", propOrder = {
         "value"
 })
 public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {

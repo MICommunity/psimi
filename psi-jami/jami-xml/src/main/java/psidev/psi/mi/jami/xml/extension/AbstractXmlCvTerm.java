@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.Locatable;
+import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -11,10 +12,11 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract cv term
@@ -23,13 +25,13 @@ import java.util.Collections;
  * @version $Id$
  * @since <pre>19/07/13</pre>
  */
-@XmlTransient
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Locatable{
     private CvTermXrefContainer xrefContainer;
     private NamesContainer namesContainer;
-    private Collection<Annotation> annotations;
 
     private PsiXmLocator sourceLocator;
+    private JAXBAttributeWrapper jaxbAttributeWrapper;
 
     public AbstractXmlCvTerm(){
 
@@ -69,7 +71,10 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     public void setShortName(String name) {
-        getNamesContainer().setShortLabel(name != null ? name : PsiXmlUtils.UNSPECIFIED);
+        if (name == null){
+            throw new IllegalArgumentException("The short name cannot be null");
+        }
+        getNamesContainer().setShortLabel(name);
     }
 
     public String getFullName() {
@@ -117,10 +122,10 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     public Collection<Annotation> getAnnotations() {
-        if (annotations == null){
-            initialiseAnnotations();
+        if (jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
         }
-        return this.annotations;
+        return this.jaxbAttributeWrapper.annotations;
     }
 
     @Override
@@ -164,8 +169,8 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         }
     }
 
-    protected void initialiseAnnotations(){
-        this.annotations = new ArrayList<Annotation>();
+    protected void initialiseAnnotationWrapper(){
+        this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
     }
 
     protected CvTermXrefContainer getXrefContainer() {
@@ -175,7 +180,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         return xrefContainer;
     }
 
-    protected void setXrefContainer(CvTermXrefContainer value) {
+    public void setJAXBXref(CvTermXrefContainer value) {
         this.xrefContainer = value;
     }
 
@@ -187,32 +192,75 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         return namesContainer;
     }
 
-    protected void setNamesContainer(NamesContainer value) {
-        if (value == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        else {
-            this.namesContainer = value;
-            if (this.namesContainer.getShortLabel() == null){
-                namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-            }
+    public void setJAXBNames(NamesContainer value) {
+        this.namesContainer = value;
+        if (this.namesContainer != null && this.namesContainer.getShortLabel() == null){
+            this.namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
     }
 
-    protected ArrayList<Annotation> getAttributes() {
-        if (annotations == null){
+    protected JAXBAttributeWrapper getAttributeWrapper() {
+        if (this.jaxbAttributeWrapper == null){
+           initialiseAnnotationWrapper();
+        }
+        return this.jaxbAttributeWrapper;
+    }
+
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        this.jaxbAttributeWrapper = jaxbAttributeWrapper;
+    }
+
+    //////////////////////////////// class wrapper
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private Collection<Annotation> annotations;
+
+        public JAXBAttributeWrapper(){
             initialiseAnnotations();
         }
-        return (ArrayList<Annotation>)this.annotations;
-    }
 
-    protected void initialiseAnnotationsWith(ArrayList<Annotation> annotations){
-        if (annotations == null){
-            this.annotations = Collections.EMPTY_LIST;
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
         }
-        else {
-            this.annotations = annotations;
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseAnnotations(){
+            annotations = new ArrayList<Annotation>();
+        }
+
+        protected void initialiseAnnotationsWith(List<Annotation> annotations){
+            if (annotations == null){
+                this.annotations = Collections.EMPTY_LIST;
+            }
+            else {
+                this.annotations = annotations;
+            }
+        }
+
+        @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+        public List<Annotation> getJAXBAttributes() {
+            return (List<Annotation>)annotations;
         }
     }
 }

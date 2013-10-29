@@ -8,15 +8,20 @@
 
 package psidev.psi.mi.jami.xml.extension;
 
+import com.sun.xml.bind.Locatable;
+import com.sun.xml.bind.annotation.XmlLocation;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -33,21 +38,14 @@ import java.util.List;
  */
 @XmlRootElement(name = "source", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "source", propOrder = {
-    "JAXBNames",
-    "JAXBBibRef",
-    "JAXBXref",
-    "JAXBAttributes"
-})
-public class XmlSource extends XmlOpenCvTerm
-    implements Source
+public class XmlSource extends AbstractXmlCvTerm implements Source
 {
-
-    private Annotation url;
-    private String postalAddress;
     private Publication bibRef;
     private String release;
     private XMLGregorianCalendar releaseDate;
+    @XmlLocation
+    @XmlTransient
+    private Locator locator;
 
     public XmlSource(){
         super();
@@ -68,21 +66,21 @@ public class XmlSource extends XmlOpenCvTerm
     public XmlSource(String shortName, String url, String address, Publication bibRef) {
         super(shortName);
         setUrl(url);
-        this.postalAddress = address;
+        setPostalAddress(address);
         this.bibRef = bibRef;
     }
 
     public XmlSource(String shortName, Xref ontologyId, String url, String address, Publication bibRef) {
         super(shortName, ontologyId);
         setUrl(url);
-        this.postalAddress = address;
+        setPostalAddress(address);
         this.bibRef = bibRef;
     }
 
     public XmlSource(String shortName, String fullName, Xref ontologyId, String url, String address, Publication bibRef) {
         super(shortName, fullName, ontologyId);
         setUrl(url);
-        this.postalAddress = address;
+        setPostalAddress(address);
         this.bibRef = bibRef;
     }
 
@@ -97,52 +95,67 @@ public class XmlSource extends XmlOpenCvTerm
     public XmlSource(String shortName, String miId, String url, String address, Publication bibRef) {
         super(shortName, miId);
         setUrl(url);
-        this.postalAddress = address;
+        setPostalAddress(address);
         this.bibRef = bibRef;
     }
 
     public XmlSource(String shortName, String fullName, String miId, String url, String address, Publication bibRef) {
         super(shortName, fullName, miId);
         setUrl(url);
-        this.postalAddress = address;
+        setPostalAddress(address);
         this.bibRef = bibRef;
     }
 
-    @Override
-    protected void initialiseAnnotations() {
-        initialiseAnnotationsWith(new SourceAnnotationList());
-    }
-
     public String getUrl() {
-        return this.url != null ? this.url.getValue() : null;
+        Annotation url = getAttributeWrapper().url;
+        return url != null ? url.getValue() : null;
     }
 
     public void setUrl(String url) {
-        Collection<Annotation> sourceAnnotationList = getAnnotations();
+        JAXBAttributeWrapper.SourceAnnotationList sourceAnnotationList = (JAXBAttributeWrapper.SourceAnnotationList)getAnnotations();
+        Annotation urlAnnot = getAttributeWrapper().url;
 
         // add new url if not null
         if (url != null){
-            CvTerm complexPhysicalProperties = CvTermUtils.createMICvTerm(Annotation.URL, Annotation.URL_MI);
+            CvTerm urlTopic = CvTermUtils.createMICvTerm(Annotation.URL, Annotation.URL_MI);
             // first remove old url if not null
-            if (this.url != null){
-                sourceAnnotationList.remove(this.url);
+            if (urlAnnot != null){
+                sourceAnnotationList.removeOnly(urlAnnot);
             }
-            this.url = new DefaultAnnotation(complexPhysicalProperties, url);
-            sourceAnnotationList.add(this.url);
+            getAttributeWrapper().url = new DefaultAnnotation(urlTopic, url);
+            sourceAnnotationList.addOnly(urlAnnot);
         }
         // remove all url if the collection is not empty
         else if (!sourceAnnotationList.isEmpty()) {
             AnnotationUtils.removeAllAnnotationsWithTopic(sourceAnnotationList, Annotation.URL_MI, Annotation.URL);
-            this.url = null;
+            getAttributeWrapper().url = null;
         }
     }
 
     public String getPostalAddress() {
-        return this.postalAddress;
+        Annotation postal = getAttributeWrapper().postalAddress;
+        return postal != null ? postal.getValue() : null;
     }
 
     public void setPostalAddress(String address) {
-        this.postalAddress = address;
+        JAXBAttributeWrapper.SourceAnnotationList sourceAnnotationList = (JAXBAttributeWrapper.SourceAnnotationList)getAnnotations();
+        Annotation postalAnnot = getAttributeWrapper().postalAddress;
+
+        // add new url if not null
+        if (address != null){
+            CvTerm postalTopic = new DefaultCvTerm(Annotation.POSTAL_ADDRESS);
+            // first remove old url if not null
+            if (postalAnnot != null){
+                sourceAnnotationList.removeOnly(postalAnnot);
+            }
+            getAttributeWrapper().postalAddress = new DefaultAnnotation(postalTopic, address);
+            sourceAnnotationList.addOnly(postalAnnot);
+        }
+        // remove all url if the collection is not empty
+        else if (!sourceAnnotationList.isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(sourceAnnotationList, null, Annotation.POSTAL_ADDRESS);
+            getAttributeWrapper().postalAddress = null;
+        }
     }
 
     public Publication getPublication() {
@@ -153,37 +166,48 @@ public class XmlSource extends XmlOpenCvTerm
         this.bibRef = ref;
     }
 
+    /**
+     * Sets the value of the names property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link NamesContainer }
+     *
+     */
+    @XmlElement(name = "names", required = true)
     @Override
-    @XmlElement(name = "xref", required = true)
-    public CvTermXrefContainer getJAXBXref() {
-        return super.getJAXBXref();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
+    /**
+     * Sets the value of the xrefContainer property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link XrefContainer }
+     *
+     */
+    @XmlElement(name = "xref", required = true)
     @Override
-    @XmlElement(name = "names", required = true)
-    public NamesContainer getJAXBNames() {
-        return super.getJAXBNames();
+    public void setJAXBXref(CvTermXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @XmlElement(name = "bibRef", type = BibRef.class)
-    public Publication getJAXBBibRef() {
-        return this.bibRef;
-    }
-
     public void setJAXBBibRef(BibRef ref) {
         this.bibRef = ref;
     }
 
     /**
      * Gets the value of the release property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
-    @XmlAttribute(name = "release")
-    public String getJAXBRelease() {
+    public String getRelease() {
         return release;
     }
 
@@ -195,21 +219,20 @@ public class XmlSource extends XmlOpenCvTerm
      *     {@link String }
      *     
      */
-    public void setJAXBRelease(String value) {
+    @XmlAttribute(name = "release")
+    public void setRelease(String value) {
         this.release = value;
     }
 
     /**
      * Gets the value of the releaseDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link javax.xml.datatype.XMLGregorianCalendar }
      *
      */
-    @XmlAttribute(name = "releaseDate")
-    @XmlSchemaType(name = "date")
-    public XMLGregorianCalendar getJAXBReleaseDate() {
+    public XMLGregorianCalendar getReleaseDate() {
         return releaseDate;
     }
 
@@ -221,51 +244,112 @@ public class XmlSource extends XmlOpenCvTerm
      *     {@link javax.xml.datatype.XMLGregorianCalendar }
      *     
      */
-    public void setJAXBReleaseDate(XMLGregorianCalendar value) {
+    @XmlAttribute(name = "releaseDate")
+    @XmlSchemaType(name = "date")
+    public void setReleaseDate(XMLGregorianCalendar value) {
         this.releaseDate = value;
     }
 
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(type = XmlAnnotation.class, name = "attribute", required = true)
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper wrapper){
+        super.setJAXBAttributeWrapper(wrapper);
+    }
+
     @Override
-    public List<Annotation> getJAXBAttributes() {
-        return super.getAttributes();
+    public FileSourceLocator getSourceLocator() {
+        if (super.getSourceLocator() == null && locator != null){
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
+        }
+        return super.getSourceLocator();
     }
 
-    protected void processAddedAnnotationEvent(Annotation added) {
-        if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){
-            url = added;
+    @Override
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        if (sourceLocator == null){
+            super.setSourceLocator(null);
+        }
+        else{
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
 
-    protected void processRemovedAnnotationEvent(Annotation removed) {
-        if (url != null && url.equals(removed)){
+    @Override
+    protected JAXBAttributeWrapper getAttributeWrapper() {
+        return (JAXBAttributeWrapper) super.getAttributeWrapper();
+    }
+
+    @Override
+    protected void initialiseAnnotationWrapper() {
+        super.setJAXBAttributeWrapper(new JAXBAttributeWrapper());
+    }
+
+    //////////////////////////////// class wrapper
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name = "sourceAttributes", propOrder = {
+            "JAXBAttributes"
+    })
+    public static class JAXBAttributeWrapper extends AbstractXmlCvTerm.JAXBAttributeWrapper implements Locatable, FileSourceContext {
+        private Annotation url;
+        private Annotation postalAddress;
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+        public List<Annotation> getJAXBAttributes() {
+            return super.getJAXBAttributes();
+        }
+
+        @Override
+        protected void initialiseAnnotations() {
+            super.initialiseAnnotationsWith(new SourceAnnotationList());
+        }
+
+        private void processAddedAnnotationEvent(Annotation added) {
+            if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){
+                url = added;
+            }
+            else if (postalAddress == null && AnnotationUtils.doesAnnotationHaveTopic(added, null, Annotation.POSTAL_ADDRESS)){
+                postalAddress = added;
+            }
+        }
+
+        private void processRemovedAnnotationEvent(Annotation removed) {
+            if (url != null && url.equals(removed)){
+                url = null;
+            }
+            else if (postalAddress != null && postalAddress.equals(removed)){
+                postalAddress = null;
+            }
+        }
+
+        private void clearPropertiesLinkedToAnnotations() {
             url = null;
-        }
-    }
-
-    protected void clearPropertiesLinkedToAnnotations() {
-        url = null;
-    }
-
-    public class SourceAnnotationList extends AbstractListHavingProperties<Annotation> {
-        public SourceAnnotationList(){
-            super();
+            postalAddress = null;
         }
 
-        @Override
-        protected void processAddedObjectEvent(Annotation added) {
-            processAddedAnnotationEvent(added);
-        }
+        private class SourceAnnotationList extends AbstractListHavingProperties<Annotation> {
+            public SourceAnnotationList(){
+                super();
+            }
 
-        @Override
-        protected void processRemovedObjectEvent(Annotation removed) {
-            processRemovedAnnotationEvent(removed);
-        }
+            @Override
+            protected void processAddedObjectEvent(Annotation added) {
+                processAddedAnnotationEvent(added);
+            }
 
-        @Override
-        protected void clearProperties() {
-            clearPropertiesLinkedToAnnotations();
+            @Override
+            protected void processRemovedObjectEvent(Annotation removed) {
+                processRemovedAnnotationEvent(removed);
+            }
+
+            @Override
+            protected void clearProperties() {
+                clearPropertiesLinkedToAnnotations();
+            }
         }
     }
 }

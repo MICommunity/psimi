@@ -19,10 +19,6 @@ import javax.xml.bind.annotation.*;
  * @since <pre>18/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "cvType", propOrder = {
-        "JAXBNames",
-        "JAXBXref"
-})
 @XmlSeeAlso({
         ExperimentalCvTerm.class
 })
@@ -55,33 +51,16 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
         super(shortName, fullName, ontologyId);
     }
 
-    /**
-     * Gets the value of the names property.
-     *
-     * @return
-     *     possible object is
-     *     {@link NamesContainer }
-     *
-     */
+    @Override
     @XmlElement(name = "names", required = true)
-    public NamesContainer getJAXBNames() {
-        return super.getNamesContainer();
+    public void setJAXBNames(NamesContainer value) {
+        super.setJAXBNames(value);
     }
 
-    /**
-     * Gets the value of the xrefContainer property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XrefContainer }
-     *
-     */
+    @Override
     @XmlElement(name = "xref", required = true)
-    public CvTermXrefContainer getJAXBXref() {
-        if (super.getXrefContainer().isEmpty()){
-            return null;
-        }
-        return super.getXrefContainer();
+    public void setJAXBXref(CvTermXrefContainer value) {
+        super.setJAXBXref(value);
     }
 
     @Override
