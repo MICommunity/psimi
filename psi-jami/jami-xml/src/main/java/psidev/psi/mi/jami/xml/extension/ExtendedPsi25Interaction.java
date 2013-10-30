@@ -27,4 +27,6 @@ public interface ExtendedPsi25Interaction<T extends Participant> extends Interac
     public List<InferredInteraction> getInferredInteractions();
     public int getId();
     public void setId(int id);
+    public boolean isIntraMolecular();
+    public void setIntraMolecular(Boolean intra);
 }

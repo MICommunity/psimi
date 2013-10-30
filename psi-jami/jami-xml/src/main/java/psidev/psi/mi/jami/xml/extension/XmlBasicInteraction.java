@@ -49,9 +49,14 @@ public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
     }
 
     @Override
+    public boolean isIntraMolecular() {
+        return super.isIntraMolecular();
+    }
+
+    @Override
     @XmlElement(name = "intraMolecular", defaultValue = "false")
-    public void setJAXBIntraMolecular(Boolean value) {
-        super.setJAXBIntraMolecular(value);
+    public void setIntraMolecular(Boolean intra) {
+        super.setIntraMolecular(intra);
     }
 
     @Override

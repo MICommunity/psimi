@@ -156,6 +156,16 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     }
 
     @Override
+    public boolean isIntraMolecular() {
+        return this.wrappedInteraction.isIntraMolecular();
+    }
+
+    @Override
+    public void setIntraMolecular(Boolean intra) {
+        this.wrappedInteraction.setIntraMolecular(intra);
+    }
+
+    @Override
     public FileSourceLocator getSourceLocator() {
         return this.wrappedInteraction.getSourceLocator();
     }

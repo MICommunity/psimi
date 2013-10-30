@@ -31,6 +31,7 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
     private int id;
     private List<CvTerm> interactionTypes;
     private List<InferredInteraction> inferredInteractions;
+    private Boolean intraMolecular;
 
     public AbstractXmlBinaryInteraction(){
         super();
@@ -85,6 +86,22 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = (PsiXmLocator)sourceLocator;
+    }
+
+    public boolean isIntraMolecular(){
+        return intraMolecular != null ? intraMolecular : false;
+    }
+
+    /**
+     * Sets the value of the intraMolecular property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *
+     */
+    public void setIntraMolecular(Boolean value) {
+        this.intraMolecular = value;
     }
 
     @Override

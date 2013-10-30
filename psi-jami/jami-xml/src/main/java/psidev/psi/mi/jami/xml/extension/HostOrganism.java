@@ -77,7 +77,7 @@ public class HostOrganism extends XmlOrganism{
     ////////////////////////////////////////////////////////////////// classes
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name = "interactorExperimentRefList")
+    @XmlType(name = "hostOrganismExperimentRefList")
     public static class JAXBExperimentRefWrapper implements Locatable, FileSourceContext {
         private PsiXmLocator sourceLocator;
         @XmlLocation

@@ -338,6 +338,16 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     }
 
     @Override
+    public boolean isIntraMolecular() {
+        return this.interactionEvidence.isIntraMolecular();
+    }
+
+    @Override
+    public void setIntraMolecular(Boolean intra) {
+        this.setIntraMolecular(intra);
+    }
+
+    @Override
     public FileSourceLocator getSourceLocator() {
         return this.interactionEvidence.getSourceLocator();
     }
