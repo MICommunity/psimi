@@ -1,20 +1,14 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
-import psidev.psi.mi.jami.model.impl.DefaultChecksum;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultComplex;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Xml implementation for complex
@@ -23,26 +17,11 @@ import java.util.Date;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
-public class XmlComplex extends XmlInteractor implements Complex{
+@XmlTransient
+public class XmlComplex extends DefaultComplex implements ExtendedPsi25Interactor,FileSourceContext{
 
-    private Collection<InteractionEvidence> interactionEvidences;
-    private Source source;
-    private Collection<ModelledConfidence> modelledConfidences;
-    private Collection<ModelledParameter> modelledParameters;
-    private Collection<CooperativeEffect> cooperativeEffects;
-
-    private Checksum rigid;
-    private Date updatedDate;
-    private Date createdDate;
-    private CvTerm interactionType;
-    private Annotation physicalProperties;
-    private Collection<ModelledParticipant> participants;
-
-    public XmlComplex() {
-        super();
-    }
+    private int id;
+    private PsiXmLocator sourceLocator;
 
     public XmlComplex(String name, CvTerm type) {
         super(name, type);
@@ -107,342 +86,40 @@ public class XmlComplex extends XmlInteractor implements Complex{
     public XmlComplex(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, organism, uniqueId);
     }
-
-    public Collection<InteractionEvidence> getInteractionEvidences() {
-        if (interactionEvidences == null){
-            initialiseInteractionEvidences();
-        }
-        return this.interactionEvidences;
-    }
-
-    public Source getSource() {
-        return this.source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
-    public Collection<ModelledConfidence> getModelledConfidences() {
-        if (modelledConfidences == null){
-            initialiseModelledConfidences();
-        }
-        return this.modelledConfidences;
-    }
-
-    public Collection<ModelledParameter> getModelledParameters() {
-        if (modelledParameters == null){
-            initialiseModelledParameters();
-        }
-        return this.modelledParameters;
-    }
-
-    public Collection<CooperativeEffect> getCooperativeEffects() {
-        if (cooperativeEffects == null){
-            initialiseCooperativeEffects();
-        }
-        return this.cooperativeEffects;
-    }
-
-    public String getPhysicalProperties() {
-        return this.physicalProperties != null ? this.physicalProperties.getValue() : null;
-    }
-
-    public void setPhysicalProperties(String properties) {
-        Collection<Annotation> complexAnnotationList = getAnnotations();
-
-        // add new physical properties if not null
-        if (properties != null){
-
-            CvTerm complexPhysicalProperties = CvTermUtils.createComplexPhysicalProperties();
-            // first remove old physical property if not null
-            if (this.physicalProperties != null){
-                complexAnnotationList.remove(this.physicalProperties);
-            }
-            this.physicalProperties = new DefaultAnnotation(complexPhysicalProperties, properties);
-            complexAnnotationList.add(this.physicalProperties);
-        }
-        // remove all physical properties if the collection is not empty
-        else if (!complexAnnotationList.isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, COMPLEX_MI, COMPLEX);
-            physicalProperties = null;
-        }
-    }
-
-    protected void processAddedAnnotationEvent(Annotation added) {
-        if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
-            physicalProperties = added;
-        }
-    }
-
-    protected void processRemovedAnnotationEvent(Annotation removed) {
-        if (physicalProperties != null && physicalProperties.equals(removed)){
-            physicalProperties = AnnotationUtils.collectFirstAnnotationWithTopic(getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
-        }
-    }
-
-    protected void clearPropertiesLinkedToAnnotations() {
-        physicalProperties = null;
-    }
-
-
-    @Override
-    protected void initialiseChecksums() {
-        super.initialiseChecksumsWith(new ComplexChecksumList());
-    }
-
-    @Override
-    protected void initialiseAnnotations() {
-        super.initialiseAnnotationsWith(new ComplexAnnotationList());
-    }
-
-    @Override
     /**
-     * Sets the interactor type for this complex.
-     * If the given interactorType is null, it will set the interactor type to 'complex' (MI:0314)
+     * Gets the value of the id property.
+     *
      */
-    public void setInteractorType(CvTerm interactorType) {
-        if (interactorType == null){
-            super.setInteractorType(CvTermUtils.createComplexInteractorType());
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of the id property.
+     *
+     */
+    public void setId(int value) {
+        this.id = value;
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        if (getSourceLocator() != null){
+            sourceLocator.setObjectId(this.id);
+        }
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        if (sourceLocator == null){
+            this.sourceLocator = null;
         }
         else{
-            super.setInteractorType(interactorType);
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
         }
     }
 
-    public String getRigid() {
-        return this.rigid != null ? this.rigid.getValue() : null;
-    }
-
-    public void setRigid(String rigid) {
-        Collection<Checksum> checksums = getChecksums();
-        if (rigid != null){
-            CvTerm rigidMethod = CvTermUtils.createRigid();
-            // first remove old rigid
-            if (this.rigid != null){
-                checksums.remove(this.rigid);
-            }
-            this.rigid = new DefaultChecksum(rigidMethod, rigid);
-            checksums.add(this.rigid);
-        }
-        // remove all smiles if the collection is not empty
-        else if (!checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.RIGID_MI, Checksum.RIGID);
-            this.rigid = null;
-        }
-    }
-
-    public Date getUpdatedDate() {
-        return this.updatedDate;
-    }
-
-    public void setUpdatedDate(Date updated) {
-        this.updatedDate = updated;
-    }
-
-    public Date getCreatedDate() {
-        return this.createdDate;
-    }
-
-    public void setCreatedDate(Date created) {
-        this.createdDate = created;
-    }
-
-    public CvTerm getInteractionType() {
-        return this.interactionType;
-    }
-
-    public void setInteractionType(CvTerm term) {
-        this.interactionType = term;
-    }
-
-    public Collection<Annotation> getAnnotations() {
-        return super.getAnnotations();
-    }
-
-    public Collection<Checksum> getChecksums() {
-        return super.getChecksums();
-    }
-
-    public Collection<Xref> getXrefs() {
-        return super.getXrefs();
-    }
-
-    public Collection<Xref> getIdentifiers() {
-        return super.getIdentifiers();
-    }
-
-    public Collection<Alias> getAliases() {
-        return super.getAliases();
-    }
-
-    protected void processAddedChecksumEvent(Checksum added) {
-        if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
-            // the rigid is not set, we can set the rigid
-            rigid = added;
-        }
-    }
-
-    protected void processRemovedChecksumEvent(Checksum removed) {
-        if (rigid == removed){
-            rigid = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.RIGID_MI, Checksum.RIGID);
-        }
-    }
-
-    protected void clearPropertiesLinkedToChecksums() {
-        rigid = null;
-    }
-
-    public Collection<ModelledParticipant> getParticipants() {
-        if (participants == null){
-            initialiseParticipants();
-        }
-        return participants;
-    }
-
-    public boolean addParticipant(ModelledParticipant part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipants().add(part)){
-            part.setInteraction(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeParticipant(ModelledParticipant part) {
-        if (part == null){
-            return false;
-        }
-        if (getParticipants().remove(part)){
-            part.setInteraction(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllParticipants(Collection<? extends ModelledParticipant> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (ModelledParticipant p : participants){
-            if (addParticipant(p)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllParticipants(Collection<? extends ModelledParticipant> participants) {
-        if (participants == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (ModelledParticipant p : participants){
-            if (removeParticipant(p)){
-                removed = true;
-            }
-        }
-        return removed;
-    }
-
-    protected void initialiseInteractionEvidences(){
-        this.interactionEvidences = new ArrayList<InteractionEvidence>();
-    }
-
-    protected void initialiseCooperativeEffects(){
-        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
-    }
-
-    protected void initialiseModelledConfidences(){
-        this.modelledConfidences = new ArrayList<ModelledConfidence>();
-    }
-
-    protected void initialiseParticipants(){
-        this.participants = new ArrayList<ModelledParticipant>();
-    }
-
-    protected void initialiseParticipantsWith(Collection<ModelledParticipant> components){
-        if (components == null){
-            this.participants = Collections.EMPTY_LIST;
-        }
-        else{
-            this.participants = components;
-        }
-    }
-
-    protected void initialiseModelledConfidencesWith(Collection<ModelledConfidence> confidences){
-        if (confidences == null){
-            this.modelledConfidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledConfidences = confidences;
-        }
-    }
-
-    protected void initialiseModelledParameters(){
-        this.modelledParameters = new ArrayList<ModelledParameter>();
-    }
-
-    protected void initialiseModelledParametersWith(Collection<ModelledParameter> parameters){
-        if (parameters == null){
-            this.modelledParameters = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledParameters = parameters;
-        }
-    }
-
-    @Override
-    protected void createDefaultInteractorType() {
-        setInteractorType(new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI));
-    }
-
-    //////////////////////////////////////////////////////////////////////////// classes
-
-    private class ComplexAnnotationList extends AbstractListHavingProperties<Annotation> {
-        public ComplexAnnotationList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Annotation added) {
-            processAddedAnnotationEvent(added);
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Annotation removed) {
-            processRemovedAnnotationEvent(removed);
-        }
-
-        @Override
-        protected void clearProperties() {
-            clearPropertiesLinkedToAnnotations();
-        }
-    }
-
-    private class ComplexChecksumList extends AbstractListHavingProperties<Checksum> {
-        public ComplexChecksumList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Checksum added) {
-            processAddedChecksumEvent(added);
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Checksum removed) {
-            processRemovedChecksumEvent(removed);
-        }
-
-        @Override
-        protected void clearProperties() {
-            clearPropertiesLinkedToChecksums();
-        }
+    public void setSourceLocator(PsiXmLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }

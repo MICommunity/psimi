@@ -1,12 +1,13 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.Gene;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultGene;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Xml implementation of a Gene
@@ -15,12 +16,10 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
-public class XmlGene extends XmlMolecule implements Gene{
-
-    public XmlGene() {
-    }
+@XmlTransient
+public class XmlGene extends DefaultGene implements ExtendedPsi25Interactor, FileSourceContext{
+    private int id;
+    private PsiXmLocator sourceLocator;
 
     public XmlGene(String name) {
         super(name);
@@ -76,83 +75,40 @@ public class XmlGene extends XmlMolecule implements Gene{
         }
     }
 
-    @Override
-    protected void initialiseXrefContainer() {
-        this.xrefContainer = new GeneXrefContainer();
+    /**
+     * Gets the value of the id property.
+     *
+     */
+    public int getId() {
+        return id;
     }
 
-    public String getEnsembl() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((GeneXrefContainer)xrefContainer).getEnsembl();
-    }
-
-    public void setEnsembl(String ac) {
-        ((GeneXrefContainer)xrefContainer).setEnsembl(ac);
-    }
-
-    public String getEnsemblGenome() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((GeneXrefContainer)xrefContainer).getEnsembleGenome();
-    }
-
-    public void setEnsemblGenome(String ac) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        ((GeneXrefContainer)xrefContainer).setEnsemblGenome(ac);
-    }
-
-    public String getEntrezGeneId() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((GeneXrefContainer)xrefContainer).getEntrezGeneId();
-    }
-
-    public void setEntrezGeneId(String id) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        ((GeneXrefContainer)xrefContainer).setEntrezGeneId(id);
-    }
-
-    public String getRefseq() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((GeneXrefContainer)xrefContainer).getRefseq();
-    }
-
-    public void setRefseq(String ac) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        ((GeneXrefContainer)xrefContainer).setRefseq(ac);
-    }
-
-    @Override
-    public void setJAXBXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
-        }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new GeneXrefContainer();
-            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
-            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
-            this.xrefContainer.getJAXBSecondaryRefs().clear();
-            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+    /**
+     * Sets the value of the id property.
+     *
+     */
+    public void setId(int value) {
+        this.id = value;
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        if (getSourceLocator() != null){
+            sourceLocator.setObjectId(this.id);
         }
     }
 
-    @Override
-    protected void createDefaultInteractorType() {
-        setInteractorType(new XmlCvTerm(Gene.GENE, Gene.GENE_MI));
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        }
+    }
+
+    public void setSourceLocator(PsiXmLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }

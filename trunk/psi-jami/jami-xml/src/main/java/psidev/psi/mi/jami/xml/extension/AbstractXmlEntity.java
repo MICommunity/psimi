@@ -433,6 +433,13 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public boolean resolve(Map<Integer, Object> parsedObjects) {
+            // first check if complex not already loaded before
+            Map<Integer, Complex> resolvedComplexes = XmlEntryContext.getInstance().getMapOfReferencedComplexes();
+            if (resolvedComplexes.containsKey(this.ref)){
+                interactor = resolvedComplexes.get(this.ref);
+                return true;
+            }
+            // then take it from existing references
             if (parsedObjects.containsKey(this.ref)){
                 Object object = parsedObjects.get(this.ref);
                 if (object instanceof Interactor){

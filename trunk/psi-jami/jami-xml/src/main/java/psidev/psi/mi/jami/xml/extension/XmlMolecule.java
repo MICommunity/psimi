@@ -5,9 +5,7 @@ import psidev.psi.mi.jami.model.Molecule;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Xml implementation of molecule
@@ -16,8 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@XmlTransient
 public class XmlMolecule extends XmlInteractor implements Molecule{
 
     public XmlMolecule() {
