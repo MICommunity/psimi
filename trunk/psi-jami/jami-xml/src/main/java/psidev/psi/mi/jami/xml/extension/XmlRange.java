@@ -21,15 +21,6 @@ import javax.xml.bind.annotation.*;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "baseLocation", propOrder = {
-        "JAXBStartStatus",
-        "JAXBBeginInterval",
-        "JAXBBeginPosition",
-        "JAXBEndStatus",
-        "JAXBEndInterval",
-        "JAXBEndPosition",
-        "JAXBLink"
-})
 public class XmlRange implements Range, FileSourceContext, Locatable{
     private Position start;
     private Position end;
@@ -40,6 +31,9 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     @XmlLocation
     @XmlTransient
     private Locator locator;
+
+    private CvTerm startStatus;
+    private CvTerm endStatus;
 
     public XmlRange(){
 
@@ -76,14 +70,24 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
 
     public Position getStart() {
         if (start == null){
-           start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
+            if (startStatus != null){
+                start = new XmlPosition(startStatus, null, true);
+            }
+            else{
+                start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, true);
+            }
         }
         return start;
     }
 
     public Position getEnd() {
         if (end == null){
-            end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, false);
+            if (endStatus != null){
+                end = new XmlPosition(endStatus, null, true);
+            }
+            else{
+                end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, true);
+            }
         }
         return this.end;
     }
@@ -105,19 +109,6 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     }
 
     /**
-     * Gets the value of the startStatus property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElement(name = "startStatus", required = true, type = XmlCvTerm.class)
-    public CvTerm getJAXBStartStatus() {
-        return getStart().getStatus();
-    }
-
-    /**
      * Sets the value of the startStatus property.
      *
      * @param value
@@ -125,30 +116,9 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
+    @XmlElement(name = "startStatus", required = true, type = XmlCvTerm.class)
     public void setJAXBStartStatus(CvTerm value) {
-        if (start != null){
-            AbstractXmlPosition pos = (AbstractXmlPosition) start;
-            pos.setJAXBStatus((XmlCvTerm)value);
-        }
-        else {
-            this.start = createXmlPositionWithStatus(this.start, (XmlCvTerm)value);
-        }
-    }
-
-    /**
-     * Gets the value of the beginInterval property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlInterval }
-     *
-     */
-    @XmlElement(name = "beginInterval")
-    public XmlInterval getJAXBBeginInterval() {
-        if (start instanceof XmlInterval){
-            return (XmlInterval) start;
-        }
-        return null;
+        this.startStatus = value;
     }
 
     /**
@@ -159,24 +129,10 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlInterval }
      *
      */
+    @XmlElement(name = "beginInterval")
     public void setJAXBBeginInterval(XmlInterval value) {
         this.start = value;
-    }
-
-    /**
-     * Gets the value of the begin property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Position }
-     *
-     */
-    @XmlElement(name = "begin")
-    public XmlPosition getJAXBBeginPosition() {
-        if (start instanceof XmlPosition){
-            return (XmlPosition) start;
-        }
-        return null;
+        value.setJAXBStatus(this.startStatus);
     }
 
     /**
@@ -187,21 +143,10 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link Position }
      *
      */
+    @XmlElement(name = "begin")
     public void setJAXBBeginPosition(XmlPosition value) {
         this.start = value;
-    }
-
-    /**
-     * Gets the value of the endStatus property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElement(name = "endStatus", required = true, type = XmlCvTerm.class)
-    public CvTerm getJAXBEndStatus() {
-        return getEnd().getStatus();
+        value.setJAXBStatus(this.startStatus);
     }
 
     /**
@@ -212,30 +157,9 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
+    @XmlElement(name = "endStatus", required = true, type = XmlCvTerm.class)
     public void setJAXBEndStatus(CvTerm value) {
-        if (end != null){
-            AbstractXmlPosition pos = (AbstractXmlPosition) end;
-            pos.setJAXBStatus((XmlCvTerm)value);
-        }
-        else {
-            this.end = createXmlPositionWithStatus(this.end, (XmlCvTerm)value);
-        }
-    }
-
-    /**
-     * Gets the value of the endInterval property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlInterval }
-     *
-     */
-    @XmlElement(name = "endInterval")
-    public XmlInterval getJAXBEndInterval() {
-        if (end instanceof XmlInterval){
-            return (XmlInterval) end;
-        }
-        return null;
+        this.endStatus = value;
     }
 
     /**
@@ -246,24 +170,10 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlInterval }
      *
      */
+    @XmlElement(name = "endInterval")
     public void setJAXBEndInterval(XmlInterval value) {
         this.end = value;
-    }
-
-    /**
-     * Gets the value of the end property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlPosition }
-     *
-     */
-    @XmlElement(name = "end")
-    public XmlPosition getJAXBEndPosition() {
-        if (end instanceof XmlPosition){
-            return (XmlPosition) end;
-        }
-        return null;
+        value.setJAXBStatus(endStatus);
     }
 
     /**
@@ -274,23 +184,13 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlPosition }
      *
      */
+    @XmlElement(name = "end")
     public void setJAXBEndPosition(XmlPosition value) {
         this.end = value;
+        value.setJAXBStatus(endStatus);
     }
 
-    /**
-     * Gets the value of the isLink property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
     @XmlElement(name = "isLink", defaultValue = "false")
-    public boolean isJAXBLink() {
-        return false;
-    }
-
     public void setJAXBLink(boolean link) {
         this.isLink = link;
     }
