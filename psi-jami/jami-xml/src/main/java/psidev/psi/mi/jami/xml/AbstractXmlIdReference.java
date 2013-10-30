@@ -13,6 +13,7 @@ public abstract class AbstractXmlIdReference implements XmlIdReference {
 
     public AbstractXmlIdReference(int ref) {
         this.ref = ref;
+        registerForResolution();
     }
 
     public void registerForResolution() {

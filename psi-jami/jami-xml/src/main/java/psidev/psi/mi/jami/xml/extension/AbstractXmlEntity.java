@@ -635,7 +635,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                         // we recognize the stoichiometry range
                         if (stcs.length == 2){
                             try{
-                                XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stcs[0]), Long.parseLong(stcs[1]));
+                                XmlStoichiometry s = new XmlStoichiometry((long)Double.parseDouble(stc));
                                 s.setSourceLocator(sourceLocator);
                                 stoichiometry = s;
                                 return false;
@@ -653,7 +653,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     // simple stoichiometry
                     else {
                         try{
-                            XmlStoichiometry s = new XmlStoichiometry(Long.parseLong(stc));
+                            XmlStoichiometry s = new XmlStoichiometry((long)Double.parseDouble(stc));
                             s.setSourceLocator(sourceLocator);
                             stoichiometry = s;
                             return false;
