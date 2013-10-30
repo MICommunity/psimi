@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Parameter;
-import psidev.psi.mi.jami.model.ParameterValue;
+import psidev.psi.mi.jami.model.*;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Xml parameter wrapper
@@ -13,12 +14,13 @@ import java.math.BigDecimal;
  * @version $Id$
  * @since <pre>11/10/13</pre>
  */
-
-public class XmlModelledParameterWrapper extends XmlModelledParameter{
+@XmlTransient
+public class XmlParameterWrapper implements ModelledParameter{
 
     private Parameter parameter;
+    private Collection<Publication> publications;
 
-    public XmlModelledParameterWrapper(Parameter param){
+    public XmlParameterWrapper(Parameter param){
         if (param == null){
             throw new IllegalArgumentException("A parameter wrapper needs a non null Parameter");
         }
@@ -43,5 +45,13 @@ public class XmlModelledParameterWrapper extends XmlModelledParameter{
     @Override
     public ParameterValue getValue() {
         return this.parameter.getValue();
+    }
+
+    @Override
+    public Collection<Publication> getPublications() {
+        if (publications == null){
+            this.publications = new ArrayList<Publication>();
+        }
+        return this.publications;
     }
 }

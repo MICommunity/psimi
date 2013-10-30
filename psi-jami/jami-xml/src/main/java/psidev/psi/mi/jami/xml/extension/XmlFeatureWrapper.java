@@ -1,33 +1,29 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Xml wrapper for feature evidences.
- *
- * The new linked features added to this wrapper are NOT added to the wrapped feature evidence
- * because they are incompatibles.
+ * Xml wrapper for basic features
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>11/10/13</pre>
+ * @since <pre>30/10/13</pre>
  */
-@XmlTransient
-public class XmlFeatureEvidenceWrapper implements ModelledFeature{
-    private FeatureEvidence feature;
-    private ModelledEntity parent;
-    private Collection<ModelledFeature> linkedFeatures;
 
-    public XmlFeatureEvidenceWrapper(FeatureEvidence part, ModelledEntity wrapper){
+public class XmlFeatureWrapper implements ModelledFeature{
+    private Feature<Participant, Feature> feature;
+    private ModelledEntity parent;
+    private SynchronizedLinkedFeatureList linkedFeatures;
+
+    public XmlFeatureWrapper(Feature part, ModelledEntity parent){
         if (part == null){
-            throw new IllegalArgumentException("A feature evidence wrapper needs a non null feature");
+            throw new IllegalArgumentException("A feature wrapper needs a non null feature");
         }
         this.feature = part;
-        this.parent = wrapper;
+        this.parent = parent;
     }
 
     @Override
@@ -112,8 +108,8 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature{
 
     @Override
     public ModelledEntity getParticipant() {
-        if (this.parent == null && this.feature.getParticipant()instanceof ParticipantEvidence){
-            this.parent = new XmlParticipantEvidenceWrapper((ParticipantEvidence)this.feature.getParticipant(), null);
+        if (parent == null && this.feature.getParticipant() != null){
+            this.parent = new XmlParticipantWrapper(this.feature.getParticipant(), null);
         }
         return this.parent;
     }
@@ -142,19 +138,41 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature{
         return this.linkedFeatures;
     }
 
+    public Feature<Participant,Feature> getWrappedFeature(){
+        return this.feature;
+    }
+
     @Override
     public String toString() {
         return this.feature.toString();
     }
 
-    public FeatureEvidence getWrappedFeature(){
-        return this.feature;
+    protected void initialiseLinkedFeatures(){
+        this.linkedFeatures = new SynchronizedLinkedFeatureList();
+        for (Feature feature : this.feature.getLinkedFeatures()){
+            this.linkedFeatures.addOnly(new XmlFeatureWrapper(feature, null));
+        }
     }
 
-    protected void initialiseLinkedFeatures(){
-        this.linkedFeatures = new ArrayList<ModelledFeature>(this.feature.getLinkedFeatures().size());
-        for (FeatureEvidence feature : this.feature.getLinkedFeatures()){
-            this.linkedFeatures.add(new XmlFeatureWrapper(feature, null));
+    ////////////////////////////////////// classes
+    private class SynchronizedLinkedFeatureList extends AbstractListHavingProperties<ModelledFeature> {
+
+        private SynchronizedLinkedFeatureList() {
+        }
+
+        @Override
+        protected void processAddedObjectEvent(ModelledFeature added) {
+            feature.getLinkedFeatures().add(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(ModelledFeature removed) {
+            feature.getLinkedFeatures().remove(removed);
+        }
+
+        @Override
+        protected void clearProperties() {
+            feature.getLinkedFeatures().clear();
         }
     }
 }

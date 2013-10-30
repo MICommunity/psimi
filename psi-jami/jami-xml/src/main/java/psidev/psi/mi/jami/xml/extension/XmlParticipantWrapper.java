@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import org.xml.sax.Locator;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Wrapper for XmlParticipant
@@ -15,21 +15,23 @@ import java.util.Collection;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlParticipantWrapper extends XmlModelledParticipant{
+public class XmlParticipantWrapper implements ModelledParticipant{
 
-    private Participant participant;
+    private Participant<Interaction,Feature> participant;
+    private ModelledInteraction parent;
+    private SynchronizedFeatureList modelledFeatures;
 
-    public XmlParticipantWrapper(Participant part, XmlBasicInteractionComplexWrapper wrapper){
+    public XmlParticipantWrapper(Participant part, ModelledInteraction wrapper){
         if (part == null){
-            throw new IllegalArgumentException("A participant wrapper needs a non null interaction wrapper");
+            throw new IllegalArgumentException("A participant wrapper needs a non null participant");
         }
         this.participant = part;
-        setInteraction(wrapper);
+        this.parent = wrapper;
     }
 
     @Override
-    public Collection<Alias> getAliases() {
-        return this.participant.getAliases();
+    public List<Alias> getAliases() {
+        return (List<Alias>)this.participant.getAliases();
     }
 
     @Override
@@ -40,6 +42,11 @@ public class XmlParticipantWrapper extends XmlModelledParticipant{
     @Override
     public Interactor getInteractor() {
         return this.participant.getInteractor();
+    }
+
+    @Override
+    public void setInteractor(Interactor interactor) {
+        this.participant.setInteractor(interactor);
     }
 
     @Override
@@ -73,8 +80,76 @@ public class XmlParticipantWrapper extends XmlModelledParticipant{
     }
 
     @Override
+    public Collection<ModelledFeature> getFeatures() {
+        if (this.modelledFeatures == null){
+            initialiseFeatures();
+        }
+        return this.modelledFeatures;
+    }
+
+    @Override
     public void setChangeListener(ParticipantInteractorChangeListener listener) {
         this.participant.setChangeListener(listener);
+    }
+
+    @Override
+    public boolean addFeature(ModelledFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (this.modelledFeatures == null){
+            initialiseFeatures();
+        }
+        if (this.modelledFeatures.add(feature)){
+            feature.setParticipant(this);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFeature(ModelledFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (this.modelledFeatures == null){
+            initialiseFeatures();
+        }
+        if (this.modelledFeatures.remove(feature)){
+            feature.setParticipant(null);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addAllFeatures(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (addFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    @Override
+    public boolean removeAllFeatures(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (removeFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 
     @Override
@@ -92,99 +167,65 @@ public class XmlParticipantWrapper extends XmlModelledParticipant{
         this.participant.setBiologicalRole(bioRole);
     }
 
-    @Override
-    public FileSourceLocator getSourceLocator() {
-        return super.getSourceLocator();
-    }
-
-    @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        super.setSourceLocator(sourceLocator);
-    }
-
-    @Override
-    protected void initialiseFeatureWrapper() {
-        super.initialiseFeatureWrapper();
-        // initialise wrapper
-    }
-
-    @Override
-    public void setInteractionAndAddParticipant(ModelledInteraction interaction) {
-        super.setInteractionAndAddParticipant(interaction);
-    }
-
-    @Override
-    public ModelledInteraction getInteraction() {
-        return super.getInteraction();
-    }
-
-    @Override
-    public void setInteraction(ModelledInteraction interaction) {
-        super.setInteraction(interaction);
-    }
-
-    @Override
-    public void setInteractor(Interactor interactor) {
-        super.setInteractor(interactor);
-    }
-
-    @Override
-    public Collection<ModelledFeature> getFeatures() {
-        return super.getFeatures();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean addFeature(ModelledFeature feature) {
-        return super.addFeature(feature);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean removeFeature(ModelledFeature feature) {
-        return super.removeFeature(feature);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean addAllFeatures(Collection<? extends ModelledFeature> features) {
-        return super.addAllFeatures(features);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean removeAllFeatures(Collection<? extends ModelledFeature> features) {
-        return super.removeAllFeatures(features);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public int getId() {
-        return super.getId();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Locator sourceLocation() {
-        return super.sourceLocation();    //To change body of overridden methods use File | Settings | File Templates.
+    protected void initialiseFeatures(){
+        this.modelledFeatures = new SynchronizedFeatureList();
+        for (Feature feature : this.participant.getFeatures()){
+            this.modelledFeatures.addOnly(new XmlFeatureWrapper(feature, this));
+        }
     }
 
     @Override
     public String toString() {
-        return super.toString();    //To change body of overridden methods use File | Settings | File Templates.
+        return this.participant.toString();
+    }
+
+    public Participant<Interaction, Feature> getWrappedParticipant(){
+        return this.participant;
     }
 
     @Override
-    public void setFeatureWrapper(AbstractXmlEntity.JAXBFeatureWrapper<ModelledFeature> jaxbFeatureWrapper) {
-        super.setFeatureWrapper(jaxbFeatureWrapper);    //To change body of overridden methods use File | Settings | File Templates.
+    public void setInteractionAndAddParticipant(ModelledInteraction interaction) {
+        if (this.parent != null){
+            this.parent.removeParticipant(this);
+        }
+
+        if (interaction != null){
+            interaction.addParticipant(this);
+        }
     }
 
     @Override
-    protected void processAddedFeature(ModelledFeature feature) {
-        super.processAddedFeature(feature);    //To change body of overridden methods use File | Settings | File Templates.
+    public ModelledInteraction getInteraction() {
+        if (this.parent == null && this.participant.getInteraction() instanceof XmlBasicInteraction){
+            this.parent = new XmlBasicInteractionComplexWrapper((XmlBasicInteraction)this.participant.getInteraction());
+        }
+        return this.parent;
     }
 
     @Override
-    protected void initialiseUnspecifiedInteractor() {
-        super.initialiseUnspecifiedInteractor();    //To change body of overridden methods use File | Settings | File Templates.
+    public void setInteraction(ModelledInteraction interaction) {
+        this.parent = interaction;
     }
 
-    @Override
-    protected void initialiseAnnotationWrapper() {
-        super.initialiseAnnotationWrapper();    //To change body of overridden methods use File | Settings | File Templates.
+    ////////////////////////////////////// classes
+    private class SynchronizedFeatureList extends AbstractListHavingProperties<ModelledFeature> {
+
+        private SynchronizedFeatureList() {
+        }
+
+        @Override
+        protected void processAddedObjectEvent(ModelledFeature added) {
+            participant.getFeatures().add(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(ModelledFeature removed) {
+            participant.getFeatures().remove(removed);
+        }
+
+        @Override
+        protected void clearProperties() {
+            participant.getFeatures().clear();
+        }
     }
 }
