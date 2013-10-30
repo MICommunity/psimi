@@ -2,13 +2,13 @@ package psidev.psi.mi.jami.xml.extension;
 
 import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -318,35 +318,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
     @XmlElement(name = "bibref", required = true, type = BibRef.class)
     public void setJAXBPublication(Publication publication) {
-        if (publication != null){
-            if (!publication.getIdentifiers().isEmpty()){
-                Xref firstIdentifier = publication.getIdentifiers().iterator().next();
-
-                XmlEntryContext context = XmlEntryContext.getInstance();
-                Map<Xref, Publication> mapOfPublications = context.getMapOfPublications();
-                XmlEntry entry = context.getCurrentEntry();
-                if (entry != null){
-                    publication.setSource(entry.getSource());
-                    if (entry.getSource() != null){
-                       publication.setReleasedDate(entry.getSource().getReleaseDate().toGregorianCalendar().getTime());
-                    }
-                }
-
-                if (mapOfPublications.containsKey(firstIdentifier)){
-                    setPublicationAndAddExperiment(mapOfPublications.get(firstIdentifier));
-                }
-                else {
-                    setPublicationAndAddExperiment(publication);
-                    mapOfPublications.put(firstIdentifier, publication);
-                }
-            }
-            else {
-                setPublicationAndAddExperiment(publication);
-            }
-        }
-        else {
-            setPublicationAndAddExperiment(publication);
-        }
+        setPublicationAndAddExperiment(publication);
     }
 
     /**
@@ -449,17 +421,75 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
         // in case we have publication annotations, we can update publication
         if (this.jaxbAttributeWrapper != null){
             if (publication == null){
-               publication = new BibRef();
+                publication = new BibRef();
+                publication.setCurationDepth(this.jaxbAttributeWrapper.curationDepth);
+                publication.setTitle(this.jaxbAttributeWrapper.title);
+                publication.setPublicationDate(this.jaxbAttributeWrapper.publicationDate);
+                publication.setJournal(this.jaxbAttributeWrapper.journal);
+                if (!this.jaxbAttributeWrapper.authors.isEmpty()){
+                    publication.getAuthors().addAll(this.jaxbAttributeWrapper.authors);
+                }
             }
-            this.curationDepth != CurationDepth.undefined || !this.authors.isEmpty()
-                    || this.title != null || this.journal != null || this.publicationDate != null;
-            // set curation depth
-            if (this.jaxbAttributeWrapper.curationDepth != CurationDepth.undefined){
-                if (publication.getCurationDepth() == CurationDepth.undefined){
-                    publication.setCurationDepth(this.jaxbAttributeWrapper.curationDepth);
+            else{
+                // set curation depth
+                if (this.jaxbAttributeWrapper.curationDepth != CurationDepth.undefined){
+                    if (publication.getCurationDepth() == CurationDepth.undefined){
+                        publication.setCurationDepth(this.jaxbAttributeWrapper.curationDepth);
+                    }
+                    else {
+                        this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
+                                        Annotation.CURATION_DEPTH, Annotation.CURATION_DEPTH_MI),
+                                        this.jaxbAttributeWrapper.curationDepth.toString()));
+                        this.jaxbAttributeWrapper.curationDepth = null;
+                    }
+                }
+                // authors
+                if (!this.jaxbAttributeWrapper.authors.isEmpty() && this.publication.getAuthors().isEmpty()){
+                    this.publication.getAuthors().addAll(this.jaxbAttributeWrapper.authors);
+                    this.jaxbAttributeWrapper.authors = null;
                 }
                 else {
-                    this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(Annotation.))
+                    this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
+                            Annotation.AUTHOR, Annotation.AUTHOR_MI),
+                            StringUtils.join(this.jaxbAttributeWrapper.authors,",")));
+                    this.jaxbAttributeWrapper.authors = null;
+                }
+                // title
+                if (this.jaxbAttributeWrapper.title != null && this.publication.getTitle() == null){
+                    this.publication.setTitle(this.jaxbAttributeWrapper.title);
+                    this.jaxbAttributeWrapper.title = null;
+                }
+                else if (getFullName() != null && this.publication.getTitle() == null){
+                    this.publication.setTitle(getFullName());
+                    this.jaxbAttributeWrapper.title = null;
+                }
+                else {
+                    this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
+                            Annotation.PUBLICATION_TITLE, Annotation.PUBLICATION_TITLE_MI),
+                            this.jaxbAttributeWrapper.title));
+                    this.jaxbAttributeWrapper.title = null;
+                }
+                // journal
+                if (this.jaxbAttributeWrapper.journal != null && this.publication.getJournal()== null){
+                    this.publication.setJournal(this.jaxbAttributeWrapper.journal);
+                    this.jaxbAttributeWrapper.journal = null;
+                }
+                else {
+                    this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
+                            Annotation.PUBLICATION_JOURNAL, Annotation.PUBLICATION_JOURNAL_MI),
+                            this.jaxbAttributeWrapper.journal));
+                    this.jaxbAttributeWrapper.journal = null;
+                }
+                // publicationDate
+                if (this.jaxbAttributeWrapper.publicationDate != null && this.publication.getPublicationDate() == null){
+                    this.publication.setPublicationDate(this.jaxbAttributeWrapper.publicationDate);
+                    this.jaxbAttributeWrapper.publicationDate = null;
+                }
+                else {
+                    this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
+                            Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI),
+                            PsiXmlUtils.YEAR_FORMAT.format(this.jaxbAttributeWrapper.publicationDate)));
+                    this.jaxbAttributeWrapper.publicationDate = null;
                 }
             }
         }
@@ -541,9 +571,17 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
     @Override
     public List<Alias> getAliases() {
         if (this.namesContainer == null){
-           this.namesContainer = new NamesContainer();
+            this.namesContainer = new NamesContainer();
         }
         return this.namesContainer.getAliases();
+    }
+
+    @Override
+    public List<Organism> getHostOrganisms() {
+        if (this.jaxbHostOrganismWrapper == null){
+            this.jaxbHostOrganismWrapper = new JAXBHostOrganismWrapper();
+        }
+        return this.jaxbHostOrganismWrapper.hostOrganisms;
     }
 
     protected void initialiseAnnotationWrapper(){
