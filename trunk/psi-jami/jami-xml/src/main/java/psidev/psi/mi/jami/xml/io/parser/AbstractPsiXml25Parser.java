@@ -512,7 +512,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // load the all entry
         // we already are parsing interactions
         StartElement evt = (StartElement) eventReader.peek();
-        boolean isReadingInteraction = PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
+        boolean isReadingInteraction = evt != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(evt.getName().getLocalPart());
         while(isReadingInteraction && this.eventReader.hasNext()){
             this.loadedInteractions.add((T)this.unmarshaller.unmarshal(subEventReader));
 

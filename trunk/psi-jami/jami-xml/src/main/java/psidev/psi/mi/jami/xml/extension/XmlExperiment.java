@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -319,6 +320,16 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
     @XmlElement(name = "bibref", required = true, type = BibRef.class)
     public void setJAXBPublication(Publication publication) {
         setPublicationAndAddExperiment(publication);
+        if (publication != null){
+            XmlEntryContext context = XmlEntryContext.getInstance();
+            XmlEntry entry = context.getCurrentEntry();
+            if (entry != null){
+                publication.setSource(entry.getSource());
+                if (entry.getSource() != null){
+                    publication.setReleasedDate(entry.getSource().getReleaseDate().toGregorianCalendar().getTime());
+                }
+            }
+        }
     }
 
     /**

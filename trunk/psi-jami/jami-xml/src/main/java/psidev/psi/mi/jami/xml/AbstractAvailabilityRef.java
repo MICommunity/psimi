@@ -15,6 +15,7 @@ public abstract class AbstractAvailabilityRef extends Availability implements Xm
 
     public AbstractAvailabilityRef(int ref) {
         this.ref = ref;
+        registerForResolution();
     }
 
     public void registerForResolution() {
