@@ -263,6 +263,10 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         this.xrefContainer = value;
     }
 
+    public boolean isIntraMolecular(){
+        return intraMolecular != null ? intraMolecular : false;
+    }
+
     /**
      * Sets the value of the intraMolecular property.
      *
@@ -271,7 +275,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
      *     {@link Boolean }
      *
      */
-    public void setJAXBIntraMolecular(Boolean value) {
+    public void setIntraMolecular(Boolean value) {
         this.intraMolecular = value;
     }
 
@@ -371,10 +375,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
 
     public InteractionXrefContainer getJAXBXref() {
         return xrefContainer;
-    }
-
-    public Boolean getJAXBIntraMolecular() {
-        return intraMolecular;
     }
 
     public JAXBInferredInteractionWrapper getJAXBInferredInteractionWrapper() {

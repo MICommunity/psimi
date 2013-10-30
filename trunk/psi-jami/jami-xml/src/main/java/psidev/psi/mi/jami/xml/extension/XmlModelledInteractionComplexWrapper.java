@@ -94,6 +94,16 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
         this.modelledInteraction.setSource(source);
     }
 
+    @Override
+    public boolean isIntraMolecular() {
+        return this.modelledInteraction.isIntraMolecular();
+    }
+
+    @Override
+    public void setIntraMolecular(Boolean intra) {
+        this.modelledInteraction.setIntraMolecular(intra);
+    }
+
     public Collection<ModelledConfidence> getModelledConfidences() {
         return this.modelledInteraction.getModelledConfidences();
     }

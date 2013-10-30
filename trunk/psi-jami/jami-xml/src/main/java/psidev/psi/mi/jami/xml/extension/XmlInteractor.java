@@ -326,7 +326,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
         this.interactorType = new XmlCvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
     }
 
-    protected String getSequence() {
+    public String getSequence() {
         return xmlSequence;
     }
 
