@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -16,60 +15,53 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Wrapper of basic interactions
- *
- * If we add new modelled participants/remove participants, they will be added/removed from the list of participants of the
- * wrapped interaction.
- *
- * However, the interaction that is in the back references of new participants will be this wrapper.
+ * Xml wrapper for interaction evidences used as complex
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>30/10/13</pre>
+ * @since <pre>11/10/13</pre>
  */
 
-public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant> {
-
-    private XmlBasicInteraction interaction;
-    private SynchronizedModelledParticipantList modelledParticipants;
+public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant> {
+    private XmlInteractionEvidence interactionEvidence;
+    private Organism organism;
+    private CvTerm interactorType;
     private Collection<InteractionEvidence> interactionEvidences;
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
-    private Source source;
-    private Organism organism;
-    private CvTerm interactorType;
+    private Collection<ModelledParticipant> modelledParticipants;
 
-    public XmlBasicInteractionComplexWrapper(XmlBasicInteraction interaction){
+    public XmlInteractionEvidenceComplexWrapper(XmlInteractionEvidence interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
-        this.interaction = interaction;
+        this.interactionEvidence = interaction;
         XmlEntryContext.getInstance().getMapOfReferencedComplexes().put(interaction.getId(), this);
     }
 
     public Date getUpdatedDate() {
-        return this.interaction.getUpdatedDate();
+        return this.interactionEvidence.getUpdatedDate();
     }
 
     public void setUpdatedDate(Date updated) {
-        this.interaction.setUpdatedDate(updated);
+        this.interactionEvidence.setUpdatedDate(updated);
     }
 
     public Date getCreatedDate() {
-        return this.interaction.getCreatedDate();
+        return this.interactionEvidence.getCreatedDate();
     }
 
     public void setCreatedDate(Date created) {
-        this.interaction.setCreatedDate(created);
+        this.interactionEvidence.setCreatedDate(created);
     }
 
     public CvTerm getInteractionType() {
-        return this.interaction.getInteractionType();
+        return this.interactionEvidence.getInteractionType();
     }
 
     public void setInteractionType(CvTerm term) {
-        this.interaction.setInteractionType(term);
+        this.interactionEvidence.setInteractionType(term);
     }
 
     public boolean addParticipant(ModelledParticipant part) {
@@ -135,6 +127,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
         return this.modelledParticipants;
     }
 
+    @Override
     public Collection<InteractionEvidence> getInteractionEvidences() {
         if (this.interactionEvidences == null){
             this.interactionEvidences = new ArrayList<InteractionEvidence>();
@@ -143,77 +136,96 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     }
 
     public Source getSource() {
-        return this.source;
+        if (this.interactionEvidence.getExperiment() != null){
+            Experiment exp =this.interactionEvidence.getExperiment();
+            if (exp.getPublication() != null){
+                return exp.getPublication().getSource();
+            }
+        }
+        return null;
     }
 
     public void setSource(Source source) {
-        this.source = source;
+        if (this.interactionEvidence.getExperiment() != null){
+            Experiment exp =this.interactionEvidence.getExperiment();
+            if (exp.getPublication() != null){
+                exp.getPublication().setSource(source);
+            }
+            else{
+                exp.setPublicationAndAddExperiment(new BibRef());
+                exp.getPublication().setSource(source);
+            }
+        }
+        else{
+            this.interactionEvidence.setExperimentAndAddInteractionEvidence(new XmlExperiment(new BibRef()));
+            this.interactionEvidence.getExperiment().getPublication().setSource(source);
+        }
     }
 
     public Collection<ModelledConfidence> getModelledConfidences() {
         if (this.modelledConfidences == null){
-            this.modelledConfidences = new ArrayList<ModelledConfidence>();
+            initialiseModelledConfidences();
         }
         return this.modelledConfidences;
     }
 
     public Collection<ModelledParameter> getModelledParameters() {
         if (this.modelledParameters == null){
-            this.modelledParameters = new ArrayList<ModelledParameter>();
+            initialiseModelledParameters();
         }
         return this.modelledParameters;
     }
 
     public Collection<CooperativeEffect> getCooperativeEffects() {
         if (this.cooperativeEffects == null){
-           this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+            this.cooperativeEffects = new ArrayList<CooperativeEffect>();
         }
         return this.cooperativeEffects;
     }
 
     @Override
     public Collection<Annotation> getAnnotations() {
-        return this.interaction.getAnnotations();
+        return this.interactionEvidence.getAnnotations();
     }
 
     @Override
     public Collection<Checksum> getChecksums() {
-        return this.interaction.getChecksums();
+        return this.interactionEvidence.getChecksums();
     }
 
     @Override
     public Collection<Xref> getXrefs() {
-        return this.interaction.getXrefs();
+        return this.interactionEvidence.getXrefs();
     }
 
     @Override
     public Collection<Xref> getIdentifiers() {
-        return this.interaction.getIdentifiers();
+        return this.interactionEvidence.getIdentifiers();
     }
 
     @Override
     public String getShortName() {
-        return this.interaction.getShortName() != null ? this.interaction.getShortName() : PsiXmlUtils.UNSPECIFIED;
+        return this.interactionEvidence.getShortName() != null ? this.interactionEvidence.getShortName() : PsiXmlUtils.UNSPECIFIED;
     }
 
     @Override
     public void setShortName(String name) {
-        this.interaction.setShortName(name);
+        this.interactionEvidence.setShortName(name);
     }
 
     @Override
     public String getFullName() {
-        return this.interaction.getFullName();
+        return this.interactionEvidence.getFullName();
     }
 
     @Override
     public void setFullName(String name) {
-        this.interaction.setFullName(name);
+        this.interactionEvidence.setFullName(name);
     }
 
     @Override
     public Xref getPreferredIdentifier() {
-        return !this.interaction.getIdentifiers().isEmpty()?this.interaction.getIdentifiers().iterator().next():null;
+        return !this.interactionEvidence.getIdentifiers().isEmpty()?this.interactionEvidence.getIdentifiers().iterator().next():null;
     }
 
     @Override
@@ -243,105 +255,95 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
 
     @Override
     public String getRigid() {
-        return this.interaction.getRigid();
+        return this.interactionEvidence.getRigid();
     }
 
     @Override
     public void setRigid(String rigid) {
-        this.interaction.setRigid(rigid);
+        this.interactionEvidence.setRigid(rigid);
+    }
+
+    protected void initialiseModelledParameters(){
+        this.modelledParameters = new ArrayList<ModelledParameter>();
+        for (Parameter part : this.interactionEvidence.getParameters()){
+            this.modelledParameters.add(new XmlParameterWrapper(part));
+        }
+    }
+
+    protected void initialiseModelledConfidences(){
+        this.modelledConfidences = new ArrayList<ModelledConfidence>();
+        for (Confidence part : this.interactionEvidence.getConfidences()){
+            this.modelledConfidences.add(new XmlConfidenceWrapper(part));
+        }
+    }
+
+    protected void initialiseParticipants(){
+        this.modelledParticipants = new ArrayList<ModelledParticipant>();
+        for (ParticipantEvidence part : this.interactionEvidence.getParticipants()){
+            this.modelledParticipants.add(new XmlParticipantEvidenceWrapper(part, this));
+        }
     }
 
     @Override
     public String getPhysicalProperties() {
-        Annotation properties = AnnotationUtils.collectFirstAnnotationWithTopic(this.interaction.getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
+        Annotation properties = AnnotationUtils.collectFirstAnnotationWithTopic(this.interactionEvidence.getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
         return properties != null ? properties.getValue() : null;
     }
 
     @Override
     public void setPhysicalProperties(String properties) {
-        Annotation propertiesAnnot = AnnotationUtils.collectFirstAnnotationWithTopic(this.interaction.getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
+        Annotation propertiesAnnot = AnnotationUtils.collectFirstAnnotationWithTopic(this.interactionEvidence.getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
         if (propertiesAnnot != null){
             propertiesAnnot.setValue(properties);
         }
         else{
-            this.interaction.getAnnotations().add(new XmlAnnotation(CvTermUtils.createMICvTerm(Annotation.COMPLEX_PROPERTIES, Annotation.COMPLEX_PROPERTIES_MI), properties));
+            this.interactionEvidence.getAnnotations().add(new XmlAnnotation(CvTermUtils.createMICvTerm(Annotation.COMPLEX_PROPERTIES, Annotation.COMPLEX_PROPERTIES_MI), properties));
         }
     }
 
     @Override
     public List<Alias> getAliases() {
-        return this.interaction.getAliases();
+        return this.interactionEvidence.getAliases();
     }
 
     @Override
     public List<CvTerm> getInteractionTypes() {
-        return this.interaction.getInteractionTypes();
+        return this.interactionEvidence.getInteractionTypes();
     }
 
     @Override
     public XmlEntry getEntry() {
-        return this.interaction.getEntry();
+        return this.interactionEvidence.getEntry();
     }
 
     @Override
     public void setEntry(XmlEntry entry) {
-        this.interaction.setEntry(entry);
+        this.interactionEvidence.setEntry(entry);
     }
 
     @Override
     public List<InferredInteraction> getInferredInteractions() {
-        return this.interaction.getInferredInteractions();
+        return this.interactionEvidence.getInferredInteractions();
     }
 
     @Override
     public int getId() {
-        return this.interaction.getId();
+        return this.interactionEvidence.getId();
     }
 
     @Override
     public void setId(int id) {
-        this.interaction.setId(id);
+        this.interactionEvidence.setId(id);
         XmlEntryContext.getInstance().getMapOfReferencedComplexes().put(id, this);
     }
 
     @Override
     public FileSourceLocator getSourceLocator() {
-        return this.interaction.getSourceLocator();
+        return this.interactionEvidence.getSourceLocator();
     }
 
     @Override
     public void setSourceLocator(FileSourceLocator locator) {
-        this.interaction.setSourceLocator(locator);
-    }
-
-    public XmlBasicInteraction getWrappedInteraction(){
-        return this.interaction;
-    }
-
-    protected void initialiseParticipants(){
-        this.modelledParticipants = new SynchronizedModelledParticipantList();
-        for (Participant part : this.interaction.getParticipants()){
-            this.modelledParticipants.addOnly(new XmlParticipantWrapper(part, this));
-        }
-    }
-
-    ////////////////////////////////////// classes
-    private class SynchronizedModelledParticipantList extends AbstractListHavingProperties<ModelledParticipant>{
-
-        @Override
-        protected void processAddedObjectEvent(ModelledParticipant added) {
-            interaction.getParticipants().add(added);
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(ModelledParticipant removed) {
-            interaction.getParticipants().remove(removed);
-        }
-
-        @Override
-        protected void clearProperties() {
-            interaction.getParticipants().clear();
-        }
+        this.interactionEvidence.setSourceLocator(locator);
     }
 }
-

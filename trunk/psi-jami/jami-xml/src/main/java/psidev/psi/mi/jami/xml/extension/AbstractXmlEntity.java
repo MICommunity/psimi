@@ -440,8 +440,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     return true;
                 }
                 // convert interaction evidence in a complex
-                if (object instanceof InteractionEvidence){
-                    interactor = new XmlInteractionEvidenceWrapper((InteractionEvidence)object);
+                if (object instanceof XmlInteractionEvidence){
+                    interactor = new XmlInteractionEvidenceComplexWrapper((XmlInteractionEvidence)object);
                     return true;
                 }
                 // set the complex

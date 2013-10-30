@@ -10,16 +10,20 @@ import java.util.Collection;
 /**
  * Wrapper for Xml participants
  *
+ * Addeding new modelled feature to this participant will not add new feature evidences to the wrapped participant evidence as they are incompatibles.
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlParticipantEvidenceWrapper extends XmlModelledParticipant{
+public class XmlParticipantEvidenceWrapper implements ModelledParticipant{
 
     private ParticipantEvidence participant;
+    private Collection<ModelledFeature> modelledFeatures;
+    private ModelledInteraction parent;
 
-    public XmlParticipantEvidenceWrapper(ParticipantEvidence part, XmlInteractionEvidenceWrapper wrapper){
+    public XmlParticipantEvidenceWrapper(ParticipantEvidence part, XmlInteractionEvidenceComplexWrapper wrapper){
         if (part == null){
             throw new IllegalArgumentException("A participant evidence wrapper needs a non null participant");
         }
@@ -40,6 +44,11 @@ public class XmlParticipantEvidenceWrapper extends XmlModelledParticipant{
     @Override
     public Interactor getInteractor() {
         return this.participant.getInteractor();
+    }
+
+    @Override
+    public void setInteractor(Interactor interactor) {
+        this.participant.setInteractor(interactor);
     }
 
     @Override
@@ -73,8 +82,76 @@ public class XmlParticipantEvidenceWrapper extends XmlModelledParticipant{
     }
 
     @Override
+    public Collection<ModelledFeature> getFeatures() {
+        if (this.modelledFeatures == null){
+            initialiseFeatures();
+        }
+        return this.modelledFeatures;
+    }
+
+    @Override
     public void setChangeListener(ParticipantInteractorChangeListener listener) {
         this.participant.setChangeListener(listener);
+    }
+
+    @Override
+    public boolean addFeature(ModelledFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (this.modelledFeatures == null){
+            initialiseFeatures();
+        }
+        if (this.modelledFeatures.add(feature)){
+            feature.setParticipant(this);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFeature(ModelledFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (this.modelledFeatures == null){
+            initialiseFeatures();
+        }
+        if (this.modelledFeatures.remove(feature)){
+            feature.setParticipant(null);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addAllFeatures(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (addFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    @Override
+    public boolean removeAllFeatures(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (removeFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 
     @Override
@@ -93,11 +170,43 @@ public class XmlParticipantEvidenceWrapper extends XmlModelledParticipant{
     }
 
     @Override
-    protected void initialiseFeatureWrapper() {
-        ArrayList<ModelledFeature> modelledFeatures = new ArrayList<ModelledFeature>(this.participant.getFeatures().size());
-        for (FeatureEvidence part : this.participant.getFeatures()){
-            modelledFeatures.add(new XmlFeatureEvidenceWrapper(part, this));
+    public String toString() {
+        return this.participant.toString();
+    }
+
+
+    @Override
+    public void setInteractionAndAddParticipant(ModelledInteraction interaction) {
+        if (this.parent != null){
+            this.parent.removeParticipant(this);
         }
-        super.setJAXBFeatureWrapper(new XmlModelledParticipant.JAXBFeatureWrapper(modelledFeatures));
+
+        if (interaction != null){
+            interaction.addParticipant(this);
+        }
+    }
+
+    @Override
+    public ModelledInteraction getInteraction() {
+        if (this.parent == null && this.participant.getInteraction() instanceof XmlInteractionEvidence){
+            this.parent = new XmlInteractionEvidenceComplexWrapper((XmlInteractionEvidence)this.participant.getInteraction());
+        }
+        return this.parent;
+    }
+
+    @Override
+    public void setInteraction(ModelledInteraction interaction) {
+        this.parent = interaction;
+    }
+
+    public ExperimentalEntity getWrappedParticipant(){
+        return this.participant;
+    }
+
+    protected void initialiseFeatures(){
+        this.modelledFeatures = new ArrayList<ModelledFeature>();
+        for (FeatureEvidence feature : this.participant.getFeatures()){
+            this.modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, this));
+        }
     }
 }
