@@ -45,6 +45,8 @@ public interface Annotation {
     public static final String RAPID_CURATION_MI = "MI:0961";
     public static final String FULL_COVERAGE = "full coverage";
     public static final String FULL_COVERAGE_MI = "MI:0957";
+    public static final String CURATION_DEPTH = "curation depth";
+    public static final String CURATION_DEPTH_MI = "MI:0955";
     public static final String PARTIAL_COVERAGE = "partial coverage";
     public static final String PARTIAL_COVERAGE_MI = "MI:0958";
     public static final String EXPERIMENTALLY_OBSERVED = "experimentally-observed";
