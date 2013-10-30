@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.xml;
 
-import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 
 import java.util.ArrayList;
@@ -21,16 +20,16 @@ import java.util.Map;
 public class XmlEntryContext {
 
     private Map<Integer, Object> mapOfReferencedObjects;
-    private Map<Xref, Publication> mapOfPublications;
+    private Map<Integer, Complex> mapOfReferencedComplexes;
     private Collection<XmlIdReference> references;
     private Collection<InferredInteraction> inferredInteractions;
     private XmlEntry currentEntry;
 
     private XmlEntryContext(){
         this.mapOfReferencedObjects = new HashMap<Integer, Object>();
-        this.mapOfPublications = new HashMap<Xref, Publication>();
         this.references = new ArrayList<XmlIdReference>();
         this.inferredInteractions = new ArrayList<InferredInteraction>();
+        this.mapOfReferencedComplexes = new HashMap<Integer, Complex>();
     }
 
     public static XmlEntryContext getInstance() {
@@ -49,10 +48,6 @@ public class XmlEntryContext {
         return mapOfReferencedObjects;
     }
 
-    public Map<Xref, Publication> getMapOfPublications() {
-        return mapOfPublications;
-    }
-
     public Collection<XmlIdReference> getReferences() {
         return references;
     }
@@ -62,11 +57,11 @@ public class XmlEntryContext {
     }
 
     public void clear(){
-        this.mapOfPublications.clear();
         this.mapOfReferencedObjects.clear();
         this.references.clear();
         this.currentEntry = null;
         this.inferredInteractions.clear();
+        this.mapOfReferencedComplexes.clear();
     }
 
     public XmlEntry getCurrentEntry() {
@@ -79,5 +74,9 @@ public class XmlEntryContext {
 
     public Collection<InferredInteraction> getInferredInteractions() {
         return inferredInteractions;
+    }
+
+    public Map<Integer, Complex> getMapOfReferencedComplexes() {
+        return mapOfReferencedComplexes;
     }
 }

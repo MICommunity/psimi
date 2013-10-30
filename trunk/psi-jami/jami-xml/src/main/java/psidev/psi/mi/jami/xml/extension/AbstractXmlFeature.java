@@ -22,7 +22,8 @@ import java.util.List;
  * @since <pre>25/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements Feature<P,F>, FileSourceContext, Locatable{
+public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements
+        Feature<P,F>, FileSourceContext, Locatable, ExtendedPsi25Feature<P,F>{
 
     private CvTerm interactionEffect;
     private CvTerm interactionDependency;
@@ -126,6 +127,14 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
             this.namesContainer = new NamesContainer();
         }
         this.namesContainer.setFullName(name);
+    }
+
+    @Override
+    public List<Alias> getAliases() {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        return this.namesContainer.getAliases();
     }
 
     /**
@@ -254,7 +263,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
      * Gets the value of the id property.
      *
      */
-    public int getJAXBId() {
+    public int getId() {
         return id;
     }
 
@@ -263,7 +272,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
      * Adds this object in the mapOfReferencedObjects of this entry
      *
      */
-    public void setJAXBId(int value) {
+    public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (getSourceLocator() != null){

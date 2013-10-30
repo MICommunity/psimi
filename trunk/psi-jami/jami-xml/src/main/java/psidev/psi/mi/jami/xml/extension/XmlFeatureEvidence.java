@@ -106,8 +106,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
      */
     @Override
     @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int id) {
-        super.setJAXBId(id);
+    public void setId(int id) {
+        super.setId(id);
     }
 
     /**
@@ -139,7 +139,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
     }
@@ -150,7 +150,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
     }
 
