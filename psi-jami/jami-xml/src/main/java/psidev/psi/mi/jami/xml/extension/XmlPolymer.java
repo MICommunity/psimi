@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Polymer;
+import psidev.psi.mi.jami.model.Xref;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Xml implementation of Polymer
@@ -13,8 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "polymer")
+@XmlTransient
 public class XmlPolymer extends XmlMolecule implements Polymer{
 
     public XmlPolymer() {
@@ -90,10 +90,10 @@ public class XmlPolymer extends XmlMolecule implements Polymer{
     }
 
     public String getSequence() {
-        return getJAXBSequence();
+        return super.getSequence();
     }
 
     public void setSequence(String sequence) {
-        setJAXBSequence(sequence);
+        super.setSequence(sequence);
     }
 }

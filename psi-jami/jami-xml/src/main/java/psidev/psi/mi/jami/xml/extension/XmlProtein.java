@@ -1,15 +1,14 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Xml implementation of protein
@@ -18,14 +17,11 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
-public class XmlProtein extends XmlPolymer implements Protein{
+@XmlTransient
+public class XmlProtein extends DefaultProtein implements ExtendedPsi25Interactor, FileSourceContext{
 
-    private Checksum rogid;
-
-    public XmlProtein() {
-    }
+    private int id;
+    private PsiXmLocator sourceLocator;
 
     public XmlProtein(String name, CvTerm type) {
         super(name, type);
@@ -91,162 +87,40 @@ public class XmlProtein extends XmlPolymer implements Protein{
         super(name, fullName, organism, uniqueId);
     }
 
-    @Override
-    protected void initialiseXrefContainer() {
-        this.xrefContainer = new ProteinXrefContainer();
+    /**
+     * Gets the value of the id property.
+     *
+     */
+    public int getId() {
+        return id;
     }
 
-    @Override
-    protected void initialiseNamesContainer() {
-        this.namesContainer = new ProteinNamesContainer();
-    }
-
-    public String getUniprotkb() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((ProteinXrefContainer)xrefContainer).getUniprotkb();
-    }
-
-    public void setUniprotkb(String ac) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        ((ProteinXrefContainer)xrefContainer).setUniprotkb(ac);
-    }
-
-    public String getRefseq() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((ProteinXrefContainer)xrefContainer).getRefseq();
-    }
-
-    public void setRefseq(String ac) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        ((ProteinXrefContainer)xrefContainer).setRefseq(ac);
-    }
-
-    public String getGeneName() {
-        if (namesContainer == null){
-            initialiseNamesContainer();
-        }
-        return ((ProteinNamesContainer)namesContainer).getGeneName();
-    }
-
-    public void setGeneName(String name) {
-        if (namesContainer == null){
-            initialiseNamesContainer();
-        }
-        ((ProteinNamesContainer)namesContainer).setGeneName(name);
-    }
-
-    public String getRogid() {
-        return this.rogid != null ? this.rogid.getValue() : null;
-    }
-
-    public void setRogid(String rogid) {
-        Collection<Checksum> proteinChecksums = getChecksums();
-
-        if (rogid != null){
-            CvTerm rogidMethod = CvTermUtils.createRogid();
-            // first remove old rogid
-            if (this.rogid != null){
-                proteinChecksums.remove(this.rogid);
-            }
-            this.rogid = new XmlChecksum(rogidMethod, rogid);
-            proteinChecksums.add(this.rogid);
-        }
-        // remove all smiles if the collection is not empty
-        else if (!proteinChecksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(proteinChecksums, Checksum.ROGID_MI, Checksum.ROGID);
-            this.rogid = null;
+    /**
+     * Sets the value of the id property.
+     *
+     */
+    public void setId(int value) {
+        this.id = value;
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        if (getSourceLocator() != null){
+            sourceLocator.setObjectId(this.id);
         }
     }
 
-    @Override
-    public void setJAXBXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        if (sourceLocator == null){
+            this.sourceLocator = null;
         }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new ProteinXrefContainer();
-            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
-            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
-            this.xrefContainer.getJAXBSecondaryRefs().clear();
-            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
         }
     }
 
-    @Override
-    public void setJAXBNames(NamesContainer value) {
-        if (value == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
-        }
-        else if (this.namesContainer == null){
-            this.namesContainer = new ProteinNamesContainer();
-            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
-            this.namesContainer.setFullName(value.getFullName());
-            this.namesContainer.getAliases().addAll(value.getAliases());
-        }
-        else {
-            this.namesContainer.setShortLabel(value.getShortLabel() != null ? value.getShortLabel() : PsiXmlUtils.UNSPECIFIED);
-            this.namesContainer.setFullName(value.getFullName());
-            this.namesContainer.getAliases().addAll(value.getAliases());
-        }
-    }
-
-    @Override
-    protected void createDefaultInteractorType() {
-        setInteractorType(new XmlCvTerm(Protein.PROTEIN, Protein.PROTEIN_MI));
-    }
-
-    protected void processAddedChecksumEvent(Checksum added) {
-        if (rogid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.ROGID_MI, Checksum.ROGID)){
-            // the rogid is not set, we can set the rogid
-            rogid = added;
-        }
-    }
-
-    protected void processRemovedChecksumEvent(Checksum removed) {
-        if (rogid != null && rogid.equals(removed)){
-            rogid = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.ROGID_MI, Checksum.ROGID);
-        }
-    }
-
-    protected void clearPropertiesLinkedToChecksums() {
-        rogid = null;
-    }
-
-    @Override
-    protected void initialiseChecksums() {
-        initialiseChecksumsWith(new ChecksumList());
-    }
-
-    private class ChecksumList extends AbstractListHavingProperties<Checksum> {
-        public ChecksumList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Checksum added) {
-            processAddedChecksumEvent(added);
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Checksum removed) {
-            processRemovedChecksumEvent(removed);
-        }
-
-        @Override
-        protected void clearProperties() {
-            clearPropertiesLinkedToChecksums();
-        }
+    public void setSourceLocator(PsiXmLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }

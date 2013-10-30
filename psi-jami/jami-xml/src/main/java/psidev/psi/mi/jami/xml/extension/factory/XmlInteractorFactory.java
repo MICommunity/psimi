@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.xml.extension.factory;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 import psidev.psi.mi.jami.xml.extension.*;
@@ -64,32 +66,33 @@ public class XmlInteractorFactory extends InteractorFactory{
     }
 
     @Override
-    public XmlInteractor createInteractorFromInteractorType(CvTerm type, String name) {
-        return (XmlInteractor) super.createInteractorFromInteractorType(type, name);
+    public ExtendedPsi25Interactor createInteractorFromInteractorType(CvTerm type, String name) {
+        return (ExtendedPsi25Interactor) super.createInteractorFromInteractorType(type, name);
     }
 
     @Override
-    public XmlInteractor createInteractorFromDatabase(CvTerm database, String name) {
-        return (XmlInteractor)super.createInteractorFromDatabase(database, name);
+    public ExtendedPsi25Interactor createInteractorFromDatabase(CvTerm database, String name) {
+        return (ExtendedPsi25Interactor)super.createInteractorFromDatabase(database, name);
     }
 
     @Override
-    public XmlInteractor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name) {
-        return (XmlInteractor)super.createInteractorFromIdentityXrefs(xrefs, name);
+    public ExtendedPsi25Interactor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name) {
+        return (ExtendedPsi25Interactor)super.createInteractorFromIdentityXrefs(xrefs, name);
     }
 
     public Interactor createInteractorFromXmlInteractorInstance(XmlInteractor source){
-        XmlInteractor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getJAXBInteractorType(), source.getShortName());
-        Xref primary = source.getPreferredIdentifier();
-        if (reloadedInteractorDependingOnType == null && primary != null){
-            reloadedInteractorDependingOnType = createInteractorFromDatabase(primary.getDatabase(), source.getShortName());
+        ExtendedPsi25Interactor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getInteractorType(), source.getShortName());
+        if (reloadedInteractorDependingOnType == null){
+            reloadedInteractorDependingOnType = createInteractorFromIdentityXrefs(source.getIdentifiers(), source.getShortName());
         }
 
         if (reloadedInteractorDependingOnType != null){
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
-            reloadedInteractorDependingOnType.setSourceLocation((PsiXmLocator)source.getSourceLocator());
-            reloadedInteractorDependingOnType.setJAXBId(source.getJAXBId());
-            reloadedInteractorDependingOnType.setJAXBSequence(source.getJAXBSequence());
+            ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmLocator)source.getSourceLocator());
+            reloadedInteractorDependingOnType.setId(source.getId());
+            if (reloadedInteractorDependingOnType instanceof Polymer){
+                ((Polymer)reloadedInteractorDependingOnType).setSequence(source.getSequence());
+            }
 
             return reloadedInteractorDependingOnType;
         }

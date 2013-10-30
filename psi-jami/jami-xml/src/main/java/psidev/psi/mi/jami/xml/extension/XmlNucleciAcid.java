@@ -1,13 +1,14 @@
 package psidev.psi.mi.jami.xml.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.NucleicAcid;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultNucleicAcid;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Xml implementation of Nucleic acid
@@ -16,12 +17,10 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Id$
  * @since <pre>24/07/13</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
-public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
-
-    public XmlNucleciAcid() {
-    }
+@XmlTransient
+public class XmlNucleciAcid extends DefaultNucleicAcid implements ExtendedPsi25Interactor, FileSourceContext{
+    private int id;
+    private PsiXmLocator sourceLocator;
 
     public XmlNucleciAcid(String name, CvTerm type) {
         super(name, type);
@@ -87,58 +86,40 @@ public class XmlNucleciAcid extends XmlPolymer implements NucleicAcid{
         super(name, fullName, organism, uniqueId);
     }
 
-    @Override
-    public void initialiseXrefContainer() {
-        this.xrefContainer = new NucleicAcidXrefContainer();
+    /**
+     * Gets the value of the id property.
+     *
+     */
+    public int getId() {
+        return id;
     }
 
-    @Override
-    protected void createDefaultInteractorType() {
-        setInteractorType(new XmlCvTerm(NucleicAcid.NULCEIC_ACID, NucleicAcid.NULCEIC_ACID_MI));
+    /**
+     * Sets the value of the id property.
+     *
+     */
+    public void setId(int value) {
+        this.id = value;
+        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        if (getSourceLocator() != null){
+            sourceLocator.setObjectId(this.id);
+        }
     }
 
-    public String getDdbjEmblGenbank() {
-        if (xrefContainer == null){
-           initialiseXrefContainer();
-        }
-        return ((NucleicAcidXrefContainer)xrefContainer).getDdbjEmblGenbank();
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
     }
 
-    public void setDdbjEmblGenbank(String id) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        if (sourceLocator == null){
+            this.sourceLocator = null;
         }
-        ((NucleicAcidXrefContainer)xrefContainer).setDdbjEmblGenbank(id);
+        else{
+            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        }
     }
 
-    public String getRefseq() {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        return ((NucleicAcidXrefContainer)xrefContainer).getRefseq();
-    }
-
-    public void setRefseq(String id) {
-        if (xrefContainer == null){
-            initialiseXrefContainer();
-        }
-        ((NucleicAcidXrefContainer)xrefContainer).setRefseq(id);
-    }
-
-    @Override
-    public void setJAXBXref(InteractorXrefContainer value) {
-        if (value == null){
-            this.xrefContainer = null;
-        }
-        else if (this.xrefContainer == null){
-            this.xrefContainer = new NucleicAcidXrefContainer();
-            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
-            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
-        }
-        else {
-            this.xrefContainer.setJAXBPrimaryRef(value.getJAXBPrimaryRef());
-            this.xrefContainer.getJAXBSecondaryRefs().clear();
-            this.xrefContainer.getJAXBSecondaryRefs().addAll(value.getJAXBSecondaryRefs());
-        }
+    public void setSourceLocator(PsiXmLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }
