@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +20,6 @@ import java.util.Map;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "",propOrder = {
-        "JAXBExperimentRef"
-})
 public class XmlModelledParameter extends XmlParameter implements ModelledParameter{
     private Experiment experiment;
     private Collection<Publication> publications;
@@ -97,7 +93,7 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
                 if (obj instanceof Experiment){
                     experiment = (Experiment)obj;
                     if (experiment.getPublication() != null){
-                        publications.add(experiment.getPublication());
+                        getPublications().add(experiment.getPublication());
                         return true;
                     }
                 }

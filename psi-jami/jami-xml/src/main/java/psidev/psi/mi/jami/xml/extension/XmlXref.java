@@ -13,6 +13,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -20,6 +21,7 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,7 +38,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlXref
-    implements Xref, FileSourceContext, Locatable
+    implements ExtendedPsi25Xref, FileSourceContext, Locatable
 {
 
     private CvTerm database;
@@ -44,7 +46,7 @@ public class XmlXref
     private String id;
     private String version;
     private String secondary;
-    private List<XmlAnnotation> annotations;
+    private JAXBAttributeWrapper jaxbAttributeWrapper;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -211,6 +213,10 @@ public class XmlXref
         }
     }
 
+    public String getSecondary() {
+        return secondary;
+    }
+
     /**
      * Sets the value of the secondary property.
      *
@@ -220,7 +226,7 @@ public class XmlXref
      *
      */
     @XmlAttribute(name = "secondary")
-    public void setJAXBSecondary(String value) {
+    public void setSecondary(String value) {
         this.secondary = value;
     }
 
@@ -233,10 +239,17 @@ public class XmlXref
      *     {@link XmlAnnotation }
      *
      */
-    @XmlElementWrapper(name="attributeList")
-    @XmlElement(name="attribute", required = true, type = XmlAnnotation.class)
-    public List<XmlAnnotation> getJAXBAttributes() {
-        return this.annotations;
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper wrapper) {
+        this.jaxbAttributeWrapper = wrapper;
+    }
+
+    @Override
+    public List<Annotation> getAnnotations() {
+        if (this.jaxbAttributeWrapper == null){
+            this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
+        }
+        return this.jaxbAttributeWrapper.annotations;
     }
 
     @Override
@@ -283,5 +296,50 @@ public class XmlXref
     @Override
     public String toString() {
         return database.toString() + ":" + id.toString() + (qualifier != null ? " (" + qualifier.toString() + ")" : "");
+    }
+
+    //////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="xrefAttributeWrapper")
+    public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Annotation> annotations;
+
+        public JAXBAttributeWrapper(){
+            initialiseAnnotations();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseAnnotations(){
+            annotations = new ArrayList<Annotation>();
+        }
+
+        @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
+        public List<Annotation> getJAXBAttributes() {
+            return annotations;
+        }
     }
 }

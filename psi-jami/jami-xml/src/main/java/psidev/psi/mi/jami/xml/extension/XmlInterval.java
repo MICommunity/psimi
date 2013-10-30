@@ -26,17 +26,17 @@ public class XmlInterval extends AbstractXmlPosition{
     public XmlInterval() {
     }
 
-    public XmlInterval(XmlCvTerm status, boolean positionUndetermined) {
+    public XmlInterval(CvTerm status, boolean positionUndetermined) {
         super(status, positionUndetermined);
     }
 
-    public XmlInterval(XmlCvTerm status, BigInteger start, BigInteger end, boolean positionUndetermined) {
+    public XmlInterval(CvTerm status, BigInteger start, BigInteger end, boolean positionUndetermined) {
         super(status, positionUndetermined);
         this.start = start;
         this.end = end;
     }
 
-    public XmlInterval(XmlCvTerm status, long start, long end, boolean positionUndetermined) {
+    public XmlInterval(CvTerm status, long start, long end, boolean positionUndetermined) {
         super(status, positionUndetermined);
         this.start = new BigInteger(Long.toString(start));
         this.end = new BigInteger(Long.toString(end));

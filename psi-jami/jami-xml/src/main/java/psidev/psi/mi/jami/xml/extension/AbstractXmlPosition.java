@@ -29,7 +29,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
     protected AbstractXmlPosition() {
     }
 
-    protected AbstractXmlPosition(XmlCvTerm status, boolean positionUndetermined) {
+    protected AbstractXmlPosition(CvTerm status, boolean positionUndetermined) {
         this.status = status;
         isPositionUndetermined = positionUndetermined;
     }

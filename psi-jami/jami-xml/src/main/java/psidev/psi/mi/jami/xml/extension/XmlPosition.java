@@ -27,16 +27,16 @@ public class XmlPosition extends AbstractXmlPosition{
     public XmlPosition() {
     }
 
-    public XmlPosition(XmlCvTerm status, boolean positionUndetermined) {
+    public XmlPosition(CvTerm status, boolean positionUndetermined) {
         super(status, positionUndetermined);
     }
 
-    public XmlPosition(XmlCvTerm status, BigInteger pos, boolean positionUndetermined) {
+    public XmlPosition(CvTerm status, BigInteger pos, boolean positionUndetermined) {
         super(status, positionUndetermined);
         this.pos = pos;
     }
 
-    public XmlPosition(XmlCvTerm status, long pos, boolean positionUndetermined) {
+    public XmlPosition(CvTerm status, long pos, boolean positionUndetermined) {
         super(status, positionUndetermined);
         this.pos = new BigInteger(Long.toString(pos));
     }
