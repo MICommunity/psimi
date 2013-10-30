@@ -86,14 +86,14 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
      */
     @Override
     @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int id) {
-        super.setJAXBId(id);
+    public void setId(int id) {
+        super.setId(id);
     }
 
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
     }
@@ -104,7 +104,7 @@ public class XmlFeature extends AbstractXmlFeature<Entity,Feature>{
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
     }
 }

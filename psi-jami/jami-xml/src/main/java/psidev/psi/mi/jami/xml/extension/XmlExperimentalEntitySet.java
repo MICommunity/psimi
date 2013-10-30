@@ -320,8 +320,8 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
     @Override
     @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int value) {
-        super.setJAXBId(value);
+    public void setId(int value) {
+        super.setId(value);
     }
 
     @Override
@@ -373,7 +373,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
     }
@@ -384,7 +384,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
     }
 

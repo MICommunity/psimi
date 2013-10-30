@@ -15,11 +15,11 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledParticipantWrapper extends XmlModelledParticipant{
+public class XmlParticipantEvidenceWrapper extends XmlModelledParticipant{
 
     private ParticipantEvidence participant;
 
-    public XmlModelledParticipantWrapper(ParticipantEvidence part, XmlInteractionEvidenceWrapper wrapper){
+    public XmlParticipantEvidenceWrapper(ParticipantEvidence part, XmlInteractionEvidenceWrapper wrapper){
         if (part == null){
             throw new IllegalArgumentException("A participant evidence wrapper needs a non null participant");
         }
@@ -96,7 +96,7 @@ public class XmlModelledParticipantWrapper extends XmlModelledParticipant{
     protected void initialiseFeatureWrapper() {
         ArrayList<ModelledFeature> modelledFeatures = new ArrayList<ModelledFeature>(this.participant.getFeatures().size());
         for (FeatureEvidence part : this.participant.getFeatures()){
-            modelledFeatures.add(new XmlModelledFeatureWrapper(part, this));
+            modelledFeatures.add(new XmlFeatureEvidenceWrapper(part, this));
         }
         super.setJAXBFeatureWrapper(new XmlModelledParticipant.JAXBFeatureWrapper(modelledFeatures));
     }

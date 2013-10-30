@@ -138,7 +138,7 @@ public class XmlInteractionEvidenceWrapper extends XmlComplex implements Complex
     protected void initialiseParticipants(){
         Collection<ModelledParticipant> modelledParticipants = new ArrayList<ModelledParticipant>(this.interactionEvidence.getParticipants().size());
         for (ParticipantEvidence part : this.interactionEvidence.getParticipants()){
-            modelledParticipants.add(new XmlModelledParticipantWrapper(part, this));
+            modelledParticipants.add(new XmlParticipantEvidenceWrapper(part, this));
         }
         super.initialiseParticipantsWith(modelledParticipants);
     }

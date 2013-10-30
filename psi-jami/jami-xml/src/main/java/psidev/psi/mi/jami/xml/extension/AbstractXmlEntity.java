@@ -27,7 +27,7 @@ import java.util.*;
  * @since <pre>31/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>, FileSourceContext, Locatable {
+public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPsi25Participant<F>, FileSourceContext, Locatable {
     private Interactor interactor;
     private CvTerm biologicalRole;
     private CausalRelationship causalRelationship;
@@ -75,7 +75,33 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
         this.interactorFactory = new XmlInteractorFactory();
     }
 
-    public Collection<Alias> getAliases() {
+    @Override
+    public String getShortLabel() {
+        return this.namesContainer != null ? this.namesContainer.getShortLabel():null;
+    }
+
+    @Override
+    public void setShortLabel(String name) {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        this.namesContainer.setShortLabel(name);
+    }
+
+    @Override
+    public String getFullName() {
+        return this.namesContainer != null ? this.namesContainer.getFullName():null;
+    }
+
+    @Override
+    public void setFullName(String name) {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        this.namesContainer.setFullName(name);
+    }
+
+    public List<Alias> getAliases() {
         if (namesContainer == null){
             namesContainer = new NamesContainer();
         }
@@ -330,7 +356,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      * Gets the value of the id property.
      *
      */
-    public int getJAXBId() {
+    public int getId() {
         return id;
     }
 
@@ -338,7 +364,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
      * Sets the value of the id property.
      *
      */
-    public void setJAXBId(int value) {
+    public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (getSourceLocator() != null){
@@ -424,8 +450,13 @@ public abstract class AbstractXmlEntity<F extends Feature> implements Entity<F>,
                     return true;
                 }
                 // wrap modelled interaction
-                else if (object instanceof ModelledInteraction){
-                    interactor = new XmlModelledInteractionWrapper((ModelledInteraction)object);
+                else if (object instanceof XmlModelledInteraction){
+                    interactor = new XmlModelledInteractionComplexWrapper((XmlModelledInteraction)object);
+                    return true;
+                }
+                // wrap basic interaction
+                else if (object instanceof XmlBasicInteraction){
+                    interactor = new XmlBasicInteractionComplexWrapper((XmlBasicInteraction)object);
                     return true;
                 }
             }

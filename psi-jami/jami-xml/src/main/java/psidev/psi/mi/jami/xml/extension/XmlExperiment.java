@@ -25,7 +25,7 @@ import java.util.*;
  */
 @XmlRootElement(name = "experimentDescription", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
+public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
@@ -470,7 +470,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      *
      */
     @XmlAttribute(name = "id", required = true)
-    public int getJAXBId() {
+    public int getId() {
         return id;
     }
 
@@ -478,7 +478,7 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
      * Sets the value of the id property.
      *
      */
-    public void setJAXBId(int value) {
+    public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
         if (getSourceLocator() != null){
@@ -510,6 +510,40 @@ public class XmlExperiment implements Experiment, FileSourceContext, Locatable{
         else{
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
         }
+    }
+
+    @Override
+    public String getShortLabel() {
+        return this.namesContainer != null ? this.namesContainer.getShortLabel():null;
+    }
+
+    @Override
+    public void setShortLabel(String name) {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        this.namesContainer.setShortLabel(name);
+    }
+
+    @Override
+    public String getFullName() {
+        return this.namesContainer != null ? this.namesContainer.getFullName():null;
+    }
+
+    @Override
+    public void setFullName(String name) {
+        if (this.namesContainer == null){
+            this.namesContainer = new NamesContainer();
+        }
+        this.namesContainer.setFullName(name);
+    }
+
+    @Override
+    public List<Alias> getAliases() {
+        if (this.namesContainer == null){
+           this.namesContainer = new NamesContainer();
+        }
+        return this.namesContainer.getAliases();
     }
 
     protected void initialiseAnnotationWrapper(){

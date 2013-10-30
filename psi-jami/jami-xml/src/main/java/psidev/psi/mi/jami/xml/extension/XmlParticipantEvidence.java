@@ -21,7 +21,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements ParticipantEvidence{
+public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements ExtendedPsi25ParticipantEvidence{
 
     @XmlLocation
     @XmlTransient
@@ -190,11 +190,24 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         return this.jaxbParameterWrapper.parameters;
     }
 
-    public Collection<ExperimentalInteractor> getExperimentalInteractors() {
+    @Override
+    public List<Organism> getHostOrganisms() {
+        if (this.jaxbHostOrganismWrapper == null){
+            initialiseHostOrganismWrapper();
+        }
+        return this.jaxbHostOrganismWrapper.hostOrganisms;
+    }
+
+    public List<ExperimentalInteractor> getExperimentalInteractors() {
         if (this.jaxbExperimentalInteractorWrapper == null){
             initialiseExperimentalInteractorWrapper();
         }
         return this.jaxbExperimentalInteractorWrapper.experimentalInteractors;
+    }
+
+    @Override
+    public List<CvTerm> getExperimentalRoles() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -240,8 +253,8 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
     @Override
     @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int value) {
-        super.setJAXBId(value);
+    public void setId(int value) {
+        super.setId(value);
     }
 
     @Override
@@ -300,7 +313,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
     }
@@ -311,7 +324,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getJAXBId()));
+            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
     }
 
