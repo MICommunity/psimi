@@ -21,7 +21,18 @@ public class Xml25InteractionEvidenceParserTest {
 
     @Test
     public void test_read_valid_xml25() throws JAXBException, XMLStreamException, IOException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/src/test/resources/samples/10049915.xml");
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
+
+        PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);
+
+        InteractionEvidence interaction = parser.parseNextInteraction();
+
+        Assert.assertNotNull(interaction);
+    }
+
+    @Test
+    public void test_read_valid_xml25_inferred() throws JAXBException, XMLStreamException, IOException {
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
         PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);
 
