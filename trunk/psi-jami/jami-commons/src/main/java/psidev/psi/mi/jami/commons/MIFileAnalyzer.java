@@ -115,8 +115,12 @@ public class MIFileAnalyzer {
                 }
                 // we have xml
                 else if (line.trim().startsWith("<?xml")){
-                    line = reader.readLine();
-                    if (line != null && line.startsWith("<entrySet")){
+                    if (line.contains("<entrySet")){
+                        return MIFileType.psi25_xml;
+                    }
+
+                    String line2 = reader.readLine();
+                    if (line2 != null && line2.startsWith("<entrySet")){
                         return MIFileType.psi25_xml;
                     }
                     else {
@@ -276,8 +280,12 @@ public class MIFileAnalyzer {
         }
         // we have xml
         else if (line.trim().startsWith("<?xml")){
-            line = reader.readLine();
-            if (line.startsWith("<entrySet")){
+            if (line.contains("<entrySet")){
+                return MIFileType.psi25_xml;
+            }
+
+            String line2 = reader.readLine();
+            if (line2 != null && line2.startsWith("<entrySet")){
                 return MIFileType.psi25_xml;
             }
             else {
