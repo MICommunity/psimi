@@ -377,14 +377,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         return xrefContainer;
     }
 
-    public JAXBInferredInteractionWrapper getJAXBInferredInteractionWrapper() {
-        return jaxbInferredInteractionWrapper;
-    }
-
-    public JAXBAttributeWrapper getJAXBAttributeWrapper() {
-        return jaxbAttributeWrapper;
-    }
-
     protected void processAddedParticipant(T participant) {
         participant.setInteraction(this);
     }

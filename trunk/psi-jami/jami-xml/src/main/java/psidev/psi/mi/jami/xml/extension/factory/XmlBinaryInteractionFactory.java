@@ -111,7 +111,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         XmlInteractionEvidence xmlSource = (XmlInteractionEvidence)interaction;
         InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, binary, false, true);
         binary.setId(xmlSource.getId());
-        binary.getInferredInteractions().addAll(xmlSource.getJAXBInferredInteractionWrapper().getJAXBInferredInteractions());
+        binary.getInferredInteractions().addAll(xmlSource.getInferredInteractions());
         binary.getInteractionTypes().clear();
         binary.getInteractionTypes().addAll(xmlSource.getInteractionTypes());
         binary.setIntraMolecular(xmlSource.isIntraMolecular());
@@ -129,7 +129,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         XmlBasicInteraction xmlSource = (XmlBasicInteraction)interaction;
         InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
         binary.setId(xmlSource.getId());
-        binary.getInferredInteractions().addAll(xmlSource.getJAXBInferredInteractionWrapper().getJAXBInferredInteractions());
+        binary.getInferredInteractions().addAll(xmlSource.getInferredInteractions());
         binary.getInteractionTypes().clear();
         binary.getInteractionTypes().addAll(xmlSource.getInteractionTypes());
         binary.setIntraMolecular(xmlSource.isIntraMolecular());
@@ -143,7 +143,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         XmlModelledInteraction xmlSource = (XmlModelledInteraction)interaction;
         InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
         binary.setId(xmlSource.getId());
-        binary.getInferredInteractions().addAll(xmlSource.getJAXBInferredInteractionWrapper().getJAXBInferredInteractions());
+        binary.getInferredInteractions().addAll(xmlSource.getInferredInteractions());
         binary.getInteractionTypes().clear();
         binary.getInteractionTypes().addAll(xmlSource.getInteractionTypes());
         binary.setIntraMolecular(xmlSource.isIntraMolecular());
