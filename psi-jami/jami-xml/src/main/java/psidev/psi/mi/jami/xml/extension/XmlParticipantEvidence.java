@@ -83,19 +83,26 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
             List<XmlExperiment> originalExperiments = originalInteraction.getOriginalExperiments();
             if (originalExperiments != null && !originalExperiments.isEmpty()){
-                if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()){
-                    expToIgnore = new ArrayList<Experiment>(originalIdentificationMethods.size());
-                    for (ExperimentalCvTerm part : this.originalIdentificationMethods){
-                        if (!part.getExperiments().isEmpty()){
-                            expToIgnore.addAll(part.getExperiments());
-                        }
-                    }
+                // participant identification method overrides the one in the experiment
+                if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()
+                        && originalExperiments.size() == 1){
                     this.originalIdentificationMethods = null;
                 }
+                else{
+                    if (originalIdentificationMethods != null){
+                        expToIgnore = new ArrayList<Experiment>(originalIdentificationMethods.size());
+                        for (ExperimentalCvTerm part : this.originalIdentificationMethods){
+                            if (!part.getExperiments().isEmpty()){
+                                expToIgnore.addAll(part.getExperiments());
+                            }
+                        }
+                        this.originalIdentificationMethods = null;
+                    }
 
-                for (XmlExperiment exp : originalExperiments){
-                    if (exp.getParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
-                        this.jaxbParticipantionIdentificationWrapper.identificationMethods.add(exp.getParticipantIdentificationMethod());
+                    for (XmlExperiment exp : originalExperiments){
+                        if (exp.getParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
+                            this.jaxbParticipantionIdentificationWrapper.identificationMethods.add(exp.getParticipantIdentificationMethod());
+                        }
                     }
                 }
             }

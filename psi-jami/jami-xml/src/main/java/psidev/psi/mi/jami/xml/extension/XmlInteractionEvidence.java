@@ -174,8 +174,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
+    public void setIntraMolecular(boolean intra) {
+        super.setIntraMolecular(intra);
+    }
+
     @XmlElement(name = "intraMolecular", defaultValue = "false")
-    public void setIntraMolecular(Boolean intra) {
+    public void setJAXBIntraMolecular(Boolean intra) {
         super.setIntraMolecular(intra);
     }
 
@@ -337,8 +341,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
-    @XmlElement(name = "modelled", defaultValue = "false")
-    public void setModelled(Boolean value) {
+    public void setModelled(boolean value) {
+        this.modelled = value;
+    }
+
+    @XmlElement(name = "modelled", defaultValue = "false", type = Boolean.class)
+    public void setJAXBModelled(Boolean value) {
         this.modelled = value;
     }
 
@@ -350,7 +358,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *     {@link Boolean }
      *
      */
-    @XmlElement(name = "negative", defaultValue = "false")
+    @XmlElement(name = "negative", defaultValue = "false", type = Boolean.class)
     public void setJAXBNegative(Boolean value) {
         if (value == null){
             this.isNegative = false;

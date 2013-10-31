@@ -17,7 +17,6 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.*;
-import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.*;
@@ -143,11 +142,17 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
         // the next tag is an interaction, we parse the interaction.
         if (PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
-            return parseInteractionTag(entryContext);
+            T interaction = parseInteractionTag(entryContext);
+            // check if last interaction and need to flush entry
+            flushEntryIfNecessary(entryContext);
+            return interaction;
         }
         // we start a new entry
         else if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(start.getName().getLocalPart())) {
-            return processEntry(entryContext);
+            T interaction = processEntry(entryContext);
+            // check if last interaction and need to flush entry
+            flushEntryIfNecessary(entryContext);
+            return interaction;
         }
         // entry set
         else if (PsiXmlUtils.ENTRYSET_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
@@ -155,8 +160,17 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             XmlEntryContext.getInstance().setListener(this.listener);
             // read the entrySet
             eventReader.nextEvent();
-            return processEntry(entryContext);
+            // parse first interaction
+            T interaction = processEntry(entryContext);
+            // check if last interaction and need to flush entry
+            flushEntryIfNecessary(entryContext);
+            return interaction;
         }
+        // process availability of an existing entry
+        else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
+            processEntryAttributeList(entryContext);
+        }
+        // node not recognized.
         else{
             FileSourceContext context = null;
             if (start.getLocation() != null){
@@ -334,34 +348,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 }
                 // process availability
                 else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
-                    // read availability list
-                    StartElement startList = (StartElement)this.eventReader.nextEvent();
-                    // load availability
-                    if (this.eventReader.hasNext()){
-                        XmlEntry entry = entryContext.getCurrentEntry();
-
-                        nextEvt = (StartElement)this.eventReader.peek();
-                        // load availability
-                        while (nextEvt != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())) {
-                            entry.getAvailabilities().add((Availability)unmarshaller.unmarshal(this.subEventReader));
-                            if (this.eventReader.hasNext()){
-                                nextEvt = (StartElement)this.eventReader.peek();
-                            }
-                            else{
-                                nextEvt= null;
-                            }
-                        }
-                    }
-                    else{
-                        if (listener != null){
-                            FileSourceContext context = null;
-                            if (startList.getLocation() != null){
-                                Location loc = startList.getLocation();
-                                context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
-                            }
-                            listener.onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList element does not contain any availability node. PSI-XML is not valid."));
-                        }
-                    }
+                    processEntryAttributeList(entryContext);
                 }
                 // process experiments
                 else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equalsIgnoreCase(nextEvt.getName().getLocalPart())){
@@ -596,6 +583,63 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         return interaction;
     }
 
+    protected void processEntryAttributeList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+        StartElement start;// read availability list
+        StartElement startList = (StartElement)this.eventReader.nextEvent();
+        // load availability
+        if (this.eventReader.hasNext()){
+            XmlEntry entry = entryContext.getCurrentEntry();
+
+            start = (StartElement)this.eventReader.peek();
+            // load availability
+            while (start != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(start.getName().getLocalPart())) {
+                entry.getAvailabilities().add((Availability)unmarshaller.unmarshal(this.subEventReader));
+                if (this.eventReader.hasNext()){
+                    start = (StartElement)this.eventReader.peek();
+                }
+                else{
+                    start= null;
+                }
+            }
+        }
+        else{
+            if (listener != null){
+                FileSourceContext context = null;
+                if (startList.getLocation() != null){
+                    Location loc = startList.getLocation();
+                    context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                }
+                listener.onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList element does not contain any availability node. PSI-XML is not valid."));
+            }
+        }
+    }
+
+    private void flushEntryIfNecessary(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+        StartElement start;// get next event without parsing it
+        start = (StartElement) eventReader.peek();
+        // end of file, flush last entry
+        if (start == null){
+            flushEntry();
+        }
+        // end of entry, parse attributes and flush the entry
+        else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(start.getName().getLocalPart())){
+            processEntryAttributeList(entryContext);
+            flushEntry();
+        }
+        // if this interaction is not followed by another interaction, we need to flush the entry
+        else if (!PsiXmlUtils.INTERACTION_TAG.equals(start.getName().getLocalPart())){
+            flushEntry();
+        }
+    }
+
+    private void flushEntry(){
+        XmlEntryContext context = XmlEntryContext.getInstance();
+        if (context.getCurrentEntry() != null){
+            context.getCurrentEntry().setHasLoadedFullEntry(true);
+        }
+        clearEntryReferences(context);
+    }
+
     private void clearEntryReferences(XmlEntryContext context){
         resolveInteractorAndExperimentRefs(context);
         resolveInferredInteractionRefs(context);
@@ -697,17 +741,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.subEventReader = xmler;
         EventFilter filter = new EventFilter() {
             public boolean accept(XMLEvent event) {
-                // clear entry when reach end of entry
-                if(event.isEndElement()){
-                    EndElement end = (EndElement)event;
-                    if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(end.getName().getLocalPart())){
-                        XmlEntryContext context = XmlEntryContext.getInstance();
-                        if (context.getCurrentEntry() != null){
-                            context.getCurrentEntry().setHasLoadedFullEntry(true);
-                        }
-                        clearEntryReferences(context);
-                    }
-                }
                 return event.isStartElement();
             }
         };

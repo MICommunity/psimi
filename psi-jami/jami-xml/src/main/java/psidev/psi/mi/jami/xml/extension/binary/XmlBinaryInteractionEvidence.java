@@ -224,7 +224,7 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
     }
 
     @Override
-    public void setModelled(Boolean modelled) {
+    public void setModelled(boolean modelled) {
        isModelled = modelled;
     }
 

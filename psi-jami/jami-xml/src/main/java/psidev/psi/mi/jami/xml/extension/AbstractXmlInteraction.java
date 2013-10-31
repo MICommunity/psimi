@@ -275,7 +275,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
      *     {@link Boolean }
      *
      */
-    public void setIntraMolecular(Boolean value) {
+    public void setIntraMolecular(boolean value) {
         this.intraMolecular = value;
     }
 

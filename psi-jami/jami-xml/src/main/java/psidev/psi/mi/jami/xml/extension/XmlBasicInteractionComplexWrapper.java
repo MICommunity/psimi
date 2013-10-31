@@ -78,7 +78,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     }
 
     @Override
-    public void setIntraMolecular(Boolean intra) {
+    public void setIntraMolecular(boolean intra) {
         this.interaction.setIntraMolecular(intra);
     }
 
