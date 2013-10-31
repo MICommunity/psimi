@@ -116,7 +116,7 @@ public class MIFileAnalyzer {
                 // we have xml
                 else if (line.trim().startsWith("<?xml")){
                     line = reader.readLine();
-                    if (line.startsWith("<entrySet")){
+                    if (line != null && line.startsWith("<entrySet")){
                         return MIFileType.psi25_xml;
                     }
                     else {
