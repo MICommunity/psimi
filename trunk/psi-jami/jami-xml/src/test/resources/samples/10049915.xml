@@ -470,7 +470,7 @@
                         <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292" dbAc="MI:0446" db="pubmed"/>
                     </xref>
                 </interactionType>
-                <modelled>false</modelled>
+                <modelled>true</modelled>
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <attributeList>

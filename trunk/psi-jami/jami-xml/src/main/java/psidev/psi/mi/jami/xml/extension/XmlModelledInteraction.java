@@ -128,8 +128,12 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @Override
-    @XmlElement(name = "intraMolecular", defaultValue = "false")
-    public void setIntraMolecular(Boolean intra) {
+    public void setIntraMolecular(boolean intra) {
+        super.setIntraMolecular(intra);
+    }
+
+    @XmlElement(name = "intraMolecular", defaultValue = "false", type = Boolean.class)
+    public void setJAXBIntraMolecular(boolean intra) {
         super.setIntraMolecular(intra);
     }
 

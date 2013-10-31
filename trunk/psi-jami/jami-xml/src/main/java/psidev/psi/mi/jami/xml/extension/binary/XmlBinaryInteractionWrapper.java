@@ -161,7 +161,7 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     }
 
     @Override
-    public void setIntraMolecular(Boolean intra) {
+    public void setIntraMolecular(boolean intra) {
         this.wrappedInteraction.setIntraMolecular(intra);
     }
 

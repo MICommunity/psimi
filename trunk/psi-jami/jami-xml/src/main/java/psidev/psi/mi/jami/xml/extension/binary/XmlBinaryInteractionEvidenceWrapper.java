@@ -162,7 +162,7 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public void setIntraMolecular(Boolean intra) {
+    public void setIntraMolecular(boolean intra) {
         this.wrappedInteraction.setIntraMolecular(intra);
     }
 
@@ -267,7 +267,7 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public void setModelled(Boolean modelled) {
+    public void setModelled(boolean modelled) {
         this.wrappedInteraction.setModelled(modelled);
     }
 

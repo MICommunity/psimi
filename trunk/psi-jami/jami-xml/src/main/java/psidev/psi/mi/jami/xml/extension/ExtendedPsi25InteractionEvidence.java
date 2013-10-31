@@ -19,6 +19,6 @@ public interface ExtendedPsi25InteractionEvidence extends ExtendedPsi25Interacti
     public Availability getXmlAvailability();
     public void setXmlAvailability(Availability availability);
     public boolean isModelled();
-    public void setModelled(Boolean modelled);
+    public void setModelled(boolean modelled);
     public List<Experiment> getExperiments();
 }

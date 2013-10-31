@@ -136,7 +136,7 @@ public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryIntera
     }
 
     @Override
-    public void setIntraMolecular(Boolean intra) {
+    public void setIntraMolecular(boolean intra) {
         this.wrappedInteraction.setIntraMolecular(intra);
     }
 

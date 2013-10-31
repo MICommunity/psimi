@@ -100,7 +100,7 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
      *     {@link Boolean }
      *
      */
-    public void setIntraMolecular(Boolean value) {
+    public void setIntraMolecular(boolean value) {
         this.intraMolecular = value;
     }
 
