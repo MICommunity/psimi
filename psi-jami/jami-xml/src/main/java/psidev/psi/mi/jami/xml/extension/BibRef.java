@@ -183,7 +183,7 @@ public class BibRef
         if (xrefContainer == null){
             xrefContainer = new PublicationXrefContainer();
         }
-        return xrefContainer.getIdentifiers();
+        return xrefContainer.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {
