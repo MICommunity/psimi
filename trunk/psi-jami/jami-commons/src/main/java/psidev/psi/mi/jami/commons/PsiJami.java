@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.io.parser.*;
 import psidev.psi.mi.jami.tab.io.writer.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.xml.io.parser.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -180,6 +181,14 @@ public class PsiJami {
 
         Map<String, Object> supportedOptions33 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.basic_binary);
         datasourceFactory.registerDataSource(LightMitabBinaryDataSource.class, supportedOptions33);
+
+        Map<String, Object> supportedOptions4 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic);
+        supportedOptions4.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        datasourceFactory.registerDataSource(Xml25InteractionDatasource.class, supportedOptions4);
+
+        Map<String, Object> supportedOptions44 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic_binary);
+        supportedOptions44.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        datasourceFactory.registerDataSource(Xml25BinaryInteractionDatasource.class, supportedOptions44);
     }
 
     public static void initialiseModelledInteractionSources() {
@@ -190,6 +199,14 @@ public class PsiJami {
 
         Map<String, Object> supportedOptions22 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.modelled_binary);
         datasourceFactory.registerDataSource(MitabModelledBinaryDataSource.class, supportedOptions22);
+
+        Map<String, Object> supportedOptions3 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled);
+        supportedOptions3.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        datasourceFactory.registerDataSource(Xml25ModelledInteractionDatasource.class, supportedOptions3);
+
+        Map<String, Object> supportedOptions33 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled_binary);
+        supportedOptions33.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        datasourceFactory.registerDataSource(Xml25ModelledBinaryInteractionDatasource.class, supportedOptions33);
     }
 
     public static void initialiseInteractionEvidenceSources() {
@@ -200,6 +217,14 @@ public class PsiJami {
 
         Map<String, Object> supportedOptions11 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.binary_evidence);
         datasourceFactory.registerDataSource(MitabBinaryEvidenceDataSource.class, supportedOptions11);
+
+        Map<String, Object> supportedOptions2 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.evidence);
+        supportedOptions2.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        datasourceFactory.registerDataSource(Xml25InteractionEvidenceDatasource.class, supportedOptions2);
+
+        Map<String, Object> supportedOptions22 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.binary_evidence);
+        supportedOptions22.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        datasourceFactory.registerDataSource(Xml25BinaryInteractionEvidenceDatasource.class, supportedOptions22);
     }
 
     private static Map<String, Object> createInteractionWriterOptions(String outputFormat, InteractionObjectCategory interactionCategory, MitabVersion version, boolean extended, boolean needCompleExpansion) {
