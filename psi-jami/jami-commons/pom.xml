@@ -26,6 +26,13 @@
           <version>1.0.0-SNAPSHOT</version>
       </dependency>
 
+      <!-- JAMI xml-->
+      <dependency>
+          <groupId>psidev.psi.mi.jami</groupId>
+          <artifactId>jami-xml</artifactId>
+          <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+
       <!-- apache commons-->
       <dependency>
           <groupId>org.apache.commons</groupId>

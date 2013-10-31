@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,7 +102,7 @@ public class MIDataSourceOptionFactory {
             case mitab:
                 return getDefaultMitabOptions(inputData);
             case psi25_xml:
-                return getDefaultXmlOptions(inputData);
+                return getDefaultXml25Options(inputData);
             default:
                 return null;
         }
@@ -158,33 +159,61 @@ public class MIDataSourceOptionFactory {
      * @return the MITAB datasource options
      */
     public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
-        Map<String, Object> options = new HashMap<String, Object>(10);
-
-        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.mitab.toString());
-        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
-        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
-        if (listener != null){
-            options.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, listener);
-        }
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
-
-        return options;
+        return getOptions(MIFileType.mitab, objectCategory, streaming, listener, input);
     }
 
     /**
-     * Create the default options for the PSI-XML datasource.
-     * It will read a mix of InteractionEvidence and ModelledInteraction elements in a streaming way.
-     * @return the default options for the PSI-XML datasource
+     * Create the default options for the Psi-XML 2.5 datasource.
+     * It will read InteractionEvidence elements in a streaming way.
+     * It will use the PsiXmlParserLogger to listen to the Psi-XML parsing events
+     * @return the default options for the PSI-xml 2.5 datasource
      */
-    public Map<String, Object> getDefaultXmlOptions(Object input){
-        Map<String, Object> options = new HashMap<String, Object>(10);
+    public Map<String, Object> getDefaultXml25Options(Object inputData){
+        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData);
+    }
 
-        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
-        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, InteractionObjectCategory.mixed);
-        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, true);
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
+    /**
+     * Create the options for the Psi-XML 2.4 datasource using the provided objectCategory.
+     * It will read elements from this objectCategory in a streaming way.
+     * It will use the PsiXmlParserLogger to listen to the Psi=XML parsing events
+     * @param objectCategory
+     * @return the options for the Psi Xml datasource using the provided objectCategory
+     */
+    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, Object inputData){
+        return getXml25Options(objectCategory, true, null, inputData);
+    }
 
-        return options;
+    /**
+     * Create the options for the PSI-XML 2.5 datasource and specify if we want a Streaming MIFileDatasource.
+     * It will read InteractionEvidence elements.
+     * It will use the PsiXmlParserLogger to listen to the PSI-XML parsing events
+     * @param streaming : tru if we want to read the interactions in a streaming way
+     * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
+     */
+    public Map<String, Object> getXml25Options(boolean streaming, Object inputData){
+        return getXml25Options(null, streaming, null, inputData);
+    }
+
+    /**
+     * Create the options for the Psi-XML 2.5 datasource using the provided MIFileParserListener.
+     * It will read InteractionEvidence elements in a streaming way.
+     * @param listener
+     * @param inputData is the mitab data to read
+     * @return the options for the PSI-XML datasource with the provided listener
+     */
+    public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData){
+        return getXml25Options(null, true, listener, inputData);
+    }
+
+    /**
+     * Create the options for the PSI-XML 2.5 datasource.
+     * @param objectCategory : interaction object type to load
+     * @param streaming : true if we want to load interactions in a streaming way
+     * @param listener : the listener to use for listening XML parsing events
+     * @return the Xml 2.5 datasource options
+     */
+    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
+        return getOptions(MIFileType.psi25_xml, objectCategory, streaming, listener, input);
     }
 
     public Map<String, Object> getXmlOptions(InteractionObjectCategory objectCategory, boolean streaming, Object input){
@@ -193,6 +222,20 @@ public class MIDataSourceOptionFactory {
         options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
         options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.mixed);
         options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
+
+        return options;
+    }
+
+    public Map<String, Object> getOptions(MIFileType type, InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
+        Map<String, Object> options = new HashMap<String, Object>(10);
+
+        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, type.toString());
+        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
+        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
+        if (listener != null){
+            options.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, listener);
+        }
         options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
 
         return options;
