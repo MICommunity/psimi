@@ -122,14 +122,14 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         if (xrefContainer == null){
             xrefContainer = new InteractionXrefContainer();
         }
-        return this.xrefContainer.getAllIdentifiers();
+        return this.xrefContainer.getIdentifiers();
     }
 
     public Collection<Xref> getXrefs() {
         if (xrefContainer == null){
             xrefContainer = new InteractionXrefContainer();
         }
-        return this.xrefContainer.getAllXrefs();
+        return this.xrefContainer.getXrefs();
     }
 
     public Collection<Checksum> getChecksums() {

@@ -6,9 +6,9 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -27,14 +27,12 @@ import java.util.List;
 })
 public class XrefContainer implements FileSourceContext, Locatable{
 
-    Xref primaryRef;
-    Collection<Xref> secondaryRefs;
-    List<Xref> allXrefs;
-
+    private List<Xref> xrefs;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
+    private JAXBSecondaryXrefList jaxbSecondaryRefs;
 
     /**
      * Sets the value of the primaryRef property.
@@ -46,13 +44,8 @@ public class XrefContainer implements FileSourceContext, Locatable{
      */
     @XmlElement(name = "primaryRef",required = true, type = XmlXref.class)
     public void setJAXBPrimaryRef(Xref value) {
-        if (this.primaryRef != null){
-            processRemovedPrimaryRef(this.primaryRef);
-        }
-
-        this.primaryRef = value;
         if (value != null){
-            processAddedPrimaryRef();
+            processAddedPrimaryRef(value);
         }
     }
 
@@ -79,22 +72,22 @@ public class XrefContainer implements FileSourceContext, Locatable{
      *
      */
     @XmlElement(name = "secondaryRef", type = XmlXref.class)
-    public Collection<Xref> getJAXBSecondaryRefs() {
-        if (secondaryRefs == null) {
-            secondaryRefs = new SecondaryXrefList();
+    public List<Xref> getJAXBSecondaryRefs() {
+        if (this.jaxbSecondaryRefs == null) {
+            initialiseSecondaryRefs();
         }
-        return secondaryRefs;
+        return this.jaxbSecondaryRefs;
     }
 
-    public Collection<Xref> getAllXrefs() {
-        if (allXrefs == null){
+    public List<Xref> getXrefs() {
+        if (xrefs == null) {
             initialiseXrefs();
         }
-        return allXrefs;
+        return xrefs;
     }
 
     public boolean isEmpty(){
-        if (primaryRef == null && getJAXBSecondaryRefs().isEmpty()){
+        if (getXrefs().isEmpty()){
             return true;
         }
         return false;
@@ -122,111 +115,95 @@ public class XrefContainer implements FileSourceContext, Locatable{
     }
 
     protected void initialiseXrefs(){
-        this.allXrefs = new FullXrefList();
+        this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void processAddedPrimaryRef() {
-        ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
-    }
-
-    protected void processRemovedPrimaryRef(Xref removed) {
-        ((FullXrefList)getAllXrefs()).removeOnly(removed);
-    }
-
-    protected void processAddedSecondaryXref(Xref added) {
-        ((FullXrefList)getAllXrefs()).addOnly(added);
-    }
-
-    protected void processRemovedSecondaryXref(Xref removed) {
-        ((FullXrefList)getAllXrefs()).removeOnly(removed);
-    }
-
-    protected void clearSecondaryXrefProperties() {
-        if (primaryRef != null){
-            ((FullXrefList)getAllXrefs()).retainAllOnly(Collections.singleton(primaryRef));
+    protected void initialiseXrefsWith(List<Xref> list){
+        if (list == null){
+             this.xrefs = Collections.EMPTY_LIST;
         }
         else{
-            ((FullXrefList)getAllXrefs()).clearOnly();
+            this.xrefs = list;
         }
     }
 
-    protected void processAddedXref(Xref added) {
-        // it is a XML instance so it can be converted with jaxb
-        if (primaryRef == null){
-            primaryRef = (XmlXref)added;
+    protected void initialiseSecondaryRefs(){
+        this.jaxbSecondaryRefs = new JAXBSecondaryXrefList();
+    }
+
+    protected void initialiseSecondaryResWith(JAXBSecondaryXrefList list){
+        if (list == null){
+            this.jaxbSecondaryRefs = new JAXBSecondaryXrefList();
         }
         else{
-            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
+            this.jaxbSecondaryRefs = list;
         }
     }
 
-    protected void processRemovedXref(Xref removed) {
-        if (removed instanceof XmlXref){
-            if (primaryRef != null && removed.equals(primaryRef)){
-                if (!getJAXBSecondaryRefs().isEmpty()){
-                    primaryRef = secondaryRefs.iterator().next();
-                    ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
+    protected void processAddedPrimaryRef(Xref added) {
+        if (xrefs == null){
+            initialiseXrefs();
+        }
+        xrefs.add(0, added);
+    }
+
+    ///////////////////////////// classes
+    //////////////////////////////// private class
+    protected class JAXBSecondaryXrefList extends ArrayList<Xref>{
+
+        protected JAXBSecondaryXrefList() {
+        }
+
+        @Override
+        public boolean add(Xref xref) {
+            if (xref == null){
+                return false;
+            }
+            return addXref(null, xref);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends Xref> c) {
+            if (c == null){
+                return false;
+            }
+            boolean added = false;
+
+            for (Xref a : c){
+                if (add(a)){
+                    added = true;
                 }
-                else{
-                    primaryRef = null;
+            }
+            return added;
+        }
+
+        @Override
+        public void add(int index, Xref element) {
+            addXref(index, element);
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends Xref> c) {
+            int newIndex = index;
+            if (c == null){
+                return false;
+            }
+            boolean add = false;
+            for (Xref a : c){
+                if (addXref(newIndex, a)){
+                    newIndex++;
+                    add = true;
                 }
             }
-        }
-    }
-
-    protected void clearFullXrefProperties() {
-        primaryRef = null;
-        ((SecondaryXrefList)getJAXBSecondaryRefs()).clearOnly();
-    }
-
-    class FullXrefList extends AbstractListHavingProperties<Xref> {
-        public FullXrefList(){
-            super();
+            return add;
         }
 
-        @Override
-        protected void processAddedObjectEvent(Xref added) {
-            if (added != null){
-                processAddedXref(added);
-
+        protected boolean addXref(Integer index, Xref xref) {
+            if (index == null){
+                return getXrefs().add(xref);
             }
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Xref removed) {
-            if (removed != null){
-                processRemovedXref(removed);
-            }
-        }
-
-        @Override
-        protected void clearProperties() {
-            clearFullXrefProperties();
-        }
-    }
-
-    class SecondaryXrefList extends AbstractListHavingProperties<Xref> {
-        public SecondaryXrefList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Xref added) {
-            if (added != null){
-                processAddedSecondaryXref(added);
-            }
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Xref removed) {
-            if (removed != null){
-                processRemovedSecondaryXref(removed);
-            }
-        }
-
-        @Override
-        protected void clearProperties() {
-            clearSecondaryXrefProperties();
+            getXrefs().add(index, xref);
+            return true;
         }
     }
 }

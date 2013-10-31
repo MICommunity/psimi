@@ -164,14 +164,14 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         if (this.xrefContainer == null){
             this.xrefContainer = new FeatureXrefContainer();
         }
-        return xrefContainer.getAllIdentifiers();
+        return xrefContainer.getIdentifiers();
     }
 
     public Collection<Xref> getXrefs() {
         if (this.xrefContainer == null){
             this.xrefContainer = new FeatureXrefContainer();
         }
-        return xrefContainer.getAllXrefs();
+        return xrefContainer.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {

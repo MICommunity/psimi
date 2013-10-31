@@ -186,7 +186,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
         if (xrefContainer == null){
             initialiseXrefContainer();
         }
-        return xrefContainer.getAllIdentifiers();
+        return xrefContainer.getIdentifiers();
     }
 
     protected void initialiseXrefContainer() {
@@ -216,7 +216,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
         if (xrefContainer == null){
             initialiseXrefContainer();
         }
-        return xrefContainer.getAllXrefs();
+        return xrefContainer.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {

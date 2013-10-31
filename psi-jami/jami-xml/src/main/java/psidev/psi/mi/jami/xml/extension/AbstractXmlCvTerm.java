@@ -86,7 +86,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     public Collection<Xref> getIdentifiers() {
-        return getXrefContainer().getAllIdentifiers();
+        return getXrefContainer().getIdentifiers();
     }
 
     public String getMIIdentifier() {
@@ -114,7 +114,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     public Collection<Xref> getXrefs() {
-        return getXrefContainer().getAllXrefs();
+        return getXrefContainer().getXrefs();
     }
 
     public Collection<Alias> getSynonyms() {
