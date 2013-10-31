@@ -204,7 +204,7 @@ public class MIJsonServlet extends HttpServlet{
                interactionWriter = new MIJsonBinaryWriter(writer, this.fetcher);
                break;
             case psi25_xml:
-                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionObjectCategory.binary_evidence, true, dataStream));
+                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionObjectCategory.evidence, true, dataStream));
                 interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
                 break;
             default:
