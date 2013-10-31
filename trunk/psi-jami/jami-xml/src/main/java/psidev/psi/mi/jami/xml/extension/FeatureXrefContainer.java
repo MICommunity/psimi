@@ -24,36 +24,24 @@ import java.util.*;
 public class FeatureXrefContainer extends XrefContainer{
 
     private Xref interpro;
-    private List<Xref> allIdentifiers;
+    private List<Xref> identifiers;
 
     @Override
-    protected void processRemovedPrimaryRef(Xref removed) {
-        if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(this.primaryRef)){
-            // if it is not an identifier
-            ((FullXrefList)getAllXrefs()).removeOnly(this.primaryRef);
+    protected void processAddedPrimaryRef(Xref added) {
+        if (XrefUtils.isXrefAnIdentifier(added)){
+            getIdentifiers().add(added);
         }
         else {
-            processRemovedIdentifierEvent(this.primaryRef);
-        }
-    }
-
-    @Override
-    protected void processAddedPrimaryRef() {
-        if (XrefUtils.isXrefAnIdentifier(this.primaryRef)){
-            ((FullIdentifierList)getAllIdentifiers()).addOnly(0, this.primaryRef);
-            processAddedIdentifierEvent(this.primaryRef);
-        }
-        else {
-            ((FullXrefList)getAllXrefs()).addOnly(0, this.primaryRef);
+            getXrefs().add(added);
         }
     }
 
     @XmlTransient
-    public Collection<Xref> getAllIdentifiers() {
-        if (allIdentifiers == null){
-            allIdentifiers = new FullIdentifierList();
+    public Collection<Xref> getIdentifiers() {
+        if (identifiers == null){
+            identifiers = new FullIdentifierList();
         }
-        return allIdentifiers;
+        return identifiers;
     }
 
     @XmlTransient
@@ -62,7 +50,7 @@ public class FeatureXrefContainer extends XrefContainer{
     }
 
     public void setInterpro(String interpro) {
-        FullIdentifierList featureIdentifiers = (FullIdentifierList)getAllIdentifiers();
+        FullIdentifierList featureIdentifiers = (FullIdentifierList) getIdentifiers();
 
         // add new interpro if not null
         if (interpro != null){
@@ -71,13 +59,9 @@ public class FeatureXrefContainer extends XrefContainer{
             // first remove old chebi if not null
             if (this.interpro != null){
                 featureIdentifiers.removeOnly(this.interpro);
-                if (this.interpro instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref) this.interpro);
-                }
             }
             this.interpro = new XmlXref(interproDatabase, interpro, identityQualifier);
             featureIdentifiers.addOnly(this.interpro);
-            processAddedPrimaryAndSecondaryRefs((XmlXref)this.interpro);
         }
         // remove all interpro if the collection is not empty
         else if (!featureIdentifiers.isEmpty()) {
@@ -110,7 +94,7 @@ public class FeatureXrefContainer extends XrefContainer{
 
     protected void processRemovedIdentifierEvent(Xref removed) {
         if (interpro != null && interpro.equals(removed)){
-            interpro = XrefUtils.collectFirstIdentifierWithDatabase(getAllIdentifiers(), Xref.INTERPRO_MI, Xref.INTERPRO);
+            interpro = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.INTERPRO_MI, Xref.INTERPRO);
         }
     }
 
@@ -118,115 +102,50 @@ public class FeatureXrefContainer extends XrefContainer{
         interpro = null;
     }
 
-    private void processAddedPrimaryAndSecondaryRefs(XmlXref added) {
-        if (primaryRef == null){
-            primaryRef = added;
-        }
-        else{
-            ((SecondaryXrefList)getJAXBSecondaryRefs()).addOnly(added);
-        }
+    protected void initialiseIdentifiers(){
+        this.identifiers = new FullIdentifierList();
     }
 
-    private void processRemovedPrimaryAndSecondaryRefs(XmlXref removed) {
-        if (primaryRef != null && removed.equals(primaryRef)){
-            if (!getJAXBSecondaryRefs().isEmpty()){
-                primaryRef = secondaryRefs.iterator().next();
-                ((SecondaryXrefList)secondaryRefs).removeOnly(primaryRef);
+    @Override
+    protected void initialiseSecondaryRefs() {
+        super.initialiseSecondaryResWith(new JAXBSecondaryXrefList());
+    }
+
+    ///////////////////////////// classes
+    //////////////////////////////// private class
+    private class JAXBSecondaryXrefList extends XrefContainer.JAXBSecondaryXrefList{
+
+        private JAXBSecondaryXrefList() {
+            super();
+            if (identifiers == null){
+                initialiseIdentifiers();
+            }
+        }
+
+        protected boolean addXref(Integer index, Xref xref) {
+            if (XrefUtils.isXrefAnIdentifier(xref)){
+                return addIdentifier(index, xref);
             }
             else{
-                primaryRef = null;
+                return processXref(index, xref);
             }
         }
-    }
-
-    @Override
-    protected void processAddedSecondaryXref(Xref added) {
-        // it is an identifier
-        if (XrefUtils.isXrefAnIdentifier(added)){
-            ((FullIdentifierList)getAllIdentifiers()).addOnly(added);
-            processAddedIdentifierEvent(added);
-        }
-        // it is not an identifier
-        else {
-            ((FullXrefList)getAllXrefs()).addOnly(added);
-        }
-    }
-
-    @Override
-    protected void processRemovedSecondaryXref(Xref removed) {
-        // if it is an identifier
-        if (!((FullIdentifierList)getAllIdentifiers()).removeOnly(removed)){
-            // if it is not an identifier
-            ((FullXrefList)getAllXrefs()).removeOnly(removed);
-        }
-        else {
-            processRemovedIdentifierEvent(removed);
-        }
-    }
-
-    @Override
-    protected void clearSecondaryXrefProperties() {
-        if (primaryRef != null){
-            Collection<Xref> primary = Collections.singleton(primaryRef);
-            List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
-            identifiersToBeDeleted.remove(primaryRef);
-
-            for (Xref ref : identifiersToBeDeleted){
-                ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
-                processRemovedIdentifierEvent(ref);
+        protected boolean addIdentifier(Integer index, Xref xref) {
+            if (index == null){
+                return identifiers.add(xref);
             }
-
-            // if it is not an identifier
-            ((FullXrefList)getAllXrefs()).retainAllOnly(primary);
+            identifiers.add(index, xref);
+            return true;
         }
-        else{
-            ((FullXrefList)getAllXrefs()).clearOnly();
-            List<Xref> identifiersToBeDeleted = new ArrayList<Xref>(getAllIdentifiers());
-            for (Xref ref : identifiersToBeDeleted){
-                ((FullIdentifierList)getAllIdentifiers()).removeOnly(ref);
-                processRemovedIdentifierEvent(ref);
+
+        private boolean processXref(Integer index, Xref xref) {
+
+            if (index == null){
+                return getXrefs().add(xref);
             }
+            getXrefs().add(index, xref);
+            return true;
         }
-    }
-
-    @Override
-    protected void processAddedXref(Xref added) {
-        if (added instanceof XmlXref){
-            processAddedPrimaryAndSecondaryRefs((XmlXref)added);
-        }
-    }
-
-    @Override
-    protected void processRemovedXref(Xref removed) {
-        if (removed instanceof XmlXref){
-            processRemovedPrimaryAndSecondaryRefs((XmlXref)removed);
-        }
-    }
-
-    @Override
-    protected void clearFullXrefProperties() {
-        // the primary ref is in identifiers
-        if (getAllIdentifiers().contains(primaryRef)){
-            // do nothing
-        }
-        // the primary ref is in xrefs, we reset it to the first identifier
-        else if (!getAllIdentifiers().isEmpty()){
-            Iterator<Xref> refsIterator = allIdentifiers.iterator();
-            Xref ref = refsIterator.next();
-
-            while(refsIterator.hasNext() && !(ref instanceof XmlXref)){
-                ref = refsIterator.next();
-            }
-            if (ref instanceof XmlXref){
-                primaryRef = (XmlXref) ref;
-                ((FullIdentifierList)allIdentifiers).removeOnly(ref);
-            }
-        }
-        else{
-            primaryRef = null;
-        }
-
-        ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllIdentifiers());
     }
 
     private class FullIdentifierList extends AbstractListHavingProperties<Xref> {
@@ -236,47 +155,16 @@ public class FeatureXrefContainer extends XrefContainer{
 
         @Override
         protected void processAddedObjectEvent(Xref added) {
-            if (added != null){
-                if (added instanceof XmlXref){
-                    processAddedPrimaryAndSecondaryRefs((XmlXref) added);
-                }
-                processAddedIdentifierEvent(added);
-            }
+            processAddedIdentifierEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (removed != null){
-                if (removed instanceof XmlXref){
-                    processRemovedPrimaryAndSecondaryRefs((XmlXref)removed);
-                }
-                processRemovedIdentifierEvent(removed);
-            }
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            // the primary ref is in xrefs
-            if (getAllXrefs().contains(primaryRef)){
-                // do nothing
-            }
-            // the primary ref is in identifiers, we reset it to the first xrefContainer
-            else if (!getAllXrefs().isEmpty()){
-                Iterator<Xref> refsIterator = allXrefs.iterator();
-                Xref ref = refsIterator.next();
-
-                while(refsIterator.hasNext() && !(ref instanceof XmlXref)){
-                    ref = refsIterator.next();
-                }
-                if (ref instanceof XmlXref){
-                    primaryRef = (XmlXref) ref;
-                    ((FullXrefList)allXrefs).removeOnly(ref);
-                }
-            }
-            else{
-                primaryRef = null;
-            }
-            ((SecondaryXrefList)getJAXBSecondaryRefs()).retainAllOnly(getAllXrefs());
             clearPropertiesLinkedToIdentifiers();
         }
     }

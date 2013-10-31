@@ -124,7 +124,7 @@ public class BibRef
         if (xrefContainer == null){
             xrefContainer = new PublicationXrefContainer();
         }
-        return xrefContainer.getAllIdentifiers();
+        return xrefContainer.getIdentifiers();
     }
 
     public String getImexId() {
@@ -183,7 +183,7 @@ public class BibRef
         if (xrefContainer == null){
             xrefContainer = new PublicationXrefContainer();
         }
-        return xrefContainer.getAllIdentifiers();
+        return xrefContainer.getIdentifiers();
     }
 
     public Collection<Annotation> getAnnotations() {

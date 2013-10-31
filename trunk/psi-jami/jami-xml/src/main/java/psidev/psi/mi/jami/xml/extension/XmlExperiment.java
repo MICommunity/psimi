@@ -30,8 +30,8 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
-    private XmlCvTerm participantIdentificationMethod;
-    private XmlCvTerm featureDetectionMethod;
+    private CvTerm participantIdentificationMethod;
+    private CvTerm featureDetectionMethod;
     private int id;
     @XmlLocation
     @XmlTransient
@@ -106,7 +106,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
             this.xrefContainer = new ExperimentXrefContainer();
             this.xrefContainer.setPublication(publication);
         }
-        return this.xrefContainer.getAllXrefs();
+        return this.xrefContainer.getXrefs();
     }
 
     public Organism getHostOrganism() {
@@ -379,7 +379,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      *     {@link XmlCvTerm }
      *
      */
-    public XmlCvTerm getParticipantIdentificationMethod() {
+    public CvTerm getParticipantIdentificationMethod() {
         return participantIdentificationMethod;
     }
 
@@ -391,8 +391,8 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "participantIdentificationMethod")
-    public void setParticipantIdentificationMethod(XmlCvTerm value) {
+    @XmlElement(name = "participantIdentificationMethod", type = XmlCvTerm.class)
+    public void setParticipantIdentificationMethod(CvTerm value) {
         this.participantIdentificationMethod = value;
     }
 
@@ -404,7 +404,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      *     {@link XmlCvTerm }
      *
      */
-    public XmlCvTerm getFeatureDetectionMethod() {
+    public CvTerm getFeatureDetectionMethod() {
         return featureDetectionMethod;
     }
 
@@ -416,8 +416,8 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "featureDetectionMethod")
-    public void setFeatureDetectionMethod(XmlCvTerm value) {
+    @XmlElement(name = "featureDetectionMethod", type = XmlCvTerm.class)
+    public void setFeatureDetectionMethod(CvTerm value) {
         this.featureDetectionMethod = value;
     }
 

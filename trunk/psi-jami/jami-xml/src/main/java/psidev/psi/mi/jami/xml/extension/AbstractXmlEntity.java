@@ -112,7 +112,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         if (xrefContainer == null){
             xrefContainer = new XrefContainer();
         }
-        return this.xrefContainer.getAllXrefs();
+        return this.xrefContainer.getXrefs();
     }
 
     public Interactor getInteractor() {
