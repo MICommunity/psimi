@@ -2,10 +2,9 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -58,17 +57,46 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals("dohrmann-1999-1", exp.getShortLabel());
         Assert.assertEquals("RAD53 regulates DBF4 independently of checkpoint function in Saccharomyces cerevisiae.", exp.getFullName());
         Assert.assertEquals(3, exp.getXrefs().size());
-        Assert.assertNotNull(exp.getHostOrganism());
         // all annotations are publication annotations
         Assert.assertEquals(0, exp.getAnnotations().size());
+        // detection method
         Assert.assertNotNull(exp.getInteractionDetectionMethod());
+        CvTerm method = exp.getInteractionDetectionMethod();
+        Assert.assertEquals("2 hybrid", method.getShortName());
+        Assert.assertEquals("two hybrid", method.getFullName());
+        Assert.assertEquals(8, method.getSynonyms().size());
+        Assert.assertEquals("MI:0018", method.getMIIdentifier());
+        Assert.assertEquals(2, method.getIdentifiers().size());
+        Assert.assertEquals(3, method.getXrefs().size());
+        // participant identification method
         Assert.assertNotNull(exp.getParticipantIdentificationMethod());
+        method = exp.getParticipantIdentificationMethod();
+        Assert.assertEquals("predetermined", method.getShortName());
+        Assert.assertEquals("predetermined participant", method.getFullName());
+        Assert.assertEquals(0, method.getSynonyms().size());
+        Assert.assertEquals("MI:0396", method.getMIIdentifier());
+        Assert.assertEquals(2, method.getIdentifiers().size());
+        Assert.assertEquals(1, method.getXrefs().size());
         Assert.assertNull(exp.getFeatureDetectionMethod());
-
         // host organism
+        Assert.assertNotNull(exp.getHostOrganism());
         Organism host = exp.getHostOrganism();
-
+        Assert.assertEquals(-4, host.getTaxId());
+        Assert.assertEquals("in vivo", host.getCommonName());
+        Assert.assertNull(host.getScientificName());
+        Assert.assertEquals(0, host.getAliases().size());
+        Assert.assertNull(host.getCellType());
+        Assert.assertNull(host.getTissue());
+        Assert.assertNull(host.getCompartment());
         // publication
+        Assert.assertNotNull(exp.getPublication());
+        Publication pub = exp.getPublication();
+        Assert.assertEquals("10049915", pub.getPubmedId());
+        Assert.assertEquals(1, pub.getIdentifiers().size());
+        Assert.assertEquals(0, pub.getXrefs().size());
+        Assert.assertEquals("Genetics (0016-6731)", pub.getJournal());
+        Assert.assertEquals("1999", PsiXmlUtils.YEAR_FORMAT.format(pub.getPublicationDate()));
+        Assert.assertEquals(4, pub.getAuthors().size());
 
         parser.close();
     }
