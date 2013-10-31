@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +25,7 @@ public class XmlEntryContext {
     private Collection<XmlIdReference> references;
     private Collection<InferredInteraction> inferredInteractions;
     private XmlEntry currentEntry;
+    private PsiXmlParserListener listener;
 
     private XmlEntryContext(){
         this.mapOfReferencedObjects = new HashMap<Integer, Object>();
@@ -78,5 +80,13 @@ public class XmlEntryContext {
 
     public Map<Integer, Complex> getMapOfReferencedComplexes() {
         return mapOfReferencedComplexes;
+    }
+
+    public PsiXmlParserListener getListener() {
+        return listener;
+    }
+
+    public void setListener(PsiXmlParserListener listener) {
+        this.listener = listener;
     }
 }

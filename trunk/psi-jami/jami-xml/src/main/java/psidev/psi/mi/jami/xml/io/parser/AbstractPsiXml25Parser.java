@@ -152,6 +152,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // entry set
         else if (PsiXmlUtils.ENTRYSET_TAG.equalsIgnoreCase(start.getName().getLocalPart())){
             started = true;
+            XmlEntryContext.getInstance().setListener(this.listener);
             // read the entrySet
             eventReader.nextEvent();
             return processEntry(entryContext);
