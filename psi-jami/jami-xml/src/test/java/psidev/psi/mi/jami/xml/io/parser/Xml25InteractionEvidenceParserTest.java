@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Iterator;
 
 /**
@@ -206,6 +207,25 @@ public class Xml25InteractionEvidenceParserTest {
         }
 
         Assert.assertEquals(26, index);
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml25_2() throws JAXBException, XMLStreamException, IOException {
+        InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
+
+        System.out.println("Start"+System.currentTimeMillis());
+        PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);
+        int index = 0;
+        while(!parser.hasFinished()){
+            InteractionEvidence interaction = parser.parseNextInteraction();
+            Assert.assertNotNull(interaction);
+            index++;
+        }
+        System.out.println("End"+System.currentTimeMillis());
+
+        System.out.println("Read "+index+" interactions");
 
         parser.close();
     }
