@@ -70,6 +70,16 @@
                         <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292" dbAc="MI:0446" db="pubmed"/>
                     </xref>
                 </participantIdentificationMethod>
+                <confidenceList>
+                    <confidence>
+                        <unit>
+                            <names>
+                                <shortLabel>author-score</shortLabel>
+                            </names>
+                        </unit>
+                        <value>1.2</value>
+                    </confidence>
+                </confidenceList>
                 <attributeList>
                     <attribute nameAc="MI:0636" name="author-list">Dohrmann PR., Oshiro G., Tecklenburg M., Sclafani RA.</attribute>
                     <attribute nameAc="MI:0885" name="journal">Genetics (0016-6731)</attribute>
@@ -228,6 +238,7 @@
                     <primaryRef refTypeAc="MI:0356" refType="identity" id="MINT-18818" dbAc="MI:0471" db="mint"/>
                     <secondaryRef refTypeAc="MI:0356" refType="identity" id="EBI-6948673" dbAc="MI:0469" db="intact"/>
                 </xref>
+                <availability id="100000000">copyright</availability>
                 <experimentList>
                     <experimentRef>4120</experimentRef>
                 </experimentList>
@@ -292,6 +303,11 @@
                                 </xref>
                             </experimentalPreparation>
                         </experimentalPreparationList>
+                        <experimentalInteractorList>
+                            <experimentalInteractor>
+                                <interactorRef>4122</interactorRef>
+                            </experimentalInteractor>
+                        </experimentalInteractorList>
                         <featureList>
                             <feature id="4125">
                                 <names>
@@ -341,6 +357,18 @@
                                 </featureRangeList>
                             </feature>
                         </featureList>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="9606">
+                                <names>
+                                    <shortLabel>human-293t</shortLabel>
+                                </names>
+                                <cellType>
+                                    <names>
+                                        <shortLabel>293t</shortLabel>
+                                    </names>
+                                </cellType>
+                            </hostOrganism>
+                        </hostOrganismList>
                         <attributeList>
                             <attribute nameAc="MI:0612" name="comment">Stoichiometry: 1.0</attribute>
                         </attributeList>
@@ -473,6 +501,21 @@
                 <modelled>true</modelled>
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
+                <confidenceList>
+                    <confidence>
+                        <unit>
+                            <names>
+                                <shortLabel>intact-miscore</shortLabel>
+                            </names>
+                        </unit>
+                        <value>0.8</value>
+                    </confidence>
+                </confidenceList>
+                <parameterList>
+                    <parameter term="kd" factor="5">
+                        <experimentRef>4120</experimentRef>
+                    </parameter>
+                </parameterList>
                 <attributeList>
                     <attribute nameAc="MI:0612" name="comment">mint</attribute>
                 </attributeList>

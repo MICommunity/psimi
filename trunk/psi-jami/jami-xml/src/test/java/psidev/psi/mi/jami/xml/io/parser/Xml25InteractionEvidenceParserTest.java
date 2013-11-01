@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Experiment;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25ParticipantEvidence;
@@ -113,6 +114,11 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(0, source.getXrefs().size());
         Assert.assertEquals(2, source.getAnnotations().size());
         Assert.assertEquals("http://mint.bio.uniroma2.it/mint", source.getUrl());
+        // confidences
+        Assert.assertEquals(1, exp.getConfidences().size());
+        Confidence conf = exp.getConfidences().iterator().next();
+        Assert.assertEquals("author-score", conf.getType().getShortName());
+        Assert.assertEquals("1.2", conf.getValue());
 
         // attributes
         Assert.assertEquals(1, interaction.getAnnotations().size());
@@ -174,6 +180,23 @@ public class Xml25InteractionEvidenceParserTest {
         // identification method
         Assert.assertEquals(1, p1.getIdentificationMethods().size());
         Assert.assertNotSame(p1.getIdentificationMethods().iterator().next(), exp.getParticipantIdentificationMethod());
+        // experimental interactor
+        Assert.assertEquals(1, ((ExtendedPsi25ParticipantEvidence) p1).getExperimentalInteractors().size());
+        ExperimentalInteractor expInteractor = ((ExtendedPsi25ParticipantEvidence) p1).getExperimentalInteractors().iterator().next();
+        Assert.assertNotNull(expInteractor.getInteractor());
+        Assert.assertTrue(expInteractor.getExperiments().isEmpty());
+        Assert.assertEquals("dbf4_yeast", expInteractor.getInteractor().getShortName());
+        // expressed in
+        Assert.assertNotNull(p1.getExpressedInOrganism());
+        host = p1.getExpressedInOrganism();
+        Assert.assertEquals(9606, host.getTaxId());
+        Assert.assertEquals("human-293t", host.getCommonName());
+        Assert.assertNull(host.getScientificName());
+        Assert.assertEquals(0, host.getAliases().size());
+        Assert.assertNotNull(host.getCellType());
+        Assert.assertEquals("293t", host.getCellType().getShortName());
+        Assert.assertNull(host.getTissue());
+        Assert.assertNull(host.getCompartment());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
         FeatureEvidence f = p1.getFeatures().iterator().next();
@@ -185,9 +208,29 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(0, f.getAnnotations().size());
         Assert.assertEquals(1, f.getRanges().size());
         Assert.assertEquals("?-?", RangeUtils.convertRangeToString(f.getRanges().iterator().next()));
+        // interactor
+        Assert.assertNotNull(p1.getInteractor());
+        Assert.assertEquals("rad53_yeast", p1.getInteractor().getShortName());
+        Assert.assertEquals("Serine/threonine-protein kinase RAD53", p1.getInteractor().getFullName());
+        Assert.assertEquals(8, p1.getInteractor().getAliases().size());
+        Assert.assertTrue(p1.getInteractor() instanceof Protein);
+        Protein prot = (Protein)p1.getInteractor();
+        Assert.assertEquals("RAD53", prot.getGeneName());
+        Assert.assertEquals(44, prot.getXrefs().size());
+        Assert.assertEquals(4, prot.getIdentifiers().size());
+        Assert.assertEquals("P22216", prot.getUniprotkb());
+        Assert.assertEquals("MENITQPTQQSTQATQRFLIEKFSQEQIGENIVCRVICTTGQIPIRDLSADISQVLKEKRSIKKVWTFGRNPACDYHLGNISRLSNKHFQILLGEDGNLLLNDISTNGTWLNGQKVEKNSNQLLSQGDEITVGVGVESDILSLVIFINDKFKQCLEQNKVDRIRSNLKNTSKIASPGLTSSTASSMVANKTGIFKDFSIIDEVVGQGAFATVKKAIERTTGKTFAVKIISKRKVIGNMDGVTRELEVLQKLNHPRIVRLKGFYEDTESYYMVMEFVSGGDLMDFVAAHGAVGEDAGREISRQILTAIKYIHSMGISHRDLKPDNILIEQDDPVLVKITDFGLAKVQGNGSFMKTFCGTLAYVAPEVIRGKDTSVSPDEYEERNEYSSLVDMWSMGCLVYVILTGHLPFSGSTQDQLYKQIGRGSYHEGPLKDFRISEEARDFIDSLLQVDPNNRSTAAKALNHPWIKMSPLGSQSYGDFSQISLSQSLSQQKLLENMDDAQYEFVKAQRKLQMEQQLQEQDQEDQDGKIQGFKIPAHAPIRYTQPKSIEAETREQKLLHSNNTENVKSSKKKGNGRFLTLKPLPDSIIQESLEIQQGVNPFFIGRSEDCNCKIEDNRLSRVHCFIFKKRHAVGKSMYESPAQGLDDIWYCHTGTNVSYLNNNRMIQGTKFLLQDGDEIKIIWDKNNKFVIGFKVEINDTTGLFNEGLGMLQEQRVVLKQTAEEKDLVKKLTQMMAAQRANQPSASSSSMSAKKPPVSDTNNNGNNSVLNDLVESPINANTGNILKRIHSVSLSQSQIDPSKKVKRAKLDQTSKGPENLQFS", prot.getSequence());
+        Assert.assertNotNull(prot.getOrganism());
+        Assert.assertEquals(559292, prot.getOrganism().getTaxId());
 
-        Assert.assertEquals(0, interaction.getConfidences().size());
-        Assert.assertEquals(0, interaction.getParameters().size());
+        Assert.assertEquals(1, interaction.getConfidences().size());
+        conf = interaction.getConfidences().iterator().next();
+        Assert.assertEquals("intact-miscore", conf.getType().getShortName());
+        Assert.assertEquals("0.8", conf.getValue());
+        Assert.assertEquals(1, interaction.getParameters().size());
+        Parameter param = interaction.getParameters().iterator().next();
+        Assert.assertEquals("kd", param.getType().getShortName());
+        Assert.assertEquals("5", param.getValue().toString());
 
         Assert.assertTrue(parser.hasFinished());
 
@@ -229,4 +272,24 @@ public class Xml25InteractionEvidenceParserTest {
 
         parser.close();
     }
+
+    //@Test
+    /*public void test_read_valid_xml25_3() throws JAXBException, XMLStreamException, IOException {
+        InputStream stream = new FileInputStream("/home/marine/Downloads/BIOGRID-ALL-3.2.97.psi25.xml");
+
+        System.out.println("Start"+System.currentTimeMillis());
+        PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);
+        int index = 0;
+        while(!parser.hasFinished()){
+            InteractionEvidence interaction = parser.parseNextInteraction();
+            if (interaction != null){
+                index++;
+            }
+        }
+        System.out.println("End"+System.currentTimeMillis());
+
+        System.out.println("Read "+index+" interactions");
+
+        parser.close();
+    }*/
 }
