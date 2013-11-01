@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Collection;
 
@@ -306,10 +305,12 @@ public class DefaultGene extends DefaultMolecule implements Gene {
      * @throw IllegalArgumentException: If the give type is not gene (MI:0301)
      */
     public void setInteractorType(CvTerm type) {
-        if (!DefaultCvTermComparator.areEquals(type, CvTermUtils.getGene())){
-            throw new IllegalArgumentException("This interactor is a Gene and the only available interactor type is gene (MI:0301)");
+        if (type == null){
+            super.setInteractorType(CvTermUtils.createGeneInteractorType());
         }
-        super.setInteractorType(type);
+        else {
+            super.setInteractorType(type);
+        }
     }
 
     @Override
