@@ -51,7 +51,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
     }
 
     public CvTerm getType() {
-        return null;
+        return this.type;
     }
 
     public String getName() {
