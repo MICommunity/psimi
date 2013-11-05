@@ -687,7 +687,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     protected void skipNextElement() throws XMLStreamException {
-        this.subEventReader.nextEvent();
+        if (this.subEventReader.hasNext()){
+            this.subEventReader.nextEvent();
+        }
     }
 
     private void flushEntryIfNecessary(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
