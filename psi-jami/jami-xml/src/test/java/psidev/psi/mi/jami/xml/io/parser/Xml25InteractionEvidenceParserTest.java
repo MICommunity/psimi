@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -273,8 +274,8 @@ public class Xml25InteractionEvidenceParserTest {
         parser.close();
     }
 
-    //@Test
-    /*public void test_read_valid_xml25_3() throws JAXBException, XMLStreamException, IOException {
+    @Test
+    public void test_read_valid_xml25_3() throws JAXBException, XMLStreamException, IOException {
         InputStream stream = new FileInputStream("/home/marine/Downloads/BIOGRID-ALL-3.2.97.psi25.xml");
 
         System.out.println("Start"+System.currentTimeMillis());
@@ -291,5 +292,5 @@ public class Xml25InteractionEvidenceParserTest {
         System.out.println("Read "+index+" interactions");
 
         parser.close();
-    }*/
+    }
 }
