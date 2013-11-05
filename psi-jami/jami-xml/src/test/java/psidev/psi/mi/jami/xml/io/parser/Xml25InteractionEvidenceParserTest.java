@@ -12,9 +12,9 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Iterator;
 
 /**
@@ -481,7 +481,7 @@ public class Xml25InteractionEvidenceParserTest {
 
     @Test
     public void test_read_valid_xml25_2() throws JAXBException, XMLStreamException, IOException {
-        InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
+        InputStream stream = new FileInputStream("/home/marine/Downloads/19536198_gong-2009-1_01.xml");
 
         System.out.println("Start"+System.currentTimeMillis());
         PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);

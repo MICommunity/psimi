@@ -14,9 +14,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import java.io.*;
 import java.net.URL;
 
@@ -55,72 +52,74 @@ public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<?
     @Override
     protected void parseExperimentList() throws XMLStreamException, JAXBException {
         // read experiment list
-        StartElement experimentList = (StartElement)getEventReader().nextEvent();
-        setCurrentElement(peekNextPsiXml25Element());
+        Location experimentList = getStreamReader().getLocation();
+        getStreamReader().nextTag();
+
+        setCurrentElement(getNextPsiXml25StartElement());
         // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
         if (getCurrentElement() != null){
-            XMLEvent evt = getCurrentElement();
+            String evt = getCurrentElement();
             String name = null;
             // skip experimentDescription up to the end of experiment list
             while (evt != null && (name == null || (name != null && !PsiXmlUtils.EXPERIMENTLIST_TAG.equals(name)))) {
-                while (evt != null && !evt.isEndElement()){
+                while (evt != null && !getStreamReader().isEndElement()){
                     skipNextElement();
-                    evt = getSubEventReader().peek();
+                    evt = getStreamReader().getLocalName();
                 }
 
-                if (evt != null && evt.isEndElement()){
-                    name = ((EndElement)evt).getName().getLocalPart();
+                if (evt != null && getStreamReader().isEndElement()){
+                    name = getStreamReader().getLocalName();
                     skipNextElement();
-                    evt = getSubEventReader().peek();
+                    evt = getStreamReader().getLocalName();
                 }
             }
         }
         else{
             if (getListener() != null){
                 FileSourceContext context = null;
-                if (experimentList.getLocation() != null){
-                    Location loc = experimentList.getLocation();
-                    context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                if (experimentList != null){
+                    context = new DefaultFileSourceContext(new PsiXmLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
                 }
                 getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList element does not contain any experimentDescription node. PSI-XML is not valid."));
             }
         }
-        setCurrentElement(peekNextPsiXml25Element());
+        setCurrentElement(getNextPsiXml25StartElement());
     }
 
     @Override
     protected void parseAvailabilityList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         // read availabilityList
-        StartElement availabilityList = (StartElement)getEventReader().nextEvent();
-        setCurrentElement(peekNextPsiXml25Element());
+        Location availabilityList = getStreamReader().getLocation();
+        getStreamReader().nextTag();
+
+        setCurrentElement(getNextPsiXml25StartElement());
         // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
         if (getCurrentElement() != null){
-            XMLEvent evt = getCurrentElement();
+            String evt = getCurrentElement();
             String name = null;
             // skip experimentDescription up to the end of experiment list
             while (evt != null && (name == null || (name != null && !PsiXmlUtils.AVAILABILITYLIST_TAG.equals(name)))) {
-                while (evt != null && !evt.isEndElement()){
+                while (evt != null && !getStreamReader().isEndElement()){
                     skipNextElement();
-                    evt = getSubEventReader().peek();
+                    evt = getStreamReader().getLocalName();
                 }
 
-                if (evt != null && evt.isEndElement()){
-                    name = ((EndElement)evt).getName().getLocalPart();
+                if (evt != null && getStreamReader().isEndElement()){
+                    name = getStreamReader().getLocalName();
                     skipNextElement();
-                    evt = getSubEventReader().peek();
+                    evt = getStreamReader().getLocalName();
                 }
             }
         }
         else{
             if (getListener() != null){
                 FileSourceContext context = null;
-                if (availabilityList.getLocation() != null){
-                    Location loc = availabilityList.getLocation();
-                    context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+                if (availabilityList != null){
+                    context = new DefaultFileSourceContext(new PsiXmLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
                 }
                 getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList element does not contain any availability node. PSI-XML is not valid."));
             }
         }
-        setCurrentElement(peekNextPsiXml25Element());
+        setCurrentElement(getNextPsiXml25StartElement());
     }
 }
