@@ -70,6 +70,8 @@ public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<?
 
                 if (evt != null && evt.isEndElement()){
                     name = ((EndElement)evt).getName().getLocalPart();
+                    skipNextElement();
+                    evt = getSubEventReader().peek();
                 }
             }
         }
@@ -104,6 +106,8 @@ public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<?
 
                 if (evt != null && evt.isEndElement()){
                     name = ((EndElement)evt).getName().getLocalPart();
+                    skipNextElement();
+                    evt = getSubEventReader().peek();
                 }
             }
         }
