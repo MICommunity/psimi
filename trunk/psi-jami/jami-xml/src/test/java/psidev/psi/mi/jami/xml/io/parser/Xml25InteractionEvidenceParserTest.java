@@ -460,6 +460,17 @@ public class Xml25InteractionEvidenceParserTest {
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
+            if (index == 1){
+                Iterator<ParticipantEvidence> pIterator = interaction.getParticipants().iterator();
+                ParticipantEvidence p1 = pIterator.next();
+                FeatureEvidence f1 = p1.getFeatures().iterator().next();
+                Assert.assertEquals(1, f1.getLinkedFeatures().size());
+                ParticipantEvidence p2 = pIterator.next();
+                FeatureEvidence f2 = p2.getFeatures().iterator().next();
+                Assert.assertEquals(1, f2.getLinkedFeatures().size());
+                Assert.assertEquals(f1.getLinkedFeatures().iterator().next(), f2);
+                Assert.assertEquals(f2.getLinkedFeatures().iterator().next(), f1);
+            }
             index++;
         }
 
