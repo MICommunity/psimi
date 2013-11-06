@@ -2,11 +2,8 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
 
 /**
  * Interface for PsiXml25Parser
@@ -17,11 +14,11 @@ import java.io.IOException;
  */
 
 public interface PsiXml25Parser<T extends Interaction> {
-    public T parseNextInteraction() throws IOException, XMLStreamException, JAXBException;
+    public T parseNextInteraction() throws PsiXmlParserException;
 
     public void close() throws MIIOException;
 
-    public boolean hasFinished();
+    public boolean hasFinished() throws PsiXmlParserException;
 
     public void reInit() throws MIIOException;
 
