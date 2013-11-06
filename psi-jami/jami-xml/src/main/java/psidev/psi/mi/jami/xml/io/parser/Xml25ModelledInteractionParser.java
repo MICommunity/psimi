@@ -121,4 +121,9 @@ public class Xml25ModelledInteractionParser extends AbstractPsiXml25Parser<Model
         }
         setCurrentElement(getNextPsiXml25StartElement());
     }
+
+    @Override
+    protected ModelledInteraction unmarshallInteraction() throws JAXBException {
+        return super.unmarshallInteraction(XmlModelledInteraction.class);
+    }
 }

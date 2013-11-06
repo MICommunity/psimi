@@ -122,4 +122,9 @@ public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<?
         }
         setCurrentElement(getNextPsiXml25StartElement());
     }
+
+    @Override
+    protected Interaction<? extends Participant> unmarshallInteraction() throws JAXBException {
+        return super.unmarshallInteraction(XmlBasicInteraction.class);
+    }
 }

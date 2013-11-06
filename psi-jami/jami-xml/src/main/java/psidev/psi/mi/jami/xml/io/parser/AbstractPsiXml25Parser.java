@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.io.parser;
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
@@ -14,13 +13,18 @@ import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.*;
+import javax.xml.transform.stream.StreamSource;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,15 +66,15 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     private String currentElement;
 
-    public AbstractPsiXml25Parser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
+    public AbstractPsiXml25Parser(File file) throws XMLStreamException, JAXBException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
         this.originalFile = file;
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        this.originalReader = new FileReader(file);
-        this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+        StreamSource source = new StreamSource(file);
+        this.streamReader = xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -83,8 +87,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.originalStream = inputStream;
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        this.originalReader = new InputStreamReader(inputStream);
-        this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+        StreamSource source = new StreamSource(inputStream);
+        this.streamReader = xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -99,8 +103,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.originalStream = url.openStream();
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        this.originalReader = new InputStreamReader(this.originalStream);
-        this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+        StreamSource source = new StreamSource(this.originalStream);
+        this.streamReader = xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -114,7 +118,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.originalReader = reader;
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        this.streamReader =  xmlif.createXMLStreamReader(reader);
+        StreamSource source = new StreamSource(this.originalStream);
+        this.streamReader =  xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -240,33 +245,15 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
         }
         if (this.originalFile != null){
-            // close the previous reader
-            if (this.originalReader != null){
-                try {
-                    this.originalReader.close();
-                } catch (IOException e) {
-                    logger.log(Level.SEVERE, "Could not close the reader.", e);
-                }
-            }
             XMLInputFactory xmlif = XMLInputFactory.newInstance();
             try {
-                this.originalReader = new FileReader(this.originalFile);
-                this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
-            } catch (FileNotFoundException e) {
-                throw new MIIOException("File not found  " + this.originalFile.getName(), e);
+                StreamSource source = new StreamSource(this.originalFile);
+                this.streamReader = xmlif.createXMLStreamReader(source);
             } catch (XMLStreamException e) {
                 throw new MIIOException("We cannot open the file " + this.originalFile.getName(), e);
             }
         }
         else if (this.originalURL != null){
-            // close the previous reader
-            if (this.originalReader != null){
-                try {
-                    this.originalReader.close();
-                } catch (IOException e) {
-                    logger.log(Level.SEVERE, "Could not close the reader.", e);
-                }
-            }
             // close the previous stream
             if (this.originalStream != null){
                 try {
@@ -279,8 +266,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             try {
                 this.originalStream = originalURL.openStream();
                 XMLInputFactory xmlif = XMLInputFactory.newInstance();
-                this.originalReader = new InputStreamReader(this.originalStream);
-                this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+                StreamSource source = new StreamSource(this.originalStream);
+                this.streamReader = xmlif.createXMLStreamReader(source);
             }catch (XMLStreamException e) {
                 throw new MIIOException("We cannot open the URL " + this.originalURL.toString(), e);
             } catch (IOException e) {
@@ -292,8 +279,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             if (this.originalReader.markSupported()){
                 try {
                     this.originalReader.reset();
+                    StreamSource source = new StreamSource(this.originalReader);
                     XMLInputFactory xmlif = XMLInputFactory.newInstance();
-                    this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+                    this.streamReader = xmlif.createXMLStreamReader(source);
                 } catch (XMLStreamException e) {
                     throw new MIIOException("We cannot open the reader ", e);
                 } catch (IOException e) {
@@ -310,8 +298,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 try {
                     this.originalStream.reset();
                     XMLInputFactory xmlif = XMLInputFactory.newInstance();
-                    this.originalReader = new InputStreamReader(this.originalStream);
-                    this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+                    StreamSource source = new StreamSource(this.originalStream);
+                    this.streamReader = xmlif.createXMLStreamReader(source);
 
                 } catch (XMLStreamException e) {
                     throw new MIIOException("We cannot open the inputStream ", e);
@@ -451,7 +439,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             XmlEntry currentEntry = entryContext.getCurrentEntry();
             // load attribute
             while (this.currentElement != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(this.currentElement)) {
-                currentEntry.getAnnotations().add((Annotation) this.unmarshaller.unmarshal(streamReader));
+                JAXBElement<XmlAnnotation> attribute = this.unmarshaller.unmarshal(streamReader, XmlAnnotation.class);
+                currentEntry.getAnnotations().add(attribute.getValue());
                 this.currentElement = getNextPsiXml25StartElement();
             }                    }
         else{
@@ -501,8 +490,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         if (this.currentElement != null){
             // load experimentDescription
             while (this.currentElement != null && PsiXmlUtils.INTERACTOR_TAG.equalsIgnoreCase(this.currentElement)) {
+                JAXBElement<XmlInteractor> interactorElement = unmarshaller.unmarshal(this.streamReader, XmlInteractor.class);
                 this.interactorFactory.
-                        createInteractorFromXmlInteractorInstance((XmlInteractor) unmarshaller.unmarshal(this.streamReader));
+                        createInteractorFromXmlInteractorInstance(interactorElement.getValue());
                 this.currentElement = getNextPsiXml25StartElement();
             }
         }
@@ -529,7 +519,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         if (this.currentElement != null){
             // load experimentDescription
             while (this.currentElement != null && PsiXmlUtils.EXPERIMENT_TAG.equalsIgnoreCase(this.currentElement)) {
-                unmarshaller.unmarshal(this.streamReader);
+                unmarshaller.unmarshal(this.streamReader, XmlExperiment.class);
                 this.currentElement = getNextPsiXml25StartElement();
             }
         }
@@ -550,7 +540,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     protected void parseSource(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
-        entryContext.getCurrentEntry().setSource((XmlSource) this.unmarshaller.unmarshal(this.streamReader));
+        JAXBElement<XmlSource> sourceElement = this.unmarshaller.unmarshal(this.streamReader, XmlSource.class);
+        entryContext.getCurrentEntry().setSource(sourceElement.getValue());
         this.currentElement = getNextPsiXml25StartElement();
     }
 
@@ -586,7 +577,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.currentElement = getNextPsiXml25StartElement();
         boolean isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(this.currentElement);
         while(isReadingInteraction && this.currentElement != null){
-            this.loadedInteractions.add((T)this.unmarshaller.unmarshal(streamReader));
+            this.loadedInteractions.add(unmarshallInteraction());
 
             this.currentElement = getNextPsiXml25StartElement();
             isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(this.currentElement);
@@ -631,7 +622,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
      * @throws XMLStreamException
      */
     protected T parseInteractionTag(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
-        T interaction = (T)this.unmarshaller.unmarshal(streamReader);
+        T interaction = unmarshallInteraction();
         // no references, can return the interaction
         if (entryContext.getReferences().isEmpty() && entryContext.getInferredInteractions().isEmpty()){
             return interaction;
@@ -642,6 +633,13 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
 
         return interaction;
+    }
+
+    protected abstract T unmarshallInteraction() throws JAXBException;
+
+    protected T unmarshallInteraction(Class<? extends T> interactionClass) throws JAXBException {
+        JAXBElement<? extends T> element = this.unmarshaller.unmarshal(streamReader, interactionClass);
+        return element.getValue();
     }
 
     protected void processAvailabilityList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
@@ -658,7 +656,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
             // load availability
             while (this.currentElement != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(this.currentElement)) {
-                entry.getAvailabilities().add((Availability)unmarshaller.unmarshal(this.streamReader));
+                JAXBElement<Availability> availabilityElement = unmarshaller.unmarshal(this.streamReader, Availability.class);
+                entry.getAvailabilities().add(availabilityElement.getValue());
                 this.currentElement = getNextPsiXml25StartElement();
             }
         }
