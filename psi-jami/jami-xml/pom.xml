@@ -55,6 +55,13 @@
             <version>2.2.7</version>
         </dependency>
 
+        <!-- woodstox -->
+        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>wstx-asl</artifactId>
+            <version>4.0.6</version>
+        </dependency>
+
         <!-- apache commons -->
         <dependency>
             <groupId>commons-lang</groupId>
