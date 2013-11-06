@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
 import psidev.psi.mi.jami.xml.XmlIdReference;
+import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import java.io.*;
@@ -85,8 +86,17 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
             throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
-        if (this.parser.hasFinished()){
-            reInit();
+        try {
+            if (this.parser.hasFinished()){
+                reInit();
+            }
+        } catch (PsiXmlParserException e) {
+            if (defaultParserListener != null){
+                defaultParserListener.onInvalidSyntax(new DefaultFileSourceContext(e.getLocator()), e);
+            }
+            else{
+                throw new MIIOException("Cannot know if the parser has finished.", e);
+            }
         }
         return createXmlIterator();
     }
@@ -108,11 +118,20 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
 
         boolean needToResetParser = false;
         // if the parser did parse all interactions, we reset the current streams
-        if (this.parser.hasFinished()){
-            reInit();
-        }
-        else{
-            needToResetParser = true;
+        try {
+            if (this.parser.hasFinished()){
+                reInit();
+            }
+            else{
+                needToResetParser = true;
+            }
+        } catch (PsiXmlParserException e) {
+            if (defaultParserListener != null){
+                defaultParserListener.onInvalidSyntax(new DefaultFileSourceContext(e.getLocator()), e);
+            }
+            else{
+                throw new MIIOException("Cannot know if the parser has finished.", e);
+            }
         }
 
         try {

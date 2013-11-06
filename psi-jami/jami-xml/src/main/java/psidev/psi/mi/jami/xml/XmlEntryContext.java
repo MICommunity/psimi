@@ -48,11 +48,15 @@ public class XmlEntryContext {
     }
 
     public void clear(){
-        this.mapOfReferencedObjects.clear();
+        if (this.mapOfReferencedObjects != null){
+            this.mapOfReferencedObjects.clear();
+        }
         this.references.clear();
         this.currentEntry = null;
         this.inferredInteractions.clear();
-        this.mapOfReferencedComplexes.clear();
+        if (this.mapOfReferencedComplexes != null){
+            this.mapOfReferencedComplexes.clear();
+        }
     }
 
     public XmlEntry getCurrentEntry() {

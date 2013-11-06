@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.xml.io.iterator;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.io.parser.PsiXml25Parser;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.Iterator;
 
 /**
@@ -34,28 +33,24 @@ public class AbstractXml25Iterator<T extends Interaction> implements Iterator<T>
 
     private void processNextBinary() throws MIIOException{
         this.nextInteraction = null;
+        try {
+            while (!this.parser.hasFinished() && this.nextInteraction == null){
 
-        while (!this.parser.hasFinished() && this.nextInteraction == null){
-            try {
                 this.nextInteraction = this.parser.parseNextInteraction();
-            } catch (XMLStreamException e) {
-                if (this.parserListener != null){
-                    FileSourceLocator locator = null;
-                    if (e.getLocation() != null){
-                        locator = new FileSourceLocator(e.getLocation().getLineNumber(), e.getLocation().getColumnNumber());
-                    }
-                    this.parserListener.onInvalidSyntax(new DefaultFileSourceContext(locator), e);
-                }
-                else{
-                    throw new MIIOException("Impossible to read next interaction.", e);
-                }
-            } catch (Exception e) {
-                if (this.parserListener != null){
-                    this.parserListener.onInvalidSyntax(new DefaultFileSourceContext(), e);
-                }
-                else{
-                    throw new MIIOException("Impossible to read next interaction.", e);
-                }
+            }
+        } catch (PsiXmlParserException e) {
+            if (this.parserListener != null){
+                this.parserListener.onInvalidSyntax(new DefaultFileSourceContext(e.getLocator()), e);
+            }
+            else{
+                throw new MIIOException("Impossible to read next interaction.", e);
+            }
+        } catch (Exception e) {
+            if (this.parserListener != null){
+                this.parserListener.onInvalidSyntax(new DefaultFileSourceContext(), e);
+            }
+            else{
+                throw new MIIOException("Impossible to read next interaction.", e);
             }
         }
     }

@@ -50,10 +50,16 @@ public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<?
     }
 
     @Override
-    protected void parseExperimentList() throws XMLStreamException, JAXBException {
+    protected void parseExperimentList() throws PsiXmlParserException {
         // read experiment list
         Location experimentList = getStreamReader().getLocation();
-        getStreamReader().nextTag();
+        try {
+            if (getStreamReader().hasNext()){
+                getStreamReader().next();
+            }
+        } catch (XMLStreamException e) {
+            throw createPsiXmlExceptionFrom("Impossible to read first experiment in the experiment list", e);
+        }
 
         setCurrentElement(getNextPsiXml25StartElement());
         // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
@@ -87,10 +93,16 @@ public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<?
     }
 
     @Override
-    protected void parseAvailabilityList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+    protected void parseAvailabilityList(XmlEntryContext entryContext) throws PsiXmlParserException {
         // read availabilityList
         Location availabilityList = getStreamReader().getLocation();
-        getStreamReader().nextTag();
+        try {
+            if (getStreamReader().hasNext()){
+                getStreamReader().next();
+            }
+        } catch (XMLStreamException e) {
+            throw createPsiXmlExceptionFrom("Impossible to read the next availability in the availability list", e);
+        }
 
         setCurrentElement(getNextPsiXml25StartElement());
         // process experiments. Each experiment will be loaded in entryContext so no needs to do something else

@@ -5,13 +5,13 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.factory.XmlBinaryInteractionFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -38,7 +38,7 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
     }
 
     @Override
-    public B parseNextInteraction() throws IOException, XMLStreamException, JAXBException {
+    public B parseNextInteraction() throws PsiXmlParserException {
         // first look at loaded interaction
         if (this.binaryInteractionIterator != null && this.binaryInteractionIterator.hasNext()){
             return processAndRemoveNextBinary();
@@ -62,7 +62,7 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
     }
 
     @Override
-    public boolean hasFinished() {
+    public boolean hasFinished() throws PsiXmlParserException {
         if (this.binaryInteractionIterator != null && this.binaryInteractionIterator.hasNext()){
             return true;
         }
