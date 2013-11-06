@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
+import org.codehaus.stax2.XMLInputFactory2;
+import org.codehaus.stax2.XMLStreamReader2;
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
@@ -49,7 +51,7 @@ import java.util.logging.Logger;
 public abstract class AbstractPsiXml25Parser<T extends Interaction> implements PsiXml25Parser<T>{
 
     private static final Logger logger = Logger.getLogger("AbstractPsiXml25Parser");
-    private XMLStreamReader streamReader;
+    private XMLStreamReader2 streamReader;
 
     private URL originalURL;
     private File originalFile;
@@ -72,9 +74,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         this.originalFile = file;
         // Parse the data, filtering out the start elements
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
+        XMLInputFactory xmlif = XMLInputFactory2.newInstance();
         StreamSource source = new StreamSource(file);
-        this.streamReader = xmlif.createXMLStreamReader(source);
+        this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -88,7 +90,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
         StreamSource source = new StreamSource(inputStream);
-        this.streamReader = xmlif.createXMLStreamReader(source);
+        this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -104,7 +106,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
         StreamSource source = new StreamSource(this.originalStream);
-        this.streamReader = xmlif.createXMLStreamReader(source);
+        this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -119,7 +121,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
         StreamSource source = new StreamSource(this.originalStream);
-        this.streamReader =  xmlif.createXMLStreamReader(source);
+        this.streamReader =  (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -248,7 +250,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             XMLInputFactory xmlif = XMLInputFactory.newInstance();
             try {
                 StreamSource source = new StreamSource(this.originalFile);
-                this.streamReader = xmlif.createXMLStreamReader(source);
+                this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
             } catch (XMLStreamException e) {
                 throw new MIIOException("We cannot open the file " + this.originalFile.getName(), e);
             }
@@ -267,7 +269,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 this.originalStream = originalURL.openStream();
                 XMLInputFactory xmlif = XMLInputFactory.newInstance();
                 StreamSource source = new StreamSource(this.originalStream);
-                this.streamReader = xmlif.createXMLStreamReader(source);
+                this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
             }catch (XMLStreamException e) {
                 throw new MIIOException("We cannot open the URL " + this.originalURL.toString(), e);
             } catch (IOException e) {
@@ -281,7 +283,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     this.originalReader.reset();
                     StreamSource source = new StreamSource(this.originalReader);
                     XMLInputFactory xmlif = XMLInputFactory.newInstance();
-                    this.streamReader = xmlif.createXMLStreamReader(source);
+                    this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
                 } catch (XMLStreamException e) {
                     throw new MIIOException("We cannot open the reader ", e);
                 } catch (IOException e) {
@@ -299,7 +301,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     this.originalStream.reset();
                     XMLInputFactory xmlif = XMLInputFactory.newInstance();
                     StreamSource source = new StreamSource(this.originalStream);
-                    this.streamReader = xmlif.createXMLStreamReader(source);
+                    this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
 
                 } catch (XMLStreamException e) {
                     throw new MIIOException("We cannot open the inputStream ", e);
