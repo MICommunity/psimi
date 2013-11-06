@@ -809,6 +809,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         loadedInteractions.clear();
         this.interactionIterator = null;
         this.started = false;
+        this.unmarshaller = null;
 
         // release the thread local
         XmlEntryContext.getInstance().clear();
