@@ -42,4 +42,9 @@ public class Xml25InteractionEvidenceParser extends AbstractPsiXml25Parser<Inter
                 Availability.class, XmlSource.class);
         return ctx.createUnmarshaller();
     }
+
+    @Override
+    protected InteractionEvidence unmarshallInteraction() throws JAXBException {
+        return super.unmarshallInteraction(XmlInteractionEvidence.class);
+    }
 }
