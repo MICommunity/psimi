@@ -16,7 +16,10 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.*;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -66,8 +69,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.originalFile = file;
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        FileReader fr = new FileReader(file);
-        this.streamReader = xmlif.createXMLStreamReader(fr);
+        this.originalReader = new FileReader(file);
+        this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -80,8 +83,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.originalStream = inputStream;
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        InputStreamReader fr = new InputStreamReader(inputStream);
-        this.streamReader = xmlif.createXMLStreamReader(fr);
+        this.originalReader = new InputStreamReader(inputStream);
+        this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -96,8 +99,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.originalStream = url.openStream();
         // Parse the data, filtering out the start elements
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        InputStreamReader fr = new InputStreamReader(this.originalStream);
-        this.streamReader = xmlif.createXMLStreamReader(fr);
+        this.originalReader = new InputStreamReader(this.originalStream);
+        this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -175,10 +178,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 processUnexpectedNode();
             }
         }
-        // process availability of an existing entry
-        else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(currentElement)){
-            processEntryAttributeList(entryContext);
-        }
         // node not recognized.
         else{
             processUnexpectedNode();
@@ -221,7 +220,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         try {
             return !this.streamReader.hasNext();
         } catch (XMLStreamException e) {
-            throw new MIIOException("Impossible to parse next XML tag", e);
+            logger.log(Level.SEVERE, "Impossible to parse next XML tag", e);
+            return true;
         }
     }
 
@@ -240,11 +240,18 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
         }
         if (this.originalFile != null){
+            // close the previous reader
+            if (this.originalReader != null){
+                try {
+                    this.originalReader.close();
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "Could not close the reader.", e);
+                }
+            }
             XMLInputFactory xmlif = XMLInputFactory.newInstance();
-            FileReader fr = null;
             try {
-                fr = new FileReader(this.originalFile);
-                this.streamReader = xmlif.createXMLStreamReader(fr);
+                this.originalReader = new FileReader(this.originalFile);
+                this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
             } catch (FileNotFoundException e) {
                 throw new MIIOException("File not found  " + this.originalFile.getName(), e);
             } catch (XMLStreamException e) {
@@ -252,6 +259,14 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
         }
         else if (this.originalURL != null){
+            // close the previous reader
+            if (this.originalReader != null){
+                try {
+                    this.originalReader.close();
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "Could not close the reader.", e);
+                }
+            }
             // close the previous stream
             if (this.originalStream != null){
                 try {
@@ -264,31 +279,12 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             try {
                 this.originalStream = originalURL.openStream();
                 XMLInputFactory xmlif = XMLInputFactory.newInstance();
-                InputStreamReader fr = new InputStreamReader(this.originalStream);
-                this.streamReader = xmlif.createXMLStreamReader(fr);
+                this.originalReader = new InputStreamReader(this.originalStream);
+                this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
             }catch (XMLStreamException e) {
                 throw new MIIOException("We cannot open the URL " + this.originalURL.toString(), e);
             } catch (IOException e) {
                 throw new MIIOException("We cannot open the URL  " + this.originalURL.toString(), e);
-            }
-        }
-        else if (this.originalStream != null){
-            // reinit parser if inputStream can be reset
-            if (this.originalStream.markSupported()){
-                try {
-                    this.originalStream.reset();
-                    XMLInputFactory xmlif = XMLInputFactory.newInstance();
-                    InputStreamReader fr = new InputStreamReader(this.originalStream);
-                    this.streamReader = xmlif.createXMLStreamReader(fr);
-
-                } catch (XMLStreamException e) {
-                    throw new MIIOException("We cannot open the inputStream ", e);
-                } catch (IOException e) {
-                    throw new MIIOException("We cannot read the inputStream  ", e);
-                }
-            }
-            else {
-                throw new MIIOException("The inputStream has been consumed and cannot be reset");
             }
         }
         else if (this.originalReader != null){
@@ -306,6 +302,25 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
             else {
                 throw new MIIOException("The reader has been consumed and cannot be reset");
+            }
+        }
+        else if (this.originalStream != null){
+            // reinit parser if inputStream can be reset
+            if (this.originalStream.markSupported()){
+                try {
+                    this.originalStream.reset();
+                    XMLInputFactory xmlif = XMLInputFactory.newInstance();
+                    this.originalReader = new InputStreamReader(this.originalStream);
+                    this.streamReader = xmlif.createXMLStreamReader(this.originalReader);
+
+                } catch (XMLStreamException e) {
+                    throw new MIIOException("We cannot open the inputStream ", e);
+                } catch (IOException e) {
+                    throw new MIIOException("We cannot read the inputStream  ", e);
+                }
+            }
+            else {
+                throw new MIIOException("The inputStream has been consumed and cannot be reset");
             }
         }
     }
@@ -530,12 +545,12 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     protected void parseAvailabilityList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
-        processEntryAttributeList(entryContext);
+        processAvailabilityList(entryContext);
         this.currentElement = getNextPsiXml25StartElement();
     }
 
     protected void parseSource(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
-        entryContext.getCurrentEntry().setSource((XmlSource) this.unmarshaller.unmarshal(streamReader));
+        entryContext.getCurrentEntry().setSource((XmlSource) this.unmarshaller.unmarshal(this.streamReader));
         this.currentElement = getNextPsiXml25StartElement();
     }
 
@@ -591,32 +606,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         else{
             // check entry attributes
             if (this.currentElement != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(this.currentElement)){
-                // read attributeList
-                Location attributeList = this.streamReader.getLocation();
-                if (this.streamReader.hasNext()){
-                    streamReader.next();
-                }
-
-                this.currentElement = getNextPsiXml25StartElement();
-                if (this.currentElement == null){
-                    if (listener != null){
-                        FileSourceContext context = null;
-                        if (attributeList != null){
-                            context = new DefaultFileSourceContext(new PsiXmLocator(attributeList.getLineNumber(), attributeList.getColumnNumber(), null));
-                        }
-                        listener.onInvalidSyntax(context, new PsiXmlParserException("The attributeList node did not contain any availability node. PSI-XML is not valid."));
-                    }
-                }
-                else{
-                    boolean isReadingAttribute = PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(this.currentElement);
-
-                    while(isReadingAttribute && this.currentElement != null){
-                        currentEntry.getAnnotations().add((Annotation)this.unmarshaller.unmarshal(streamReader));
-
-                        this.currentElement = getNextPsiXml25StartElement();
-                        isReadingAttribute = this.currentElement != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(this.currentElement);
-                    }
-                }
+                parseAttributeList(entryContext);
             }
 
             this.interactionIterator = this.loadedInteractions.iterator();
@@ -654,7 +644,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         return interaction;
     }
 
-    protected void processEntryAttributeList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+    protected void processAvailabilityList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         // read availability list
         Location startList = this.streamReader.getLocation();
         if (this.streamReader.hasNext()){
@@ -712,7 +702,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         // end of entry, parse attributes and flush the entry
         else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
-            processEntryAttributeList(entryContext);
+            processAvailabilityList(entryContext);
             flushEntry();
         }
         // if this interaction is not followed by another interaction, we need to flush the entry
