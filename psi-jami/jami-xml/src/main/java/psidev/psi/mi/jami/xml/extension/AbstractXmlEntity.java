@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.AbstractInteractorReference;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -366,7 +367,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        XmlEntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             this.sourceLocator.setObjectId(this.id);
         }
@@ -432,15 +433,9 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         }
 
         @Override
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            // first check if complex not already loaded before
-            Map<Integer, Complex> resolvedComplexes = XmlEntryContext.getInstance().getMapOfReferencedComplexes();
-            if (resolvedComplexes.containsKey(this.ref)){
-                interactor = resolvedComplexes.get(this.ref);
-                return true;
-            }
-            // then take it from existing references
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            // take it from existing references
+            if (parsedObjects.contains(this.ref)){
                 Object object = parsedObjects.get(this.ref);
                 if (object instanceof Interactor){
                     interactor = (Interactor) object;
@@ -490,14 +485,19 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         }
 
         @Override
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
                 Object obj = parsedObjects.get(this.ref);
                 if (obj instanceof Interactor){
                     interactor = (Interactor) obj;
                     return true;
                 }
             }
+            return false;
+        }
+
+        @Override
+        public boolean isComplexReference() {
             return false;
         }
 

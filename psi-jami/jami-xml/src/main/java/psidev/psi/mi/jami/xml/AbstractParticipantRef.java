@@ -93,4 +93,9 @@ public abstract class AbstractParticipantRef extends AbstractXmlIdReference impl
     public boolean removeAllFeatures(Collection features) {
         throw new IllegalStateException("The participant reference is not resolved and we cannot remove features for participant id "+ref);
     }
+
+    @Override
+    public boolean isComplexReference() {
+        return false;
+    }
 }

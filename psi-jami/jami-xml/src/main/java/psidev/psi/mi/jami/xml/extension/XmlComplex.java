@@ -100,7 +100,8 @@ public class XmlComplex extends DefaultComplex implements ExtendedPsi25Interacto
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        XmlEntryContext.getInstance().registerObject(this.id, this);
+        XmlEntryContext.getInstance().registerComplex(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

@@ -7,13 +7,13 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>Java class for inferredInteraction complex type.
@@ -48,7 +48,7 @@ public class InferredInteraction
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
 
     public InferredInteraction() {
-        XmlEntryContext.getInstance().getInferredInteractions().add(this);
+        XmlEntryContext.getInstance().registerInferredInteraction(this);
     }
 
     public Collection<Experiment> getExperiments() {
@@ -239,8 +239,8 @@ public class InferredInteraction
                 super(ref);
             }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
+            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                if (parsedObjects.contains(this.ref)){
                     Object obj = parsedObjects.get(this.ref);
                     if (obj instanceof Experiment){
                         experiments.remove(this);

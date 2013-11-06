@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,7 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * Xml implementation of ModelledParameter
@@ -87,8 +87,8 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
             super(ref);
         }
 
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
                 Object obj = parsedObjects.get(this.ref);
                 if (obj instanceof Experiment){
                     experiment = (Experiment)obj;

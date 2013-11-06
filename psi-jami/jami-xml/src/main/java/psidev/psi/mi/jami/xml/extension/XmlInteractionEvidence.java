@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.AbstractAvailabilityRef;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;
@@ -527,8 +528,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
             super(ref);
         }
 
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
                 Object obj = parsedObjects.get(this.ref);
                 if (obj instanceof Availability){
                     availability = (Availability)obj;
@@ -685,8 +686,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
                     super(ref);
                 }
 
-                public boolean resolve(Map<Integer, Object> parsedObjects) {
-                    if (parsedObjects.containsKey(this.ref)){
+                public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                    if (parsedObjects.contains(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof XmlExperiment){
                             XmlExperiment exp = (XmlExperiment)obj;

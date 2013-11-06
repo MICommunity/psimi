@@ -96,4 +96,9 @@ public abstract class AbstractFeatureRef extends AbstractXmlIdReference implemen
     public Collection<Feature> getLinkedFeatures() {
         throw new IllegalStateException("The feature reference is not resolved and we don't have linked features for feature id "+ref);
     }
+
+    @Override
+    public boolean isComplexReference() {
+        return false;
+    }
 }

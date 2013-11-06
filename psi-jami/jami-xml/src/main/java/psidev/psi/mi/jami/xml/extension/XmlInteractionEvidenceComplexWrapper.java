@@ -37,7 +37,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
         this.interactionEvidence = interaction;
-        XmlEntryContext.getInstance().getMapOfReferencedComplexes().put(interaction.getId(), this);
+        XmlEntryContext.getInstance().registerComplex(interaction.getId(), this);
     }
 
     public Date getUpdatedDate() {
@@ -334,7 +334,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     @Override
     public void setId(int id) {
         this.interactionEvidence.setId(id);
-        XmlEntryContext.getInstance().getMapOfReferencedComplexes().put(id, this);
+        XmlEntryContext.getInstance().registerComplex(id, this);
     }
 
     @Override

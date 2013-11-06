@@ -5,11 +5,17 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.ExperimentalEntity;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Xml implementation of a Feature
@@ -305,8 +311,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
                 super(ref);
             }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
+            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                if (parsedObjects.contains(this.ref)){
                     Object obj = parsedObjects.get(this.ref);
                     if (obj instanceof Experiment){
                         experiments.remove(this);

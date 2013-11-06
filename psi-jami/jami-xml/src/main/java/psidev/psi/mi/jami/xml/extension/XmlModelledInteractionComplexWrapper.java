@@ -35,7 +35,7 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
         this.modelledInteraction = modelled;
         this.interactorType = new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI);
         // add the new generated complex in the referenced complexes
-        XmlEntryContext.getInstance().getMapOfReferencedComplexes().put(modelled.getId(), this);
+        XmlEntryContext.getInstance().registerComplex(modelled.getId(), this);
     }
 
     public Date getUpdatedDate() {
@@ -246,7 +246,7 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     @Override
     public void setId(int id) {
         this.modelledInteraction.setId(id);
-        XmlEntryContext.getInstance().getMapOfReferencedComplexes().put(id, this);
+        XmlEntryContext.getInstance().registerComplex(id, this);
     }
 
     @Override

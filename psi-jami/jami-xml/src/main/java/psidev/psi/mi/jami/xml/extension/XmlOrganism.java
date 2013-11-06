@@ -182,6 +182,10 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
         }
         else {
             this.taxId = -3;
+            /*PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.
+            }*/
         }
     }
 

@@ -17,7 +17,7 @@ public abstract class AbstractXmlIdReference implements XmlIdReference {
     }
 
     public void registerForResolution() {
-        XmlEntryContext.getInstance().getReferences().add(this);
+        XmlEntryContext.getInstance().registerReference(this);
     }
 
     public int getRef() {

@@ -121,4 +121,9 @@ public abstract class AbstractComplexReference extends AbstractInteractorReferen
     public Collection<Xref> getIdentifiers() {
         return super.getIdentifiers();
     }
+
+    @Override
+    public boolean isComplexReference() {
+        return true;
+    }
 }

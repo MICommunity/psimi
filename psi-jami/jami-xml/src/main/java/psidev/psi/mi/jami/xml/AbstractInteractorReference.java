@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * An implementation of XmlIdReference for interactors
@@ -73,6 +72,4 @@ public abstract class AbstractInteractorReference extends AbstractXmlIdReference
     public void setInteractorType(CvTerm type) {
         throw new IllegalStateException("The interactor reference is not resolved and we cannot set an interactor type for interactor id "+ref);
     }
-
-    public abstract boolean resolve(Map<Integer, Object> parsedObjects);
 }
