@@ -6,9 +6,10 @@ import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.InMemoryPsiXml25Index;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.XmlIdReference;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
@@ -31,7 +32,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,6 +63,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     private XmlInteractorFactory interactorFactory;
     private PsiXmlParserListener listener;
     private boolean started = false;
+
+    private PsiXml25IdIndex indexOfObjects=null;
+    private PsiXml25IdIndex indexOfComplexes=null;
 
     public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
 
@@ -147,6 +150,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
             return null;
         }
+
         // get xml entry context
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
         // the next tag is an interaction, we parse the interaction.
@@ -165,8 +169,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         // entry set
         else if (PsiXmlUtils.ENTRYSET_TAG.equalsIgnoreCase(currentElement)){
-            started = true;
-            XmlEntryContext.getInstance().setListener(this.listener);
+            initialiseEntryContext(entryContext);
             // read the entrySet
             if (this.streamReader.hasNext()){
                 streamReader.next();
@@ -192,7 +195,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         return null;
     }
 
-    private void processUnexpectedNode() throws XMLStreamException {
+    protected void processUnexpectedNode() throws XMLStreamException {
         // skip nodes from other schema
         FileSourceContext context = null;
         if (this.streamReader.getLocation() != null){
@@ -323,6 +326,14 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.listener = listener;
     }
 
+    public void setIndexOfObjects(PsiXml25IdIndex indexOfObjects) {
+        this.indexOfObjects = indexOfObjects;
+    }
+
+    public void setIndexOfComplexes(PsiXml25IdIndex indexOfComplexes) {
+        this.indexOfComplexes = indexOfComplexes;
+    }
+
     protected String getNextPsiXml25StartElement() throws XMLStreamException {
         // Parse into typed objects
 
@@ -428,7 +439,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         return loadedInteraction;
     }
 
-    private void parseAttributeList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
+    protected void parseAttributeList(XmlEntryContext entryContext) throws XMLStreamException, JAXBException {
         // read attributeList
         Location attributeList = this.streamReader.getLocation();
         if (this.streamReader.hasNext()){
@@ -456,7 +467,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
     }
 
-    private T parseInteractionList(XmlEntryContext entryContext, T loadedInteraction) throws XMLStreamException, JAXBException {
+    protected T parseInteractionList(XmlEntryContext entryContext, T loadedInteraction) throws XMLStreamException, JAXBException {
         // read experiment list
         Location interactionList = this.streamReader.getLocation();
         if (this.streamReader.hasNext()){
@@ -626,7 +637,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     protected T parseInteractionTag(XmlEntryContext entryContext) throws JAXBException, XMLStreamException {
         T interaction = unmarshallInteraction();
         // no references, can return the interaction
-        if (entryContext.getReferences().isEmpty() && entryContext.getInferredInteractions().isEmpty()){
+        if (!entryContext.hasInferredInteractions() && !entryContext.hasUnresolvedReferences()){
             return interaction;
         }
         // we have references to resolve, loads the all entry and keep in cache
@@ -699,21 +710,20 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.currentElement = getNextPsiXml25StartElement();
         // end of file, flush last entry
         if (this.currentElement == null){
-            flushEntry();
+            flushEntry(entryContext);
         }
         // end of entry, parse attributes and flush the entry
         else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
             processAvailabilityList(entryContext);
-            flushEntry();
+            flushEntry(entryContext);
         }
         // if this interaction is not followed by another interaction, we need to flush the entry
         else if (!PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)){
-            flushEntry();
+            flushEntry(entryContext);
         }
     }
 
-    private void flushEntry(){
-        XmlEntryContext context = XmlEntryContext.getInstance();
+    private void flushEntry(XmlEntryContext context){
         if (context.getCurrentEntry() != null){
             context.getCurrentEntry().setHasLoadedFullEntry(true);
         }
@@ -721,57 +731,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     private void clearEntryReferences(XmlEntryContext context){
-        resolveInteractorAndExperimentRefs(context);
-        resolveInferredInteractionRefs(context);
-        XmlEntryContext.getInstance().clear();
-    }
-
-    private void resolveInteractorAndExperimentRefs(XmlEntryContext context){
-
-        Iterator<XmlIdReference> refIterator = context.getReferences().iterator();
-        while(refIterator.hasNext()){
-            XmlIdReference ref = refIterator.next();
-            if (!ref.resolve(context.getMapOfReferencedObjects())){
-                if (listener != null){
-                    listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
-                }
-            }
-            refIterator.remove();
-        }
-    }
-
-    private void resolveInferredInteractionRefs(XmlEntryContext context){
-        Iterator<InferredInteraction> inferredIterator = context.getInferredInteractions().iterator();
-        while(inferredIterator.hasNext()){
-            InferredInteraction inferred = inferredIterator.next();
-            if (!inferred.getParticipants().isEmpty()){
-                Iterator<InferredInteractionParticipant> partIterator = inferred.getParticipants().iterator();
-                List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getParticipants());
-                int currentIndex = 0;
-
-                while (partIterator.hasNext()){
-                    currentIndex++;
-                    InferredInteractionParticipant p1 = partIterator.next();
-                    for (int i = currentIndex; i < partIterator2.size();i++){
-                        InferredInteractionParticipant p2 = partIterator2.get(i);
-
-                        if (p1.getFeature() != null && p2.getFeature() != null){
-                            p1.getFeature().getLinkedFeatures().add(p2.getFeature());
-                            if (p1.getFeature() != p2.getFeature()){
-                                p2.getFeature().getLinkedFeatures().add(p1.getFeature());
-                            }
-                        }
-                    }
-                }
-            }
-            else{
-                if (listener != null){
-                    listener.onInvalidSyntax(inferred, new PsiXmlParserException("InferredInteraction must have at least one inferredInteractionParticipant."));
-                }
-            }
-
-            inferredIterator.remove();
-        }
+        context.resolveInteractorAndExperimentRefs();
+        context.resolveInferredInteractionRefs();
+        context.clear();
     }
 
     private void closeOriginalInputSources() {
@@ -816,5 +778,18 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // release the thread local
         XmlEntryContext.getInstance().clear();
         XmlEntryContext.remove();
+    }
+
+    private void initialiseEntryContext(XmlEntryContext entryContext) {
+        started = true;
+        entryContext.setListener(this.listener);
+        if (this.indexOfComplexes == null){
+            this.indexOfComplexes = new InMemoryPsiXml25Index();
+        }
+        if (this.indexOfObjects == null){
+            this.indexOfObjects = new InMemoryPsiXml25Index();
+        }
+        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
+        entryContext.setMapOfReferencedComplexes(this.indexOfObjects);
     }
 }

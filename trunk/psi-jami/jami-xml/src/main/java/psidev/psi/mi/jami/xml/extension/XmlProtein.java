@@ -101,7 +101,7 @@ public class XmlProtein extends DefaultProtein implements ExtendedPsi25Interacto
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        XmlEntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

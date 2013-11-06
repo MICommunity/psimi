@@ -9,9 +9,12 @@ import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.xml.AbstractFeatureRef;
 import psidev.psi.mi.jami.xml.AbstractParticipantRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
-import javax.xml.bind.annotation.*;
-import java.util.Map;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Participant of the inferred interaction.
@@ -119,8 +122,8 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
             super(ref);
         }
 
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
                 Object obj = parsedObjects.get(this.ref);
                 if (obj instanceof Entity){
                     participant = (Entity)obj;
@@ -149,8 +152,8 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
             super(ref);
         }
 
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
                 Object obj = parsedObjects.get(this.ref);
                 if (obj instanceof Feature){
                     feature = (Feature)obj;

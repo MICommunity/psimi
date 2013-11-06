@@ -97,4 +97,9 @@ public abstract class AbstractExperimentRef extends AbstractXmlIdReference imple
     public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
         throw new IllegalStateException("The experiment reference is not resolved and we cannot remove variable parameters for experiment id "+ref);
     }
+
+    @Override
+    public boolean isComplexReference() {
+        return false;
+    }
 }

@@ -521,7 +521,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        XmlEntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

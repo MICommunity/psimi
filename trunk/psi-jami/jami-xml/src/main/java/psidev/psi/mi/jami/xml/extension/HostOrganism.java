@@ -8,12 +8,12 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The experiment/participant host organism
@@ -192,8 +192,8 @@ public class HostOrganism extends XmlOrganism{
                 super(ref);
             }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
+            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                if (parsedObjects.contains(this.ref)){
                     Object obj = parsedObjects.get(this.ref);
                     if (obj instanceof Experiment){
                         experiments.remove(this);

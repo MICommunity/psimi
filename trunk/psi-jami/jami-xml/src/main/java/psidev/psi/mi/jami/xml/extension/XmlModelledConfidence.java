@@ -9,12 +9,12 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Xml implementation of ModelledConfidence
@@ -180,8 +180,8 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
                 super(ref);
             }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
+            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                if (parsedObjects.contains(this.ref)){
                     Object obj = parsedObjects.get(this.ref);
                     if (obj instanceof Experiment){
                         Experiment exp = (Experiment)obj;

@@ -9,13 +9,13 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.AbstractInteractorReference;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>Java class for experimentalInteractor complex type.
@@ -251,8 +251,8 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
                 super(ref);
             }
 
-            public boolean resolve(Map<Integer, Object> parsedObjects) {
-                if (parsedObjects.containsKey(this.ref)){
+            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                if (parsedObjects.contains(this.ref)){
                     Object obj = parsedObjects.get(this.ref);
                     if (obj instanceof Experiment){
                         experiments.remove(this);
@@ -284,14 +284,19 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
         }
 
         @Override
-        public boolean resolve(Map<Integer, Object> parsedObjects) {
-            if (parsedObjects.containsKey(this.ref)){
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
                 Object obj = parsedObjects.get(this.ref);
                 if (obj instanceof Interactor){
                     interactor = (Interactor) obj;
                     return true;
                 }
             }
+            return false;
+        }
+
+        @Override
+        public boolean isComplexReference() {
             return false;
         }
 

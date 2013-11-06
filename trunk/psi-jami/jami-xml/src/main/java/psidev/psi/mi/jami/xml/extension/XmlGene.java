@@ -89,7 +89,7 @@ public class XmlGene extends DefaultGene implements ExtendedPsi25Interactor, Fil
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        XmlEntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

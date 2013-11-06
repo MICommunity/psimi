@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 
-import java.util.Map;
-
 /**
  * A XML reference to an parent having an id
  *
@@ -24,5 +22,7 @@ public interface XmlIdReference extends FileSourceContext{
      * @param parsedObjects
      * @return true if the reference was solved. false otherwise
      */
-    public boolean resolve(Map<Integer,Object> parsedObjects);
+    public boolean resolve(PsiXml25IdIndex parsedObjects);
+
+    public boolean isComplexReference();
 }

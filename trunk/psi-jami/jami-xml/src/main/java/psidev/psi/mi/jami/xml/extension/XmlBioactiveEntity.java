@@ -2,19 +2,14 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
-import psidev.psi.mi.jami.model.impl.DefaultChecksum;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
 
 /**
  * Xml implementation of BioactiveEntity
@@ -151,7 +146,7 @@ public class XmlBioactiveEntity extends DefaultBioactiveEntity implements Extend
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().getMapOfReferencedObjects().put(this.id, this);
+        XmlEntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
