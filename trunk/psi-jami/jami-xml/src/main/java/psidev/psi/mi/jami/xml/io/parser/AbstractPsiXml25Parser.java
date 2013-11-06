@@ -155,21 +155,21 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // get xml entry context
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
         // the next tag is an interaction, we parse the interaction.
-        if (PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(currentElement)){
+        if (PsiXmlUtils.INTERACTION_TAG.equals(currentElement)){
             T interaction = parseInteractionTag(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
             return interaction;
         }
         // we start a new entry
-        else if (PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(currentElement)) {
+        else if (PsiXmlUtils.ENTRY_TAG.equals(currentElement)) {
             T interaction = processEntry(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
             return interaction;
         }
         // entry set
-        else if (PsiXmlUtils.ENTRYSET_TAG.equalsIgnoreCase(currentElement)){
+        else if (PsiXmlUtils.ENTRYSET_TAG.equals(currentElement)){
             initialiseEntryContext(entryContext);
             // read the entrySet
             try {
@@ -181,7 +181,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
             // get next element
             this.currentElement = getNextPsiXml25StartElement();
-            if (this.currentElement != null && PsiXmlUtils.ENTRY_TAG.equalsIgnoreCase(currentElement)){
+            if (this.currentElement != null && PsiXmlUtils.ENTRY_TAG.equals(currentElement)){
                 // parse first interaction
                 T interaction = processEntry(entryContext);
                 // check if last interaction and need to flush entry
@@ -362,7 +362,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 }
             }
             while(start != null &&
-                    (namespaceURI == null || !NAMESPACE_URI.equalsIgnoreCase(namespaceURI.trim())));
+                    (namespaceURI == null || !NAMESPACE_URI.equals(namespaceURI.trim())));
             return start;
         }
         catch (XMLStreamException e){
@@ -412,30 +412,30 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             // get next event without parsing it until we could read an interaction and solve all its references
             while(loadedInteraction == null && this.currentElement != null){
                 // process source of entry
-                if (PsiXmlUtils.SOURCE_TAG.equalsIgnoreCase(this.currentElement)){
+                if (PsiXmlUtils.SOURCE_TAG.equals(this.currentElement)){
                     parseSource(entryContext);
                 }
                 // process availability
-                else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equalsIgnoreCase(this.currentElement)){
+                else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equals(this.currentElement)){
                     parseAvailabilityList(entryContext);
                 }
                 // process experiments
-                else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equalsIgnoreCase(this.currentElement)){
+                else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equals(this.currentElement)){
                     parseExperimentList();
 
                 }
                 // process interactors. All interactors will be stored in entryContext so no need to do something else
-                else if (PsiXmlUtils.INTERACTORLIST_TAG.equalsIgnoreCase(this.currentElement)){
+                else if (PsiXmlUtils.INTERACTORLIST_TAG.equals(this.currentElement)){
                     parseInteractorList();
 
                 }
                 // process interaction
-                else if (PsiXmlUtils.INTERACTIONLIST_TAG.equalsIgnoreCase(this.currentElement)){
+                else if (PsiXmlUtils.INTERACTIONLIST_TAG.equals(this.currentElement)){
                     loadedInteraction = parseInteractionList(entryContext, loadedInteraction);
 
                 }
                 // read attributeList
-                else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(this.currentElement)){
+                else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
                     parseAttributeList(entryContext);
 
                 }
@@ -468,7 +468,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             if (this.currentElement != null){
                 XmlEntry currentEntry = entryContext.getCurrentEntry();
                 // load attribute
-                while (this.currentElement != null && PsiXmlUtils.ATTRIBUTE_TAG.equalsIgnoreCase(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.ATTRIBUTE_TAG.equals(this.currentElement)) {
                     JAXBElement<XmlAnnotation> attribute = this.unmarshaller.unmarshal(streamReader, XmlAnnotation.class);
                     currentEntry.getAnnotations().add(attribute.getValue());
                     this.currentElement = getNextPsiXml25StartElement();
@@ -531,7 +531,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             // process interactors
             if (this.currentElement != null){
                 // load experimentDescription
-                while (this.currentElement != null && PsiXmlUtils.INTERACTOR_TAG.equalsIgnoreCase(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.INTERACTOR_TAG.equals(this.currentElement)) {
                     JAXBElement<XmlInteractor> interactorElement = unmarshaller.unmarshal(this.streamReader, XmlInteractor.class);
                     this.interactorFactory.
                             createInteractorFromXmlInteractorInstance(interactorElement.getValue());
@@ -567,7 +567,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
             if (this.currentElement != null){
                 // load experimentDescription
-                while (this.currentElement != null && PsiXmlUtils.EXPERIMENT_TAG.equalsIgnoreCase(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.EXPERIMENT_TAG.equals(this.currentElement)) {
                     unmarshaller.unmarshal(this.streamReader, XmlExperiment.class);
                     this.currentElement = getNextPsiXml25StartElement();
                 }
@@ -642,12 +642,12 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // we already are parsing interactions
         try{
             this.currentElement = getNextPsiXml25StartElement();
-            boolean isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(this.currentElement);
+            boolean isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement);
             while(isReadingInteraction && this.currentElement != null){
                 this.loadedInteractions.add(unmarshallInteraction());
 
                 this.currentElement = getNextPsiXml25StartElement();
-                isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equalsIgnoreCase(this.currentElement);
+                isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement);
             }
 
             // get the current entry. It must exists
@@ -663,7 +663,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
             else{
                 // check entry attributes
-                if (this.currentElement != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equalsIgnoreCase(this.currentElement)){
+                if (this.currentElement != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
                     parseAttributeList(entryContext);
                 }
 
@@ -733,7 +733,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 XmlEntry entry = entryContext.getCurrentEntry();
 
                 // load availability
-                while (this.currentElement != null && PsiXmlUtils.AVAILABILITY_TAG.equalsIgnoreCase(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.AVAILABILITY_TAG.equals(this.currentElement)) {
                     JAXBElement<Availability> availabilityElement = unmarshaller.unmarshal(this.streamReader, Availability.class);
                     entry.getAvailabilities().add(availabilityElement.getValue());
                     this.currentElement = getNextPsiXml25StartElement();
