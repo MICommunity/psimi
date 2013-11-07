@@ -171,6 +171,11 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
                 ((List<Experiment>)experiments).add(index, new ExperimentRef(val));
                 return true;
             }
+
+            @Override
+            public String toString() {
+                return "Confidence Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            }
         }
         /**
          * Experiment ref for experimental interactor
@@ -198,7 +203,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
 
             @Override
             public String toString() {
-                return "Experiment reference: "+ref+" in confidence "+(sourceLocator != null? sourceLocator.toString():"") ;
+                return "Confidence Experiment Reference: "+sourceLocator != null ? sourceLocator.toString():super.toString();
             }
 
             public FileSourceLocator getSourceLocator() {

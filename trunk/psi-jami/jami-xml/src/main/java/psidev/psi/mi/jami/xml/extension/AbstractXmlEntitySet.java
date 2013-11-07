@@ -200,4 +200,9 @@ public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feat
     protected void initialiseUnspecifiedInteractor() {
         super.setInteractor(new XmlInteractorSet(PsiXmlUtils.UNSPECIFIED));
     }
+
+    @Override
+    public String toString() {
+        return "Entity set: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
 }

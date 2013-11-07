@@ -98,4 +98,9 @@ public abstract class AbstractParticipantRef extends AbstractXmlIdReference impl
     public boolean isComplexReference() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Participant Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+    }
 }

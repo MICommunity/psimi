@@ -356,4 +356,9 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     public void setSourceLocator(FileSourceLocator locator) {
         this.interactionEvidence.setSourceLocator(locator);
     }
+
+    @Override
+    public String toString() {
+        return this.interactionEvidence.toString();
+    }
 }

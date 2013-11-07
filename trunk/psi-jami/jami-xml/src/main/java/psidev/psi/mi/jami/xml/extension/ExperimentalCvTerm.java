@@ -84,6 +84,11 @@ public class ExperimentalCvTerm
         this.jaxbExperimentRefWrapper = wrapper;
     }
 
+    @Override
+    public String toString() {
+        return "Experimental Cv Term: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
+
     ////////////////////////////////////////////////////////////////// classes
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -190,6 +195,11 @@ public class ExperimentalCvTerm
                 experiments.add(index, new ExperimentRef(val));
                 return true;
             }
+
+            @Override
+            public String toString() {
+                return "Cv Term Experiment references List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            }
         }
 
         /////////////////////////////////////////// inner inner classes
@@ -215,7 +225,7 @@ public class ExperimentalCvTerm
 
             @Override
             public String toString() {
-                return "Experiment reference: "+ref+" in experimental CvTerm "+(sourceLocator != null? sourceLocator.toString():"") ;
+                return "Cv Term Experiment Reference : "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
             }
 
             public FileSourceLocator getSourceLocator() {

@@ -388,7 +388,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
     @Override
     public String toString() {
-        return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (jaxbAttributeWrapper != null && jaxbAttributeWrapper.stoichiometry != null ? ", stoichiometry: " + jaxbAttributeWrapper.stoichiometry.toString() : "");
+        return "Participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
@@ -467,7 +467,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Interaction reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
+            return "Participant Interaction Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
         }
 
         public FileSourceLocator getSourceLocator() {
@@ -503,7 +503,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Interactor reference: "+ref+" in participant "+(getParticipantLocator() != null? getParticipantLocator().toString():"") ;
+            return "Participant Interactor Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
         }
 
         public FileSourceLocator getSourceLocator() {
@@ -670,6 +670,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                 }
             }
         }
+
+        @Override
+        public String toString() {
+            return "Participant Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -716,6 +721,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         public List<F> getJAXBFeatures() {
             return this.features;
+        }
+
+        @Override
+        public String toString() {
+            return "Participant Feature List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

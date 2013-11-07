@@ -101,4 +101,9 @@ public abstract class AbstractFeatureRef extends AbstractXmlIdReference implemen
     public boolean isComplexReference() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Feature Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+    }
 }

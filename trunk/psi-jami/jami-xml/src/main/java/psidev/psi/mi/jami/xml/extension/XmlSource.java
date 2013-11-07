@@ -283,6 +283,11 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
         super.setAttributeWrapper(new JAXBAttributeWrapper());
     }
 
+    @Override
+    public String toString() {
+        return "Source: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
+
     //////////////////////////////// class wrapper
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -348,6 +353,11 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
             protected void clearProperties() {
                 clearPropertiesLinkedToAnnotations();
             }
+        }
+
+        @Override
+        public String toString() {
+            return "Source Attribute List: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
         }
     }
 }

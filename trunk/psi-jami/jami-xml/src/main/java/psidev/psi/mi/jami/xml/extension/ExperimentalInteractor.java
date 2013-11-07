@@ -179,6 +179,11 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
             return jaxbExperimentRefs;
         }
 
+        @Override
+        public String toString() {
+            return "Experimental Interactor: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
+
         //////////////////////////////////////////////////////////////
         /**
          * The experiment ref list used by JAXB to populate experiment refs
@@ -241,6 +246,11 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
                 experiments.add(index, new ExperimentRef(val));
                 return true;
             }
+
+            @Override
+            public String toString() {
+                return "Experimental Interactor Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            }
         }
 
         /**
@@ -265,7 +275,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
             @Override
             public String toString() {
-                return "Experiment reference: "+ref+" in experimental interactor "+(sourceLocator != null? sourceLocator.toString():"") ;
+                return "Experimental Interactor Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
             }
 
             public FileSourceLocator getSourceLocator() {
@@ -302,7 +312,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
         @Override
         public String toString() {
-            return "Interactor reference: "+ref+" in experimental interactor "+(ExperimentalInteractor.this.sourceLocator != null? ExperimentalInteractor.this.sourceLocator.toString():"") ;
+            return "Experimental Interactor Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
         }
 
         public FileSourceLocator getSourceLocator() {

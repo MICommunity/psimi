@@ -122,4 +122,9 @@ public class XmlNucleciAcid extends DefaultNucleicAcid implements ExtendedPsi25I
     public void setSourceLocator(PsiXmLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Nucleic Acid: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

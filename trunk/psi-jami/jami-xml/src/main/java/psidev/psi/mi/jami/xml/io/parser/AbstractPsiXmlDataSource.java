@@ -10,7 +10,10 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
 import psidev.psi.mi.jami.xml.XmlIdReference;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
@@ -21,7 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
@@ -116,14 +118,10 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
             return isValid;
         }
 
-        boolean needToResetParser = false;
         // if the parser did parse all interactions, we reset the current streams
         try {
             if (this.parser.hasFinished()){
                 reInit();
-            }
-            else{
-                needToResetParser = true;
             }
         } catch (PsiXmlParserException e) {
             if (defaultParserListener != null){
@@ -141,7 +139,18 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
             r.setFeature( SCHEMA_FEATURE, true );
 
             r.setErrorHandler( this );
-            r.parse( new InputSource( this.originalReader));
+            if (this.originalFile != null){
+                r.parse( new InputSource( new FileInputStream(this.originalFile)));
+            }
+            else if (this.originalURL != null){
+                r.parse( new InputSource( this.originalURL.openStream()));
+            }
+            else if (this.originalStream != null){
+                r.parse( new InputSource( this.originalStream));
+            }
+            else if (this.originalReader != null){
+                r.parse( new InputSource( this.originalReader));
+            }
 
         } catch (SAXException e) {
             throw new MIIOException("Impossible to validate the source file",e);
@@ -149,10 +158,6 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
             throw new MIIOException("Impossible to validate the source file",e);
         } catch (IOException e) {
             throw new MIIOException("Impossible to validate the source file",e);
-        }
-
-        if(needToResetParser){
-            this.parser.reInit();
         }
 
         return isValid;
@@ -280,6 +285,9 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
         if (parserListener != null){
             parserListener.onUnresolvedReference(ref, message);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(ref, message);
+        }
     }
 
     @Override
@@ -311,20 +319,6 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
     }
 
     @Override
-    public void onSeveralCvTermsFound(Collection<? extends CvTerm> terms, FileSourceContext context, String message) {
-        if (defaultParserListener != null){
-            defaultParserListener.onSeveralCvTermsFound(terms, context, message);
-        }
-    }
-
-    @Override
-    public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms, FileSourceContext context) {
-        if (defaultParserListener != null){
-            defaultParserListener.onSeveralHostOrganismFound(organisms, context);
-        }
-    }
-
-    @Override
     public void onParticipantWithoutInteractor(Participant participant, FileSourceContext context) {
         if (defaultParserListener != null){
             defaultParserListener.onParticipantWithoutInteractor(participant, context);
@@ -340,6 +334,7 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
 
     @Override
     public void warning(SAXParseException exception) throws SAXException {
+        isValid = false;
         if (defaultParserListener != null){
             defaultParserListener.onSyntaxWarning(new DefaultFileSourceContext(new FileSourceLocator(exception.getLineNumber(), exception.getColumnNumber())), ExceptionUtils.getFullStackTrace(exception));
         }
@@ -347,6 +342,7 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
 
     @Override
     public void error(SAXParseException exception) throws SAXException {
+        isValid = false;
         if (defaultParserListener != null){
             defaultParserListener.onInvalidSyntax(new DefaultFileSourceContext(new FileSourceLocator(exception.getLineNumber(), exception.getColumnNumber())), exception);
         }
@@ -354,8 +350,107 @@ public abstract class AbstractPsiXmlDataSource<T extends Interaction> implements
 
     @Override
     public void fatalError(SAXParseException exception) throws SAXException {
+        isValid = false;
         if (defaultParserListener != null){
             defaultParserListener.onInvalidSyntax(new DefaultFileSourceContext(new FileSourceLocator(exception.getLineNumber(), exception.getColumnNumber())), exception);
+        }
+    }
+
+    @Override
+    public void onInvalidOrganismTaxid(String taxid, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidOrganismTaxid(taxid, context);
+        }
+    }
+
+    @Override
+    public void onMissingParameterValue(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingParameterValue(context);
+        }
+    }
+
+    @Override
+    public void onMissingParameterType(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingParameterType(context);
+        }
+    }
+
+    @Override
+    public void onMissingConfidenceValue(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingConfidenceValue(context);
+        }
+    }
+
+    @Override
+    public void onMissingConfidenceType(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingConfidenceType(context);
+        }
+    }
+
+    @Override
+    public void onMissingChecksumValue(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingChecksumValue(context);
+        }
+    }
+
+    @Override
+    public void onMissingChecksumMethod(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingChecksumMethod(context);
+        }
+    }
+
+    @Override
+    public void onInvalidPosition(String message, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidPosition(message, context);
+        }
+    }
+
+    @Override
+    public void onInvalidRange(String message, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidRange(message, context);
+        }
+    }
+
+    @Override
+    public void onInvalidStoichiometry(String message, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidStoichiometry(message, context);
+        }
+    }
+
+    @Override
+    public void onXrefWithoutDatabase(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onXrefWithoutDatabase(context);
+        }
+    }
+
+    @Override
+    public void onXrefWithoutId(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onXrefWithoutId(context);
+        }
+    }
+
+    @Override
+    public void onAnnotationWithoutTopic(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onAnnotationWithoutTopic(context);
+        }
+    }
+
+    @Override
+    public void onAliasWithoutName(FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onAliasWithoutName(context);
         }
     }
 

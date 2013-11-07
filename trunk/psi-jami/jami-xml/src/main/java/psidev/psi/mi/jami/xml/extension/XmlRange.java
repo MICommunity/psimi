@@ -268,7 +268,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
 
     @Override
     public String toString() {
-        return getStart().toString() + " - " + getEnd().toString() + (isLink ? "(linked)" : "");
+        return "Feature Range: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     protected AbstractXmlPosition createXmlPositionWithStatus(Position pos, XmlCvTerm status){

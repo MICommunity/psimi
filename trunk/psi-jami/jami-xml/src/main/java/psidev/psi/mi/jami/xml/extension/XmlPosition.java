@@ -89,4 +89,9 @@ public class XmlPosition extends AbstractXmlPosition{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
+
+    @Override
+    public String toString() {
+        return "Range Position: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
 }

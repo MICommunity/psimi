@@ -263,5 +263,10 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         public List<Annotation> getJAXBAttributes() {
             return (List<Annotation>)annotations;
         }
+
+        @Override
+        public String toString() {
+            return "Open Cv Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 }

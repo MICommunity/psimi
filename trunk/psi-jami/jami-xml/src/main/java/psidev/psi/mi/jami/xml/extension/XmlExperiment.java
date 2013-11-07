@@ -529,7 +529,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
     @Override
     public String toString() {
-        return publication.toString() + "( " + interactionDetectionMethod.toString() + (getHostOrganism() != null ? ", " + getHostOrganism().toString():"") + " )";
+        return "ExperimentDescription: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     @Override
@@ -808,7 +808,10 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
                 }
             }
         }
-
+        @Override
+        public String toString() {
+            return "Experiment Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -853,6 +856,11 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
         protected void initialiseHostOrganisms(){
             this.hostOrganisms = new ArrayList<Organism>();
         }
+
+        @Override
+        public String toString() {
+            return "Experiment Host Organism List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -896,6 +904,11 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
         protected void initialiseConfidences(){
             this.confidences = new ArrayList<Confidence>();
+        }
+
+        @Override
+        public String toString() {
+            return "Experiment Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

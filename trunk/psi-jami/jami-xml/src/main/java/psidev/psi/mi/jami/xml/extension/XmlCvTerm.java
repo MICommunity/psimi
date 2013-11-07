@@ -80,4 +80,9 @@ public class XmlCvTerm extends AbstractXmlCvTerm{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
+
+    @Override
+    public String toString() {
+        return "Cv Term: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
 }

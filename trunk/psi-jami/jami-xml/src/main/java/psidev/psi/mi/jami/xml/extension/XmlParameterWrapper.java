@@ -54,4 +54,9 @@ public class XmlParameterWrapper implements ModelledParameter{
         }
         return this.publications;
     }
+
+    @Override
+    public String toString() {
+        return this.parameter.toString();
+    }
 }

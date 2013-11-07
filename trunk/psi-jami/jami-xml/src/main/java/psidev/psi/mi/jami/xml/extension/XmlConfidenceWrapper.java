@@ -43,4 +43,9 @@ public class XmlConfidenceWrapper implements ModelledConfidence{
         }
         return this.publications;
     }
+
+    @Override
+    public String toString() {
+        return this.confidence.toString();
+    }
 }

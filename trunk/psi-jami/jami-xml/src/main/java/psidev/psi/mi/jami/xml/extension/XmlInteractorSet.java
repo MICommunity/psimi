@@ -166,6 +166,11 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
     }
 
     @Override
+    public String toString() {
+        return "Interactor set: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
+
+    @Override
     protected void createDefaultInteractorType() {
         setInteractorType(new XmlCvTerm(InteractorSet.MOLECULE_SET, InteractorSet.MOLECULE_SET_MI));
     }

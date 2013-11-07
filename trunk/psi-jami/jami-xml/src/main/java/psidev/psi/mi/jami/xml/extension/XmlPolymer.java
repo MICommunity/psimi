@@ -96,4 +96,9 @@ public class XmlPolymer extends XmlMolecule implements Polymer{
     public void setSequence(String sequence) {
         super.setSequence(sequence);
     }
+
+    @Override
+    public String toString() {
+        return "Polymer: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
 }

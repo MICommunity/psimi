@@ -63,7 +63,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     private Iterator<T> interactionIterator;
     private XmlInteractorFactory interactorFactory;
     private PsiXmlParserListener listener;
-    private boolean started = false;
+    private boolean hasReadEntrySet = false;
+    private boolean hasReadEntry = false;
 
     private PsiXml25IdIndex indexOfObjects=null;
     private PsiXml25IdIndex indexOfComplexes=null;
@@ -146,7 +147,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
         // the eventreader does not have any new events
         if (currentElement == null){
-            if (!started && listener != null){
+            if (!hasReadEntrySet && listener != null){
                 listener.onInvalidSyntax(new DefaultFileSourceContext(new PsiXmLocator(1,1,null)), new PsiXmlParserException("EntrySet root term not found. PSI-XML is not valid."));
             }
             return null;
@@ -155,14 +156,14 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // get xml entry context
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
         // the next tag is an interaction, we parse the interaction.
-        if (PsiXmlUtils.INTERACTION_TAG.equals(currentElement)){
+        if (PsiXmlUtils.INTERACTION_TAG.equals(currentElement) && hasReadEntry){
             T interaction = parseInteractionTag(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
             return interaction;
         }
         // we start a new entry
-        else if (PsiXmlUtils.ENTRY_TAG.equals(currentElement)) {
+        else if (PsiXmlUtils.ENTRY_TAG.equals(currentElement) && hasReadEntrySet) {
             T interaction = processEntry(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
@@ -182,6 +183,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             // get next element
             this.currentElement = getNextPsiXml25StartElement();
             if (this.currentElement != null && PsiXmlUtils.ENTRY_TAG.equals(currentElement)){
+                hasReadEntry = true;
                 // parse first interaction
                 T interaction = processEntry(entryContext);
                 // check if last interaction and need to flush entry
@@ -242,7 +244,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     public void reInit() throws MIIOException{
         loadedInteractions.clear();
         this.interactionIterator = null;
-        this.started = false;
+        this.hasReadEntry = false;
+        this.hasReadEntrySet = false;
         // release the thread local
         XmlEntryContext.getInstance().clear();
         XmlEntryContext.remove();
@@ -790,7 +793,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         // end of entry, parse attributes and flush the entry
         else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
-            processAvailabilityList(entryContext);
+            parseAttributeList(entryContext);
             flushEntry(entryContext);
         }
         // if this interaction is not followed by another interaction, we need to flush the entry
@@ -804,6 +807,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             context.getCurrentEntry().setHasLoadedFullEntry(true);
         }
         clearEntryReferences(context);
+        this.hasReadEntry = false;
     }
 
     private void clearEntryReferences(XmlEntryContext context){
@@ -848,7 +852,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
         loadedInteractions.clear();
         this.interactionIterator = null;
-        this.started = false;
+        this.hasReadEntry = false;
+        this.hasReadEntrySet = false;
         this.unmarshaller = null;
 
         // release the thread local
@@ -857,7 +862,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) {
-        started = true;
+        this.hasReadEntrySet = true;
         entryContext.setListener(this.listener);
         if (this.indexOfComplexes == null){
             this.indexOfComplexes = new InMemoryPsiXml25Index();

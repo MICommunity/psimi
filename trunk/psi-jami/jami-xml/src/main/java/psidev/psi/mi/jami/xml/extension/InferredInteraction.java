@@ -167,6 +167,11 @@ public class InferredInteraction
             return jaxbExperimentRefs;
         }
 
+        @Override
+        public String toString() {
+            return "Inferred Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
+
         /**
          * The experiment ref list used by JAXB to populate experiment refs
          */
@@ -228,6 +233,11 @@ public class InferredInteraction
                 ((ArrayList<Experiment>)experiments).add(index, new ExperimentRef(val));
                 return true;
             }
+
+            @Override
+            public String toString() {
+                return "Inferred Interaction Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            }
         }
 
         ///////////////////////////////////////////
@@ -253,7 +263,7 @@ public class InferredInteraction
 
             @Override
             public String toString() {
-                return "Experiment reference: "+ref+" in inferred interaction "+(sourceLocator != null? sourceLocator.toString():"") ;
+                return "Inferred Interaction Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
             }
 
             public FileSourceLocator getSourceLocator() {

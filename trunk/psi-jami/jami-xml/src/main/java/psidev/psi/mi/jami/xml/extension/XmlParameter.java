@@ -239,7 +239,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
 
     @Override
     public String toString() {
-        return type.toString() + ": " + value  + (uncertainty != null ? " ~" + uncertainty.toString() : "" + (unit != null ? "("+unit.toString()+")" : ""));
+        return "Xml Parameter: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     @Override
