@@ -90,4 +90,9 @@ public class MitabInteractorSet extends DefaultInteractorSet implements FileSour
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Interactor set: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

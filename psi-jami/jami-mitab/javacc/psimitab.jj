@@ -13,6 +13,7 @@ PARSER_BEGIN(MitabLineParser)
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import java.util.Collection;
@@ -600,10 +601,27 @@ MitabStoichiometry stoichiometry(int columnNumber):
       [ "-" maxString = safeStoichiometry()
       ]
       {
+         try{
          min = Long.parseLong(minString);
+         }
+         catch(NumberFormatException e){
+             min=0;
+             if (getParserListener() != null){getParserListener().onInvalidStoichiometry(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+         }
          if (maxString != null){
+            try{
             max = Long.parseLong(maxString);
+            }
+            catch(NumberFormatException e){
+                max=min;
+                if (getParserListener() != null){getParserListener().onInvalidStoichiometry(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+            }
+            try{
             stc = new MitabStoichiometry(min, max);
+            }catch(IllegalArgumentException e){
+                stc = new MitabStoichiometry(0);
+                if (getParserListener() != null){getParserListener().onInvalidStoichiometry(e.getMessage(), stc);}
+            }
          }
          else{
             stc = new MitabStoichiometry(min);
@@ -617,14 +635,6 @@ MitabStoichiometry stoichiometry(int columnNumber):
         error_skipToNext(enumSet, true);
         return null;
    }
-   catch(NumberFormatException e){
-       processSyntaxError(beginLine, beginColumn, columnNumber, e);
-       return null;
-   }
-  catch(IllegalArgumentException e){
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          return null;
-       }
 }
 
 F feature(int columnNumber):
@@ -680,10 +690,35 @@ MitabRange range(int columnNumber):
     { beginLine = token.beginLine; beginColumn = token.beginColumn;
     }
     "-" endString = safePosition())
-     {  start = PositionUtils.createPositionFromString(startString);
+     {  try{
+        start = PositionUtils.createPositionFromString(startString);
+        }catch(IllegalRangeException e){
+            start = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        catch(IllegalArgumentException e){
+            start = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        try{
         end = PositionUtils.createPositionFromString(endString);
+        }catch(IllegalRangeException e){
+            end = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        catch(IllegalArgumentException e){
+            end = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        try{
         range = new MitabRange(start, end);
         range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        }
+        catch(IllegalArgumentException e){
+            range = new MitabRange(PositionUtils.createUndeterminedPosition(), PositionUtils.createUndeterminedPosition());
+            range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+            if (getParserListener() != null){getParserListener().onInvalidRange(e.getMessage(), range);}
+        }
        return range;}
   }
   catch (ParseException e){
@@ -691,14 +726,6 @@ MitabRange range(int columnNumber):
       error_skipToNext(enumSet, true);
       return null;
     }
-   catch(IllegalRangeException e){
-       processSyntaxError(beginLine, beginColumn, columnNumber, e);
-       return null;
-   }
-  catch(IllegalArgumentException e){
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          return null;
-       }
 }
 
 boolean negative():
@@ -734,6 +761,8 @@ MitabChecksum checksum(int columnNumber):
     {
         checksum = new MitabChecksum(method, value);
         checksum.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        if (method == null && getParserListener() != null){getParserListener().onMissingChecksumMethod(checksum);}
+        if (value == null && getParserListener() != null){getParserListener().onMissingChecksumValue(checksum);}
         return checksum;
       }
   }
@@ -742,10 +771,6 @@ MitabChecksum checksum(int columnNumber):
        error_skipToNext(enumSet, true);
         return null;
     }
-  catch(IllegalArgumentException e){
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          return null;
-       }
 }
 
 MitabDate date(int columnNumber):
@@ -792,6 +817,8 @@ MitabParameter parameter() :
     type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> value = safeString() [ <OPEN_PAREN> unit = safeString() <CLOSE_PAREN> ]
     {param = new MitabParameter(type, value, unit);
      param.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 30));
+     if (type == null && getParserListener() != null){getParserListener().onMissingParameterType(param);}
+     if (value == null && getParserListener() != null){getParserListener().onMissingParameterValue(param);}
      return param;
      }
   }
@@ -801,13 +828,9 @@ MitabParameter parameter() :
        return null;
    }
    catch (IllegalParameterException e){
-      processSyntaxError(beginLine, beginColumn, 30, e);
-      return null;
+         processSyntaxError(beginLine, beginColumn, 30, e);
+         return null;
     }
-   catch(IllegalArgumentException e){
-           processSyntaxError(beginLine, beginColumn, 30, e);
-           return null;
-        }
 }
 
 MitabAnnotation annotation(int columnNumber):
@@ -825,6 +848,7 @@ MitabAnnotation annotation(int columnNumber):
     topic = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ <COLON> value = safeString() ]
     { annot = new MitabAnnotation(topic, value);
       annot.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+      if (topic == null && getParserListener() != null){getParserListener().onAnnotationWithoutTopic(annot);}
       return annot;}
   }
   catch (ParseException e){
@@ -832,10 +856,6 @@ MitabAnnotation annotation(int columnNumber):
          error_skipToNext(enumSet, true);
          return null;
       }
-  catch(IllegalArgumentException e){
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          return null;
-       }
 }
 
 MitabCvTerm expansion():
@@ -852,13 +872,11 @@ MitabCvTerm expansion():
   try{
   //db:id(name) or just name for backward compatibility
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
-    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id);
-           cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
-           if (getParserListener() != null) {getParserListener().onMissingCvTermName(cv, cv, "The complex expansion method does not have a name.");}}
-      else if (id == null) {cv = new MitabCvTerm(name);
+    { if (id == null) {cv = new MitabCvTerm(name);
             cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
             if (getParserListener() != null) {getParserListener().onMissingExpansionId(cv);}}
       else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));}
+      if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv,  "The expansion method at the column 16 does not have a name.");}
       return cv;}
   }
   catch (ParseException e){
@@ -866,10 +884,6 @@ MitabCvTerm expansion():
      error_skipToNext(enumSet, true);
      return null;
   }
-  catch(IllegalArgumentException e){
-        processSyntaxError(beginLine, beginColumn, 16, e);
-        return null;
-     }
 }
 
 MitabConfidence confidence():
@@ -888,6 +902,8 @@ MitabConfidence confidence():
     { if (text == null){conf = new MitabConfidence(type, value, null); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));}
       else {conf = new MitabConfidence(type, value, text); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));
              if (getParserListener() != null) {getParserListener().onTextFoundInConfidence(conf);}}
+      if (type == null && getParserListener() != null){getParserListener().onMissingConfidenceType(conf);}
+      if (value == null && getParserListener() != null){getParserListener().onMissingConfidenceValue(conf);}
       return conf;}
   }
   catch (ParseException e){
@@ -895,10 +911,6 @@ MitabConfidence confidence():
      error_skipToNext(enumSet, true);
      return null;
   }
-  catch(IllegalArgumentException e){
-        processSyntaxError(beginLine, beginColumn, 15, e);
-        return null;
-     }
 }
 
 MitabSource source():
@@ -915,9 +927,8 @@ MitabSource source():
   try {
      //db:id(name)
        db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
-       { if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
-            if (getParserListener() != null) {getParserListener().onMissingCvTermName(s, s, "The interaction source does not have a name.");}}
-         else {s = new MitabSource(name, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));}
+       { s = new MitabSource(name, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
+         if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(s, s,  "The source at the column 13 does not have a name.");}
          return s;}
   }
   catch (ParseException e){
@@ -925,10 +936,6 @@ MitabSource source():
         error_skipToNext(enumSet, true);
         return null;
   }
-  catch(IllegalArgumentException e){
-        processSyntaxError(beginLine, beginColumn, 13, e);
-        return null;
-     }
 }
 
 MitabOrganism organism(int columnNumber):
@@ -952,9 +959,18 @@ MitabOrganism organism(int columnNumber):
     }
      <COLON> id = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ] )
     {
-       organism = new MitabOrganism(Integer.parseInt(id), name);
+    try{
+       int tax = Integer.parseInt(id);
+       organism = new MitabOrganism(tax, name);
        organism.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+       if ((tax == 0 || tax < -5) && getParserListener() != null){getParserListener().onInvalidOrganismTaxid(id, organism);}
        return organism;
+       }catch (NumberFormatException e){
+             organism = new MitabOrganism(-3, name);
+             organism.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+             if (getParserListener() != null){getParserListener().onInvalidOrganismTaxid(id, organism);}
+             return organism;
+       }
      }
   }
   catch (ParseException e){
@@ -962,14 +978,6 @@ MitabOrganism organism(int columnNumber):
            error_skipToNext(enumSet, true);
            return null;
   }
-  catch (NumberFormatException e){
-           processSyntaxError(beginLine, beginColumn, columnNumber, e);
-           return null;
-  }
-  catch(IllegalArgumentException e){
-        processSyntaxError(beginLine, beginColumn, columnNumber, e);
-        return null;
-     }
 }
 
 MitabAuthor author():
@@ -1010,18 +1018,13 @@ MitabCvTerm cvTerm(int column):
   //db:id(name)
   try{
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> id = safeString() [ <OPEN_PAREN> name = safeString() <CLOSE_PAREN> ]
-    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
-          if (getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv, "The term at the column " + column + " does not have a name.");}}
-      else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));}
+    { cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
+      if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv,  "The term at the column " + column + " does not have a name.");}
       return cv;}
   }
   catch (ParseException e){
      processSyntaxError(token.beginLine, token.beginColumn, column, e);
      error_skipToNext(enumSet, true);
-     return null;
-  }
-  catch(IllegalArgumentException e){
-     processSyntaxError(beginLine, beginColumn, column, e);
      return null;
   }
 }
@@ -1042,15 +1045,13 @@ MitabAlias alias(int columnNumber):
       db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} <COLON> name = safeString() [ <OPEN_PAREN> type = safeString() <CLOSE_PAREN> ]
       { alias = new MitabAlias(db, name, type);
         alias.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        if (db == null && getParserListener() != null){getParserListener().onAliasWithoutDbSource(alias);}
+        if (name == null && getParserListener() != null){getParserListener().onAliasWithoutName(alias);}
         return alias;}
   }
   catch(ParseException e){
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
-      return null;
-  }
-  catch(IllegalArgumentException e){
-      processSyntaxError(beginLine, beginColumn, columnNumber, e);
       return null;
   }
 }
@@ -1089,15 +1090,13 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
           ref = new MitabXref(db, id, text);
           ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
        }
+       if (db == null && getParserListener() != null){getParserListener().onXrefWithoutDatabase(ref);}
+       if (id == null && getParserListener() != null){getParserListener().onXrefWithoutId(ref);}
        return ref;}
    }
    catch(ParseException e){
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
-      return null;
-   }
-   catch(IllegalArgumentException e){
-      processSyntaxError(beginLine, beginColumn, columnNumber, e);
       return null;
    }
 }

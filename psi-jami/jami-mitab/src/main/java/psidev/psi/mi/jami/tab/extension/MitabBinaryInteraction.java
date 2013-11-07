@@ -69,4 +69,9 @@ public class MitabBinaryInteraction extends DefaultBinaryInteraction implements 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Binary interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

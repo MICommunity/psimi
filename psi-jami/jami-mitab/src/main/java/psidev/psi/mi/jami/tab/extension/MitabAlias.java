@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 /**
  * Extended alias in MITAB
@@ -19,44 +20,29 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
     private FileSourceLocator sourceLocator;
 
     public MitabAlias(String dbSource, CvTerm type, String name) {
-        super(type, name);
-        if (dbSource == null){
-            throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
-        }
-        this.dbSource = dbSource;
+        super(type, name != null ? name : MitabUtils.UNKNOWN_NAME);
+        this.dbSource = dbSource != null ? dbSource : MitabUtils.UNKNOWN_DATABASE;
     }
 
     public MitabAlias(String dbSource, String name) {
-        super(name);
-        if (dbSource == null){
-            throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
-        }
-        this.dbSource = dbSource;
+        super(name != null ? name : MitabUtils.UNKNOWN_NAME);
+        this.dbSource = dbSource != null ? dbSource : MitabUtils.UNKNOWN_DATABASE;
     }
 
     public MitabAlias(String dbSource, String name, String type) {
-        super(type != null ? new MitabCvTerm(type) : null, name);
-        if (dbSource == null){
-            throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
-        }
-        this.dbSource = dbSource;
+        super(type != null ? new MitabCvTerm(type) : null, name != null ? name : MitabUtils.UNKNOWN_NAME);
+        this.dbSource = dbSource != null ? dbSource : MitabUtils.UNKNOWN_DATABASE;
     }
 
     public MitabAlias(String dbSource, CvTerm type, String name, FileSourceLocator locator) {
-        super(type, name);
-        if (dbSource == null){
-            throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
-        }
-        this.dbSource = dbSource;
+        super(type, name != null ? name : MitabUtils.UNKNOWN_NAME);
+        this.dbSource = dbSource != null ? dbSource : MitabUtils.UNKNOWN_DATABASE;
         this.sourceLocator = locator;
     }
 
     public MitabAlias(String dbSource, String name, FileSourceLocator locator) {
-        super(name);
-        if (dbSource == null){
-            throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
-        }
-        this.dbSource = dbSource;
+        super(name != null ? name : MitabUtils.UNKNOWN_NAME);
+        this.dbSource = dbSource != null ? dbSource : MitabUtils.UNKNOWN_DATABASE;
         this.sourceLocator = locator;
     }
 
@@ -70,5 +56,10 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public String toString() {
+        return "Mitab Alias: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

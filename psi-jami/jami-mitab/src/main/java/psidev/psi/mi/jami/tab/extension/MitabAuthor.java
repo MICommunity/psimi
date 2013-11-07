@@ -86,4 +86,9 @@ public class MitabAuthor implements FileSourceContext{
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "First Author: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

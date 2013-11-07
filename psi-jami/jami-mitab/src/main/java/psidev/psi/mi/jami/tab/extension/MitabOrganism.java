@@ -19,27 +19,27 @@ public class MitabOrganism extends DefaultOrganism implements FileSourceContext{
     private FileSourceLocator sourceLocator;
 
     public MitabOrganism(int taxId) {
-        super(taxId);
+        super((taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0) ? taxId : -3);
     }
 
     public MitabOrganism(int taxId, String commonName) {
-        super(taxId, commonName);
+        super((taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0) ? taxId : -3, commonName);
     }
 
     public MitabOrganism(int taxId, String commonName, String scientificName) {
-        super(taxId, commonName, scientificName);
+        super((taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0) ? taxId : -3, commonName, scientificName);
     }
 
     public MitabOrganism(int taxId, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
-        super(taxId, cellType, tissue, compartment);
+        super((taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0) ? taxId : -3, cellType, tissue, compartment);
     }
 
     public MitabOrganism(int taxId, String commonName, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
-        super(taxId, commonName, cellType, tissue, compartment);
+        super((taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0) ? taxId : -3, commonName, cellType, tissue, compartment);
     }
 
     public MitabOrganism(int taxId, String commonName, String scientificName, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
-        super(taxId, commonName, scientificName, cellType, tissue, compartment);
+        super((taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId == -5 || taxId > 0) ? taxId : -3, commonName, scientificName, cellType, tissue, compartment);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -48,5 +48,10 @@ public class MitabOrganism extends DefaultOrganism implements FileSourceContext{
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public String toString() {
+        return "Organism: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

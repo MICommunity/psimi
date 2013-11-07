@@ -2,6 +2,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import java.util.Collection;
@@ -1135,10 +1136,27 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_la1[58] = jj_gen;
         ;
       }
+         try{
          min = Long.parseLong(minString);
+         }
+         catch(NumberFormatException e){
+             min=0;
+             if (getParserListener() != null){getParserListener().onInvalidStoichiometry(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+         }
          if (maxString != null){
+            try{
             max = Long.parseLong(maxString);
+            }
+            catch(NumberFormatException e){
+                max=min;
+                if (getParserListener() != null){getParserListener().onInvalidStoichiometry(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+            }
+            try{
             stc = new MitabStoichiometry(min, max);
+            }catch(IllegalArgumentException e){
+                stc = new MitabStoichiometry(0);
+                if (getParserListener() != null){getParserListener().onInvalidStoichiometry(e.getMessage(), stc);}
+            }
          }
          else{
             stc = new MitabStoichiometry(min);
@@ -1149,12 +1167,6 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
         error_skipToNext(enumSet, true);
         {if (true) return null;}
-    } catch (NumberFormatException e) {
-       processSyntaxError(beginLine, beginColumn, columnNumber, e);
-       {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1227,21 +1239,40 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       beginLine = token.beginLine; beginColumn = token.beginColumn;
       jj_consume_token(DASH);
       endString = safePosition();
+        try{
         start = PositionUtils.createPositionFromString(startString);
+        }catch(IllegalRangeException e){
+            start = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        catch(IllegalArgumentException e){
+            start = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        try{
         end = PositionUtils.createPositionFromString(endString);
+        }catch(IllegalRangeException e){
+            end = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        catch(IllegalArgumentException e){
+            end = PositionUtils.createUndeterminedPosition();
+            if (getParserListener() != null){getParserListener().onInvalidPosition(e.getMessage(), new DefaultFileSourceContext(new MitabSourceLocator(beginLine, beginColumn, columnNumber)));}
+        }
+        try{
         range = new MitabRange(start, end);
         range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        }
+        catch(IllegalArgumentException e){
+            range = new MitabRange(PositionUtils.createUndeterminedPosition(), PositionUtils.createUndeterminedPosition());
+            range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+            if (getParserListener() != null){getParserListener().onInvalidRange(e.getMessage(), range);}
+        }
        {if (true) return range;}
     } catch (ParseException e) {
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
       {if (true) return null;}
-    } catch (IllegalRangeException e) {
-       processSyntaxError(beginLine, beginColumn, columnNumber, e);
-       {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1276,14 +1307,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       value = safeString();
         checksum = new MitabChecksum(method, value);
         checksum.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        if (method == null && getParserListener() != null){getParserListener().onMissingChecksumMethod(checksum);}
+        if (value == null && getParserListener() != null){getParserListener().onMissingChecksumValue(checksum);}
         {if (true) return checksum;}
     } catch (ParseException e) {
        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
        error_skipToNext(enumSet, true);
         {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1337,17 +1367,16 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       }
      param = new MitabParameter(type, value, unit);
      param.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 30));
+     if (type == null && getParserListener() != null){getParserListener().onMissingParameterType(param);}
+     if (value == null && getParserListener() != null){getParserListener().onMissingParameterValue(param);}
      {if (true) return param;}
     } catch (ParseException e) {
       processSyntaxError(token.beginLine, token.beginColumn, 30, e);
        error_skipToNext(enumSet, true);
        {if (true) return null;}
     } catch (IllegalParameterException e) {
-      processSyntaxError(beginLine, beginColumn, 30, e);
-      {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-           processSyntaxError(beginLine, beginColumn, 30, e);
-           {if (true) return null;}
+         processSyntaxError(beginLine, beginColumn, 30, e);
+         {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1374,14 +1403,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       }
       annot = new MitabAnnotation(topic, value);
       annot.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+      if (topic == null && getParserListener() != null){getParserListener().onAnnotationWithoutTopic(annot);}
       {if (true) return annot;}
     } catch (ParseException e) {
          processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
          error_skipToNext(enumSet, true);
          {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-          processSyntaxError(beginLine, beginColumn, columnNumber, e);
-          {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1410,21 +1437,16 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_la1[63] = jj_gen;
         ;
       }
-      if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id);
-           cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
-           if (getParserListener() != null) {getParserListener().onMissingCvTermName(cv, cv, "The complex expansion method does not have a name.");}}
-      else if (id == null) {cv = new MitabCvTerm(name);
+      if (id == null) {cv = new MitabCvTerm(name);
             cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
             if (getParserListener() != null) {getParserListener().onMissingExpansionId(cv);}}
       else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));}
+      if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv,  "The expansion method at the column 16 does not have a name.");}
       {if (true) return cv;}
     } catch (ParseException e) {
      processSyntaxError(token.beginLine, token.beginColumn, 16, e);
      error_skipToNext(enumSet, true);
      {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-        processSyntaxError(beginLine, beginColumn, 16, e);
-        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1455,14 +1477,13 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       if (text == null){conf = new MitabConfidence(type, value, null); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));}
       else {conf = new MitabConfidence(type, value, text); conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));
              if (getParserListener() != null) {getParserListener().onTextFoundInConfidence(conf);}}
+      if (type == null && getParserListener() != null){getParserListener().onMissingConfidenceType(conf);}
+      if (value == null && getParserListener() != null){getParserListener().onMissingConfidenceValue(conf);}
       {if (true) return conf;}
     } catch (ParseException e) {
      processSyntaxError(token.beginLine, token.beginColumn, 15, e);
      error_skipToNext(enumSet, true);
      {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-        processSyntaxError(beginLine, beginColumn, 15, e);
-        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1491,16 +1512,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_la1[65] = jj_gen;
         ;
       }
-         if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
-            if (getParserListener() != null) {getParserListener().onMissingCvTermName(s, s, "The interaction source does not have a name.");}}
-         else {s = new MitabSource(name, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));}
+         s = new MitabSource(name, null, db, id); s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
+         if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(s, s,  "The source at the column 13 does not have a name.");}
          {if (true) return s;}
     } catch (ParseException e) {
         processSyntaxError(token.beginLine, token.beginColumn, 13, e);
         error_skipToNext(enumSet, true);
-        {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-        processSyntaxError(beginLine, beginColumn, 13, e);
         {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
@@ -1533,19 +1550,22 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_la1[66] = jj_gen;
         ;
       }
-       organism = new MitabOrganism(Integer.parseInt(id), name);
+    try{
+       int tax = Integer.parseInt(id);
+       organism = new MitabOrganism(tax, name);
        organism.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+       if ((tax == 0 || tax < -5) && getParserListener() != null){getParserListener().onInvalidOrganismTaxid(id, organism);}
        {if (true) return organism;}
+       }catch (NumberFormatException e){
+             organism = new MitabOrganism(-3, name);
+             organism.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+             if (getParserListener() != null){getParserListener().onInvalidOrganismTaxid(id, organism);}
+             {if (true) return organism;}
+       }
     } catch (ParseException e) {
            processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
            error_skipToNext(enumSet, true);
            {if (true) return null;}
-    } catch (NumberFormatException e) {
-           processSyntaxError(beginLine, beginColumn, columnNumber, e);
-           {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-        processSyntaxError(beginLine, beginColumn, columnNumber, e);
-        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -1593,16 +1613,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         jj_la1[67] = jj_gen;
         ;
       }
-      if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
-          if (getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv, "The term at the column " + column + " does not have a name.");}}
-      else {cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));}
+      cv = new MitabCvTerm(name, null, db, id); cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
+      if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv,  "The term at the column " + column + " does not have a name.");}
       {if (true) return cv;}
     } catch (ParseException e) {
      processSyntaxError(token.beginLine, token.beginColumn, column, e);
      error_skipToNext(enumSet, true);
-     {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-     processSyntaxError(beginLine, beginColumn, column, e);
      {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
@@ -1633,13 +1649,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       }
         alias = new MitabAlias(db, name, type);
         alias.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        if (db == null && getParserListener() != null){getParserListener().onAliasWithoutDbSource(alias);}
+        if (name == null && getParserListener() != null){getParserListener().onAliasWithoutName(alias);}
         {if (true) return alias;}
     } catch (ParseException e) {
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
-      {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-      processSyntaxError(beginLine, beginColumn, columnNumber, e);
       {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
@@ -1689,13 +1704,12 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           ref = new MitabXref(db, id, text);
           ref.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
        }
+       if (db == null && getParserListener() != null){getParserListener().onXrefWithoutDatabase(ref);}
+       if (id == null && getParserListener() != null){getParserListener().onXrefWithoutId(ref);}
        {if (true) return ref;}
     } catch (ParseException e) {
       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
       error_skipToNext(enumSet, true);
-      {if (true) return null;}
-    } catch (IllegalArgumentException e) {
-      processSyntaxError(beginLine, beginColumn, columnNumber, e);
       {if (true) return null;}
     }
     throw new Error("Missing return statement in function");

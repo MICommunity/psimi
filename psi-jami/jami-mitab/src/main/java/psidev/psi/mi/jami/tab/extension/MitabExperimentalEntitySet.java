@@ -93,4 +93,9 @@ public class MitabExperimentalEntitySet extends DefaultExperimentalEntitySet imp
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Entity set: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

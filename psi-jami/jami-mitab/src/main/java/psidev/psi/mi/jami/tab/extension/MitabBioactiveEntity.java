@@ -115,4 +115,9 @@ public class MitabBioactiveEntity extends DefaultBioactiveEntity implements File
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Bioactive entity: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

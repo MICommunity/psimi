@@ -35,4 +35,9 @@ public class MitabDate implements FileSourceContext{
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Mitab date: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

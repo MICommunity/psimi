@@ -53,4 +53,9 @@ public class DefaultMitabFeature extends DefaultFeature implements MitabFeature<
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Feature: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }
