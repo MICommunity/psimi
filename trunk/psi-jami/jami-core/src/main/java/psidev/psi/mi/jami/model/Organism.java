@@ -25,7 +25,6 @@ public interface Organism {
     /**
      * Set the common name
      * @param name : common name or mnemonic (or scientific name if no common names/mnemonic)
-     * @throws IllegalArgumentException if the name is null or empty
      */
     public void setCommonName(String name);
 
