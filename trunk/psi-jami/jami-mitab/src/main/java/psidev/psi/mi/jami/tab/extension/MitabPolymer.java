@@ -91,4 +91,9 @@ public class MitabPolymer extends DefaultPolymer implements FileSourceContext{
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Polymer: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

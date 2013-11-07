@@ -43,4 +43,9 @@ public class MitabEntity extends DefaultEntity implements FileSourceContext {
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Entity: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

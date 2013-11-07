@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 /**
  * Mitab extension for Checksum.
@@ -23,7 +24,7 @@ public class MitabChecksum extends DefaultChecksum implements FileSourceContext{
     }
 
     public MitabChecksum(String method, String value) {
-        super(new MitabCvTerm(method), value);
+        super(new MitabCvTerm(method != null ? method: MitabUtils.UNKNOWN_TYPE), value!= null ? value : MitabUtils.UNKNOWN_ID);
     }
 
     public MitabChecksum(CvTerm method, String value, FileSourceLocator locator) {
@@ -37,5 +38,10 @@ public class MitabChecksum extends DefaultChecksum implements FileSourceContext{
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public String toString() {
+        return "Mitab Checksum: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

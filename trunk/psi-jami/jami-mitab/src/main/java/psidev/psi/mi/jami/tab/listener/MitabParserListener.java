@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.listener;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.tab.extension.*;
 
@@ -38,4 +39,23 @@ public interface MitabParserListener extends MIFileParserListener{
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates);
 
     public void onSeveralUpdatedDateFound(Collection<MitabDate> dates);
+
+    public void onAliasWithoutDbSource(MitabAlias alias);
+
+    /**
+     * Listen to an event where several CvTerms were found and only one was expected.
+     * Can happen when reading a clustered interaction evidence for instance
+     * @param terms
+     * @param context
+     * @param message
+     */
+    public void onSeveralCvTermsFound(Collection<MitabCvTerm> terms, FileSourceContext context, String message);
+
+    /**
+     * Listen to an event where several host organisms were found in a single experiment and only one was expected.
+     * Can happen when reading a clustered interaction evidence for instance
+     * @param organisms
+     * @param context
+     */
+    public void onSeveralHostOrganismFound(Collection<MitabOrganism> organisms, FileSourceContext context);
 }

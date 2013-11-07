@@ -37,4 +37,9 @@ public class MitabInteraction extends DefaultInteraction implements FileSourceCo
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

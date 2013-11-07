@@ -32,4 +32,9 @@ public class MitabStoichiometry extends DefaultStoichiometry implements FileSour
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Mitab Stoichiometry: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

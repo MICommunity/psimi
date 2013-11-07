@@ -39,4 +39,9 @@ public class MitabExperiment extends DefaultExperiment implements FileSourceCont
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Experiment: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

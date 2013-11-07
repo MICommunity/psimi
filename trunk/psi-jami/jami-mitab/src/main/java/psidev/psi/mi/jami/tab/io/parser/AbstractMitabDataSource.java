@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.datasource.InteractionSource;
-import psidev.psi.mi.jami.datasource.MIFileDataSource;
-import psidev.psi.mi.jami.datasource.SourceCategory;
+import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
@@ -271,15 +268,21 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         }
     }
 
-    public void onSeveralCvTermsFound(Collection<? extends CvTerm> terms, FileSourceContext context, String message) {
-        if (defaultParserListener != null){
-            defaultParserListener.onSeveralCvTermsFound(terms, context, message);
+    public void onSeveralCvTermsFound(Collection<MitabCvTerm> terms, FileSourceContext context, String message) {
+        if (parserListener != null){
+            parserListener.onSeveralCvTermsFound(terms, context, message);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(context, message);
         }
     }
 
-    public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms, FileSourceContext context) {
-        if (defaultParserListener != null){
-            defaultParserListener.onSeveralHostOrganismFound(organisms, context);
+    public void onSeveralHostOrganismFound(Collection<MitabOrganism> organisms, FileSourceContext context) {
+        if (parserListener != null){
+            parserListener.onSeveralHostOrganismFound(organisms, context);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(context, organisms.size() + " host organisms found. Only one is expected. Only the first organism will be loaded, the other organisms will be ignored.");
         }
     }
 
@@ -303,11 +306,17 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (parserListener != null){
             parserListener.onMissingInteractorIdentifierColumns(line, column, mitabColumn);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn)), new ParseException("Interactor without any identifiers."));
+        }
     }
 
     public void onSeveralOrganismFound(Collection<MitabOrganism> organisms) {
         if (parserListener != null){
             parserListener.onSeveralOrganismFound(organisms);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(organisms.iterator().next(), organisms.size() + " organisms found. Only one is expected. Only the first organism will be loaded, the other organisms will be ignored.");
         }
     }
 
@@ -315,11 +324,17 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (parserListener != null){
             parserListener.onSeveralStoichiometryFound(stoichiometry);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(stoichiometry.iterator().next(), stoichiometry.size() + " different stoichiometries found. Only one is expected. Only the first stoichiometry will be loaded, the other stoichiometries will be ignored.");
+        }
     }
 
     public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors) {
         if (parserListener != null){
             parserListener.onSeveralFirstAuthorFound(authors);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(authors.iterator().next(), authors.size() + " first authors found. Only one is expected. Only the first author will be loaded, the other authors will be ignored.");
         }
     }
 
@@ -327,11 +342,17 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (parserListener != null){
             parserListener.onSeveralSourceFound(sources);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(sources.iterator().next(), sources.size() + " sources found. Only one is expected. Only the first source will be loaded, the other sources will be ignored.");
+        }
     }
 
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates) {
         if (parserListener != null){
             parserListener.onSeveralCreatedDateFound(dates);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(dates.iterator().next(), dates.size() + " created dates found. Only one is expected. Only the first created date will be loaded, the other created dates will be ignored.");
         }
     }
 
@@ -339,11 +360,17 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (parserListener != null){
             parserListener.onSeveralUpdatedDateFound(dates);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(dates.iterator().next(), dates.size() + " update dates found. Only one is expected. Only the first update date will be loaded, the other update dates will be ignored.");
+        }
     }
 
     public void onTextFoundInIdentifier(MitabXref xref) {
         if (parserListener != null){
             parserListener.onTextFoundInIdentifier(xref);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(xref, "Some text has been found attached to one identifier. Usually in mitab, identifiers do not have any text in parenthesis.");
         }
     }
 
@@ -351,11 +378,17 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (parserListener != null){
             parserListener.onTextFoundInConfidence(conf);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(conf, "Some text has been found attached to one confidence. Usually in mitab, confidences do not have any text in parenthesis.");
+        }
     }
 
     public void onMissingExpansionId(MitabCvTerm expansion) {
         if (parserListener != null){
             parserListener.onMissingExpansionId(expansion);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(expansion, "The provided expansion method does not have an identifier. As it is a controlled vocabulary, a PSI-MI identifier was expected.");
         }
     }
 
@@ -363,12 +396,122 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
         if (parserListener != null){
             parserListener.onSeveralUniqueIdentifiers(ids);
         }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning(ids.iterator().next(), ids.size() + " unique identifiers found. Only one should be provided as unique identifier, other identifiers should go in alternative identifiers columns.");
+        }
     }
 
     public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn) {
         isValid = false;
         if (parserListener != null){
             parserListener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onInvalidSyntax(new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn)), new ParseException("No unique identifier found. Each interactor should have at least one unique identifier in MITAB."));
+        }
+    }
+
+    public void onAliasWithoutDbSource(MitabAlias alias) {
+        isValid = false;
+        if (parserListener != null){
+            parserListener.onAliasWithoutDbSource(alias);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onInvalidSyntax(alias, new ParseException("Invalid MITAB alias: all aliases should have a db source."));
+        }
+    }
+
+    public void onInvalidOrganismTaxid(String taxid, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidOrganismTaxid(taxid, context);
+        }
+    }
+
+    public void onMissingParameterValue(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingParameterValue(context);
+        }
+    }
+
+    public void onMissingParameterType(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingParameterType(context);
+        }
+    }
+
+    public void onMissingConfidenceValue(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingConfidenceValue(context);
+        }
+    }
+
+    public void onMissingConfidenceType(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingConfidenceType(context);
+        }
+    }
+
+    public void onMissingChecksumValue(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingChecksumValue(context);
+        }
+    }
+
+    public void onMissingChecksumMethod(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onMissingChecksumMethod(context);
+        }
+    }
+
+    public void onInvalidPosition(String message, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidPosition(message, context);
+        }
+    }
+
+    public void onInvalidRange(String message, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidRange(message, context);
+        }
+    }
+
+    public void onInvalidStoichiometry(String message, FileSourceContext context) {
+        if (defaultParserListener != null){
+            defaultParserListener.onInvalidStoichiometry(message, context);
+        }
+    }
+
+    public void onXrefWithoutDatabase(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onXrefWithoutDatabase(context);
+        }
+    }
+
+    public void onXrefWithoutId(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onXrefWithoutId(context);
+        }
+    }
+
+    public void onAnnotationWithoutTopic(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onAnnotationWithoutTopic(context);
+        }
+    }
+
+    public void onAliasWithoutName(FileSourceContext context) {
+        isValid = false;
+        if (defaultParserListener != null){
+            defaultParserListener.onAliasWithoutName(context);
         }
     }
 

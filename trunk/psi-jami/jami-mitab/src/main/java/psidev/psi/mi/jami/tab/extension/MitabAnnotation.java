@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 /**
  * Extension of Annotation for Mitab with a sourceLocator
@@ -26,7 +27,7 @@ public class MitabAnnotation extends DefaultAnnotation implements FileSourceCont
     }
 
     public MitabAnnotation(String topic, String value) {
-        super(new MitabCvTerm(topic), value);
+        super(new MitabCvTerm(topic != null ? topic : MitabUtils.UNKNOWN_DATABASE), value);
     }
 
     public MitabAnnotation(CvTerm topic, FileSourceLocator sourceLocator) {
@@ -45,5 +46,10 @@ public class MitabAnnotation extends DefaultAnnotation implements FileSourceCont
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public String toString() {
+        return "Mitab Annotation: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

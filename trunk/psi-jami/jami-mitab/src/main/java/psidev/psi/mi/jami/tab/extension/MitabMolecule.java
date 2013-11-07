@@ -90,4 +90,9 @@ public class MitabMolecule extends DefaultMolecule implements FileSourceContext{
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Molecule: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

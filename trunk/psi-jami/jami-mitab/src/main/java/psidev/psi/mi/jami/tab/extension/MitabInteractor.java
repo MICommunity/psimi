@@ -90,4 +90,9 @@ public class MitabInteractor extends DefaultInteractor implements FileSourceCont
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Interactor: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

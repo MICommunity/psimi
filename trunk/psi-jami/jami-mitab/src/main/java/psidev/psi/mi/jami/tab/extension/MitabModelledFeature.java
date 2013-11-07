@@ -67,4 +67,9 @@ public class MitabModelledFeature extends DefaultModelledFeature implements Mita
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Feature: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

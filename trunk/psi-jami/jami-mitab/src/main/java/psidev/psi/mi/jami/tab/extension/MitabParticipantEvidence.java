@@ -93,4 +93,9 @@ public class MitabParticipantEvidence extends DefaultParticipantEvidence impleme
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

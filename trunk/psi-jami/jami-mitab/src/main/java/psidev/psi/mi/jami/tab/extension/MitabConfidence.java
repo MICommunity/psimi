@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultModelledConfidence;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 /**
  * A MitabConfidence is a confidence with some text
@@ -28,7 +29,7 @@ public class MitabConfidence extends DefaultModelledConfidence implements FileSo
     }
 
     public MitabConfidence(String type, String value, String text) {
-        super(new MitabCvTerm(type), value);
+        super(new MitabCvTerm(type != null ? type : MitabUtils.UNKNOWN_TYPE), value != null ? value : MitabUtils.UNKNOWN_ID);
         this.text = text;
     }
 
@@ -42,5 +43,10 @@ public class MitabConfidence extends DefaultModelledConfidence implements FileSo
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public String toString() {
+        return "Mitab Confidence: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultModelledParameter;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.math.BigDecimal;
 
@@ -47,7 +48,7 @@ public class MitabParameter extends DefaultModelledParameter implements FileSour
     }
 
     public MitabParameter(String type, String value, String unit) throws IllegalParameterException {
-        super(new MitabCvTerm(type), value, unit != null ? new MitabCvTerm(unit) : null);
+        super(new MitabCvTerm(type!= null ? type : MitabUtils.UNKNOWN_TYPE), value != null ? value : "", unit != null ? new MitabCvTerm(unit) : null);
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -56,5 +57,10 @@ public class MitabParameter extends DefaultModelledParameter implements FileSour
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    @Override
+    public String toString() {
+        return "Mitab Parameter: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }
