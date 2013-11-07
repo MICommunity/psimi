@@ -1,9 +1,10 @@
 package psidev.psi.mi.jami.listener;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.*;
-
-import java.util.Collection;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Interface for listening to the parsing of a MI file.
@@ -48,23 +49,6 @@ public interface MIFileParserListener {
     public void onMissingInteractorName(Interactor interactor, FileSourceContext context);
 
     /**
-     * Listen to an event where several CvTerms were found and only one was expected.
-     * Can happen when reading a clustered interaction evidence for instance
-     * @param terms
-     * @param context
-     * @param message
-     */
-    public void onSeveralCvTermsFound(Collection<? extends CvTerm> terms, FileSourceContext context, String message);
-
-    /**
-     * Listen to an event where several host organisms were found in a single experiment and only one was expected.
-     * Can happen when reading a clustered interaction evidence for instance
-     * @param organisms
-     * @param context
-     */
-    public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms, FileSourceContext context);
-
-    /**
      * Listen to en event fired when a Participant is read and no interactor details has been provided.
      * In such a case, the interactor can be automatically generated as an unknown interactor
      * @param participant
@@ -79,4 +63,68 @@ public interface MIFileParserListener {
      * @param context
      */
     public void onInteractionWithoutParticipants(Interaction interaction, FileSourceContext context);
+
+    /**
+     * Listen to an event fired when an organism does not have a valid taxid (positive integer or -1, -2, -3, -4, -5)
+     * @param taxid
+     * @param context
+     */
+    public void onInvalidOrganismTaxid(String taxid, FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a parameter does not have a value
+     * @param context
+     */
+    public void onMissingParameterValue(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a parameter does not have a type
+     * @param context
+     */
+    public void onMissingParameterType(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a confidence does not have a value
+     * @param context
+     */
+    public void onMissingConfidenceValue(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a confidence does not have a confidence type
+     * @param context
+     */
+    public void onMissingConfidenceType(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a checksum does not have a value
+     * @param context
+     */
+    public void onMissingChecksumValue(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a checksum does not have a method
+     * @param context
+     */
+    public void onMissingChecksumMethod(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a position is not valid
+     * @param message
+     * @param context
+     */
+    public void onInvalidPosition(String message, FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a range is not valid
+     * @param message
+     * @param context
+     */
+    public void onInvalidRange(String message, FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a stoichiometry is not valid
+     * @param message
+     * @param context
+     */
+    public void onInvalidStoichiometry(String message, FileSourceContext context);
 }
