@@ -22,4 +22,10 @@ public interface FileSourceContext {
      * @param locator
      */
     public void setSourceLocator(FileSourceLocator locator);
+
+    /**
+     *
+     * @return the file source context as a String. If the source locator is not null, it should give the source locator properties
+     */
+    public String toString();
 }

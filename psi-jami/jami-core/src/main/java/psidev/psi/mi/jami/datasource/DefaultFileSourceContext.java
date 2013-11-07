@@ -32,4 +32,9 @@ public class DefaultFileSourceContext implements FileSourceContext {
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "File context: "+sourceLocator != null ? sourceLocator.toString() : super.toString();
+    }
 }
