@@ -328,6 +328,11 @@ public class BibRef
         }
     }
 
+    @Override
+    public String toString() {
+        return "Bibref: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
+
     protected void initialiseAnnotationWrapper(){
         this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
     }
@@ -513,6 +518,11 @@ public class BibRef
                 annotations.add(index, annot);
                 return true;
             }
+        }
+
+        @Override
+        public String toString() {
+            return "BibRef Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

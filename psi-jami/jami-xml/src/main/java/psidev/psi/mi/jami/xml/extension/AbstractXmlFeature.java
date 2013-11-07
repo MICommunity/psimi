@@ -243,7 +243,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     @Override
     public String toString() {
-        return type != null ? type.toString() : (jaxbRangeWrapper != null && !jaxbRangeWrapper.ranges.isEmpty() ? "("+jaxbRangeWrapper.ranges.iterator().next().toString()+"...)" : " (-)");
+        return "Feature: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     @Override
@@ -345,6 +345,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         public List<Annotation> getJAXBAttributes() {
             return annotations;
         }
+
+        @Override
+        public String toString() {
+            return "Feature Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -388,6 +393,11 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         @XmlElement(type=XmlRange.class, name="featureRange", required = true)
         public List<Range> getJAXBRanges() {
             return ranges;
+        }
+
+        @Override
+        public String toString() {
+            return "Feature Range List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

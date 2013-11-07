@@ -168,4 +168,9 @@ public class XmlBioactiveEntity extends DefaultBioactiveEntity implements Extend
     public void setSourceLocator(PsiXmLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Bioactive entity: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

@@ -344,7 +344,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
 
     @Override
     public String toString() {
-        return (getShortName() != null ? getShortName()+", " : "") + (getInteractionType() != null ? getInteractionType().toString() : "");
+        return "Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     public void setJAXBIdOnly(int value) {
@@ -550,6 +550,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
                 clearPropertiesLinkedToChecksums();
             }
         }
+
+        @Override
+        public String toString() {
+            return "Interaction Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -592,6 +597,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
 
         public List<T> getJAXBParticipants() {
             return participants;
+        }
+
+        @Override
+        public String toString() {
+            return "Participant List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 
@@ -636,6 +646,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         @XmlElement(name="inferredInteraction", type = InferredInteraction.class, required = true)
         public List<InferredInteraction> getJAXBInferredInteractions() {
             return inferredInteractions;
+        }
+
+        @Override
+        public String toString() {
+            return "Inferred Interaction List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

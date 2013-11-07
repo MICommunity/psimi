@@ -144,6 +144,6 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
 
     @Override
     public String toString() {
-        return topic.toString()+(value != null ? ": " + value : "");
+        return "Xml Annotation: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

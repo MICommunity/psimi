@@ -138,6 +138,11 @@ public class NamesContainer implements FileSourceContext, Locatable{
         return (shortLabel == null && fullName == null && getAliases().isEmpty());
     }
 
+    @Override
+    public String toString() {
+        return "Names: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
+
     protected void initialiseAliases(){
         this.aliases = new ArrayList<Alias>();
     }

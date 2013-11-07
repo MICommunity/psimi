@@ -332,7 +332,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
 
     @Override
     public String toString() {
-        return getShortName() + (organism != null ? ", " + organism.toString() : "") + (interactorType != null ? ", " + interactorType.toString() : "")  ;
+        return "Interactor: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     @Override
@@ -528,6 +528,11 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
                 }
                 annotations.add(index, a);
                 return true;
+            }
+
+            @Override
+            public String toString() {
+                return "Interactor Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
             }
         }
     }

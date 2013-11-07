@@ -115,6 +115,11 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         return sourceLocator;
     }
 
+    @Override
+    public String toString() {
+        return "Inferred participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
+
     ////////////////////////////////////////////////////////////////// classes
 
     private class ParticipantRef extends AbstractParticipantRef{
@@ -135,7 +140,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 
         @Override
         public String toString() {
-            return "Participant reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
+            return "Participant Reference in inferred Participant: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
         }
 
         public FileSourceLocator getSourceLocator() {
@@ -165,7 +170,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 
         @Override
         public String toString() {
-            return "Feature reference: "+ref+" in inferred participant "+(getInferredParticipantLocator() != null? getInferredParticipantLocator().toString():"") ;
+            return "Feature Reference in inferred participant: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
         }
 
         public FileSourceLocator getSourceLocator() {

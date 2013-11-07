@@ -264,6 +264,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         protected void initialiseConfidences(){
             this.confidences = new ArrayList<ModelledConfidence>();
         }
+
+        @Override
+        public String toString() {
+            return "Interaction Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -307,6 +312,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         protected void initialiseParameters(){
             this.parameters = new ArrayList<ModelledParameter>();
+        }
+
+        @Override
+        public String toString() {
+            return "Interaction Parameter List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

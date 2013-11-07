@@ -114,6 +114,11 @@ public class XrefContainer implements FileSourceContext, Locatable{
         }
     }
 
+    @Override
+    public String toString() {
+        return "Xref: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
+
     protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }

@@ -450,6 +450,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         protected void initialiseIdentificationMethods(){
             this.identificationMethods = new ArrayList<CvTerm>();
         }
+
+        @Override
+        public String toString() {
+            return "Participant Identification method List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -493,6 +498,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         protected void initialiseExperimentalPreparations(){
             this.experimentalPreparations = new ArrayList<CvTerm>();
+        }
+
+        @Override
+        public String toString() {
+            return "Participant Experimental Preparation List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 
@@ -538,6 +548,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         protected void initialiseExperimentalRoles(){
             this.experimentalRoles = new ArrayList<CvTerm>();
         }
+
+        @Override
+        public String toString() {
+            return "Participant Experimental Role List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -581,6 +596,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         protected void initialiseExperimentalIneteractors(){
             this.experimentalInteractors = new ArrayList<ExperimentalInteractor>();
+        }
+
+        @Override
+        public String toString() {
+            return "Participant Experimental Interactor List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 
@@ -626,6 +646,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         protected void initialiseHostOrganisms(){
             this.hostOrganisms = new ArrayList<Organism>();
         }
+
+        @Override
+        public String toString() {
+            return "Participant Host Organism List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -670,6 +695,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
         protected void initialiseConfidences(){
             this.confidences = new ArrayList<Confidence>();
         }
+
+        @Override
+        public String toString() {
+            return "Participant Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
@@ -713,6 +743,11 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         protected void initialiseParameters(){
             this.parameters = new ArrayList<Parameter>();
+        }
+
+        @Override
+        public String toString() {
+            return "Participant Parameter List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

@@ -335,6 +335,11 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
         }
     }
 
+    @Override
+    public String toString() {
+        return interaction.toString();
+    }
+
     ////////////////////////////////////// classes
     private class SynchronizedModelledParticipantList extends AbstractListHavingProperties<ModelledParticipant>{
 

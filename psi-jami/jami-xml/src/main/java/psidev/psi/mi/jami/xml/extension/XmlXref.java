@@ -295,7 +295,7 @@ public class XmlXref
 
     @Override
     public String toString() {
-        return database.toString() + ":" + id.toString() + (qualifier != null ? " (" + qualifier.toString() + ")" : "");
+        return "Xml db reference: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
     //////////////////////////////// classes
@@ -340,6 +340,11 @@ public class XmlXref
         @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
         public List<Annotation> getJAXBAttributes() {
             return annotations;
+        }
+
+        @Override
+        public String toString() {
+            return "Xref Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
         }
     }
 }

@@ -119,6 +119,11 @@ public class HostOrganism extends XmlOrganism{
             return jaxbExperimentRefs;
         }
 
+        @Override
+        public String toString() {
+            return "Host Organism: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        }
+
         //////////////////////////////////////////////////////////////
         /**
          * The experiment ref list used by JAXB to populate experiment refs
@@ -181,6 +186,11 @@ public class HostOrganism extends XmlOrganism{
                 experiments.add(index, new ExperimentRef(val));
                 return true;
             }
+
+            @Override
+            public String toString() {
+                return "Host Organism Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            }
         }
 
         ////////////////////////////////////////////////////// classes
@@ -206,7 +216,7 @@ public class HostOrganism extends XmlOrganism{
 
             @Override
             public String toString() {
-                return "Experiment reference: "+ref+" in host organism "+(sourceLocator != null? sourceLocator.toString():"") ;
+                return "Host Organism Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
             }
 
             public FileSourceLocator getSourceLocator() {

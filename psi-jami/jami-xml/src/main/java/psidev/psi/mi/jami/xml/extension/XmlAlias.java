@@ -153,7 +153,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     @Override
     public String toString() {
-        return getName() + (type != null ? "("+type.toString()+")" : "");
+        return "Xml Alias: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }
 

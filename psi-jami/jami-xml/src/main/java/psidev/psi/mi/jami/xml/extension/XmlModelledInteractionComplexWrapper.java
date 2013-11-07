@@ -258,4 +258,9 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     public void setSourceLocator(FileSourceLocator locator) {
         this.modelledInteraction.setSourceLocator(locator);
     }
+
+    @Override
+    public String toString() {
+        return this.modelledInteraction.toString();
+    }
 }

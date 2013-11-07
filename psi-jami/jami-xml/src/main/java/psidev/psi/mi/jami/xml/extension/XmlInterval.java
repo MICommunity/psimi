@@ -103,4 +103,9 @@ public class XmlInterval extends AbstractXmlPosition{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
+
+    @Override
+    public String toString() {
+        return "Xml Range Interval: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
 }

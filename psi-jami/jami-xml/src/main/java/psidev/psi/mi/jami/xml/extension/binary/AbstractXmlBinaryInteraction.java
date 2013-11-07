@@ -175,4 +175,9 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Binary interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

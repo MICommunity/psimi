@@ -42,4 +42,9 @@ public class XmlStoichiometry extends DefaultStoichiometry implements FileSource
     public void setSourceLocator(PsiXmLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
+
+    @Override
+    public String toString() {
+        return "Participant Stoichiometry: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

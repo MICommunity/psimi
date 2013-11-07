@@ -109,4 +109,9 @@ public class Availability implements FileSourceContext, Locatable
             this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Availability: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

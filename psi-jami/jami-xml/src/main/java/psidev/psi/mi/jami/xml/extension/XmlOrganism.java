@@ -230,6 +230,6 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
 
     @Override
     public String toString() {
-        return taxId + "(" + (getCommonName() != null ? getCommonName() : "-" )+")";
+        return "Organism: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 }

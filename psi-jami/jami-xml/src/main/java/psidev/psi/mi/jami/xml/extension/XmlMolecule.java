@@ -83,4 +83,9 @@ public class XmlMolecule extends XmlInteractor implements Molecule{
     public XmlMolecule(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, organism, uniqueId);
     }
+
+    @Override
+    public String toString() {
+        return "Molecule: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+    }
 }

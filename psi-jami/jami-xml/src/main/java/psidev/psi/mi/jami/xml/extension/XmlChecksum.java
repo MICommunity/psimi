@@ -38,4 +38,9 @@ public class XmlChecksum extends DefaultChecksum implements FileSourceContext{
     public void setSourceLocator(PsiXmLocator locator) {
         this.sourceLocator = locator;
     }
+
+    @Override
+    public String toString() {
+        return "Checksum: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
 }

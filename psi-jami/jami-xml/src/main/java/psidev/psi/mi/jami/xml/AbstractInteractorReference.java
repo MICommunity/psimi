@@ -72,4 +72,9 @@ public abstract class AbstractInteractorReference extends AbstractXmlIdReference
     public void setInteractorType(CvTerm type) {
         throw new IllegalStateException("The interactor reference is not resolved and we cannot set an interactor type for interactor id "+ref);
     }
+
+    @Override
+    public String toString() {
+        return "Interactor Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+    }
 }
