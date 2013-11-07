@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -361,6 +362,12 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         if (this.jaxbParticipantWrapper != null && !this.jaxbParticipantWrapper.participants.isEmpty()){
             for (T participant : this.jaxbParticipantWrapper.participants){
                 processAddedParticipant(participant);
+            }
+        }
+        else{
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onInteractionWithoutParticipants(this, this);
             }
         }
     }

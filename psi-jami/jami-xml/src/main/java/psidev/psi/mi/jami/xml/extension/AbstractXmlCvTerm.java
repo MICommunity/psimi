@@ -10,6 +10,8 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -194,8 +196,23 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
 
     public void setJAXBNames(NamesContainer value) {
         this.namesContainer = value;
-        if (this.namesContainer != null && this.namesContainer.getShortLabel() == null){
-            this.namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+        if (this.namesContainer != null){
+            if (this.namesContainer.isEmpty()){
+                this.namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+                PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                if (listener != null){
+                    listener.onMissingCvTermName(this, this , "At least the shortLabel of a Cv Term is required. By default will load the Cv Term with 'unknown' shortName");
+                }
+            }
+            else if (this.namesContainer.getShortLabel() == null){
+                this.namesContainer.setShortLabel(this.namesContainer.getFullName() != null ? this.namesContainer.getFullName() : this.namesContainer.getAliases().iterator().next().getName());
+            }
+        }
+        else{
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onMissingCvTermName(this, this , "At least the shortLabel of a Cv Term is required. By default will load the Cv Term with 'unknown' shortName");
+            }
         }
     }
 

@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.xml.AbstractInteractorReference;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -307,6 +308,10 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
     public void setJAXBInteractor(XmlInteractor interactor) {
         if (interactor == null){
            this.interactor = null;
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onParticipantWithoutInteractor(null, this);
+            }
         }
         else{
             this.interactor = this.interactorFactory.createInteractorFromXmlInteractorInstance(interactor);
@@ -442,7 +447,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     return true;
                 }
                 // convert interaction evidence in a complex
-                if (object instanceof XmlInteractionEvidence){
+                else if (object instanceof XmlInteractionEvidence){
                     interactor = new XmlInteractionEvidenceComplexWrapper((XmlInteractionEvidence)object);
                     return true;
                 }
@@ -460,6 +465,12 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                 else if (object instanceof XmlBasicInteraction){
                     interactor = new XmlBasicInteractionComplexWrapper((XmlBasicInteraction)object);
                     return true;
+                }
+                else{
+                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                    if (listener != null){
+                        listener.onParticipantWithoutInteractor(null, this);
+                    }
                 }
             }
             return false;
@@ -491,6 +502,12 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                 if (obj instanceof Interactor){
                     interactor = (Interactor) obj;
                     return true;
+                }
+                else{
+                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                    if (listener != null){
+                        listener.onParticipantWithoutInteractor(null, this);
+                    }
                 }
             }
             return false;
@@ -641,7 +658,10 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                                 return false;
                             }
                             catch (NumberFormatException e){
-                                e.printStackTrace();
+                                PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                                if (listener != null){
+                                    listener.onInvalidStoichiometry("The stoichiometry is invalid "+ e.getMessage(), JAXBAttributeWrapper.this);
+                                }
                                 return addAnnotation(index, annotation);
                             }
                         }
@@ -660,7 +680,10 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                         }
                         // not a number, keep the annotation as annotation
                         catch (NumberFormatException e){
-                            e.printStackTrace();
+                            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                            if (listener != null){
+                                listener.onInvalidStoichiometry("The stoichiometry is invalid "+ e.getMessage(), JAXBAttributeWrapper.this);
+                            }
                             return addAnnotation(index, annotation);
                         }
                     }

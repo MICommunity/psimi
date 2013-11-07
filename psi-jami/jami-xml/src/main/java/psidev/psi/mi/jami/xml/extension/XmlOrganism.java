@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.*;
 import java.util.Collection;
@@ -182,10 +184,10 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
         }
         else {
             this.taxId = -3;
-            /*PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
             if (listener != null){
-                listener.
-            }*/
+                listener.onInvalidOrganismTaxid(Integer.toString(id) , this);
+            }
         }
     }
 
