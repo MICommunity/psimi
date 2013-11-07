@@ -127,4 +127,28 @@ public interface MIFileParserListener {
      * @param context
      */
     public void onInvalidStoichiometry(String message, FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a xref does not have a database
+     * @param context
+     */
+    public void onXrefWithoutDatabase(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when a xref does not have an id
+     * @param context
+     */
+    public void onXrefWithoutId(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when an annotation does not have a topic
+     * @param context
+     */
+    public void onAnnotationWithoutTopic(FileSourceContext context);
+
+    /**
+     * Listen to an event fired when an alias does not have a name
+     * @param context
+     */
+    public void onAliasWithoutName(FileSourceContext context);
 }
