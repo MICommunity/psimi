@@ -32,13 +32,6 @@ public class DefaultGeneTest {
         Assert.assertNull(gene.getOrganism());
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void test_create_gene_set_different_interactor_type() throws Exception {
-        Gene gene = new DefaultGene("test");
-
-        gene.setInteractorType(CvTermUtils.createUnknownInteractorType());
-    }
-
     @Test
     public void test_set_unset_ensembl(){
 
