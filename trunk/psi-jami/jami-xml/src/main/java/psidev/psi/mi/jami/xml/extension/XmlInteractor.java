@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -240,14 +241,23 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
      */
     @XmlElement(name = "names", required = true)
     public void setJAXBNames(NamesContainer value) {
-        if (value == null){
-            namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+        this.namesContainer = value;
+        if (this.namesContainer != null){
+            if (this.namesContainer.isEmpty()){
+                this.namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+                PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                if (listener != null){
+                    listener.onMissingInteractorName(this, this);
+                }
+            }
+            else if (this.namesContainer.getShortLabel() == null){
+                this.namesContainer.setShortLabel(this.namesContainer.getFullName() != null ? this.namesContainer.getFullName() : this.namesContainer.getAliases().iterator().next().getName());
+            }
         }
-        else {
-            this.namesContainer = value;
-            if (this.namesContainer.getShortLabel() == null){
-                namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+        else{
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onMissingInteractorName(this, this );
             }
         }
     }

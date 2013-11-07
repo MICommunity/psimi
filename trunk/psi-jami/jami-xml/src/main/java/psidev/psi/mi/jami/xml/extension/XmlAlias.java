@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -64,6 +66,12 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
     @XmlValue
     public void setJAXBName(String name) {
         this.name = name;
+        if (this.name == null){
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onAliasWithoutName(this);
+            }
+        }
     }
 
     /**

@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.annotation.UnambiguousAnnotationComparator;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -82,6 +84,12 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
         }
         else if (this.topic != null){
             this.topic.setShortName(value != null ? value : PsiXmlUtils.UNSPECIFIED);
+        }
+        if (value == null){
+            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onAnnotationWithoutTopic(this);
+            }
         }
     }
 
