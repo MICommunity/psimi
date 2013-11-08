@@ -1,39 +1,39 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.datasource.ModelledBinaryInteractionSource;
+import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.datasource.BinaryInteractionEvidenceStream;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.tab.io.iterator.MitabModelledBinaryIterator;
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.tab.io.iterator.MitabBinaryEvidenceIterator;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Iterator;
 
 /**
- * A mitab datasource that loads modelled interactions and ignore experimental details
- *
+ * A mitab datasource that loads interaction evidences (full experimental details)
+ * It only provides an iterator of the interactions
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>21/06/13</pre>
+ * @since <pre>25/06/13</pre>
  */
 
-public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<ModelledBinaryInteraction, ModelledParticipant, ModelledFeature> implements ModelledBinaryInteractionSource{
+public class MitabBinaryEvidenceStreamSource extends AbstractMitabStreamSource<BinaryInteractionEvidence, ParticipantEvidence, FeatureEvidence> implements BinaryInteractionEvidenceStream{
 
-    public MitabModelledBinaryDataSource() {
+    public MitabBinaryEvidenceStreamSource() {
         super();
     }
 
-    public MitabModelledBinaryDataSource(File file) throws IOException {
+    public MitabBinaryEvidenceStreamSource(File file) throws IOException {
         super(file);
     }
 
-    public MitabModelledBinaryDataSource(InputStream input) {
+    public MitabBinaryEvidenceStreamSource(InputStream input) {
         super(input);
     }
 
-    public MitabModelledBinaryDataSource(Reader reader) {
+    public MitabBinaryEvidenceStreamSource(Reader reader) {
         super(reader);
     }
 
@@ -43,7 +43,7 @@ public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<Model
             throw new IllegalArgumentException("The reader cannot be null.");
         }
         setOriginalReader(reader);
-        setLineParser(new ModelledBinaryLineParser(reader));
+        setLineParser(new BinaryEvidenceLineParser(reader));
     }
 
     @Override
@@ -66,16 +66,16 @@ public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<Model
     @Override
     protected void initialiseMitabLineParser(InputStream input) {
         setOriginalStream(input);
-        setLineParser(new ModelledBinaryLineParser(input));
+        setLineParser(new BinaryEvidenceLineParser(input));
     }
 
     @Override
-    protected Iterator<ModelledBinaryInteraction> createMitabIterator() throws MIIOException{
-        return new MitabModelledBinaryIterator(getLineParser());
+    protected Iterator<BinaryInteractionEvidence> createMitabIterator() {
+        return new MitabBinaryEvidenceIterator(getLineParser());
     }
 
     @Override
-    protected void initialiseMitabLineParser(URL url) {
+    protected void initialiseMitabLineParser(URL url) throws MIIOException{
         if (url == null){
             throw new IllegalArgumentException("The url cannot be null.");
         }
@@ -88,4 +88,3 @@ public class MitabModelledBinaryDataSource extends AbstractMitabDataSource<Model
         }
     }
 }
-

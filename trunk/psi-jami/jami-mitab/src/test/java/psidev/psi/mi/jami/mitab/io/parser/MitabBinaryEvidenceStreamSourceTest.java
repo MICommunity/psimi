@@ -3,9 +3,10 @@ package psidev.psi.mi.jami.mitab.io.parser;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.tab.io.parser.MitabEvidenceDataSource;
+import psidev.psi.mi.jami.tab.io.parser.MitabBinaryEvidenceStreamSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,35 +15,35 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Unit tester for MitabEvidenceDataSource
+ * Unit tester for MitabEvidenceStreamSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>02/07/13</pre>
  */
 
-public class MitabEvidenceDataSourceTest {
+public class MitabBinaryEvidenceStreamSourceTest {
 
     @Test(expected = IllegalStateException.class)
     public void test_validate_fails_not_initialised(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource();
         dataSource.validateSyntax();
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_iterate_fails_not_initialised(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource();
         dataSource.getInteractionsIterator();
     }
 
     @Test
     public void validate_valid_file(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource(MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         Assert.assertTrue(dataSource.validateSyntax());
 
-        dataSource = new MitabEvidenceDataSource();
+        dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
         dataSource.close();
@@ -50,12 +51,12 @@ public class MitabEvidenceDataSourceTest {
 
     @Test
     public void validate_invalid_file(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource(MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         Assert.assertFalse(dataSource.validateSyntax());
 
-        dataSource = new MitabEvidenceDataSource();
+        dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
@@ -63,8 +64,8 @@ public class MitabEvidenceDataSourceTest {
 
     @Test
     public void iterate_valid_file(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource(MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         InteractionEvidence i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
@@ -74,9 +75,9 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertTrue(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new MitabEvidenceDataSource();
+        dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -91,8 +92,8 @@ public class MitabEvidenceDataSourceTest {
 
     @Test
     public void iterate_invalid_file(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource(MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         InteractionEvidence i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
@@ -102,9 +103,9 @@ public class MitabEvidenceDataSourceTest {
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new MitabEvidenceDataSource();
+        dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -119,29 +120,29 @@ public class MitabEvidenceDataSourceTest {
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource(MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         dataSource.close();
     }
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit_2(){
 
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabEvidenceDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabBinaryEvidenceStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         dataSource.close();
     }
 
     @Test
     public void test_validate_datasource_reinit() throws IOException {
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource(new File(MitabEvidenceDataSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource(new File(MitabBinaryEvidenceStreamSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         InteractionEvidence i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
@@ -155,12 +156,12 @@ public class MitabEvidenceDataSourceTest {
     @Test
     public void test_validate_datasource_reinit_2(){
 
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(MitabEvidenceDataSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(MitabBinaryEvidenceStreamSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         InteractionEvidence i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
@@ -174,13 +175,13 @@ public class MitabEvidenceDataSourceTest {
     @Test
     @Ignore
     public void test_playground(){
-        MitabEvidenceDataSource dataSource = new MitabEvidenceDataSource();
+        MitabBinaryEvidenceStreamSource dataSource = new MitabBinaryEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File("/home/marine/Desktop/general/intact/intact.txt"));
         dataSource.initialiseContext(options);
         System.out.print("start "+System.currentTimeMillis());
 
-        Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
+        Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         int count = 0;
         while (iterator.hasNext()){
             iterator.next();
