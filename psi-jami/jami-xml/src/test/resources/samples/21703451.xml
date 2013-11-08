@@ -1322,7 +1322,7 @@
                     <secondaryRef refTypeAc="MI:0662" refType="imex-primary" id="IM-16552-12" dbAc="MI:0670" db="imex"/>
                 </xref>
                 <experimentList>
-                    <experimentRef>1240036</experimentRef>
+                    <experimentRef>1240046</experimentRef>
                 </experimentList>
                 <participantList>
                     <participant id="1240059">
