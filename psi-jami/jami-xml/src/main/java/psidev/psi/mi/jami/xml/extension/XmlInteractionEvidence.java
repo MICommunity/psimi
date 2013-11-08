@@ -153,11 +153,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     @Override
-    public String toString() {
-        return getImexId() != null ? getImexId() : super.toString();
-    }
-
-    @Override
     @XmlElement(name = "names")
     public void setJAXBNames(NamesContainer value) {
         super.setJAXBNames(value);
@@ -479,7 +474,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
         @Override
         public String toString() {
-            return "Interaction Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Interaction Confidence List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -528,7 +523,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
         @Override
         public String toString() {
-            return "Interaction Parameter List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Interaction Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -565,7 +560,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
         @Override
         public String toString() {
-            return "Interaction Availability Reference: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+            return "Interaction Availability Reference: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -625,7 +620,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
         @Override
         public String toString() {
-            return "Interaction Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Interaction Experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
 
         ////////////////////////////////////////////////// Inner classes of ExperimentList
@@ -694,7 +689,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
             @Override
             public String toString() {
-                return "Interaction Experiment Reference List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+                return "Interaction Experiment Reference List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
             }
 
             /**
@@ -731,7 +726,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
 
                 @Override
                 public String toString() {
-                    return "Interaction Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+                    return "Interaction Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
                 }
 
                 public FileSourceLocator getSourceLocator() {

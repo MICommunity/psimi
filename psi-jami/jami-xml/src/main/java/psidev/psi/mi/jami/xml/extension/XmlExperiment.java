@@ -533,7 +533,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
     @Override
     public String toString() {
-        return "ExperimentDescription: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "ExperimentDescription: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     @Override
@@ -814,7 +814,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
         }
         @Override
         public String toString() {
-            return "Experiment Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Experiment Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -863,7 +863,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
         @Override
         public String toString() {
-            return "Experiment Host Organism List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Experiment Host Organism List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -912,7 +912,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
 
         @Override
         public String toString() {
-            return "Experiment Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Experiment Confidence List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

@@ -126,6 +126,6 @@ public class XmlProtein extends DefaultProtein implements ExtendedPsi25Interacto
 
     @Override
     public String toString() {
-        return "Protein: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Protein: "+(sourceLocator != null ? sourceLocator.toString():super.toString());
     }
 }

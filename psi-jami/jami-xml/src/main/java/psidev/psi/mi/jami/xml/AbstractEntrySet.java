@@ -45,7 +45,7 @@ public abstract class AbstractEntrySet<T extends AbstractEntry> implements Locat
 
     @Override
     public String toString() {
-        return "EntrySet: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "EntrySet: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     private class EntryList extends AbstractListHavingProperties<T> {

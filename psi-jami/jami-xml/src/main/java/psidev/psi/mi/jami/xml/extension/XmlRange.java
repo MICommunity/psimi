@@ -309,7 +309,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
 
     @Override
     public String toString() {
-        return "Open Cv Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Feature range: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     protected AbstractXmlPosition createXmlPositionWithStatus(Position pos, XmlCvTerm status){

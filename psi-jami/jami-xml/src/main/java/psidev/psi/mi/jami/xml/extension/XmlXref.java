@@ -309,7 +309,7 @@ public class XmlXref
 
     @Override
     public String toString() {
-        return "Xml db reference: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Xml db reference: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     //////////////////////////////// classes
@@ -358,7 +358,7 @@ public class XmlXref
 
         @Override
         public String toString() {
-            return "Xref Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Xref Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

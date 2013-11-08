@@ -167,7 +167,7 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
 
     @Override
     public String toString() {
-        return "Interactor set: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+        return "Interactor set: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     @Override

@@ -330,7 +330,7 @@ public class BibRef
 
     @Override
     public String toString() {
-        return "Bibref: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Bibref: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     protected void initialiseAnnotationWrapper(){
@@ -522,7 +522,7 @@ public class BibRef
 
         @Override
         public String toString() {
-            return "BibRef Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "BibRef Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

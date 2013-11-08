@@ -243,7 +243,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     @Override
     public String toString() {
-        return "Feature: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Feature: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     @Override
@@ -348,7 +348,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
         @Override
         public String toString() {
-            return "Feature Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Feature Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -397,7 +397,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
         @Override
         public String toString() {
-            return "Feature Range List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Feature Range List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

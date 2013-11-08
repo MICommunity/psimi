@@ -70,6 +70,11 @@ public abstract class AbstractEntry<T extends Interaction> extends XmlEntry impl
         }
     }
 
+    @Override
+    public String toString() {
+        return "Entry : "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+    }
+
     protected void setInteractorsWrapper(JAXBInteractorsWrapper wrapper){
         this.interactorsWrapper = wrapper;
     }
@@ -147,7 +152,7 @@ public abstract class AbstractEntry<T extends Interaction> extends XmlEntry impl
 
         @Override
         public String toString() {
-            return "Entry interactor List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Entry interactor List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
 
         private class InteractorList extends AbstractListHavingProperties<Interactor> {
@@ -216,7 +221,7 @@ public abstract class AbstractEntry<T extends Interaction> extends XmlEntry impl
 
         @Override
         public String toString() {
-            return "Entry availability List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Entry availability List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -265,7 +270,7 @@ public abstract class AbstractEntry<T extends Interaction> extends XmlEntry impl
 
         @Override
         public String toString() {
-            return "Entry attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Entry attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -313,7 +318,7 @@ public abstract class AbstractEntry<T extends Interaction> extends XmlEntry impl
 
         @Override
         public String toString() {
-            return "Entry interaction List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Entry interaction List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

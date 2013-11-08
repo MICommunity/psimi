@@ -114,6 +114,6 @@ public class XmlGene extends DefaultGene implements ExtendedPsi25Interactor, Fil
 
     @Override
     public String toString() {
-        return "Gene: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Gene: "+(sourceLocator != null ? sourceLocator.toString():super.toString());
     }
 }

@@ -102,6 +102,6 @@ public class XmlOpenCvTerm extends AbstractXmlCvTerm{
 
     @Override
     public String toString() {
-        return "Open Cv Term: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+        return "Open Cv Term: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

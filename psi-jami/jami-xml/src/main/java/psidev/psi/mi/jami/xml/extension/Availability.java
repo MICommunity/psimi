@@ -112,6 +112,6 @@ public class Availability implements FileSourceContext, Locatable
 
     @Override
     public String toString() {
-        return "Availability: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Availability: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

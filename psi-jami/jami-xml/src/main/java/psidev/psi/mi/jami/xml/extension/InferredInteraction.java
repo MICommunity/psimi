@@ -169,7 +169,7 @@ public class InferredInteraction
 
         @Override
         public String toString() {
-            return "Inferred Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Inferred Interaction: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
 
         /**
@@ -236,7 +236,7 @@ public class InferredInteraction
 
             @Override
             public String toString() {
-                return "Inferred Interaction Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+                return "Inferred Interaction Experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
             }
         }
 
@@ -263,7 +263,7 @@ public class InferredInteraction
 
             @Override
             public String toString() {
-                return "Inferred Interaction Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+                return "Inferred Interaction Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
             }
 
             public FileSourceLocator getSourceLocator() {

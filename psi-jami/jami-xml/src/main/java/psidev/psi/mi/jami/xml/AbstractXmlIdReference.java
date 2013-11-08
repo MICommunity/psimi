@@ -26,6 +26,6 @@ public abstract class AbstractXmlIdReference implements XmlIdReference {
 
     @Override
     public String toString() {
-        return "Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }
