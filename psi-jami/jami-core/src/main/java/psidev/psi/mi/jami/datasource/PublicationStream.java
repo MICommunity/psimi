@@ -13,11 +13,11 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingPublicationSource extends MIDataSource {
+public interface PublicationStream extends MIDataSource {
 
     /**
      * The publications iterator for this datasource.
      * @return iterator of publications for a given datasource
      */
-     public Iterator<? extends Publication> getPublicationsIterator() throws MIIOException;
+     public Iterator<Publication> getPublicationsIterator() throws MIIOException;
 }

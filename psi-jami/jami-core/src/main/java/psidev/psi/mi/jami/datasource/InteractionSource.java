@@ -1,24 +1,28 @@
 package psidev.psi.mi.jami.datasource;
 
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Interaction;
 
-import java.util.Iterator;
+import java.util.Collection;
 
 /**
- * An interaction data source allows to stream the interactors of a given datasource
+ * A Data source of interactions.
+ * It gives full access to all the interactions using Iterator or the full collection.
+ * It can also give information about the size of the datasource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/12/12</pre>
+ * @since <pre>08/11/13</pre>
  */
 
-public interface InteractionSource extends MIDataSource {
+public interface InteractionSource<T extends Interaction> extends InteractionStream<T> {
 
     /**
-     * The iterator of Interactions for this datasource
-     * @return iterator of Interactions for this datasource
-     * @throws MIIOException
+     * The collection of Interactions for this datasource
+     * @return collection of Interactions for this datasource
+     * @throws psidev.psi.mi.jami.exception.MIIOException
      */
-    public <I extends Interaction> Iterator<I> getInteractionsIterator() throws MIIOException;
+    public Collection<T> getInteractions() throws MIIOException;
+
+    public long getNumberOfInteractions();
 }

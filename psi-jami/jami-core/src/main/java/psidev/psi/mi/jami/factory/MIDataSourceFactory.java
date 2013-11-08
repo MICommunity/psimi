@@ -1,8 +1,9 @@
 package psidev.psi.mi.jami.factory;
 
-import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.MIDataSource;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
+import psidev.psi.mi.jami.model.Interaction;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +32,7 @@ public class MIDataSourceFactory {
     public static final String PARSER_LISTENER_OPTION_KEY = "parser_listener_key";
     public static final String INPUT_FORMAT_OPTION_KEY = "input_format_key";
     public static final String COMPLEX_EXPANSION_OPTION_KEY = "complex_expansion_key";
-    private Class interactionSourceClass = InteractionSource.class;
+    private Class interactionSourceClass = InteractionStream.class;
 
     private MIDataSourceFactory(){
         registeredDataSources = new ConcurrentHashMap<Class<? extends MIDataSource>, Map<String, Object>>();
@@ -59,13 +60,13 @@ public class MIDataSourceFactory {
         return null;
     }
 
-    public InteractionSource getInteractionSourceWith(Map<String,Object> requiredOptions) {
+    public <I extends Interaction> InteractionStream<I> getInteractionSourceWith(Map<String,Object> requiredOptions) {
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
             // we check for a DataSource that can be used with the given options
             if (interactionSourceClass.isAssignableFrom(entry.getKey()) && areSupportedOptions(entry.getValue(), requiredOptions)){
                 try {
-                    return (InteractionSource) instantiateNewDataSource(entry.getKey(), requiredOptions);
+                    return (InteractionStream) instantiateNewDataSource(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
                     logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
