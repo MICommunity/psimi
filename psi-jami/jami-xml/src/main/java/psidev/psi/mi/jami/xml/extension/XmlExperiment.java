@@ -510,7 +510,6 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      * Gets the value of the id property.
      *
      */
-    @XmlAttribute(name = "id", required = true)
     public int getId() {
         return id;
     }
@@ -525,6 +524,11 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
+    }
+
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int value) {
+        setId(value);
     }
 
     @Override

@@ -258,9 +258,8 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         super.setJAXBBiologicalRole(bioRole);
     }
 
-    @Override
     @XmlAttribute(name = "id", required = true)
-    public void setId(int value) {
+    public void setJAXBId(int value) {
         super.setId(value);
     }
 

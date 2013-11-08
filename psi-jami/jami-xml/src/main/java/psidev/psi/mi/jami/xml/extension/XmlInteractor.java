@@ -310,13 +310,17 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
      * Sets the value of the id property.
      *
      */
-    @XmlAttribute(name = "id", required = true)
     public void setId(int value) {
         this.id = value;
         XmlEntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
+    }
+
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int value) {
+        setId(value);
     }
 
     /**
