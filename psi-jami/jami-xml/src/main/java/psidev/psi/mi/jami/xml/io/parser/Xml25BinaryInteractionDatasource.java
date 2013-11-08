@@ -52,8 +52,6 @@ public class Xml25BinaryInteractionDatasource extends AbstractPsiXmlBinaryDataSo
             throw new MIIOException("Impossible to read with provided reader ",e);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided reader",e);
-        } catch (FileNotFoundException e) {
-            throw new MIIOException("Impossible to read with provided reader",e);
         }
     }
 
@@ -83,8 +81,6 @@ public class Xml25BinaryInteractionDatasource extends AbstractPsiXmlBinaryDataSo
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to parse the inputstream ",e);
         } catch (JAXBException e) {
-            throw new MIIOException("Impossible to parse the inputstream ",e);
-        } catch (FileNotFoundException e) {
             throw new MIIOException("Impossible to parse the inputstream ",e);
         }
     }

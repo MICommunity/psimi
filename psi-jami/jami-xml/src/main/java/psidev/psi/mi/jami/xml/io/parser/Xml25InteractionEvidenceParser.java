@@ -20,7 +20,7 @@ import java.net.URL;
 
 public class Xml25InteractionEvidenceParser extends AbstractPsiXml25Parser<InteractionEvidence>{
 
-    public Xml25InteractionEvidenceParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
+    public Xml25InteractionEvidenceParser(File file) throws XMLStreamException, JAXBException {
         super(file);
     }
 

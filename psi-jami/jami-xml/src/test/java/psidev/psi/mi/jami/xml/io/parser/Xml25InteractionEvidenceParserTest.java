@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
@@ -35,6 +36,7 @@ public class Xml25InteractionEvidenceParserTest {
         PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
 
         Assert.assertNotNull(interaction);
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
@@ -249,6 +251,7 @@ public class Xml25InteractionEvidenceParserTest {
         InteractionEvidence interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
         Assert.assertNull(interaction.getImexId());
         Assert.assertEquals(2, interaction.getIdentifiers().size());
@@ -461,6 +464,7 @@ public class Xml25InteractionEvidenceParserTest {
         InteractionEvidence interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
 
         // experiment
@@ -584,6 +588,7 @@ public class Xml25InteractionEvidenceParserTest {
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
+            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             if (index == 1){
                 Iterator<ParticipantEvidence> pIterator = interaction.getParticipants().iterator();
                 ParticipantEvidence p1 = pIterator.next();
@@ -613,6 +618,7 @@ public class Xml25InteractionEvidenceParserTest {
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
+            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;
         }
         System.out.println("End"+System.currentTimeMillis());

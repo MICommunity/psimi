@@ -23,11 +23,11 @@ import java.net.URL;
 
 public class FullXml25BinaryInteractionParser extends AbstractPsixml25BinaryParser<Interaction<? extends Participant>,BinaryInteraction>{
 
-    public FullXml25BinaryInteractionParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
+    public FullXml25BinaryInteractionParser(File file) throws XMLStreamException, JAXBException {
         super(new FullXml25InteractionParser(file));
     }
 
-    public FullXml25BinaryInteractionParser(InputStream inputStream) throws XMLStreamException, JAXBException, FileNotFoundException {
+    public FullXml25BinaryInteractionParser(InputStream inputStream) throws XMLStreamException, JAXBException {
         super(new FullXml25InteractionParser(inputStream));
     }
 
@@ -35,7 +35,7 @@ public class FullXml25BinaryInteractionParser extends AbstractPsixml25BinaryPars
         super(new FullXml25InteractionParser(url));
     }
 
-    public FullXml25BinaryInteractionParser(Reader reader) throws XMLStreamException, JAXBException, FileNotFoundException {
+    public FullXml25BinaryInteractionParser(Reader reader) throws XMLStreamException, JAXBException {
         super(new FullXml25InteractionParser(reader));
     }
 
