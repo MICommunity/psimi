@@ -304,4 +304,110 @@ public class Xml25ModelledInteractionParserTest {
 
         parser.close();
     }
+
+    @Test
+    public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
+
+        PsiXml25Parser<ModelledInteraction> parser = new Xml25ModelledInteractionParser(stream);
+
+        ModelledInteraction interaction = parser.parseNextInteraction();
+
+        Assert.assertNotNull(interaction);
+        Assert.assertEquals("rad53-dbf4", interaction.getShortName());
+
+        // source
+        Assert.assertNotNull(interaction.getSource());
+        Source source = interaction.getSource();
+        Assert.assertEquals("MINT", source.getShortName());
+        Assert.assertEquals("MINT, Dpt of Biology, University of Rome Tor Vergata", source.getFullName());
+        Assert.assertEquals(0, source.getSynonyms().size());
+        Assert.assertEquals("MI:0471", source.getMIIdentifier());
+        Assert.assertEquals(2, source.getIdentifiers().size());
+        Assert.assertEquals(0, source.getXrefs().size());
+        Assert.assertEquals(2, source.getAnnotations().size());
+        Assert.assertEquals("http://mint.bio.uniroma2.it/mint", source.getUrl());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
+        ModelledParticipant p1 = partIterator.next();
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        // features
+        Assert.assertEquals(1, p1.getFeatures().size());
+        ModelledFeature f = p1.getFeatures().iterator().next();
+        Assert.assertEquals("tagged molecule", f.getShortName());
+        // interactor
+        Assert.assertNotNull(p1.getInteractor());
+        Assert.assertEquals("rad53_yeast", p1.getInteractor().getShortName());
+        Assert.assertEquals("Serine/threonine-protein kinase RAD53", p1.getInteractor().getFullName());
+        Assert.assertEquals(8, p1.getInteractor().getAliases().size());
+        Assert.assertTrue(p1.getInteractor() instanceof Protein);
+        Protein prot = (Protein)p1.getInteractor();
+        Assert.assertEquals("RAD53", prot.getGeneName());
+        Assert.assertEquals(44, prot.getXrefs().size());
+        Assert.assertEquals(4, prot.getIdentifiers().size());
+        Assert.assertEquals("P22216", prot.getUniprotkb());
+        Assert.assertEquals("MENITQPTQQSTQATQRFLIEKFSQEQIGENIVCRVICTTGQIPIRDLSADISQVLKEKRSIKKVWTFGRNPACDYHLGNISRLSNKHFQILLGEDGNLLLNDISTNGTWLNGQKVEKNSNQLLSQGDEITVGVGVESDILSLVIFINDKFKQCLEQNKVDRIRSNLKNTSKIASPGLTSSTASSMVANKTGIFKDFSIIDEVVGQGAFATVKKAIERTTGKTFAVKIISKRKVIGNMDGVTRELEVLQKLNHPRIVRLKGFYEDTESYYMVMEFVSGGDLMDFVAAHGAVGEDAGREISRQILTAIKYIHSMGISHRDLKPDNILIEQDDPVLVKITDFGLAKVQGNGSFMKTFCGTLAYVAPEVIRGKDTSVSPDEYEERNEYSSLVDMWSMGCLVYVILTGHLPFSGSTQDQLYKQIGRGSYHEGPLKDFRISEEARDFIDSLLQVDPNNRSTAAKALNHPWIKMSPLGSQSYGDFSQISLSQSLSQQKLLENMDDAQYEFVKAQRKLQMEQQLQEQDQEDQDGKIQGFKIPAHAPIRYTQPKSIEAETREQKLLHSNNTENVKSSKKKGNGRFLTLKPLPDSIIQESLEIQQGVNPFFIGRSEDCNCKIEDNRLSRVHCFIFKKRHAVGKSMYESPAQGLDDIWYCHTGTNVSYLNNNRMIQGTKFLLQDGDEIKIIWDKNNKFVIGFKVEINDTTGLFNEGLGMLQEQRVVLKQTAEEKDLVKKLTQMMAAQRANQPSASSSSMSAKKPPVSDTNNNGNNSVLNDLVESPINANTGNILKRIHSVSLSQSQIDPSKKVKRAKLDQTSKGPENLQFS", prot.getSequence());
+        Assert.assertNotNull(prot.getOrganism());
+        Assert.assertEquals(559292, prot.getOrganism().getTaxId());
+
+        Assert.assertFalse(parser.hasFinished());
+
+        interaction = parser.parseNextInteraction();
+
+        Assert.assertNotNull(interaction);
+        Assert.assertEquals("trp-inad-2", interaction.getShortName());
+
+        // source
+        Assert.assertNotNull(interaction.getSource());
+        source = interaction.getSource();
+        Assert.assertEquals("IntAct", source.getShortName());
+        Assert.assertEquals("European Bioinformatics Institute", source.getFullName());
+        Assert.assertEquals(0, source.getSynonyms().size());
+        Assert.assertEquals("MI:0469", source.getMIIdentifier());
+        Assert.assertEquals(2, source.getIdentifiers().size());
+        Assert.assertEquals(1, source.getXrefs().size());
+        Assert.assertEquals(3, source.getAnnotations().size());
+        Assert.assertEquals("http://www.ebi.ac.uk/", source.getUrl());
+        Assert.assertEquals("European Bioinformatics Institute; Wellcome Trust Genome Campus; Hinxton, Cambridge; CB10 1SD; United Kingdom", source.getPostalAddress());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        partIterator = interaction.getParticipants().iterator();
+        p1 = partIterator.next();
+        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortLabel());
+        // features
+        Assert.assertEquals(2, p1.getFeatures().size());
+        f = p1.getFeatures().iterator().next();
+        Assert.assertEquals("gb1 tag region", f.getShortName());
+        // interactor
+        Assert.assertNotNull(p1.getInteractor());
+        Assert.assertEquals("trp_drome", p1.getInteractor().getShortName());
+        Assert.assertEquals("Transient receptor potential protein", p1.getInteractor().getFullName());
+        Assert.assertEquals(2, p1.getInteractor().getAliases().size());
+        Assert.assertTrue(p1.getInteractor() instanceof Protein);
+        prot = (Protein)p1.getInteractor();
+        Assert.assertEquals("trp", prot.getGeneName());
+        Assert.assertEquals(23, prot.getXrefs().size());
+        Assert.assertEquals(4, prot.getIdentifiers().size());
+        Assert.assertEquals("P19334", prot.getUniprotkb());
+        Assert.assertEquals("MGSNTESDAEKALGSRLDYDLMMAEEYILSDVEKNFILSCERGDLPGVKKILEEYQGTDKFNINCTDPMNRSALISAIENENFDLMVILLEHNIEVGDALLHAISEEYVEAVEELLQWEETNHKEGQPYSWEAVDRSKSTFTVDITPLILAAHRNNYEILKILLDRGATLPMPHDVKCGCDECVTSQMTDSLRHSQSRINAYRALSASSLIALSSRDPVLTAFQLSWELKRLQAMESEFRAEYTEMRQMVQDFGTSLLDHARTSMELEVMLNFNHEPSHDIWCLGQRQTLERLKLAIRYKQKTFVAHPNVQQLLAAIWYDGLPGFRRKQASQQLMDVVKLGCSFPIYSLKYILAPDSEGAKFMRKPFVKFITHSCSYMFFLMLLGAASLRVVQITFELLAFPWMLTMLEDWRKHERGSLPGPIELAIITYIMALIFEELKSLYSDGLFEYIMDLWNIVDYISNMFYVTWILCRATAWVIVHRDLWFRGIDPYFPREHWHPFDPMLLSEGAFAAGMVFSYLKLVHIFSINPHLGPLQVSLGRMIIDIIKFFFIYTLVLFAFGCGLNQLLWYYAELEKNKCYHLHPDVADFDDQEKACTIWRRFSNLFETSQSLFWASFGLVDLVSFDLAGIKSFTRFWALLMFGSYSVINIIVLLNMLIAMMSNSYQIISERADTEWKFARSQLWMSYFEDGGTIPPPFNLCPNMKMLRKTLGRKRPSRTKSFMRKSMERAQTLHDKVMKLLVRRYITAEQRRRDDYGITEDDIIEVRQDISSLRFELLEIFTNNNWDVPDIEKKSQGVARTTKGKVMERRILKDFQIGFVENLKQEMSESESGRDIFSSLAKVIGRKKTQKGDKDWNAIARKNTFASDPIGSKRSSMQRHSQRSLRRKIIEQANEGLQMNQTQLIEFNPNLGDVTRATRVAYVKFMRKKMAADEVSLADDEGAPNGEGEKKPLDASGSKKSITSGGTGGGASMLAAAALRASVKNVDEKSGADGKPGTMGKPTDDKKAGDDKDKQQPPKDSKPSAGGPKPGDQKPTPGAGAPKPQAAGTISKPGESQKKDAPAPPTKPGDTKPAAPKPGESAKPEAAAKKEESSKTEASKPAATNGAAKSAAPSAPSDAKPDSKLKPGAAGAPEATKATNGASKPDEKKSGPEEPKKAAGDSKPGDDAKDKDKKPGDDKDKKPGDDKDKKPADNNDKKPADDKDKKPGDDKDKKPGDDKDKKPSDDKDKKPADDKDKKPAAAPLKPAIKVGQSSAAAGGERGKSTVTGRMISGWL", prot.getSequence());
+        Assert.assertNotNull(prot.getOrganism());
+        Assert.assertEquals(7227, prot.getOrganism().getTaxId());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
+        PsiXml25Parser<ModelledInteraction> parser = new Xml25ModelledInteractionParser(stream);
+
+        ModelledInteraction interaction = parser.parseNextInteraction();
+
+        // read first interaction
+        Assert.assertNull(interaction);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }
