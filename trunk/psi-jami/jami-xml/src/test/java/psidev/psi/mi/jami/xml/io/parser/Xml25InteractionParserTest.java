@@ -262,4 +262,85 @@ public class Xml25InteractionParserTest {
 
         parser.close();
     }
+
+    @Test
+    public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
+
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+
+        Interaction<? extends Participant> interaction = parser.parseNextInteraction();
+
+        Assert.assertNotNull(interaction);
+        Assert.assertEquals("rad53-dbf4", interaction.getShortName());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        Iterator<? extends Participant> partIterator = interaction.getParticipants().iterator();
+        Participant p1 = partIterator.next();
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        // features
+        Assert.assertEquals(1, p1.getFeatures().size());
+        Feature f = (Feature)p1.getFeatures().iterator().next();
+        Assert.assertEquals("tagged molecule", f.getShortName());
+        // interactor
+        Assert.assertNotNull(p1.getInteractor());
+        Assert.assertEquals("rad53_yeast", p1.getInteractor().getShortName());
+        Assert.assertEquals("Serine/threonine-protein kinase RAD53", p1.getInteractor().getFullName());
+        Assert.assertEquals(8, p1.getInteractor().getAliases().size());
+        Assert.assertTrue(p1.getInteractor() instanceof Protein);
+        Protein prot = (Protein)p1.getInteractor();
+        Assert.assertEquals("RAD53", prot.getGeneName());
+        Assert.assertEquals(44, prot.getXrefs().size());
+        Assert.assertEquals(4, prot.getIdentifiers().size());
+        Assert.assertEquals("P22216", prot.getUniprotkb());
+        Assert.assertEquals("MENITQPTQQSTQATQRFLIEKFSQEQIGENIVCRVICTTGQIPIRDLSADISQVLKEKRSIKKVWTFGRNPACDYHLGNISRLSNKHFQILLGEDGNLLLNDISTNGTWLNGQKVEKNSNQLLSQGDEITVGVGVESDILSLVIFINDKFKQCLEQNKVDRIRSNLKNTSKIASPGLTSSTASSMVANKTGIFKDFSIIDEVVGQGAFATVKKAIERTTGKTFAVKIISKRKVIGNMDGVTRELEVLQKLNHPRIVRLKGFYEDTESYYMVMEFVSGGDLMDFVAAHGAVGEDAGREISRQILTAIKYIHSMGISHRDLKPDNILIEQDDPVLVKITDFGLAKVQGNGSFMKTFCGTLAYVAPEVIRGKDTSVSPDEYEERNEYSSLVDMWSMGCLVYVILTGHLPFSGSTQDQLYKQIGRGSYHEGPLKDFRISEEARDFIDSLLQVDPNNRSTAAKALNHPWIKMSPLGSQSYGDFSQISLSQSLSQQKLLENMDDAQYEFVKAQRKLQMEQQLQEQDQEDQDGKIQGFKIPAHAPIRYTQPKSIEAETREQKLLHSNNTENVKSSKKKGNGRFLTLKPLPDSIIQESLEIQQGVNPFFIGRSEDCNCKIEDNRLSRVHCFIFKKRHAVGKSMYESPAQGLDDIWYCHTGTNVSYLNNNRMIQGTKFLLQDGDEIKIIWDKNNKFVIGFKVEINDTTGLFNEGLGMLQEQRVVLKQTAEEKDLVKKLTQMMAAQRANQPSASSSSMSAKKPPVSDTNNNGNNSVLNDLVESPINANTGNILKRIHSVSLSQSQIDPSKKVKRAKLDQTSKGPENLQFS", prot.getSequence());
+        Assert.assertNotNull(prot.getOrganism());
+        Assert.assertEquals(559292, prot.getOrganism().getTaxId());
+
+        Assert.assertFalse(parser.hasFinished());
+
+        interaction = parser.parseNextInteraction();
+
+        Assert.assertNotNull(interaction);
+        Assert.assertEquals("trp-inad-2", interaction.getShortName());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        partIterator = interaction.getParticipants().iterator();
+        p1 = partIterator.next();
+        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortLabel());
+        // features
+        Assert.assertEquals(2, p1.getFeatures().size());
+        f = (Feature)p1.getFeatures().iterator().next();
+        Assert.assertEquals("gb1 tag region", f.getShortName());
+        // interactor
+        Assert.assertNotNull(p1.getInteractor());
+        Assert.assertEquals("trp_drome", p1.getInteractor().getShortName());
+        Assert.assertEquals("Transient receptor potential protein", p1.getInteractor().getFullName());
+        Assert.assertEquals(2, p1.getInteractor().getAliases().size());
+        Assert.assertTrue(p1.getInteractor() instanceof Protein);
+        prot = (Protein)p1.getInteractor();
+        Assert.assertEquals("trp", prot.getGeneName());
+        Assert.assertEquals(23, prot.getXrefs().size());
+        Assert.assertEquals(4, prot.getIdentifiers().size());
+        Assert.assertEquals("P19334", prot.getUniprotkb());
+        Assert.assertEquals("MGSNTESDAEKALGSRLDYDLMMAEEYILSDVEKNFILSCERGDLPGVKKILEEYQGTDKFNINCTDPMNRSALISAIENENFDLMVILLEHNIEVGDALLHAISEEYVEAVEELLQWEETNHKEGQPYSWEAVDRSKSTFTVDITPLILAAHRNNYEILKILLDRGATLPMPHDVKCGCDECVTSQMTDSLRHSQSRINAYRALSASSLIALSSRDPVLTAFQLSWELKRLQAMESEFRAEYTEMRQMVQDFGTSLLDHARTSMELEVMLNFNHEPSHDIWCLGQRQTLERLKLAIRYKQKTFVAHPNVQQLLAAIWYDGLPGFRRKQASQQLMDVVKLGCSFPIYSLKYILAPDSEGAKFMRKPFVKFITHSCSYMFFLMLLGAASLRVVQITFELLAFPWMLTMLEDWRKHERGSLPGPIELAIITYIMALIFEELKSLYSDGLFEYIMDLWNIVDYISNMFYVTWILCRATAWVIVHRDLWFRGIDPYFPREHWHPFDPMLLSEGAFAAGMVFSYLKLVHIFSINPHLGPLQVSLGRMIIDIIKFFFIYTLVLFAFGCGLNQLLWYYAELEKNKCYHLHPDVADFDDQEKACTIWRRFSNLFETSQSLFWASFGLVDLVSFDLAGIKSFTRFWALLMFGSYSVINIIVLLNMLIAMMSNSYQIISERADTEWKFARSQLWMSYFEDGGTIPPPFNLCPNMKMLRKTLGRKRPSRTKSFMRKSMERAQTLHDKVMKLLVRRYITAEQRRRDDYGITEDDIIEVRQDISSLRFELLEIFTNNNWDVPDIEKKSQGVARTTKGKVMERRILKDFQIGFVENLKQEMSESESGRDIFSSLAKVIGRKKTQKGDKDWNAIARKNTFASDPIGSKRSSMQRHSQRSLRRKIIEQANEGLQMNQTQLIEFNPNLGDVTRATRVAYVKFMRKKMAADEVSLADDEGAPNGEGEKKPLDASGSKKSITSGGTGGGASMLAAAALRASVKNVDEKSGADGKPGTMGKPTDDKKAGDDKDKQQPPKDSKPSAGGPKPGDQKPTPGAGAPKPQAAGTISKPGESQKKDAPAPPTKPGDTKPAAPKPGESAKPEAAAKKEESSKTEASKPAATNGAAKSAAPSAPSDAKPDSKLKPGAAGAPEATKATNGASKPDEKKSGPEEPKKAAGDSKPGDDAKDKDKKPGDDKDKKPGDDKDKKPADNNDKKPADDKDKKPGDDKDKKPGDDKDKKPSDDKDKKPADDKDKKPAAAPLKPAIKVGQSSAAAGGERGKSTVTGRMISGWL", prot.getSequence());
+        Assert.assertNotNull(prot.getOrganism());
+        Assert.assertEquals(7227, prot.getOrganism().getTaxId());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+
+        Interaction<? extends Participant> interaction = parser.parseNextInteraction();
+
+        // read first interaction
+        Assert.assertNull(interaction);
+        Assert.assertTrue(parser.hasFinished());
+    }
 }
