@@ -184,9 +184,8 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
         super.setIntraMolecular(intra);
     }
 
-    @Override
     @XmlAttribute(name = "id", required = true)
-    public void setId(int value) {
+    public void setJAXBId(int value) {
         super.setId(value);
     }
 

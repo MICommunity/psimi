@@ -132,8 +132,14 @@ public class XmlEntryContext {
                     }
                 }
             }
-            else if (this.mapOfReferencedObjects == null ||
-                    (this.mapOfReferencedObjects != null && !ref.resolve(this.mapOfReferencedObjects))){
+            else if (this.mapOfReferencedObjects != null){
+                if (!ref.resolve(this.mapOfReferencedObjects)){
+                    if (listener != null){
+                        listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
+                    }
+                }
+            }
+            else if (this.mapOfReferencedObjects == null){
                 if (listener != null){
                     listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
                 }

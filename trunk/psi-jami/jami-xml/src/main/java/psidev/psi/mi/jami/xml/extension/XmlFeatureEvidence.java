@@ -106,13 +106,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         super.setJAXBRangeWrapper(jaxbRangeWrapper);
     }
 
-    /**
-     * Gets the value of the id property.
-     *
-     */
-    @Override
     @XmlAttribute(name = "id", required = true)
-    public void setId(int id) {
+    public void setJAXBId(int id) {
         super.setId(id);
     }
 

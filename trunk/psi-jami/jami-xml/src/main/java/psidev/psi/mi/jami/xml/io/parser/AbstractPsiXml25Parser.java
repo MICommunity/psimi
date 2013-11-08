@@ -148,7 +148,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // the eventreader does not have any new events
         if (currentElement == null){
             if (!hasReadEntrySet && listener != null){
-                listener.onInvalidSyntax(new DefaultFileSourceContext(new PsiXmLocator(1,1,null)), new PsiXmlParserException("EntrySet root term not found. PSI-XML is not valid."));
+                listener.onInvalidSyntax(new DefaultFileSourceContext(new PsiXmLocator(1,1,null)), new PsiXmlParserException("ExperimentalEntrySet root term not found. PSI-XML is not valid."));
             }
             return null;
         }
@@ -243,6 +243,12 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     public void reInit() throws MIIOException{
         loadedInteractions.clear();
+        if (this.indexOfObjects != null){
+            this.indexOfObjects.clear();
+        }
+        if (this.indexOfComplexes != null){
+            this.indexOfComplexes.clear();
+        }
         this.interactionIterator = null;
         this.hasReadEntry = false;
         this.hasReadEntrySet = false;
@@ -408,7 +414,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 if (startEntry != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(startEntry.getLineNumber(), startEntry.getColumnNumber(), null));
                 }
-                listener.onInvalidSyntax(context, new PsiXmlParserException("Entry element is empty. It should contain at least an interactionList. It can also contain a source, availabilityList, experimentList, interactorList and attributeList. PSI-XML is not valid."));
+                listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentalEntry element is empty. It should contain at least an interactionList. It can also contain a source, availabilityList, experimentList, interactorList and attributeList. PSI-XML is not valid."));
             }
         }
         else{
@@ -449,7 +455,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                             Location loc = this.streamReader.getLocation();
                             context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
                         }
-                        listener.onInvalidSyntax(context, new PsiXmlParserException("Entry contains a node "+this.currentElement+". In an entry, only a source, experimentList, interactorList, interactionList, attributeList and availabilityList are allowed. PSI-XML is not valid."));
+                        listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentalEntry contains a node "+this.currentElement+". In an entry, only a source, experimentList, interactorList, interactionList, attributeList and availabilityList are allowed. PSI-XML is not valid."));
                     }
                 }
             }
@@ -855,6 +861,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.hasReadEntry = false;
         this.hasReadEntrySet = false;
         this.unmarshaller = null;
+        this.indexOfComplexes = null;
+        this.indexOfObjects = null;
 
         // release the thread local
         XmlEntryContext.getInstance().clear();
@@ -862,6 +870,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) {
+        entryContext.clear();
         this.hasReadEntrySet = true;
         entryContext.setListener(this.listener);
         if (this.indexOfComplexes == null){
