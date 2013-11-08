@@ -61,8 +61,6 @@ public class Xml25InteractionEvidenceDatasource extends AbstractPsiXmlDataSource
             throw new MIIOException("Impossible to parse the file "+file.getName(),e);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to parse the file "+file.getName(),e);
-        } catch (FileNotFoundException e) {
-            throw new MIIOException("Impossible to parse the file "+file.getName(),e);
         }
     }
 

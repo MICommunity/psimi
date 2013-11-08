@@ -26,7 +26,7 @@ import java.net.URL;
  */
 
 public class Xml25InteractionParser extends AbstractPsiXml25Parser<Interaction<? extends Participant>>{
-    public Xml25InteractionParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
+    public Xml25InteractionParser(File file) throws XMLStreamException, JAXBException {
         super(file);
     }
 

@@ -26,7 +26,7 @@ public class FullXml25ModelledBinaryInteractionParser extends AbstractPsixml25Bi
         super(new FullXml25ModelledInteractionParser(file));
     }
 
-    public FullXml25ModelledBinaryInteractionParser(InputStream inputStream) throws XMLStreamException, JAXBException, FileNotFoundException {
+    public FullXml25ModelledBinaryInteractionParser(InputStream inputStream) throws XMLStreamException, JAXBException {
         super(new FullXml25ModelledInteractionParser(inputStream));
     }
 
@@ -34,7 +34,7 @@ public class FullXml25ModelledBinaryInteractionParser extends AbstractPsixml25Bi
         super(new FullXml25ModelledInteractionParser(url));
     }
 
-    public FullXml25ModelledBinaryInteractionParser(Reader reader) throws XMLStreamException, JAXBException, FileNotFoundException {
+    public FullXml25ModelledBinaryInteractionParser(Reader reader) throws XMLStreamException, JAXBException {
         super(new FullXml25ModelledInteractionParser(reader));
     }
 

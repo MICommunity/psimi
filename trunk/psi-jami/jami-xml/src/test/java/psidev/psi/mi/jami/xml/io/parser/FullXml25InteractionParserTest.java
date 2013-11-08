@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
@@ -34,6 +35,7 @@ public class FullXml25InteractionParserTest {
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
         Assert.assertEquals(2, interaction.getIdentifiers().size());
 
@@ -129,6 +131,7 @@ public class FullXml25InteractionParserTest {
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
         Assert.assertEquals(2, interaction.getIdentifiers().size());
 
@@ -225,6 +228,7 @@ public class FullXml25InteractionParserTest {
         while(!parser.hasFinished()){
             Interaction<? extends Participant> interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
+            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             if (index == 1){
                 Iterator<? extends Participant> pIterator = interaction.getParticipants().iterator();
                 Participant p1 = pIterator.next();
@@ -254,6 +258,7 @@ public class FullXml25InteractionParserTest {
         while(!parser.hasFinished()){
             Interaction<? extends Participant> interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
+            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;
         }
         System.out.println("End"+System.currentTimeMillis());
@@ -272,6 +277,7 @@ public class FullXml25InteractionParserTest {
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
 
         // participants

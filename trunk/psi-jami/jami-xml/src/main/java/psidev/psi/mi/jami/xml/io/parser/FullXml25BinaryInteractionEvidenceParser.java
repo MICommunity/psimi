@@ -26,7 +26,7 @@ public class FullXml25BinaryInteractionEvidenceParser extends AbstractPsixml25Bi
         super(new FullXml25InteractionEvidenceParser(file));
     }
 
-    public FullXml25BinaryInteractionEvidenceParser(InputStream inputStream) throws XMLStreamException, JAXBException, FileNotFoundException {
+    public FullXml25BinaryInteractionEvidenceParser(InputStream inputStream) throws XMLStreamException, JAXBException {
         super(new FullXml25InteractionEvidenceParser(inputStream));
     }
 
@@ -34,7 +34,7 @@ public class FullXml25BinaryInteractionEvidenceParser extends AbstractPsixml25Bi
         super(new Xml25InteractionEvidenceParser(url));
     }
 
-    public FullXml25BinaryInteractionEvidenceParser(Reader reader) throws XMLStreamException, JAXBException, FileNotFoundException {
+    public FullXml25BinaryInteractionEvidenceParser(Reader reader) throws XMLStreamException, JAXBException {
         super(new FullXml25InteractionEvidenceParser(reader));
     }
 

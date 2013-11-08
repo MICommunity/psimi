@@ -25,7 +25,7 @@ import java.net.URL;
  */
 
 public class Xml25ModelledInteractionParser extends AbstractPsiXml25Parser<ModelledInteraction>{
-    public Xml25ModelledInteractionParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
+    public Xml25ModelledInteractionParser(File file) throws XMLStreamException, JAXBException {
         super(file);
     }
 
