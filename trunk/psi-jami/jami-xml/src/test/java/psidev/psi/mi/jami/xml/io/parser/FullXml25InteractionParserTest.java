@@ -16,20 +16,20 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for Xml25InteractionParser
+ * Unit tester for Xml25InteractionEvidenceParser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>06/11/13</pre>
+ * @since <pre>17/10/13</pre>
  */
 
-public class Xml25InteractionParserTest {
+public class FullXml25InteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25InteractionParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
@@ -124,7 +124,7 @@ public class Xml25InteractionParserTest {
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25InteractionParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
@@ -219,7 +219,7 @@ public class Xml25InteractionParserTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25InteractionParser(stream);
 
         int index = 0;
         while(!parser.hasFinished()){
@@ -249,7 +249,7 @@ public class Xml25InteractionParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25InteractionParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             Interaction<? extends Participant> interaction = parser.parseNextInteraction();
@@ -267,7 +267,7 @@ public class Xml25InteractionParserTest {
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25InteractionParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
@@ -332,10 +332,10 @@ public class Xml25InteractionParserTest {
         parser.close();
     }
 
-    @Test
+    @Test(expected = PsiXmlParserException.class)
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new Xml25InteractionParser(stream);
+        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25InteractionParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
