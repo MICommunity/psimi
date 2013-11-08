@@ -30,7 +30,7 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
     private Iterator<B> binaryInteractionIterator;
     private PsiXml25Parser<T> delegateParser;
 
-    public AbstractPsixml25BinaryParser(AbstractPsiXml25Parser<T> delegateParser) throws FileNotFoundException, XMLStreamException, JAXBException {
+    public AbstractPsixml25BinaryParser(PsiXml25Parser<T> delegateParser) throws FileNotFoundException, XMLStreamException, JAXBException {
         if (delegateParser == null){
            throw new IllegalArgumentException("An AbstractPsiXml25Parser is required to parse Xml interactions");
         }
