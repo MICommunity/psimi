@@ -115,11 +115,6 @@ public class XmlExperimentalEntity extends AbstractXmlEntity<FeatureEvidence> im
         return this.parameters;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + (getExperimentalRole() != null ? ", " + getExperimentalRole().toString() : "") + (getExpressedInOrganism() != null ? ", " + getExpressedInOrganism().toString() : "");
-    }
-
     protected void initialiseExperimentalPreparations() {
         this.experimentalPreparations = new ArrayList<CvTerm>();
     }

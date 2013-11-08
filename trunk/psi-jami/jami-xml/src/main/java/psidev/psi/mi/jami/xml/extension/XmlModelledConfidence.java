@@ -174,7 +174,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
 
             @Override
             public String toString() {
-                return "Confidence Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+                return "Confidence Experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
             }
         }
         /**
@@ -203,7 +203,7 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
 
             @Override
             public String toString() {
-                return "Confidence Experiment Reference: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+                return "Confidence Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
             }
 
             public FileSourceLocator getSourceLocator() {

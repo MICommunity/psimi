@@ -129,7 +129,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
 
         @Override
         public String toString() {
-            return "Entry experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Entry experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 

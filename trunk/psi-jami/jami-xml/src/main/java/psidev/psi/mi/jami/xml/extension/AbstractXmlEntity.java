@@ -393,7 +393,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
     @Override
     public String toString() {
-        return "Participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Participant: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
@@ -478,7 +478,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Participant Interaction Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+            return "Participant Interaction Reference: "+ref+(getSourceLocator() != null ? ","+getSourceLocator().toString():super.toString());
         }
 
         public FileSourceLocator getSourceLocator() {
@@ -520,7 +520,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Participant Interactor Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+            return "Participant Interactor Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
         }
 
         public FileSourceLocator getSourceLocator() {
@@ -696,7 +696,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Participant Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -748,7 +748,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Participant Feature List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Feature List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

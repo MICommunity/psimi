@@ -146,6 +146,6 @@ public class XmlInterval extends AbstractXmlPosition{
 
     @Override
     public String toString() {
-        return "Xml Range Interval: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+        return "Xml Range Interval: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

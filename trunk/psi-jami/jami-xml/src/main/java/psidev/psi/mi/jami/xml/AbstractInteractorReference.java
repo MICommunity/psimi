@@ -75,6 +75,6 @@ public abstract class AbstractInteractorReference extends AbstractXmlIdReference
 
     @Override
     public String toString() {
-        return "Interactor Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Interactor Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }

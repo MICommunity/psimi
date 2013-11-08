@@ -45,6 +45,6 @@ public class XmlStoichiometry extends DefaultStoichiometry implements FileSource
 
     @Override
     public String toString() {
-        return "Participant Stoichiometry: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Participant Stoichiometry: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

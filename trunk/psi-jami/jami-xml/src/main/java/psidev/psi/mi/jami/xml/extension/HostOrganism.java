@@ -121,7 +121,7 @@ public class HostOrganism extends XmlOrganism{
 
         @Override
         public String toString() {
-            return "Host Organism: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Host Organism: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
 
         //////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@ public class HostOrganism extends XmlOrganism{
 
             @Override
             public String toString() {
-                return "Host Organism Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+                return "Host Organism Experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
             }
         }
 
@@ -216,7 +216,7 @@ public class HostOrganism extends XmlOrganism{
 
             @Override
             public String toString() {
-                return "Host Organism Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+                return "Host Organism Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
             }
 
             public FileSourceLocator getSourceLocator() {

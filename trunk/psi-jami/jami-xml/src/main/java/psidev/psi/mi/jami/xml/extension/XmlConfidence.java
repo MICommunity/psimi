@@ -141,7 +141,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
 
     @Override
     public String toString() {
-        return "Xml Confidence: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Xml Confidence: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     @Override

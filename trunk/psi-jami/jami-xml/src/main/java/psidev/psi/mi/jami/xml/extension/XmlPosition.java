@@ -106,6 +106,6 @@ public class XmlPosition extends AbstractXmlPosition{
 
     @Override
     public String toString() {
-        return "Range Position: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+        return "Range Position: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

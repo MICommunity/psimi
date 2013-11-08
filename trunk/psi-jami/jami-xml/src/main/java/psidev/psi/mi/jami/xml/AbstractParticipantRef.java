@@ -101,6 +101,6 @@ public abstract class AbstractParticipantRef extends AbstractXmlIdReference impl
 
     @Override
     public String toString() {
-        return "Participant Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Participant Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }

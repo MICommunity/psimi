@@ -214,12 +214,10 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
     @Override
     public List<CvTerm> getExperimentalRoles() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + (getExperimentalRole() != null ? ", " + getExperimentalRole().toString() : "") + (getExpressedInOrganism() != null ? ", " + getExpressedInOrganism().toString() : "");
+        if (this.jaxbExperimentalRoleWrapper == null){
+            initialiseExperimentalRoleWrapper();
+        }
+        return this.jaxbExperimentalRoleWrapper.experimentalRoles;
     }
 
     @Override
@@ -413,7 +411,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Identification method List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Identification method List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -462,7 +460,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Experimental Preparation List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Experimental Preparation List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -511,7 +509,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Experimental Role List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Experimental Role List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -560,7 +558,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Experimental Interactor List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Experimental Interactor List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -609,7 +607,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Host Organism List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Host Organism List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -658,7 +656,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Confidence List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -707,7 +705,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Parameter List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

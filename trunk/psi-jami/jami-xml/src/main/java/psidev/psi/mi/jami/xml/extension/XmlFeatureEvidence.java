@@ -320,7 +320,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
 
             @Override
             public String toString() {
-                return "Experiment reference: "+ref+" in feature "+(sourceLocator != null? sourceLocator.toString():"") ;
+                return "Experiment reference: "+ref+" in feature "+(getSourceLocator() != null? getSourceLocator().toString():"") ;
             }
 
             public FileSourceLocator getSourceLocator() {

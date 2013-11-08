@@ -266,7 +266,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         @Override
         public String toString() {
-            return "Interaction Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Interaction Confidence List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -315,7 +315,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         @Override
         public String toString() {
-            return "Interaction Parameter List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Interaction Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

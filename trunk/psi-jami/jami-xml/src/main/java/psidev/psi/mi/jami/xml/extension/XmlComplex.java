@@ -126,6 +126,6 @@ public class XmlComplex extends DefaultComplex implements ExtendedPsi25Interacto
 
     @Override
     public String toString() {
-        return "Complex : "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Complex : "+(sourceLocator != null ? sourceLocator.toString():super.toString());
     }
 }

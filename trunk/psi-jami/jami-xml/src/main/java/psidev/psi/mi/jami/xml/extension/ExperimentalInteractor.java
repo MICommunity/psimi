@@ -181,7 +181,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
         @Override
         public String toString() {
-            return "Experimental Interactor: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Experimental Interactor: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
 
         //////////////////////////////////////////////////////////////
@@ -249,7 +249,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
             @Override
             public String toString() {
-                return "Experimental Interactor Experiment List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+                return "Experimental Interactor Experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
             }
         }
 
@@ -275,7 +275,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
             @Override
             public String toString() {
-                return "Experimental Interactor Experiment Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+                return "Experimental Interactor Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
             }
 
             public FileSourceLocator getSourceLocator() {
@@ -312,7 +312,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
         @Override
         public String toString() {
-            return "Experimental Interactor Reference: "+ref+sourceLocator != null ? ", "+sourceLocator.toString():super.toString();
+            return "Experimental Interactor Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
         }
 
         public FileSourceLocator getSourceLocator() {

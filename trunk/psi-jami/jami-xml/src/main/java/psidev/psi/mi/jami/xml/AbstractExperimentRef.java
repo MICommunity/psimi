@@ -105,6 +105,6 @@ public abstract class AbstractExperimentRef extends AbstractXmlIdReference imple
 
     @Override
     public String toString() {
-        return "Experiment Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }

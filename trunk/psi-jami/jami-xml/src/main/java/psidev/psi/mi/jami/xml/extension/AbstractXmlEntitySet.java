@@ -203,6 +203,6 @@ public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feat
 
     @Override
     public String toString() {
-        return "Entity set: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+        return "Entity set: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

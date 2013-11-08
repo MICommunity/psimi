@@ -77,7 +77,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
 
     @Override
     public String toString() {
-        return "Position: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Position: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     @Override

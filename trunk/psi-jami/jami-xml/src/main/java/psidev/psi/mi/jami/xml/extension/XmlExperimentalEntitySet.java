@@ -278,11 +278,6 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
     }
 
     @Override
-    public String toString() {
-        return super.toString() + (getExperimentalRole() != null ? ", " + getExperimentalRole().toString() : "") + (getExpressedInOrganism() != null ? ", " + getExpressedInOrganism().toString() : "");
-    }
-
-    @Override
     @XmlElement(name = "names")
     public void setJAXBNames(NamesContainer value) {
         super.setJAXBNames(value);
@@ -452,7 +447,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Identification method List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Identification method List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -501,7 +496,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Experimental Preparation List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Experimental Preparation List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -550,7 +545,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Experimental Role List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Experimental Role List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -599,7 +594,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Experimental Interactor List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Experimental Interactor List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -648,7 +643,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Host Organism List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Host Organism List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -697,7 +692,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Confidence List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Confidence List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
@@ -746,7 +741,7 @@ public class XmlExperimentalEntitySet extends AbstractXmlEntitySet<InteractionEv
 
         @Override
         public String toString() {
-            return "Participant Parameter List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Participant Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

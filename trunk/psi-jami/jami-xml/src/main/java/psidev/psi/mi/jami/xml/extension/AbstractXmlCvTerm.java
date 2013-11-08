@@ -283,7 +283,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
 
         @Override
         public String toString() {
-            return "Open Cv Attribute List: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+            return "Open Cv Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

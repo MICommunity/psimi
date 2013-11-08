@@ -33,6 +33,6 @@ public abstract class AbstractAvailabilityRef extends Availability implements Xm
 
     @Override
     public String toString() {
-        return "Availability Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Availability Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }

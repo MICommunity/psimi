@@ -104,6 +104,6 @@ public abstract class AbstractFeatureRef extends AbstractXmlIdReference implemen
 
     @Override
     public String toString() {
-        return "Feature Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Feature Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }

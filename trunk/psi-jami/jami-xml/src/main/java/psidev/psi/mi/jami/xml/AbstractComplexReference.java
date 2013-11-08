@@ -129,6 +129,6 @@ public abstract class AbstractComplexReference extends AbstractInteractorReferen
 
     @Override
     public String toString() {
-        return "Interaction Reference: "+ref+getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString();
+        return "Interaction Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
 }

@@ -285,7 +285,7 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
 
     @Override
     public String toString() {
-        return "Source: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+        return "Source: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
     //////////////////////////////// class wrapper
@@ -357,7 +357,7 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
 
         @Override
         public String toString() {
-            return "Source Attribute List: "+getSourceLocator() != null ? getSourceLocator().toString():super.toString();
+            return "Source Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }
