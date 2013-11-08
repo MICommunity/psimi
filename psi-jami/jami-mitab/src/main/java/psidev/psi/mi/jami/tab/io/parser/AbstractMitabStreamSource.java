@@ -21,16 +21,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * abstract class for Mitab datasource
+ * abstract class for Mitab datasource.
+ *
+ * This datasource loads all the interactions from a MITAB file
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/06/13</pre>
  */
 
-public abstract class AbstractMitabDataSource<T extends Interaction, P extends Participant, F extends Feature> implements MIFileDataSource, InteractionSource, MitabParserListener{
+public abstract class AbstractMitabStreamSource<T extends Interaction, P extends Participant, F extends Feature> implements MIFileDataSource, InteractionStream<T>, MitabParserListener{
 
-    private static final Logger logger = Logger.getLogger("AbstractMitabDataSource");
+    private static final Logger logger = Logger.getLogger("AbstractMitabStreamSource");
     private MitabLineParser<T,P,F> lineParser;
     private boolean isInitialised = false;
 
@@ -47,28 +49,28 @@ public abstract class AbstractMitabDataSource<T extends Interaction, P extends P
     /**
      * Empty constructor for the factory
      */
-    public AbstractMitabDataSource(){
+    public AbstractMitabStreamSource(){
     }
 
-    public AbstractMitabDataSource(File file) throws IOException {
+    public AbstractMitabStreamSource(File file) throws IOException {
 
         initialiseFile(file);
         isInitialised = true;
     }
 
-    public AbstractMitabDataSource(InputStream input) {
+    public AbstractMitabStreamSource(InputStream input) {
 
         initialiseInputStream(input);
         isInitialised = true;
     }
 
-    public AbstractMitabDataSource(Reader reader) {
+    public AbstractMitabStreamSource(Reader reader) {
 
         initialiseReader(reader);
         isInitialised = true;
     }
 
-    public AbstractMitabDataSource(URL url) {
+    public AbstractMitabStreamSource(URL url) {
 
         initialiseURL(url);
         isInitialised = true;

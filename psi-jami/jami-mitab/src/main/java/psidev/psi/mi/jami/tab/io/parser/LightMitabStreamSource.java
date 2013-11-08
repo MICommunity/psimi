@@ -1,39 +1,38 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.datasource.InteractionEvidenceSource;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.tab.io.iterator.MitabInteractionEvidenceIterator;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.tab.io.iterator.MitabInteractionIterator;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Iterator;
 
 /**
- * A mitab datasource that loads interaction evidences
- *
+ * A mitab datasource that loads very basic interactions and ignore experimental details, source, confidence and experimental details
+ * It will only provide an iterator of interactions.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>25/06/13</pre>
+ * @since <pre>21/06/13</pre>
  */
 
-public class MitabEvidenceDataSource extends AbstractMitabDataSource<InteractionEvidence, ParticipantEvidence, FeatureEvidence> implements InteractionEvidenceSource{
+public class LightMitabStreamSource extends AbstractMitabStreamSource<Interaction, Participant, Feature> {
 
-    public MitabEvidenceDataSource() {
+    public LightMitabStreamSource() {
         super();
     }
 
-    public MitabEvidenceDataSource(File file) throws IOException {
+    public LightMitabStreamSource(File file) throws IOException {
         super(file);
     }
 
-    public MitabEvidenceDataSource(InputStream input) {
+    public LightMitabStreamSource(InputStream input) {
         super(input);
     }
 
-    public MitabEvidenceDataSource(Reader reader) {
+    public LightMitabStreamSource(Reader reader) {
         super(reader);
     }
 
@@ -43,7 +42,7 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
             throw new IllegalArgumentException("The reader cannot be null.");
         }
         setOriginalReader(reader);
-        setLineParser(new InteractionEvidenceLineParser(reader));
+        setLineParser(new InteractionLineParser(reader));
     }
 
     @Override
@@ -66,12 +65,7 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
     @Override
     protected void initialiseMitabLineParser(InputStream input) {
         setOriginalStream(input);
-        setLineParser(new InteractionEvidenceLineParser(input));
-    }
-
-    @Override
-    protected Iterator<InteractionEvidence> createMitabIterator() throws MIIOException {
-        return new MitabInteractionEvidenceIterator(getLineParser());
+        setLineParser(new InteractionLineParser(input));
     }
 
     @Override
@@ -86,5 +80,10 @@ public class MitabEvidenceDataSource extends AbstractMitabDataSource<Interaction
         } catch (IOException e) {
             throw new MIIOException("Impossible to open the url " + url.toExternalForm());
         }
+    }
+
+    @Override
+    protected Iterator<Interaction> createMitabIterator() throws MIIOException{
+        return new MitabInteractionIterator(getLineParser());
     }
 }

@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.mitab.io.parser;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.tab.io.parser.MitabModelledDataSource;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.tab.io.parser.LightMitabStreamSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,48 +13,49 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Unit tester for MitabModelledDataSource
+ * Untit tester for LightMitabStreamSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>02/07/13</pre>
  */
 
-public class MitabModelledDataSourceTest {
+public class LightMitabStreamSourceTest {
 
     @Test(expected = IllegalStateException.class)
     public void test_validate_fails_not_initialised(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource();
+        LightMitabStreamSource dataSource = new LightMitabStreamSource();
         dataSource.validateSyntax();
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_iterate_fails_not_initialised(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource();
+        LightMitabStreamSource dataSource = new LightMitabStreamSource();
         dataSource.getInteractionsIterator();
     }
 
     @Test
     public void validate_valid_file(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource(MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        LightMitabStreamSource dataSource = new LightMitabStreamSource(MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         Assert.assertTrue(dataSource.validateSyntax());
 
-        dataSource = new MitabModelledDataSource();
+        dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
+
         dataSource.close();
     }
 
     @Test
     public void validate_invalid_file(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource(MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        LightMitabStreamSource dataSource = new LightMitabStreamSource(MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         Assert.assertFalse(dataSource.validateSyntax());
 
-        dataSource = new MitabModelledDataSource();
+        dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
@@ -62,20 +63,20 @@ public class MitabModelledDataSourceTest {
 
     @Test
     public void iterate_valid_file(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource(MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
-        Iterator<ModelledInteraction> iterator = dataSource.getInteractionsIterator();
-        ModelledInteraction i1 = iterator.next();
+        LightMitabStreamSource dataSource = new LightMitabStreamSource(MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
+        Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
-        ModelledInteraction i2 = iterator.next();
+        Interaction i2 = iterator.next();
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertTrue(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new MitabModelledDataSource();
+        dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -90,20 +91,20 @@ public class MitabModelledDataSourceTest {
 
     @Test
     public void iterate_invalid_file(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource(MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
-        Iterator<ModelledInteraction> iterator = dataSource.getInteractionsIterator();
-        ModelledInteraction i1 = iterator.next();
+        LightMitabStreamSource dataSource = new LightMitabStreamSource(MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
+        Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
-        ModelledInteraction i2 = iterator.next();
+        Interaction i2 = iterator.next();
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new MitabModelledDataSource();
+        dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -118,31 +119,31 @@ public class MitabModelledDataSourceTest {
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit(){
-        MitabModelledDataSource dataSource = new MitabModelledDataSource(MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        LightMitabStreamSource dataSource = new LightMitabStreamSource(MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<ModelledInteraction> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
     }
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit_2(){
 
-        MitabModelledDataSource dataSource = new MitabModelledDataSource();
+        LightMitabStreamSource dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledDataSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<ModelledInteraction> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
     }
 
     @Test
     public void test_validate_datasource_reinit() throws IOException {
-        MitabModelledDataSource dataSource = new MitabModelledDataSource(new File(MitabModelledDataSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
+        LightMitabStreamSource dataSource = new LightMitabStreamSource(new File(MitabModelledStreamSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<ModelledInteraction> iterator = dataSource.getInteractionsIterator();
-        ModelledInteraction i1 = iterator.next();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
+        Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
-        ModelledInteraction i2 = iterator.next();
+        Interaction i2 = iterator.next();
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
@@ -152,19 +153,18 @@ public class MitabModelledDataSourceTest {
     @Test
     public void test_validate_datasource_reinit_2(){
 
-        MitabModelledDataSource dataSource = new MitabModelledDataSource();
+        LightMitabStreamSource dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(MitabModelledDataSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
+        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(MitabModelledStreamSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
-        Iterator<ModelledInteraction> iterator = dataSource.getInteractionsIterator();
-        ModelledInteraction i1 = iterator.next();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
+        Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertTrue(iterator.hasNext());
-        ModelledInteraction i2 = iterator.next();
+        Interaction i2 = iterator.next();
         Assert.assertNotNull(i2);
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
-        dataSource.close();
     }
 }
