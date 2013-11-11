@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.tab.io.parser.*;
 import psidev.psi.mi.jami.tab.io.writer.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.io.parser.*;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -177,54 +178,84 @@ public class PsiJami {
         MIDataSourceFactory datasourceFactory = MIDataSourceFactory.getInstance();
 
         Map<String, Object> supportedOptions3 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.basic);
-        datasourceFactory.registerDataSource(LightMitabDataSource.class, supportedOptions3);
+        datasourceFactory.registerDataSource(LightMitabStreamSource.class, supportedOptions3);
 
         Map<String, Object> supportedOptions33 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.basic_binary);
-        datasourceFactory.registerDataSource(LightMitabBinaryDataSource.class, supportedOptions33);
+        datasourceFactory.registerDataSource(LightMitabBinaryStreamSource.class, supportedOptions33);
 
-        Map<String, Object> supportedOptions4 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic);
-        supportedOptions4.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
-        datasourceFactory.registerDataSource(Xml25InteractionDatasource.class, supportedOptions4);
+        Map<String, Object> supportedOptions333 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.basic);
+        datasourceFactory.registerDataSource(LightMitabSource.class, supportedOptions333);
 
-        Map<String, Object> supportedOptions44 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic_binary);
-        supportedOptions44.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
-        datasourceFactory.registerDataSource(Xml25BinaryInteractionDatasource.class, supportedOptions44);
+        Map<String, Object> supportedOptions3333 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.basic_binary);
+        datasourceFactory.registerDataSource(LightMitabBinarySource.class, supportedOptions3333);
+
+        Map<String, Object> supportedOptions4 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic);
+        datasourceFactory.registerDataSource(LightXml25StreamSource.class, supportedOptions4);
+
+        Map<String, Object> supportedOptions44 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic_binary);
+        datasourceFactory.registerDataSource(LightXml25BinaryStreamSource.class, supportedOptions44);
+
+        Map<String, Object> supportedOptions444 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.basic);
+        datasourceFactory.registerDataSource(LightXml25Source.class, supportedOptions444);
+
+        Map<String, Object> supportedOptions4444 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.basic_binary);
+        datasourceFactory.registerDataSource(LightXml25BinarySource.class, supportedOptions444);
     }
 
     public static void initialiseModelledInteractionSources() {
         MIDataSourceFactory datasourceFactory = MIDataSourceFactory.getInstance();
 
         Map<String, Object> supportedOptions2 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.modelled);
-        datasourceFactory.registerDataSource(MitabModelledDataSource.class, supportedOptions2);
+        datasourceFactory.registerDataSource(MitabModelledStreamSource.class, supportedOptions2);
 
         Map<String, Object> supportedOptions22 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.modelled_binary);
-        datasourceFactory.registerDataSource(MitabModelledBinaryDataSource.class, supportedOptions22);
+        datasourceFactory.registerDataSource(MitabModelledBinaryStreamSource.class, supportedOptions22);
 
-        Map<String, Object> supportedOptions3 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled);
-        supportedOptions3.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
-        datasourceFactory.registerDataSource(Xml25ModelledInteractionDatasource.class, supportedOptions3);
+        Map<String, Object> supportedOptions222 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.modelled);
+        datasourceFactory.registerDataSource(MitabModelledSource.class, supportedOptions222);
 
-        Map<String, Object> supportedOptions33 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled_binary);
-        supportedOptions33.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
-        datasourceFactory.registerDataSource(Xml25ModelledBinaryInteractionDatasource.class, supportedOptions33);
+        Map<String, Object> supportedOptions2222 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.modelled_binary);
+        datasourceFactory.registerDataSource(MitabModelledBinarySource.class, supportedOptions2222);
+
+        Map<String, Object> supportedOptions3 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled);
+        datasourceFactory.registerDataSource(Xml25ModelledStreamSource.class, supportedOptions3);
+
+        Map<String, Object> supportedOptions33 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled_binary);
+        datasourceFactory.registerDataSource(Xml25ModelledBinaryStreamSource.class, supportedOptions33);
+
+        Map<String, Object> supportedOptions333 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.modelled);
+        datasourceFactory.registerDataSource(Xml25ModelledSource.class, supportedOptions333);
+
+        Map<String, Object> supportedOptions3333 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.modelled_binary);
+        datasourceFactory.registerDataSource(Xml25ModelledBinarySource.class, supportedOptions3333);
     }
 
     public static void initialiseInteractionEvidenceSources() {
         MIDataSourceFactory datasourceFactory = MIDataSourceFactory.getInstance();
 
         Map<String, Object> supportedOptions1 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.evidence);
-        datasourceFactory.registerDataSource(MitabEvidenceDataSource.class, supportedOptions1);
+        datasourceFactory.registerDataSource(MitabEvidenceStreamSource.class, supportedOptions1);
 
         Map<String, Object> supportedOptions11 = createDataSourceOptions(MIFileType.mitab.toString(), true, InteractionObjectCategory.binary_evidence);
-        datasourceFactory.registerDataSource(MitabBinaryEvidenceDataSource.class, supportedOptions11);
+        datasourceFactory.registerDataSource(MitabBinaryEvidenceStreamSource.class, supportedOptions11);
+
+        Map<String, Object> supportedOptions111 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.evidence);
+        datasourceFactory.registerDataSource(MitabEvidenceSource.class, supportedOptions111);
+
+        Map<String, Object> supportedOptions1111 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.binary_evidence);
+        datasourceFactory.registerDataSource(MitabBinaryEvidenceSource.class, supportedOptions1111);
 
         Map<String, Object> supportedOptions2 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.evidence);
-        supportedOptions2.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
-        datasourceFactory.registerDataSource(Xml25InteractionEvidenceDatasource.class, supportedOptions2);
+        datasourceFactory.registerDataSource(Xml25EvidenceStreamSource.class, supportedOptions2);
 
         Map<String, Object> supportedOptions22 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.binary_evidence);
-        supportedOptions22.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
-        datasourceFactory.registerDataSource(Xml25BinaryInteractionEvidenceDatasource.class, supportedOptions22);
+        datasourceFactory.registerDataSource(Xml25BinaryEvidenceStreamSource.class, supportedOptions22);
+
+        Map<String, Object> supportedOptions222 = createDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.evidence);
+        datasourceFactory.registerDataSource(Xml25EvidenceSource.class, supportedOptions222);
+
+        Map<String, Object> supportedOptions2222 = createDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.binary_evidence);
+        datasourceFactory.registerDataSource(Xml25BinaryEvidenceSource.class, supportedOptions2222);
     }
 
     private static Map<String, Object> createInteractionWriterOptions(String outputFormat, InteractionObjectCategory interactionCategory, MitabVersion version, boolean extended, boolean needCompleExpansion) {
@@ -248,6 +279,14 @@ public class PsiJami {
         supportedOptions1.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory);
         supportedOptions1.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, null);
         supportedOptions1.put(MIDataSourceFactory.INPUT_OPTION_KEY, null);
+        return supportedOptions1;
+    }
+
+    private static Map<String, Object> createXmlDataSourceOptions(String inputFormat, boolean streaming, InteractionObjectCategory objectCategory) {
+        Map<String, Object> supportedOptions1 = createDataSourceOptions(inputFormat, streaming, objectCategory);
+        supportedOptions1.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
+        supportedOptions1.put(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION, null);
+        supportedOptions1.put(PsiXml25Utils.COMPLEX_CACHE_OPTION, null);
         return supportedOptions1;
     }
 }

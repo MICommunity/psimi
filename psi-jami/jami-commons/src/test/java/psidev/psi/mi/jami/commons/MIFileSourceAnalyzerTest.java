@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.commons;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
@@ -215,7 +215,7 @@ public class MIFileSourceAnalyzerTest {
         MIDataSourceOptionFactory optionfactory = MIDataSourceOptionFactory.getInstance();
         MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
 
-        InteractionSource interactionSource = dataSourceFactory.
+        InteractionStream interactionSource = dataSourceFactory.
                 getInteractionSourceWith(optionfactory.getDefaultOptions(new File("path/to/file")));
 
         // writer

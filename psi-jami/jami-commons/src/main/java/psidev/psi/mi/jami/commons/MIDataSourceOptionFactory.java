@@ -1,10 +1,14 @@
 package psidev.psi.mi.jami.commons;
 
+import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
+import psidev.psi.mi.jami.xml.InMemoryPsiXml25Index;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserLogger;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -166,43 +170,47 @@ public class MIDataSourceOptionFactory {
      * Create the default options for the Psi-XML 2.5 datasource.
      * It will read InteractionEvidence elements in a streaming way.
      * It will use the PsiXmlParserLogger to listen to the Psi-XML parsing events
+     * It will keep the parsed objects having an id in memory.
      * @return the default options for the PSI-xml 2.5 datasource
      */
     public Map<String, Object> getDefaultXml25Options(Object inputData){
-        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData);
+        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index());
     }
 
     /**
      * Create the options for the Psi-XML 2.4 datasource using the provided objectCategory.
      * It will read elements from this objectCategory in a streaming way.
      * It will use the PsiXmlParserLogger to listen to the Psi=XML parsing events
+     * It will keep the parsed objects having an id in memory.
      * @param objectCategory
      * @return the options for the Psi Xml datasource using the provided objectCategory
      */
     public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, Object inputData){
-        return getXml25Options(objectCategory, true, null, inputData);
+        return getXml25Options(objectCategory, true, null, inputData, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index());
     }
 
     /**
      * Create the options for the PSI-XML 2.5 datasource and specify if we want a Streaming MIFileDatasource.
      * It will read InteractionEvidence elements.
      * It will use the PsiXmlParserLogger to listen to the PSI-XML parsing events
+     * It will keep the parsed objects having an id in memory.
      * @param streaming : tru if we want to read the interactions in a streaming way
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getXml25Options(boolean streaming, Object inputData){
-        return getXml25Options(null, streaming, null, inputData);
+        return getXml25Options(null, streaming, null, inputData, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index());
     }
 
     /**
      * Create the options for the Psi-XML 2.5 datasource using the provided MIFileParserListener.
      * It will read InteractionEvidence elements in a streaming way.
+     * It will keep the parsed objects having an id in memory.
      * @param listener
      * @param inputData is the mitab data to read
      * @return the options for the PSI-XML datasource with the provided listener
      */
     public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData){
-        return getXml25Options(null, true, listener, inputData);
+        return getXml25Options(null, true, listener, inputData, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index());
     }
 
     /**
@@ -210,23 +218,35 @@ public class MIDataSourceOptionFactory {
      * @param objectCategory : interaction object type to load
      * @param streaming : true if we want to load interactions in a streaming way
      * @param listener : the listener to use for listening XML parsing events
+     * @param input : the MI source containing data
+     * @param expansionMethod: the complex expansion method
+     * @param objectCache: cache for parsed objects having an id
+     * @param complexCache: cache for parsed objects having an id and being a complex
      * @return the Xml 2.5 datasource options
      */
-    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
-        return getOptions(MIFileType.psi25_xml, objectCategory, streaming, listener, input);
-    }
-
-    public Map<String, Object> getXmlOptions(InteractionObjectCategory objectCategory, boolean streaming, Object input){
-        Map<String, Object> options = new HashMap<String, Object>(10);
-
-        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
-        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.mixed);
-        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
-
+    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod, PsiXml25IdIndex objectCache, PsiXml25IdIndex complexCache){
+        Map<String, Object> options = getOptions(MIFileType.psi25_xml, objectCategory, streaming, listener, input);
+        if (expansionMethod != null){
+            options.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, expansionMethod);
+        }
+        if (objectCache != null){
+            options.put(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION, objectCache);
+        }
+        if (complexCache != null){
+            options.put(PsiXml25Utils.COMPLEX_CACHE_OPTION, complexCache);
+        }
         return options;
     }
 
+    /**
+     * Create a map of options
+     * @param type : MI source type (mitab, xml25, etc.)
+     * @param objectCategory : the kind of interactions to be returned by the datasource (interaction evidence, binary, modelled interaction, ...)
+     * @param streaming : boolean value to know if we want to stream the interactions or load the full interaction dataset
+     * @param listener : parser listener
+     * @param input : the MI source containing data
+     * @return the map of options
+     */
     public Map<String, Object> getOptions(MIFileType type, InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
@@ -237,7 +257,6 @@ public class MIDataSourceOptionFactory {
             options.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, listener);
         }
         options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
-
         return options;
     }
 }
