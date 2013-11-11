@@ -245,16 +245,16 @@ public class PsiJami {
         Map<String, Object> supportedOptions1111 = createDataSourceOptions(MIFileType.mitab.toString(), false, InteractionObjectCategory.binary_evidence);
         datasourceFactory.registerDataSource(MitabBinaryEvidenceSource.class, supportedOptions1111);
 
-        Map<String, Object> supportedOptions2 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.evidence);
+        Map<String, Object> supportedOptions2 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.evidence);
         datasourceFactory.registerDataSource(Xml25EvidenceStreamSource.class, supportedOptions2);
 
-        Map<String, Object> supportedOptions22 = createDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.binary_evidence);
+        Map<String, Object> supportedOptions22 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.binary_evidence);
         datasourceFactory.registerDataSource(Xml25BinaryEvidenceStreamSource.class, supportedOptions22);
 
-        Map<String, Object> supportedOptions222 = createDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.evidence);
+        Map<String, Object> supportedOptions222 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.evidence);
         datasourceFactory.registerDataSource(Xml25EvidenceSource.class, supportedOptions222);
 
-        Map<String, Object> supportedOptions2222 = createDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.binary_evidence);
+        Map<String, Object> supportedOptions2222 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.binary_evidence);
         datasourceFactory.registerDataSource(Xml25BinaryEvidenceSource.class, supportedOptions2222);
     }
 
