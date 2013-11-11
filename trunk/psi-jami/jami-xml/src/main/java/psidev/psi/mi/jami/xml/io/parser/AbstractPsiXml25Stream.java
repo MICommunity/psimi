@@ -16,6 +16,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
@@ -62,7 +63,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     public AbstractPsiXml25Stream(){
     }
 
-    public AbstractPsiXml25Stream(File file) throws IOException {
+    public AbstractPsiXml25Stream(File file) {
 
         initialiseFile(file);
         isInitialised = true;
@@ -157,11 +158,14 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             }
 
         } catch (SAXException e) {
-            throw new MIIOException("Impossible to validate the source file",e);
+            onInvalidSyntax(new DefaultFileSourceContext(), e);
         } catch (FileNotFoundException e) {
             throw new MIIOException("Impossible to validate the source file",e);
         } catch (IOException e) {
             throw new MIIOException("Impossible to validate the source file",e);
+        }
+        if (isValid == null){
+           isValid = true;
         }
 
         return isValid;
@@ -259,10 +263,10 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         else if (sourceUrl != null){
             initialiseURL(sourceUrl);
         }
-        if (sourceStream != null){
+        else if (sourceStream != null){
             initialiseInputStream(sourceStream);
         }
-        if (sourceReader!= null){
+        else if (sourceReader!= null){
             initialiseReader(sourceReader);
         }
         isInitialised = true;
@@ -494,6 +498,15 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     }
 
     protected void reInit() throws MIIOException{
+        if (this.elementCache != null){
+            this.elementCache.clear();
+        }
+        if (this.complexCache != null){
+            this.complexCache.clear();
+        }
+        // release the thread local
+        XmlEntryContext.getInstance().clear();
+        XmlEntryContext.remove();
         // release the thread local
         if (this.originalFile != null){
             // close the previous reader
@@ -512,7 +525,6 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
                     logger.log(Level.SEVERE, "Could not close the inputStream.", e);
                 }
             }
-            // reinitialise the stream and reader
             initialiseXmlParser(this.originalFile);
         }
         else if (this.originalURL != null){
@@ -532,7 +544,6 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
                     logger.log(Level.SEVERE, "Could not close the inputStream.", e);
                 }
             }
-            // reinitialise the stream and reader
             initialiseXmlParser(this.originalURL);
         }
         else if (this.originalReader != null){
@@ -540,7 +551,6 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             if (this.originalReader.markSupported()){
                 try {
                     this.originalReader.reset();
-                    initialiseXmlParser(this.originalReader);
                 } catch (IOException e) {
                     throw new MIIOException("We cannot open the reader  ", e);
                 }
@@ -548,13 +558,13 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             else {
                 throw new MIIOException("The reader has been consumed and cannot be reset");
             }
+            initialiseXmlParser(this.originalReader);
         }
         else if (this.originalStream != null){
             // reinit parser if inputStream can be reset
             if (this.originalStream.markSupported()){
                 try {
                     this.originalStream.reset();
-                    initialiseXmlParser(this.originalStream);
                 } catch (IOException e) {
                     throw new MIIOException("We cannot read the inputStream  ", e);
                 }
@@ -562,6 +572,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             else {
                 throw new MIIOException("The inputStream has been consumed and cannot be reset");
             }
+            initialiseXmlParser(this.originalStream);
         }
     }
 
@@ -593,7 +604,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         if (reader == null){
             throw new IllegalArgumentException("The reader cannot be null.");
         }
-
+        this.originalReader = reader;
         initialiseXmlParser(reader);
     }
 
@@ -601,7 +612,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         if (input == null){
             throw new IllegalArgumentException("The input stream cannot be null.");
         }
-
+        this.originalStream = input;
         initialiseXmlParser(input);
     }
 
@@ -612,7 +623,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         else if (!file.canRead()){
             throw new IllegalArgumentException("Does not have the permissions to read the file "+file.getAbsolutePath());
         }
-
+        this.originalFile = file;
         initialiseXmlParser(file);
     }
 
@@ -620,7 +631,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         if (url == null){
             throw new IllegalArgumentException("The url cannot be null.");
         }
-
+        this.originalURL = url;
         initialiseXmlParser(url);
     }
 }
