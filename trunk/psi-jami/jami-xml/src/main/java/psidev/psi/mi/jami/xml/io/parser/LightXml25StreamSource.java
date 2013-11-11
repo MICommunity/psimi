@@ -21,12 +21,12 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class LightXml25StreamSource extends AbstractPsiXml25Source<Interaction<?extends Participant>> {
+public class LightXml25StreamSource extends AbstractPsiXml25Stream<Interaction<?extends Participant>> {
 
     public LightXml25StreamSource() {
     }
 
-    public LightXml25StreamSource(File file) throws IOException {
+    public LightXml25StreamSource(File file) {
         super(file);
     }
 
