@@ -20,12 +20,12 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class LightXml25BinaryStreamSource extends AbstractPsiXml25BinarySource<Interaction<? extends Participant>, BinaryInteraction> {
+public class LightXml25BinaryStreamSource extends AbstractPsiXml25BinaryStream<Interaction<? extends Participant>, BinaryInteraction> {
 
     public LightXml25BinaryStreamSource() {
     }
 
-    public LightXml25BinaryStreamSource(File file) throws IOException {
+    public LightXml25BinaryStreamSource(File file) {
         super(file);
     }
 
