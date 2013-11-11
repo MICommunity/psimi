@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
@@ -138,7 +138,7 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
 
     @Override
     public String getShortName() {
-        return this.modelledInteraction.getShortName() != null ? this.modelledInteraction.getShortName() : PsiXmlUtils.UNSPECIFIED;
+        return this.modelledInteraction.getShortName() != null ? this.modelledInteraction.getShortName() : PsiXml25Utils.UNSPECIFIED;
     }
 
     @Override

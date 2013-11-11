@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 import java.text.ParseException;
@@ -473,7 +473,7 @@ public class BibRef
                     }
                     else {
                         try {
-                            publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
+                            publicationDate = PsiXml25Utils.YEAR_FORMAT.parse(annot.getValue().trim());
                             return false;
                         } catch (ParseException e) {
                             e.printStackTrace();

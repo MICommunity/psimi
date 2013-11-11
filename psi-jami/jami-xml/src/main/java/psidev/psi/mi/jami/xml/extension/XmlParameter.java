@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
@@ -51,7 +51,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
 
     public CvTerm getType() {
         if (this.type == null){
-            this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
+            this.type = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED);
         }
         return this.type;
     }
@@ -85,7 +85,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
             this.type = new DefaultCvTerm(value);
         }
         else if (this.type != null){
-            this.type.setShortName(value != null ? value : PsiXmlUtils.UNSPECIFIED);
+            this.type.setShortName(value != null ? value : PsiXml25Utils.UNSPECIFIED);
         }
         if (value == null){
             PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
@@ -106,7 +106,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     @XmlAttribute(name = "termAc")
     public void setJAXBTermAc(String value) {
         if (this.type == null && value != null){
-            this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
+            this.type = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED, value);
         }
         else if (this.type != null){
             this.type.setMIIdentifier(value);
@@ -131,7 +131,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
                 this.unit = null;
             }
             else {
-                this.unit.setShortName(value!= null ? value : PsiXmlUtils.UNSPECIFIED);
+                this.unit.setShortName(value!= null ? value : PsiXml25Utils.UNSPECIFIED);
             }
         }
     }
@@ -147,10 +147,10 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     @XmlAttribute(name = "unitAc")
     public void setUnitAc(String value) {
         if (this.unit == null && value != null){
-            this.unit = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
+            this.unit = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED, value);
         }
         else if (this.unit != null){
-            if (PsiXmlUtils.UNSPECIFIED.equals(this.unit.getShortName()) && value == null){
+            if (PsiXml25Utils.UNSPECIFIED.equals(this.unit.getShortName()) && value == null){
                 this.unit = null;
             }
             else {

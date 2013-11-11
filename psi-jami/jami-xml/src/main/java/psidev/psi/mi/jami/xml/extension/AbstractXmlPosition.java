@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,7 +36,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
 
     public CvTerm getStatus() {
         if (status == null){
-            this.status = new XmlCvTerm(PsiXmlUtils.UNSPECIFIED);
+            this.status = new XmlCvTerm(PsiXml25Utils.UNSPECIFIED);
         }
         return this.status;
     }

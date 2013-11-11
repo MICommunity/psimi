@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -67,7 +67,7 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
             String evt = getCurrentElement();
             String name = null;
             // skip experimentDescription up to the end of experiment list
-            while (evt != null && (name == null || (name != null && !PsiXmlUtils.EXPERIMENTLIST_TAG.equals(name)))) {
+            while (evt != null && (name == null || (name != null && !PsiXml25Utils.EXPERIMENTLIST_TAG.equals(name)))) {
                 while (evt != null && !getStreamReader().isEndElement()){
                     skipNextElement();
                     evt = getStreamReader().getLocalName();
@@ -110,7 +110,7 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
             String evt = getCurrentElement();
             String name = null;
             // skip experimentDescription up to the end of experiment list
-            while (evt != null && (name == null || (name != null && !PsiXmlUtils.AVAILABILITYLIST_TAG.equals(name)))) {
+            while (evt != null && (name == null || (name != null && !PsiXml25Utils.AVAILABILITYLIST_TAG.equals(name)))) {
                 while (evt != null && !getStreamReader().isEndElement()){
                     skipNextElement();
                     evt = getStreamReader().getLocalName();

@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -205,7 +205,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
 
     @Override
     public String getShortName() {
-        return this.interactionEvidence.getShortName() != null ? this.interactionEvidence.getShortName() : PsiXmlUtils.UNSPECIFIED;
+        return this.interactionEvidence.getShortName() != null ? this.interactionEvidence.getShortName() : PsiXml25Utils.UNSPECIFIED;
     }
 
     @Override

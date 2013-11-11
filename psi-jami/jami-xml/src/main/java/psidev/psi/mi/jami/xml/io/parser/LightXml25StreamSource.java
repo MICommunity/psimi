@@ -45,8 +45,12 @@ public class LightXml25StreamSource extends AbstractPsiXml25Source<Interaction<?
     @Override
     protected void initialiseXmlParser(Reader reader) {
         try {
-            setParser(new Xml25Parser(reader));
-            getParser().setListener(this);
+            Xml25Parser parser = new Xml25Parser(reader);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
+
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to read with provided reader ",e);
         } catch (JAXBException e) {
@@ -56,8 +60,11 @@ public class LightXml25StreamSource extends AbstractPsiXml25Source<Interaction<?
     @Override
     protected void initialiseXmlParser(File file) {
         try {
-            setParser(new Xml25Parser(file));
-            getParser().setListener(this);
+            Xml25Parser parser = new Xml25Parser(file);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to parse the file "+file.getName(),e);
         } catch (JAXBException e) {
@@ -68,8 +75,11 @@ public class LightXml25StreamSource extends AbstractPsiXml25Source<Interaction<?
     @Override
     protected void initialiseXmlParser(InputStream input) {
         try {
-            setParser(new Xml25Parser(input));
-            getParser().setListener(this);
+            Xml25Parser parser = new Xml25Parser(input);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to parse the inputstream ",e);
         } catch (JAXBException e) {
@@ -80,8 +90,11 @@ public class LightXml25StreamSource extends AbstractPsiXml25Source<Interaction<?
     @Override
     protected void initialiseXmlParser(URL url) {
         try {
-            setParser(new Xml25Parser(url));
-            getParser().setListener(this);
+            Xml25Parser parser = new Xml25Parser(url);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (IOException e) {
             throw new MIIOException("Impossible to read the url "+url.toExternalForm(),e);
         } catch (XMLStreamException e) {

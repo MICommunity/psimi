@@ -48,6 +48,8 @@ public class LightXml25Source extends AbstractPsiXml25Source<Interaction<?extend
         try {
             FullXml25Parser parser = new FullXml25Parser(reader);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided reader",e);
@@ -59,6 +61,8 @@ public class LightXml25Source extends AbstractPsiXml25Source<Interaction<?extend
         try {
             FullXml25Parser parser = new FullXml25Parser(file);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided file",e);
@@ -70,6 +74,8 @@ public class LightXml25Source extends AbstractPsiXml25Source<Interaction<?extend
         try {
             FullXml25Parser parser = new FullXml25Parser(input);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided Input stream",e);
@@ -81,6 +87,8 @@ public class LightXml25Source extends AbstractPsiXml25Source<Interaction<?extend
         try {
             FullXml25Parser parser = new FullXml25Parser(url);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided URL",e);

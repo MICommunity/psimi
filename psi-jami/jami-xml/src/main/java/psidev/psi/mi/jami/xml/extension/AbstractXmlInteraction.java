@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -518,7 +518,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
             private boolean processAnnotation(Integer index, Annotation annotation) {
                 if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
                         || AnnotationUtils.doesAnnotationHaveTopic(annotation, null, Checksum.RIGID)){
-                    XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXmlUtils.UNSPECIFIED);
+                    XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXml25Utils.UNSPECIFIED);
                     checksum.setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
                     checksums.add(checksum);
                     return false;
