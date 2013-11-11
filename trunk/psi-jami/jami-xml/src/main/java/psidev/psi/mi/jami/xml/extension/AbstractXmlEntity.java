@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;
@@ -415,7 +415,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
     }
 
     protected void initialiseUnspecifiedInteractor() {
-        this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
+        this.interactor = new XmlInteractor(PsiXml25Utils.UNSPECIFIED);
     }
 
     protected void initialiseAnnotationWrapper() {
@@ -643,8 +643,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
             private boolean processAnnotation(Integer index, Annotation annotation) {
                 // we have stoichiometry
                 if(AnnotationUtils.doesAnnotationHaveTopic(annotation, Annotation.COMMENT_MI, Annotation.COMMENT)
-                        && annotation.getValue() != null && annotation.getValue().trim().toLowerCase().startsWith(PsiXmlUtils.STOICHIOMETRY_PREFIX)){
-                    String stc = annotation.getValue().substring(annotation.getValue().indexOf(PsiXmlUtils.STOICHIOMETRY_PREFIX) + PsiXmlUtils.STOICHIOMETRY_PREFIX.length()).trim();
+                        && annotation.getValue() != null && annotation.getValue().trim().toLowerCase().startsWith(PsiXml25Utils.STOICHIOMETRY_PREFIX)){
+                    String stc = annotation.getValue().substring(annotation.getValue().indexOf(PsiXml25Utils.STOICHIOMETRY_PREFIX) + PsiXml25Utils.STOICHIOMETRY_PREFIX.length()).trim();
 
                     // we have stoichiometry range
                     if (stc.contains("-") && !stc.startsWith("-")){

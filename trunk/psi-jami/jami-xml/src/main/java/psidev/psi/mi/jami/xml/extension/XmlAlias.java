@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 
@@ -58,7 +58,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     public String getName() {
         if (name == null){
-            name = PsiXmlUtils.UNSPECIFIED;
+            name = PsiXml25Utils.UNSPECIFIED;
         }
         return name;
     }
@@ -85,10 +85,10 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
     @XmlAttribute(name = "typeAc")
     public void setJAXBTypeAc(String value) {
         if (this.type == null && value != null){
-            this.type = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
+            this.type = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED, value);
         }
         else if (this.type != null){
-            if (PsiXmlUtils.UNSPECIFIED.equals(this.type.getShortName()) && value == null){
+            if (PsiXml25Utils.UNSPECIFIED.equals(this.type.getShortName()) && value == null){
                 this.type = null;
             }
             else {
@@ -115,7 +115,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
                 this.type = null;
             }
             else {
-                this.type.setShortName(value!= null ? value : PsiXmlUtils.UNSPECIFIED);
+                this.type.setShortName(value!= null ? value : PsiXml25Utils.UNSPECIFIED);
             }
         }
     }

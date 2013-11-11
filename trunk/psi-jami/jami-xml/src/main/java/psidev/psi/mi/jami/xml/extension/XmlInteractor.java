@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;
@@ -244,7 +244,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
         this.namesContainer = value;
         if (this.namesContainer != null){
             if (this.namesContainer.isEmpty()){
-                this.namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+                this.namesContainer.setShortLabel(PsiXml25Utils.UNSPECIFIED);
                 PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
                 if (listener != null){
                     listener.onMissingInteractorName(this, this);
@@ -381,7 +381,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
     protected NamesContainer getNamesContainer() {
         if (namesContainer == null){
             namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
+            namesContainer.setShortLabel(PsiXml25Utils.UNSPECIFIED);
         }
         return namesContainer;
     }
@@ -526,7 +526,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
-                    XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
+                    XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXml25Utils.UNSPECIFIED);
                     checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
                     checksums.add(checksum);
                     return false;

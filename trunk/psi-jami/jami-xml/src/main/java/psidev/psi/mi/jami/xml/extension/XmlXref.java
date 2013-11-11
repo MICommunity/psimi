@@ -20,7 +20,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -87,14 +87,14 @@ public class XmlXref
 
     public CvTerm getDatabase() {
         if (this.database == null){
-            this.database = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
+            this.database = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED);
         }
         return this.database;
     }
 
     public String getId() {
         if (this.id == null){
-            this.id = PsiXmlUtils.UNSPECIFIED;
+            this.id = PsiXml25Utils.UNSPECIFIED;
         }
         return this.id;
     }
@@ -153,7 +153,7 @@ public class XmlXref
             this.database = new DefaultCvTerm(value);
         }
         else if (this.database != null){
-            this.database.setShortName(value != null ? value : PsiXmlUtils.UNSPECIFIED);
+            this.database.setShortName(value != null ? value : PsiXml25Utils.UNSPECIFIED);
         }
         if (value == null){
             PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
@@ -174,7 +174,7 @@ public class XmlXref
     @XmlAttribute(name = "dbAc")
     public void setJAXBDbAc(String value) {
         if (this.database == null && value != null){
-            this.database = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
+            this.database = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED, value);
         }
         else if (this.database != null){
             this.database.setMIIdentifier(value);
@@ -199,7 +199,7 @@ public class XmlXref
                 this.qualifier = null;
             }
             else {
-                this.qualifier.setShortName(value != null ? value : PsiXmlUtils.UNSPECIFIED);
+                this.qualifier.setShortName(value != null ? value : PsiXml25Utils.UNSPECIFIED);
             }
         }
     }
@@ -215,10 +215,10 @@ public class XmlXref
     @XmlAttribute(name = "refTypeAc")
     public void setJAXBRefTypeAc(String value) {
         if (this.qualifier == null && value != null){
-            this.qualifier = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
+            this.qualifier = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED, value);
         }
         else if (this.qualifier != null){
-            if (PsiXmlUtils.UNSPECIFIED.equals(this.qualifier.getShortName()) && value == null){
+            if (PsiXml25Utils.UNSPECIFIED.equals(this.qualifier.getShortName()) && value == null){
                 this.qualifier = null;
             }
             else {

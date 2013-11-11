@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -203,7 +203,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
 
     @Override
     public String getShortName() {
-        return this.interaction.getShortName() != null ? this.interaction.getShortName() : PsiXmlUtils.UNSPECIFIED;
+        return this.interaction.getShortName() != null ? this.interaction.getShortName() : PsiXml25Utils.UNSPECIFIED;
     }
 
     @Override

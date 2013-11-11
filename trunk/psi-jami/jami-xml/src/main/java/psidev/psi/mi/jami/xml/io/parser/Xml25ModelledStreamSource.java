@@ -46,8 +46,11 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Source<ModelledIn
     @Override
     protected void initialiseXmlParser(Reader reader) {
         try {
-            setParser(new Xml25ModelledParser(reader));
-            getParser().setListener(this);
+            Xml25ModelledParser parser = new Xml25ModelledParser(reader);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to read with provided reader ",e);
         } catch (JAXBException e) {
@@ -57,8 +60,11 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Source<ModelledIn
     @Override
     protected void initialiseXmlParser(File file) {
         try {
-            setParser(new Xml25ModelledParser(file));
-            getParser().setListener(this);
+            Xml25ModelledParser parser = new Xml25ModelledParser(file);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to parse the file "+file.getName(),e);
         } catch (JAXBException e) {
@@ -69,8 +75,11 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Source<ModelledIn
     @Override
     protected void initialiseXmlParser(InputStream input) {
         try {
-            setParser(new Xml25ModelledParser(input));
-            getParser().setListener(this);
+            Xml25ModelledParser parser = new Xml25ModelledParser(input);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to parse the inputstream ",e);
         } catch (JAXBException e) {
@@ -81,8 +90,11 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Source<ModelledIn
     @Override
     protected void initialiseXmlParser(URL url) {
         try {
-            setParser(new Xml25ModelledParser(url));
-            getParser().setListener(this);
+            Xml25ModelledParser parser = new Xml25ModelledParser(url);
+            parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
+            setParser(parser);
         } catch (IOException e) {
             throw new MIIOException("Impossible to read the url "+url.toExternalForm(),e);
         } catch (XMLStreamException e) {

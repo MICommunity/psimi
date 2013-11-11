@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.factory.XmlBinaryInteractionFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
@@ -94,6 +95,14 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
 
     public void setExpansionMethod(ComplexExpansionMethod<T, B> expansionMethod) {
         this.expansionMethod = expansionMethod;
+    }
+
+    public void setCacheOfObjects(PsiXml25IdIndex indexOfObjects) {
+        this.delegateParser.setCacheOfObjects(indexOfObjects);
+    }
+
+    public void setCacheOfComplexes(PsiXml25IdIndex indexOfComplexes) {
+        this.delegateParser.setCacheOfComplexes(indexOfComplexes);
     }
 
     protected ComplexExpansionMethod<T,B> getExpansionMethod(){

@@ -15,9 +15,11 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -51,6 +53,8 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     private Reader originalReader;
 
     private Boolean isValid = null;
+    private PsiXml25IdIndex elementCache;
+    private PsiXml25IdIndex complexCache;
 
     public static final String VALIDATION_FEATURE = "http://xml.org/sax/features/validation";
     public static final String SCHEMA_FEATURE = "http://apache.org/xml/features/validation/schema";
@@ -240,6 +244,14 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             setMIFileParserListener((MIFileParserListener) options.get(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY));
         }
 
+        if (options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
+            this.elementCache = (PsiXml25IdIndex)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
+        }
+
+        if (options.containsKey(PsiXml25Utils.COMPLEX_CACHE_OPTION)){
+            this.complexCache = (PsiXml25IdIndex)options.get(PsiXml25Utils.COMPLEX_CACHE_OPTION);
+        }
+
         // initialise parser after reading all options
         if (sourceFile != null){
             initialiseFile(sourceFile);
@@ -259,6 +271,8 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     @Override
     public void close() throws MIIOException{
         if (isInitialised){
+            this.elementCache = null;
+            this.complexCache = null;
             this.parserListener = null;
             this.defaultParserListener = null;
             this.isValid = null;
@@ -272,6 +286,8 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     @Override
     public void reset() throws MIIOException{
         if (isInitialised){
+            this.elementCache = null;
+            this.complexCache = null;
             this.parser = null;
             this.parserListener = null;
             this.defaultParserListener = null;
@@ -497,12 +513,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
                 }
             }
             // reinitialise the stream and reader
-            try {
-                this.originalStream = new FileInputStream(this.originalFile);
-                this.originalReader = new InputStreamReader(this.originalStream);
-            }catch (IOException e) {
-                throw new MIIOException("We cannot open the URL  " + this.originalURL.toString(), e);
-            }
+            initialiseXmlParser(this.originalFile);
         }
         else if (this.originalURL != null){
             // close the previous reader
@@ -522,18 +533,14 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
                 }
             }
             // reinitialise the stream and reader
-            try {
-                this.originalStream = originalURL.openStream();
-                this.originalReader = new InputStreamReader(this.originalStream);
-            }catch (IOException e) {
-                throw new MIIOException("We cannot open the URL  " + this.originalURL.toString(), e);
-            }
+            initialiseXmlParser(this.originalURL);
         }
         else if (this.originalReader != null){
             // reinit line parser if reader can be reset
             if (this.originalReader.markSupported()){
                 try {
                     this.originalReader.reset();
+                    initialiseXmlParser(this.originalReader);
                 } catch (IOException e) {
                     throw new MIIOException("We cannot open the reader  ", e);
                 }
@@ -547,7 +554,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             if (this.originalStream.markSupported()){
                 try {
                     this.originalStream.reset();
-                    this.originalReader = new InputStreamReader(this.originalStream);
+                    initialiseXmlParser(this.originalStream);
                 } catch (IOException e) {
                     throw new MIIOException("We cannot read the inputStream  ", e);
                 }
@@ -574,8 +581,12 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         return isInitialised;
     }
 
-    protected void setInitialised(boolean initialised) {
-        isInitialised = initialised;
+    protected PsiXml25IdIndex getElementCache() {
+        return elementCache;
+    }
+
+    protected PsiXml25IdIndex getComplexCache() {
+        return complexCache;
     }
 
     private void initialiseReader(Reader reader) {

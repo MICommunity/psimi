@@ -238,6 +238,14 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.listener = listener;
     }
 
+    public void setCacheOfObjects(PsiXml25IdIndex indexOfObjects) {
+        this.indexOfObjects = indexOfObjects;
+    }
+
+    public void setCacheOfComplexes(PsiXml25IdIndex indexOfComplexes) {
+        this.indexOfComplexes = indexOfComplexes;
+    }
+
     /**
      *
      * @return the unmarshaller with the class context

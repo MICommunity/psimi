@@ -47,6 +47,8 @@ public class Xml25ModelledBinarySource extends AbstractPsiXml25BinarySource<Mode
         try {
             FullXml25ModelledBinaryParser parser = new FullXml25ModelledBinaryParser(reader);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided reader",e);
@@ -58,6 +60,8 @@ public class Xml25ModelledBinarySource extends AbstractPsiXml25BinarySource<Mode
         try {
             FullXml25ModelledBinaryParser parser = new FullXml25ModelledBinaryParser(file);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided file",e);
@@ -69,6 +73,8 @@ public class Xml25ModelledBinarySource extends AbstractPsiXml25BinarySource<Mode
         try {
             FullXml25ModelledBinaryParser parser = new FullXml25ModelledBinaryParser(input);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided Input stream",e);
@@ -80,6 +86,8 @@ public class Xml25ModelledBinarySource extends AbstractPsiXml25BinarySource<Mode
         try {
             FullXml25ModelledBinaryParser parser = new FullXml25ModelledBinaryParser(url);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
             throw new MIIOException("Impossible to read with provided URL",e);

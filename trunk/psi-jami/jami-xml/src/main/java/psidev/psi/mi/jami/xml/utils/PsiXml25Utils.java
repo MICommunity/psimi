@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
  * @since <pre>18/07/13</pre>
  */
 
-public class PsiXmlUtils {
+public class PsiXml25Utils {
 
     public static final String UNSPECIFIED = "unspecified";
     public final static DateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy");
@@ -29,4 +29,6 @@ public class PsiXmlUtils {
     public static final String AVAILABILITY_TAG = "availability";
     public static final String ATTRIBUTELIST_TAG = "attributeList";
     public static final String ATTRIBUTE_TAG = "attribute";
+    public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";
+    public static final String COMPLEX_CACHE_OPTION = "complex_id_cache_key";
 }

@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.annotation.UnambiguousAnnotationComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
 
@@ -55,7 +55,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
 
     public CvTerm getTopic() {
         if (topic == null){
-            this.topic = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED);
+            this.topic = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED);
         }
         return this.topic;
     }
@@ -83,7 +83,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
             this.topic = new DefaultCvTerm(value);
         }
         else if (this.topic != null){
-            this.topic.setShortName(value != null ? value : PsiXmlUtils.UNSPECIFIED);
+            this.topic.setShortName(value != null ? value : PsiXml25Utils.UNSPECIFIED);
         }
         if (value == null){
             PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
@@ -104,7 +104,7 @@ public class XmlAnnotation implements Annotation, FileSourceContext, Locatable {
     @XmlAttribute(name = "nameAc")
     public void setJAXBNameAc(String value) {
         if (this.topic == null && value != null){
-            this.topic = new DefaultCvTerm(PsiXmlUtils.UNSPECIFIED, value);
+            this.topic = new DefaultCvTerm(PsiXml25Utils.UNSPECIFIED, value);
         }
         else if (this.topic != null){
             this.topic.setMIIdentifier(value);

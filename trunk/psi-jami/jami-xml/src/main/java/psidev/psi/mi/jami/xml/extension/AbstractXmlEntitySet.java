@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
@@ -198,7 +198,7 @@ public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feat
 
     @Override
     protected void initialiseUnspecifiedInteractor() {
-        super.setInteractor(new XmlInteractorSet(PsiXmlUtils.UNSPECIFIED));
+        super.setInteractor(new XmlInteractorSet(PsiXml25Utils.UNSPECIFIED));
     }
 
     @Override

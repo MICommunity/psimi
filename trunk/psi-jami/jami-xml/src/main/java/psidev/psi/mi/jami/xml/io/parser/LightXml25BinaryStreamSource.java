@@ -46,6 +46,8 @@ public class LightXml25BinaryStreamSource extends AbstractPsiXml25BinarySource<I
         try {
             Xml25BinaryParser parser = new Xml25BinaryParser(reader);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -60,6 +62,8 @@ public class LightXml25BinaryStreamSource extends AbstractPsiXml25BinarySource<I
         try {
             Xml25BinaryParser parser = new Xml25BinaryParser(file);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -76,6 +80,8 @@ public class LightXml25BinaryStreamSource extends AbstractPsiXml25BinarySource<I
         try {
             Xml25BinaryParser parser = new Xml25BinaryParser(input);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -90,6 +96,8 @@ public class LightXml25BinaryStreamSource extends AbstractPsiXml25BinarySource<I
         try {
             Xml25BinaryParser parser = new Xml25BinaryParser(url);
             parser.setListener(this);
+            parser.setCacheOfComplexes(getComplexCache());
+            parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
         } catch (IOException e) {
