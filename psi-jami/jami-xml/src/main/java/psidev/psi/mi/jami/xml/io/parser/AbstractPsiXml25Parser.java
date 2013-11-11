@@ -65,9 +65,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     private PsiXmlParserListener listener;
     private boolean hasReadEntrySet = false;
     private boolean hasReadEntry = false;
-
     private PsiXml25IdIndex indexOfObjects=null;
     private PsiXml25IdIndex indexOfComplexes=null;
+    private boolean useDefaultCache = true;
 
     public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
 
@@ -315,10 +315,12 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     public void setCacheOfObjects(PsiXml25IdIndex indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
+        this.useDefaultCache = false;
     }
 
     public void setCacheOfComplexes(PsiXml25IdIndex indexOfComplexes) {
         this.indexOfComplexes = indexOfComplexes;
+        this.useDefaultCache = false;
     }
 
     protected String getNextPsiXml25StartElement() throws PsiXmlParserException{
@@ -873,6 +875,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.unmarshaller = null;
         this.indexOfComplexes = null;
         this.indexOfObjects = null;
+        this.useDefaultCache = true;
 
         // release the thread local
         XmlEntryContext.getInstance().clear();
@@ -883,13 +886,19 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         entryContext.clear();
         this.hasReadEntrySet = true;
         entryContext.setListener(this.listener);
+        if (useDefaultCache){
+            initialiseDefaultCache();
+        }
+        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
+        entryContext.setMapOfReferencedObjects(this.indexOfObjects);
+    }
+
+    private void initialiseDefaultCache() {
         if (this.indexOfComplexes == null){
             this.indexOfComplexes = new InMemoryPsiXml25Index();
         }
         if (this.indexOfObjects == null){
             this.indexOfObjects = new InMemoryPsiXml25Index();
         }
-        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
-        entryContext.setMapOfReferencedObjects(this.indexOfObjects);
     }
 }
