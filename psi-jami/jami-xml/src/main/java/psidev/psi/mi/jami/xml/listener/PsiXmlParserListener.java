@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.listener;
 
 import psidev.psi.mi.jami.listener.MIFileParserListener;
-import psidev.psi.mi.jami.xml.XmlIdReference;
+import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 
 /**
  * A listener listening to events when parsing a mitab file

@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.io.parser.Xml25InteractionEvidenceParserTest;
-import psidev.psi.mi.jami.xml.io.parser.Xml25InteractionParser;
+import psidev.psi.mi.jami.xml.io.parser.Xml25Parser;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -30,7 +30,7 @@ public class Xml25InteractionIteratorTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        Iterator<Interaction<? extends Participant>> iterator = new Xml25InteractionIterator(new Xml25InteractionParser(stream));
+        Iterator<Interaction<? extends Participant>> iterator = new Xml25InteractionIterator(new Xml25Parser(stream));
         int index = 0;
         while(iterator.hasNext()){
             Interaction<? extends Participant> interaction = iterator.next();
@@ -46,7 +46,7 @@ public class Xml25InteractionIteratorTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        Iterator<Interaction<? extends Participant>> iterator = new Xml25InteractionIterator(new Xml25InteractionParser(stream));
+        Iterator<Interaction<? extends Participant>> iterator = new Xml25InteractionIterator(new Xml25Parser(stream));
         int index = 0;
         while(iterator.hasNext()){
             Interaction<? extends Participant> interaction = iterator.next();
@@ -63,7 +63,7 @@ public class Xml25InteractionIteratorTest {
     public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
 
-        Iterator<Interaction<? extends Participant>> iterator = new Xml25InteractionIterator(new Xml25InteractionParser(stream));
+        Iterator<Interaction<? extends Participant>> iterator = new Xml25InteractionIterator(new Xml25Parser(stream));
         int index = 0;
         while(iterator.hasNext()){
             Interaction<? extends Participant> interaction = iterator.next();

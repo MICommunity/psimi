@@ -7,8 +7,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.xml.AbstractFeatureRef;
-import psidev.psi.mi.jami.xml.AbstractParticipantRef;
+import psidev.psi.mi.jami.xml.reference.AbstractFeatureRef;
+import psidev.psi.mi.jami.xml.reference.AbstractParticipantRef;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.XmlAccessType;

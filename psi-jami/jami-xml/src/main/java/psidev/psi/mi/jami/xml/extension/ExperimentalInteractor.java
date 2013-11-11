@@ -7,8 +7,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.xml.AbstractExperimentRef;
-import psidev.psi.mi.jami.xml.AbstractInteractorReference;
+import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 
