@@ -27,7 +27,7 @@ public class LightXml25BinarySource extends AbstractPsiXml25BinarySource<Interac
     public LightXml25BinarySource() {
     }
 
-    public LightXml25BinarySource(File file) throws IOException {
+    public LightXml25BinarySource(File file) {
         super(file);
     }
 

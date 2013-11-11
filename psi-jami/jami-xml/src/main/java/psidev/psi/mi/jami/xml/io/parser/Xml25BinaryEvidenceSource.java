@@ -26,7 +26,7 @@ public class Xml25BinaryEvidenceSource extends AbstractPsiXml25BinarySource<Inte
     public Xml25BinaryEvidenceSource() {
     }
 
-    public Xml25BinaryEvidenceSource(File file) throws IOException {
+    public Xml25BinaryEvidenceSource(File file) {
         super(file);
     }
 
