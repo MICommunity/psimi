@@ -20,12 +20,12 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class Xml25BinaryEvidenceStreamSource extends AbstractPsiXml25BinarySource<InteractionEvidence, BinaryInteractionEvidence> implements BinaryInteractionEvidenceStream{
+public class Xml25BinaryEvidenceStreamSource extends AbstractPsiXml25BinaryStream<InteractionEvidence, BinaryInteractionEvidence> implements BinaryInteractionEvidenceStream{
 
     public Xml25BinaryEvidenceStreamSource() {
     }
 
-    public Xml25BinaryEvidenceStreamSource(File file) throws IOException {
+    public Xml25BinaryEvidenceStreamSource(File file) {
         super(file);
     }
 
