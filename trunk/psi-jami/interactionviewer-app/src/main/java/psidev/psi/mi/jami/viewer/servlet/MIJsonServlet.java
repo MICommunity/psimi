@@ -18,7 +18,7 @@ import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
 import psidev.psi.mi.jami.commons.PsiJami;
-import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
@@ -28,6 +28,7 @@ import psidev.psi.mi.jami.json.MIJsonWriter;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.InMemoryPsiXml25Index;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -115,7 +116,7 @@ public class MIJsonServlet extends HttpServlet{
         Writer writer = resp.getWriter();
 
         InputStream stream = null;
-        InteractionSource miDataSource = null;
+        InteractionStream miDataSource = null;
         try {
             URL url = new URL(urlString);
             URLConnection connection1 = url.openConnection();
@@ -192,7 +193,7 @@ public class MIJsonServlet extends HttpServlet{
         this.timeOut = timeOut;
     }
 
-    private InteractionSource processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionSource miDataSource) throws IOException {
+    private InteractionStream processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionStream miDataSource) throws IOException {
         MIFileType fileType = fileAnalyzer.identifyMIFileTypeFor(stream);
         MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
         MIDataSourceFactory miFactory = MIDataSourceFactory.getInstance();
@@ -204,7 +205,7 @@ public class MIJsonServlet extends HttpServlet{
                interactionWriter = new MIJsonBinaryWriter(writer, this.fetcher);
                break;
             case psi25_xml:
-                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionObjectCategory.evidence, true, dataStream));
+                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXml25Options(InteractionObjectCategory.evidence, true, null, dataStream, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index()));
                 interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
                 break;
             default:
@@ -230,7 +231,7 @@ public class MIJsonServlet extends HttpServlet{
         Writer writer = resp.getWriter();
 
         InputStream stream = null;
-        InteractionSource miDataSource = null;
+        InteractionStream miDataSource = null;
         try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
             for (FileItem item : items) {
