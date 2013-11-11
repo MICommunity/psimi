@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +45,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
     private String currentElement;
 
-    public AbstractFullPsiXml25Parser(File file) throws XMLStreamException, JAXBException {
+    public AbstractFullPsiXml25Parser(File file) throws JAXBException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
@@ -54,7 +53,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.unmarshaller = createJAXBUnmarshaller();
     }
 
-    public AbstractFullPsiXml25Parser(InputStream inputStream) throws XMLStreamException, JAXBException {
+    public AbstractFullPsiXml25Parser(InputStream inputStream) throws JAXBException {
         if (inputStream == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
@@ -63,7 +62,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
     }
 
-    public AbstractFullPsiXml25Parser(URL url) throws IOException, XMLStreamException, JAXBException {
+    public AbstractFullPsiXml25Parser(URL url) throws IOException, JAXBException {
         if (url == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
@@ -72,7 +71,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.unmarshaller = createJAXBUnmarshaller();
     }
 
-    public AbstractFullPsiXml25Parser(Reader reader) throws XMLStreamException, JAXBException {
+    public AbstractFullPsiXml25Parser(Reader reader) throws JAXBException {
         if (reader == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
@@ -281,6 +280,14 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
     protected PsiXmlParserException createPsiXmlExceptionFrom(String message, Exception e) {
         return new PsiXmlParserException(null, message, e);
+    }
+
+    protected AbstractEntrySet<AbstractEntry<T>> getEntrySet() throws PsiXmlParserException {
+        if (this.entrySet == null){
+            this.entrySet = parseEntrySet();
+            this.entryIterator = this.entrySet.getEntries().iterator();
+        }
+        return entrySet;
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) {

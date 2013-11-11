@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.AbstractExperimentRef;
+import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.XmlAccessType;

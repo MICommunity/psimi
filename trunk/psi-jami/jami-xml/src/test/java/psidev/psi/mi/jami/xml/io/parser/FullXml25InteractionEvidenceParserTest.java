@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for Xml25InteractionEvidenceParser
+ * Unit tester for Xml25EvidenceParser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -33,7 +33,7 @@ public class FullXml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = FullXml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new FullXml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new FullXml25EvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -246,7 +246,7 @@ public class FullXml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = FullXml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new FullXml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new FullXml25EvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -459,7 +459,7 @@ public class FullXml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = FullXml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new FullXml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new FullXml25EvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
@@ -489,7 +489,7 @@ public class FullXml25InteractionEvidenceParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<InteractionEvidence> parser = new FullXml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new FullXml25EvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
@@ -508,7 +508,7 @@ public class FullXml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new FullXml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new FullXml25EvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
 
@@ -619,7 +619,7 @@ public class FullXml25InteractionEvidenceParserTest {
     @Test(expected = PsiXmlParserException.class)
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXml25Parser<InteractionEvidence> parser = new FullXml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new FullXml25EvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
 
@@ -634,7 +634,7 @@ public class FullXml25InteractionEvidenceParserTest {
         InputStream stream = new FileInputStream("/home/marine/Downloads/BIOGRID-ALL-3.2.97.psi25.xml");
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25InteractionEvidenceParser(stream);
+        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();

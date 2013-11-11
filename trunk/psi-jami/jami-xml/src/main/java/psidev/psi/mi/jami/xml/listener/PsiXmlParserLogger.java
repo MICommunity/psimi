@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.XmlIdReference;
+import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

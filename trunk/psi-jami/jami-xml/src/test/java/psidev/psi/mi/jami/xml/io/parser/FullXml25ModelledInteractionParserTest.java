@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for Xml25InteractionEvidenceParser
+ * Unit tester for Xml25EvidenceParser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -30,7 +30,7 @@ public class FullXml25ModelledInteractionParserTest {
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledInteractionParser(stream);
+        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledParser(stream);
 
         ModelledInteraction interaction = parser.parseNextInteraction();
 
@@ -147,7 +147,7 @@ public class FullXml25ModelledInteractionParserTest {
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledInteractionParser(stream);
+        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledParser(stream);
 
         ModelledInteraction interaction = parser.parseNextInteraction();
 
@@ -264,7 +264,7 @@ public class FullXml25ModelledInteractionParserTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledInteractionParser(stream);
+        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledParser(stream);
 
         int index = 0;
         while(!parser.hasFinished()){
@@ -295,7 +295,7 @@ public class FullXml25ModelledInteractionParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledInteractionParser(stream);
+        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             ModelledInteraction interaction = parser.parseNextInteraction();
@@ -314,7 +314,7 @@ public class FullXml25ModelledInteractionParserTest {
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledInteractionParser(stream);
+        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledParser(stream);
 
         ModelledInteraction interaction = parser.parseNextInteraction();
 
@@ -408,7 +408,7 @@ public class FullXml25ModelledInteractionParserTest {
     @Test(expected = PsiXmlParserException.class)
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledInteractionParser(stream);
+        PsiXml25Parser<ModelledInteraction> parser = new FullXml25ModelledParser(stream);
 
         ModelledInteraction interaction = parser.parseNextInteraction();
 
