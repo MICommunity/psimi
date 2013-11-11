@@ -41,6 +41,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
     private PsiXml25IdIndex indexOfObjects=null;
     private PsiXml25IdIndex indexOfComplexes=null;
+    private boolean useDefaultCache = true;
 
     public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
 
@@ -165,6 +166,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.entrySet = null;
         this.indexOfComplexes = null;
         this.indexOfObjects = null;
+        this.useDefaultCache = true;
 
         // release the thread local
         XmlEntryContext.getInstance().clear();
@@ -235,10 +237,12 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
     public void setCacheOfObjects(PsiXml25IdIndex indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
+        this.useDefaultCache = false;
     }
 
     public void setCacheOfComplexes(PsiXml25IdIndex indexOfComplexes) {
         this.indexOfComplexes = indexOfComplexes;
+        this.useDefaultCache = false;
     }
 
     /**
@@ -296,13 +300,19 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     private void initialiseEntryContext(XmlEntryContext entryContext) {
         entryContext.clear();
         entryContext.setListener(this.listener);
+        if (useDefaultCache){
+            initialiseDefaultCache();
+        }
+        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
+        entryContext.setMapOfReferencedObjects(this.indexOfObjects);
+    }
+
+    private void initialiseDefaultCache() {
         if (this.indexOfComplexes == null){
             this.indexOfComplexes = new InMemoryPsiXml25Index();
         }
         if (this.indexOfObjects == null){
             this.indexOfObjects = new InMemoryPsiXml25Index();
         }
-        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
-        entryContext.setMapOfReferencedObjects(this.indexOfObjects);
     }
 }
