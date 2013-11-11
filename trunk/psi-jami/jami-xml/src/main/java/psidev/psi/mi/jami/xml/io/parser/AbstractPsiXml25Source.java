@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.AbstractEntry;
 import psidev.psi.mi.jami.xml.AbstractEntrySet;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.io.FullPsiXml25Parser;
 
 import java.io.File;
 import java.io.InputStream;
@@ -95,18 +96,13 @@ public abstract class AbstractPsiXml25Source<T extends Interaction> extends Abst
     }
 
     @Override
-    protected AbstractFullPsiXml25Parser<T> getParser() {
-        return (AbstractFullPsiXml25Parser<T>)super.getParser();
-    }
-
-    @Override
     protected Iterator<T> createXmlIterator() {
         return getInteractions().iterator();
     }
 
     private void initialiseLoadedInteractions() throws PsiXmlParserException {
         this.loadedInteractions = new ArrayList<T>();
-        AbstractEntrySet<AbstractEntry<T>> entrySet = getParser().getEntrySet();
+        AbstractEntrySet<AbstractEntry<T>> entrySet = ((FullPsiXml25Parser<T>)getParser()).getEntrySet();
         for (AbstractEntry<T> entry : entrySet.getEntries()){
             this.loadedInteractions.addAll(entry.getInteractions());
         }

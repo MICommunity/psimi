@@ -115,6 +115,10 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
 
     protected abstract ComplexExpansionMethod<T,B> initialiseDefaultExpansionMethod();
 
+    protected PsiXml25Parser<T> getDelegateParser() {
+        return delegateParser;
+    }
+
     private B processAndRemoveNextBinary() {
         B binary = this.binaryInteractionIterator.next();
         this.binaryInteractionIterator.remove();

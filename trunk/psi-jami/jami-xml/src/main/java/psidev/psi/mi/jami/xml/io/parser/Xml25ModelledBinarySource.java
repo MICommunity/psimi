@@ -26,7 +26,7 @@ public class Xml25ModelledBinarySource extends AbstractPsiXml25BinarySource<Mode
     public Xml25ModelledBinarySource() {
     }
 
-    public Xml25ModelledBinarySource(File file) throws IOException {
+    public Xml25ModelledBinarySource(File file) {
         super(file);
     }
 

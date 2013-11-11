@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.datasource.BinaryInteractionSource;
 import psidev.psi.mi.jami.model.Interaction;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -26,7 +25,7 @@ public abstract class AbstractPsiXml25BinarySource<T extends Interaction,B exten
     public AbstractPsiXml25BinarySource() {
     }
 
-    public AbstractPsiXml25BinarySource(File file) throws IOException {
+    public AbstractPsiXml25BinarySource(File file) {
         super(file);
     }
 

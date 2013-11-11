@@ -27,7 +27,7 @@ public class Xml25EvidenceSource extends AbstractPsiXml25Source<InteractionEvide
     public Xml25EvidenceSource() {
     }
 
-    public Xml25EvidenceSource(File file) throws IOException {
+    public Xml25EvidenceSource(File file) {
         super(file);
     }
 

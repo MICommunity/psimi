@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.*;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.io.FullPsiXml25Parser;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.JAXBException;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
  * @since <pre>07/11/13</pre>
  */
 
-public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implements PsiXml25Parser<T>{
+public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implements PsiXml25Parser<T>, FullPsiXml25Parser<T>{
     private static final Logger logger = Logger.getLogger("AbstractFullPsiXml25Parser");
 
     private URL originalURL;
@@ -104,19 +105,13 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
         // is parsing interaction of an entry
         if (this.interactionIterator.hasNext()){
-            T interaction = this.interactionIterator.next();
-            // remove parsed interaction
-            this.interactionIterator.remove();
-            return interaction;
+            return this.interactionIterator.next();
         }
         // parse interactions of the next entry
         else if (this.entryIterator.hasNext()){
             this.interactionIterator = this.entryIterator.next().getInteractions().iterator();
             if (this.interactionIterator.hasNext()){
-                T interaction = this.interactionIterator.next();
-                // remove parsed interaction
-                this.interactionIterator.remove();
-                return interaction;
+                return this.interactionIterator.next();
             }
             // error, should find at least one entry
             else if (this.listener != null){
@@ -290,7 +285,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         return new PsiXmlParserException(null, message, e);
     }
 
-    protected AbstractEntrySet<AbstractEntry<T>> getEntrySet() throws PsiXmlParserException {
+    public AbstractEntrySet<AbstractEntry<T>> getEntrySet() throws PsiXmlParserException {
         if (this.entrySet == null){
             this.entrySet = parseEntrySet();
             this.entryIterator = this.entrySet.getEntries().iterator();

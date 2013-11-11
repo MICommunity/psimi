@@ -27,7 +27,7 @@ public class Xml25ModelledSource extends AbstractPsiXml25Source<ModelledInteract
     public Xml25ModelledSource() {
     }
 
-    public Xml25ModelledSource(File file) throws IOException {
+    public Xml25ModelledSource(File file) {
         super(file);
     }
 

@@ -27,7 +27,7 @@ public class LightXml25Source extends AbstractPsiXml25Source<Interaction<?extend
     public LightXml25Source() {
     }
 
-    public LightXml25Source(File file) throws IOException {
+    public LightXml25Source(File file) {
         super(file);
     }
 
