@@ -73,60 +73,43 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     private String currentElement;
 
-    public AbstractPsiXml25Parser(File file) throws XMLStreamException, JAXBException {
+    public AbstractPsiXml25Parser(File file) throws JAXBException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
         this.originalFile = file;
-        // Parse the data, filtering out the start elements
-        XMLInputFactory xmlif = XMLInputFactory2.newInstance();
-        StreamSource source = new StreamSource(file);
-        this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
-    public AbstractPsiXml25Parser(InputStream inputStream) throws XMLStreamException, JAXBException {
+    public AbstractPsiXml25Parser(InputStream inputStream) throws JAXBException {
         if (inputStream == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
         this.originalStream = inputStream;
-        // Parse the data, filtering out the start elements
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        StreamSource source = new StreamSource(inputStream);
-        this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
 
     }
 
-    public AbstractPsiXml25Parser(URL url) throws IOException, XMLStreamException, JAXBException {
+    public AbstractPsiXml25Parser(URL url) throws JAXBException {
         if (url == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
         this.originalURL = url;
-        this.originalStream = url.openStream();
-        // Parse the data, filtering out the start elements
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        StreamSource source = new StreamSource(this.originalStream);
-        this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
 
     }
 
-    public AbstractPsiXml25Parser(Reader reader) throws XMLStreamException, JAXBException {
+    public AbstractPsiXml25Parser(Reader reader) throws JAXBException {
         if (reader == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
         this.originalReader = reader;
-        // Parse the data, filtering out the start elements
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        StreamSource source = new StreamSource(this.originalStream);
-        this.streamReader =  (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         loadedInteractions = new ArrayList<T>();
         this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
@@ -134,6 +117,15 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     public T parseNextInteraction() throws PsiXmlParserException{
         // Parse into typed objects
+        if (this.streamReader == null){
+            try {
+                initialiseStreamReader();
+            } catch (XMLStreamException e) {
+                createPsiXmlExceptionFrom("Cannot create a XMLStreamReader to parse the MI source", e);
+            } catch (IOException e) {
+                createPsiXmlExceptionFrom("Cannot create a XMLStreamReader to parse the MI source", e);
+            }
+        }
 
         // we have loaded interactions before because of references. We can use the cache and return next one until the cache is clear
         if (this.interactionIterator != null && this.interactionIterator.hasNext()){
@@ -202,21 +194,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         return null;
     }
 
-    protected void processUnexpectedNode() throws PsiXmlParserException {
-        // skip nodes from other schema
-        FileSourceContext context = null;
-        if (this.streamReader.getLocation() != null){
-            Location loc = this.streamReader.getLocation();
-            context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
-        }
-        if(listener != null){
-            listener.onInvalidSyntax(context, new PsiXmlParserException("We found a tag " + currentElement + ". We only expected " +
-                    "interaction, entry or entrySet tag"));
-        }
-        // skip the node
-        skipNextElement();
-    }
-
     public void close() throws MIIOException{
         if (this.streamReader != null){
             try {
@@ -230,6 +207,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     }
 
     public boolean hasFinished() throws PsiXmlParserException{
+        if (this.streamReader == null){
+            return false;
+        }
         if (this.interactionIterator != null && this.interactionIterator.hasNext()){
             return false;
         }
@@ -255,13 +235,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // release the thread local
         XmlEntryContext.getInstance().clear();
         XmlEntryContext.remove();
-        if (this.streamReader != null){
-            try {
-                this.streamReader.close();
-            } catch (XMLStreamException e) {
-                logger.log(Level.SEVERE, "Could not close the eventReader.", e);
-            }
-        }
+        this.streamReader = null;
         if (this.originalFile != null){
             XMLInputFactory xmlif = XMLInputFactory.newInstance();
             try {
@@ -788,6 +762,42 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         catch (XMLStreamException e){
             throw createPsiXmlExceptionFrom("Cannot parse next start/end element", e);
+        }
+    }
+
+    protected void processUnexpectedNode() throws PsiXmlParserException {
+        // skip nodes from other schema
+        FileSourceContext context = null;
+        if (this.streamReader.getLocation() != null){
+            Location loc = this.streamReader.getLocation();
+            context = new DefaultFileSourceContext(new PsiXmLocator(loc.getLineNumber(), loc.getColumnNumber(), null));
+        }
+        if(listener != null){
+            listener.onInvalidSyntax(context, new PsiXmlParserException("We found a tag " + currentElement + ". We only expected " +
+                    "interaction, entry or entrySet tag"));
+        }
+        // skip the node
+        skipNextElement();
+    }
+
+    private void initialiseStreamReader() throws XMLStreamException, IOException {
+        XMLInputFactory xmlif = XMLInputFactory2.newInstance();
+        if (this.originalFile != null){
+            StreamSource source = new StreamSource(this.originalFile);
+            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+        }
+        else if (this.originalURL != null){
+            this.originalStream = this.originalURL.openStream();
+            StreamSource source = new StreamSource(this.originalStream);
+            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+        }
+        else if (this.originalReader != null){
+            StreamSource source = new StreamSource(this.originalReader);
+            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+        }
+        else if (this.originalStream != null){
+            StreamSource source = new StreamSource(this.originalStream);
+            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
         }
     }
 
