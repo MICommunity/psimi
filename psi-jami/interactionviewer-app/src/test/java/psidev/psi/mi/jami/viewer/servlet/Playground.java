@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIFileAnalyzer;
 import psidev.psi.mi.jami.commons.MIFileType;
 import psidev.psi.mi.jami.commons.PsiJami;
-import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
@@ -25,6 +25,7 @@ import psidev.psi.mi.jami.json.MIJsonWriter;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.InMemoryPsiXml25Index;
 
 import java.io.*;
 import java.net.URL;
@@ -79,11 +80,11 @@ public class Playground {
     @Test
     @Ignore
     public void test_play_psicquic() throws IOException {
-        String urlString="http://www.ebi.ac.uk/Tools/webservices/psicquic/intact/webservices/current/search/query/ftype:*?format=tab27&maxResults=500";
+        String urlString="ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/21988832_02.xml";
         Writer writer = new PrintWriter(new File("example7.txt"));
 
         InputStream stream = null;
-        InteractionSource miDataSource = null;
+        InteractionStream miDataSource = null;
         InteractionWriter interactionWriter = null;
         try {
             URL url = new URL(urlString);
@@ -107,7 +108,7 @@ public class Playground {
                     interactionWriter = new MIJsonBinaryWriter(writer,this.fetcher);
                     break;
                 case psi25_xml:
-                    miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionObjectCategory.binary_evidence, true, dataStream));
+                    miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXml25Options(InteractionObjectCategory.binary_evidence, true, null, dataStream, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index()));
                     interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
                     break;
                 default:
