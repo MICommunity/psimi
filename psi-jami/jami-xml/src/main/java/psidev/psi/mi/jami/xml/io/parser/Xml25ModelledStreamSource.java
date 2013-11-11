@@ -22,12 +22,12 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class Xml25ModelledStreamSource extends AbstractPsiXml25Source<ModelledInteraction> implements ModelledInteractionStream<ModelledInteraction>{
+public class Xml25ModelledStreamSource extends AbstractPsiXml25Stream<ModelledInteraction> implements ModelledInteractionStream<ModelledInteraction>{
 
     public Xml25ModelledStreamSource() {
     }
 
-    public Xml25ModelledStreamSource(File file) throws IOException {
+    public Xml25ModelledStreamSource(File file) {
         super(file);
     }
 

@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.xml.AbstractEntrySet;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -32,7 +31,7 @@ public abstract class AbstractPsiXml25Source<T extends Interaction> extends Abst
     protected AbstractPsiXml25Source() {
     }
 
-    protected AbstractPsiXml25Source(File file) throws IOException {
+    protected AbstractPsiXml25Source(File file) {
         super(file);
     }
 
