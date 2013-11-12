@@ -24,7 +24,7 @@ public class Xml25AvailabilityWriter implements PsiXml25ElementWriter<String>{
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25AvailabilityWriter");
         }
         this.streamWriter = writer;
-        if (writer == null){
+        if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25AvailabilityWriter. It is necessary for generating an id to availability");
         }
         this.objectIndex = objectIndex;
