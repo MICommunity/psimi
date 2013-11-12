@@ -190,7 +190,7 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment>{
     protected void writeExtendedExperiment(Experiment object, boolean hasPublicationTitle, ExtendedPsi25Experiment xmlExperiment) throws XMLStreamException {
         // write names
         boolean hasShortLabel = xmlExperiment.getShortLabel() != null;
-        boolean hasExperimentFullLabel = xmlExperiment.getShortLabel() != null;
+        boolean hasExperimentFullLabel = xmlExperiment.getFullName() != null;
         boolean hasAliases = !xmlExperiment.getAliases().isEmpty();
         if (hasShortLabel || hasExperimentFullLabel || hasPublicationTitle || hasAliases){
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
