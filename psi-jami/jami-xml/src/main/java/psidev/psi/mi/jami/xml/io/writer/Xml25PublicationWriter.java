@@ -1,15 +1,18 @@
 package psidev.psi.mi.jami.xml.io.writer;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -20,7 +23,7 @@ import java.util.Iterator;
  * @since <pre>11/11/13</pre>
  */
 
-public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication>{
+public class Xml25PublicationWriter implements PsiXml25PublicationWriter{
     private XMLStreamWriter2 streamWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
@@ -100,6 +103,98 @@ public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication
         }
     }
 
+    public void writeAllPublicationAttributes(Publication object){
+        try{
+            boolean hasTitle = object.getTitle() != null;
+            boolean hasJournal = object.getJournal() != null;
+            boolean hasPublicationDate = object.getPublicationDate() != null;
+            boolean hasCurationDepth = !CurationDepth.undefined.equals(object.getCurationDepth());
+            boolean hasAuthors = !object.getAuthors().isEmpty();
+            boolean hasAttributes = !object.getAnnotations().isEmpty();
+            // write attributes if no identifiers available
+            if (hasTitle || hasJournal || hasPublicationDate || hasCurationDepth || hasAuthors || hasAttributes){
+                // write start attribute list
+                this.streamWriter.writeStartElement("attributeList");
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                // write publication properties such as title, journal, etc..
+                writePublicationPropertiesAsAttributes(object, hasTitle, hasJournal, hasPublicationDate, hasCurationDepth, hasAuthors);
+                // write normal attributes
+                if (hasAttributes){
+                    Iterator<Annotation> annotIterator = object.getAnnotations().iterator();
+                    while (annotIterator.hasNext()){
+                        Annotation ann = annotIterator.next();
+                        this.attributeWriter.write(ann);
+                        if (annotIterator.hasNext()){
+                            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                        }
+                    }
+                }
+                // write end attributeList
+                this.streamWriter.writeEndElement();
+            }
+        } catch (XMLStreamException e) {
+            throw new MIIOException("Impossible to write the publication attributes for : "+object.toString(), e);
+        }
+    }
+
+    public void writeAllPublicationAttributes(Publication object, Collection<Annotation> attributesToFilter){
+        try{
+            boolean hasTitle = object.getTitle() != null;
+            boolean hasJournal = object.getJournal() != null;
+            boolean hasPublicationDate = object.getPublicationDate() != null;
+            boolean hasCurationDepth = !CurationDepth.undefined.equals(object.getCurationDepth());
+            boolean hasAuthors = !object.getAuthors().isEmpty();
+            boolean hasAttributes = !object.getAnnotations().isEmpty();
+            for (Annotation filter : attributesToFilter){
+                // Filter title
+                if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+                    hasTitle = true;
+                }
+                // Filter journal
+                else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+                    hasJournal = true;
+                }
+                // Filter publication date
+                else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+                    hasPublicationDate = true;
+                }
+                // Filtercuration depth
+                else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.CURATION_DEPTH_MI, Annotation.CURATION_DEPTH)){
+                    hasCurationDepth = true;
+                }
+                // Filter authors
+                else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    hasAuthors = true;
+                }
+            }
+            // write attributes if no identifiers available
+            if (hasTitle || hasJournal || hasPublicationDate || hasCurationDepth || hasAuthors){
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                // write publication properties such as title, journal, etc..
+                writePublicationPropertiesAsAttributes(object, hasTitle, hasJournal, hasPublicationDate, hasCurationDepth, hasAuthors);
+                // write normal attributes
+                if (hasAttributes){
+                    Iterator<Annotation> annotIterator = object.getAnnotations().iterator();
+                    boolean first = true;
+                    while (annotIterator.hasNext()){
+                        Annotation ann = annotIterator.next();
+                        if (!attributesToFilter.contains(ann)){
+                            if (!first){
+                                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                            }
+                            else {
+                                first = false;
+                            }
+                            this.attributeWriter.write(ann);
+                        }
+                    }
+                }
+            }
+        } catch (XMLStreamException e) {
+            throw new MIIOException("Impossible to write the publication attributes for : "+object.toString(), e);
+        }
+    }
+
     protected void writePublicationPropertiesAsAttributes(Publication object, boolean hasTitle, boolean hasJournal, boolean hasPublicationDate, boolean hasCurationDepth, boolean hasAuthors) throws XMLStreamException {
         if (hasTitle){
             writeAnnotation(Annotation.PUBLICATION_TITLE, Annotation.PUBLICATION_TITLE_MI, object.getTitle());
@@ -118,7 +213,7 @@ public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         if (hasAuthors){
-            writeAnnotation(Annotation.CURATION_DEPTH, Annotation.CURATION_DEPTH_MI, object.getCurationDepth().toString());
+            writeAnnotation(Annotation.AUTHOR, Annotation.AUTHOR_MI, StringUtils.join(object.getAuthors(), ", "));
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
@@ -212,7 +307,6 @@ public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication
         }
 
         // write secondaryRefs (and primary ref if not done already)
-        int index = 0;
         Iterator<Xref> refIterator = object.getIdentifiers().iterator();
         // default qualifier is identity
         this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
@@ -224,7 +318,7 @@ public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication
             // ignore pubmed that is already written
             // ignore doi that is already written
             if (ref != pubmedXref && ref != doiXref){
-                if (index == 0 && !hasWrittenPrimaryRef){
+                if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
                     this.primaryRefWriter.write(ref);
                 }
@@ -233,7 +327,6 @@ public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication
                     this.secondaryRefWriter.write(ref);
                 }
             }
-            index++;
         }
         this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
@@ -242,18 +335,9 @@ public class Xml25PublicationWriter implements PsiXml25ElementWriter<Publication
             // default qualifier is null
             this.secondaryRefWriter.setDefaultRefType(null);
             this.secondaryRefWriter.setDefaultRefTypeAc(null);
-            String imexId = object.getImexId();
             for (Xref ref : object.getXrefs()){
-                // ignore imex id!
-                if (imexId != null && ref.getId().equals(imexId)
-                        && XrefUtils.isXrefFromDatabase(ref, Xref.IMEX_MI, Xref.IMEX)
-                        && XrefUtils.doesXrefHaveQualifier(ref, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
-                    continue;
-                }
-                else{
-                    this.secondaryRefWriter.write(ref);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                }
+                this.secondaryRefWriter.write(ref);
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
         }
 
