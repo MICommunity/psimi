@@ -68,9 +68,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     private PsiXml25IdIndex indexOfObjects=null;
     private PsiXml25IdIndex indexOfComplexes=null;
     private boolean useDefaultCache = true;
-
-    public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
-
     private String currentElement;
 
     public AbstractPsiXml25Parser(File file) throws JAXBException {
@@ -347,7 +344,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 }
             }
             while(start != null &&
-                    (namespaceURI == null || !NAMESPACE_URI.equals(namespaceURI.trim())));
+                    (namespaceURI == null || !PsiXml25Utils.NAMESPACE_URI.equals(namespaceURI.trim())));
             return start;
         }
         catch (XMLStreamException e){

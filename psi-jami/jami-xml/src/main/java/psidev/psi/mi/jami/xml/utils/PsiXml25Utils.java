@@ -31,4 +31,15 @@ public class PsiXml25Utils {
     public static final String ATTRIBUTE_TAG = "attribute";
     public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";
     public static final String COMPLEX_CACHE_OPTION = "complex_id_cache_key";
+
+    public static final String LINE_BREAK = "\n";
+
+    public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
+    public final static String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema-instance";
+    public final static String XML_SCHEMA_PREFIX = "xsi";
+    public final static String PSI_SCHEMA_LOCATION = "http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd";
+    public final static String SCHEMA_LOCATION_ATTRIBUTE = "schemaLocation";
+    public final static String MINOR_VERSION_ATTRIBUTE="minorVersion";
+    public final static String VERSION_ATTRIBUTE="version=";
+    public final static String LEVEL_ATTRIBUTE="level";
 }

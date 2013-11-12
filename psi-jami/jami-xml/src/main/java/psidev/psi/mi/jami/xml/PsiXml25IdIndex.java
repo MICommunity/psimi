@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
 /**
- * Index that can retrieve an object given its id
+ * Index that can retrieve a MI object given its id
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
