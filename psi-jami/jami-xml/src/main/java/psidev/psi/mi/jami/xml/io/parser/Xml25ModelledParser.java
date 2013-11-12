@@ -49,49 +49,6 @@ public class Xml25ModelledParser extends AbstractPsiXml25Parser<ModelledInteract
     }
 
     @Override
-    protected void parseExperimentList() throws PsiXmlParserException {
-        // read experiment list
-        Location experimentList = getStreamReader().getLocation();
-        try {
-            if (getStreamReader().hasNext()){
-                getStreamReader().next();
-            }
-        } catch (XMLStreamException e) {
-            throw createPsiXmlExceptionFrom("Impossible to read first experiment in the experiment list", e);
-        }
-
-        setCurrentElement(getNextPsiXml25StartElement());
-        // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
-        if (getCurrentElement() != null){
-            String evt = getCurrentElement();
-            String name = null;
-            // skip experimentDescription up to the end of experiment list
-            while (evt != null && (name == null || (name != null && !PsiXml25Utils.EXPERIMENTLIST_TAG.equals(name)))) {
-                while (evt != null && !getStreamReader().isEndElement()){
-                    skipNextElement();
-                    evt = getStreamReader().getLocalName();
-                }
-
-                if (evt != null && getStreamReader().isEndElement()){
-                    name = getStreamReader().getLocalName();
-                    skipNextElement();
-                    evt = getStreamReader().getLocalName();
-                }
-            }
-        }
-        else{
-            if (getListener() != null){
-                FileSourceContext context = null;
-                if (experimentList != null){
-                    context = new DefaultFileSourceContext(new PsiXmLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
-                }
-                getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList element does not contain any experimentDescription node. PSI-XML is not valid."));
-            }
-        }
-        setCurrentElement(getNextPsiXml25StartElement());
-    }
-
-    @Override
     protected void parseAvailabilityList(XmlEntryContext entryContext) throws PsiXmlParserException {
         // read availabilityList
         Location availabilityList = getStreamReader().getLocation();

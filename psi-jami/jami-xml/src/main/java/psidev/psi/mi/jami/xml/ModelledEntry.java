@@ -1,14 +1,20 @@
 package psidev.psi.mi.jami.xml;
 
+import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.extension.XmlModelledInteraction;
 import psidev.psi.mi.jami.xml.extension.XmlSource;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +31,11 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
     @XmlLocation
     @XmlTransient
     private Locator locator;
+    private JAXBExperimentsWrapper experimentsWrapper;
+
+    public List<Experiment> getExperiments(){
+        return this.experimentsWrapper != null ? this.experimentsWrapper.experiments : Collections.EMPTY_LIST;
+    }
 
     @XmlElement(name = "source")
     public void setJAXBSource(XmlSource source) {
@@ -34,6 +45,11 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
     @XmlElement(name = "availabilityList")
     public void setJAXBAvailabilityWrapper(JAXBAvailabilitiesWrapper wrapper) {
         super.setAvailabilitiesWrapper(wrapper);
+    }
+
+    @XmlElement(name = "experimentList")
+    public void setJAXBExperimentWrapper(JAXBExperimentsWrapper wrapper){
+        this.experimentsWrapper = wrapper;
     }
 
     @XmlElement(name = "interactorList")
@@ -70,6 +86,54 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
     }
 
     //////////////////////////////// class wrapper
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="modelledExperimentsWrapper")
+    public static class JAXBExperimentsWrapper implements Locatable, FileSourceContext {
+        private List<Experiment> experiments;
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+
+        public JAXBExperimentsWrapper(){
+            initialiseExperiments();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseExperiments(){
+            experiments = new ArrayList<Experiment>();
+        }
+
+        @XmlElement(type=XmlExperiment.class, name="experimentDescription", required = true)
+        public List<Experiment> getJAXBExperiments() {
+            return experiments;
+        }
+
+        @Override
+        public String toString() {
+            return "Entry experiment List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="basicInteractionsWrapper")

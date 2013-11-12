@@ -53,9 +53,9 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
 
             // write names
             boolean hasShortLabel = object.getShortName() != null;
-            boolean hasExperimentFullLabel = object.getFullName() != null;
+            boolean hasFullLabel = object.getFullName() != null;
             boolean hasAliases = !object.getSynonyms().isEmpty();
-            if (hasShortLabel || hasExperimentFullLabel || hasAliases){
+            if (hasShortLabel || hasFullLabel || hasAliases){
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("names");
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
@@ -67,7 +67,7 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write fullname
-                if (hasExperimentFullLabel){
+                if (hasFullLabel){
                     this.streamWriter.writeStartElement("fullName");
                     this.streamWriter.writeCharacters(object.getFullName());
                     this.streamWriter.writeEndElement();

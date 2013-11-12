@@ -26,6 +26,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor>{
     private PsiXml25ElementWriter<CvTerm> interactorTypeWriter;
     private PsiXml25ElementWriter<Organism> organismWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
+    private PsiXml25ElementWriter<Checksum> checksumWriter;
 
     public Xml25InteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
         if (writer == null){
@@ -33,7 +34,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor>{
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ExperimentWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25InteractorWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
         this.aliasWriter = new Xml25AliasWriter(writer);
@@ -42,12 +43,14 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor>{
         this.interactorTypeWriter = new Xml25InteractorTypeWriter(writer);
         this.organismWriter = new Xml25OrganismWriter(writer);
         this.attributeWriter = new Xml25AnnotationWriter(writer);
+        this.checksumWriter = new Xml25ChecksumWriter(writer);
     }
 
     public Xml25InteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
                                  PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> interactorTypeWriter,
-                                 PsiXml25ElementWriter<Organism> organismWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+                                 PsiXml25ElementWriter<Organism> organismWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
+                                 PsiXml25ElementWriter<Checksum> checksumWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25InteractorWriter");
         }
@@ -61,6 +64,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor>{
         this.interactorTypeWriter = interactorTypeWriter != null ? interactorTypeWriter : new Xml25InteractorTypeWriter(writer);
         this.organismWriter = organismWriter != null ? organismWriter : new Xml25OrganismWriter(writer);
         this.attributeWriter = attributeWriter != null ? attributeWriter : new Xml25AnnotationWriter(writer);
+        this.checksumWriter = checksumWriter != null ? checksumWriter : new Xml25ChecksumWriter(writer);
     }
 
     @Override
@@ -140,6 +144,23 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor>{
                 this.streamWriter.writeStartElement("attributeList");
                 for (Annotation ann : object.getAnnotations()){
                     this.attributeWriter.write(ann);
+                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                }
+                for (Checksum c : object.getChecksums()){
+                    this.checksumWriter.write(c);
+                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                }
+                // write end attributeList
+                this.streamWriter.writeEndElement();
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            }
+            // write checksum
+            else if (!object.getChecksums().isEmpty()){
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                // write start attribute list
+                this.streamWriter.writeStartElement("attributeList");
+                for (Checksum c : object.getChecksums()){
+                    this.checksumWriter.write(c);
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end attributeList
@@ -238,5 +259,4 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor>{
         // write end xref
         this.streamWriter.writeEndElement();
     }
-
 }
