@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.impl.BinaryInteractionEvidenceWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.XmlEntry;
+import psidev.psi.mi.jami.xml.Entry;
 import psidev.psi.mi.jami.xml.extension.Availability;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
@@ -132,12 +132,12 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public XmlEntry getEntry() {
+    public Entry getEntry() {
         return this.wrappedInteraction.getEntry();
     }
 
     @Override
-    public void setEntry(XmlEntry entry) {
+    public void setEntry(Entry entry) {
         this.wrappedInteraction.setEntry(entry);
     }
 

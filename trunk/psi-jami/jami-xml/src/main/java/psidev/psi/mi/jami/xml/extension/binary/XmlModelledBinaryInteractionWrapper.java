@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.impl.ModelledBinaryInteractionWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.XmlEntry;
+import psidev.psi.mi.jami.xml.Entry;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.XmlModelledInteraction;
@@ -141,12 +141,12 @@ public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryIntera
     }
 
     @Override
-    public XmlEntry getEntry() {
+    public Entry getEntry() {
         return this.wrappedInteraction.getEntry();
     }
 
     @Override
-    public void setEntry(XmlEntry entry) {
+    public void setEntry(Entry entry) {
         this.wrappedInteraction.setEntry(entry);
     }
 

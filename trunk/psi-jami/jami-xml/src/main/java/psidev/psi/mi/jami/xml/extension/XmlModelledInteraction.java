@@ -6,7 +6,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     public XmlModelledInteraction(String shortName) {
         super(shortName);
-        XmlEntryContext context = XmlEntryContext.getInstance();
+        Xml25EntryContext context = Xml25EntryContext.getInstance();
         setEntry(context.getCurrentEntry());
         if (context.getCurrentEntry() != null){
             this.source = context.getCurrentEntry().getSource();
@@ -51,7 +51,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     public XmlModelledInteraction(String shortName, CvTerm type) {
         super(shortName, type);
-        XmlEntryContext context = XmlEntryContext.getInstance();
+        Xml25EntryContext context = Xml25EntryContext.getInstance();
         setEntry(context.getCurrentEntry());
         if (context.getCurrentEntry() != null){
             this.source = context.getCurrentEntry().getSource();

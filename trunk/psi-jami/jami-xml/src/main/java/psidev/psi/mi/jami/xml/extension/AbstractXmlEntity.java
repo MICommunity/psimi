@@ -10,10 +10,10 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -78,12 +78,12 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
     }
 
     @Override
-    public String getShortLabel() {
+    public String getShortName() {
         return this.namesContainer != null ? this.namesContainer.getShortLabel():null;
     }
 
     @Override
-    public void setShortLabel(String name) {
+    public void setShortName(String name) {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }
@@ -308,7 +308,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
     public void setJAXBInteractor(XmlInteractor interactor) {
         if (interactor == null){
            this.interactor = null;
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onParticipantWithoutInteractor(null, this);
             }
@@ -372,7 +372,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             this.sourceLocator.setObjectId(this.id);
         }
@@ -467,7 +467,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     return true;
                 }
                 else{
-                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                    PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
                     if (listener != null){
                         listener.onParticipantWithoutInteractor(null, this);
                     }
@@ -504,7 +504,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     return true;
                 }
                 else{
-                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                    PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
                     if (listener != null){
                         listener.onParticipantWithoutInteractor(null, this);
                     }
@@ -658,7 +658,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                                 return false;
                             }
                             catch (NumberFormatException e){
-                                PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                                PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
                                 if (listener != null){
                                     listener.onInvalidStoichiometry("The stoichiometry is invalid "+ e.getMessage(), JAXBAttributeWrapper.this);
                                 }
@@ -680,7 +680,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                         }
                         // not a number, keep the annotation as annotation
                         catch (NumberFormatException e){
-                            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
                             if (listener != null){
                                 listener.onInvalidStoichiometry("The stoichiometry is invalid "+ e.getMessage(), JAXBAttributeWrapper.this);
                             }

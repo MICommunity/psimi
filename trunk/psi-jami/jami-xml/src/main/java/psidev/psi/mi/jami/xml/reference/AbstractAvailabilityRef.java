@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.reference;
 
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.extension.Availability;
 
 /**
@@ -20,7 +20,7 @@ public abstract class AbstractAvailabilityRef extends Availability implements Xm
     }
 
     public void registerForResolution() {
-        XmlEntryContext.getInstance().registerReference(this);
+        Xml25EntryContext.getInstance().registerReference(this);
     }
 
     public int getRef() {

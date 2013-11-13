@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
@@ -505,8 +505,8 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             this.complexCache.clear();
         }
         // release the thread local
-        XmlEntryContext.getInstance().clear();
-        XmlEntryContext.remove();
+        Xml25EntryContext.getInstance().clear();
+        Xml25EntryContext.remove();
         // release the thread local
         if (this.originalFile != null){
             // close the previous reader

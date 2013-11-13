@@ -38,7 +38,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "source", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlSource extends AbstractXmlCvTerm implements Source
+public class XmlSource extends AbstractXmlCvTerm implements ExtendedPsi25Source
 {
     private Publication bibRef;
     private String release;
@@ -219,8 +219,12 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
      *     {@link String }
      *     
      */
-    @XmlAttribute(name = "release")
     public void setRelease(String value) {
+        this.release = value;
+    }
+
+    @XmlAttribute(name = "release")
+    public void setJAXBRelease(String value) {
         this.release = value;
     }
 
@@ -244,9 +248,13 @@ public class XmlSource extends AbstractXmlCvTerm implements Source
      *     {@link javax.xml.datatype.XMLGregorianCalendar }
      *     
      */
+    public void setReleaseDate(XMLGregorianCalendar value) {
+        this.releaseDate = value;
+    }
+
     @XmlAttribute(name = "releaseDate")
     @XmlSchemaType(name = "date")
-    public void setReleaseDate(XMLGregorianCalendar value) {
+    public void setJAXBReleaseDate(XMLGregorianCalendar value) {
         this.releaseDate = value;
     }
 

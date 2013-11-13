@@ -25,7 +25,7 @@ import java.util.List;
  * @since <pre>07/11/13</pre>
  */
 @XmlTransient
-public abstract class AbstractEntry<T extends Interaction> extends XmlEntry implements Locatable, FileSourceContext {
+public abstract class AbstractEntry<T extends Interaction> extends Entry implements Locatable, FileSourceContext {
     private PsiXmLocator sourceLocator;
     private JAXBInteractorsWrapper interactorsWrapper;
     private JAXBInteractionsWrapper<T> interactionsWrapper;
@@ -34,7 +34,7 @@ public abstract class AbstractEntry<T extends Interaction> extends XmlEntry impl
 
     public AbstractEntry() {
         super();
-        XmlEntryContext.getInstance().setCurrentSource(this);
+        Xml25EntryContext.getInstance().setCurrentSource(this);
     }
 
     @Override

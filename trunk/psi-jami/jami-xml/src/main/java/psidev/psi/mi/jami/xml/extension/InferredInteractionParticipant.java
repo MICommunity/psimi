@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
- *         &lt;element name="participantRef" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="participantFeatureRef" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;elements name="participantRef" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;elements name="participantFeatureRef" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/choice>
  *     &lt;/restriction>
  *   &lt;/complexContent>

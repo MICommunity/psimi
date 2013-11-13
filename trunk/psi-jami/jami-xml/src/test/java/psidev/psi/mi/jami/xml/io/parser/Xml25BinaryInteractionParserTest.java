@@ -80,7 +80,7 @@ public class Xml25BinaryInteractionParserTest {
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         Participant p1 = interaction.getParticipantA();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -175,7 +175,7 @@ public class Xml25BinaryInteractionParserTest {
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         Participant p1 = interaction.getParticipantA();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -285,7 +285,7 @@ public class Xml25BinaryInteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<? extends Participant> partIterator = interaction.getParticipants().iterator();
         Participant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
         Feature f = (Feature)p1.getFeatures().iterator().next();
@@ -316,7 +316,7 @@ public class Xml25BinaryInteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         partIterator = interaction.getParticipants().iterator();
         p1 = partIterator.next();
-        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
         f = (Feature)p1.getFeatures().iterator().next();

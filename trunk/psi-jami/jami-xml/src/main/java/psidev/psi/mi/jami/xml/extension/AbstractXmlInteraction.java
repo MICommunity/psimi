@@ -10,8 +10,8 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Entry;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -39,19 +39,19 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
     private Date updatedDate;
     private Date createdDate;
     private PsiXmLocator sourceLocator;
-    private XmlEntry entry;
+    private Entry entry;
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
     private JAXBParticipantWrapper<T> jaxbParticipantWrapper;
     private JAXBInferredInteractionWrapper jaxbInferredInteractionWrapper;
 
     public AbstractXmlInteraction(){
-        XmlEntryContext context = XmlEntryContext.getInstance();
+        Xml25EntryContext context = Xml25EntryContext.getInstance();
         this.entry = context.getCurrentEntry();
     }
 
     public AbstractXmlInteraction(String shortName){
-        XmlEntryContext context = XmlEntryContext.getInstance();
+        Xml25EntryContext context = Xml25EntryContext.getInstance();
         this.entry = context.getCurrentEntry();
         setShortName(shortName);
     }
@@ -294,7 +294,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
@@ -335,11 +335,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         this.sourceLocator = (PsiXmLocator)sourceLocator;
     }
 
-    public XmlEntry getEntry() {
+    public Entry getEntry() {
         return entry;
     }
 
-    public void setEntry(XmlEntry entry) {
+    public void setEntry(Entry entry) {
         this.entry = entry;
     }
 
@@ -365,7 +365,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
             }
         }
         else{
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInteractionWithoutParticipants(this, this);
             }

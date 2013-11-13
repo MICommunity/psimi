@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.XmlEntry;
+import psidev.psi.mi.jami.xml.Entry;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
@@ -27,7 +27,7 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
     private PsiXmLocator sourceLocator;
     private String fullName;
     private List<Alias> aliases;
-    private XmlEntry entry;
+    private Entry entry;
     private int id;
     private List<CvTerm> interactionTypes;
     private List<InferredInteraction> inferredInteractions;
@@ -149,12 +149,12 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
     }
 
     @Override
-    public XmlEntry getEntry() {
+    public Entry getEntry() {
         return this.entry;
     }
 
     @Override
-    public void setEntry(XmlEntry entry) {
+    public void setEntry(Entry entry) {
         this.entry = entry;
     }
 

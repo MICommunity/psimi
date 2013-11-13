@@ -18,7 +18,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousXrefComparator;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -111,7 +111,7 @@ public class XmlXref
     public void setJAXBId(String value) {
         this.id = value;
         if (this.id == null){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onXrefWithoutId(this);
             }
@@ -156,7 +156,7 @@ public class XmlXref
             this.database.setShortName(value != null ? value : PsiXml25Utils.UNSPECIFIED);
         }
         if (value == null){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onXrefWithoutDatabase(this);
             }

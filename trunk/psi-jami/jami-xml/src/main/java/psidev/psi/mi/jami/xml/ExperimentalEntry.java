@@ -7,10 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
-import psidev.psi.mi.jami.xml.extension.XmlExperiment;
-import psidev.psi.mi.jami.xml.extension.XmlInteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.XmlSource;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -34,8 +31,8 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
     public List<Experiment> getExperiments(){
         return this.experimentsWrapper != null ? this.experimentsWrapper.experiments : Collections.EMPTY_LIST;
     }
-    @XmlElement(name = "source")
-    public void setJAXBSource(XmlSource source) {
+    @XmlElement(name = "source", type = XmlSource.class)
+    public void setJAXBSource(ExtendedPsi25Source source) {
         super.setSource(source);
     }
 

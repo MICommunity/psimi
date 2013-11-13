@@ -28,10 +28,10 @@ import java.util.List;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;choice>
- *           &lt;element name="interactorRef" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *           &lt;element name="interactor" type="{http://psi.hupo.org/mi/mif}interactor"/>
+ *           &lt;elements name="interactorRef" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *           &lt;elements name="interactor" type="{http://psi.hupo.org/mi/mif}interactor"/>
  *         &lt;/choice>
- *         &lt;element name="experimentRefList" type="{http://psi.hupo.org/mi/mif}experimentRefList" minOccurs="0"/>
+ *         &lt;elements name="experimentRefList" type="{http://psi.hupo.org/mi/mif}experimentRefList" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>

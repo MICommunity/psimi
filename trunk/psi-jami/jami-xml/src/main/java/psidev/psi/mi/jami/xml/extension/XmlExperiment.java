@@ -9,8 +9,8 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Entry;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
@@ -321,13 +321,16 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
     public void setJAXBPublication(Publication publication) {
         setPublicationAndAddExperiment(publication);
         if (publication != null){
-            XmlEntryContext context = XmlEntryContext.getInstance();
-            XmlEntry entry = context.getCurrentEntry();
+            Xml25EntryContext context = Xml25EntryContext.getInstance();
+            Entry entry = context.getCurrentEntry();
             if (entry != null){
                 publication.setSource(entry.getSource());
                 if (entry.getSource() != null){
                     publication.setReleasedDate(entry.getSource().getReleaseDate().toGregorianCalendar().getTime());
                 }
+            }
+            if (getFullName() == null && publication.getTitle() != null){
+                setFullName(publication.getTitle());
             }
         }
     }
@@ -520,7 +523,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
@@ -558,12 +561,12 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
     }
 
     @Override
-    public String getShortLabel() {
+    public String getShortName() {
         return this.namesContainer != null ? this.namesContainer.getShortLabel():null;
     }
 
     @Override
-    public void setShortLabel(String name) {
+    public void setShortName(String name) {
         if (this.namesContainer == null){
             this.namesContainer = new NamesContainer();
         }

@@ -6,9 +6,9 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ import java.util.List;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="participant" type="{http://psi.hupo.org/mi/mif}inferredInteractionParticipant" maxOccurs="unbounded" minOccurs="2"/>
- *         &lt;element name="experimentRefList" type="{http://psi.hupo.org/mi/mif}experimentRefList" minOccurs="0"/>
+ *         &lt;elements name="participant" type="{http://psi.hupo.org/mi/mif}inferredInteractionParticipant" maxOccurs="unbounded" minOccurs="2"/>
+ *         &lt;elements name="experimentRefList" type="{http://psi.hupo.org/mi/mif}experimentRefList" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -48,7 +48,7 @@ public class InferredInteraction
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
 
     public InferredInteraction() {
-        XmlEntryContext.getInstance().registerInferredInteraction(this);
+        Xml25EntryContext.getInstance().registerInferredInteraction(this);
     }
 
     public Collection<Experiment> getExperiments() {
