@@ -5,7 +5,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -79,7 +79,7 @@ public class XmlPosition extends AbstractXmlPosition{
         if (this.pos == null){
             this.pos = new BigInteger(String.valueOf(0));
             this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidPosition("The Xml Position is not provided. It will be loaded as undetermined position", this);
             }

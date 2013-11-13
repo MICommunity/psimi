@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.reference;
 
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 /**
  * Abstract implementation for XmlIdReference
@@ -19,7 +19,7 @@ public abstract class AbstractXmlIdReference implements XmlIdReference {
     }
 
     public void registerForResolution() {
-        XmlEntryContext.getInstance().registerReference(this);
+        Xml25EntryContext.getInstance().registerReference(this);
     }
 
     public int getRef() {

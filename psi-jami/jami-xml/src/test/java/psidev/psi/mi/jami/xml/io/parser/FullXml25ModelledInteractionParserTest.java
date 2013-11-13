@@ -90,7 +90,7 @@ public class FullXml25ModelledInteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
         ModelledParticipant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -207,7 +207,7 @@ public class FullXml25ModelledInteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
         ModelledParticipant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -338,7 +338,7 @@ public class FullXml25ModelledInteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
         ModelledParticipant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
         ModelledFeature f = p1.getFeatures().iterator().next();
@@ -382,7 +382,7 @@ public class FullXml25ModelledInteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         partIterator = interaction.getParticipants().iterator();
         p1 = partIterator.next();
-        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortLabel());
+        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
         f = p1.getFeatures().iterator().next();

@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -101,7 +101,7 @@ public class XmlProtein extends DefaultProtein implements ExtendedPsi25Interacto
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

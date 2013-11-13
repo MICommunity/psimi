@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -142,7 +142,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
                 this.start.getEnd() > this.end.getStart()){
             this.start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
             this.end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidRange("The range is invalid as the start position is after the end position. It will be loaded as undetermined range.", this);
             }
@@ -165,7 +165,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
                 this.start.getEnd() > this.end.getStart()){
             this.start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
             this.end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidRange("The range is invalid as the start position is after the end position. It will be loaded as undetermined range.", this);
             }
@@ -201,7 +201,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
                 this.start.getEnd() > this.end.getStart()){
             this.start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
             this.end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidRange("The range is invalid as the start position is after the end position. It will be loaded as undetermined range.", this);
             }
@@ -224,7 +224,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
                 this.start.getEnd() > this.end.getStart()){
             this.start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
             this.end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), true);
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidRange("The range is invalid as the start position is after the end position. It will be loaded as undetermined range", this);
             }

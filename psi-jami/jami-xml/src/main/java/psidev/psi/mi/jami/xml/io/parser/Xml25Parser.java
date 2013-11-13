@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -86,14 +86,14 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
                 if (experimentList != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
                 }
-                getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList element does not contain any experimentDescription node. PSI-XML is not valid."));
+                getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList elements does not contain any experimentDescription node. PSI-XML is not valid."));
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());
     }
 
     @Override
-    protected void parseAvailabilityList(XmlEntryContext entryContext) throws PsiXmlParserException {
+    protected void parseAvailabilityList(Xml25EntryContext entryContext) throws PsiXmlParserException {
         // read availabilityList
         Location availabilityList = getStreamReader().getLocation();
         try {
@@ -129,7 +129,7 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
                 if (availabilityList != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
                 }
-                getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList element does not contain any availability node. PSI-XML is not valid."));
+                getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contain any availability node. PSI-XML is not valid."));
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());

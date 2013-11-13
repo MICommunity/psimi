@@ -25,7 +25,7 @@ import java.util.List;
 
 
 /**
- * This element is controlled by the PSI-MI controlled vocabulary
+ * This elements is controlled by the PSI-MI controlled vocabulary
  *                 "experimentalPreparation", root term id MI:0346.
  *             
  * 

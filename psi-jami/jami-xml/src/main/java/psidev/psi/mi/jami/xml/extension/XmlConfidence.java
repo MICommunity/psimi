@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceComparator;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -79,7 +79,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
     public void setJAXBValue(String value) {
         this.value = value != null ? value : PsiXml25Utils.UNSPECIFIED;
         if (value == null){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onMissingConfidenceValue(this);
             }
@@ -98,7 +98,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
     public void setJAXBType(CvTerm value) {
         this.type = value;
         if (value == null){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onMissingConfidenceType(this);
             }

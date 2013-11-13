@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -88,7 +88,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
             this.type.setShortName(value != null ? value : PsiXml25Utils.UNSPECIFIED);
         }
         if (value == null){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onMissingParameterType(this);
             }
@@ -196,7 +196,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     @XmlAttribute(name = "factor", required = true)
     public void setJAXBFactor(BigDecimal value) {
         if (value == null){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onMissingParameterValue(this);
             }

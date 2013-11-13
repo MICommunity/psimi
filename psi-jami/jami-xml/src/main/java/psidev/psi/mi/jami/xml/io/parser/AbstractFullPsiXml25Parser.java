@@ -85,7 +85,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     public T parseNextInteraction() throws PsiXmlParserException {
         // did not parse the entry set yet
         if (this.entrySet == null){
-            initialiseEntryContext(XmlEntryContext.getInstance());
+            initialiseEntryContext(Xml25EntryContext.getInstance());
             this.entrySet = parseEntrySet();
             this.entryIterator = this.entrySet.getEntries().iterator();
         }
@@ -169,8 +169,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.useDefaultCache = true;
 
         // release the thread local
-        XmlEntryContext.getInstance().clear();
-        XmlEntryContext.remove();
+        Xml25EntryContext.getInstance().clear();
+        Xml25EntryContext.remove();
     }
 
     @Override
@@ -195,8 +195,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
             this.indexOfComplexes.clear();
         }
         // release the thread local
-        XmlEntryContext.getInstance().clear();
-        XmlEntryContext.remove();
+        Xml25EntryContext.getInstance().clear();
+        Xml25EntryContext.remove();
         if (this.originalReader != null){
             // reinit line parser if reader can be reset
             if (this.originalReader.markSupported()){
@@ -297,7 +297,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         return entrySet;
     }
 
-    private void initialiseEntryContext(XmlEntryContext entryContext) {
+    private void initialiseEntryContext(Xml25EntryContext entryContext) {
         entryContext.clear();
         entryContext.setListener(this.listener);
         if (useDefaultCache){

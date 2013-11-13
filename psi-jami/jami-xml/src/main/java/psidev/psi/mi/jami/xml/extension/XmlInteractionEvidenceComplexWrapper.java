@@ -5,8 +5,8 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.XmlEntry;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Entry;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
         this.interactionEvidence = interaction;
-        XmlEntryContext.getInstance().registerComplex(interaction.getId(), this);
+        Xml25EntryContext.getInstance().registerComplex(interaction.getId(), this);
     }
 
     public Date getUpdatedDate() {
@@ -312,12 +312,12 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     }
 
     @Override
-    public XmlEntry getEntry() {
+    public Entry getEntry() {
         return this.interactionEvidence.getEntry();
     }
 
     @Override
-    public void setEntry(XmlEntry entry) {
+    public void setEntry(Entry entry) {
         this.interactionEvidence.setEntry(entry);
     }
 
@@ -334,7 +334,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     @Override
     public void setId(int id) {
         this.interactionEvidence.setId(id);
-        XmlEntryContext.getInstance().registerComplex(id, this);
+        Xml25EntryContext.getInstance().registerComplex(id, this);
     }
 
     @Override

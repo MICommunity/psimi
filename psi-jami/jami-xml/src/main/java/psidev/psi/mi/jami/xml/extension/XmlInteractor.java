@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -245,7 +245,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
         if (this.namesContainer != null){
             if (this.namesContainer.isEmpty()){
                 this.namesContainer.setShortLabel(PsiXml25Utils.UNSPECIFIED);
-                PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
                 if (listener != null){
                     listener.onMissingInteractorName(this, this);
                 }
@@ -255,7 +255,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
             }
         }
         else{
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onMissingInteractorName(this, this );
             }
@@ -312,7 +312,7 @@ public class XmlInteractor implements Interactor, FileSourceContext, Locatable, 
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

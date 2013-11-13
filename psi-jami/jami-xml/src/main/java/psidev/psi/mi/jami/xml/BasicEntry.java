@@ -4,6 +4,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Source;
 import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.extension.XmlBasicInteraction;
 import psidev.psi.mi.jami.xml.extension.XmlSource;
@@ -26,8 +27,8 @@ public class BasicEntry extends AbstractEntry<Interaction>{
     @XmlTransient
     private Locator locator;
 
-    @XmlElement(name = "source")
-    public void setJAXBSource(XmlSource source) {
+    @XmlElement(name = "source", type = XmlSource.class)
+    public void setJAXBSource(ExtendedPsi25Source source) {
         super.setSource(source);
     }
 

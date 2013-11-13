@@ -5,7 +5,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.*;
 
@@ -83,7 +83,7 @@ public class Availability implements FileSourceContext, Locatable
     @XmlAttribute(name = "id", required = true)
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

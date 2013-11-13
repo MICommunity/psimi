@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultNucleicAcid;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -100,7 +100,7 @@ public class XmlNucleciAcid extends DefaultNucleicAcid implements ExtendedPsi25I
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

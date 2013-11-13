@@ -66,7 +66,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
         ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)interaction.getExperiment();
-        Assert.assertEquals("dohrmann-1999-1", exp.getShortLabel());
+        Assert.assertEquals("dohrmann-1999-1", exp.getShortName());
         Assert.assertEquals("RAD53 regulates DBF4 independently of checkpoint function in Saccharomyces cerevisiae.", exp.getFullName());
         Assert.assertEquals(3, exp.getXrefs().size());
         // all annotations are publication annotations
@@ -151,7 +151,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         ParticipantEvidence p1 = interaction.getParticipantA();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -278,7 +278,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
         ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)interaction.getExperiment();
-        Assert.assertEquals("dohrmann-1999-1", exp.getShortLabel());
+        Assert.assertEquals("dohrmann-1999-1", exp.getShortName());
         Assert.assertEquals("RAD53 regulates DBF4 independently of checkpoint function in Saccharomyces cerevisiae.", exp.getFullName());
         Assert.assertEquals(3, exp.getXrefs().size());
         // all annotations are publication annotations
@@ -363,7 +363,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         ParticipantEvidence p1 = interaction.getParticipantA();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -470,7 +470,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
         ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)interaction.getExperiment();
-        Assert.assertEquals("dohrmann-1999-1", exp.getShortLabel());
+        Assert.assertEquals("dohrmann-1999-1", exp.getShortName());
         // publication
         Assert.assertNotNull(exp.getPublication());
         Publication pub = exp.getPublication();
@@ -490,7 +490,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         ParticipantEvidence p1 = interaction.getParticipantA();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortLabel());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
         FeatureEvidence f = p1.getFeatures().iterator().next();
@@ -521,7 +521,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
         exp = (ExtendedPsi25Experiment)interaction.getExperiment();
-        Assert.assertEquals("liu-2011d-10", exp.getShortLabel());
+        Assert.assertEquals("liu-2011d-10", exp.getShortName());
         // publication
         Assert.assertNotNull(exp.getPublication());
         pub = exp.getPublication();
@@ -542,7 +542,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         p1 = interaction.getParticipantA();
-        Assert.assertEquals("n/a", ((ExtendedPsi25ParticipantEvidence) p1).getShortLabel());
+        Assert.assertEquals("n/a", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
         f = p1.getFeatures().iterator().next();

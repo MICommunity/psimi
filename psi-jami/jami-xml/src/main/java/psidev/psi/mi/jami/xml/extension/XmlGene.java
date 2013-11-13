@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultGene;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -89,7 +89,7 @@ public class XmlGene extends DefaultGene implements ExtendedPsi25Interactor, Fil
      */
     public void setId(int value) {
         this.id = value;
-        XmlEntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerObject(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

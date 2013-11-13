@@ -53,7 +53,7 @@ public abstract class AbstractEntrySet<T extends AbstractEntry> implements Locat
         @Override
         protected void processAddedObjectEvent(T added) {
             // resolve references
-            XmlEntryContext context = XmlEntryContext.getInstance();
+            Xml25EntryContext context = Xml25EntryContext.getInstance();
             context.resolveInteractorAndExperimentRefs();
             context.resolveInferredInteractionRefs();
             context.getCurrentEntry().setHasLoadedFullEntry(true);

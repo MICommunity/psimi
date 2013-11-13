@@ -5,7 +5,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -80,13 +80,13 @@ public class XmlInterval extends AbstractXmlPosition{
         if (this.start == null){
             this.start = new BigInteger(String.valueOf(0));
             this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidPosition("The Xml start position is not provided. It will be loaded as undetermined position", this);
             }
         }
         else if (end != null && end.intValue() > start.intValue()){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidPosition("The Xml Interval is invalid as the start position "+start+" is after the end position "+end, this);
             }
@@ -110,13 +110,13 @@ public class XmlInterval extends AbstractXmlPosition{
         if (this.end == null){
             this.end = new BigInteger(String.valueOf(0));
             this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidPosition("The Xml end Position is not provided. It will be loaded as undetermined position", this);
             }
         }
         else if (start != null && end.intValue() > start.intValue()){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
             if (listener != null){
                 listener.onInvalidPosition("The Xml Interval is invalid as the start position "+start+" is after the end position "+end, this);
             }
