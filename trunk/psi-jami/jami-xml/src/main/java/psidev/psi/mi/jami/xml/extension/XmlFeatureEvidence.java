@@ -25,7 +25,7 @@ import java.util.List;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence{
+public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements ExtendedPsi25FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
     private boolean initialisedMethods = false;
@@ -69,7 +69,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         return featureDetectionMethods;
     }
 
-    public Collection<Experiment> getExperiments() {
+    public List<Experiment> getExperiments() {
         if (jaxbExperimentRefWrapper == null){
             jaxbExperimentRefWrapper = new JAXBExperimentRefWrapper();
         }
