@@ -114,13 +114,13 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
     protected void writeRanges(F object) throws XMLStreamException {
         if (!object .getRanges().isEmpty()){
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-            // write start attribute list
+            // write start range list
             getStreamWriter().writeStartElement("featureRangeList");
             for (Object range : object.getRanges()){
                 this.rangeWriter.write((Range)range);
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
-            // write end attributeList
+            // write end rangeList
             getStreamWriter().writeEndElement();
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
