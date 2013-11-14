@@ -47,7 +47,7 @@ public class Xml25RangeWriter implements PsiXml25ElementWriter<Range>{
                 if (object.isLink()){
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.streamWriter.writeStartElement("isLink");
-                    this.streamWriter.writeBoolean(object.isLink());
+                    this.streamWriter.writeCharacters(Boolean.toString(object.isLink()));
                     this.streamWriter.writeEndElement();
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }

@@ -40,6 +40,7 @@ public abstract class AbstractXml25OpenCvTermWriter extends AbstractXml25CvTermW
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
+            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Annotation ann : object.getAnnotations()){
                 this.attributeWriter.write(ann);
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);

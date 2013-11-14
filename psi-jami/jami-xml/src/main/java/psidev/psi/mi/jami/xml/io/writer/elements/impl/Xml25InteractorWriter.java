@@ -144,6 +144,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 for (Annotation ann : object.getAnnotations()){
                     this.attributeWriter.write(ann);
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
@@ -161,6 +162,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 for (Checksum c : object.getChecksums()){
                     this.checksumWriter.write(c);
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);

@@ -110,6 +110,9 @@ public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWrit
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
 
+            // write other properties
+            writeOtherProperties(object);
+
             // write end organism
             this.streamWriter.writeEndElement();
 
@@ -117,6 +120,8 @@ public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWrit
             throw new MIIOException("Impossible to write the db reference : "+object.toString(), e);
         }
     }
+
+    protected abstract void writeOtherProperties(Organism object) throws XMLStreamException;
 
     protected abstract void writeStartOrganism() throws XMLStreamException;
 

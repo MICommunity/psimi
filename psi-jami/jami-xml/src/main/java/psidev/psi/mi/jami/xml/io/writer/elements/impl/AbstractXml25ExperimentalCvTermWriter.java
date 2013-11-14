@@ -48,8 +48,10 @@ public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml2
             for (Experiment exp : term.getExperiments()){
                 getStreamWriter().writeStartElement("experimentRef");
                 getStreamWriter().writeCharacters(Integer.toString(this.objectIndex.extractIdFor(exp)));
+                getStreamWriter().writeEndElement();
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
+            getStreamWriter().writeEndElement();
         }
     }
 }

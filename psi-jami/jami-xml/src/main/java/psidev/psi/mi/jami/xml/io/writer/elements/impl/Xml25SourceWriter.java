@@ -141,6 +141,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 for (Annotation ann : object.getAnnotations()){
                     this.attributeWriter.write(ann);
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);

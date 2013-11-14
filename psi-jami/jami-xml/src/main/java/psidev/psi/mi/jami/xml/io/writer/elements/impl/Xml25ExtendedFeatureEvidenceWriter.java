@@ -43,8 +43,10 @@ public class Xml25ExtendedFeatureEvidenceWriter extends Xml25NamedFeatureEvidenc
             for (Experiment exp : extendedFeature.getExperiments()){
                 getStreamWriter().writeStartElement("experimentRef");
                 getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(exp)));
+                getStreamWriter().writeEndElement();
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
+            getStreamWriter().writeEndElement();
         }
     }
 }
