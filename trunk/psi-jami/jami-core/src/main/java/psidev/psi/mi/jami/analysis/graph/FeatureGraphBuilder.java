@@ -56,11 +56,13 @@ public class FeatureGraphBuilder<I extends Interaction, F extends Feature> {
             Participant participant = (Participant)o;
             for (Object o2 : participant.getFeatures()){
                 F feature = (F)o2;
-                graph.addVertex(feature);
-                for (Object o3 : feature.getLinkedFeatures()){
-                    F feature2 = (F)o3;
-                    graph.addVertex(feature2);
-                    graph.addEdge(feature, feature2);
+                if (!feature.getLinkedFeatures().isEmpty()){
+                    graph.addVertex(feature);
+                    for (Object o3 : feature.getLinkedFeatures()){
+                        F feature2 = (F)o3;
+                        graph.addVertex(feature2);
+                        graph.addEdge(feature, feature2);
+                    }
                 }
             }
         }
