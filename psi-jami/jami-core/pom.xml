@@ -69,6 +69,13 @@
 
     <dependencies>
 
+        <!-- JGraphT is a free Java graph library that provides mathematical graph-theory objects and algorithms  -->
+        <dependency>
+            <groupId>net.sf.jgrapht</groupId>
+            <artifactId>jgrapht</artifactId>
+            <version>0.8.3</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
