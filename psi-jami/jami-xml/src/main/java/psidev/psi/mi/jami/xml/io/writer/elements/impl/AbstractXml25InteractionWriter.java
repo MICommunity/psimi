@@ -1,18 +1,18 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import org.codehaus.stax2.XMLStreamWriter2;
+import psidev.psi.mi.jami.analysis.graph.BindingSiteCliqueFinder;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Abstract writer of interaction
@@ -22,23 +22,61 @@ import java.util.Iterator;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXml25InteractionWriter<T extends Interaction> implements PsiXml25ElementWriter<T> {
+public abstract class AbstractXml25InteractionWriter<T extends Interaction, P extends Participant> implements PsiXml25ElementWriter<T> {
 
     private XMLStreamWriter2 streamWriter;
     private PsiXml25ObjectIndex objectIndex;
-    private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
+    private PsiXml25ElementWriter<P> participantWriter;
+    private PsiXml25ElementWriter<CvTerm> interactionTypeWriter;
+    private PsiXml25ElementWriter<Annotation> attributeWriter;
+    private PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter;
 
-    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+                                          PsiXml25ElementWriter<P> participantWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
         }
+        this.streamWriter = writer;
+
         if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXml25InteractionWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
+        if (participantWriter == null){
+            throw new IllegalArgumentException("The PsiXml 2.5 participant writer is mandatory for the AbstractXml25InteractionWriter.");
+        }
+        this.participantWriter = participantWriter;
+        this.primaryRefWriter = new Xml25PrimaryXrefWriter(writer);
+        this.secondaryRefWriter = new Xml25SecondaryXrefWriter(writer);
+        this.interactionTypeWriter = new Xml25InteractionTypeWriter(writer);
+        this.attributeWriter = new Xml25AnnotationWriter(writer);
+        this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
+    }
+
+    protected AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+                                             PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+                                             PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter) {
+        if (writer == null){
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
+        }
         this.streamWriter = writer;
+
+        if (objectIndex == null){
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXml25InteractionWriter. It is necessary for generating an id to an experimentDescription");
+        }
+        this.objectIndex = objectIndex;
+        if (participantWriter == null){
+            throw new IllegalArgumentException("The PsiXml 2.5 participant writer is mandatory for the AbstractXml25InteractionWriter.");
+        }
+        this.participantWriter = participantWriter;
+        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new Xml25PrimaryXrefWriter(writer);
+        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new Xml25SecondaryXrefWriter(writer);
+        this.interactionTypeWriter = interactionTypeWriter != null ? interactionTypeWriter : new Xml25InteractionTypeWriter(writer);
+        this.attributeWriter = attributeWriter != null ? attributeWriter : new Xml25AnnotationWriter(writer);
+        this.inferredInteractionWriter = inferredInteractionWriter != null ? inferredInteractionWriter : new Xml25InferredInteractionWriter(writer, objectIndex);
     }
 
     @Override
@@ -46,89 +84,39 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction> impl
         try {
             // write start
             this.streamWriter.writeStartElement("interaction");
-            int id = this.objectIndex.extractIdFor(object);
             // write id attribute
+            int id = this.objectIndex.extractIdFor(object);
             this.streamWriter.writeAttribute("id", Integer.toString(id));
             // write other attributes (such as imex id)
             writeOtherAttributes(object);
-            // write extended interaction
-            boolean hasShortLabel = object.getShortName() != null;
 
-            if (object instanceof ExtendedPsi25Interaction){
-               ExtendedPsi25Interaction xmlInteraction = (ExtendedPsi25Interaction) object;
-               writeExtendedInteraction(object, hasShortLabel, xmlInteraction);
-            }
-            // write normal interaction
-            else{
-                // write names
-                if (hasShortLabel){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                    this.streamWriter.writeStartElement("names");
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                    // write shortname
-                    this.streamWriter.writeStartElement("shortLabel");
-                    this.streamWriter.writeCharacters(object.getShortName());
-                    this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                    // write end names
-                    this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                }
-                // write Xref
-                writeXref(object);
-                // write availability
-                writeAvailability(object);
-                // write experiments
-                writeExperiments(object);
-                // write participants
-                // write inferred interactions
-                // write interaction type
-                // write modelled
-                // write intramolecular
-                // write negative
-                // write confidences
-                // write parameters
-                // write attributes
-            }
-            /*
-
-            // write interactor type
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            this.interactorTypeWriter.write(object.getInteractorType());
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-
-            // write organism
-            if (object.getOrganism() != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                this.organismWriter.write(object.getOrganism());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-
-            // write sequence
-            if (object instanceof Polymer){
-                Polymer pol = (Polymer) object;
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                this.streamWriter.writeStartElement("sequence");
-                this.streamWriter.writeCharacters(pol.getSequence());
-                this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-
+            // write names
+            writeNames(object);
+            // write Xref
+            writeXref(object);
+            // write availability
+            writeAvailability(object);
+            // write experiments
+            writeExperiments(object);
+            // write participants
+            writeParticipants(object);
+            // write inferred interactions
+            writeInferredInteractions(object);
+            // write interaction type
+            writeInteractionType(object);
+            // write modelled
+            writeModelled(object);
+            // write intramolecular
+            writeIntraMolecular(object);
+            // write negative
+            writeNegative(object);
+            // write confidences
+            writeConfidences(object);
+            // write parameters
+            writeParameters(object);
             // write attributes
-            if (!object.getAnnotations().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                // write start attribute list
-                this.streamWriter.writeStartElement("attributeList");
-                for (Annotation ann : object.getAnnotations()){
-                    this.attributeWriter.write(ann);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                }
-                // write end attributeList
-                this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }*/
-
-            // write end interactor
+            writeAttributes(object);
+            // write end interaction
             this.streamWriter.writeEndElement();
 
         } catch (XMLStreamException e) {
@@ -136,15 +124,82 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction> impl
         }
     }
 
+    protected void writeAttributes(T object) throws XMLStreamException {
+        // write attributes
+        if (!object.getAnnotations().isEmpty()){
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            // write start attribute list
+            this.streamWriter.writeStartElement("attributeList");
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            for (Object ann : object.getAnnotations()){
+                this.attributeWriter.write((Annotation)ann);
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            }
+            // write end attributeList
+            this.streamWriter.writeEndElement();
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        }
+    }
+
+    protected void writeInteractionType(T object) throws XMLStreamException {
+        if (object.getInteractionType() != null){
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            this.interactionTypeWriter.write(object.getInteractionType());
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        }
+    }
+
+    protected void writeInferredInteractions(T object) throws XMLStreamException {
+        Collection<Set<Feature>> inferredInteractions = collectInferredInteractionsFrom(object);
+        if (inferredInteractions != null && !inferredInteractions.isEmpty()){
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            this.streamWriter.writeStartElement("inferredInteractionList");
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            for (Set<Feature> inferred : inferredInteractions){
+                this.inferredInteractionWriter.write(inferred);
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            }
+            this.streamWriter.writeEndElement();
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        }
+    }
+
+    protected void writeParticipants(T object) throws XMLStreamException {
+        if (object.getParticipants().isEmpty()){
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            this.streamWriter.writeStartElement("participantList");
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            for (Object participant : object.getParticipants()){
+                this.participantWriter.write((P)participant);
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            }
+            this.streamWriter.writeEndElement();
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        }
+    }
+
+    protected void writeNames(T object) throws XMLStreamException {
+        boolean hasShortLabel = object.getShortName() != null;
+        if (hasShortLabel){
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            this.streamWriter.writeStartElement("names");
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            // write shortname
+            this.streamWriter.writeStartElement("shortLabel");
+            this.streamWriter.writeCharacters(object.getShortName());
+            this.streamWriter.writeEndElement();
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            // write end names
+            this.streamWriter.writeEndElement();
+            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        }
+    }
+
     protected abstract void writeAvailability(T object);
-
-    protected abstract void writeAvailability(ExtendedPsi25Interaction object);
-
     protected abstract void writeExperiments(T object);
-
-    protected abstract void writeExperiments(ExtendedPsi25Interaction object);
-
     protected abstract void writeOtherAttributes(T object);
+    protected abstract void writeIntraMolecular(T object);
+    protected abstract void writeModelled(T object);
 
     protected void writeXref(T object) throws XMLStreamException {
         if (!object.getIdentifiers().isEmpty()){
@@ -156,46 +211,6 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction> impl
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeXrefFromInteractionXrefs(object);
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-        }
-    }
-
-    protected void writeExtendedInteraction(T object, boolean hasShortLabel, ExtendedPsi25Interaction xmlInteraction) throws XMLStreamException {
-        // write names
-        boolean hasFullLabel = xmlInteraction.getFullName() != null;
-        boolean hasAliases = !xmlInteraction.getAliases().isEmpty();
-        if (hasShortLabel || hasFullLabel || hasAliases){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            this.streamWriter.writeStartElement("names");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            // write shortname
-            if (hasShortLabel){
-                this.streamWriter.writeStartElement("shortLabel");
-                this.streamWriter.writeCharacters(object.getShortName());
-                this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-            // write fullname
-            if (hasFullLabel){
-                this.streamWriter.writeStartElement("fullName");
-                this.streamWriter.writeCharacters(xmlInteraction.getFullName());
-                this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-            // write aliases
-            for (Object alias : xmlInteraction.getAliases()){
-                this.aliasWriter.write((Alias)alias);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-            // write end names
-            this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-
-            // write Xref
-            writeXref(object);
-            // write availability
-            writeAvailability(xmlInteraction);
-            // write experiments
-            writeExperiments(xmlInteraction);
         }
     }
 
@@ -275,5 +290,20 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction> impl
 
     protected XMLStreamWriter2 getStreamWriter() {
         return streamWriter;
+    }
+
+    protected PsiXml25ObjectIndex getObjectIndex() {
+        return objectIndex;
+    }
+
+    protected abstract void writeParameters(T object);
+
+    protected abstract void writeConfidences(T object);
+
+    protected abstract void writeNegative(T object);
+
+    private Collection<Set<Feature>> collectInferredInteractionsFrom(T object){
+        BindingSiteCliqueFinder<T,Feature> cliqueFinder = new BindingSiteCliqueFinder<T, Feature>(object);
+        return cliqueFinder.getAllMaximalCliques();
     }
 }
