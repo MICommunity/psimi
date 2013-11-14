@@ -101,6 +101,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
+            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object ann : object.getAnnotations()){
                 this.attributeWriter.write((Annotation)ann);
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
@@ -116,6 +117,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start range list
             getStreamWriter().writeStartElement("featureRangeList");
+            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object range : object.getRanges()){
                 this.rangeWriter.write((Range)range);
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
