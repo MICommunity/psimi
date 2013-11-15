@@ -10,10 +10,7 @@ import psidev.psi.mi.jami.xml.Entry;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Wrapper of basic interactions
@@ -177,6 +174,12 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     public Collection<CooperativeEffect> getCooperativeEffects() {
         if (this.cooperativeEffects == null){
            this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+            // collect cooperative effects from interaction evidence annotations
+            Collection<Annotation> annotations = new ArrayList<Annotation>(this.interaction.getAnnotations());
+            CooperativeEffect effect = PsiXml25Utils.extractCooperativeEffectFrom(annotations, Collections.EMPTY_LIST, Xml25EntryContext.getInstance().getListener());
+            if (effect != null){
+                getCooperativeEffects().add(effect);
+            }
         }
         return this.cooperativeEffects;
     }

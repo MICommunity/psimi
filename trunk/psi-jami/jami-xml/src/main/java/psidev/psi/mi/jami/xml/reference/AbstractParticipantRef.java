@@ -13,7 +13,7 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractParticipantRef extends AbstractXmlIdReference implements Entity{
+public abstract class AbstractParticipantRef<T extends Feature> extends AbstractXmlIdReference implements Entity<T>{
     public AbstractParticipantRef(int ref) {
         super(ref);
     }
@@ -66,7 +66,7 @@ public abstract class AbstractParticipantRef extends AbstractXmlIdReference impl
         throw new IllegalStateException("The participant reference is not resolved and we cannot set the stoichiometry for participant id "+ref);
     }
 
-    public Collection<Feature> getFeatures() {
+    public Collection<T> getFeatures() {
         throw new IllegalStateException("The participant reference is not resolved and we don't have features for participant id "+ref);
     }
 
@@ -78,19 +78,19 @@ public abstract class AbstractParticipantRef extends AbstractXmlIdReference impl
         throw new IllegalStateException("The participant reference is not resolved and we cannot set the change listener for participant id "+ref);
     }
 
-    public boolean addFeature(Feature feature) {
+    public boolean addFeature(T feature) {
         throw new IllegalStateException("The participant reference is not resolved and we cannot add a feature for participant id "+ref);
     }
 
-    public boolean removeFeature(Feature feature) {
+    public boolean removeFeature(T feature) {
         throw new IllegalStateException("The participant reference is not resolved and we cannot remove a feature for participant id "+ref);
     }
 
-    public boolean addAllFeatures(Collection features) {
+    public boolean addAllFeatures(Collection<? extends T> features) {
         throw new IllegalStateException("The participant reference is not resolved and we cannot add features for participant id "+ref);
     }
 
-    public boolean removeAllFeatures(Collection features) {
+    public boolean removeAllFeatures(Collection<? extends T> features) {
         throw new IllegalStateException("The participant reference is not resolved and we cannot remove features for participant id "+ref);
     }
 

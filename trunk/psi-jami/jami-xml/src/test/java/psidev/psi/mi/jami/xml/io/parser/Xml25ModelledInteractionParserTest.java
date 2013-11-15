@@ -416,4 +416,43 @@ public class Xml25ModelledInteractionParserTest {
         Assert.assertNull(interaction);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_read_valid_dynamic_interactions() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/S1.xml");
+
+        PsiXml25Parser<ModelledInteraction> parser = new Xml25ModelledParser(stream);
+
+        ModelledInteraction interaction = parser.parseNextInteraction();
+
+        Assert.assertNotNull(interaction);
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+        Assert.assertEquals(1, interaction.getCooperativeEffects().size());
+
+        CooperativeEffect effect = interaction.getCooperativeEffects().iterator().next();
+        Assert.assertEquals("positive cooperative effect", effect.getOutCome().getShortName());
+        Assert.assertTrue(effect instanceof Preassembly);
+        Preassembly preAssembly = (Preassembly) effect;
+        Assert.assertEquals("configurational pre-organization", preAssembly.getResponse().getShortName());
+        Assert.assertEquals(1, preAssembly.getAffectedInteractions().size());
+        Assert.assertEquals("CyclinA_pCdk2-Cdc6", preAssembly.getAffectedInteractions().iterator().next().getShortName());
+
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        interaction = parser.parseNextInteraction();
+        Assert.assertNotNull(interaction);
+        Assert.assertTrue(parser.hasFinished());
+
+        parser.close();
+    }
 }

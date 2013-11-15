@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import java.util.Collection;
 
 /**
- * Abstract class for an ExperimentRef
+ * Abstract class for an ModelledInteractionRef
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

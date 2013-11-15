@@ -165,7 +165,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     }
 
     protected void writeParticipants(T object) throws XMLStreamException {
-        if (object.getParticipants().isEmpty()){
+        if (!object.getParticipants().isEmpty()){
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.streamWriter.writeStartElement("participantList");
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
@@ -198,7 +198,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     protected abstract void writeAvailability(T object);
     protected abstract void writeExperiments(T object) throws XMLStreamException;
     protected abstract void writeOtherAttributes(T object);
-    protected abstract void writeIntraMolecular(T object);
+    protected abstract void writeIntraMolecular(T object) throws XMLStreamException;
     protected abstract void writeModelled(T object);
 
     protected void writeXref(T object) throws XMLStreamException {
@@ -301,6 +301,10 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     protected abstract void writeConfidences(T object);
 
     protected abstract void writeNegative(T object);
+
+    protected PsiXml25ElementWriter<CvTerm> getInteractionTypeWriter() {
+        return interactionTypeWriter;
+    }
 
     private Collection<Set<Feature>> collectInferredInteractionsFrom(T object){
         BindingSiteCliqueFinder<T,Feature> cliqueFinder = new BindingSiteCliqueFinder<T, Feature>(object);
