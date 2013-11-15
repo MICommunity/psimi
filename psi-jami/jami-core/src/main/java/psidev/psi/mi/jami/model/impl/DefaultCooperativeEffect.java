@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,7 @@ public class DefaultCooperativeEffect implements CooperativeEffect {
     private Collection<Annotation> annotations;
     private CvTerm outcome;
     private CvTerm response;
+    private BigDecimal value;
 
     public DefaultCooperativeEffect(CvTerm outcome){
         if (outcome == null){
@@ -119,6 +121,14 @@ public class DefaultCooperativeEffect implements CooperativeEffect {
 
     public void setResponse(CvTerm response) {
         this.response = response;
+    }
+
+    public BigDecimal getCooperativeEffectValue() {
+        return this.value;
+    }
+
+    public void setCooperativeEffectValue(BigDecimal value) {
+        this.value = value;
     }
 
     @Override

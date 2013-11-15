@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.model;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
@@ -116,5 +117,16 @@ public interface CooperativeEffect {
      */
     public void setResponse(CvTerm response);
 
+    /**
+     * Quantification of the cooperative effect. The ratio of a binding or a catalytic parameter of the affected interaction in
+     * the absence versus presence of the affecting interaction.
+     * @return the cooperative effect value if it exists, null otherwise
+     */
+    public BigDecimal getCooperativeEffectValue();
 
+    /**
+     * Sets the cooperative effect value of this effect
+     * @param value
+     */
+    public void setCooperativeEffectValue(BigDecimal value);
 }
