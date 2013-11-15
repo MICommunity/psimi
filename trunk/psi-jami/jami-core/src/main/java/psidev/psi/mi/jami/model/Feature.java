@@ -26,6 +26,18 @@ public interface Feature<P extends Entity, F extends Feature> {
     public static String SUFFICIENT_BINDING_MI ="MI:0442";
     public static String DIRECT_BINDING = "direct binding region";
     public static String DIRECT_BINDING_MI ="MI:1125";
+    public static String PREREQUISITE_PTM = "prerequisite-ptm";
+    public static String PREREQUISITE_PTM_MI ="MI:0638";
+    public static String DECREASING_PTM = "decreasing-ptm";
+    public static String DECREASING_PTM_MI ="MI:1223";
+    public static String DISRUPTING_PTM = "disrupting-ptm";
+    public static String DISRUPTING_PTM_MI ="MI:1225";
+    public static String INCREASING_PTM = "increasing-ptm";
+    public static String INCREASING_PTM_MI ="MI:1224";
+    public static String RESULTING_PTM = "resulting-ptm";
+    public static String RESULTING_PTM_MI ="MI:0639";
+    public static String RESULTING_CLEAVAGE = "resulting-cleavage";
+    public static String RESULTING_CLEAVAGE_MI ="MI:1233";
     public static String BINDING_SITE = "binding-associated region";
     public static String BINDING_SITE_MI ="MI:0117";
 
@@ -120,7 +132,7 @@ public interface Feature<P extends Entity, F extends Feature> {
     /**
      * The effect of this feature on the interaction where the feature has been reported.
      * It can be null if the feature does not have any effects on the interaction or it is not relevant
-     * Ex: prerequisite, increasing interaction, decreasing interaction, disrupting interaction, etc.
+     * Ex: increasing interaction, decreasing interaction, disrupting interaction, etc.
      * @return the effect of this feature on the interaction
      */
     public CvTerm getInteractionEffect();
@@ -134,7 +146,7 @@ public interface Feature<P extends Entity, F extends Feature> {
     /**
      * The interaction dependency between the interaction reporting this feature and this feature.
      * It can be null if it is not relevant/appropriate for this feature.
-     * Ex: resulting-ptm, ...
+     * Ex: resulting-ptm,prerequisite-ptm ...
      * @return the interaction dependency between the interaction reporting this feature and this feature.
      */
     public CvTerm getInteractionDependency();

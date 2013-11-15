@@ -17,6 +17,45 @@ public interface CooperativeEffect {
 
     public static String ALLOSTERY = "allostery";
     public static String ALLOSTERY_ID = "MI:1157";
+    public static String PREASSEMBLY = "pre-assembly";
+    public static String PREASSEMBLY_ID = "MI:1158";
+    public static String AFFECTED_INTERACTION = "affected interaction";
+    public static String AFFECTED_INTERACTION_ID = "MI:1150";
+    public static String NEGATIVE_EFFECT = "negative cooperative effect";
+    public static String NEGATIVE_EFFECT_ID = "MI:1155";
+    public static String POSITIVE_EFFECT = "positive cooperative effect";
+    public static String POSITIVE_EFFECT_ID = "MI:1154";
+    public static String ALLOSTERIC_EFFECTOR = "allosteric effector";
+    public static String ALLOSTERIC_EFFECTOR_ID = "MI:1160";
+    public static String ALLOSTERIC_MOLECULE = "allosteric molecule";
+    public static String ALLOSTERIC_MOLECULE_ID = "MI:1159";
+    public static String ALLOSTERIC_K_RESPONSE = "allosteric k-type response";
+    public static String ALLOSTERIC_K_RESPONSE_ID = "MI:1162";
+    public static String ALLOSTERIC_V_RESPONSE = "allosteric v-type response";
+    public static String ALLOSTERIC_V_RESPONSE_ID = "MI:1163";
+    public static String HETEROTROPIC_ALLOSTERY = "heterotropic allostery";
+    public static String HETEROTROPIC_ALLOSTERY_ID = "MI:1168";
+    public static String HOMOTROPIC_ALLOSTERY = "homotropic allostery";
+    public static String HOMOTROPIC_ALLOSTERY_ID = "MI:1169";
+    public static String COOPERATIVE_EFFECT_VALUE = "cooperative effect value";
+    public static String COOPERATIVE_EFFECT_VALUE_ID = "MI:1152";
+    public static String ALLOSTERIC_DYNAMIC_CHANGE = "allosteric change in dynamics";
+    public static String ALLOSTERIC_DYNAMIC_CHANGE_ID = "MI:1166";
+    public static String ALTERED_PHYSICO_COMPATIBILITY = "altered physicochemical compatibility";
+    public static String ALTERED_PHYSICO_COMPATIBILITY_ID = "MI:1172";
+    public static String BINDING_HIDING = "binding site hiding";
+    public static String BINDING_HIDING_ID = "MI:1173";
+    public static String COMPOSITE_BINDING = "composite binding site formation";
+    public static String COMPOSITE_BINDING_ID = "MI:1171";
+    public static String ALLOSTERIC_STRUCTURE_CHANE = "allosteric change in structure";
+    public static String ALLOSTERIC_STRUCTURE_CHANE_ID = "MI:1165";
+    public static String PRE_ORGANIZATION = "configurational pre-organization";
+    public static String PRE_ORGANIZATION_ID = "MI:1174";
+    public static String ALLOSTERIC_PTM = "allosteric ptm";
+    public static String ALLOSTERIC_PTM_ID = "MI:1175";
+    public static String PARTICIPANT_REF = "participant-ref";
+    public static String PARTICIPANT_REF_ID = "MI:1151";
+
 
     /**
      * Collection of experimental methods and publications from which this cooperative effect has been inferred.
