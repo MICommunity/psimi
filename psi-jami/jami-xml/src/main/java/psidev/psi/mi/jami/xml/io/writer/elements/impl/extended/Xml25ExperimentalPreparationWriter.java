@@ -17,12 +17,12 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25ExtendedExperimentalPreparationWriter extends AbstractXml25ExperimentalCvTermWriter {
-    public Xml25ExtendedExperimentalPreparationWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+public class Xml25ExperimentalPreparationWriter extends AbstractXml25ExperimentalCvTermWriter {
+    public Xml25ExperimentalPreparationWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
         super(writer, objectIndex);
     }
 
-    public Xml25ExtendedExperimentalPreparationWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25ExperimentalPreparationWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

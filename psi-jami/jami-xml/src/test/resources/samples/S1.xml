@@ -1,0 +1,702 @@
+<entrySet xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="4" version="5" level="2" xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd">
+	<entry>
+		<experimentList>
+			<experimentDescription id="30">
+				<names>
+					<shortLabel>cheng-2006-1</shortLabel>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="16707497"/>
+					</xref>
+				</bibref>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>inferred by author</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0363"/>
+					</xref>
+				</interactionDetectionMethod>
+				<attributeList>
+                    <attribute name="publication year" nameAc="MI:0886">2006</attribute>
+                    <attribute name="author-list" nameAc="MI:0636">Cheng et al.</attribute>
+                </attributeList>
+			</experimentDescription>
+			<experimentDescription id="31">
+				<names>
+					<shortLabel>stevenson-2002-1</shortLabel>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="12081504"/>
+					</xref>
+				</bibref>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>inferred by author</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0363"/>
+					</xref>
+				</interactionDetectionMethod>
+				<attributeList>
+                    <attribute name="publication year" nameAc="MI:0886">2002</attribute>
+                    <attribute name="author-list" nameAc="MI:0636">Stevenson et al.</attribute>
+                </attributeList>
+			</experimentDescription>
+			<experimentDescription id="32">
+				<names>
+					<shortLabel>jeffrey-1995-1</shortLabel>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="7630397"/>
+					</xref>
+				</bibref>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>inferred by author</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0363"/>
+					</xref>
+				</interactionDetectionMethod>
+				<attributeList>
+                    <attribute name="publication year" nameAc="MI:0886">1995</attribute>
+                    <attribute name="author-list" nameAc="MI:0636">Jeffrey et al.</attribute>
+                </attributeList>
+			</experimentDescription>
+			<experimentDescription id="33">
+				<names>
+					<shortLabel>Brown-1999-1</shortLabel>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="10559988"/>
+					</xref>
+				</bibref>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>inferred by author</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0363"/>
+					</xref>
+				</interactionDetectionMethod>
+				<attributeList>
+                    <attribute name="publication year" nameAc="MI:0886">1999</attribute>
+                    <attribute name="author-list" nameAc="MI:0636">Brown et al.</attribute>
+                </attributeList>
+			</experimentDescription>
+			<experimentDescription id="34">
+				<names>
+					<shortLabel>russo-1996-1</shortLabel>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="8756328"/>
+					</xref>
+				</bibref>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>inferred by author</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0363"/>
+					</xref>
+				</interactionDetectionMethod>
+				<attributeList>
+                    <attribute name="publication year" nameAc="MI:0886">1996</attribute>
+                    <attribute name="author-list" nameAc="MI:0636">Russo et al.</attribute>
+                </attributeList>
+			</experimentDescription>
+		</experimentList>
+		<interactorList>
+			<interactor id="1">
+				<names>
+					<shortLabel>Cdk2</shortLabel>
+					<fullName>Cyclin-dependent kinase 2</fullName>
+					<alias typeAc="MI:0301" type="gene name">CDK2</alias>
+					<alias typeAc="MI:1041" type="synonym">p33 protein kinase</alias>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="uniprot knowledge base" refTypeAc="MI:0356" dbAc="MI:0486" id="P24941"/>
+					<secondaryRef refType="gene product" db="ensembl" refTypeAc="MI:0251" dbAc="MI:0476" id="ENSG00000123374"/>
+					<secondaryRef refType="identical object" db="refseq" refTypeAc="MI:0356" dbAc="MI:0481" id="NP_001789.2"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0326"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="2">
+				<names>
+					<shortLabel>Ccna2</shortLabel>
+					<fullName>Cyclin-A2</fullName>
+					<alias typeAc="MI:0301" type="gene name">CCNA2</alias>
+					<alias typeAc="MI:1041" type="synonym">CCN1</alias>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="uniprot knowledge base" refTypeAc="MI:0356" dbAc="MI:0486" id="P20248"/>
+					<secondaryRef refType="gene product" db="ensembl" refTypeAc="MI:0251" dbAc="MI:0476" id="ENSG00000145386"/>
+					<secondaryRef refType="identical object" db="refseq" refTypeAc="MI:0356" dbAc="MI:0481" id="NP_001228.1"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0326"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="3">
+				<names>
+					<shortLabel>Cdk7</shortLabel>
+					<fullName>Cyclin-dependent kinase 7</fullName>
+					<alias typeAc="MI:0301" type="gene name">CDK7</alias>
+					<alias typeAc="MI:1041" type="synonym">CDK-activating kinase 1</alias>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="uniprot knowledge base" refTypeAc="MI:0356" dbAc="MI:0486" id="P50613"/>
+					<secondaryRef refType="gene product" db="ensembl" refTypeAc="MI:0251" dbAc="MI:0476" id="ENSG00000134058"/>
+					<secondaryRef refType="identical object" db="refseq" refTypeAc="MI:0356" dbAc="MI:0481" id="NP_001790.1"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0326"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="4">
+				<names>
+					<shortLabel>Cdc6</shortLabel>
+					<fullName>Cell division control protein 6 homolog</fullName>
+					<alias typeAc="MI:0301" type="gene name">CDC6</alias>
+					<alias typeAc="MI:1041" type="synonym">Cdc18-related protein</alias>
+				</names>
+				<xref>
+					<primaryRef db="uniprot knowledge base" refTypeAc="MI:0356" dbAc="MI:0486" id="Q99741"/>
+					<secondaryRef refType="gene product" db="ensembl" refTypeAc="MI:0251" dbAc="MI:0476" id="ENSG00000094804"/>
+					<secondaryRef refType="identical object" db="refseq" refTypeAc="MI:0356" dbAc="MI:0481" id="NP_001245.1"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0326"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<interaction id="5">
+				<names>
+					<shortLabel>CyclinA-Cdk2</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="intact" refTypeAc="MI:0356" dbAc="MI:0469" id="EBI-1030422"/>
+				</xref>
+				<experimentList>
+					<experimentRef>30</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="13">
+						<interactorRef>1</interactorRef>
+					</participant>
+					<participant id="14">
+						<interactorRef>2</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>direct interaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="pre-assembly" nameAc="MI:1158"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="configurational pre-organization" nameAc="MI:1174"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="6">
+				<names>
+					<shortLabel>CyclinA-Cdk2</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="intact" refTypeAc="MI:0356" dbAc="MI:0469" id="EBI-1030422"/>
+				</xref>
+				<experimentList>
+					<experimentRef>31</experimentRef>
+					<experimentRef>32</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="15">
+						<interactorRef>1</interactorRef>
+					</participant>
+					<participant id="16">
+						<interactorRef>2</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>direct interaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="allostery" nameAc="MI:1157"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="allosteric molecule" nameAc="MI:1159">15</attribute>
+					<attribute name="allosteric effector" nameAc="MI:1160">16</attribute>
+					<attribute name="allosteric change in structure" nameAc="MI:1165"></attribute>
+					<attribute name="allosteric v-type response" nameAc="MI:1163"></attribute>
+					<attribute name="heterotropic allostery" nameAc="MI:1168"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="7">
+				<names>
+					<shortLabel>CyclinA-Cdk2</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="intact" refTypeAc="MI:0356" dbAc="MI:0469" id="EBI-1030422"/>
+				</xref>
+				<experimentList>
+					<experimentRef>31</experimentRef>
+					<experimentRef>32</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="17">
+						<interactorRef>1</interactorRef>
+					</participant>
+					<participant id="18">
+						<interactorRef>2</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>direct interaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="allostery" nameAc="MI:1157"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="allosteric molecule" nameAc="MI:1159">17</attribute>
+					<attribute name="allosteric effector" nameAc="MI:1160">18</attribute>
+					<attribute name="allosteric change in structure" nameAc="MI:1165"></attribute>
+					<attribute name="allosteric k-type response" nameAc="MI:1162"></attribute>
+					<attribute name="heterotropic allostery" nameAc="MI:1168"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="8">
+				<names>
+					<shortLabel>CyclinA-Cdk2</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="intact" refTypeAc="MI:0356" dbAc="MI:0469" id="EBI-1030422"/>
+				</xref>
+				<experimentList>
+					<experimentRef>32</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="19">
+						<interactorRef>1</interactorRef>
+					</participant>
+					<participant id="20">
+						<interactorRef>2</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>direct interaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="allostery" nameAc="MI:1157"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">9</attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">10</attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">11</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="allosteric molecule" nameAc="MI:1159">19</attribute>
+					<attribute name="allosteric effector" nameAc="MI:1160">20</attribute>
+					<attribute name="allosteric change in structure" nameAc="MI:1165"></attribute>
+					<attribute name="allosteric k-type response" nameAc="MI:1162"></attribute>
+					<attribute name="heterotropic allostery" nameAc="MI:1168"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="9">
+				<names>
+					<shortLabel>CyclinA_Cdk2-Cdk7</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="dip" refTypeAc="MI:0356" dbAc="MI:0465" id="57013"/>
+				</xref>
+				<experimentList>
+					<experimentRef>31</experimentRef>
+					<experimentRef>33</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="21">
+						<interactionRef>5</interactionRef>
+						<featureList>
+							<feature id="50">
+								<featureType>
+									<names>
+										<shortLabel>phosphorylated residue</shortLabel>
+									</names>
+									<xref>
+										<primaryRef refType="identity" refTypeAc="MI:0356" db="psi-mod" dbAc="MI:0897" id="MOD:00696"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</startStatus>
+										<begin position="160"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</endStatus>
+										<end position="160"/>
+									</featureRange>
+								</featureRangeList>
+								<attributeList>
+									<attribute name="resulting-ptm" nameAc="MI:0639"></attribute>
+									<attribute name="participant-ref" nameAc="MI:1151">13</attribute>
+								</attributeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="22">
+						<interactorRef>3</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>phosphorylation reaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0217"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="allostery" nameAc="MI:1157"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="allosteric molecule" nameAc="MI:1159">13</attribute>
+					<attribute name="allosteric post-translational modification" nameAc="MI:1175">50</attribute>
+					<attribute name="allosteric change in structure" nameAc="MI:1165"></attribute>
+					<attribute name="allosteric k-type response" nameAc="MI:1162"></attribute>
+					<attribute name="heterotropic allostery" nameAc="MI:1168"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="10">
+				<names>
+					<shortLabel>CyclinA_Cdk2-Cdk7</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="dip" refTypeAc="MI:0356" dbAc="MI:0465" id="57013"/>
+				</xref>
+				<experimentList>
+					<experimentRef>31</experimentRef>
+					<experimentRef>34</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="23">
+						<interactionRef>5</interactionRef>
+						<featureList>
+							<feature id="51">
+								<featureType>
+									<names>
+										<shortLabel>phosphorylated residue</shortLabel>
+									</names>
+									<xref>
+										<primaryRef refType="identity" refTypeAc="MI:0356" db="psi-mod" dbAc="MI:0897" id="MOD:00696"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</startStatus>
+										<begin position="160"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</endStatus>
+										<end position="160"/>
+									</featureRange>
+								</featureRangeList>
+								<attributeList>
+									<attribute name="resulting-ptm" nameAc="MI:0639"></attribute>
+									<attribute name="participant-ref" nameAc="MI:1151">13</attribute>
+								</attributeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="24">
+						<interactorRef>3</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>phosphorylation reaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0217"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="allostery" nameAc="MI:1157"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="allosteric molecule" nameAc="MI:1159">13</attribute>
+					<attribute name="allosteric post-translational modification" nameAc="MI:1175">51</attribute>
+					<attribute name="allosteric change in structure" nameAc="MI:1165"></attribute>
+					<attribute name="allosteric v-type response" nameAc="MI:1163"></attribute>
+					<attribute name="heterotropic allostery" nameAc="MI:1168"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="11">
+				<names>
+					<shortLabel>CyclinA_Cdk2-Cdk7</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="dip" refTypeAc="MI:0356" dbAc="MI:0465" id="57013"/>
+				</xref>
+				<experimentList>
+					<experimentRef>30</experimentRef>
+					<experimentRef>33</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="25">
+						<interactionRef>5</interactionRef>
+						<featureList>
+							<feature id="52">
+								<featureType>
+									<names>
+										<shortLabel>phosphorylated residue</shortLabel>
+									</names>
+									<xref>
+										<primaryRef refType="identity" refTypeAc="MI:0356" db="psi-mod" dbAc="MI:0897" id="MOD:00696"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</startStatus>
+										<begin position="160"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</endStatus>
+										<end position="160"/>
+									</featureRange>
+								</featureRangeList>
+								<attributeList>
+									<attribute name="resulting-ptm" nameAc="MI:0639"></attribute>
+									<attribute name="participant-ref" nameAc="MI:1151">13</attribute>
+								</attributeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="26">
+						<interactorRef>3</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>phosphorylation reaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refTypeAc="MI:0356" refType="identical object" db="psi-mi" dbAc="MI:0488" id="MI:0217"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="pre-assembly" nameAc="MI:1158"></attribute>
+					<attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+					<attribute name="positive cooperative effect" nameAc="MI:1154"></attribute>
+					<attribute name="altered physicochemical compatibility" nameAc="MI:1172"></attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="12">
+				<names>
+					<shortLabel>CyclinA_pCdk2-Cdc6</shortLabel>
+				</names>
+				<xref>
+					<primaryRef refType="identical object" db="rcsb pdb" refTypeAc="MI:0356" dbAc="MI:0460" id="2CCI"/>
+				</xref>
+				<experimentList>
+					<experimentRef>30</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="27">
+						<interactionRef>5</interactionRef>
+						<featureList>
+							<feature id="53">
+								<featureType>
+									<names>
+										<shortLabel>phosphorylated residue</shortLabel>
+									</names>
+									<xref>
+										<primaryRef refType="identity" refTypeAc="MI:0356" db="psi-mod" dbAc="MI:0897" id="MOD:00696"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</startStatus>
+										<begin position="160"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</endStatus>
+										<end position="160"/>
+									</featureRange>
+								</featureRangeList>
+								<attributeList>
+									<attribute name="prerequisite-ptm" nameAc="MI:0638"></attribute>
+									<attribute name="participant-ref" nameAc="MI:1151">13</attribute>
+								</attributeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="28">
+						<interactorRef>4</interactorRef>
+						<featureList>
+							<feature id="54">
+								<featureType>
+									<names>
+										<shortLabel>phosphorylated residue</shortLabel>
+									</names>
+									<xref>
+										<primaryRef refType="identity" refTypeAc="MI:0356" db="psi-mod" dbAc="MI:0897" id="MOD:00696"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</startStatus>
+										<begin position="74"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain sequence position</shortLabel>
+											</names>
+											<xref>
+												<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335"/>
+											</xref>
+										</endStatus>
+										<end position="74"/>
+									</featureRange>
+								</featureRangeList>
+								<attributeList>
+									<attribute name="resulting-ptm" nameAc="MI:0639"></attribute>
+								</attributeList>
+							</feature>
+						</featureList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>phosphorylation reaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef refTypeAc="MI:0356" refType="identical object" db="psi-mi" dbAc="MI:0488" id="MI:0217"/>
+					</xref>
+				</interactionType>
+			</interaction>
+		</interactionList>
+	</entry>
+</entrySet>

@@ -12,7 +12,7 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractFeatureRef extends AbstractXmlIdReference implements Feature{
+public abstract class AbstractFeatureRef<E extends Entity, F extends Feature> extends AbstractXmlIdReference implements Feature<E,F>{
     public AbstractFeatureRef(int ref) {
         super(ref);
     }
@@ -81,19 +81,19 @@ public abstract class AbstractFeatureRef extends AbstractXmlIdReference implemen
         throw new IllegalStateException("The feature reference is not resolved and we cannot set the interaction dependency for feature id "+ref);
     }
 
-    public Entity getParticipant() {
+    public E getParticipant() {
         throw new IllegalStateException("The feature reference is not resolved and we don't have a participant for feature id "+ref);
     }
 
-    public void setParticipant(Entity participant) {
+    public void setParticipant(E participant) {
         throw new IllegalStateException("The feature reference is not resolved and we cannot set the participant for feature id "+ref);
     }
 
-    public void setParticipantAndAddFeature(Entity participant) {
+    public void setParticipantAndAddFeature(E participant) {
         throw new IllegalStateException("The feature reference is not resolved and we cannot set the participant for feature id "+ref);
     }
 
-    public Collection<Feature> getLinkedFeatures() {
+    public Collection<F> getLinkedFeatures() {
         throw new IllegalStateException("The feature reference is not resolved and we don't have linked features for feature id "+ref);
     }
 

@@ -179,6 +179,12 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     public Collection<CooperativeEffect> getCooperativeEffects() {
         if (this.cooperativeEffects == null){
             this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+            // collect cooperative effects from interaction evidence annotations
+            Collection<Annotation> annotations = new ArrayList<Annotation>(this.interactionEvidence.getAnnotations());
+            CooperativeEffect effect = PsiXml25Utils.extractCooperativeEffectFrom(annotations, this.interactionEvidence.getExperiments(), Xml25EntryContext.getInstance().getListener());
+            if (effect != null){
+                getCooperativeEffects().add(effect);
+            }
         }
         return this.cooperativeEffects;
     }
