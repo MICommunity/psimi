@@ -8,8 +8,10 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
+import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.reference.AbstractParticipantRef;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,7 +33,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     private Position end;
     private boolean isLink;
     private ResultingSequence resultingSequence;
-    private Participant participant;
+    private Entity participant;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -260,12 +262,16 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
         this.resultingSequence = resultingSequence;
     }
 
-    public Participant getParticipant() {
+    public Entity getParticipant() {
         return this.participant;
     }
 
-    public void setParticipant(Participant participant) {
+    public void setParticipant(Entity participant) {
         this.participant = participant;
+    }
+
+    public void setJAXBParticipantRef(int id, PsiXmLocator locator){
+        this.participant = new ParticipantRef(id, locator);
     }
 
     @Override
@@ -319,6 +325,53 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
         // we have xml position
         else{
             return  new XmlPosition(status, pos.getStart(), pos.isPositionUndetermined());
+        }
+    }
+
+    ////// inner classes
+    /**
+     * participant ref for a composite feature
+     */
+    private class ParticipantRef extends AbstractParticipantRef{
+        private PsiXmLocator sourceLocator;
+
+        public ParticipantRef(int ref, PsiXmLocator locator) {
+            super(ref);
+            this.sourceLocator = locator;
+        }
+
+        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
+                Object object = parsedObjects.get(this.ref);
+                // participant
+                if (object instanceof Participant){
+                    participant = (Participant)object;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Feature range participant reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return this.sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        public void setSourceLocator(PsiXmLocator sourceLocator) {
+            this.sourceLocator = sourceLocator;
         }
     }
 }

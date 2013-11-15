@@ -6,6 +6,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.*;
@@ -25,8 +26,6 @@ import java.util.List;
 public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements
         Feature<P,F>, FileSourceContext, Locatable, ExtendedPsi25Feature<P,F>{
 
-    private CvTerm interactionEffect;
-    private CvTerm interactionDependency;
     private P participant;
     private Collection<F> linkedFeatures;
     private PsiXmLocator sourceLocator;
@@ -201,20 +200,29 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     }
 
     public CvTerm getInteractionEffect() {
-        return this.interactionEffect;
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.interactionEffect : null;
     }
 
     public void setInteractionEffect(CvTerm effect) {
-        this.interactionEffect = effect;
+        if (this.jaxbAttributeWrapper == null && effect != null){
+            initialiseAnnotationWrapper();
+        }
+        else if (this.jaxbAttributeWrapper != null){
+            this.jaxbAttributeWrapper.interactionEffect = effect;
+        }
     }
 
     public CvTerm getInteractionDependency() {
-        return this.interactionDependency;
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.interactionDependency : null;
     }
 
     public void setInteractionDependency(CvTerm interactionDependency) {
-        this.interactionDependency = interactionDependency;
-    }
+        if (this.jaxbAttributeWrapper == null && interactionDependency != null){
+            initialiseAnnotationWrapper();
+        }
+        else if (this.jaxbAttributeWrapper != null){
+            this.jaxbAttributeWrapper.interactionDependency = interactionDependency;
+        }    }
 
     public P getParticipant() {
         return this.participant;
@@ -282,6 +290,12 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         this.jaxbAttributeWrapper = jaxbAttributeWrapper;
+        // initialise participant ref of the ranges
+        if (this.jaxbAttributeWrapper != null && this.jaxbAttributeWrapper.participantId != null){
+            for (Range range : getRanges()){
+                ((XmlRange)range).setJAXBParticipantRef(this.jaxbAttributeWrapper.participantId, this.jaxbAttributeWrapper.sourceLocator);
+            }
+        }
     }
 
     public void setJAXBRangeWrapper(JAXBRangeWrapper jaxbRangeWrapper) {
@@ -311,6 +325,10 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
         @XmlTransient
         private Locator locator;
         private List<Annotation> annotations;
+        private JAXBAttributeList jaxbAttributeList;
+        private Integer participantId;
+        private CvTerm interactionEffect;
+        private CvTerm interactionDependency;
 
         public JAXBAttributeWrapper(){
             initialiseAnnotations();
@@ -343,12 +361,108 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
         @XmlElement(type=XmlAnnotation.class, name="attribute", required = true)
         public List<Annotation> getJAXBAttributes() {
-            return annotations;
+            if (this.jaxbAttributeList == null){
+                this.jaxbAttributeList = new JAXBAttributeList();
+            }
+            return this.jaxbAttributeList;
         }
 
         @Override
         public String toString() {
             return "Feature Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+
+        private class JAXBAttributeList extends ArrayList<Annotation> {
+
+            public JAXBAttributeList(){
+                super();
+            }
+
+            @Override
+            public boolean add(Annotation annotation) {
+                if (annotation == null){
+                    return false;
+                }
+                return processAnnotation(null, annotation);
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Annotation> c) {
+                if (c == null){
+                    return false;
+                }
+                boolean added = false;
+
+                for (Annotation a : c){
+                    if (add(a)){
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            @Override
+            public void add(int index, Annotation element) {
+                processAnnotation(index, element);
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Annotation> c) {
+                int newIndex = index;
+                if (c == null){
+                    return false;
+                }
+                boolean add = false;
+                for (Annotation a : c){
+                    if (processAnnotation(newIndex, a)){
+                        newIndex++;
+                        add = true;
+                    }
+                }
+                return add;
+            }
+
+            private boolean processAnnotation(Integer index, Annotation annotation) {
+                // we have a participant ref
+                if (AnnotationUtils.doesAnnotationHaveTopic(annotation, CooperativeEffect.PARTICIPANT_REF_ID, CooperativeEffect.PARTICIPANT_REF)
+                        && annotation.getValue() != null){
+                    try{
+                        participantId = Integer.parseInt(annotation.getValue());
+                        return false;
+                    }
+                    catch (NumberFormatException e){
+                        annotations.add(annotation);
+                        return true;
+                    }
+                }
+                // we have an intercation dependency
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.PREREQUISITE_PTM_MI, Feature.PREREQUISITE_PTM)
+                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_PTM_MI, Feature.RESULTING_PTM)
+                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_CLEAVAGE_MI, Feature.RESULTING_CLEAVAGE)){
+                    interactionDependency = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
+                    ((XmlCvTerm)interactionDependency).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
+                     return false;
+                }
+                // we have an interaction effect
+                else if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DECREASING_PTM_MI, Feature.DECREASING_PTM)
+                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.INCREASING_PTM_MI, Feature.INCREASING_PTM)
+                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DISRUPTING_PTM_MI, Feature.DISRUPTING_PTM)){
+                    interactionEffect = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
+                    ((XmlCvTerm)interactionEffect).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
+                    return false;
+                }
+                else {
+                    return addAnnotation(index, annotation);
+                }
+            }
+
+            private boolean addAnnotation(Integer index, Annotation annotation) {
+                if (index == null){
+                    return annotations.add(annotation);
+                }
+                annotations.add(index, annotation);
+                return true;
+            }
         }
     }
 
