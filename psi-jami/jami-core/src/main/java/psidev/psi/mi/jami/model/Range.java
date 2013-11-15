@@ -73,11 +73,11 @@ public interface Range {
      * It can be null. If null, the range is applied to the participant reporting the feature.
      * @return The participant that the range is referring to
      */
-    public Participant getParticipant();
+    public Entity getParticipant();
 
     /**
      * Sets the participating molecule that the range refers to
      * @param participant
      */
-    public void setParticipant(Participant participant);
+    public void setParticipant(Entity participant);
 }
