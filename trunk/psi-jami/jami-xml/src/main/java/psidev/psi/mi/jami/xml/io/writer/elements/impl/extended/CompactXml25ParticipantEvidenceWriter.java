@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25ParticipantEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25ParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter;
@@ -37,7 +38,7 @@ public class CompactXml25ParticipantEvidenceWriter extends AbstractXml25Particip
                                                  PsiXml25ElementWriter<Interactor> interactorWriter, CompactPsiXml25ElementWriter<ExperimentalInteractor> experimentalInteractorWriter, PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter,
                                                  PsiXml25ElementWriter<CvTerm> identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
                                                  PsiXml25ElementWriter<CvTerm> experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,
-                                                 PsiXml25ElementWriter<Parameter> parameterWriter) {
+                                                 PsiXml25ParameterWriter parameterWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter != null ? featureWriter : new Xml25FeatureEvidenceWriter(writer, objectIndex), attributeWriter, interactorWriter,
                 experimentalPreparationWriter,identificationMethodWriter, confidenceWriter, experimentalRoleWriter, hostOrganismWriter, parameterWriter);
         this.experimentalInteractorWriter = experimentalInteractorWriter != null ? experimentalInteractorWriter : new CompactXml25ExperimentalInteractorWriter(writer, objectIndex);

@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -34,7 +35,7 @@ public class ExpandedXml25NamedParticipantEvidenceWriter extends AbstractXml25Pa
                                                        PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter,
                                                        PsiXml25ElementWriter<CvTerm> identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
                                                        PsiXml25ElementWriter<CvTerm> experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,
-                                                       PsiXml25ElementWriter<Parameter> parameterWriter) {
+                                                       PsiXml25ParameterWriter parameterWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter != null ? featureWriter : new Xml25FeatureEvidenceWriter(writer, objectIndex), attributeWriter, interactorWriter,
                 experimentalPreparationWriter,identificationMethodWriter, confidenceWriter, experimentalRoleWriter, hostOrganismWriter, parameterWriter);
     }

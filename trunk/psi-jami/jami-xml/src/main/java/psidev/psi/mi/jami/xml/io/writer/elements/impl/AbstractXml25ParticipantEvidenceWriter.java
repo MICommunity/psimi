@@ -4,6 +4,7 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -32,7 +33,7 @@ public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml
         this.confidenceWriter = new Xml25ConfidenceWriter(writer);
         this.experimentalRoleWriter = new Xml25ExperimentalRoleWriter(writer);
         this.hostOrganismWriter = new Xml25HostOrganismWriter(writer);
-        this.parameterWriter = new Xml25ParameterWriter(writer);
+        this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
     }
 
     public AbstractXml25ParticipantEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
@@ -42,14 +43,14 @@ public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml
                                                   PsiXml25ElementWriter<Interactor> interactorWriter, PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter,
                                                   PsiXml25ElementWriter<CvTerm> identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
                                                   PsiXml25ElementWriter<CvTerm> experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,
-                                                  PsiXml25ElementWriter<Parameter> parameterWriter) {
+                                                  PsiXml25ParameterWriter parameterWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter, attributeWriter, interactorWriter);
         this.experimentalPreparationWriter = experimentalPreparationWriter != null ? experimentalPreparationWriter : new Xml25ExperimentalPreparationWriter(writer);
         this.identificationMethodWriter = identificationMethodWriter != null ? identificationMethodWriter : new Xml25ParticipantIdentificationMethodWriter(writer);
         this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new Xml25ConfidenceWriter(writer);
         this.experimentalRoleWriter = experimentalRoleWriter != null ? experimentalRoleWriter : new Xml25ExperimentalRoleWriter(writer);
         this.hostOrganismWriter = hostOrganismWriter != null ? hostOrganismWriter : new Xml25HostOrganismWriter(writer);
-        this.parameterWriter = parameterWriter != null ? parameterWriter : new Xml25ParameterWriter(writer);
+        this.parameterWriter = parameterWriter != null ? parameterWriter : new Xml25ParameterWriter(writer, objectIndex);
     }
 
     @Override

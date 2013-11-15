@@ -1,13 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,20 +18,14 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
+public class Xml25ParameterWriter implements PsiXml25ElementWriter<Parameter> {
     private XMLStreamWriter2 streamWriter;
-    private Experiment defaultExperiment;
-    private PsiXml25ObjectIndex objectIndex;
 
-    public Xml25ParameterWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public Xml25ParameterWriter(XMLStreamWriter2 writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ParameterWriter");
         }
         this.streamWriter = writer;
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ParameterWriter. It is necessary for generating an id to an experimentDescription");
-        }
-        this.objectIndex = objectIndex;
     }
 
     @Override
@@ -69,14 +61,7 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
                 if (object.getUncertainty() != null){
                     this.streamWriter.writeAttribute("uncertainty",object.getUncertainty().toString());
                 }
-                // write experiment Ref
-                if (this.defaultExperiment != null){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                    this.streamWriter.writeStartElement("experimentRef");
-                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdFor(this.defaultExperiment)));
-                    this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                }
+                // TODO write experiment ref
                 // write end parameter
                 this.streamWriter.writeEndElement();
 
@@ -84,15 +69,5 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
                 throw new MIIOException("Impossible to write the parameter : "+object.toString(), e);
             }
         }
-    }
-
-    @Override
-    public Experiment getDefaultExperiment() {
-        return this.defaultExperiment;
-    }
-
-    @Override
-    public void setDefaultExperiment(Experiment exp) {
-        this.defaultExperiment = exp;
     }
 }
