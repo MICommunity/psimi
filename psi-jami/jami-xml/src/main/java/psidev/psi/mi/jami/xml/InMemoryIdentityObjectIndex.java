@@ -1,7 +1,11 @@
 package psidev.psi.mi.jami.xml;
 
+import psidev.psi.mi.jami.model.Complex;
+
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -16,10 +20,12 @@ import java.util.Map;
 public class InMemoryIdentityObjectIndex implements PsiXml25ObjectIndex{
     private int current;
     private Map<Object, Integer> identityMap;
+    private Set<Complex> complexes;
 
     public InMemoryIdentityObjectIndex(){
         this.current = 0;
         this.identityMap = new IdentityHashMap<Object, Integer>();
+        this.complexes = new HashSet<Complex>();
     }
 
     @Override
@@ -38,6 +44,29 @@ public class InMemoryIdentityObjectIndex implements PsiXml25ObjectIndex{
     public void clear(){
         this.current = 0;
         this.identityMap.clear();
+        this.complexes.clear();
+    }
+
+    @Override
+    public boolean contain(Object o) {
+        return this.identityMap.containsKey(o);
+    }
+
+    @Override
+    public void registerSubComplex(Complex c) {
+        this.complexes.add(c);
+    }
+
+    @Override
+    public Set<Complex> clearRegisteredComplexes() {
+        Set<Complex> complexes = new HashSet<Complex>(this.complexes);
+        this.complexes.clear();
+        return complexes;
+    }
+
+    @Override
+    public boolean hasRegisteredSubComplexes() {
+        return !this.complexes.isEmpty();
     }
 
     private int nextId(){
