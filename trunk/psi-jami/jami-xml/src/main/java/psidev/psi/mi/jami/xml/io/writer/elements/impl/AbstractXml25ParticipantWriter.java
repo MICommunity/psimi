@@ -222,6 +222,9 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
             this.streamWriter.writeCharacters(Integer.toString(id));
             this.streamWriter.writeEndElement();
             this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+
+            // register this complex in case it has not been written yet
+            this.objectIndex.registerSubComplex((Complex)interactor);
         }
         // write interactor ref or interactor
         else{
