@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.model.Range;
-import psidev.psi.mi.jami.model.ResultingSequence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 
 /**
@@ -23,7 +20,7 @@ public class DefaultRange implements Range {
     private boolean isLink;
 
     private ResultingSequence resultingSequence;
-    private Participant participant;
+    private Entity participant;
 
     public DefaultRange(Position start, Position end){
         setPositions(start, end);
@@ -44,12 +41,12 @@ public class DefaultRange implements Range {
         this.resultingSequence = resultingSequence;
     }
 
-    public DefaultRange(Position start, Position end, Participant participant){
+    public DefaultRange(Position start, Position end, Entity participant){
         this(start, end);
         this.participant = participant;
     }
 
-    public DefaultRange(Position start, Position end, boolean isLink, Participant participant){
+    public DefaultRange(Position start, Position end, boolean isLink, Entity participant){
         this(start, end, isLink);
         this.participant = participant;
     }
@@ -93,11 +90,11 @@ public class DefaultRange implements Range {
         this.resultingSequence = resultingSequence;
     }
 
-    public Participant getParticipant() {
+    public Entity getParticipant() {
         return this.participant;
     }
 
-    public void setParticipant(Participant participant) {
+    public void setParticipant(Entity participant) {
         this.participant = participant;
     }
 
