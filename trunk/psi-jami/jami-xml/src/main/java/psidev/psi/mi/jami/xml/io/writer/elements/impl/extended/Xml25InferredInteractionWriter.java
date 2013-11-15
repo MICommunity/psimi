@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
@@ -19,17 +19,17 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25ExtendedInferredInteractionWriter implements PsiXml25ElementWriter<InferredInteraction> {
+public class Xml25InferredInteractionWriter implements PsiXml25ElementWriter<InferredInteraction> {
     private XMLStreamWriter2 streamWriter;
     private PsiXml25ObjectIndex objectIndex;
 
-    public Xml25ExtendedInferredInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public Xml25InferredInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ExtendedInferredInteractionWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25InferredInteractionWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ExtendedInferredInteractionWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25InferredInteractionWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }
