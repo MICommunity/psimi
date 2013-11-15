@@ -124,7 +124,8 @@ public class PsiXml25Utils {
                     }
                     allostericMolecule = a;
                 }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.ALLOSTERIC_EFFECTOR_ID, CooperativeEffect.ALLOSTERIC_EFFECTOR)){
+                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.ALLOSTERIC_EFFECTOR_ID, CooperativeEffect.ALLOSTERIC_EFFECTOR)
+                        && a.getValue() != null){
                     if (allostericEffector != null && listener != null){
                         listener.onSyntaxWarning((FileSourceContext)a, "We found several allosteric molecule effector attributes where only one is expected. " +
                                 "It will not load the cooperative effect attributes and keep them as simple attributes");
@@ -133,7 +134,8 @@ public class PsiXml25Utils {
                     }
                     allostericEffector = a;
                 }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.ALLOSTERIC_PTM_ID, CooperativeEffect.ALLOSTERIC_PTM)){
+                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.ALLOSTERIC_PTM_ID, CooperativeEffect.ALLOSTERIC_PTM)
+                        && a.getValue() != null){
                     if (allostericPTM != null && listener != null){
                         listener.onSyntaxWarning((FileSourceContext)a, "We found several allosteric feature modification attributes where only one is expected. " +
                                 "It will not load the cooperative effect attributes and keep them as simple attributes");
@@ -152,7 +154,8 @@ public class PsiXml25Utils {
                     }
                     allosteryType = a;
                 }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.AFFECTED_INTERACTION_ID, CooperativeEffect.AFFECTED_INTERACTION)){
+                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.AFFECTED_INTERACTION_ID, CooperativeEffect.AFFECTED_INTERACTION)
+                        && a.getValue() != null){
                     affectedInteractions.add(a);
                 }
                 else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.ALLOSTERIC_DYNAMIC_CHANGE_ID, CooperativeEffect.ALLOSTERIC_DYNAMIC_CHANGE)
@@ -165,7 +168,8 @@ public class PsiXml25Utils {
                     }
                     allosteryMechanism = a;
                 }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.COOPERATIVE_EFFECT_VALUE_ID, CooperativeEffect.COOPERATIVE_EFFECT_VALUE)){
+                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.COOPERATIVE_EFFECT_VALUE_ID, CooperativeEffect.COOPERATIVE_EFFECT_VALUE)
+                        && a.getValue() != null){
                     if (cooperativeValue != null && listener != null){
                         listener.onSyntaxWarning((FileSourceContext)a, "We found several cooperative effect values attributes where only one is expected. " +
                                 "It will not load the cooperative effect attributes and keep them as simple attributes");
