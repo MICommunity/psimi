@@ -55,7 +55,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
     }
 
-    protected AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                              PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter) {
@@ -196,7 +196,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     }
 
     protected abstract void writeAvailability(T object);
-    protected abstract void writeExperiments(T object);
+    protected abstract void writeExperiments(T object) throws XMLStreamException;
     protected abstract void writeOtherAttributes(T object);
     protected abstract void writeIntraMolecular(T object);
     protected abstract void writeModelled(T object);

@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Annotation;
@@ -14,12 +14,12 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25ExtendedPrimaryXrefWriter extends AbstractXml25ExtendedXrefWriter{
-    protected Xml25ExtendedPrimaryXrefWriter(XMLStreamWriter2 writer) {
+public class Xml25PrimaryXrefWriter extends AbstractXml25XrefWriter {
+    protected Xml25PrimaryXrefWriter(XMLStreamWriter2 writer) {
         super(writer);
     }
 
-    protected Xml25ExtendedPrimaryXrefWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Annotation> annotationWriter) {
+    protected Xml25PrimaryXrefWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Annotation> annotationWriter) {
         super(writer, annotationWriter);
     }
 

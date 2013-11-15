@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Alias;
@@ -20,21 +20,21 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25ExtendedHostOrganismWriter extends Xml25HostOrganismWriter{
+public class Xml25HostOrganismWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25HostOrganismWriter {
     private PsiXml25ObjectIndex objectIndex;
 
-    public Xml25ExtendedHostOrganismWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+    public Xml25HostOrganismWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
         super(writer);
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ExtendedHostOrganismWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25HostOrganismWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }
 
-    public Xml25ExtendedHostOrganismWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter, PsiXml25ElementWriter<CvTerm> cellTypeWriter) {
+    public Xml25HostOrganismWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter, PsiXml25ElementWriter<CvTerm> cellTypeWriter) {
         super(writer, aliasWriter, tissueWriter, compartmentWriter, cellTypeWriter);
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ExtendedHostOrganismWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25HostOrganismWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }
