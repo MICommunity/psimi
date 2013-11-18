@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25NamedInteractionWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
@@ -19,7 +20,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractXml25InteractionWriter<I extends Interaction, P extends Participant> extends psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25NamedInteractionWriter<I,P> {
+public abstract class AbstractXml25InteractionWriter<I extends Interaction, P extends Participant> extends AbstractXml25NamedInteractionWriter<I,P> {
 
     private PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter;
 
