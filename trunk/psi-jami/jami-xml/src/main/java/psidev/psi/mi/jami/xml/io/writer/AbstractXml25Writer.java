@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectIndex;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25SourceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -29,12 +28,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     private XMLStreamWriter2 streamWriter;
     private boolean isInitialised = false;
-    private PsiXml25ElementWriter<Source> sourceWriter;
-    private PsiXml25ElementWriter<String> availabilityWriter;
-    private PsiXml25ElementWriter<Experiment> experimentWriter;
-    private PsiXml25ElementWriter<Interactor> interactorWriter;
-    private PsiXml25ElementWriter<Interaction> interactionWriter;
-    private PsiXml25ElementWriter<Annotation> attributeWriter;
+    private PsiXml25ElementWriter<T> interactionWriter;
     private PsiXml25ElementWriter<ModelledInteraction> complexWriter;
     private PsiXml25ObjectIndex elementCache;
 
@@ -305,6 +299,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     protected abstract void writeTopEntryProperties(Iterator<? extends T> interaction);
 
     protected void writeStartEntry() throws XMLStreamException {
+        this.elementCache.clear();
         this.streamWriter.writeStartElement(PsiXml25Utils.ENTRY_TAG);
         this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
@@ -312,11 +307,10 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     protected void writeEndEntry() throws XMLStreamException {
         this.streamWriter.writeEndElement();
         this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        this.elementCache.clear();
     }
 
-    protected void initialiseSubWriters(){
-        this.sourceWriter = new Xml25SourceWriter(this.streamWriter);
-    }
+    protected abstract void initialiseSubWriters();
 
     protected void initialiseDefaultElementCache() {
         this.elementCache = new InMemoryIdentityObjectIndex();
