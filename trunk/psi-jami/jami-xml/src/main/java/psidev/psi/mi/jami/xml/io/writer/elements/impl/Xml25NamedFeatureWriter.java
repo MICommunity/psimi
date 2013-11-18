@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25NamedFeatureWriter;
 
 /**
  * XML 2.5 writer for a basic feature (ignore experimental details) having aliases in
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25NamedFeatureWriter extends AbstractXml25NamedFeatureWriter<Feature>{
+public class Xml25NamedFeatureWriter extends AbstractXml25NamedFeatureWriter<Feature> {
     public Xml25NamedFeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
         super(writer, objectIndex);
     }

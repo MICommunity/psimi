@@ -9,8 +9,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25ParticipantEvidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.ExpandedXml25ExperimentalInteractorWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 

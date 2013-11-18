@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>13/11/13</pre>
  */
 
-public abstract class AbstractXml25XrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25XrefWriter<ExtendedPsi25Xref> {
+public abstract class AbstractXml25XrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25XrefWriter<ExtendedPsi25Xref> {
     private PsiXml25ElementWriter<Annotation> annotationWriter;
 
     protected AbstractXml25XrefWriter(XMLStreamWriter2 writer) {

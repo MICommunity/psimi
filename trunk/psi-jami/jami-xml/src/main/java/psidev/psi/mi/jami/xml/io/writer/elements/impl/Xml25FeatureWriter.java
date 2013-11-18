@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25FeatureWriter;
 
 /**
  * XML 2.5 writer for a basic feature (ignore experimental details)
@@ -17,7 +18,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25FeatureWriter extends AbstractXml25FeatureWriter<Feature>{
+public class Xml25FeatureWriter extends AbstractXml25FeatureWriter<Feature> {
     public Xml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
         super(writer, objectIndex);
     }

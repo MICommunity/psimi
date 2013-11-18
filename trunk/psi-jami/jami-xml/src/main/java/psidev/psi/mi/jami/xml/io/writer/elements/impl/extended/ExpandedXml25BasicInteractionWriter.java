@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.ExpandedXml25ParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 

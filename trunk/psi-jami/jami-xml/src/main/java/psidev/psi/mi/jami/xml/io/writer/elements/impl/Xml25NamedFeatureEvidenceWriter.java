@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25FeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
@@ -17,7 +18,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25NamedFeatureEvidenceWriter extends AbstractXml25FeatureEvidenceWriter{
+public class Xml25NamedFeatureEvidenceWriter extends AbstractXml25FeatureEvidenceWriter {
     private PsiXml25ElementWriter<Alias> aliasWriter;
     public Xml25NamedFeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
         super(writer, objectIndex);

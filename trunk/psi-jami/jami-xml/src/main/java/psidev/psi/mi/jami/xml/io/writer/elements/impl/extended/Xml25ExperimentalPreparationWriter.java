@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25ExperimentalCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ExperimentalCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
 

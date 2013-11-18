@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.CompactXml25ParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 
