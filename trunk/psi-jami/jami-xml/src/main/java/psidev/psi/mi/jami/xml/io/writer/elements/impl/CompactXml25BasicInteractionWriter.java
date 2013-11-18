@@ -18,7 +18,7 @@ import java.util.Set;
  * @since <pre>14/11/13</pre>
  */
 
-public class CompactXml25BasicInteractionWriter extends AbstractXml25InteractionWithoutExperimentWriter<Interaction,Participant> implements CompactPsiXml25ElementWriter<Interaction>{
+public class CompactXml25BasicInteractionWriter extends AbstractXml25InteractionWriter<Interaction,Participant> implements CompactPsiXml25ElementWriter<Interaction>{
     public CompactXml25BasicInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
         super(writer, objectIndex, new CompactXml25ParticipantWriter(writer, objectIndex));
     }
@@ -26,9 +26,11 @@ public class CompactXml25BasicInteractionWriter extends AbstractXml25Interaction
     public CompactXml25BasicInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
                                               PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                               CompactPsiXml25ElementWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter) {
+                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
+                                              PsiXml25ElementWriter<Experiment> experimentWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, inferredInteractionWriter);
+                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, inferredInteractionWriter,
+                experimentWriter);
     }
 
     @Override

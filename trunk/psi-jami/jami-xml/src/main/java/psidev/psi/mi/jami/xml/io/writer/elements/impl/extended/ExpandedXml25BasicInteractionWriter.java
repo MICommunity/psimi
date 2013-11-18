@@ -30,10 +30,10 @@ public class ExpandedXml25BasicInteractionWriter extends AbstractXml25Interactio
     public ExpandedXml25BasicInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
                                               PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                               ExpandedPsiXml25ElementWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter,
+                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Experiment> experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter,
                                               PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new ExpandedXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, aliasWriter,
+                participantWriter != null ? participantWriter : new ExpandedXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, experimentWriter, aliasWriter,
                 inferredInteractionWriter);
     }
 

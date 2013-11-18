@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml;
 
-import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 
 import java.util.Set;
 
@@ -32,13 +32,13 @@ public interface PsiXml25ObjectIndex {
      * This method will register a complex that is used as an interactor
      * @param c
      */
-    public void registerSubComplex(Complex c);
+    public void registerSubComplex(ModelledInteraction c);
 
     /**
      * This method will return all registered complexes and clear them from the index
      * @return
      */
-    public Set<Complex> clearRegisteredComplexes();
+    public Set<ModelledInteraction> clearRegisteredComplexes();
 
     /**
      *
