@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml;
 
-import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -20,12 +20,12 @@ import java.util.Set;
 public class InMemoryIdentityObjectIndex implements PsiXml25ObjectIndex{
     private int current;
     private Map<Object, Integer> identityMap;
-    private Set<Complex> complexes;
+    private Set<ModelledInteraction> complexes;
 
     public InMemoryIdentityObjectIndex(){
         this.current = 0;
         this.identityMap = new IdentityHashMap<Object, Integer>();
-        this.complexes = new HashSet<Complex>();
+        this.complexes = new HashSet<ModelledInteraction>();
     }
 
     @Override
@@ -53,13 +53,13 @@ public class InMemoryIdentityObjectIndex implements PsiXml25ObjectIndex{
     }
 
     @Override
-    public void registerSubComplex(Complex c) {
+    public void registerSubComplex(ModelledInteraction c) {
         this.complexes.add(c);
     }
 
     @Override
-    public Set<Complex> clearRegisteredComplexes() {
-        Set<Complex> complexes = new HashSet<Complex>(this.complexes);
+    public Set<ModelledInteraction> clearRegisteredComplexes() {
+        Set<ModelledInteraction> complexes = new HashSet<ModelledInteraction>(this.complexes);
         this.complexes.clear();
         return complexes;
     }

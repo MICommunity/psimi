@@ -7,8 +7,6 @@ import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25InteractionWithoutExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AliasWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
@@ -21,25 +19,19 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractXml25InteractionWriter<I extends Interaction, P extends Participant> extends AbstractXml25InteractionWithoutExperimentWriter<I,P> {
+public abstract class AbstractXml25InteractionWriter<I extends Interaction, P extends Participant> extends psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25NamedInteractionWriter<I,P> {
 
-    private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter;
 
     public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<P> participantWriter) {
         super(writer, objectIndex, participantWriter);
-        this.aliasWriter = new Xml25AliasWriter(writer);
         this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
     }
 
-    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
-                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                              PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter, interactionTypeWriter, attributeWriter, new psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25InferredInteractionWriter(writer, objectIndex));
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
-        this.inferredInteractionWriter = inferredInteractionWriter != null ? inferredInteractionWriter : new Xml25InferredInteractionWriter(writer, objectIndex);
+    protected AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Experiment> experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter, attributeWriter, new psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25InferredInteractionWriter(writer, objectIndex), experimentWriter,
+                aliasWriter);
+        inferredInteractionWriter = inferredInteractionWriter1;
     }
 
     @Override
@@ -50,42 +42,6 @@ public abstract class AbstractXml25InteractionWriter<I extends Interaction, P ex
             getStreamWriter().writeStartElement("intraMolecular");
             getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
             // write end intra molecular
-            getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-        }
-    }
-
-    @Override
-    protected void writeNames(Interaction object) throws XMLStreamException {
-        NamedInteraction xmlInteraction = (NamedInteraction) object;
-        // write names
-        boolean hasShortLabel = xmlInteraction.getShortName() != null;
-        boolean hasInteractionFullLabel = xmlInteraction.getFullName() != null;
-        boolean hasAliases = !xmlInteraction.getAliases().isEmpty();
-        if (hasShortLabel || hasInteractionFullLabel || hasAliases){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-            getStreamWriter().writeStartElement("names");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-            // write shortname
-            if (hasShortLabel){
-                getStreamWriter().writeStartElement("shortLabel");
-                getStreamWriter().writeCharacters(xmlInteraction.getShortName());
-                getStreamWriter().writeEndElement();
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-            // write fullname
-            if (hasInteractionFullLabel){
-                getStreamWriter().writeStartElement("fullName");
-                getStreamWriter().writeCharacters(xmlInteraction.getFullName());
-                getStreamWriter().writeEndElement();
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-            // write aliases
-            for (Object alias : xmlInteraction.getAliases()){
-                this.aliasWriter.write((Alias)alias);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
-            }
-            // write end names
             getStreamWriter().writeEndElement();
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }

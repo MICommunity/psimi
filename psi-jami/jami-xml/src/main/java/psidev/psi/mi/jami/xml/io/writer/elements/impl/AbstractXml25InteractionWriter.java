@@ -4,6 +4,8 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.analysis.graph.BindingSiteCliqueFinder;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultExperiment;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -11,6 +13,7 @@ import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -32,6 +35,8 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     private PsiXml25ElementWriter<CvTerm> interactionTypeWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter;
+    private Experiment defaultExperiment;
+    private PsiXml25ElementWriter<Experiment> experimentWriter;
 
     public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
                                           PsiXml25ElementWriter<P> participantWriter){
@@ -53,12 +58,14 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.interactionTypeWriter = new Xml25InteractionTypeWriter(writer);
         this.attributeWriter = new Xml25AnnotationWriter(writer);
         this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
+        this.experimentWriter = new Xml25ExperimentWriter(writer, objectIndex);
     }
 
     public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                              PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter) {
+                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
+                                             PsiXml25ElementWriter<Experiment> experimentWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
         }
@@ -77,6 +84,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.interactionTypeWriter = interactionTypeWriter != null ? interactionTypeWriter : new Xml25InteractionTypeWriter(writer);
         this.attributeWriter = attributeWriter != null ? attributeWriter : new Xml25AnnotationWriter(writer);
         this.inferredInteractionWriter = inferredInteractionWriter != null ? inferredInteractionWriter : new Xml25InferredInteractionWriter(writer, objectIndex);
+        this.experimentWriter = experimentWriter != null ? experimentWriter : new Xml25ExperimentWriter(writer, objectIndex);
     }
 
     @Override
@@ -122,6 +130,20 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to write the interaction : "+object.toString(), e);
         }
+    }
+
+    public Experiment getDefaultExperiment() {
+        if (this.defaultExperiment == null){
+            initialiseDefaultExperiment();
+        }
+        return defaultExperiment;
+    }
+
+    public void setDefaultExperiment(Experiment defaultExperiment) {
+        if (defaultExperiment == null){
+            throw new IllegalArgumentException("The default experiment is mandatory");
+        }
+        this.defaultExperiment = defaultExperiment;
     }
 
     protected void writeAttributes(T object) throws XMLStreamException {
@@ -296,14 +318,48 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         return objectIndex;
     }
 
-    protected abstract void writeParameters(T object);
+    protected abstract void writeParameters(T object) throws XMLStreamException;
 
-    protected abstract void writeConfidences(T object);
+    protected abstract void writeConfidences(T object) throws XMLStreamException;
 
     protected abstract void writeNegative(T object);
 
     protected PsiXml25ElementWriter<CvTerm> getInteractionTypeWriter() {
         return interactionTypeWriter;
+    }
+
+    protected PsiXml25ElementWriter<Annotation> getAttributeWriter() {
+        return attributeWriter;
+    }
+
+    protected void writeExperimentRef() throws XMLStreamException {
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        getStreamWriter().writeStartElement("experimentList");
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        getStreamWriter().writeStartElement("experimentRef");
+        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(getDefaultExperiment())));
+        getStreamWriter().writeEndElement();
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        getStreamWriter().writeEndElement();
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+    }
+
+    protected void writeExperimentDescription() throws XMLStreamException {
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        getStreamWriter().writeStartElement("experimentList");
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        this.experimentWriter.write(getDefaultExperiment());
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        getStreamWriter().writeEndElement();
+        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+    }
+
+    protected void initialiseDefaultExperiment(){
+        this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for modelled interactions that are not interaction evidences.",(String)null,(Date)null));
+    }
+
+    protected PsiXml25ElementWriter<Experiment> getExperimentWriter() {
+        return experimentWriter;
     }
 
     private Collection<Set<Feature>> collectInferredInteractionsFrom(T object){

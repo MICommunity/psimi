@@ -30,10 +30,10 @@ public class CompactXml25BasicInteractionWriter extends AbstractXml25Interaction
                                               PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                               CompactPsiXml25ElementWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                               PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter,
-                                              PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter) {
+                                              PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter, PsiXml25ElementWriter<Experiment> experimentWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, aliasWriter,
-                inferredInteractionWriter);
+                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
+                experimentWriter, aliasWriter,inferredInteractionWriter);
     }
 
     @Override
