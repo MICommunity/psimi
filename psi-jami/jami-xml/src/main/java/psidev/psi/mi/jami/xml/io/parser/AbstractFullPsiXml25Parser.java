@@ -43,10 +43,6 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     private PsiXml25IdIndex indexOfComplexes=null;
     private boolean useDefaultCache = true;
 
-    public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
-
-    private String currentElement;
-
     public AbstractFullPsiXml25Parser(File file) throws JAXBException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
