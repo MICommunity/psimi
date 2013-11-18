@@ -4,57 +4,42 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
-import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25InteractionWithoutExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.CompactXml25ParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AliasWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
-import java.util.Set;
 
 /**
- * Compact XML 2.5 writer for a basic interaction (ignore experimental details) which has a fullname
- * and aliases in addition to a shortname
+ * Abstract class for extended interaction writer
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>15/11/13</pre>
+ * @since <pre>18/11/13</pre>
  */
 
-public class CompactXml25InteractionWriter extends AbstractXml25InteractionWithoutExperimentWriter<Interaction,Participant> implements CompactPsiXml25ElementWriter<Interaction> {
+public abstract class AbstractXml25InteractionWriter<I extends Interaction, P extends Participant> extends AbstractXml25InteractionWithoutExperimentWriter<I,P> {
+
     private PsiXml25ElementWriter<Alias> aliasWriter;
+    private PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter;
 
-    public CompactXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
-        super(writer, objectIndex, new CompactXml25ParticipantWriter(writer, objectIndex));
+    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<P> participantWriter) {
+        super(writer, objectIndex, participantWriter);
         this.aliasWriter = new Xml25AliasWriter(writer);
+        this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
     }
 
-    public CompactXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
-                                         PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                         CompactPsiXml25ElementWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                         PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                         PsiXml25ElementWriter<Alias> aliasWriter) {
+    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+                                              PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, inferredInteractionWriter);
+                participantWriter, interactionTypeWriter, attributeWriter, new psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25InferredInteractionWriter(writer, objectIndex));
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
-    }
-
-    @Override
-    protected void writeAvailability(Interaction object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeExperiments(Interaction object) throws XMLStreamException {
-        writeExperimentRef();
-    }
-
-    @Override
-    protected void writeOtherAttributes(Interaction object) {
-        // nothing to do
+        this.inferredInteractionWriter = inferredInteractionWriter != null ? inferredInteractionWriter : new Xml25InferredInteractionWriter(writer, objectIndex);
     }
 
     @Override
@@ -68,26 +53,6 @@ public class CompactXml25InteractionWriter extends AbstractXml25InteractionWitho
             getStreamWriter().writeEndElement();
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
-    }
-
-    @Override
-    protected void writeModelled(Interaction object) {
-        // do nothing
-    }
-
-    @Override
-    protected void writeParameters(Interaction object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeConfidences(Interaction object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeNegative(Interaction object) {
-        // nothing to do
     }
 
     @Override
@@ -140,17 +105,17 @@ public class CompactXml25InteractionWriter extends AbstractXml25InteractionWitho
 
     @Override
     protected void writeInferredInteractions(Interaction object) throws XMLStreamException {
-        /*ExtendedPsi25Interaction xmlInteraction = (ExtendedPsi25Interaction)object;
-        if (!object.getParticipants().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            this.streamWriter.writeStartElement("participantList");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            for (Object participant : object.getParticipants()){
-                this.participantWriter.write((P)participant);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        ExtendedPsi25Interaction xmlInteraction = (ExtendedPsi25Interaction)object;
+        if (!xmlInteraction.getInferredInteractions().isEmpty()){
+            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+            getStreamWriter().writeStartElement("inferredInteractionList");
+            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+            for (Object inferred : xmlInteraction.getInferredInteractions()){
+                this.inferredInteractionWriter.write((InferredInteraction)inferred);
+                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
-            this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-        }*/
+            getStreamWriter().writeEndElement();
+            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
+        }
     }
 }
