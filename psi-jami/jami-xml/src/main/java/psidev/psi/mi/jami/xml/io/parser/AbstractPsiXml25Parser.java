@@ -8,8 +8,8 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.Entry;
-import psidev.psi.mi.jami.xml.InMemoryPsiXml25Index;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.InMemoryPsiXml25Cache;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
@@ -65,8 +65,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     private PsiXmlParserListener listener;
     private boolean hasReadEntrySet = false;
     private boolean hasReadEntry = false;
-    private PsiXml25IdIndex indexOfObjects=null;
-    private PsiXml25IdIndex indexOfComplexes=null;
+    private PsiXml25IdCache indexOfObjects=null;
     private boolean useDefaultCache = true;
     private String currentElement;
 
@@ -223,9 +222,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         if (this.indexOfObjects != null){
             this.indexOfObjects.clear();
         }
-        if (this.indexOfComplexes != null){
-            this.indexOfComplexes.clear();
-        }
         this.interactionIterator = null;
         this.hasReadEntry = false;
         this.hasReadEntrySet = false;
@@ -310,13 +306,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.listener = listener;
     }
 
-    public void setCacheOfObjects(PsiXml25IdIndex indexOfObjects) {
+    public void setCacheOfObjects(PsiXml25IdCache indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
-        this.useDefaultCache = false;
-    }
-
-    public void setCacheOfComplexes(PsiXml25IdIndex indexOfComplexes) {
-        this.indexOfComplexes = indexOfComplexes;
         this.useDefaultCache = false;
     }
 
@@ -387,7 +378,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 if (startEntry != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(startEntry.getLineNumber(), startEntry.getColumnNumber(), null));
                 }
-                listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentalEntry elements is empty. It should contain at least an interactionList. It can also contain a source, availabilityList, experimentList, interactorList and attributeList. PSI-XML is not valid."));
+                listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentalEntry elements is empty. It should contains at least an interactionList. It can also contains a source, availabilityList, experimentList, interactorList and attributeList. PSI-XML is not valid."));
             }
         }
         else{
@@ -461,7 +452,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     if (attributeList != null){
                         context = new DefaultFileSourceContext(new PsiXmLocator(attributeList.getLineNumber(), attributeList.getColumnNumber(), null));
                     }
-                    listener.onInvalidSyntax(context, new PsiXmlParserException("JAXBFeatureList elements does not contain any attribute node. PSI-XML is not valid."));
+                    listener.onInvalidSyntax(context, new PsiXmlParserException("JAXBFeatureList elements does not contains any attribute node. PSI-XML is not valid."));
                 }
             }
         }
@@ -491,7 +482,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     if (interactionList != null){
                         context = new DefaultFileSourceContext(new PsiXmLocator(interactionList.getLineNumber(), interactionList.getColumnNumber(), null));
                     }
-                    listener.onInvalidSyntax(context, new PsiXmlParserException("InteractionList elements does not contain any interaction node. PSI-XML is not valid."));
+                    listener.onInvalidSyntax(context, new PsiXmlParserException("InteractionList elements does not contains any interaction node. PSI-XML is not valid."));
                 }
             }
             return loadedInteraction;
@@ -526,7 +517,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     if (interactorList != null){
                         context = new DefaultFileSourceContext(new PsiXmLocator(interactorList.getLineNumber(), interactorList.getColumnNumber(), null));
                     }
-                    listener.onInvalidSyntax(context, new PsiXmlParserException("InteractorList elements does not contain any interactor node. PSI-XML is not valid."));
+                    listener.onInvalidSyntax(context, new PsiXmlParserException("InteractorList elements does not contains any interactor node. PSI-XML is not valid."));
                 }
             }
         }
@@ -560,7 +551,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     if (experimentList != null){
                         context = new DefaultFileSourceContext(new PsiXmLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
                     }
-                    listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentList elements does not contain any experimentDescription node. PSI-XML is not valid."));
+                    listener.onInvalidSyntax(context, new PsiXmlParserException("ExperimentList elements does not contains any experimentDescription node. PSI-XML is not valid."));
                 }
             }
         }
@@ -727,7 +718,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                     if (startList != null){
                         context = new DefaultFileSourceContext(new PsiXmLocator(startList.getLineNumber(), startList.getColumnNumber(), null));
                     }
-                    listener.onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contain any availability node. PSI-XML is not valid."));
+                    listener.onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contains any availability node. PSI-XML is not valid."));
                 }
             }
         }
@@ -870,7 +861,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.hasReadEntry = false;
         this.hasReadEntrySet = false;
         this.unmarshaller = null;
-        this.indexOfComplexes = null;
         this.indexOfObjects = null;
         this.useDefaultCache = true;
 
@@ -886,16 +876,12 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         if (useDefaultCache){
             initialiseDefaultCache();
         }
-        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
-        entryContext.setMapOfReferencedObjects(this.indexOfObjects);
+        entryContext.setElementCache(this.indexOfObjects);
     }
 
     private void initialiseDefaultCache() {
-        if (this.indexOfComplexes == null){
-            this.indexOfComplexes = new InMemoryPsiXml25Index();
-        }
         if (this.indexOfObjects == null){
-            this.indexOfObjects = new InMemoryPsiXml25Index();
+            this.indexOfObjects = new InMemoryPsiXml25Cache();
         }
     }
 }

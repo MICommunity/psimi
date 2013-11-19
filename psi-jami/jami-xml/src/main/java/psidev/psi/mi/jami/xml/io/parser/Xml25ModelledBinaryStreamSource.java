@@ -46,7 +46,6 @@ public class Xml25ModelledBinaryStreamSource extends AbstractPsiXml25BinaryStrea
         try {
             Xml25ModelledBinaryParser parser = new Xml25ModelledBinaryParser(reader);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
@@ -62,7 +61,6 @@ public class Xml25ModelledBinaryStreamSource extends AbstractPsiXml25BinaryStrea
         try {
             Xml25ModelledBinaryParser parser = new Xml25ModelledBinaryParser(file);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
@@ -80,7 +78,6 @@ public class Xml25ModelledBinaryStreamSource extends AbstractPsiXml25BinaryStrea
         try {
             Xml25ModelledBinaryParser parser = new Xml25ModelledBinaryParser(input);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);
@@ -96,7 +93,6 @@ public class Xml25ModelledBinaryStreamSource extends AbstractPsiXml25BinaryStrea
         try {
             Xml25ModelledBinaryParser parser = new Xml25ModelledBinaryParser(url);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             parser.setExpansionMethod(getComplexExpansion());
             setParser(parser);

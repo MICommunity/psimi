@@ -98,11 +98,6 @@ public abstract class AbstractFeatureRef<E extends Entity, F extends Feature> ex
     }
 
     @Override
-    public boolean isComplexReference() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "Feature Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }

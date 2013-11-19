@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
@@ -26,12 +26,12 @@ public class ExpandedXml25NamedInteractionEvidenceWriter extends AbstractXml25In
         implements ExpandedPsiXml25ElementWriter<InteractionEvidence> {
     private PsiXml25ElementWriter<Alias> aliasWriter;
 
-    public ExpandedXml25NamedInteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+    public ExpandedXml25NamedInteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
         super(writer, objectIndex, new ExpandedXml25ParticipantEvidenceWriter(writer, objectIndex));
         this.aliasWriter = new Xml25AliasWriter(writer);
     }
 
-    public ExpandedXml25NamedInteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public ExpandedXml25NamedInteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                        PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                        ExpandedPsiXml25ElementWriter<ParticipantEvidence> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                        PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,

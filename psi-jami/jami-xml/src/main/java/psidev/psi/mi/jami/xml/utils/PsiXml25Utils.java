@@ -43,7 +43,6 @@ public class PsiXml25Utils {
     public static final String ATTRIBUTELIST_TAG = "attributeList";
     public static final String ATTRIBUTE_TAG = "attribute";
     public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";
-    public static final String COMPLEX_CACHE_OPTION = "complex_id_cache_key";
 
     public static final String LINE_BREAK = "\n";
 

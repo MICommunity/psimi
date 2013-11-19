@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
@@ -29,14 +29,14 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
     private PsiXml25ParameterWriter parameterWriter;
 
-    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<P> participantWriter) {
+    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<P> participantWriter) {
         super(writer, objectIndex, participantWriter);
         this.availabilityWriter = new Xml25AvailabilityWriter(writer, objectIndex);
         this.confidenceWriter = new Xml25ConfidenceWriter(writer);
         this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
     }
 
-    protected AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Experiment> experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1, PsiXml25ElementWriter<String> availabilityWriter, PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter) {
+    protected AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Experiment> experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1, PsiXml25ElementWriter<String> availabilityWriter, PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter, attributeWriter, experimentWriter, aliasWriter, inferredInteractionWriter1);
         this.availabilityWriter = availabilityWriter != null ? availabilityWriter : new Xml25AvailabilityWriter(writer, objectIndex);
         this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new Xml25ConfidenceWriter(writer);
@@ -71,7 +71,7 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
             for (Experiment evidence : xmlInteraction.getExperiments()){
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
                 getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(evidence)));
+                getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(evidence)));
                 getStreamWriter().writeEndElement();
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
@@ -175,7 +175,7 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     protected void writeAvailabilityRef(String availability) throws XMLStreamException {
         getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeStartElement("availabilityRef");
-        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(availability)));
+        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForAvailability(availability)));
         getStreamWriter().writeEndElement();
         getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
     }

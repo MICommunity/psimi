@@ -6,7 +6,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -464,7 +464,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
                     super(ref);
                 }
 
-                public boolean resolve(PsiXml25IdIndex parsedObjects) {
+                public boolean resolve(PsiXml25IdCache parsedObjects) {
                     if (parsedObjects.contains(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
                         if (obj instanceof XmlExperiment){

@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.reference.AbstractParticipantRef;
@@ -340,12 +340,12 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
             this.sourceLocator = locator;
         }
 
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
+                Entity object = parsedObjects.getParticipant(this.ref);
                 // participant
-                if (object instanceof Participant){
-                    participant = (Participant)object;
+                if (object != null){
+                    participant = object;
                     return true;
                 }
             }

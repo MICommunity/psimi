@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -23,9 +23,9 @@ import javax.xml.stream.XMLStreamException;
 public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
     private XMLStreamWriter2 streamWriter;
     private Experiment defaultExperiment;
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
 
-    public Xml25ParameterWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public Xml25ParameterWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ParameterWriter");
         }
@@ -73,7 +73,7 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
                 if (this.defaultExperiment != null){
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.streamWriter.writeStartElement("experimentRef");
-                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdFor(this.defaultExperiment)));
+                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(this.defaultExperiment)));
                     this.streamWriter.writeEndElement();
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }

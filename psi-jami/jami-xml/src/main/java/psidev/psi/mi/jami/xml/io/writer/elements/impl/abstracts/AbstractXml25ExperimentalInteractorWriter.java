@@ -4,7 +4,7 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -21,9 +21,9 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class AbstractXml25ExperimentalInteractorWriter implements PsiXml25ElementWriter<ExperimentalInteractor>{
     private XMLStreamWriter2 streamWriter;
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
 
-    public AbstractXml25ExperimentalInteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public AbstractXml25ExperimentalInteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25ExperimentalInteractorWriter");
         }
@@ -47,7 +47,7 @@ public abstract class AbstractXml25ExperimentalInteractorWriter implements PsiXm
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 for (Experiment exp : object.getExperiments()){
                     this.streamWriter.writeStartElement("experimentRef");
-                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdFor(exp)));
+                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
                     this.streamWriter.writeEndElement();
                     this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
@@ -68,7 +68,7 @@ public abstract class AbstractXml25ExperimentalInteractorWriter implements PsiXm
         return streamWriter;
     }
 
-    protected PsiXml25ObjectIndex getObjectIndex() {
+    protected PsiXml25ObjectCache getObjectIndex() {
         return objectIndex;
     }
 }

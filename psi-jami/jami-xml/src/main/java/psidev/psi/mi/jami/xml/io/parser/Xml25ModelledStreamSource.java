@@ -48,7 +48,6 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Stream<ModelledIn
         try {
             Xml25ModelledParser parser = new Xml25ModelledParser(reader);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -62,7 +61,6 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Stream<ModelledIn
         try {
             Xml25ModelledParser parser = new Xml25ModelledParser(file);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -77,7 +75,6 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Stream<ModelledIn
         try {
             Xml25ModelledParser parser = new Xml25ModelledParser(input);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -92,7 +89,6 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Stream<ModelledIn
         try {
             Xml25ModelledParser parser = new Xml25ModelledParser(url);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (IOException e) {

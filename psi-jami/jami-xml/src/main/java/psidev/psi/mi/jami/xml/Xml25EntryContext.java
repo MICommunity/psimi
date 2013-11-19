@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.xml;
 
-import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.extension.Availability;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
@@ -20,8 +21,7 @@ import java.util.*;
 
 public class Xml25EntryContext {
 
-    private PsiXml25IdIndex mapOfReferencedObjects;
-    private PsiXml25IdIndex mapOfReferencedComplexes;
+    private PsiXml25IdCache elementCache;
     private Collection<XmlIdReference> references;
     private Collection<InferredInteraction> inferredInteractions;
     private Entry currentEntry;
@@ -49,15 +49,12 @@ public class Xml25EntryContext {
     }
 
     public void clear(){
-        if (this.mapOfReferencedObjects != null){
-            this.mapOfReferencedObjects.clear();
+        if (this.elementCache != null){
+            this.elementCache.clear();
         }
         this.references.clear();
         this.currentEntry = null;
         this.inferredInteractions.clear();
-        if (this.mapOfReferencedComplexes != null){
-            this.mapOfReferencedComplexes.clear();
-        }
     }
 
     public Entry getCurrentEntry() {
@@ -76,23 +73,49 @@ public class Xml25EntryContext {
         this.listener = listener;
     }
 
-    public void setMapOfReferencedObjects(PsiXml25IdIndex mapOfReferencedObjects) {
-        this.mapOfReferencedObjects = mapOfReferencedObjects;
+    public void setElementCache(PsiXml25IdCache elementCache) {
+        this.elementCache = elementCache;
     }
 
-    public void setMapOfReferencedComplexes(PsiXml25IdIndex mapOfReferencedComplexes) {
-        this.mapOfReferencedComplexes = mapOfReferencedComplexes;
+    public void registerAvailability(int id, Availability o){
+        if (this.elementCache != null){
+            this.elementCache.registerAvailability(id, o);
+        }
     }
 
-    public void registerObject(int id, Object o){
-        if (this.mapOfReferencedObjects != null){
-            this.mapOfReferencedObjects.put(id, o);
+    public void registerExperiment(int id, Experiment o){
+        if (this.elementCache != null){
+            this.elementCache.registerExperiment(id, o);
+        }
+    }
+
+    public void registerInteractor(int id, Interactor o){
+        if (this.elementCache != null){
+            this.elementCache.registerInteractor(id, o);
+        }
+    }
+
+    public void registerInteraction(int id, Interaction o){
+        if (this.elementCache != null){
+            this.elementCache.registerInteraction(id, o);
+        }
+    }
+
+    public void registerParticipant(int id, Entity o){
+        if (this.elementCache != null){
+            this.elementCache.registerParticipant(id, o);
+        }
+    }
+
+    public void registerFeature(int id, Feature o){
+        if (this.elementCache != null){
+            this.elementCache.registerFeature(id, o);
         }
     }
 
     public void registerComplex(int id, Complex o){
-        if (this.mapOfReferencedComplexes != null){
-            this.mapOfReferencedComplexes.put(id, o);
+        if (this.elementCache != null){
+            this.elementCache.registerComplex(id, o);
         }
     }
 
@@ -116,31 +139,8 @@ public class Xml25EntryContext {
         Iterator<XmlIdReference> refIterator = references.iterator();
         while(refIterator.hasNext()){
             XmlIdReference ref = refIterator.next();
-            // when we have complex reference, look at complexes already indexed
-            if (ref.isComplexReference()){
-                if (this.mapOfReferencedComplexes != null && !ref.resolve(this.mapOfReferencedComplexes)){
-                    if (this.mapOfReferencedObjects == null ||
-                            (this.mapOfReferencedObjects != null && !ref.resolve(this.mapOfReferencedObjects))){
-                        if (listener != null){
-                            listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
-                        }
-                    }
-                }
-                else if (this.mapOfReferencedObjects == null ||
-                        (this.mapOfReferencedObjects != null && !ref.resolve(this.mapOfReferencedObjects))){
-                    if (listener != null){
-                        listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
-                    }
-                }
-            }
-            else if (this.mapOfReferencedObjects != null){
-                if (!ref.resolve(this.mapOfReferencedObjects)){
-                    if (listener != null){
-                        listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
-                    }
-                }
-            }
-            else if (this.mapOfReferencedObjects == null){
+            if (this.elementCache == null ||
+                    (this.elementCache != null && !ref.resolve(this.elementCache))){
                 if (listener != null){
                     listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
                 }

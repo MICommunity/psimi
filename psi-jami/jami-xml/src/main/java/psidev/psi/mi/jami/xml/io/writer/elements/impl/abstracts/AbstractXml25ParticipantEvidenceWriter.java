@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -27,7 +27,7 @@ public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml
     private PsiXml25ElementWriter<Organism> hostOrganismWriter;
     private PsiXml25ElementWriter<Parameter> parameterWriter;
 
-    public AbstractXml25ParticipantEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<FeatureEvidence> featureWriter) {
+    public AbstractXml25ParticipantEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<FeatureEvidence> featureWriter) {
         super(writer, objectIndex, featureWriter);
         this.experimentalPreparationWriter = new Xml25ExperimentalPreparationWriter(writer);
         this.identificationMethodWriter = new Xml25ParticipantIdentificationMethodWriter(writer);
@@ -37,7 +37,7 @@ public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml
         this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
     }
 
-    public AbstractXml25ParticipantEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public AbstractXml25ParticipantEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                   PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
                                                   PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
                                                   PsiXml25ElementWriter<FeatureEvidence> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,

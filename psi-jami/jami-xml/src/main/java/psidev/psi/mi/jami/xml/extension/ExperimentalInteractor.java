@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 
 import javax.xml.bind.annotation.*;
@@ -261,12 +261,12 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
                 super(ref);
             }
 
-            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            public boolean resolve(PsiXml25IdCache parsedObjects) {
                 if (parsedObjects.contains(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof Experiment){
+                    Experiment obj = parsedObjects.getExperiment(this.ref);
+                    if (obj != null){
                         experiments.remove(this);
-                        experiments.add((Experiment)obj);
+                        experiments.add(obj);
                         return true;
                     }
                 }
@@ -294,19 +294,15 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
         }
 
         @Override
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Interactor){
-                    interactor = (Interactor) obj;
+                Interactor obj = parsedObjects.getInteractor(this.ref);
+                if (obj != null){
+                    interactor = obj;
                     return true;
                 }
+                return false;
             }
-            return false;
-        }
-
-        @Override
-        public boolean isComplexReference() {
             return false;
         }
 

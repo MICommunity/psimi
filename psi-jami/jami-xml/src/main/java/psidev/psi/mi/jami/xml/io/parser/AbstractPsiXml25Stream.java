@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
@@ -54,8 +54,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     private Reader originalReader;
 
     private Boolean isValid = null;
-    private PsiXml25IdIndex elementCache;
-    private PsiXml25IdIndex complexCache;
+    private PsiXml25IdCache elementCache;
 
     public static final String VALIDATION_FEATURE = "http://xml.org/sax/features/validation";
     public static final String SCHEMA_FEATURE = "http://apache.org/xml/features/validation/schema";
@@ -90,7 +89,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     @Override
     public Iterator<T> getInteractionsIterator() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
         try {
@@ -116,7 +115,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     @Override
     public boolean validateSyntax() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
         if (isValid != null){
@@ -185,7 +184,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         Reader sourceReader = null;
 
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the PsiXml interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalArgumentException("The options for the PsiXml interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         else if (options == null){
             return;
@@ -237,7 +236,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the Psi xml interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalArgumentException("The options for the Psi xml interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
         if (options.containsKey(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY)){
@@ -249,11 +248,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         }
 
         if (options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25IdIndex)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
-        }
-
-        if (options.containsKey(PsiXml25Utils.COMPLEX_CACHE_OPTION)){
-            this.complexCache = (PsiXml25IdIndex)options.get(PsiXml25Utils.COMPLEX_CACHE_OPTION);
+            this.elementCache = (PsiXml25IdCache)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
         }
 
         // initialise parser after reading all options
@@ -276,7 +271,6 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     public void close() throws MIIOException{
         if (isInitialised){
             this.elementCache = null;
-            this.complexCache = null;
             this.parserListener = null;
             this.defaultParserListener = null;
             this.isValid = null;
@@ -291,7 +285,6 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     public void reset() throws MIIOException{
         if (isInitialised){
             this.elementCache = null;
-            this.complexCache = null;
             this.parser = null;
             this.parserListener = null;
             this.defaultParserListener = null;
@@ -501,9 +494,6 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         if (this.elementCache != null){
             this.elementCache.clear();
         }
-        if (this.complexCache != null){
-            this.complexCache.clear();
-        }
         // release the thread local
         Xml25EntryContext.getInstance().clear();
         Xml25EntryContext.remove();
@@ -592,12 +582,8 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         return isInitialised;
     }
 
-    protected PsiXml25IdIndex getElementCache() {
+    protected PsiXml25IdCache getElementCache() {
         return elementCache;
-    }
-
-    protected PsiXml25IdIndex getComplexCache() {
-        return complexCache;
     }
 
     private void initialiseReader(Reader reader) {

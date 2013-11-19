@@ -10,10 +10,10 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -372,7 +372,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
      */
     public void setId(int value) {
         this.id = value;
-        Xml25EntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerParticipant(this.id, this);
         if (getSourceLocator() != null){
             this.sourceLocator.setObjectId(this.id);
         }
@@ -438,7 +438,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         }
 
         @Override
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             // take it from existing references
             if (parsedObjects.contains(this.ref)){
                 Object object = parsedObjects.get(this.ref);
@@ -496,11 +496,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         }
 
         @Override
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Interactor){
-                    interactor = (Interactor) obj;
+                Interactor obj = parsedObjects.getInteractor(this.ref);
+                if (obj != null){
+                    interactor = obj;
                     return true;
                 }
                 else{
@@ -510,11 +510,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     }
                 }
             }
-            return false;
-        }
-
-        @Override
-        public boolean isComplexReference() {
             return false;
         }
 

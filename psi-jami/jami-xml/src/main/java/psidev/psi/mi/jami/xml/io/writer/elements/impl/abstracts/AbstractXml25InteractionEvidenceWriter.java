@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -27,14 +27,14 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
     private PsiXml25ParameterWriter parameterWriter;
 
-    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<P> participantWriter) {
+    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<P> participantWriter) {
         super(writer, objectIndex, participantWriter);
         this.availabilityWriter = new Xml25AvailabilityWriter(writer, objectIndex);
         this.confidenceWriter = new Xml25ConfidenceWriter(writer);
         this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
     }
 
-    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                   PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                   PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                   PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
@@ -134,7 +134,7 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     protected void writeAvailabilityRef(String availability) throws XMLStreamException {
         getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeStartElement("availabilityRef");
-        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(availability)));
+        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForAvailability(availability)));
         getStreamWriter().writeEndElement();
         getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
     }

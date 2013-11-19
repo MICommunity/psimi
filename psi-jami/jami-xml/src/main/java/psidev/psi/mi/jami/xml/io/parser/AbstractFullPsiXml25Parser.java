@@ -39,8 +39,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     private PsiXmlParserListener listener;
     private AbstractEntrySet<AbstractEntry<T>> entrySet;
 
-    private PsiXml25IdIndex indexOfObjects=null;
-    private PsiXml25IdIndex indexOfComplexes=null;
+    private PsiXml25IdCache indexOfObjects=null;
     private boolean useDefaultCache = true;
 
     public AbstractFullPsiXml25Parser(File file) throws JAXBException {
@@ -160,7 +159,6 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.entryIterator = null;
         this.unmarshaller = null;
         this.entrySet = null;
-        this.indexOfComplexes = null;
         this.indexOfObjects = null;
         this.useDefaultCache = true;
 
@@ -186,9 +184,6 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.entrySet = null;
         if (this.indexOfObjects != null){
             this.indexOfObjects.clear();
-        }
-        if (this.indexOfComplexes != null){
-            this.indexOfComplexes.clear();
         }
         // release the thread local
         Xml25EntryContext.getInstance().clear();
@@ -231,13 +226,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.listener = listener;
     }
 
-    public void setCacheOfObjects(PsiXml25IdIndex indexOfObjects) {
+    public void setCacheOfObjects(PsiXml25IdCache indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
-        this.useDefaultCache = false;
-    }
-
-    public void setCacheOfComplexes(PsiXml25IdIndex indexOfComplexes) {
-        this.indexOfComplexes = indexOfComplexes;
         this.useDefaultCache = false;
     }
 
@@ -299,16 +289,12 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         if (useDefaultCache){
             initialiseDefaultCache();
         }
-        entryContext.setMapOfReferencedComplexes(this.indexOfComplexes);
-        entryContext.setMapOfReferencedObjects(this.indexOfObjects);
+        entryContext.setElementCache(this.indexOfObjects);
     }
 
     private void initialiseDefaultCache() {
-        if (this.indexOfComplexes == null){
-            this.indexOfComplexes = new InMemoryPsiXml25Index();
-        }
         if (this.indexOfObjects == null){
-            this.indexOfObjects = new InMemoryPsiXml25Index();
+            this.indexOfObjects = new InMemoryPsiXml25Cache();
         }
     }
 }

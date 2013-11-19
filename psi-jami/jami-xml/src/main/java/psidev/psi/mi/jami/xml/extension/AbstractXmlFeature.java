@@ -282,7 +282,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
      */
     public void setId(int value) {
         this.id = value;
-        Xml25EntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerFeature(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

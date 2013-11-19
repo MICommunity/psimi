@@ -294,7 +294,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
      */
     public void setId(int value) {
         this.id = value;
-        Xml25EntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerInteraction(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

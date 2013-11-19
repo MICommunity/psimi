@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalCvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -20,9 +20,9 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml25CvTermWriter<ExperimentalCvTerm> {
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
 
-    public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+    public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
         super(writer);
         if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXml25ExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");
@@ -30,7 +30,7 @@ public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml2
         this.objectIndex = objectIndex;
     }
 
-    public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter2 writer,PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter2 writer,PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
         if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXml25ExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");
@@ -47,7 +47,7 @@ public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml2
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Experiment exp : term.getExperiments()){
                 getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(this.objectIndex.extractIdFor(exp)));
+                getStreamWriter().writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
                 getStreamWriter().writeEndElement();
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }

@@ -99,11 +99,6 @@ public abstract class AbstractExperimentRef extends AbstractXmlIdReference imple
     }
 
     @Override
-    public boolean isComplexReference() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }

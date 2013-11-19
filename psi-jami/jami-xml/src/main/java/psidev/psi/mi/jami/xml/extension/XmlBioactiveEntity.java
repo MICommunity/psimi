@@ -146,7 +146,7 @@ public class XmlBioactiveEntity extends DefaultBioactiveEntity implements Extend
      */
     public void setId(int value) {
         this.id = value;
-        Xml25EntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerInteractor(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
