@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.mitab.io.writer.extended;
+package psidev.psi.mi.jami.mitab.io.writer;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -8,14 +8,13 @@ import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
-import psidev.psi.mi.jami.tab.io.writer.extended.Mitab27InteractionEvidenceWriter;
+import psidev.psi.mi.jami.tab.io.writer.Mitab26EvidenceWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.StringWriter;
@@ -25,38 +24,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Unit tester for Mitab27InteractionEvidenceWriter
+ * Unit tester for Mitab26EvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/06/13</pre>
  */
 
-public class Mitab27InteractionEvidenceWriterTest {
+public class Mitab26EvidenceWriterTest {
 
     @Test
     public void test_mitab_version_and_header(){
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
-        Assert.assertEquals(MitabVersion.v2_7, binaryWriter.getVersion());
+        Mitab26EvidenceWriter binaryWriter = new Mitab26EvidenceWriter();
+        Assert.assertEquals(MitabVersion.v2_6, binaryWriter.getVersion());
         Assert.assertFalse(binaryWriter.isWriteHeader());
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab26EvidenceWriter binaryWriter = new Mitab26EvidenceWriter();
         binaryWriter.write(new MitabInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab26EvidenceWriter binaryWriter = new Mitab26EvidenceWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
     public void test_write_binary() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter(writer);
+        Mitab26EvidenceWriter binaryWriter = new Mitab26EvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         InteractionEvidence interaction = createBinaryInteractionEvidence();
@@ -70,7 +69,7 @@ public class Mitab27InteractionEvidenceWriterTest {
     @Test
     public void test_write_binary_list() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter(writer);
+        Mitab26EvidenceWriter binaryWriter = new Mitab26EvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         InteractionEvidence interaction = createBinaryInteractionEvidence();
@@ -84,7 +83,7 @@ public class Mitab27InteractionEvidenceWriterTest {
     @Test
     public void test_write_binary2() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab26EvidenceWriter binaryWriter = new Mitab26EvidenceWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
         options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
@@ -105,7 +104,7 @@ public class Mitab27InteractionEvidenceWriterTest {
                 "\tuniprotkb:P12350|intact:EBI-12347" +
                 "\tuniprotkb:P12346|intact:EBI-12345" +
                 "\tpsi-mi:protein3(display_short)|psi-mi:full name protein3(display_long)" +
-                "\tpsi-mi:protein1(display_short)|psi-mi:full name protein1(display_long)|mint:brca2(gene name)|intact:brca2 synonym(gene name synonym)|intact:\\\"bla\\\" author assigned name(author assigned name)" +
+                "\tpsi-mi:protein1(display_short)|psi-mi:full name protein1(display_long)|uniprotkb:brca2(gene name)|uniprotkb:brca2 synonym(gene name synonym)|intact:\\\"bla\\\" author assigned name(author assigned name)" +
                 "\tpsi-mi:\"MI:xxx2\"(pull down)" +
                 "\tauthor1 et al.(2006)" +
                 "\tpubmed:12345|imex:IM-1" +
@@ -114,7 +113,7 @@ public class Mitab27InteractionEvidenceWriterTest {
                 "\tpsi-mi:\"MI:xxxx\"(association)" +
                 "\tpsi-mi:\"MI:xxx1\"(intact)" +
                 "\tintact:EBI-xxxx|imex:IM-1-1" +
-                "\tauthor-score:high(text)" +
+                "\tauthor-score:high" +
                 "\tpsi-mi:\"MI:1060\"(spoke expansion)" +
                 "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
                 "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
@@ -136,12 +135,6 @@ public class Mitab27InteractionEvidenceWriterTest {
                 "\trogid:xxxx1" +
                 "\trigid:xxxx3" +
                 "\ttrue"+
-                "\t-" +
-                "\tbinding site region:1..3-6..7,>9->9(text)" +
-                "\t1" +
-                "\t2" +
-                "\tpsi-mi:\"MI:xxxx1\"(western blot)" +
-                "\tpsi-mi:\"MI:xxxx1\"(western blot)"+
                 "\n"+
                 "uniprotkb:P12349" +
                 "\tuniprotkb:P12347" +
@@ -157,7 +150,7 @@ public class Mitab27InteractionEvidenceWriterTest {
                 "\tpsi-mi:\"MI:xxxx\"(association)" +
                 "\tpsi-mi:\"MI:xxx1\"(intact)" +
                 "\tintact:EBI-xxxx|imex:IM-1-1" +
-                "\tauthor-score:high(text)"+
+                "\tauthor-score:high"+
                 "\tpsi-mi:\"MI:1060\"(spoke expansion)" +
                 "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
                 "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
@@ -178,13 +171,7 @@ public class Mitab27InteractionEvidenceWriterTest {
                 "\trogid:xxxx4" +
                 "\trogid:xxxx2" +
                 "\trigid:xxxx3" +
-                "\ttrue"+
-                "\t-" +
-                "\t-" +
-                "\t1" +
-                "\t5" +
-                "\tpsi-mi:\"MI:xxxx1\"(western blot)" +
-                "\tpsi-mi:\"MI:xxxx2\"(predetermined)";
+                "\ttrue";
     }
 
     private InteractionEvidence createBinaryInteractionEvidence() throws ParseException, IllegalParameterException {
@@ -194,9 +181,9 @@ public class Mitab27InteractionEvidenceWriterTest {
         participantA.getInteractor().getIdentifiers().add(XrefUtils.createUniprotSecondary("P12346"));
         participantA.getInteractor().getIdentifiers().add(XrefUtils.createXref("intact", "EBI-12345"));
         // add aliases
-        participantA.getInteractor().getAliases().add(new MitabAlias("mint", "brca2", "gene name"));
-        participantA.getInteractor().getAliases().add(new MitabAlias("intact", "brca2 synonym", "gene name synonym"));
-        participantA.getAliases().add(new MitabAlias("intact", "\"bla\" author assigned name", "author assigned name"));
+        participantA.getInteractor().getAliases().add(AliasUtils.createGeneName("brca2"));
+        participantA.getInteractor().getAliases().add(AliasUtils.createGeneNameSynonym("brca2 synonym"));
+        participantA.getAliases().add(AliasUtils.createAuthorAssignedName("\"bla\" author assigned name"));
         // species
         participantA.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
         //participantA.getAliases()
@@ -235,21 +222,6 @@ public class Mitab27InteractionEvidenceWriterTest {
         participantA.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx1"));
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
-        // features
-        MitabFeatureEvidence feature = new MitabFeatureEvidence(new DefaultCvTerm("binding site", "binding site region", (String)null));
-        feature.setText("text");
-        feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
-        feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
-        feature.setInterpro("interpro:xxxx");
-        participantA.addFeature(feature);
-        // stoichiometry
-        participantA.setStoichiometry(2);
-        participantB.setStoichiometry(5);
-        participantC.setStoichiometry(1);
-        // participant identification method
-        participantA.getIdentificationMethods().add(new MitabCvTerm("western blot", "MI:xxxx1"));
-        participantB.getIdentificationMethods().add(new MitabCvTerm("predetermined", "MI:xxxx2"));
-        participantC.getIdentificationMethods().add(new MitabCvTerm("western blot", "MI:xxxx1"));
 
         InteractionEvidence interaction = new MitabInteractionEvidence();
         interaction.addParticipant(participantA);
@@ -276,7 +248,7 @@ public class Mitab27InteractionEvidenceWriterTest {
         interaction.getIdentifiers().add(XrefUtils.createIdentityXref("intact", "EBI-xxxx"));
         interaction.getIdentifiers().add(XrefUtils.createXrefWithQualifier("imex", "IM-1-1", "imex-primary"));
         // confidences
-        interaction.getConfidences().add(new MitabConfidence("author-score", "high", "text"));
+        interaction.getConfidences().add(new MitabConfidence("author-score", "high", null));
         // xrefs
         interaction.getXrefs().add(new MitabXref("go", "GO:xxxx2", "process"));
         // annotations

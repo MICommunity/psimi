@@ -18,33 +18,33 @@ import java.io.Writer;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab27InteractionEvidenceWriter extends Mitab26InteractionEvidenceWriter {
+public class Mitab27EvidenceWriter extends Mitab26EvidenceWriter {
 
-    public Mitab27InteractionEvidenceWriter() {
+    public Mitab27EvidenceWriter() {
     super();
 }
 
-    public Mitab27InteractionEvidenceWriter(File file) throws IOException {
+    public Mitab27EvidenceWriter(File file) throws IOException {
         super(file);
     }
 
-    public Mitab27InteractionEvidenceWriter(OutputStream output) {
+    public Mitab27EvidenceWriter(OutputStream output) {
         super(output);
     }
 
-    public Mitab27InteractionEvidenceWriter(Writer writer) {
+    public Mitab27EvidenceWriter(Writer writer) {
         super(writer);
     }
 
-    public Mitab27InteractionEvidenceWriter(OutputStream output, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+    public Mitab27EvidenceWriter(OutputStream output, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
         super(output, expansionMethod);
     }
 
-    public Mitab27InteractionEvidenceWriter(File file, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) throws IOException {
+    public Mitab27EvidenceWriter(File file, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab27InteractionEvidenceWriter(Writer writer, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+    public Mitab27EvidenceWriter(Writer writer, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
         super(writer, expansionMethod);
     }
 

@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
-import psidev.psi.mi.jami.tab.io.writer.Mitab27InteractionEvidenceWriter;
+import psidev.psi.mi.jami.tab.io.writer.Mitab27EvidenceWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.utils.*;
 
@@ -22,38 +22,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Unit tester for Mitab27InteractionEvidenceWriter
+ * Unit tester for Mitab27EvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/06/13</pre>
  */
 
-public class Mitab27InteractionEvidenceWriterTest {
+public class Mitab27EvidenceWriterTest {
 
     @Test
     public void test_mitab_version_and_header(){
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         Assert.assertEquals(MitabVersion.v2_7, binaryWriter.getVersion());
         Assert.assertFalse(binaryWriter.isWriteHeader());
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         binaryWriter.write(new MitabInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
     public void test_write_binary() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter(writer);
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         InteractionEvidence interaction = createBinaryInteractionEvidence();
@@ -67,7 +67,7 @@ public class Mitab27InteractionEvidenceWriterTest {
     @Test
     public void test_write_binary_list() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter(writer);
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         InteractionEvidence interaction = createBinaryInteractionEvidence();
@@ -81,7 +81,7 @@ public class Mitab27InteractionEvidenceWriterTest {
     @Test
     public void test_write_binary2() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab27InteractionEvidenceWriter binaryWriter = new Mitab27InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
         options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);

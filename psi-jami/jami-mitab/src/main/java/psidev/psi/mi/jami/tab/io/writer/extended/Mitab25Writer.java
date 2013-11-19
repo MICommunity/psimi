@@ -29,8 +29,8 @@ import java.io.*;
 
 public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Participant>, BinaryInteraction, Participant> {
 
-    private Mitab25ModelledInteractionWriter modelledInteractionWriter;
-    private Mitab25InteractionEvidenceWriter interactionEvidenceWriter;
+    private Mitab25ModelledWriter modelledInteractionWriter;
+    private Mitab25EvidenceWriter interactionEvidenceWriter;
     private Writer writer;
 
     public Mitab25Writer() {
@@ -150,18 +150,18 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Par
 
     protected void initialiseSubWriters() {
         setBinaryWriter(new Mitab25BinaryWriter(this.writer));
-        this.modelledInteractionWriter = new Mitab25ModelledInteractionWriter(writer);
+        this.modelledInteractionWriter = new Mitab25ModelledWriter(writer);
         this.modelledInteractionWriter.setWriteHeader(false);
-        this.interactionEvidenceWriter = new Mitab25InteractionEvidenceWriter(writer);
+        this.interactionEvidenceWriter = new Mitab25EvidenceWriter(writer);
         this.interactionEvidenceWriter.setWriteHeader(false);
     }
 
-    protected void setModelledInteractionWriter(Mitab25ModelledInteractionWriter modelledInteractionWriter) {
+    protected void setModelledInteractionWriter(Mitab25ModelledWriter modelledInteractionWriter) {
         this.modelledInteractionWriter = modelledInteractionWriter;
         this.modelledInteractionWriter.setWriteHeader(false);
     }
 
-    protected void setInteractionEvidenceWriter(Mitab25InteractionEvidenceWriter interactionEvidenceWriter) {
+    protected void setInteractionEvidenceWriter(Mitab25EvidenceWriter interactionEvidenceWriter) {
         this.interactionEvidenceWriter = interactionEvidenceWriter;
         this.interactionEvidenceWriter.setWriteHeader(false);
     }

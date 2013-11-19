@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.tab.io.writer.extended;
+package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
@@ -18,33 +18,33 @@ import java.io.Writer;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab27ModelledInteractionWriter extends Mitab26ModelledInteractionWriter {
+public class Mitab27ModelledWriter extends Mitab26ModelledWriter {
 
-    public Mitab27ModelledInteractionWriter() {
+    public Mitab27ModelledWriter() {
         super();
     }
 
-    public Mitab27ModelledInteractionWriter(File file) throws IOException {
+    public Mitab27ModelledWriter(File file) throws IOException {
         super(file);
     }
 
-    public Mitab27ModelledInteractionWriter(OutputStream output) {
+    public Mitab27ModelledWriter(OutputStream output) {
         super(output);
     }
 
-    public Mitab27ModelledInteractionWriter(Writer writer) {
+    public Mitab27ModelledWriter(Writer writer) {
         super(writer);
     }
 
-    public Mitab27ModelledInteractionWriter(File file, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) throws IOException {
+    public Mitab27ModelledWriter(File file, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab27ModelledInteractionWriter(OutputStream output, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
+    public Mitab27ModelledWriter(OutputStream output, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
         super(output, expansionMethod);
     }
 
-    public Mitab27ModelledInteractionWriter(Writer writer, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
+    public Mitab27ModelledWriter(Writer writer, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
         super(writer, expansionMethod);
     }
 
