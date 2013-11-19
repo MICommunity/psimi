@@ -31,7 +31,7 @@ public class ExpandedXml25NamedModelledInteractionWriter extends AbstractXml25Mo
 
     public ExpandedXml25NamedModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                       PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                                      ExpandedPsiXml25ElementWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                                      PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                       PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
                                                       PsiXml25ElementWriter<Experiment> experimentWriter,
                                                       PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter

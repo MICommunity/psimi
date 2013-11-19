@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -33,7 +34,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     private PsiXml25ObjectCache objectIndex;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
-    private PsiXml25ElementWriter<P> participantWriter;
+    private PsiXml25ParticipantWriter<P> participantWriter;
     private PsiXml25ElementWriter<CvTerm> interactionTypeWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter;
@@ -41,7 +42,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     private PsiXml25ElementWriter<Experiment> experimentWriter;
 
     public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
-                                          PsiXml25ElementWriter<P> participantWriter){
+                                          PsiXml25ParticipantWriter<P> participantWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
         }
@@ -65,7 +66,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
 
     public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                             PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                             PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
                                              PsiXml25ElementWriter<Experiment> experimentWriter) {
         if (writer == null){
