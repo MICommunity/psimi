@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.xml.io.writer;
+package psidev.psi.mi.jami.xml.io.writer.compact;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 

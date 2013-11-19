@@ -54,7 +54,8 @@ public class Xml25ConfidenceWriter implements PsiXml25ElementWriter<Confidence> 
                 // write value
                 this.streamWriter.writeCharacters(object.getValue());
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                // TODO write experiments
+                // write experiments
+
                 // write end confidence
                 this.streamWriter.writeEndElement();
 
