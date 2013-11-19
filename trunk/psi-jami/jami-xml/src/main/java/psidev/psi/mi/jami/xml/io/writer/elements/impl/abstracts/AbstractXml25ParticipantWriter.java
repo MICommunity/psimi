@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -20,7 +21,7 @@ import java.util.Iterator;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXml25ParticipantWriter<P extends Participant, F extends Feature> implements PsiXml25ElementWriter<P> {
+public abstract class AbstractXml25ParticipantWriter<P extends Participant, F extends Feature> implements PsiXml25ParticipantWriter<P> {
     private XMLStreamWriter2 streamWriter;
     private PsiXml25ObjectCache objectIndex;
     private PsiXml25ElementWriter<Alias> aliasWriter;
@@ -30,6 +31,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
     private PsiXml25ElementWriter<F> featureWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Interactor> interactorWriter;
+    private boolean writeComplexAsInteractor=false;
 
     public AbstractXml25ParticipantWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                           PsiXml25ElementWriter<F> featureWriter){
@@ -118,6 +120,16 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to write the participant : "+object.toString(), e);
         }
+    }
+
+    @Override
+    public boolean writeComplexAsInteractor() {
+        return this.writeComplexAsInteractor;
+    }
+
+    @Override
+    public void setComplexAsInteractor(boolean complexAsInteractor) {
+        this.writeComplexAsInteractor = complexAsInteractor;
     }
 
     protected void writeAttributes(P object) throws XMLStreamException {
@@ -216,16 +228,23 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
     protected void writeInteractor(P object) throws XMLStreamException {
         Interactor interactor = object.getInteractor();
         // write interaction ref
-        if (interactor instanceof Complex){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-            this.streamWriter.writeStartElement("interactionRef");
-            int id = this.objectIndex.extractIdForInteractor(interactor);
-            this.streamWriter.writeCharacters(Integer.toString(id));
-            this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+        if (!writeComplexAsInteractor && interactor instanceof Complex){
+            Complex complex = (Complex)interactor;
+            // write complex as an interactor if no participants as XML 25 interactions must have at least one participant
+            if (complex.getParticipants().isEmpty()){
+                writeMolecule(interactor);
+            }
+            else{
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                this.streamWriter.writeStartElement("interactionRef");
+                int id = this.objectIndex.extractIdForInteractor(interactor);
+                this.streamWriter.writeCharacters(Integer.toString(id));
+                this.streamWriter.writeEndElement();
+                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
-            // register this complex in case it has not been written yet
-            this.objectIndex.registerSubComplex((Complex)interactor);
+                // register this complex in case it has not been written yet
+                this.objectIndex.registerSubComplex((Complex)interactor);
+            }
         }
         // write interactor ref or interactor
         else{

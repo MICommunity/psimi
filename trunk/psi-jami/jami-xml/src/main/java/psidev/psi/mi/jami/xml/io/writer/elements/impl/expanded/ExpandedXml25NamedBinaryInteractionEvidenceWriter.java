@@ -4,10 +4,7 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AliasWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25InteractionEvidenceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -34,7 +31,7 @@ public class ExpandedXml25NamedBinaryInteractionEvidenceWriter extends AbstractX
 
     public ExpandedXml25NamedBinaryInteractionEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                                             ExpandedPsiXml25ElementWriter<ParticipantEvidence> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                                             PsiXml25ParticipantWriter<ParticipantEvidence> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
                                                              PsiXml25ElementWriter<Experiment> experimentWriter, PsiXml25ElementWriter<String> availabilityWriter,
                                                              PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,

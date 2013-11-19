@@ -38,6 +38,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private boolean started = false;
     private Source currentSource;
     private T currentInteraction;
+    private boolean writeComplexesAsInteractors=false;
 
     public AbstractXml25Writer(){
         this.interactionsToWrite = new ArrayList<T>();
@@ -124,6 +125,10 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         // use the default cache option
         else{
             initialiseDefaultElementCache();
+        }
+
+        if (options.containsKey(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
+            this.writeComplexesAsInteractors = (Boolean)options.get(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION);
         }
 
         isInitialised = true;
@@ -436,10 +441,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return interactionsToWrite;
     }
 
-    protected void setInteractionsToWrite(List<T> interactionsToWrite) {
-        this.interactionsToWrite = interactionsToWrite;
-    }
-
     protected void setElementCache(PsiXml25ObjectCache elementCache) {
         this.elementCache = elementCache;
     }
@@ -453,10 +454,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected XMLStreamWriter2 getStreamWriter() {
         return streamWriter;
-    }
-
-    protected void setStreamWriter(XMLStreamWriter2 streamWriter) {
-        this.streamWriter = streamWriter;
     }
 
     protected T getCurrentInteraction() {
@@ -473,6 +470,10 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected void setStarted(boolean started) {
         this.started = started;
+    }
+
+    protected boolean isWriteComplexesAsInteractors() {
+        return writeComplexesAsInteractors;
     }
 
     private void initialiseWriter(Writer writer) throws XMLStreamException {

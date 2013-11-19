@@ -4,10 +4,7 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -29,7 +26,7 @@ public class ExpandedXml25BasicInteractionWriter extends AbstractXml25Interactio
 
     public ExpandedXml25BasicInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                               PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                              ExpandedPsiXml25ElementWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                              PsiXml25ParticipantWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                               PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Experiment> experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter,
                                               PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
