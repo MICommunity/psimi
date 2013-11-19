@@ -3,54 +3,57 @@ package psidev.psi.mi.jami.mitab.io.writer.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
+import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
-import psidev.psi.mi.jami.tab.io.writer.extended.Mitab25ModelledInteractionWriter;
+import psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.StringWriter;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Unit tester for Mitab25ModelledInteractionWriter
+ * Unit tester for Mitab26ModelledWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/06/13</pre>
  */
 
-public class Mitab25ModelledInteractionWriterTest {
+public class Mitab26ModelledWriterTest {
 
     @Test
     public void test_mitab_version_and_header(){
-        Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
-        Assert.assertEquals(MitabVersion.v2_5, binaryWriter.getVersion());
+        Mitab26ModelledWriter binaryWriter = new Mitab26ModelledWriter();
+        Assert.assertEquals(MitabVersion.v2_6, binaryWriter.getVersion());
         Assert.assertFalse(binaryWriter.isWriteHeader());
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
+        Mitab26ModelledWriter binaryWriter = new Mitab26ModelledWriter();
         binaryWriter.write(new MitabModelledInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
+        Mitab26ModelledWriter binaryWriter = new Mitab26ModelledWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_interaction() {
+    public void test_write_interaction() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
-        Mitab25ModelledInteractionWriter interactionWriter = new Mitab25ModelledInteractionWriter(writer);
+        Mitab26ModelledWriter interactionWriter = new Mitab26ModelledWriter(writer);
         interactionWriter.setWriteHeader(false);
 
         ModelledInteraction binary = createModelledInteraction();
@@ -62,9 +65,9 @@ public class Mitab25ModelledInteractionWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() {
+    public void test_write_binary_list() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
-        Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter(writer);
+        Mitab26ModelledWriter binaryWriter = new Mitab26ModelledWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         ModelledInteraction binary = createModelledInteraction();
@@ -76,9 +79,9 @@ public class Mitab25ModelledInteractionWriterTest {
     }
 
     @Test
-    public void test_write_binary2() {
+    public void test_write_binary2() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
-        Mitab25ModelledInteractionWriter binaryWriter = new Mitab25ModelledInteractionWriter();
+        Mitab26ModelledWriter binaryWriter = new Mitab26ModelledWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
         options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
@@ -109,6 +112,27 @@ public class Mitab25ModelledInteractionWriterTest {
                 "\tpsi-mi:\"MI:xxx1\"(intact)" +
                 "\tintact:EBI-xxxx" +
                 "\tauthor-score:high(text)" +
+                "\tpsi-mi:\"MI:1060\"(spoke expansion)" +
+                "\tpsi-mi:\"MI:0501\"(enzyme)" +
+                "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
+                "\t-" +
+                "\t-" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tintact:EBI-x(see-also)" +
+                "\tgo:\"GO:xxxxx\"(component)" +
+                "\tgo:\"GO:xxxx2\"(process)" +
+                "\tisoform-comment:test comment" +
+                "\tcomment:\"test comment (to be reviewed)\"" +
+                "\tfigure-legend:Fig 1." +
+                "\t-" +
+                "\tic50:\"5x10^(-1)\"(molar)" +
+                "\t2006/06/06" +
+                "\t2007/01/01" +
+                "\trogid:xxxx4" +
+                "\trogid:xxxx1" +
+                "\trigid:xxxx3" +
+                "\t-" +
                 "\n"+
                 "uniprotkb:P12349" +
                 "\tuniprotkb:P12347" +
@@ -124,10 +148,31 @@ public class Mitab25ModelledInteractionWriterTest {
                 "\tpsi-mi:\"MI:xxxx\"(association)" +
                 "\tpsi-mi:\"MI:xxx1\"(intact)" +
                 "\tintact:EBI-xxxx" +
-                "\tauthor-score:high(text)";
+                "\tauthor-score:high(text)" +
+                "\tpsi-mi:\"MI:1060\"(spoke expansion)" +
+                "\tpsi-mi:\"MI:0501\"(enzyme)" +
+                "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
+                "\t-" +
+                "\t-" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tintact:EBI-x(see-also)" +
+                "\tinterpro:\"INTERPRO:xxxxx\"" +
+                "\tgo:\"GO:xxxx2\"(process)" +
+                "\tisoform-comment:test comment" +
+                "\tcaution:sequence withdrawn from uniprot" +
+                "\tfigure-legend:Fig 1." +
+                "\t-" +
+                "\tic50:\"5x10^(-1)\"(molar)" +
+                "\t2006/06/06" +
+                "\t2007/01/01" +
+                "\trogid:xxxx4" +
+                "\trogid:xxxx2" +
+                "\trigid:xxxx3" +
+                "\t-";
     }
 
-    private ModelledInteraction createModelledInteraction() {
+    private ModelledInteraction createModelledInteraction() throws IllegalParameterException, ParseException {
         ModelledParticipant participantA = new MitabModelledParticipant(new MitabProtein("protein1", "full name protein1"));
         // add identifiers
         participantA.getInteractor().getIdentifiers().add(XrefUtils.createUniprotIdentity("P12345"));
@@ -155,7 +200,22 @@ public class Mitab25ModelledInteractionWriterTest {
         // species
         participantC.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
         // participant C is the spoke expansion bait
-        participantC.setBiologicalRole(new MitabCvTerm("enzyme"));
+        participantC.setBiologicalRole(new MitabCvTerm("enzyme","MI:0501"));
+        // biological roles
+        participantA.setBiologicalRole(CvTermUtils.createMICvTerm("enzyme target", "MI:xxx5"));
+        participantB.setBiologicalRole(CvTermUtils.createMICvTerm("enzyme target", "MI:xxx5"));
+        // xrefs
+        participantA.getXrefs().add(new MitabXref("go", "GO:xxxxx", "component"));
+        participantB.getInteractor().getXrefs().add(new MitabXref("interpro", "INTERPRO:xxxxx"));
+        participantC.getXrefs().add(new MitabXref("intact","EBI-x","see-also"));
+        // annotations
+        participantA.getAnnotations().add(new MitabAnnotation("comment", "test comment (to be reviewed)"));
+        participantB.getInteractor().getAnnotations().add(new MitabAnnotation("caution", "sequence withdrawn from uniprot"));
+        participantC.getAnnotations().add(new MitabAnnotation("isoform-comment", "test comment"));
+        // checksum
+        participantA.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx1"));
+        participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
+        participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
 
         ModelledInteraction interaction = new MitabModelledInteraction();
         interaction.addParticipant(participantA);
@@ -172,6 +232,18 @@ public class Mitab25ModelledInteractionWriterTest {
         interaction.getIdentifiers().add(XrefUtils.createIdentityXref("intact", "EBI-xxxx"));
         // confidences
         interaction.getModelledConfidences().add(new MitabConfidence("author-score", "high", "text"));
+        // xrefs
+        interaction.getXrefs().add(new MitabXref("go", "GO:xxxx2", "process"));
+        // annotations
+        interaction.getAnnotations().add(new MitabAnnotation("figure-legend", "Fig 1."));
+        // parameters
+        interaction.getModelledParameters().add(new MitabParameter("ic50", "5x10^(-1)", "molar"));
+        // creation date
+        interaction.setCreatedDate(MitabUtils.DATE_FORMAT.parse("2006/06/06"));
+        // update date
+        interaction.setUpdatedDate(MitabUtils.DATE_FORMAT.parse("2007/01/01"));
+        // checksum
+        interaction.getChecksums().add(ChecksumUtils.createRigid("xxxx3"));
         return interaction;
     }
 }

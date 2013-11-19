@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.tab.io.writer;
+package psidev.psi.mi.jami.tab.io.writer.extended;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.MitabVersion;
+import psidev.psi.mi.jami.tab.io.writer.AbstractMitabWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,33 +21,33 @@ import java.io.Writer;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab25InteractionEvidenceWriter extends AbstractMitabWriter<InteractionEvidence, BinaryInteractionEvidence, ParticipantEvidence> {
+public class Mitab25EvidenceWriter extends AbstractMitabWriter<InteractionEvidence, BinaryInteractionEvidence, ParticipantEvidence> {
 
-    public Mitab25InteractionEvidenceWriter() {
+    public Mitab25EvidenceWriter() {
         super();
     }
 
-    public Mitab25InteractionEvidenceWriter(File file) throws IOException {
+    public Mitab25EvidenceWriter(File file) throws IOException {
         super(file);
     }
 
-    public Mitab25InteractionEvidenceWriter(OutputStream output) {
+    public Mitab25EvidenceWriter(OutputStream output) {
         super(output);
     }
 
-    public Mitab25InteractionEvidenceWriter(Writer writer) {
+    public Mitab25EvidenceWriter(Writer writer) {
         super(writer);
     }
 
-    public Mitab25InteractionEvidenceWriter(OutputStream output, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+    public Mitab25EvidenceWriter(OutputStream output, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
         super(output, expansionMethod);
     }
 
-    public Mitab25InteractionEvidenceWriter(File file, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) throws IOException {
+    public Mitab25EvidenceWriter(File file, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab25InteractionEvidenceWriter(Writer writer, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
+    public Mitab25EvidenceWriter(Writer writer, ComplexExpansionMethod<InteractionEvidence, BinaryInteractionEvidence> expansionMethod) {
         super(writer, expansionMethod);
     }
 

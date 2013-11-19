@@ -17,33 +17,33 @@ import java.io.*;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab25ModelledInteractionWriter extends AbstractMitabWriter<ModelledInteraction, ModelledBinaryInteraction, ModelledParticipant> {
+public class Mitab25ModelledWriter extends AbstractMitabWriter<ModelledInteraction, ModelledBinaryInteraction, ModelledParticipant> {
 
-    public Mitab25ModelledInteractionWriter() {
+    public Mitab25ModelledWriter() {
         super();
     }
 
-    public Mitab25ModelledInteractionWriter(File file) throws IOException {
+    public Mitab25ModelledWriter(File file) throws IOException {
         super(file);
     }
 
-    public Mitab25ModelledInteractionWriter(OutputStream output) {
+    public Mitab25ModelledWriter(OutputStream output) {
         super(output);
     }
 
-    public Mitab25ModelledInteractionWriter(Writer writer) {
+    public Mitab25ModelledWriter(Writer writer) {
         super(writer);
     }
 
-    public Mitab25ModelledInteractionWriter(File file, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25ModelledWriter(File file, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab25ModelledInteractionWriter(OutputStream output, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
+    public Mitab25ModelledWriter(OutputStream output, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
         super(output, expansionMethod);
     }
 
-    public Mitab25ModelledInteractionWriter(Writer writer, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
+    public Mitab25ModelledWriter(Writer writer, ComplexExpansionMethod<ModelledInteraction, ModelledBinaryInteraction> expansionMethod) {
         super(writer, expansionMethod);
     }
 

@@ -3,14 +3,20 @@ package psidev.psi.mi.jami.mitab.io.writer.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
+import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
-import psidev.psi.mi.jami.tab.io.writer.extended.Mitab25InteractionEvidenceWriter;
+import psidev.psi.mi.jami.tab.io.writer.extended.Mitab27EvidenceWriter;
+import psidev.psi.mi.jami.tab.io.writer.extended.Mitab27EvidenceWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.StringWriter;
@@ -20,38 +26,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Unit tester for Mitab25InteractionEvidenceWriter
+ * Unit tester for Mitab27EvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/06/13</pre>
  */
 
-public class Mitab25InteractionEvidenceWriterTest {
+public class Mitab27EvidenceWriterTest {
 
     @Test
     public void test_mitab_version_and_header(){
-        Mitab25InteractionEvidenceWriter binaryWriter = new Mitab25InteractionEvidenceWriter();
-        Assert.assertEquals(MitabVersion.v2_5, binaryWriter.getVersion());
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
+        Assert.assertEquals(MitabVersion.v2_7, binaryWriter.getVersion());
         Assert.assertFalse(binaryWriter.isWriteHeader());
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        Mitab25InteractionEvidenceWriter binaryWriter = new Mitab25InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         binaryWriter.write(new MitabInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        Mitab25InteractionEvidenceWriter binaryWriter = new Mitab25InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
-    public void test_write_binary() throws ParseException {
+    public void test_write_binary() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab25InteractionEvidenceWriter binaryWriter = new Mitab25InteractionEvidenceWriter(writer);
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         InteractionEvidence interaction = createBinaryInteractionEvidence();
@@ -63,9 +69,9 @@ public class Mitab25InteractionEvidenceWriterTest {
     }
 
     @Test
-    public void test_write_binary_list() throws ParseException {
+    public void test_write_binary_list() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab25InteractionEvidenceWriter binaryWriter = new Mitab25InteractionEvidenceWriter(writer);
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         InteractionEvidence interaction = createBinaryInteractionEvidence();
@@ -77,9 +83,9 @@ public class Mitab25InteractionEvidenceWriterTest {
     }
 
     @Test
-    public void test_write_binary2() throws ParseException {
+    public void test_write_binary2() throws ParseException, IllegalParameterException {
         StringWriter writer = new StringWriter();
-        Mitab25InteractionEvidenceWriter binaryWriter = new Mitab25InteractionEvidenceWriter();
+        Mitab27EvidenceWriter binaryWriter = new Mitab27EvidenceWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
         options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
@@ -110,6 +116,33 @@ public class Mitab25InteractionEvidenceWriterTest {
                 "\tpsi-mi:\"MI:xxx1\"(intact)" +
                 "\tintact:EBI-xxxx|imex:IM-1-1" +
                 "\tauthor-score:high(text)" +
+                "\tpsi-mi:\"MI:1060\"(spoke expansion)" +
+                "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
+                "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
+                "\tpsi-mi:\"MI:0496\"(bait)" +
+                "\tpsi-mi:\"MI:xxx6\"(prey)" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tintact:EBI-x(see-also)" +
+                "\tgo:\"GO:xxxxx\"(component)" +
+                "\tgo:\"GO:xxxx2\"(process)" +
+                "\tisoform-comment:test comment" +
+                "\tcomment:\"test comment (to be reviewed)\"" +
+                "\tfigure-legend:Fig 1.|imex curation" +
+                "\ttaxid:-1(in vitro)" +
+                "\tic50:\"5x10^(-1)\"(molar)" +
+                "\t2006/06/06" +
+                "\t2007/01/01" +
+                "\trogid:xxxx4" +
+                "\trogid:xxxx1" +
+                "\trigid:xxxx3" +
+                "\ttrue"+
+                "\t-" +
+                "\tbinding site region:1..3-6..7,>9->9(text)" +
+                "\t1" +
+                "\t2" +
+                "\tpsi-mi:\"MI:xxxx1\"(western blot)" +
+                "\tpsi-mi:\"MI:xxxx1\"(western blot)"+
                 "\n"+
                 "uniprotkb:P12349" +
                 "\tuniprotkb:P12347" +
@@ -125,10 +158,37 @@ public class Mitab25InteractionEvidenceWriterTest {
                 "\tpsi-mi:\"MI:xxxx\"(association)" +
                 "\tpsi-mi:\"MI:xxx1\"(intact)" +
                 "\tintact:EBI-xxxx|imex:IM-1-1" +
-                "\tauthor-score:high(text)";
+                "\tauthor-score:high(text)"+
+                "\tpsi-mi:\"MI:1060\"(spoke expansion)" +
+                "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
+                "\tpsi-mi:\"MI:xxx5\"(enzyme target)" +
+                "\tpsi-mi:\"MI:0496\"(bait)" +
+                "\tpsi-mi:\"MI:xxx6\"(prey)" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tpsi-mi:\"MI:0326\"(protein)" +
+                "\tintact:EBI-x(see-also)" +
+                "\tinterpro:\"INTERPRO:xxxxx\"" +
+                "\tgo:\"GO:xxxx2\"(process)" +
+                "\tisoform-comment:test comment" +
+                "\tcaution:sequence withdrawn from uniprot" +
+                "\tfigure-legend:Fig 1.|imex curation" +
+                "\ttaxid:-1(in vitro)" +
+                "\tic50:\"5x10^(-1)\"(molar)" +
+                "\t2006/06/06" +
+                "\t2007/01/01" +
+                "\trogid:xxxx4" +
+                "\trogid:xxxx2" +
+                "\trigid:xxxx3" +
+                "\ttrue"+
+                "\t-" +
+                "\t-" +
+                "\t1" +
+                "\t5" +
+                "\tpsi-mi:\"MI:xxxx1\"(western blot)" +
+                "\tpsi-mi:\"MI:xxxx2\"(predetermined)";
     }
 
-    private InteractionEvidence createBinaryInteractionEvidence() throws ParseException {
+    private InteractionEvidence createBinaryInteractionEvidence() throws ParseException, IllegalParameterException {
         ParticipantEvidence participantA = new MitabParticipantEvidence(new MitabProtein("protein1", "full name protein1"));
         // add identifiers
         participantA.getInteractor().getIdentifiers().add(XrefUtils.createUniprotIdentity("P12345"));
@@ -156,7 +216,41 @@ public class Mitab25InteractionEvidenceWriterTest {
         // species
         participantC.getInteractor().setOrganism(new MitabOrganism(9606, "human", "Homo Sapiens"));
         // participant C is the spoke expansion bait
-        participantC.setExperimentalRole(new MitabCvTerm("bait"));
+        participantC.setExperimentalRole(new MitabCvTerm("bait", Participant.BAIT_ROLE_MI));
+        // biological roles
+        participantA.setBiologicalRole(CvTermUtils.createMICvTerm("enzyme target", "MI:xxx5"));
+        participantB.setBiologicalRole(CvTermUtils.createMICvTerm("enzyme target", "MI:xxx5"));
+        participantC.setBiologicalRole(CvTermUtils.createMICvTerm("enzyme target", "MI:xxx5"));
+        // experimental roles
+        participantA.setExperimentalRole(CvTermUtils.createMICvTerm("prey", "MI:xxx6"));
+        participantB.setExperimentalRole(CvTermUtils.createMICvTerm("prey", "MI:xxx6"));
+        // xrefs
+        participantA.getXrefs().add(new MitabXref("go", "GO:xxxxx", "component"));
+        participantB.getInteractor().getXrefs().add(new MitabXref("interpro", "INTERPRO:xxxxx"));
+        participantC.getXrefs().add(new MitabXref("intact","EBI-x","see-also"));
+        // annotations
+        participantA.getAnnotations().add(new MitabAnnotation("comment", "test comment (to be reviewed)"));
+        participantB.getInteractor().getAnnotations().add(new MitabAnnotation("caution", "sequence withdrawn from uniprot"));
+        participantC.getAnnotations().add(new MitabAnnotation("isoform-comment", "test comment"));
+        // checksum
+        participantA.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx1"));
+        participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
+        participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
+        // features
+        MitabFeatureEvidence feature = new MitabFeatureEvidence(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        feature.setText("text");
+        feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
+        feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
+        feature.setInterpro("interpro:xxxx");
+        participantA.addFeature(feature);
+        // stoichiometry
+        participantA.setStoichiometry(2);
+        participantB.setStoichiometry(5);
+        participantC.setStoichiometry(1);
+        // participant identification method
+        participantA.getIdentificationMethods().add(new MitabCvTerm("western blot", "MI:xxxx1"));
+        participantB.getIdentificationMethods().add(new MitabCvTerm("predetermined", "MI:xxxx2"));
+        participantC.getIdentificationMethods().add(new MitabCvTerm("western blot", "MI:xxxx1"));
 
         InteractionEvidence interaction = new MitabInteractionEvidence();
         interaction.addParticipant(participantA);
@@ -184,6 +278,22 @@ public class Mitab25InteractionEvidenceWriterTest {
         interaction.getIdentifiers().add(XrefUtils.createXrefWithQualifier("imex", "IM-1-1", "imex-primary"));
         // confidences
         interaction.getConfidences().add(new MitabConfidence("author-score", "high", "text"));
+        // xrefs
+        interaction.getXrefs().add(new MitabXref("go", "GO:xxxx2", "process"));
+        // annotations
+        interaction.getAnnotations().add(new MitabAnnotation("figure-legend", "Fig 1."));
+        // parameters
+        interaction.getParameters().add(new MitabParameter("ic50", "5x10^(-1)", "molar"));
+        // creation date
+        interaction.setCreatedDate(MitabUtils.DATE_FORMAT.parse("2006/06/06"));
+        // update date
+        interaction.setUpdatedDate(MitabUtils.DATE_FORMAT.parse("2007/01/01"));
+        // checksum
+        interaction.getChecksums().add(ChecksumUtils.createRigid("xxxx3"));
+        // host organism
+        interaction.getExperiment().setHostOrganism(new MitabOrganism(-1, "in vitro"));
+        // negative
+        interaction.setNegative(true);
         return interaction;
     }
 }

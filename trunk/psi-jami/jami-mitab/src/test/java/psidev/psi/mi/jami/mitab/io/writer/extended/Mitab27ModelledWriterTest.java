@@ -7,12 +7,14 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
-import psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledInteractionWriter;
+import psidev.psi.mi.jami.tab.io.writer.extended.Mitab27ModelledWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.StringWriter;
@@ -22,38 +24,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Unit tester for Mitab26ModelledInteractionWriter
+ * Unit tester for Mitab27ModelledWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/06/13</pre>
  */
 
-public class Mitab26ModelledInteractionWriterTest {
+public class Mitab27ModelledWriterTest {
 
     @Test
     public void test_mitab_version_and_header(){
-        Mitab26ModelledInteractionWriter binaryWriter = new Mitab26ModelledInteractionWriter();
-        Assert.assertEquals(MitabVersion.v2_6, binaryWriter.getVersion());
+        Mitab27ModelledWriter binaryWriter = new Mitab27ModelledWriter();
+        Assert.assertEquals(MitabVersion.v2_7, binaryWriter.getVersion());
         Assert.assertFalse(binaryWriter.isWriteHeader());
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        Mitab26ModelledInteractionWriter binaryWriter = new Mitab26ModelledInteractionWriter();
+        Mitab27ModelledWriter binaryWriter = new Mitab27ModelledWriter();
         binaryWriter.write(new MitabModelledInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        Mitab26ModelledInteractionWriter binaryWriter = new Mitab26ModelledInteractionWriter();
+        Mitab27ModelledWriter binaryWriter = new Mitab27ModelledWriter();
         binaryWriter.initialiseContext(null);
     }
 
     @Test
     public void test_write_interaction() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
-        Mitab26ModelledInteractionWriter interactionWriter = new Mitab26ModelledInteractionWriter(writer);
+        Mitab27ModelledWriter interactionWriter = new Mitab27ModelledWriter(writer);
         interactionWriter.setWriteHeader(false);
 
         ModelledInteraction binary = createModelledInteraction();
@@ -67,7 +69,7 @@ public class Mitab26ModelledInteractionWriterTest {
     @Test
     public void test_write_binary_list() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
-        Mitab26ModelledInteractionWriter binaryWriter = new Mitab26ModelledInteractionWriter(writer);
+        Mitab27ModelledWriter binaryWriter = new Mitab27ModelledWriter(writer);
         binaryWriter.setWriteHeader(false);
 
         ModelledInteraction binary = createModelledInteraction();
@@ -81,7 +83,7 @@ public class Mitab26ModelledInteractionWriterTest {
     @Test
     public void test_write_binary2() throws IllegalParameterException, ParseException {
         StringWriter writer = new StringWriter();
-        Mitab26ModelledInteractionWriter binaryWriter = new Mitab26ModelledInteractionWriter();
+        Mitab27ModelledWriter binaryWriter = new Mitab27ModelledWriter();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MitabUtils.MITAB_HEADER_OPTION, false);
         options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
@@ -132,7 +134,13 @@ public class Mitab26ModelledInteractionWriterTest {
                 "\trogid:xxxx4" +
                 "\trogid:xxxx1" +
                 "\trigid:xxxx3" +
+                "\t-"  +
                 "\t-" +
+                "\tbinding site region:1..3-6..7,>9->9(text)" +
+                "\t1" +
+                "\t2" +
+                "\t-" +
+                "\t-"+
                 "\n"+
                 "uniprotkb:P12349" +
                 "\tuniprotkb:P12347" +
@@ -169,6 +177,12 @@ public class Mitab26ModelledInteractionWriterTest {
                 "\trogid:xxxx4" +
                 "\trogid:xxxx2" +
                 "\trigid:xxxx3" +
+                "\t-" +
+                "\t-" +
+                "\t-" +
+                "\t1" +
+                "\t5" +
+                "\t-" +
                 "\t-";
     }
 
@@ -216,6 +230,17 @@ public class Mitab26ModelledInteractionWriterTest {
         participantA.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx1"));
         participantB.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx2"));
         participantC.getInteractor().getChecksums().add(ChecksumUtils.createRogid("xxxx4"));
+        // features
+        MitabModelledFeature feature = new MitabModelledFeature(new DefaultCvTerm("binding site", "binding site region", (String)null));
+        feature.setText("text");
+        feature.getRanges().add(RangeUtils.createFuzzyRange(1, 3, 6, 7));
+        feature.getRanges().add(RangeUtils.createGreaterThanRange(9));
+        feature.setInterpro("interpro:xxxx");
+        participantA.addFeature(feature);
+        // stoichiometry
+        participantA.setStoichiometry(2);
+        participantB.setStoichiometry(5);
+        participantC.setStoichiometry(1);
 
         ModelledInteraction interaction = new MitabModelledInteraction();
         interaction.addParticipant(participantA);
