@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.AbstractEntry;
 import psidev.psi.mi.jami.xml.AbstractEntrySet;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.io.FullPsiXml25Parser;
 
 import java.io.File;
 import java.io.InputStream;

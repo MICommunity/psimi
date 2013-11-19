@@ -56,6 +56,23 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
     }
 
     @Override
+    public Experiment extractDefaultExperimentFrom(I interaction) {
+        Experiment exp = null;
+        if (!interaction.getCooperativeEffects().isEmpty()){
+            CooperativeEffect effect = interaction.getCooperativeEffects().iterator().next();
+            if (!effect.getCooperativityEvidences().isEmpty()){
+                CooperativityEvidence evidence = effect.getCooperativityEvidences().iterator().next();
+                // set first experiment as default experiment
+                if (evidence.getPublication() != null){
+                    exp = new DefaultNamedExperiment(evidence.getPublication());
+                    ((NamedExperiment)exp).setFullName(evidence.getPublication().getTitle());
+                }
+            }
+        }
+        return exp != null ? exp : getDefaultExperiment() ;
+    }
+
+    @Override
     protected void writeAvailability(I object) {
         // nothing to do
     }
