@@ -260,14 +260,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
     }
 
-    protected void writeStartEntryContent() throws XMLStreamException {
-        // write start entry
-        writeStartEntry();
-        // write source
-        writeSource();
-        // write start interactionList
-        writeStartInteractionList();
-    }
+    protected abstract void writeStartEntryContent() throws XMLStreamException;
 
     @Override
     public void write(Iterator<? extends T> interactions) throws MIIOException {
@@ -472,7 +465,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.started = started;
     }
 
-    protected boolean isWriteComplexesAsInteractors() {
+    protected boolean writeComplexesAsInteractors() {
         return writeComplexesAsInteractors;
     }
 
