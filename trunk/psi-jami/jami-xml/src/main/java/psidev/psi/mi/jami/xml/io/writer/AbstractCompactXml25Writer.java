@@ -165,9 +165,15 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         for (Object o : interaction.getParticipants()){
             Participant participant = (Participant)o;
             // we have a complex, we want to register default experiments
-            if (participant.getInteractor() instanceof Complex){
+            if (!writeComplexesAsInteractors() && participant.getInteractor() instanceof Complex){
                 Complex complex = (Complex)participant.getInteractor();
-                registerAllInteractorsAndExperimentsFrom(complex);
+                // the complex will be written as interactor as it does not have any participants
+                if (complex.getParticipants().isEmpty()){
+                    this.interactors.add(complex);
+                }
+                else {
+                    registerAllInteractorsAndExperimentsFrom(complex);
+                }
             }
             // register interactor
             else{
@@ -185,7 +191,13 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
             // we have a complex, we want to register default experiments
             if (participant.getInteractor() instanceof Complex){
                 Complex complex = (Complex)participant.getInteractor();
-                registerAllInteractorsAndExperimentsFrom(complex);
+                // the complex will be written as interactor as it does not have any participants
+                if (complex.getParticipants().isEmpty()){
+                    this.interactors.add(complex);
+                }
+                else {
+                    registerAllInteractorsAndExperimentsFrom(complex);
+                }
             }
             // register interactor
             else{
