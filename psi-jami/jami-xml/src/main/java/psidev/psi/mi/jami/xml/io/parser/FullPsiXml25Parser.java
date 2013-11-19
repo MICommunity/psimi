@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io;
+package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;

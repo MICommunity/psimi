@@ -99,4 +99,6 @@ public interface PsiXml25ObjectCache {
      * @return true if the index has registered som sub complexes, fasle otherwise
      */
     public boolean hasRegisteredSubComplexes();
+
+    public void removeObject(Object o);
 }

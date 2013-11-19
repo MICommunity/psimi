@@ -59,6 +59,12 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     }
 
     @Override
+    public Experiment extractDefaultExperimentFrom(I interaction) {
+        Experiment exp = interaction.getExperiment();
+        return exp != null ? exp : getDefaultExperiment() ;
+    }
+
+    @Override
     protected void writeExperiments(I object) throws XMLStreamException {
         if (object.getExperiment() != null){
             setDefaultExperiment(object.getExperiment());

@@ -102,6 +102,15 @@ public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
         return !this.complexes.isEmpty();
     }
 
+    @Override
+    public void removeObject(Object o) {
+        if (o != null){
+           if (this.identityMap.remove(o) == null){
+               this.availabilityMap.remove(o);
+           }
+        }
+    }
+
     private int nextId(){
         current++;
         return current;

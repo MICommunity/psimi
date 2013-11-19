@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -26,7 +27,7 @@ import java.util.Set;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXml25InteractionWriter<T extends Interaction, P extends Participant> implements PsiXml25ElementWriter<T> {
+public abstract class AbstractXml25InteractionWriter<T extends Interaction, P extends Participant> implements PsiXml25InteractionWriter<T> {
 
     private XMLStreamWriter2 streamWriter;
     private PsiXml25ObjectCache objectIndex;
@@ -145,6 +146,11 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
             throw new IllegalArgumentException("The default experiment is mandatory");
         }
         this.defaultExperiment = defaultExperiment;
+    }
+
+    @Override
+    public Experiment extractDefaultExperimentFrom(T interaction) {
+        return getDefaultExperiment();
     }
 
     protected void writeAttributes(T object) throws XMLStreamException {

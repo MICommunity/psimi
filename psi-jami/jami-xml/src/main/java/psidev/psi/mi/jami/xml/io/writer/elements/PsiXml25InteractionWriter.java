@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Interaction;
  * @since <pre>14/11/13</pre>
  */
 
-public interface PsiXml25NonExperimentalInteractionWriter<T extends Interaction> extends PsiXml25ElementWriter<T>{
+public interface PsiXml25InteractionWriter<T extends Interaction> extends PsiXml25ElementWriter<T>{
 
     /**
      * The default experiment that will be used to write a valid XML 2.5 file but is not a real experiment attached
@@ -28,4 +28,11 @@ public interface PsiXml25NonExperimentalInteractionWriter<T extends Interaction>
      * @throws IllegalArgumentException when default experiment is null
      */
     public void setDefaultExperiment(Experiment exp);
+
+    /**
+     *
+     * @param interaction
+     * @return the default experiment for this interaction
+     */
+    public Experiment extractDefaultExperimentFrom(T interaction);
 }
