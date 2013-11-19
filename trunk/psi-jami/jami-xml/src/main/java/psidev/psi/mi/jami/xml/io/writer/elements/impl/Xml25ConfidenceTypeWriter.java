@@ -22,7 +22,7 @@ public class Xml25ConfidenceTypeWriter extends AbstractXml25OpenCvTermWriter {
         super(writer);
     }
 
-    protected Xml25ConfidenceTypeWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+    public Xml25ConfidenceTypeWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
     }
 

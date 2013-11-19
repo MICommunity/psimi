@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25PublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -59,7 +60,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
     }
 
     public Xml25SourceWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter,
-                             PsiXml25ElementWriter<Publication> publicationWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
+                             PsiXml25PublicationWriter publicationWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XML25SourceWriter");
