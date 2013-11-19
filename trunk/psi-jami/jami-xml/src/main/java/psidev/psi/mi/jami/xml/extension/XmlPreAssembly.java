@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.impl.DefaultPreassemby;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
 
 /**
@@ -64,7 +64,7 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
             this.sourceLocator = locator;
         }
 
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
                 Object object = parsedObjects.get(this.ref);
                 // convert interaction evidence in a complex

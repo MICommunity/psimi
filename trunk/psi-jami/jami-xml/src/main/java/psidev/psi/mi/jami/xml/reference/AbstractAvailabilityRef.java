@@ -28,11 +28,6 @@ public abstract class AbstractAvailabilityRef extends Availability implements Xm
     }
 
     @Override
-    public boolean isComplexReference() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "Availability Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }

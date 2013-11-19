@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25FeatureEvidenceWriter;
@@ -20,12 +20,12 @@ import javax.xml.stream.XMLStreamException;
 
 public class Xml25NamedFeatureEvidenceWriter extends AbstractXml25FeatureEvidenceWriter {
     private PsiXml25ElementWriter<Alias> aliasWriter;
-    public Xml25NamedFeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+    public Xml25NamedFeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
         super(writer, objectIndex);
         this.aliasWriter = new Xml25AliasWriter(writer);
     }
 
-    public Xml25NamedFeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public Xml25NamedFeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                            PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                            PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                            PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,

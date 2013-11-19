@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectIndex;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -30,7 +30,10 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private boolean isInitialised = false;
     private PsiXml25ElementWriter<T> interactionWriter;
     private PsiXml25ElementWriter<ModelledInteraction> complexWriter;
-    private PsiXml25ObjectIndex elementCache;
+    private PsiXml25ElementWriter<Source> sourceWriter;
+    private PsiXml25ObjectCache elementCache;
+
+    private Source currentSource;
 
     public AbstractXml25Writer(){
 
@@ -57,7 +60,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     public void initialiseContext(Map<String, Object> options) {
 
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         else if (options == null){
             return;
@@ -104,11 +107,11 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
         if (options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25ObjectIndex)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
+            this.elementCache = (PsiXml25ObjectCache)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
         }
         // use the default cache option
         else{
@@ -121,7 +124,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void end() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
         // write end of entrySet
@@ -142,7 +145,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void start() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
         // write start of document (by default, version = 1 and encoding = UTL-8)
@@ -170,7 +173,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void write(T interaction) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         try {
             // write start entry
@@ -187,7 +190,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void write(Collection<? extends T> interactions) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         try {
             // write start entry
@@ -204,7 +207,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void write(Iterator<? extends T> interactions) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         try {
             // write start entry
@@ -257,6 +260,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     }
 
     protected void writeInteractionInEntry(Iterator<? extends T> interaction) throws XMLStreamException {
+
         // write elements before
         writeTopEntryProperties(interaction);
         // write interaction list
@@ -278,7 +282,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
         // write sub complexes or eother modelled interactions used as interactor/reference
         while (this.elementCache.hasRegisteredSubComplexes()){
-            Set<ModelledInteraction> subComplexes = this.elementCache.clearRegisteredComplexes();
+            Set<ModelledInteraction> subComplexes = this.elementCache.clearRegisteredSubComplexes();
             writeSubComplexInEntry(subComplexes.iterator());
         }
 
@@ -298,6 +302,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected abstract void writeTopEntryProperties(Iterator<? extends T> interaction);
 
+    protected abstract void writeSource(T interaction);
+
     protected void writeStartEntry() throws XMLStreamException {
         this.elementCache.clear();
         this.streamWriter.writeStartElement(PsiXml25Utils.ENTRY_TAG);
@@ -313,7 +319,39 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     protected abstract void initialiseSubWriters();
 
     protected void initialiseDefaultElementCache() {
-        this.elementCache = new InMemoryIdentityObjectIndex();
+        this.elementCache = new InMemoryIdentityObjectCache();
+    }
+
+    protected PsiXml25ElementWriter<T> getInteractionWriter() {
+        return interactionWriter;
+    }
+
+    protected PsiXml25ElementWriter<ModelledInteraction> getComplexWriter() {
+        return complexWriter;
+    }
+
+    protected PsiXml25ElementWriter<Source> getSourceWriter() {
+        return sourceWriter;
+    }
+
+    protected PsiXml25ObjectCache getElementCache() {
+        return elementCache;
+    }
+
+    protected void setSourceWriter(PsiXml25ElementWriter<Source> sourceWriter) {
+        this.sourceWriter = sourceWriter;
+    }
+
+    protected void setCurrentSource(Source currentSource) {
+        this.currentSource = currentSource;
+    }
+
+    protected void setComplexWriter(PsiXml25ElementWriter<ModelledInteraction> complexWriter) {
+        this.complexWriter = complexWriter;
+    }
+
+    protected void setInteractionWriter(PsiXml25ElementWriter<T> interactionWriter) {
+        this.interactionWriter = interactionWriter;
     }
 
     private void initialiseWriter(Writer writer) throws XMLStreamException {

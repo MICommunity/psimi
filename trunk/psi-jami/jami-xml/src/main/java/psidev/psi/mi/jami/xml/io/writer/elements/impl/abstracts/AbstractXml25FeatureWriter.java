@@ -4,7 +4,7 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -23,14 +23,14 @@ import java.util.Iterator;
 
 public abstract class AbstractXml25FeatureWriter<F extends Feature> implements PsiXml25ElementWriter<F>{
     private XMLStreamWriter2 streamWriter;
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
     private PsiXml25ElementWriter<CvTerm> featureTypeWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Range> rangeWriter;
 
-    public AbstractXml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public AbstractXml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25FeatureWriter");
         }
@@ -47,7 +47,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
 
     }
 
-    protected AbstractXml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    protected AbstractXml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                          PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                          PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                          PsiXml25ElementWriter<Range> rangeWriter) {
@@ -73,7 +73,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
                 // write start
                 this.streamWriter.writeStartElement("feature");
                 // write id attribute
-                int id = this.objectIndex.extractIdFor(object);
+                int id = this.objectIndex.extractIdForFeature(object);
                 this.streamWriter.writeAttribute("id", Integer.toString(id));
                 // write names
                 writeNames(object);
@@ -281,7 +281,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
         return streamWriter;
     }
 
-    protected PsiXml25ObjectIndex getObjectIndex() {
+    protected PsiXml25ObjectCache getObjectIndex() {
         return objectIndex;
     }
 }

@@ -51,7 +51,7 @@ public abstract class AbstractPsiXml25Source<T extends Interaction> extends Abst
     @Override
     public Collection<T> getInteractions() throws MIIOException {
         if (!isInitialised()){
-            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
         try {

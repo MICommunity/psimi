@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.reference;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 
 /**
  * A XML reference to an parent having an id
@@ -23,7 +23,5 @@ public interface XmlIdReference extends FileSourceContext{
      * @param parsedObjects
      * @return true if the reference was solved. false otherwise
      */
-    public boolean resolve(PsiXml25IdIndex parsedObjects);
-
-    public boolean isComplexReference();
+    public boolean resolve(PsiXml25IdCache parsedObjects);
 }

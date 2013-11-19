@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> {
     private XMLStreamWriter2 streamWriter;
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
     private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
@@ -30,7 +30,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Checksum> checksumWriter;
 
-    public Xml25InteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public Xml25InteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25InteractorWriter");
         }
@@ -48,7 +48,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
         this.checksumWriter = new Xml25ChecksumWriter(writer);
     }
 
-    public Xml25InteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public Xml25InteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                  PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> interactorTypeWriter,
                                  PsiXml25ElementWriter<Organism> organismWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
@@ -74,7 +74,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
         try {
             // write start
             this.streamWriter.writeStartElement("interactor");
-            int id = this.objectIndex.extractIdFor(object);
+            int id = this.objectIndex.extractIdForInteractor(object);
             // write id attribute
             this.streamWriter.writeAttribute("id", Integer.toString(id));
 

@@ -98,7 +98,7 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
      * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
      * @param participants
      * @return
-     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
+     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contains more than two participants
      */
     @Override
     public boolean addAllParticipants(Collection<? extends Participant> participants) {

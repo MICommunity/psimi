@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -87,11 +87,11 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
             super(ref);
         }
 
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
-                Object obj = parsedObjects.get(this.ref);
-                if (obj instanceof Experiment){
-                    experiment = (Experiment)obj;
+                Experiment obj = parsedObjects.getExperiment(this.ref);
+                if (obj != null){
+                    experiment = obj;
                     if (experiment.getPublication() != null){
                         getPublications().add(experiment.getPublication());
                         return true;

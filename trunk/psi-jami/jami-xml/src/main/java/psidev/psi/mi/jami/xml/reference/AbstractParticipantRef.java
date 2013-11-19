@@ -95,11 +95,6 @@ public abstract class AbstractParticipantRef<T extends Feature> extends Abstract
     }
 
     @Override
-    public boolean isComplexReference() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "Participant Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }

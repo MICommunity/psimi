@@ -48,7 +48,6 @@ public class Xml25EvidenceSource extends AbstractPsiXml25Source<InteractionEvide
         try {
             FullXml25EvidenceParser parser = new FullXml25EvidenceParser(reader);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
@@ -61,7 +60,6 @@ public class Xml25EvidenceSource extends AbstractPsiXml25Source<InteractionEvide
         try {
             FullXml25EvidenceParser parser = new FullXml25EvidenceParser(file);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
@@ -74,7 +72,6 @@ public class Xml25EvidenceSource extends AbstractPsiXml25Source<InteractionEvide
         try {
             FullXml25EvidenceParser parser = new FullXml25EvidenceParser(input);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
@@ -87,7 +84,6 @@ public class Xml25EvidenceSource extends AbstractPsiXml25Source<InteractionEvide
         try {
             FullXml25EvidenceParser parser = new FullXml25EvidenceParser(url);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {

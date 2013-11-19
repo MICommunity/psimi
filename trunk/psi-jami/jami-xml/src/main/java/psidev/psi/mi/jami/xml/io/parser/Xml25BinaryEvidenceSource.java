@@ -47,7 +47,6 @@ public class Xml25BinaryEvidenceSource extends AbstractPsiXml25BinarySource<Inte
         try {
             FullXml25BinaryEvidenceParser parser = new FullXml25BinaryEvidenceParser(reader);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
@@ -60,7 +59,6 @@ public class Xml25BinaryEvidenceSource extends AbstractPsiXml25BinarySource<Inte
         try {
             FullXml25BinaryEvidenceParser parser = new FullXml25BinaryEvidenceParser(file);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
@@ -73,7 +71,6 @@ public class Xml25BinaryEvidenceSource extends AbstractPsiXml25BinarySource<Inte
         try {
             FullXml25BinaryEvidenceParser parser = new FullXml25BinaryEvidenceParser(input);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
@@ -86,7 +83,6 @@ public class Xml25BinaryEvidenceSource extends AbstractPsiXml25BinarySource<Inte
         try {
             FullXml25BinaryEvidenceParser parser = new FullXml25BinaryEvidenceParser(url);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {

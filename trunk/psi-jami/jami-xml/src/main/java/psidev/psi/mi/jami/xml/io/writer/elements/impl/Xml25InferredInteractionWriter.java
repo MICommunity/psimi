@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -20,9 +20,9 @@ import java.util.Set;
 
 public class Xml25InferredInteractionWriter implements PsiXml25ElementWriter<Set<Feature>>{
     private XMLStreamWriter2 streamWriter;
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
 
-    public Xml25InferredInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public Xml25InferredInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25InferredInteractionWriter");
         }
@@ -44,7 +44,7 @@ public class Xml25InferredInteractionWriter implements PsiXml25ElementWriter<Set
                 this.streamWriter.writeStartElement("participant");
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("participantFeatureRef");
-                this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdFor(feature)));
+                this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForFeature(feature)));
                 // write end feature ref
                 this.streamWriter.writeEndElement();
                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);

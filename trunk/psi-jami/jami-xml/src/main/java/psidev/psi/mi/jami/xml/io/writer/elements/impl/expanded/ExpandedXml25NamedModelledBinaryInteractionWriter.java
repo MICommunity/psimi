@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
@@ -28,12 +28,12 @@ import java.util.Set;
 public class ExpandedXml25NamedModelledBinaryInteractionWriter extends AbstractXml25ModelledInteractionWriter<ModelledBinaryInteraction, ModelledParticipant> implements ExpandedPsiXml25ElementWriter<ModelledBinaryInteraction> {
     private PsiXml25ElementWriter<Alias> aliasWriter;
 
-    public ExpandedXml25NamedModelledBinaryInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+    public ExpandedXml25NamedModelledBinaryInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
         super(writer, objectIndex, new ExpandedXml25ModelledParticipantWriter(writer, objectIndex));
         this.aliasWriter = new Xml25AliasWriter(writer);
     }
 
-    public ExpandedXml25NamedModelledBinaryInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public ExpandedXml25NamedModelledBinaryInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                              ExpandedPsiXml25ElementWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,

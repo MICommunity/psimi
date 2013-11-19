@@ -4,7 +4,7 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25PublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -23,7 +23,7 @@ import java.util.Iterator;
 
 public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> {
     private XMLStreamWriter2 streamWriter;
-    private PsiXml25ObjectIndex objectIndex;
+    private PsiXml25ObjectCache objectIndex;
     private PsiXml25PublicationWriter publicationWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
@@ -32,7 +32,7 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> 
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
 
-    public Xml25ExperimentWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex){
+    public Xml25ExperimentWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ExperimentWriter");
         }
@@ -50,7 +50,7 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> 
         this.confidenceWriter = new Xml25ConfidenceWriter(writer);
     }
 
-    public Xml25ExperimentWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    public Xml25ExperimentWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                  PsiXml25PublicationWriter publicationWriter,
                                  PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                  PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
@@ -77,7 +77,7 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> 
         try {
             // write start
             this.streamWriter.writeStartElement("experimentDescription");
-            int id = this.objectIndex.extractIdFor(object);
+            int id = this.objectIndex.extractIdForExperiment(object);
             // write id attribute
             this.streamWriter.writeAttribute("id", Integer.toString(id));
 

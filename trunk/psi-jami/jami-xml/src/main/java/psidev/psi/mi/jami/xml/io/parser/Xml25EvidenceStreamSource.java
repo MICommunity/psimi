@@ -47,7 +47,6 @@ public class Xml25EvidenceStreamSource extends AbstractPsiXml25Stream<Interactio
         try {
             Xml25EvidenceParser parser = new Xml25EvidenceParser(reader);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -61,7 +60,6 @@ public class Xml25EvidenceStreamSource extends AbstractPsiXml25Stream<Interactio
         try {
             Xml25EvidenceParser parser = new Xml25EvidenceParser(file);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -76,7 +74,6 @@ public class Xml25EvidenceStreamSource extends AbstractPsiXml25Stream<Interactio
         try {
             Xml25EvidenceParser parser = new Xml25EvidenceParser(input);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -91,7 +88,6 @@ public class Xml25EvidenceStreamSource extends AbstractPsiXml25Stream<Interactio
         try {
             Xml25EvidenceParser parser = new Xml25EvidenceParser(url);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (IOException e) {

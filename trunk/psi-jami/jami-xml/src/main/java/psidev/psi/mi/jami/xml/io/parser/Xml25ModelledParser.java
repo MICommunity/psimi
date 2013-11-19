@@ -85,7 +85,7 @@ public class Xml25ModelledParser extends AbstractPsiXml25Parser<ModelledInteract
                 if (availabilityList != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
                 }
-                getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contain any availability node. PSI-XML is not valid."));
+                getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contains any availability node. PSI-XML is not valid."));
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());

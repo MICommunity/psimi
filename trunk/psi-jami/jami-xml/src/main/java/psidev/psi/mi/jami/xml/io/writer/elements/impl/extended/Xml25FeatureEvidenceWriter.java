@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25FeatureEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -20,11 +20,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25FeatureEvidenceWriter extends Xml25NamedFeatureEvidenceWriter {
-    public Xml25FeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex) {
+    public Xml25FeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
-    public Xml25FeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+    public Xml25FeatureEvidenceWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                       PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                       PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
                                       PsiXml25ElementWriter<Alias> aliasWriter) {
@@ -43,7 +43,7 @@ public class Xml25FeatureEvidenceWriter extends Xml25NamedFeatureEvidenceWriter 
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Experiment exp : extendedFeature.getExperiments()){
                 getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(exp)));
+                getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(exp)));
                 getStreamWriter().writeEndElement();
                 getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }

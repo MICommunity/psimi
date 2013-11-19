@@ -83,7 +83,7 @@ public class Availability implements FileSourceContext, Locatable
     @XmlAttribute(name = "id", required = true)
     public void setId(int value) {
         this.id = value;
-        Xml25EntryContext.getInstance().registerObject(this.id, this);
+        Xml25EntryContext.getInstance().registerAvailability(this.id, this);
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }

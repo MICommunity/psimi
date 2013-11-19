@@ -47,7 +47,6 @@ public class LightXml25StreamSource extends AbstractPsiXml25Stream<Interaction<?
         try {
             Xml25Parser parser = new Xml25Parser(reader);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
 
@@ -62,7 +61,6 @@ public class LightXml25StreamSource extends AbstractPsiXml25Stream<Interaction<?
         try {
             Xml25Parser parser = new Xml25Parser(file);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -77,7 +75,6 @@ public class LightXml25StreamSource extends AbstractPsiXml25Stream<Interaction<?
         try {
             Xml25Parser parser = new Xml25Parser(input);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (XMLStreamException e) {
@@ -92,7 +89,6 @@ public class LightXml25StreamSource extends AbstractPsiXml25Stream<Interaction<?
         try {
             Xml25Parser parser = new Xml25Parser(url);
             parser.setListener(this);
-            parser.setCacheOfComplexes(getComplexCache());
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (IOException e) {

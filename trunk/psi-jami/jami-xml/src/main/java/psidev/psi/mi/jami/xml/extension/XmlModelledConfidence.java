@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -185,15 +185,14 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
                 super(ref);
             }
 
-            public boolean resolve(PsiXml25IdIndex parsedObjects) {
+            public boolean resolve(PsiXml25IdCache parsedObjects) {
                 if (parsedObjects.contains(this.ref)){
-                    Object obj = parsedObjects.get(this.ref);
-                    if (obj instanceof Experiment){
-                        Experiment exp = (Experiment)obj;
+                    Experiment obj = parsedObjects.getExperiment(this.ref);
+                    if (obj != null){
                         experiments.remove(this);
-                        experiments.add(exp);
-                        if (exp.getPublication() != null){
-                            publications.add(exp.getPublication());
+                        experiments.add(obj);
+                        if (obj.getPublication() != null){
+                            publications.add(obj.getPublication());
                         }
                         return true;
                     }

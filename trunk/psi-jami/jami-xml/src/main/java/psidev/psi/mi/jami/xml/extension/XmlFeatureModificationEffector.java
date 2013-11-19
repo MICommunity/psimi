@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25IdIndex;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.reference.AbstractFeatureRef;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -66,7 +66,7 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
             this.sourceLocator = locator;
         }
 
-        public boolean resolve(PsiXml25IdIndex parsedObjects) {
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
                 Object object = parsedObjects.get(this.ref);
                 // convert feature evidence in a modelled feature

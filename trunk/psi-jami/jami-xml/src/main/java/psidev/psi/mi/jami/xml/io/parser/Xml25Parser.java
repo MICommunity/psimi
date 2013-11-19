@@ -86,7 +86,7 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
                 if (experimentList != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
                 }
-                getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList elements does not contain any experimentDescription node. PSI-XML is not valid."));
+                getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList elements does not contains any experimentDescription node. PSI-XML is not valid."));
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());
@@ -129,7 +129,7 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
                 if (availabilityList != null){
                     context = new DefaultFileSourceContext(new PsiXmLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
                 }
-                getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contain any availability node. PSI-XML is not valid."));
+                getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contains any availability node. PSI-XML is not valid."));
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());

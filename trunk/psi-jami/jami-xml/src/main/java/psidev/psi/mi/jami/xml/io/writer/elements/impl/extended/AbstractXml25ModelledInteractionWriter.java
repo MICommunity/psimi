@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultNamedExperiment;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectIndex;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
@@ -26,13 +26,13 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
     private PsiXml25ParameterWriter parameterWriter;
 
-    public AbstractXml25ModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex, PsiXml25ElementWriter<P> participantWriter) {
+    public AbstractXml25ModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<P> participantWriter) {
         super(writer, objectIndex, participantWriter);
         this.confidenceWriter = new Xml25ConfidenceWriter(writer);
         this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
     }
 
-    protected AbstractXml25ModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectIndex objectIndex,
+    protected AbstractXml25ModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                                      PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                      PsiXml25ElementWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                      PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter,
@@ -84,7 +84,7 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
                         exp.setFullName(evidence.getPublication().getTitle());
                         getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
                         getStreamWriter().writeStartElement("experimentRef");
-                        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdFor(exp)));
+                        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(exp)));
                         getStreamWriter().writeEndElement();
                         getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
                     }
@@ -215,19 +215,19 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
 
             // write allosteric molecule
             writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERIC_MOLECULE, CooperativeEffect.ALLOSTERIC_MOLECULE_ID,
-                    Integer.toString(getObjectIndex().extractIdFor(allostery.getAllostericMolecule())));
+                    Integer.toString(getObjectIndex().extractIdForParticipant(allostery.getAllostericMolecule())));
             // write allosteric effector
             AllostericEffector effector = allostery.getAllostericEffector();
             switch (effector.getEffectorType()){
                 case molecule:
                     MoleculeEffector moleculeEffector = (MoleculeEffector)effector;
                     writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERIC_EFFECTOR, CooperativeEffect.ALLOSTERIC_EFFECTOR_ID,
-                            Integer.toString(getObjectIndex().extractIdFor(moleculeEffector.getMolecule())));
+                            Integer.toString(getObjectIndex().extractIdForParticipant(moleculeEffector.getMolecule())));
                     break;
                 case feature_modification:
                     FeatureModificationEffector featureEffector = (FeatureModificationEffector)effector;
                     writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERIC_PTM, CooperativeEffect.ALLOSTERIC_PTM_ID,
-                            Integer.toString(getObjectIndex().extractIdFor(featureEffector.getFeatureModification())));
+                            Integer.toString(getObjectIndex().extractIdForFeature(featureEffector.getFeatureModification())));
                     break;
                 default:
                     break;
@@ -251,7 +251,7 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
         if (!effect.getAffectedInteractions().isEmpty()){
             for (ModelledInteraction affected : effect.getAffectedInteractions()){
                 getObjectIndex().registerSubComplex(affected);
-                writeCooperativeEffectAttribute(CooperativeEffect.AFFECTED_INTERACTION, CooperativeEffect.AFFECTED_INTERACTION_ID, Integer.toString(getObjectIndex().extractIdFor(affected)));
+                writeCooperativeEffectAttribute(CooperativeEffect.AFFECTED_INTERACTION, CooperativeEffect.AFFECTED_INTERACTION_ID, Integer.toString(getObjectIndex().extractIdForInteraction(affected)));
             }
         }
         // write cooperative value
