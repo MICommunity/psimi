@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>12/11/13</pre>
  */
 
-public class Xml25InteractionDetectionMethodWriter extends AbstractXml25CvTermWriter<CvTerm> {
+public class Xml25InteractionDetectionMethodWriter extends AbstractXml25CvTermWriter {
     public Xml25InteractionDetectionMethodWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }

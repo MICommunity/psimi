@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalCvTerm;
@@ -19,7 +20,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml25CvTermWriter<ExperimentalCvTerm> {
+public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml25CvTermWriter {
     private PsiXml25ObjectCache objectIndex;
 
     public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
@@ -39,8 +40,8 @@ public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml2
     }
 
     @Override
-    protected void writeOtherProperties(ExperimentalCvTerm term) throws XMLStreamException {
-
+    protected void writeOtherProperties(CvTerm object) throws XMLStreamException {
+        ExperimentalCvTerm term = (ExperimentalCvTerm) object;
         if (!term.getExperiments().isEmpty()){
             getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             getStreamWriter().writeStartElement("experimentRefList");

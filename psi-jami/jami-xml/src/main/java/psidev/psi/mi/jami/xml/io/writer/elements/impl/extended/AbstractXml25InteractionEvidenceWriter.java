@@ -15,6 +15,8 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract class for interaction evidence writers that write extended interactions (having modelled, intramolecular properties, list
@@ -60,6 +62,12 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     public Experiment extractDefaultExperimentFrom(I interaction) {
         Experiment exp = interaction.getExperiment();
         return exp != null ? exp : getDefaultExperiment() ;
+    }
+
+    @Override
+    public List<Experiment> extractDefaultExperimentsFrom(I interaction) {
+        List<Experiment> exp = ((ExtendedPsi25InteractionEvidence)interaction).getExperiments();
+        return !exp.isEmpty() ? exp : Collections.singletonList(getDefaultExperiment());
     }
 
     @Override
