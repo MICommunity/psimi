@@ -154,6 +154,16 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         return getDefaultExperiment();
     }
 
+    @Override
+    public boolean writeComplexAsInteractor() {
+        return this.participantWriter.writeComplexAsInteractor();
+    }
+
+    @Override
+    public void setComplexAsInteractor(boolean complexAsInteractor) {
+        this.participantWriter.setComplexAsInteractor(complexAsInteractor);
+    }
+
     protected void writeAttributes(T object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){

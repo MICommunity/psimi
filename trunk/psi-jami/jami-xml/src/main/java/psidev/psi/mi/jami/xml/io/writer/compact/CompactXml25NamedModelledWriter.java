@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.compact;
 
+import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -25,18 +26,23 @@ import java.util.Set;
 public class CompactXml25NamedModelledWriter extends AbstractCompactXml25Writer<ModelledInteraction>{
 
     public CompactXml25NamedModelledWriter() {
+        super(ModelledInteraction.class);
     }
 
     public CompactXml25NamedModelledWriter(File file) throws IOException, XMLStreamException {
-        super(file);
+        super(ModelledInteraction.class, file);
     }
 
     public CompactXml25NamedModelledWriter(OutputStream output) throws XMLStreamException {
-        super(output);
+        super(ModelledInteraction.class, output);
     }
 
     public CompactXml25NamedModelledWriter(Writer writer) throws XMLStreamException {
-        super(writer);
+        super(ModelledInteraction.class, writer);
+    }
+
+    public CompactXml25NamedModelledWriter(XMLStreamWriter2 streamWriter) {
+        super(ModelledInteraction.class, streamWriter);
     }
 
     @Override
@@ -72,7 +78,7 @@ public class CompactXml25NamedModelledWriter extends AbstractCompactXml25Writer<
                 compartmentWriter, cellTypeWriter);
         PsiXml25ElementWriter<CvTerm> detectionMethodWriter = new Xml25InteractionDetectionMethodWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXml25ElementWriter<CvTerm> confidenceTypeWriter = new Xml25ConfidenceTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
-        PsiXml25ElementWriter<Confidence> confidenceWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ConfidenceWriter(getStreamWriter(), confidenceTypeWriter);
+        PsiXml25ElementWriter<Confidence> confidenceWriter = new Xml25ConfidenceWriter(getStreamWriter(), confidenceTypeWriter);
         PsiXml25ElementWriter<CvTerm> interactorTypeWriter = new Xml25InteractorTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXml25ElementWriter<Organism> organismWriter = new Xml25OrganismWriter(getStreamWriter(), aliasWriter, tissueWriter,
                 compartmentWriter, cellTypeWriter);

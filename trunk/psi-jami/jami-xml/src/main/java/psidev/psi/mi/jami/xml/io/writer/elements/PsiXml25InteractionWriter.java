@@ -35,4 +35,16 @@ public interface PsiXml25InteractionWriter<T extends Interaction> extends PsiXml
      * @return the default experiment for this interaction
      */
     public Experiment extractDefaultExperimentFrom(T interaction);
+
+    /**
+     *
+     * @return true if the participant writer will write a complex as an interactor
+     */
+    public boolean writeComplexAsInteractor();
+
+    /**
+     * Sets the property of the writer to write a complex as an interactor or as an interaction
+     * @param complexAsInteractor
+     */
+    public void setComplexAsInteractor(boolean complexAsInteractor);
 }

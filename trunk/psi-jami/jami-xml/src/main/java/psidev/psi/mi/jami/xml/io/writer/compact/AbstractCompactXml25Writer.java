@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.compact;
 
+import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -11,9 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -30,36 +30,50 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
     private PsiXml25ElementWriter<Experiment> experimentWriter;
     private PsiXml25ElementWriter<Interactor> interactorWriter;
 
+    private Class<T> type;
+
     private Set<Experiment> experiments;
     private Set<String> availabilities;
     private Set<Interactor> interactors;
 
-    public AbstractCompactXml25Writer() {
+    public AbstractCompactXml25Writer(Class<T> type) {
         super();
         experiments = new HashSet<Experiment>();
         availabilities = new HashSet<String>();
         interactors = new HashSet<Interactor>();
+        this.type = type;
     }
 
-    public AbstractCompactXml25Writer(File file) throws IOException, XMLStreamException {
+    public AbstractCompactXml25Writer(Class<T> type, File file) throws IOException, XMLStreamException {
         super(file);
         experiments = new HashSet<Experiment>();
         availabilities = new HashSet<String>();
         interactors = new HashSet<Interactor>();
+        this.type = type;
     }
 
-    public AbstractCompactXml25Writer(OutputStream output) throws XMLStreamException {
+    public AbstractCompactXml25Writer(Class<T> type, OutputStream output) throws XMLStreamException {
         super(output);
         experiments = new HashSet<Experiment>();
         availabilities = new HashSet<String>();
         interactors = new HashSet<Interactor>();
+        this.type = type;
     }
 
-    public AbstractCompactXml25Writer(Writer writer) throws XMLStreamException {
+    public AbstractCompactXml25Writer(Class<T> type, Writer writer) throws XMLStreamException {
         super(writer);
         experiments = new HashSet<Experiment>();
         availabilities = new HashSet<String>();
         interactors = new HashSet<Interactor>();
+        this.type = type;
+    }
+
+    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter2 streamWriter) {
+        super(streamWriter);
+        experiments = new HashSet<Experiment>();
+        availabilities = new HashSet<String>();
+        interactors = new HashSet<Interactor>();
+        this.type = type;
     }
 
     @Override
@@ -78,29 +92,14 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         super.reset();
     }
 
-    @Override
-    protected void registerInteractionForEntry(T interaction) {
-        super.registerInteractionForEntry(interaction);
+    protected void registerAllInteractionsProperties() {
         this.interactors.clear();
         this.availabilities.clear();
         this.experiments.clear();
-        registerInteractionProperties(interaction);
-    }
-
-    @Override
-    protected void registerInteractionsForEntry(Collection<? extends T> interactions) {
-        super.registerInteractionsForEntry(interactions);
-        this.interactors.clear();
-        this.availabilities.clear();
-        this.experiments.clear();
-        registerInteractionPropertiesForCurrentEntry(interactions);
-    }
-
-    @Override
-    protected void registerInteractionsForEntry(Iterator<? extends T> interactions) {
-        super.registerInteractionsForEntry(interactions);
         Source firstSource = getCurrentSource();
         T firstInteraction = getCurrentInteraction();
+        boolean started = isStarted();
+        getInteractionsToWrite().clear();
 
         while (getInteractionsIterator().hasNext()){
             T inter = getInteractionsIterator().next();
@@ -112,7 +111,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
             if (isStarted()){
                 setStarted(false);
                 setCurrentSource(source);
-                registerInteractionProperties(getCurrentInteraction());
+                registerInteractionProperties();
             }
             // write next entry after closing first one
             else if (getCurrentSource() != source){
@@ -120,7 +119,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
                 break;
             }
             else{
-                registerInteractionProperties(getCurrentInteraction());
+                registerInteractionProperties();
             }
         }
 
@@ -128,38 +127,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         setInteractionsIterator(getInteractionsToWrite().iterator());
         setCurrentSource(firstSource);
         setCurrentInteraction(firstInteraction);
-        setStarted(false);
-    }
-
-    protected void registerInteractionPropertiesForCurrentEntry(Collection<? extends T> interactions){
-        super.registerInteractionsForEntry(interactions);
-        Source firstSource = getCurrentSource();
-        T firstInteraction = getCurrentInteraction();
-
-        while (getInteractionsIterator().hasNext()){
-            setCurrentInteraction(getInteractionsIterator().next());
-            Source source = extractSourceFromInteraction();
-            // write first entry
-            if (isStarted()){
-                setStarted(false);
-                setCurrentSource(source);
-                registerInteractionProperties(getCurrentInteraction());
-            }
-            // write next entry after closing first one
-            else if (getCurrentSource() != source){
-                // stops here for the current entry
-                break;
-            }
-            else{
-                registerInteractionProperties(getCurrentInteraction());
-            }
-        }
-
-        // reset iterator
-        setInteractionsIterator(getInteractionsToWrite().iterator());
-        setCurrentSource(firstSource);
-        setCurrentInteraction(firstInteraction);
-        setStarted(false);
+        setStarted(started);
     }
 
     protected void registerAllInteractors(T interaction){
@@ -213,6 +181,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
 
     @Override
     protected void writeStartEntryContent() throws XMLStreamException {
+        registerAllInteractionsProperties();
         // write start entry
         writeStartEntry();
         // write source
@@ -297,7 +266,17 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         return interactors;
     }
 
-    private void registerInteractionProperties(T interaction) {
+    @Override
+    protected void initialiseDefaultElementCache() {
+        setElementCache(new InMemoryLightIdentityObjectCache());
+    }
+
+    protected Class<T> getInteractionType() {
+        return type;
+    }
+
+    private void registerInteractionProperties() {
+        T interaction = getCurrentInteraction();
         // register all experiments
         registerExperiment(interaction);
         // register all availabilities
