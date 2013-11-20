@@ -1,8 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.compact;
+package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
@@ -18,32 +21,32 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Abstract class for a compact PSI-XML 2.5 writer of mixed interactions
+ * Abstract class for an expanded PSI-XML 2.5 writer of mixed interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>20/11/13</pre>
  */
 
-public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M extends ModelledInteraction, E extends InteractionEvidence> extends AbstractCompactXml25Writer<I>{
+public abstract class AbstractExpandedXml25MixWriter<I extends Interaction, M extends ModelledInteraction, E extends InteractionEvidence> extends AbstractExpandedXml25Writer<I>{
 
-    private AbstractCompactXml25Writer<E> evidenceWriter;
-    private AbstractCompactXml25Writer<M> modelledWriter;
-    private AbstractCompactXml25Writer<I> lightWriter;
+    private AbstractExpandedXml25Writer<E> evidenceWriter;
+    private AbstractExpandedXml25Writer<M> modelledWriter;
+    private AbstractExpandedXml25Writer<I> lightWriter;
 
-    public AbstractCompactXml25MixWriter(Class<I> type) {
+    public AbstractExpandedXml25MixWriter(Class<I> type) {
         super(type);
     }
 
-    public AbstractCompactXml25MixWriter(Class<I> type, File file) throws IOException, XMLStreamException {
+    public AbstractExpandedXml25MixWriter(Class<I> type, File file) throws IOException, XMLStreamException {
         super(type,file);
     }
 
-    public AbstractCompactXml25MixWriter(Class<I> type, OutputStream output) throws XMLStreamException {
+    public AbstractExpandedXml25MixWriter(Class<I> type, OutputStream output) throws XMLStreamException {
         super(type,output);
     }
 
-    public AbstractCompactXml25MixWriter(Class<I> type, Writer writer) throws XMLStreamException {
+    public AbstractExpandedXml25MixWriter(Class<I> type, Writer writer) throws XMLStreamException {
         super(type,writer);
     }
 
@@ -69,27 +72,6 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     }
 
     @Override
-    protected void setAvailabilityWriter(PsiXml25ElementWriter<String> availabilityWriter) {
-        this.evidenceWriter.setAvailabilityWriter(availabilityWriter);
-    }
-
-    @Override
-    protected void setExperimentWriter(PsiXml25ElementWriter<Experiment> experimentWriter) {
-        super.setExperimentWriter(experimentWriter);
-        this.evidenceWriter.setExperimentWriter(experimentWriter);
-        this.modelledWriter.setExperimentWriter(experimentWriter);
-        this.lightWriter.setExperimentWriter(experimentWriter);
-    }
-
-    @Override
-    protected void setInteractorWriter(PsiXml25ElementWriter<Interactor> interactorWriter) {
-        super.setInteractorWriter(interactorWriter);
-        this.modelledWriter.setInteractorWriter(interactorWriter);
-        this.evidenceWriter.setInteractorWriter(interactorWriter);
-        this.lightWriter.setInteractorWriter(interactorWriter);
-    }
-
-    @Override
     public void flush() throws MIIOException {
         super.flush();
         this.evidenceWriter.flush();
@@ -103,16 +85,6 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
         this.modelledWriter.setWriteComplexesAsInteractors(writeComplexesAsInteractors);
         this.evidenceWriter.setWriteComplexesAsInteractors(writeComplexesAsInteractors);
         this.lightWriter.setWriteComplexesAsInteractors(writeComplexesAsInteractors);
-    }
-
-    @Override
-    protected void registerExperiment(I interaction) {
-        // nothing to do
-    }
-
-    @Override
-    protected void registerAvailabilities(I interaction) {
-        // nothing to do
     }
 
     @Override
@@ -236,27 +208,27 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
         this.lightWriter.setStarted(started);
     }
 
-    protected AbstractCompactXml25Writer<E> getEvidenceWriter() {
+    protected AbstractExpandedXml25Writer<E> getEvidenceWriter() {
         return evidenceWriter;
     }
 
-    protected void setEvidenceWriter(AbstractCompactXml25Writer<E> evidenceWriter) {
+    protected void setEvidenceWriter(AbstractExpandedXml25Writer<E> evidenceWriter) {
         this.evidenceWriter = evidenceWriter;
     }
 
-    protected AbstractCompactXml25Writer<M> getModelledWriter() {
+    protected AbstractExpandedXml25Writer<M> getModelledWriter() {
         return modelledWriter;
     }
 
-    protected void setModelledWriter(AbstractCompactXml25Writer<M> modelledWriter) {
+    protected void setModelledWriter(AbstractExpandedXml25Writer<M> modelledWriter) {
         this.modelledWriter = modelledWriter;
     }
 
-    protected AbstractCompactXml25Writer<I> getLightWriter() {
+    protected AbstractExpandedXml25Writer<I> getLightWriter() {
         return lightWriter;
     }
 
-    protected void setLightWriter(AbstractCompactXml25Writer<I> lightWriter) {
+    protected void setLightWriter(AbstractExpandedXml25Writer<I> lightWriter) {
         this.lightWriter = lightWriter;
     }
 
