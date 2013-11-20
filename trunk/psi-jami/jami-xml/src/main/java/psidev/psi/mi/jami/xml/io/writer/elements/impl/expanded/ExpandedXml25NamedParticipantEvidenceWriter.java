@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
@@ -33,7 +32,7 @@ public class ExpandedXml25NamedParticipantEvidenceWriter extends AbstractXml25Pa
                                                        PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
                                                        PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
                                                        PsiXml25ElementWriter<FeatureEvidence> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                                       PsiXml25ElementWriter<Interactor> interactorWriter, ExpandedPsiXml25ElementWriter<ExperimentalInteractor> experimentalInteractorWriter,
+                                                       PsiXml25ElementWriter<Interactor> interactorWriter,
                                                        PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter,
                                                        PsiXml25ElementWriter<CvTerm> identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
                                                        PsiXml25ElementWriter<CvTerm> experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,

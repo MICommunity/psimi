@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
+import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
@@ -19,19 +21,35 @@ import java.io.Writer;
 
 public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends AbstractXml25Writer<T> {
 
-    public AbstractExpandedXml25Writer() {
+    private Class<T> type;
+
+    public AbstractExpandedXml25Writer(Class<T> type) {
+        super();
+        this.type = type;
     }
 
-    public AbstractExpandedXml25Writer(File file) throws IOException, XMLStreamException {
+    public AbstractExpandedXml25Writer(Class<T> type, File file) throws IOException, XMLStreamException {
         super(file);
+        this.type = type;
     }
 
-    public AbstractExpandedXml25Writer(OutputStream output) throws XMLStreamException {
+    public AbstractExpandedXml25Writer(Class<T> type, OutputStream output) throws XMLStreamException {
         super(output);
+        this.type = type;
     }
 
-    public AbstractExpandedXml25Writer(Writer writer) throws XMLStreamException {
+    public AbstractExpandedXml25Writer(Class<T> type, Writer writer) throws XMLStreamException {
         super(writer);
+        this.type = type;
+    }
+
+    protected AbstractExpandedXml25Writer(Class<T> type, XMLStreamWriter2 streamWriter) {
+        super(streamWriter);
+    }
+
+    @Override
+    protected void initialiseDefaultElementCache() {
+        setElementCache(new InMemoryIdentityObjectCache());
     }
 
     @Override
@@ -42,5 +60,9 @@ public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends
         writeSource();
         // write start interactionList
         writeStartInteractionList();
+    }
+
+    protected Class<T> getInteractionType() {
+        return type;
     }
 }
