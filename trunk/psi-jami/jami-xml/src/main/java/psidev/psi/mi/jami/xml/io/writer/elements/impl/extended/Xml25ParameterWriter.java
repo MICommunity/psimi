@@ -3,11 +3,12 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.XmlParameter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,9 +21,10 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25ParameterWriter implements PsiXml25ElementWriter<Parameter> {
+public class Xml25ParameterWriter implements PsiXml25ParameterWriter{
     private XMLStreamWriter2 streamWriter;
     private PsiXml25ObjectCache objectIndex;
+    private Experiment defaultExperiment;
 
     public Xml25ParameterWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
@@ -84,5 +86,15 @@ public class Xml25ParameterWriter implements PsiXml25ElementWriter<Parameter> {
                 throw new MIIOException("Impossible to write the parameter : "+object.toString(), e);
             }
         }
+    }
+
+    @Override
+    public Experiment getDefaultExperiment() {
+        return this.defaultExperiment;
+    }
+
+    @Override
+    public void setDefaultExperiment(Experiment exp) {
+        this.defaultExperiment = exp;
     }
 }

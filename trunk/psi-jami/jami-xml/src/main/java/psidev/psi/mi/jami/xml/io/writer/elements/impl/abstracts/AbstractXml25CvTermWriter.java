@@ -22,7 +22,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since <pre>12/11/13</pre>
  */
-public abstract class AbstractXml25CvTermWriter<T extends CvTerm> implements PsiXml25ElementWriter<T> {
+public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter<CvTerm> {
     private XMLStreamWriter2 streamWriter;
     private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25XrefWriter primaryRefWriter;
@@ -50,7 +50,7 @@ public abstract class AbstractXml25CvTermWriter<T extends CvTerm> implements Psi
     }
 
     @Override
-    public void write(T object) throws MIIOException {
+    public void write(CvTerm object) throws MIIOException {
         try {
             // write start
             writeStartCvTerm();
@@ -111,7 +111,7 @@ public abstract class AbstractXml25CvTermWriter<T extends CvTerm> implements Psi
     }
 
     protected abstract void writeStartCvTerm() throws XMLStreamException;
-    protected abstract void writeOtherProperties(T term) throws XMLStreamException;
+    protected abstract void writeOtherProperties(CvTerm term) throws XMLStreamException;
 
     protected void writeXrefFromCvXrefs(CvTerm object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();

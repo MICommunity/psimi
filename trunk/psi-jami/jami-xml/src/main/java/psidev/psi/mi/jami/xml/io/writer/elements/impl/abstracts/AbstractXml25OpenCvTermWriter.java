@@ -19,7 +19,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXml25OpenCvTermWriter extends AbstractXml25CvTermWriter<CvTerm>{
+public abstract class AbstractXml25OpenCvTermWriter extends AbstractXml25CvTermWriter{
     private PsiXml25ElementWriter<Annotation> attributeWriter;
 
     public AbstractXml25OpenCvTermWriter(XMLStreamWriter2 writer) {

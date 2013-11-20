@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>11/11/13</pre>
  */
 
-public class Xml25PrimaryXrefWriter extends AbstractXml25XrefWriter<Xref> {
+public class Xml25PrimaryXrefWriter extends AbstractXml25XrefWriter {
 
     public Xml25PrimaryXrefWriter(XMLStreamWriter2 writer) {
         super(writer);

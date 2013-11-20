@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>12/11/13</pre>
  */
 
-public class Xml25ExperimentalPreparationWriter extends AbstractXml25CvTermWriter<CvTerm> {
+public class Xml25ExperimentalPreparationWriter extends AbstractXml25CvTermWriter {
     public Xml25ExperimentalPreparationWriter(XMLStreamWriter2 writer) {
         super(writer);
     }

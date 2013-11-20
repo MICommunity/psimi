@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>11/11/13</pre>
  */
 
-public abstract class AbstractXml25XrefWriter<T extends Xref> implements PsiXml25XrefWriter<T> {
+public abstract class AbstractXml25XrefWriter implements PsiXml25XrefWriter<Xref> {
 
     private XMLStreamWriter2 streamWriter;
     private String defaultRefTypeAc = null;
@@ -31,7 +31,7 @@ public abstract class AbstractXml25XrefWriter<T extends Xref> implements PsiXml2
     }
 
     @Override
-    public void write(T object) throws MIIOException {
+    public void write(Xref object) throws MIIOException {
         if (object != null){
             try {
                 // write start
@@ -75,7 +75,7 @@ public abstract class AbstractXml25XrefWriter<T extends Xref> implements PsiXml2
         }
     }
 
-    protected abstract void writeOtherProperties(T object) throws XMLStreamException;
+    protected abstract void writeOtherProperties(Xref object) throws XMLStreamException;
 
     protected XMLStreamWriter2 getStreamWriter() {
         return streamWriter;

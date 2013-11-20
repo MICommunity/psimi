@@ -27,7 +27,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
     private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
-    private PsiXml25ElementWriter<CvTerm> biologicalRoleWriter;
+    private PsiXml25ElementWriter biologicalRoleWriter;
     private PsiXml25ElementWriter<F> featureWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Interactor> interactorWriter;
@@ -57,7 +57,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
 
     public AbstractXml25ParticipantWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                             PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
+                                             PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter biologicalRoleWriter,
                                              PsiXml25ElementWriter<F> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                              PsiXml25ElementWriter<Interactor> interactorWriter) {
         if (writer == null){

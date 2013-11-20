@@ -15,11 +15,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25PrimaryXrefWriter extends AbstractXml25XrefWriter {
-    protected Xml25PrimaryXrefWriter(XMLStreamWriter2 writer) {
+    public Xml25PrimaryXrefWriter(XMLStreamWriter2 writer) {
         super(writer);
     }
 
-    protected Xml25PrimaryXrefWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Annotation> annotationWriter) {
+    public Xml25PrimaryXrefWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Annotation> annotationWriter) {
         super(writer, annotationWriter);
     }
 

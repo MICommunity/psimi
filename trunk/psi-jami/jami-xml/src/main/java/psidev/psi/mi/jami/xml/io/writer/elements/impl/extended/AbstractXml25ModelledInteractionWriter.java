@@ -14,6 +14,8 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract class for XML 2.5 writers of modelled interaction
@@ -71,6 +73,12 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
             }
         }
         return exp != null ? exp : getDefaultExperiment() ;
+    }
+
+    @Override
+    public List<Experiment> extractDefaultExperimentsFrom(I interaction) {
+        Experiment exp = extractDefaultExperimentFrom(interaction);
+        return exp != null ? Collections.singletonList(exp) : Collections.singletonList(getDefaultExperiment());
     }
 
     @Override

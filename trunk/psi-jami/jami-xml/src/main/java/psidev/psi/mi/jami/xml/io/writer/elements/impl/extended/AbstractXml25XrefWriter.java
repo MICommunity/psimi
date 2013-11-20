@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Xref;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AnnotationWriter;
@@ -17,7 +18,7 @@ import javax.xml.stream.XMLStreamException;
  * @since <pre>13/11/13</pre>
  */
 
-public abstract class AbstractXml25XrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25XrefWriter<ExtendedPsi25Xref> {
+public abstract class AbstractXml25XrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25XrefWriter {
     private PsiXml25ElementWriter<Annotation> annotationWriter;
 
     protected AbstractXml25XrefWriter(XMLStreamWriter2 writer) {
@@ -31,9 +32,9 @@ public abstract class AbstractXml25XrefWriter extends psidev.psi.mi.jami.xml.io.
     }
 
     @Override
-    protected void writeOtherProperties(ExtendedPsi25Xref xmlXref) throws XMLStreamException {
+    protected void writeOtherProperties(Xref object) throws XMLStreamException {
         // write secondary and attributes
-
+        ExtendedPsi25Xref xmlXref = (ExtendedPsi25Xref)object;
         // write secondary
         if (xmlXref.getSecondary() != null){
             getStreamWriter().writeAttribute("secondary", xmlXref.getSecondary());

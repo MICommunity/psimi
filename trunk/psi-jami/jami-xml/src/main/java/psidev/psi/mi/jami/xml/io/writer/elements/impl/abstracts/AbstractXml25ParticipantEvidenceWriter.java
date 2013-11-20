@@ -20,10 +20,10 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml25ParticipantWriter<ParticipantEvidence, FeatureEvidence>{
-    private PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter;
-    private PsiXml25ElementWriter<CvTerm> identificationMethodWriter;
+    private PsiXml25ElementWriter experimentalPreparationWriter;
+    private PsiXml25ElementWriter identificationMethodWriter;
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
-    private PsiXml25ElementWriter<CvTerm> experimentalRoleWriter;
+    private PsiXml25ElementWriter experimentalRoleWriter;
     private PsiXml25ElementWriter<Organism> hostOrganismWriter;
     private PsiXml25ElementWriter<Parameter> parameterWriter;
 
@@ -41,9 +41,9 @@ public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml
                                                   PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
                                                   PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
                                                   PsiXml25ElementWriter<FeatureEvidence> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                                  PsiXml25ElementWriter<Interactor> interactorWriter, PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter,
-                                                  PsiXml25ElementWriter<CvTerm> identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
-                                                  PsiXml25ElementWriter<CvTerm> experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,
+                                                  PsiXml25ElementWriter<Interactor> interactorWriter, PsiXml25ElementWriter experimentalPreparationWriter,
+                                                  PsiXml25ElementWriter identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
+                                                  PsiXml25ElementWriter experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,
                                                   PsiXml25ParameterWriter parameterWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter, attributeWriter, interactorWriter);
         this.experimentalPreparationWriter = experimentalPreparationWriter != null ? experimentalPreparationWriter : new Xml25ExperimentalPreparationWriter(writer);
