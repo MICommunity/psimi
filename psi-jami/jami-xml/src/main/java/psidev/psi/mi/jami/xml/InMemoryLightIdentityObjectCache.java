@@ -47,7 +47,7 @@ public class InMemoryLightIdentityObjectCache implements PsiXml25ObjectCache {
 
     @Override
     public int extractIdForInteraction(Interaction o) {
-        return extractIdFor(o);
+        return nextId();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class InMemoryLightIdentityObjectCache implements PsiXml25ObjectCache {
 
     @Override
     public int extractIdForComplex(Complex o) {
-        return nextId();
+        return extractIdFor(o);
     }
 
     public void clear(){

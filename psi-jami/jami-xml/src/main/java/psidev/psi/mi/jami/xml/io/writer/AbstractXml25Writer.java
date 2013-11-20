@@ -5,8 +5,9 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
@@ -66,7 +67,25 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.interactionsToWrite = new ArrayList<T>();
     }
 
+    protected AbstractXml25Writer(XMLStreamWriter2 streamWriter) {
+        if (streamWriter == null){
+            throw new IllegalArgumentException("The stream writer cannot be null.");
+        }
+
+        this.streamWriter = streamWriter;
+        initialiseSubWriters();
+        isInitialised = true;
+        this.interactionsToWrite = new ArrayList<T>();
+    }
+
     public void initialiseContext(Map<String, Object> options) {
+        if (options != null && options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
+            setElementCache((PsiXml25ObjectCache)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION));
+        }
+        // use the default cache option
+        else{
+            initialiseDefaultElementCache();
+        }
 
         if (options == null && !isInitialised){
             throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
@@ -119,16 +138,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25ObjectCache)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
-        }
-        // use the default cache option
-        else{
-            initialiseDefaultElementCache();
-        }
-
         if (options.containsKey(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
-            this.writeComplexesAsInteractors = (Boolean)options.get(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION);
+            setWriteComplexesAsInteractors(this.writeComplexesAsInteractors = (Boolean)options.get(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION));
         }
 
         isInitialised = true;
@@ -189,33 +200,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionForEntry(interaction);
-        try {
-            this.currentInteraction = interaction;
-            this.currentSource = extractSourceFromInteraction();
-            // write first entry
-            if (started){
-                started = false;
-            }
-
-            // write start entry content
-            writeStartEntryContent();
-            // write interaction
-            writeInteraction();
-            // write end entry content
-            writeEndEntryContent();
-
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Cannot write interaction "+interaction.toString(), e);
-        }
-    }
-
-    protected void writeEndEntryContent() throws XMLStreamException {
-        // write subComplexes
-        writeSubComplexInEntry();
-        // write end interactionsList
-        writeEndInteractionList();
-        // write end previous entry
-        writeEndEntry();
+        writeInteractionListContent();
     }
 
     @Override
@@ -226,41 +211,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         registerInteractionsForEntry(interactions);
         writeInteractionListContent();
     }
-
-    protected void writeInteractionListContent() {
-        try {
-            while (this.interactionsIterator.hasNext()){
-                this.currentInteraction = this.interactionsIterator.next();
-                Source source = extractSourceFromInteraction();
-                // write first entry
-                if (started){
-                    started = false;
-                    this.currentSource = source;
-                    writeStartEntryContent();
-
-                }
-                // write next entry after closing first one
-                else if (this.currentSource != source){
-                    // write subComplexes
-                    writeEndEntryContent();
-                    // change current source
-                    this.currentSource = source;
-                    // write start entry
-                    writeStartEntryContent();
-                }
-
-                // write interaction
-                writeInteraction();
-            }
-
-            // write final end entry
-            writeEndEntryContent();
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Cannot write interactions ", e);
-        }
-    }
-
-    protected abstract void writeStartEntryContent() throws XMLStreamException;
 
     @Override
     public void write(Iterator<? extends T> interactions) throws MIIOException {
@@ -313,23 +263,55 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
     }
 
-    protected void registerInteractionForEntry(T interaction) {
-        this.interactionsToWrite.clear();
-        this.interactionsIterator = null;
+    public void setWriteComplexesAsInteractors(boolean writeComplexesAsInteractors) {
+        this.writeComplexesAsInteractors = writeComplexesAsInteractors;
+        this.interactionWriter.setComplexAsInteractor(writeComplexesAsInteractors);
+        this.complexWriter.setComplexAsInteractor(writeComplexesAsInteractors);
     }
 
-    protected void registerInteractionsForEntry(Collection<? extends T> interactions) {
-        this.interactionsToWrite.clear();
-        this.interactionsToWrite.addAll(interactions);
-        this.interactionsIterator = this.interactionsToWrite.iterator();
-        this.currentInteraction = null;
+    protected void writeEndEntryContent() throws XMLStreamException {
+        // write subComplexes
+        writeSubComplexInEntry();
+        // write end interactionsList
+        writeEndInteractionList();
+        // write end previous entry
+        writeEndEntry();
     }
 
-    protected void registerInteractionsForEntry(Iterator<? extends T> interactions) {
-        this.interactionsToWrite.clear();
-        this.interactionsIterator = interactions;
-        this.currentInteraction = null;
+    protected void writeInteractionListContent() {
+        try {
+            while (this.interactionsIterator.hasNext()){
+                this.currentInteraction = this.interactionsIterator.next();
+                Source source = extractSourceFromInteraction();
+                // write first entry
+                if (started){
+                    started = false;
+                    this.currentSource = source;
+                    writeStartEntryContent();
+
+                }
+                // write next entry after closing first one
+                else if (this.currentSource != source){
+                    // write subComplexes
+                    writeEndEntryContent();
+                    // change current source
+                    this.currentSource = source;
+                    // write start entry
+                    writeStartEntryContent();
+                }
+
+                // write interaction
+                writeInteraction();
+            }
+
+            // write final end entry
+            writeEndEntryContent();
+        } catch (XMLStreamException e) {
+            throw new MIIOException("Cannot write interactions ", e);
+        }
     }
+
+    protected abstract void writeStartEntryContent() throws XMLStreamException;
 
     protected void writeStartInteractionList() throws XMLStreamException {
         // write start interaction list
@@ -380,9 +362,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected abstract void initialiseSubWriters();
 
-    protected void initialiseDefaultElementCache() {
-        this.elementCache = new InMemoryIdentityObjectCache();
-    }
+    protected abstract void initialiseDefaultElementCache();
 
     protected PsiXml25InteractionWriter<T> getInteractionWriter() {
         return interactionWriter;
@@ -400,7 +380,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return elementCache;
     }
 
-    protected void setSourceWriter(PsiXml25ElementWriter<Source> sourceWriter) {
+    public void setSourceWriter(PsiXml25ElementWriter<Source> sourceWriter) {
         if (sourceWriter == null){
             throw new IllegalArgumentException("The source writer cannot be null");
         }
@@ -411,7 +391,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.currentSource = currentSource;
     }
 
-    protected void setComplexWriter(PsiXml25InteractionWriter<ModelledInteraction> complexWriter) {
+    public void setComplexWriter(PsiXml25InteractionWriter<ModelledInteraction> complexWriter) {
         if (complexWriter == null){
             throw new IllegalArgumentException("The Complex writer cannot be null");
         }
@@ -434,8 +414,13 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return interactionsToWrite;
     }
 
-    protected void setElementCache(PsiXml25ObjectCache elementCache) {
-        this.elementCache = elementCache;
+    public void setElementCache(PsiXml25ObjectCache elementCache) {
+        if (elementCache == null){
+            initialiseDefaultElementCache();
+        }
+        else{
+            this.elementCache = elementCache;
+        }
     }
 
     protected void setInteractionWriter(PsiXml25InteractionWriter<T> interactionWriter) {
@@ -461,7 +446,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return started;
     }
 
-    protected void setStarted(boolean started) {
+    public void setStarted(boolean started) {
         this.started = started;
     }
 
@@ -499,5 +484,25 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
         this.streamWriter = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(new FileOutputStream(file), "UTF-8");
         initialiseSubWriters();
+    }
+
+    private void registerInteractionForEntry(T interaction) {
+        this.interactionsToWrite.clear();
+        this.interactionsToWrite.add(interaction);
+        this.interactionsIterator = this.interactionsToWrite.iterator();
+        this.currentInteraction = null;
+    }
+
+    private void registerInteractionsForEntry(Collection<? extends T> interactions) {
+        this.interactionsToWrite.clear();
+        this.interactionsToWrite.addAll(interactions);
+        this.interactionsIterator = this.interactionsToWrite.iterator();
+        this.currentInteraction = null;
+    }
+
+    private void registerInteractionsForEntry(Iterator<? extends T> interactions) {
+        this.interactionsToWrite.clear();
+        this.interactionsIterator = interactions;
+        this.currentInteraction = null;
     }
 }

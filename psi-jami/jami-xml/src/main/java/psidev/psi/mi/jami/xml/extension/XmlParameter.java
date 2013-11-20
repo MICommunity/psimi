@@ -6,12 +6,15 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
+import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
@@ -38,6 +41,7 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     @XmlLocation
     @XmlTransient
     private Locator locator;
+    private Experiment experiment;
 
     public XmlParameter() {
     }
@@ -259,5 +263,62 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
     @Override
     public int hashCode() {
         return UnambiguousParameterComparator.hashCode(this);
+    }
+
+    /**
+     * Sets the value of the experimentRefList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *
+     */
+    @XmlElement(name="experimentRef")
+    public void setJAXBExperimentRef(Integer value) {
+        if (value != null){
+            this.experiment = new ExperimentRef(value);
+        }
+    }
+
+    public Experiment getExperiment() {
+        return experiment;
+    }
+
+    private FileSourceLocator getParameterLocator(){
+        return getSourceLocator();
+    }
+
+    ///////////////////////////////////////////////////////// classes
+
+    /**
+     * Experiment ref for experimental interactor
+     */
+    private class ExperimentRef extends AbstractExperimentRef {
+        public ExperimentRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(PsiXml25IdCache parsedObjects) {
+            if (parsedObjects.contains(this.ref)){
+                Experiment obj = parsedObjects.getExperiment(this.ref);
+                if (obj != null){
+                    experiment = obj;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Parameter Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return getParameterLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
+        }
     }
 }
