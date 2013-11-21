@@ -5,11 +5,14 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
+import psidev.psi.mi.jami.model.impl.DefaultExperiment;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.Date;
 
 /**
  * XML 2.5 writer of a parameter
@@ -68,11 +71,9 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
                     this.streamWriter.writeAttribute("uncertainty",object.getUncertainty().toString());
                 }
                 // write experiment Ref
-                if (this.defaultExperiment != null){
-                    this.streamWriter.writeStartElement("experimentRef");
-                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(this.defaultExperiment)));
-                    this.streamWriter.writeEndElement();
-                }
+                this.streamWriter.writeStartElement("experimentRef");
+                this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(getDefaultExperiment())));
+                this.streamWriter.writeEndElement();
                 // write end parameter
                 this.streamWriter.writeEndElement();
 
@@ -84,11 +85,18 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter {
 
     @Override
     public Experiment getDefaultExperiment() {
+        if (this.defaultExperiment == null){
+            initialiseDefaultExperiment();
+        }
         return this.defaultExperiment;
     }
 
     @Override
     public void setDefaultExperiment(Experiment exp) {
         this.defaultExperiment = exp;
+    }
+
+    protected void initialiseDefaultExperiment(){
+        this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for modelled interactions that are not interaction evidences.",(String)null,(Date)null));
     }
 }
