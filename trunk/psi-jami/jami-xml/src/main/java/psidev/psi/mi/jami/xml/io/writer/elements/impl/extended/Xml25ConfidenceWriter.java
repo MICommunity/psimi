@@ -61,7 +61,9 @@ public class Xml25ConfidenceWriter implements PsiXml25ElementWriter<Confidence> 
                 CvTerm type = object.getType();
                 this.typeWriter.write(type);
                 // write value
+                this.streamWriter.writeStartElement("value");
                 this.streamWriter.writeCharacters(object.getValue());
+                this.streamWriter.writeEndElement();
                 // write experiments
                 XmlConfidence xmlConfidence = (XmlConfidence)object;
                 if (!xmlConfidence.getExperiments().isEmpty()){

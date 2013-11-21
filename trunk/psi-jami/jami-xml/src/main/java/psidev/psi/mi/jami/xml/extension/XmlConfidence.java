@@ -44,7 +44,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
     public XmlConfidence() {
     }
 
-    public XmlConfidence(XmlOpenCvTerm type, String value) {
+    public XmlConfidence(CvTerm type, String value) {
         if (type == null){
             throw new IllegalArgumentException("The confidence type is required and cannot be null");
         }
