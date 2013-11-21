@@ -57,11 +57,9 @@ public abstract class AbstractXml25PositionWriter implements PsiXml25ElementWrit
                     // write end
                     this.streamWriter.writeEndElement();
                 }
-                // write end position
-                this.streamWriter.writeEndElement();
             }
 
-        } catch (XMLStreamException e) {
+        } catch (Exception e) {
             throw new MIIOException("Impossible to write the range position : "+object.toString(), e);
         }
     }

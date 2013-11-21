@@ -22,6 +22,7 @@ public abstract class AbstractXml25WriterTest {
 
     protected XMLStreamWriter createStreamWriter() throws XMLStreamException {
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
+        outputFactory.setProperty("com.ctc.wstx.outputValidateStructure", Boolean.FALSE);
         this.output = new StringWriter();
         this.streamWriter = new IndentingXMLStreamWriter(outputFactory.createXMLStreamWriter(this.output));
         return this.streamWriter;
