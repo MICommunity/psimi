@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
@@ -9,9 +8,9 @@ import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.XmlParameter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * XML 2.5 writer of a parameter
@@ -22,11 +21,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25ParameterWriter implements PsiXml25ParameterWriter{
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
     private Experiment defaultExperiment;
 
-    public Xml25ParameterWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
+    public Xml25ParameterWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ParameterWriter");
         }
@@ -43,7 +42,6 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter{
             try {
                 // write start
                 this.streamWriter.writeStartElement("parameter");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write parameter type
                 CvTerm type = object.getType();
                 this.streamWriter.writeAttribute("term", type.getShortName());
@@ -73,11 +71,9 @@ public class Xml25ParameterWriter implements PsiXml25ParameterWriter{
                 // write experiment Ref
                 XmlParameter xmlParameter = (XmlParameter)object;
                 if (xmlParameter.getExperiment() != null){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.streamWriter.writeStartElement("experimentRef");
                     this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(xmlParameter.getExperiment())));
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end parameter
                 this.streamWriter.writeEndElement();

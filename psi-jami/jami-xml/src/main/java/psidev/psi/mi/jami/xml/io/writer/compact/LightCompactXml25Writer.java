@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.compact;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -8,9 +7,9 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25BasicI
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ModelledInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ParticipantWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ConfidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -43,7 +42,7 @@ public class LightCompactXml25Writer extends AbstractCompactXml25Writer<Interact
         super(Interaction.class, writer);
     }
 
-    public LightCompactXml25Writer(XMLStreamWriter2 streamWriter) {
+    public LightCompactXml25Writer(XMLStreamWriter streamWriter) {
         super(Interaction.class, streamWriter);
     }
 

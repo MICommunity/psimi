@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CurationDepth;
@@ -15,6 +14,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -27,12 +27,12 @@ import java.util.Iterator;
  */
 
 public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
 
-    public Xml25PublicationWriter(XMLStreamWriter2 writer){
+    public Xml25PublicationWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25PublicationWriter");
         }
@@ -42,7 +42,7 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
         this.attributeWriter = new Xml25AnnotationWriter(writer);
     }
 
-    public Xml25PublicationWriter(XMLStreamWriter2 writer, PsiXml25XrefWriter primaryRefWriter,
+    public Xml25PublicationWriter(XMLStreamWriter writer, PsiXml25XrefWriter primaryRefWriter,
                                   PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Annotation> attributeWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25PublicationWriter");
@@ -60,9 +60,7 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             this.streamWriter.writeStartElement("bibref");
             // write xref
             if (!object.getIdentifiers().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 writeXrefFromPublicationIdentifiers(object);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             else {
                 boolean hasTitle = object.getTitle() != null;
@@ -73,28 +71,22 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
                 boolean hasAttributes = !object.getAnnotations().isEmpty();
                 // write attributes if no identifiers available
                 if (hasTitle || hasJournal || hasPublicationDate || hasCurationDepth || hasAuthors || hasAttributes){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     // write start attribute list
                     this.streamWriter.writeStartElement("attributeList");
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     // write publication properties such as title, journal, etc..
                     writePublicationPropertiesAsAttributes(object, hasTitle, hasJournal, hasPublicationDate, hasCurationDepth, hasAuthors);
                     // write normal attributes
                     if (hasAttributes){
                         for (Annotation ann : object.getAnnotations()){
                             this.attributeWriter.write(ann);
-                            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                         }
                     }
                     // write end attributeList
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write xref if no identifiers and no attributes available
                 else if (!object.getXrefs().isEmpty()){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     writeXrefFromPublicationXrefs(object);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
             }
 
@@ -118,7 +110,6 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             if (hasTitle || hasJournal || hasPublicationDate || hasCurationDepth || hasAuthors || hasAttributes){
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write publication properties such as title, journal, etc..
                 writePublicationPropertiesAsAttributes(object, hasTitle, hasJournal, hasPublicationDate, hasCurationDepth, hasAuthors);
                 // write normal attributes
@@ -128,7 +119,6 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
                         Annotation ann = annotIterator.next();
                         this.attributeWriter.write(ann);
                         if (annotIterator.hasNext()){
-                            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                         }
                     }
                 }
@@ -172,22 +162,14 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             }
             // write attributes if no identifiers available
             if (hasTitle || hasJournal || hasPublicationDate || hasCurationDepth || hasAuthors){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write publication properties such as title, journal, etc..
                 writePublicationPropertiesAsAttributes(object, hasTitle, hasJournal, hasPublicationDate, hasCurationDepth, hasAuthors);
                 // write normal attributes
                 if (hasAttributes){
                     Iterator<Annotation> annotIterator = object.getAnnotations().iterator();
-                    boolean first = true;
                     while (annotIterator.hasNext()){
                         Annotation ann = annotIterator.next();
                         if (!attributesToFilter.contains(ann)){
-                            if (!first){
-                                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
-                            }
-                            else {
-                                first = false;
-                            }
                             this.attributeWriter.write(ann);
                         }
                     }
@@ -245,7 +227,6 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
         this.secondaryRefWriter.setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         int index = 0;
         while (refIterator.hasNext()){
@@ -253,13 +234,11 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             // write primaryRef
             if (index == 0){
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
             // write secondaryref
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
         }
@@ -271,7 +250,6 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
     protected void writeXrefFromPublicationIdentifiers(Publication object) throws XMLStreamException {
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         String pubmed = object.getPubmedId();
         String doi = object.getDoi();
@@ -300,7 +278,6 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             writePrimaryRef(this.primaryRefWriter, pubmedXref);
             hasWrittenPrimaryRef = true;
             if (doiXref != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 writePrimaryRef(this.secondaryRefWriter, doiXref);
             }
         }
@@ -326,12 +303,10 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
                     this.primaryRefWriter.write(ref);
                 }
                 else{
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.secondaryRefWriter.write(ref);
                 }
             }
         }
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
@@ -340,7 +315,6 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             this.secondaryRefWriter.setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
         }
 

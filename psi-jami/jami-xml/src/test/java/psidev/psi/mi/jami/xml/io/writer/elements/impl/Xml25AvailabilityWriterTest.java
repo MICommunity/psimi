@@ -1,14 +1,15 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
+import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 import junit.framework.Assert;
 import org.codehaus.stax2.XMLOutputFactory2;
-import org.codehaus.stax2.XMLStreamWriter2;
 import org.junit.Test;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -24,7 +25,7 @@ public class Xml25AvailabilityWriterTest {
     private String availability ="<availability id=\"1\">copyright</availability>";
     private String availability2 ="<availability id=\"2\">copyright</availability>";
     private StringWriter output;
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
@@ -55,10 +56,10 @@ public class Xml25AvailabilityWriterTest {
     }
 
 
-    private XMLStreamWriter2 createStreamWriter() throws XMLStreamException {
+    private XMLStreamWriter createStreamWriter() throws XMLStreamException {
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
         this.output = new StringWriter();
-        this.streamWriter = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(this.output);
+        this.streamWriter = new IndentingXMLStreamWriter(outputFactory.createXMLStreamWriter(this.output));
         return this.streamWriter;
     }
 }

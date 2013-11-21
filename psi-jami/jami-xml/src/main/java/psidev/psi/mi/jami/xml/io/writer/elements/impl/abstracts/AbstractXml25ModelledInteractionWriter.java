@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultNamedExperiment;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
@@ -10,9 +9,9 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ConfidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Set;
 
 /**
@@ -27,13 +26,13 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
     private PsiXml25ParameterWriter parameterWriter;
 
-    public AbstractXml25ModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25ParticipantWriter<P> participantWriter) {
+    public AbstractXml25ModelledInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ParticipantWriter<P> participantWriter) {
         super(writer, objectIndex, participantWriter);
         this.confidenceWriter = new Xml25ConfidenceWriter(writer);
         this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
     }
 
-    public AbstractXml25ModelledInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter,
+    public AbstractXml25ModelledInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter,
                                                   PsiXml25XrefWriter secondaryRefWriter, PsiXml25ParticipantWriter<P> participantWriter,
                                                   PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                                   PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ElementWriter<Experiment> experimentWriter,
@@ -115,17 +114,13 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
     protected void writeParameters(I object) throws XMLStreamException {
         // write parameters
         if (!object.getModelledParameters().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start parameter list
             getStreamWriter().writeStartElement("parameterList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object ann : object.getModelledParameters()){
                 this.parameterWriter.write((ModelledParameter)ann);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end parameterList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -133,17 +128,13 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
     protected void writeConfidences(I object) throws XMLStreamException {
         // write confidences
         if (!object.getModelledConfidences().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start confidence list
             getStreamWriter().writeStartElement("confidenceList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object ann : object.getModelledConfidences()){
                 this.confidenceWriter.write((ModelledConfidence)ann);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end confidenceList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -151,14 +142,11 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
     protected void writeAttributes(I object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write existing attributes
             for (Object ann : object.getAnnotations()){
                 getAttributeWriter().write((Annotation) ann);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write cooperative effect
             // can only write the FIRST cooperative effect
@@ -167,19 +155,15 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
             }
             // write end attributeList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         // write cooperative effects
         else if (!object.getCooperativeEffects().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write cooperative effects
             writeCooperativeEffect(object);
             // write end attributeList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -260,6 +244,5 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
 
         // write end attribute
         getStreamWriter().writeEndElement();
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 }

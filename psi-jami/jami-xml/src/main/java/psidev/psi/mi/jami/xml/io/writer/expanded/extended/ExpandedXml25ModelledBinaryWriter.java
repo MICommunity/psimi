@@ -20,6 +20,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SourceWriter
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,7 +52,7 @@ public class ExpandedXml25ModelledBinaryWriter extends AbstractExpandedXml25Writ
         super(ModelledBinaryInteraction.class, writer);
     }
 
-    public ExpandedXml25ModelledBinaryWriter(XMLStreamWriter2 streamWriter) {
+    public ExpandedXml25ModelledBinaryWriter(XMLStreamWriter streamWriter) {
         super(ModelledBinaryInteraction.class, streamWriter);
     }
 

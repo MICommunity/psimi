@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
@@ -10,6 +9,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25NamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Compact Xml 2.5 writer for a basic named participant with a shortname and a fullname.
@@ -21,11 +21,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class CompactXml25NamedParticipantWriter extends AbstractXml25NamedParticipantWriter<Participant, Feature> implements CompactPsiXml25ElementWriter<Participant>{
-    public CompactXml25NamedParticipantWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex) {
+    public CompactXml25NamedParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
         super(writer, objectIndex, new Xml25FeatureWriter(writer, objectIndex));
     }
 
-    public CompactXml25NamedParticipantWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<Feature> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Interactor> interactorWriter) {
+    public CompactXml25NamedParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<Feature> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Interactor> interactorWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter, attributeWriter, interactorWriter);
     }
 

@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SecondaryXre
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,7 +45,7 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
         super(Interaction.class, writer);
     }
 
-    public LightExpandedXml25Writer(XMLStreamWriter2 streamWriter) {
+    public LightExpandedXml25Writer(XMLStreamWriter streamWriter) {
         super(Interaction.class, streamWriter);
     }
 

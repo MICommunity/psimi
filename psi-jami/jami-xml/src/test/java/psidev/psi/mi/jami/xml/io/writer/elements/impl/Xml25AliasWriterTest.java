@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
+import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 import junit.framework.Assert;
 import org.codehaus.stax2.XMLOutputFactory2;
-import org.codehaus.stax2.XMLStreamWriter2;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -27,7 +28,7 @@ public class Xml25AliasWriterTest {
     private String alias_not_type_ac="<alias type=\"gene name\">BRCA2</alias>";
     private String alias_with_full_type="<alias type=\"gene name\" typeAc=\"MI:0301\">BRCA2</alias>";
     private StringWriter output;
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
 
     @Test
     public void test_write_alias_null() throws XMLStreamException, IOException {
@@ -72,10 +73,10 @@ public class Xml25AliasWriterTest {
         Assert.assertEquals(alias_with_full_type, output.toString());
     }
 
-    private XMLStreamWriter2 createStreamWriter() throws XMLStreamException {
+    private XMLStreamWriter createStreamWriter() throws XMLStreamException {
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
         this.output = new StringWriter();
-        this.streamWriter = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(this.output);
+        this.streamWriter = new IndentingXMLStreamWriter(outputFactory.createXMLStreamWriter(this.output));
         return this.streamWriter;
     }
 }

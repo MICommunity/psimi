@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Abstract Xml 2.5 writer for a range position
@@ -18,10 +17,10 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public abstract class AbstractXml25PositionWriter implements PsiXml25ElementWriter<Position>{
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ElementWriter<CvTerm> statusWriter;
 
-    public AbstractXml25PositionWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<CvTerm> statusWriter){
+    public AbstractXml25PositionWriter(XMLStreamWriter writer, PsiXml25ElementWriter<CvTerm> statusWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25PositionWriter");
         }
@@ -39,7 +38,6 @@ public abstract class AbstractXml25PositionWriter implements PsiXml25ElementWrit
             this.statusWriter.write(object.getStatus());
             // write position
             if (!object.isPositionUndetermined()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 if (object.getStart() == object.getEnd()){
                     // write start
                     writeStartPositionNode();
@@ -71,7 +69,7 @@ public abstract class AbstractXml25PositionWriter implements PsiXml25ElementWrit
     protected abstract void writeStartPositionNode() throws XMLStreamException;
     protected abstract void writeStartIntervalNode() throws XMLStreamException;
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 }

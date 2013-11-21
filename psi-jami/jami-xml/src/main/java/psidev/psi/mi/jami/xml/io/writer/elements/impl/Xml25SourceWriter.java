@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -13,6 +12,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
 
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private XMLGregorianCalendar calendar;
     private static final Logger logger = Logger.getLogger("Xml25SourceWriter");
     private PsiXml25ElementWriter<Alias> aliasWriter;
@@ -37,7 +37,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
     private PsiXml25ElementWriter<Publication> publicationWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
 
-    public Xml25SourceWriter(XMLStreamWriter2 writer){
+    public Xml25SourceWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XML25SourceWriter");
         }
@@ -59,7 +59,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
         }
     }
 
-    public Xml25SourceWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter,
+    public Xml25SourceWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
                              PsiXml25PublicationWriter publicationWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter){
         if (writer == null){
@@ -94,62 +94,46 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
             boolean hasFullName = object.getFullName() != null;
             boolean hasAliases = !object.getSynonyms().isEmpty();
             if (hasShortName || hasFullName || hasAliases){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("names");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write shortname
                 if (hasShortName){
                     this.streamWriter.writeStartElement("shortLabel");
                     this.streamWriter.writeCharacters(object.getShortName());
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write fullname
                 if (hasFullName){
                     this.streamWriter.writeStartElement("fullName");
                     this.streamWriter.writeCharacters(object.getFullName());
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write aliases
                 for (Alias alias : object.getSynonyms()){
                     this.aliasWriter.write(alias);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end names
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write bibRef
             if (object.getPublication() != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.publicationWriter.write(object.getPublication());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write Xref
             if (!object.getIdentifiers().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 writeXrefFromSourceIdentifiers(object);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             else if (!object.getXrefs().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 writeXrefFromSourceXrefs(object);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write attributes
             if (!object.getAnnotations().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 for (Annotation ann : object.getAnnotations()){
                     this.attributeWriter.write(ann);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end attributeList
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end source
             this.streamWriter.writeEndElement();
@@ -173,7 +157,6 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
         this.secondaryRefWriter.setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         int index = 0;
         while (refIterator.hasNext()){
@@ -181,13 +164,11 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
             // write primaryRef
             if (index == 0){
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
             // write secondaryref
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
         }
@@ -199,7 +180,6 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
     protected void writeXrefFromSourceIdentifiers(Source object) throws XMLStreamException {
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // default qualifier is identity
         this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
@@ -233,7 +213,6 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
             this.primaryRefWriter.write(miXref);
             hasWrittenPrimaryRef = true;
             if (parXref != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.secondaryRefWriter.write(parXref);
             }
         }
@@ -254,12 +233,10 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
                     this.primaryRefWriter.write(ref);
                 }
                 else{
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.secondaryRefWriter.write(ref);
                 }
             }
         }
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
@@ -268,7 +245,6 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
             this.secondaryRefWriter.setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
         }
 
@@ -276,7 +252,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
         this.streamWriter.writeEndElement();
     }
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 }

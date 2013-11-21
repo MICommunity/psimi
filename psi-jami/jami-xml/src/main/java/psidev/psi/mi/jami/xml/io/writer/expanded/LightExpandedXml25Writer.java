@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -10,6 +9,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25Mode
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,7 +42,7 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
         super(Interaction.class, writer);
     }
 
-    public LightExpandedXml25Writer(XMLStreamWriter2 streamWriter) {
+    public LightExpandedXml25Writer(XMLStreamWriter streamWriter) {
         super(Interaction.class, streamWriter);
     }
 

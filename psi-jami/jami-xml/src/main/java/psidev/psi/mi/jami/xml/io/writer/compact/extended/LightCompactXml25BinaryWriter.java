@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.compact.extended;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
@@ -21,6 +20,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SecondaryXre
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SourceWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,7 +52,7 @@ public class LightCompactXml25BinaryWriter extends AbstractCompactXml25Writer<Bi
         super(BinaryInteraction.class, writer);
     }
 
-    public LightCompactXml25BinaryWriter(XMLStreamWriter2 streamWriter) {
+    public LightCompactXml25BinaryWriter(XMLStreamWriter streamWriter) {
         super(BinaryInteraction.class, streamWriter);
     }
 

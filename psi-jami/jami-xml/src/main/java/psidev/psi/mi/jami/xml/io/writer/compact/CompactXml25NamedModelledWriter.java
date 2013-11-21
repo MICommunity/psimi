@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25NamedM
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25NamedModelledParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,7 +42,7 @@ public class CompactXml25NamedModelledWriter extends AbstractCompactXml25Writer<
         super(ModelledInteraction.class, writer);
     }
 
-    public CompactXml25NamedModelledWriter(XMLStreamWriter2 streamWriter) {
+    public CompactXml25NamedModelledWriter(XMLStreamWriter streamWriter) {
         super(ModelledInteraction.class, streamWriter);
     }
 

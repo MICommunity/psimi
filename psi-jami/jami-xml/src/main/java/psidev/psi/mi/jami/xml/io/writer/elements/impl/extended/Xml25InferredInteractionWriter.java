@@ -1,15 +1,14 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * XML 2.5 writer for an extended inferred interaction
@@ -20,10 +19,10 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25InferredInteractionWriter implements PsiXml25ElementWriter<InferredInteraction> {
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
 
-    public Xml25InferredInteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
+    public Xml25InferredInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25InferredInteractionWriter");
         }
@@ -40,42 +39,34 @@ public class Xml25InferredInteractionWriter implements PsiXml25ElementWriter<Inf
             if (object != null){
                 // write start
                 this.streamWriter.writeStartElement("inferredInteraction");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write participants
                 for (InferredInteractionParticipant participant : object.getParticipants()){
                     if (participant != null){
                         this.streamWriter.writeStartElement("participant");
-                        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                         if (participant.getFeature() != null){
                             this.streamWriter.writeStartElement("participantFeatureRef");
                             this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForFeature(participant.getFeature())));
                             // write end feature ref
                             this.streamWriter.writeEndElement();
-                            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                         }
                         else if (participant.getParticipant() != null){
                             this.streamWriter.writeStartElement("participantRef");
                             this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForParticipant(participant.getParticipant())));
                             // write end feature ref
                             this.streamWriter.writeEndElement();
-                            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                         }
                         // write end inferred participant
                         this.streamWriter.writeEndElement();
-                        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     }
                 }
 
                 // write experiment references
                 if (!object.getExperiments().isEmpty()){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.streamWriter.writeStartElement("experimentRefList");
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     for (Experiment exp : object.getExperiments()){
                         this.streamWriter.writeStartElement("experimentRef");
                         this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
                         this.streamWriter.writeEndElement();
-                        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     }
                     this.streamWriter.writeEndElement();
                 }

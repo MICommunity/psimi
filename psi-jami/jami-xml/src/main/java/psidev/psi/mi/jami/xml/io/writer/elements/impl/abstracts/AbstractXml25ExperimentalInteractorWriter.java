@@ -1,15 +1,14 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Abstract class for experimental interactor XML 2.5 writer
@@ -20,10 +19,10 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public abstract class AbstractXml25ExperimentalInteractorWriter implements PsiXml25ElementWriter<ExperimentalInteractor>{
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
 
-    public AbstractXml25ExperimentalInteractorWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
+    public AbstractXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25ExperimentalInteractorWriter");
         }
@@ -42,17 +41,13 @@ public abstract class AbstractXml25ExperimentalInteractorWriter implements PsiXm
             writeInteractor(object.getInteractor());
             // write experiment refs
             if (!object.getExperiments().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("experimentRefList");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 for (Experiment exp : object.getExperiments()){
                     this.streamWriter.writeStartElement("experimentRef");
                     this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end experimental interactor
             this.streamWriter.writeEndElement();
@@ -64,7 +59,7 @@ public abstract class AbstractXml25ExperimentalInteractorWriter implements PsiXm
 
     protected abstract void writeInteractor(Interactor interactor) throws XMLStreamException;
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 

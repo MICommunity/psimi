@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.analysis.graph.BindingSiteCliqueFinder;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
@@ -12,9 +11,9 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -30,7 +29,7 @@ import java.util.Set;
 
 public abstract class AbstractXml25InteractionWriter<T extends Interaction, P extends Participant> implements PsiXml25InteractionWriter<T> {
 
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
@@ -41,7 +40,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     private Experiment defaultExperiment;
     private PsiXml25ElementWriter<Experiment> experimentWriter;
 
-    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
+    public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                           PsiXml25ParticipantWriter<P> participantWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
@@ -64,7 +63,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.experimentWriter = new Xml25ExperimentWriter(writer, objectIndex);
     }
 
-    public AbstractXml25InteractionWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
+    public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                              PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
@@ -167,71 +166,53 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     protected void writeAttributes(T object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             this.streamWriter.writeStartElement("attributeList");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object ann : object.getAnnotations()){
                 this.attributeWriter.write((Annotation)ann);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end attributeList
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeInteractionType(T object) throws XMLStreamException {
         if (object.getInteractionType() != null){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.interactionTypeWriter.write(object.getInteractionType());
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeInferredInteractions(T object) throws XMLStreamException {
         Collection<Set<Feature>> inferredInteractions = collectInferredInteractionsFrom(object);
         if (inferredInteractions != null && !inferredInteractions.isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.streamWriter.writeStartElement("inferredInteractionList");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Set<Feature> inferred : inferredInteractions){
                 this.inferredInteractionWriter.write(inferred);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeParticipants(T object) throws XMLStreamException {
         if (!object.getParticipants().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.streamWriter.writeStartElement("participantList");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object participant : object.getParticipants()){
                 this.participantWriter.write((P)participant);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeNames(T object) throws XMLStreamException {
         boolean hasShortLabel = object.getShortName() != null;
         if (hasShortLabel){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.streamWriter.writeStartElement("names");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write shortname
             this.streamWriter.writeStartElement("shortLabel");
             this.streamWriter.writeCharacters(object.getShortName());
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write end names
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -243,14 +224,10 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
 
     protected void writeXref(T object) throws XMLStreamException {
         if (!object.getIdentifiers().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeXrefFromInteractionIdentifiers(object);
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         else if (!object.getXrefs().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeXrefFromInteractionXrefs(object);
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -263,7 +240,6 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.secondaryRefWriter.setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         int index = 0;
         while (refIterator.hasNext()){
@@ -271,13 +247,11 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
             // write primaryRef
             if (index == 0){
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
             // write secondaryref
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
         }
@@ -289,7 +263,6 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     protected void writeXrefFromInteractionIdentifiers(T object) throws XMLStreamException {
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // all these xrefs are identity
         this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
@@ -305,11 +278,9 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
             if (!hasWrittenPrimaryRef){
                 hasWrittenPrimaryRef = true;
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
         }
 
@@ -319,8 +290,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
             this.secondaryRefWriter.setDefaultRefType(null);
             this.secondaryRefWriter.setDefaultRefTypeAc(null);
             for (Object ref : object.getXrefs()){
-                this.secondaryRefWriter.write((Xref)ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+                this.secondaryRefWriter.write(ref);
             }
         }
 
@@ -328,7 +298,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.streamWriter.writeEndElement();
     }
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 
@@ -351,25 +321,17 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     }
 
     protected void writeExperimentRef() throws XMLStreamException {
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeStartElement("experimentList");
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeStartElement("experimentRef");
         getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(getDefaultExperiment())));
         getStreamWriter().writeEndElement();
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeEndElement();
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeExperimentDescription() throws XMLStreamException {
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeStartElement("experimentList");
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         this.experimentWriter.write(getDefaultExperiment());
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         getStreamWriter().writeEndElement();
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void initialiseDefaultExperiment(){

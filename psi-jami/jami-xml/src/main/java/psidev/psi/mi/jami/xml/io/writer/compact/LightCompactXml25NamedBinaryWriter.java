@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.*;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,7 +42,7 @@ public class LightCompactXml25NamedBinaryWriter extends AbstractCompactXml25Writ
         super(BinaryInteraction.class, writer);
     }
 
-    public LightCompactXml25NamedBinaryWriter(XMLStreamWriter2 streamWriter) {
+    public LightCompactXml25NamedBinaryWriter(XMLStreamWriter streamWriter) {
         super(BinaryInteraction.class, streamWriter);
     }
 
