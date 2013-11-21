@@ -284,6 +284,10 @@ public class XmlParameter implements Parameter, FileSourceContext, Locatable{
         return experiment;
     }
 
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
+
     private FileSourceLocator getParameterLocator(){
         return getSourceLocator();
     }
