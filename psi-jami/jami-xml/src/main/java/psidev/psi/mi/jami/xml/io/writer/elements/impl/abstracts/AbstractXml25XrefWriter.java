@@ -57,7 +57,7 @@ public abstract class AbstractXml25XrefWriter implements PsiXml25XrefWriter<Xref
                     }
                 }
                 else if (this.defaultRefType != null || this.defaultRefTypeAc != null){
-                    this.streamWriter.writeAttribute("refType", this.defaultRefType != null? this.defaultRefTypeAc : PsiXml25Utils.UNSPECIFIED );
+                    this.streamWriter.writeAttribute("refType", this.defaultRefType != null? this.defaultRefType : PsiXml25Utils.UNSPECIFIED );
                     if (this.defaultRefTypeAc != null){
                         this.streamWriter.writeAttribute("refTypeAc", this.defaultRefTypeAc);
                     }

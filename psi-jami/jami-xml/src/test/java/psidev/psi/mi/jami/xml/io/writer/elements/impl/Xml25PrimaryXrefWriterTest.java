@@ -1,19 +1,15 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 import junit.framework.Assert;
-import org.codehaus.stax2.XMLOutputFactory2;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 
 /**
  * Unit tester for Xml25PrimaryRefWriter
@@ -23,15 +19,14 @@ import java.io.StringWriter;
  * @since <pre>20/11/13</pre>
  */
 
-public class Xml25PrimaryXrefWriterTest {
+public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
 
     private String xref_no_database_ac ="<primaryRef db=\"uniprotkb\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
     private String xref_no_reftype ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\"/>";
     private String xref_no_reftype_ac ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\"/>";
     private String xref ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
     private String xref_version ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" version=\"2.4\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
-    private StringWriter output;
-    private XMLStreamWriter streamWriter;
+
     @Test
     public void test_write_xref_null() throws XMLStreamException, IOException {
 
@@ -97,10 +92,16 @@ public class Xml25PrimaryXrefWriterTest {
         Assert.assertEquals(xref_version, output.toString());
     }
 
-    private XMLStreamWriter createStreamWriter() throws XMLStreamException {
-        XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
-        this.output = new StringWriter();
-        this.streamWriter = new IndentingXMLStreamWriter(outputFactory.createXMLStreamWriter(this.output));
-        return this.streamWriter;
+    @Test
+    public void test_write_xref_default_qualifier() throws XMLStreamException, IOException {
+        Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345");
+
+        Xml25PrimaryXrefWriter writer = new Xml25PrimaryXrefWriter(createStreamWriter());
+        writer.setDefaultRefType("identity");
+        writer.setDefaultRefTypeAc("MI:0356");
+        writer.write(ref);
+        streamWriter.flush();
+
+        Assert.assertEquals(xref, output.toString());
     }
 }
