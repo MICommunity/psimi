@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
@@ -8,6 +7,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25CvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Xml25 writer for feature type
@@ -18,11 +18,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25FeatureTypeWriter extends AbstractXml25CvTermWriter {
-    public Xml25FeatureTypeWriter(XMLStreamWriter2 writer) {
+    public Xml25FeatureTypeWriter(XMLStreamWriter writer) {
         super(writer);
     }
 
-    public Xml25FeatureTypeWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25FeatureTypeWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

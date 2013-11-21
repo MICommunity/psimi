@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
@@ -8,6 +7,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25OrganismWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * PSI-XML 2.5 writer for host organism
@@ -18,11 +18,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25HostOrganismWriter extends AbstractXml25OrganismWriter {
-    public Xml25HostOrganismWriter(XMLStreamWriter2 writer) {
+    public Xml25HostOrganismWriter(XMLStreamWriter writer) {
         super(writer);
     }
 
-    public Xml25HostOrganismWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter, PsiXml25ElementWriter<CvTerm> cellTypeWriter) {
+    public Xml25HostOrganismWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter, PsiXml25ElementWriter<CvTerm> cellTypeWriter) {
         super(writer, aliasWriter, tissueWriter, compartmentWriter, cellTypeWriter);
     }
 

@@ -1,18 +1,17 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AliasWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25CelltypeWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25CompartmentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25TissueWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Abstract class forPSI-XML 2.5 writer for organism
@@ -24,13 +23,13 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWriter<Organism> {
 
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25ElementWriter<CvTerm> tissueWriter;
     private PsiXml25ElementWriter<CvTerm> compartmentWriter;
     private PsiXml25ElementWriter<CvTerm> cellTypeWriter;
 
-    public AbstractXml25OrganismWriter(XMLStreamWriter2 writer){
+    public AbstractXml25OrganismWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25OrganismWriter");
         }
@@ -41,7 +40,7 @@ public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWrit
         this.cellTypeWriter = new Xml25CelltypeWriter(writer);
     }
 
-    public AbstractXml25OrganismWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter,
+    public AbstractXml25OrganismWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
                                        PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter,
                                        PsiXml25ElementWriter<CvTerm> cellTypeWriter){
         if (writer == null){
@@ -68,50 +67,38 @@ public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWrit
             boolean hasExperimentFullLabel = object.getScientificName() != null;
             boolean hasAliases = !object.getAliases().isEmpty();
             if (hasShortLabel || hasExperimentFullLabel || hasAliases){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("names");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write shortname
                 if (hasShortLabel){
                     this.streamWriter.writeStartElement("shortLabel");
                     this.streamWriter.writeCharacters(object.getCommonName());
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write fullname
                 if (hasExperimentFullLabel){
                     this.streamWriter.writeStartElement("fullName");
                     this.streamWriter.writeCharacters(object.getScientificName());
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write aliases
                 for (Alias alias : object.getAliases()){
                     this.aliasWriter.write(alias);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end names
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
 
             // write celltype
             if (object.getCellType() != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.cellTypeWriter.write(object.getCellType());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             //write compartment
             if (object.getCompartment() != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.compartmentWriter.write(object.getCompartment());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write tissue
             if (object.getTissue()!= null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.tissueWriter.write(object.getTissue());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
 
             // write other properties
@@ -129,7 +116,7 @@ public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWrit
 
     protected abstract void writeStartOrganism() throws XMLStreamException;
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 }

@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -8,6 +7,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * abstract Xml 25 Writer for Xref object
@@ -19,11 +19,11 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class AbstractXml25XrefWriter implements PsiXml25XrefWriter<Xref> {
 
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private String defaultRefTypeAc = null;
     private String defaultRefType=null;
 
-    public AbstractXml25XrefWriter(XMLStreamWriter2 writer){
+    public AbstractXml25XrefWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25XrefWriter");
         }
@@ -77,7 +77,7 @@ public abstract class AbstractXml25XrefWriter implements PsiXml25XrefWriter<Xref
 
     protected abstract void writeOtherProperties(Xref object) throws XMLStreamException;
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 

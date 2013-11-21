@@ -1,18 +1,18 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AliasWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25PrimaryXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25SecondaryXrefWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
@@ -23,12 +23,12 @@ import java.util.Iterator;
  * @since <pre>12/11/13</pre>
  */
 public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter<CvTerm> {
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
 
-    public AbstractXml25CvTermWriter(XMLStreamWriter2 writer){
+    public AbstractXml25CvTermWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25CvTermWriter");
         }
@@ -38,7 +38,7 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
         this.secondaryRefWriter = new Xml25SecondaryXrefWriter(writer);
     }
 
-    public AbstractXml25CvTermWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Alias> aliasWriter,
+    public AbstractXml25CvTermWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
                                      PsiXml25XrefWriter primaryRefWriter,PsiXml25XrefWriter secondaryRefWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25CvTermWriter");
@@ -60,43 +60,33 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
             boolean hasFullLabel = object.getFullName() != null;
             boolean hasAliases = !object.getSynonyms().isEmpty();
             if (hasShortLabel || hasFullLabel || hasAliases){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("names");
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write shortname
                 if (hasShortLabel){
                     this.streamWriter.writeStartElement("shortLabel");
                     this.streamWriter.writeCharacters(object.getShortName());
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write fullname
                 if (hasFullLabel){
                     this.streamWriter.writeStartElement("fullName");
                     this.streamWriter.writeCharacters(object.getFullName());
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write aliases
                 for (Alias alias : object.getSynonyms()){
                     this.aliasWriter.write(alias);
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end names
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
 
             // write Xref
             if (!object.getIdentifiers().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 writeXrefFromCvIdentifiers(object);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             else if (!object.getXrefs().isEmpty()){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 writeXrefFromCvXrefs(object);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
 
             // write other properties
@@ -122,7 +112,6 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
         this.secondaryRefWriter.setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         int index = 0;
         while (refIterator.hasNext()){
@@ -130,13 +119,11 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
             // write primaryRef
             if (index == 0){
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
             // write secondaryref
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
         }
@@ -148,7 +135,6 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
     protected void writeXrefFromCvIdentifiers(CvTerm object) throws XMLStreamException {
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // all these xrefs are identity
         this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
@@ -191,11 +177,9 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
             this.primaryRefWriter.write(miXref);
             hasWrittenPrimaryRef = true;
             if (modXref != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.secondaryRefWriter.write(modXref);
             }
             if (parXref != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.secondaryRefWriter.write(parXref);
             }
         }
@@ -203,7 +187,6 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
             this.primaryRefWriter.write(modXref);
             hasWrittenPrimaryRef = true;
             if (parXref != null){
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.secondaryRefWriter.write(parXref);
             }
         }
@@ -225,12 +208,10 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
                     this.primaryRefWriter.write(ref);
                 }
                 else{
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.secondaryRefWriter.write(ref);
                 }
             }
         }
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
@@ -239,7 +220,6 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
             this.secondaryRefWriter.setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
         }
 
@@ -247,7 +227,7 @@ public abstract class AbstractXml25CvTermWriter implements PsiXml25ElementWriter
         this.streamWriter.writeEndElement();
     }
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 }

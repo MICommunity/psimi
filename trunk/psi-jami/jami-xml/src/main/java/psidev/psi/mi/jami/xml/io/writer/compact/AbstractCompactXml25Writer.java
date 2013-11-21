@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.compact;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.InMemoryLightIdentityObjectCache;
@@ -9,6 +8,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,7 +68,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         this.type = type;
     }
 
-    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter2 streamWriter) {
+    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter streamWriter) {
         super(streamWriter);
         experiments = new HashSet<Experiment>();
         availabilities = new HashSet<String>();
@@ -190,40 +190,31 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         if (!availabilities.isEmpty()){
             // write start availability list
             getStreamWriter().writeStartElement(PsiXml25Utils.AVAILABILITYLIST_TAG);
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (String availability : this.availabilities){
                 this.availabilityWriter.write(availability);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end availability list
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         // write experiment list
         if (!experiments.isEmpty()){
             // write start experiment list
             getStreamWriter().writeStartElement(PsiXml25Utils.EXPERIMENTLIST_TAG);
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Experiment experiment : this.experiments){
                 this.experimentWriter.write(experiment);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end experiment list
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         // write interactor list
         if (!interactors.isEmpty()){
             // write start interactor list
             getStreamWriter().writeStartElement(PsiXml25Utils.INTERACTORLIST_TAG);
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Interactor interactor : this.interactors){
                 this.interactorWriter.write(interactor);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end interactor list
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         }
         // write start interactionList

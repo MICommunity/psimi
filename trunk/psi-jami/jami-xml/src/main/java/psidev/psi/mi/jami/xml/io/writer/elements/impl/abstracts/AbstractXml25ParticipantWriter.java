@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
@@ -11,6 +10,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
@@ -22,7 +22,7 @@ import java.util.Iterator;
  */
 
 public abstract class AbstractXml25ParticipantWriter<P extends Participant, F extends Feature> implements PsiXml25ParticipantWriter<P> {
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
     private PsiXml25ElementWriter<Alias> aliasWriter;
     private PsiXml25XrefWriter primaryRefWriter;
@@ -33,7 +33,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
     private PsiXml25ElementWriter<Interactor> interactorWriter;
     private boolean writeComplexAsInteractor=false;
 
-    public AbstractXml25ParticipantWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
+    public AbstractXml25ParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                           PsiXml25ElementWriter<F> featureWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25ParticipantWriter");
@@ -55,7 +55,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
         this.interactorWriter = new Xml25InteractorWriter(writer, objectIndex);
     }
 
-    public AbstractXml25ParticipantWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
+    public AbstractXml25ParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
                                              PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter biologicalRoleWriter,
                                              PsiXml25ElementWriter<F> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
@@ -278,7 +278,6 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
         this.secondaryRefWriter.setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         int index = 0;
         while (refIterator.hasNext()){
@@ -286,13 +285,11 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
             // write primaryRef
             if (index == 0){
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
             // write secondaryref
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
         }
@@ -302,20 +299,16 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
     }
 
     protected void writeMoleculeRef(Interactor interactor) throws XMLStreamException {
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         this.streamWriter.writeStartElement("interactorRef");
         this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForInteractor(interactor)));
         this.streamWriter.writeEndElement();
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeMoleculeDescription(Interactor interactor) throws XMLStreamException {
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         this.interactorWriter.write(interactor);
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 

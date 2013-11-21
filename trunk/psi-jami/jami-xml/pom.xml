@@ -62,6 +62,19 @@
             <version>4.0.6</version>
         </dependency>
 
+        <!-- stax utils -->
+        <dependency>
+            <groupId>net.java.dev.stax-utils</groupId>
+            <artifactId>stax-utils</artifactId>
+            <version>20070216</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.bea.xml</groupId>
+                    <artifactId>jsr173-ri</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- apache commons -->
         <dependency>
             <groupId>commons-lang</groupId>

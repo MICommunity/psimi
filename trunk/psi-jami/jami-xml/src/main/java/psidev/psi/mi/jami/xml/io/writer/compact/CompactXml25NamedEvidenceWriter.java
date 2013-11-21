@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.*;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -40,7 +41,7 @@ public class CompactXml25NamedEvidenceWriter extends AbstractCompactXml25Writer<
         super(InteractionEvidence.class, writer);
     }
 
-    public CompactXml25NamedEvidenceWriter(XMLStreamWriter2 streamWriter) {
+    public CompactXml25NamedEvidenceWriter(XMLStreamWriter streamWriter) {
         super(InteractionEvidence.class, streamWriter);
     }
 

@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXml25MixWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;

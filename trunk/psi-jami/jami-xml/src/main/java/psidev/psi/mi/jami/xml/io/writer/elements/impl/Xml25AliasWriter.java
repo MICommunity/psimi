@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * XML25 writer for aliases
@@ -17,9 +17,9 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25AliasWriter implements PsiXml25ElementWriter<Alias> {
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
 
-    public Xml25AliasWriter(XMLStreamWriter2 writer){
+    public Xml25AliasWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XML25AliasWriter");
         }

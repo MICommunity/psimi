@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25PositionWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * XML 2.5 writer for the end position of a range
@@ -16,11 +16,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25EndPositionWriter extends AbstractXml25PositionWriter {
-    public Xml25EndPositionWriter(XMLStreamWriter2 writer) {
+    public Xml25EndPositionWriter(XMLStreamWriter writer) {
         super(writer, new Xml25EndStatusWriter(writer));
     }
 
-    public Xml25EndPositionWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<CvTerm> statusWriter) {
+    public Xml25EndPositionWriter(XMLStreamWriter writer, PsiXml25ElementWriter<CvTerm> statusWriter) {
         super(writer, statusWriter != null ? statusWriter : new Xml25EndStatusWriter(writer));
     }
 

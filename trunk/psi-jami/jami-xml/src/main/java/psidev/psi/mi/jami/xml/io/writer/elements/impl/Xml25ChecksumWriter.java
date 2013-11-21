@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Xml 25 writer of checksums
@@ -17,9 +17,9 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25ChecksumWriter implements PsiXml25ElementWriter<Checksum> {
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
 
-    public Xml25ChecksumWriter(XMLStreamWriter2 writer){
+    public Xml25ChecksumWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ChecksumWriter");
         }

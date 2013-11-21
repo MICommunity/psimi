@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Xml 2.5 writer for a feature range
@@ -18,11 +17,11 @@ import javax.xml.stream.XMLStreamException;
  */
 
 public class Xml25RangeWriter implements PsiXml25ElementWriter<Range>{
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ElementWriter<Position> startPositionWriter;
     private PsiXml25ElementWriter<Position> endPositionWriter;
 
-    public Xml25RangeWriter(XMLStreamWriter2 writer){
+    public Xml25RangeWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25RangeWriter");
         }
@@ -31,7 +30,7 @@ public class Xml25RangeWriter implements PsiXml25ElementWriter<Range>{
         this.endPositionWriter = new Xml25EndPositionWriter(writer);
     }
 
-    public Xml25RangeWriter(XMLStreamWriter2 writer, PsiXml25ElementWriter<Position> startPositionWriter, PsiXml25ElementWriter<Position> endPositionWriter) {
+    public Xml25RangeWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Position> startPositionWriter, PsiXml25ElementWriter<Position> endPositionWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25RangeWriter");
         }
@@ -47,20 +46,14 @@ public class Xml25RangeWriter implements PsiXml25ElementWriter<Range>{
                 // write start
                 this.streamWriter.writeStartElement("featureRange");
                 // write start position
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.startPositionWriter.write(object.getStart());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write end position
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.endPositionWriter.write(object.getEnd());
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 // write isLink
                 if (object.isLink()){
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.streamWriter.writeStartElement("isLink");
                     this.streamWriter.writeCharacters(Boolean.toString(object.isLink()));
                     this.streamWriter.writeEndElement();
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 }
                 // write end feature range
                 this.streamWriter.writeEndElement();

@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -8,9 +7,9 @@ import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
@@ -22,7 +21,7 @@ import java.util.Iterator;
  */
 
 public abstract class AbstractXml25FeatureWriter<F extends Feature> implements PsiXml25ElementWriter<F>{
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
     private PsiXml25XrefWriter primaryRefWriter;
     private PsiXml25XrefWriter secondaryRefWriter;
@@ -30,7 +29,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Range> rangeWriter;
 
-    public AbstractXml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex){
+    public AbstractXml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25FeatureWriter");
         }
@@ -47,7 +46,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
 
     }
 
-    protected AbstractXml25FeatureWriter(XMLStreamWriter2 writer, PsiXml25ObjectCache objectIndex,
+    protected AbstractXml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                          PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                          PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                          PsiXml25ElementWriter<Range> rangeWriter) {
@@ -99,33 +98,25 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
     protected void writeAttributes(F object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object ann : object.getAnnotations()){
                 this.attributeWriter.write((Annotation)ann);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end attributeList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeRanges(F object) throws XMLStreamException {
         if (!object .getRanges().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start range list
             getStreamWriter().writeStartElement("featureRangeList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object range : object.getRanges()){
                 this.rangeWriter.write((Range)range);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end rangeList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -133,22 +124,16 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
 
     protected void writeFeatureType(F object) throws XMLStreamException {
         if (object.getType() != null){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.featureTypeWriter.write(object.getType());
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeXrefs(F object) throws XMLStreamException {
         if (!object.getIdentifiers().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeXrefFromFeatureIdentifiers(object);
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         else if (!object.getXrefs().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeXrefFromFeatureXrefs(object);
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -161,7 +146,6 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
         this.secondaryRefWriter.setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         int index = 0;
         while (refIterator.hasNext()){
@@ -169,13 +153,11 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
             // write primaryRef
             if (index == 0){
                 this.primaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
             // write secondaryref
             else{
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 index++;
             }
         }
@@ -187,7 +169,6 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
     protected void writeXrefFromFeatureIdentifiers(F object) throws XMLStreamException {
         // write start xref
         this.streamWriter.writeStartElement("xref");
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // all these xrefs are identity
         this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
@@ -227,12 +208,10 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
                     this.primaryRefWriter.write(ref);
                 }
                 else{
-                    this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                     this.secondaryRefWriter.write(ref);
                 }
             }
         }
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
@@ -242,7 +221,6 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
             for (Object o : object.getXrefs()){
                 Xref ref = (Xref)o;
                 this.secondaryRefWriter.write(ref);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
         }
 
@@ -254,30 +232,25 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
         boolean hasShortLabel = object.getShortName() != null;
         boolean hasFullLabel = object.getFullName() != null;
         if (hasShortLabel || hasFullLabel){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.streamWriter.writeStartElement("names");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write shortname
             if (hasShortLabel){
                 this.streamWriter.writeStartElement("shortLabel");
                 this.streamWriter.writeCharacters(object.getShortName());
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write fullname
             if (hasFullLabel){
                 this.streamWriter.writeStartElement("fullName");
                 this.streamWriter.writeCharacters(object.getFullName());
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end names
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 

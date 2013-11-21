@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -43,8 +43,9 @@ public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends
         this.type = type;
     }
 
-    protected AbstractExpandedXml25Writer(Class<T> type, XMLStreamWriter2 streamWriter) {
+    protected AbstractExpandedXml25Writer(Class<T> type, XMLStreamWriter streamWriter) {
         super(streamWriter);
+        this.type = type;
     }
 
     @Override

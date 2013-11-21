@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.compact.extended;
 
-import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
@@ -23,6 +22,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SecondaryXre
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SourceWriter;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -54,7 +54,7 @@ public class CompactXml25EvidenceWriter extends AbstractCompactXml25Writer<Inter
         super(InteractionEvidence.class, writer);
     }
 
-    public CompactXml25EvidenceWriter(XMLStreamWriter2 streamWriter) {
+    public CompactXml25EvidenceWriter(XMLStreamWriter streamWriter) {
         super(InteractionEvidence.class, streamWriter);
     }
 

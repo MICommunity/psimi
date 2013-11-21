@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer;
 
+import javanet.staxutils.IndentingXMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
@@ -15,6 +16,7 @@ import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.*;
 import java.util.*;
 
@@ -28,7 +30,7 @@ import java.util.*;
 
 public abstract class AbstractXml25Writer<T extends Interaction> implements InteractionWriter<T>{
 
-    private XMLStreamWriter2 streamWriter;
+    private XMLStreamWriter streamWriter;
     private boolean isInitialised = false;
     private PsiXml25InteractionWriter<T> interactionWriter;
     private PsiXml25InteractionWriter<ModelledInteraction> complexWriter;
@@ -67,7 +69,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.interactionsToWrite = new ArrayList<T>();
     }
 
-    protected AbstractXml25Writer(XMLStreamWriter2 streamWriter) {
+    protected AbstractXml25Writer(XMLStreamWriter streamWriter) {
         if (streamWriter == null){
             throw new IllegalArgumentException("The stream writer cannot be null.");
         }
@@ -154,7 +156,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         // write end of entrySet
         try {
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         } catch (XMLStreamException e) {
             throw new MIIOException("Cannot write the end of entrySet root node.", e);
         }
@@ -175,7 +176,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         // write start of document (by default, version = 1 and encoding = UTL-8)
         try {
             this.streamWriter.writeStartDocument();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         } catch (XMLStreamException e) {
             throw new MIIOException("Cannot write the start document of this XML 2.5 output.", e);
         }
@@ -188,7 +188,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
             this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
             this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         } catch (XMLStreamException e) {
             throw new MIIOException("Cannot write the start of the entrySet root node.", e);
         }
@@ -316,19 +315,16 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     protected void writeStartInteractionList() throws XMLStreamException {
         // write start interaction list
         this.streamWriter.writeStartElement(PsiXml25Utils.INTERACTIONLIST_TAG);
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeEndInteractionList() throws XMLStreamException {
         // write end interaction list
         this.streamWriter.writeEndElement();
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeInteraction() throws XMLStreamException {
         // write interaction
         this.interactionWriter.write(this.currentInteraction);
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeSubComplexInEntry() throws XMLStreamException {
@@ -336,7 +332,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
              Set<ModelledInteraction> registeredComplexes = this.elementCache.clearRegisteredSubComplexes();
              for (ModelledInteraction modelled : registeredComplexes){
                  this.complexWriter.write(modelled);
-                 this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
              }
          }
     }
@@ -345,18 +340,15 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected void writeSource() throws XMLStreamException {
         this.sourceWriter.write(this.currentSource);
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeStartEntry() throws XMLStreamException {
         this.elementCache.clear();
         this.streamWriter.writeStartElement(PsiXml25Utils.ENTRY_TAG);
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeEndEntry() throws XMLStreamException {
         this.streamWriter.writeEndElement();
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         this.elementCache.clear();
     }
 
@@ -430,7 +422,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.interactionWriter = interactionWriter;
     }
 
-    protected XMLStreamWriter2 getStreamWriter() {
+    protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
     }
 
@@ -459,7 +451,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             throw new IllegalArgumentException("The writer cannot be null.");
         }
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
-        this.streamWriter = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(writer);
+        XMLStreamWriter2 streamWriter2 = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(writer);
+        this.streamWriter = new IndentingXMLStreamWriter(streamWriter2);
         initialiseSubWriters();
     }
 
@@ -469,7 +462,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
 
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
-        this.streamWriter = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(output, "UTF-8");
+        XMLStreamWriter2 streamWriter2 = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(output, "UTF-8");
+        this.streamWriter = new IndentingXMLStreamWriter(streamWriter2);
         initialiseSubWriters();
     }
 
@@ -482,7 +476,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
 
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
-        this.streamWriter = (XMLStreamWriter2)outputFactory.createXMLStreamWriter(new FileOutputStream(file), "UTF-8");
+        this.streamWriter = new IndentingXMLStreamWriter(outputFactory.createXMLStreamWriter(new FileOutputStream(file), "UTF-8"));
         initialiseSubWriters();
     }
 
