@@ -13,24 +13,24 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25BiologicalRoleWriter
+ * Unit tester for Xml25ExperimentalRoleWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
+public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
-    private String bioRole = "<biologicalRole>\n" +
+    private String expRole = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
-    private String bioRoleFullName = "<biologicalRole>\n" +
+            "</experimentalRole>";
+    private String expRoleFullName = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "    <fullName>unspecified role</fullName>\n"+
@@ -38,8 +38,8 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
-    private String bioRoleAliases = "<biologicalRole>\n" +
+            "</experimentalRole>";
+    private String expRoleAliases = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "    <alias type=\"synonym\">unspecified</alias>\n"+
@@ -48,24 +48,24 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
-    private String bioRoleMod = "<biologicalRole>\n" +
+            "</experimentalRole>";
+    private String expRoleMod = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
-    private String bioRolePar = "<biologicalRole>\n" +
+            "</experimentalRole>";
+    private String expRolePar = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
             "    <primaryRef db=\"psi-par\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
-    private String bioRoleFirstIdentifier = "<biologicalRole>\n" +
+            "</experimentalRole>";
+    private String expRoleFirstIdentifier = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
@@ -74,8 +74,8 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "    <secondaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
-    private String bioRoleFirstXref = "<biologicalRole>\n" +
+            "</experimentalRole>";
+    private String expRoleFirstXref = "<experimentalRole>\n" +
             "  <names>\n" +
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
@@ -83,94 +83,94 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "    <primaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
-            "</biologicalRole>";
+            "</experimentalRole>";
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
-                
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        CvTerm expRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRole, output.toString());
+        Assert.assertEquals(this.expRole, output.toString());
     }
 
     @Test
     public void test_write_cv_fullName() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
-        bioRole.setFullName("unspecified role");
+        CvTerm expRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        expRole.setFullName("unspecified role");
 
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRoleFullName, output.toString());
+        Assert.assertEquals(this.expRoleFullName, output.toString());
     }
 
     @Test
     public void test_write_cv_aliases() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
-        bioRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
-        bioRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
+        CvTerm expRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
+        expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRoleAliases, output.toString());
+        Assert.assertEquals(this.expRoleAliases, output.toString());
     }
 
     @Test
     public void test_write_cv_mod() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
-        bioRole.setMODIdentifier(bioRole.getMIIdentifier());
-        bioRole.setMIIdentifier(null);
+        CvTerm expRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        expRole.setMODIdentifier(expRole.getMIIdentifier());
+        expRole.setMIIdentifier(null);
 
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRoleMod, output.toString());
+        Assert.assertEquals(this.expRoleMod, output.toString());
     }
 
     @Test
     public void test_write_cv_par() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
-        bioRole.setPARIdentifier(bioRole.getMIIdentifier());
-        bioRole.setMIIdentifier(null);
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        CvTerm expRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        expRole.setPARIdentifier(expRole.getMIIdentifier());
+        expRole.setMIIdentifier(null);
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRolePar, output.toString());
+        Assert.assertEquals(this.expRolePar, output.toString());
     }
 
     @Test
     public void test_write_cv_first_identifier() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
-        bioRole.getIdentifiers().iterator().next().getDatabase().setShortName("test");
-        bioRole.getIdentifiers().iterator().next().getDatabase().setMIIdentifier(null);
-        bioRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
-        bioRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
+        CvTerm expRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        expRole.getIdentifiers().iterator().next().getDatabase().setShortName("test");
+        expRole.getIdentifiers().iterator().next().getDatabase().setMIIdentifier(null);
+        expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
+        expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRoleFirstIdentifier, output.toString());
+        Assert.assertEquals(this.expRoleFirstIdentifier, output.toString());
     }
 
     @Test
     public void test_write_cv_first_xref() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm("unspecified role");
-        bioRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
-        bioRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
+        CvTerm expRole = new DefaultCvTerm("unspecified role");
+        expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
+        expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
-        writer.write(bioRole);
+        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        writer.write(expRole);
         streamWriter.flush();
 
-        Assert.assertEquals(this.bioRoleFirstXref, output.toString());
+        Assert.assertEquals(this.expRoleFirstXref, output.toString());
     }
 }
