@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>11/11/13</pre>
  */
 
-public abstract class AbstractXml25XrefWriter implements PsiXml25XrefWriter<Xref> {
+public abstract class AbstractXml25XrefWriter implements PsiXml25XrefWriter {
 
     private XMLStreamWriter streamWriter;
     private String defaultRefTypeAc = null;

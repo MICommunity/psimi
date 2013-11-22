@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
@@ -204,7 +205,7 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     }
 
     @Override
-    public void setSourceWriter(PsiXml25ElementWriter<Source> sourceWriter) {
+    public void setSourceWriter(PsiXml25SourceWriter sourceWriter) {
         super.setSourceWriter(sourceWriter);
         this.evidenceWriter.setSourceWriter(sourceWriter);
         this.modelledWriter.setSourceWriter(sourceWriter);
