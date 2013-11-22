@@ -183,23 +183,33 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
     protected void writePublicationPropertiesAsAttributes(Publication object, boolean hasTitle, boolean hasJournal, boolean hasPublicationDate, boolean hasCurationDepth, boolean hasAuthors) throws XMLStreamException {
         if (hasTitle){
             writeAnnotation(Annotation.PUBLICATION_TITLE, Annotation.PUBLICATION_TITLE_MI, object.getTitle());
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         if (hasJournal){
             writeAnnotation(Annotation.PUBLICATION_JOURNAL, Annotation.PUBLICATION_JOURNAL_MI, object.getJournal());
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         if (hasPublicationDate){
             writeAnnotation(Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI, PsiXml25Utils.YEAR_FORMAT.format(object.getPublicationDate()));
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         if (hasCurationDepth){
-            writeAnnotation(Annotation.CURATION_DEPTH, Annotation.CURATION_DEPTH_MI, object.getCurationDepth().toString());
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
+            switch (object.getCurationDepth()){
+                case rapid_curation:
+                    writeAnnotation(Annotation.CURATION_DEPTH, Annotation.CURATION_DEPTH_MI, Annotation.RAPID_CURATION);
+                    writeAnnotation(Annotation.RAPID_CURATION, Annotation.RAPID_CURATION_MI, null);
+                    break;
+                case IMEx:
+                    writeAnnotation(Annotation.CURATION_DEPTH, Annotation.CURATION_DEPTH_MI, Annotation.IMEX_CURATION);
+                    writeAnnotation(Annotation.IMEX_CURATION, Annotation.IMEX_CURATION_MI, null);
+                    break;
+                case MIMIx:
+                    writeAnnotation(Annotation.CURATION_DEPTH, Annotation.CURATION_DEPTH_MI, Annotation.MIMIX_CURATION);
+                    writeAnnotation(Annotation.MIMIX_CURATION, Annotation.MIMIX_CURATION_MI, null);
+                    break;
+                default:
+                    break;
+            }
         }
         if (hasAuthors){
             writeAnnotation(Annotation.AUTHOR, Annotation.AUTHOR_MI, StringUtils.join(object.getAuthors(), ", "));
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -212,7 +222,9 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             this.streamWriter.writeAttribute("nameAc", nameAc);
         }
         // write description (not null)
-        this.streamWriter.writeCharacters(value);
+        if (value != null){
+            this.streamWriter.writeCharacters(value);
+        }
 
         // write end attribute
         this.streamWriter.writeEndElement();
