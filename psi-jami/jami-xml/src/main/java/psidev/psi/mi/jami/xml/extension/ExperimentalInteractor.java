@@ -60,6 +60,10 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
         return this.interactor;
     }
 
+    public void setInteractor(Interactor interactor) {
+        this.interactor = interactor;
+    }
+
     public Collection<Experiment> getExperiments() {
         if (jaxbExperimentRefWrapper == null){
             jaxbExperimentRefWrapper = new JAXBExperimentRefWrapper();
