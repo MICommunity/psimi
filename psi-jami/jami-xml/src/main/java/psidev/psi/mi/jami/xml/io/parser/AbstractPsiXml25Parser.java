@@ -52,7 +52,7 @@ import java.util.logging.Logger;
 public abstract class AbstractPsiXml25Parser<T extends Interaction> implements PsiXml25Parser<T>{
 
     private static final Logger logger = Logger.getLogger("AbstractPsiXml25Parser");
-    private XMLStreamReader2 streamReader;
+    private XMLStreamReader streamReader;
 
     private URL originalURL;
     private File originalFile;
@@ -774,20 +774,20 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         XMLInputFactory xmlif = XMLInputFactory2.newInstance();
         if (this.originalFile != null){
             StreamSource source = new StreamSource(this.originalFile);
-            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+            this.streamReader = xmlif.createXMLStreamReader(source);
         }
         else if (this.originalURL != null){
             this.originalStream = this.originalURL.openStream();
             StreamSource source = new StreamSource(this.originalStream);
-            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+            this.streamReader = xmlif.createXMLStreamReader(source);
         }
         else if (this.originalReader != null){
             StreamSource source = new StreamSource(this.originalReader);
-            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+            this.streamReader = xmlif.createXMLStreamReader(source);
         }
         else if (this.originalStream != null){
             StreamSource source = new StreamSource(this.originalStream);
-            this.streamReader = (XMLStreamReader2)xmlif.createXMLStreamReader(source);
+            this.streamReader = xmlif.createXMLStreamReader(source);
         }
     }
 

@@ -76,8 +76,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             throw new IllegalArgumentException("The stream writer cannot be null.");
         }
 
-        this.streamWriter = streamWriter;
-        initialiseSubWriters();
+        initialiseStreamWriter(streamWriter);
         isInitialised = true;
         this.interactionsToWrite = new ArrayList<T>();
     }
@@ -133,6 +132,9 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
                 catch (XMLStreamException e) {
                     throw new IllegalArgumentException("Impossible to open and write in output file " + ((File)output).getName(), e);
                 }
+            }
+            else if (output instanceof XMLStreamWriter){
+                initialiseStreamWriter((XMLStreamWriter) output);
             }
             else {
                 throw new IllegalArgumentException("Impossible to write in the provided output "+output.getClass().getName() + ", a File, OuputStream, Writer or file path was expected.");
@@ -454,6 +456,14 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected boolean writeComplexesAsInteractors() {
         return writeComplexesAsInteractors;
+    }
+
+    private void initialiseStreamWriter(XMLStreamWriter writer) {
+        if (writer == null){
+            throw new IllegalArgumentException("The writer cannot be null.");
+        }
+        this.streamWriter = writer;
+        initialiseSubWriters();
     }
 
     private void initialiseWriter(Writer writer) throws XMLStreamException {

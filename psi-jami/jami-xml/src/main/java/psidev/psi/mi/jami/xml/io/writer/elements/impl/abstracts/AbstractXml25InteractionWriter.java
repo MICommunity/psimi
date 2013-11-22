@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParticipantWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
 import javax.xml.stream.XMLStreamException;
@@ -38,7 +35,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter;
     private Experiment defaultExperiment;
-    private PsiXml25ElementWriter<Experiment> experimentWriter;
+    private PsiXml25ExperimentWriter experimentWriter;
 
     public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                           PsiXml25ParticipantWriter<P> participantWriter){
@@ -67,7 +64,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                              PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                             PsiXml25ElementWriter<Experiment> experimentWriter) {
+                                             PsiXml25ExperimentWriter experimentWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
         }

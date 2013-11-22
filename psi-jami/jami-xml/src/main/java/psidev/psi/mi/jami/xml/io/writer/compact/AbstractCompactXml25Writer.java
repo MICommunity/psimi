@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
@@ -27,7 +28,7 @@ import java.util.Set;
 public abstract class AbstractCompactXml25Writer<T extends Interaction> extends AbstractXml25Writer<T> {
 
     private PsiXml25ElementWriter<String> availabilityWriter;
-    private PsiXml25ElementWriter<Experiment> experimentWriter;
+    private PsiXml25ExperimentWriter experimentWriter;
     private PsiXml25ElementWriter<Interactor> interactorWriter;
 
     private Class<T> type;
@@ -229,11 +230,11 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         this.availabilityWriter = availabilityWriter;
     }
 
-    protected PsiXml25ElementWriter<Experiment> getExperimentWriter() {
+    protected PsiXml25ExperimentWriter getExperimentWriter() {
         return experimentWriter;
     }
 
-    protected void setExperimentWriter(PsiXml25ElementWriter<Experiment> experimentWriter) {
+    protected void setExperimentWriter(PsiXml25ExperimentWriter experimentWriter) {
         this.experimentWriter = experimentWriter;
     }
 

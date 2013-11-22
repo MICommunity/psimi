@@ -141,23 +141,23 @@ public class Xml25PublicationWriter implements PsiXml25PublicationWriter {
             for (Annotation filter : attributesToFilter){
                 // Filter title
                 if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-                    hasTitle = true;
+                    hasTitle = false;
                 }
                 // Filter journal
                 else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-                    hasJournal = true;
+                    hasJournal = false;
                 }
                 // Filter publication date
                 else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
-                    hasPublicationDate = true;
+                    hasPublicationDate = false;
                 }
                 // Filtercuration depth
                 else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.CURATION_DEPTH_MI, Annotation.CURATION_DEPTH)){
-                    hasCurationDepth = true;
+                    hasCurationDepth = false;
                 }
                 // Filter authors
                 else if (AnnotationUtils.doesAnnotationHaveTopic(filter, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                    hasAuthors = true;
+                    hasAuthors = false;
                 }
             }
             // write attributes if no identifiers available
