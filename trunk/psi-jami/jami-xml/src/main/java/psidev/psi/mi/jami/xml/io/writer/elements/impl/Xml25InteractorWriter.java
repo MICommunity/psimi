@@ -117,9 +117,11 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
             // write sequence
             if (object instanceof Polymer){
                 Polymer pol = (Polymer) object;
-                this.streamWriter.writeStartElement("sequence");
-                this.streamWriter.writeCharacters(pol.getSequence());
-                this.streamWriter.writeEndElement();
+                if (pol.getSequence() != null){
+                    this.streamWriter.writeStartElement("sequence");
+                    this.streamWriter.writeCharacters(pol.getSequence());
+                    this.streamWriter.writeEndElement();
+                }
             }
 
             // write attributes
