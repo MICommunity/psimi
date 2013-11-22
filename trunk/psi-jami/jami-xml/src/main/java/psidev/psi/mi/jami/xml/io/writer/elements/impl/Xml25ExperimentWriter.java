@@ -2,14 +2,17 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25PublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -20,7 +23,7 @@ import java.util.Iterator;
  * @since <pre>12/11/13</pre>
  */
 
-public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> {
+public class Xml25ExperimentWriter implements PsiXml25ExperimentWriter {
     private XMLStreamWriter streamWriter;
     private PsiXml25ObjectCache objectIndex;
     private PsiXml25PublicationWriter publicationWriter;
@@ -30,6 +33,7 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> 
     private PsiXml25ElementWriter<CvTerm> detectionMethodWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Confidence> confidenceWriter;
+    private Publication defaultPublication;
 
     public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
@@ -180,6 +184,10 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> 
             this.publicationWriter.write(publication);
             imexId = publication.getImexId();
         }
+        else{
+            this.publicationWriter.write(getDefaultPublication());
+            imexId = getDefaultPublication().getImexId();
+        }
         // write xrefs
         if (!object.getXrefs().isEmpty() || imexId != null){
             // write start xref
@@ -269,5 +277,25 @@ public class Xml25ExperimentWriter implements PsiXml25ElementWriter<Experiment> 
 
     protected PsiXml25ElementWriter<Organism> getHostOrganismWriter() {
         return hostOrganismWriter;
+    }
+
+    @Override
+    public Publication getDefaultPublication() {
+        if (this.defaultPublication == null){
+            initialiseDefaultPublication();
+        }
+        return this.defaultPublication;
+    }
+
+    @Override
+    public void setDefaultPublication(Publication pub) {
+        if (pub == null){
+            throw new IllegalArgumentException("The default publication cannot be null");
+        }
+        this.defaultPublication = pub;
+    }
+
+    protected void initialiseDefaultPublication(){
+        this.defaultPublication = new DefaultPublication("Mock publication for experiments that do not have a publication reference",(String)null,(Date)null);
     }
 }

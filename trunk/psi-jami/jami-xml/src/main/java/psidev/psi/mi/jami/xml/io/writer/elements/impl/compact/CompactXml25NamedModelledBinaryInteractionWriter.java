@@ -33,7 +33,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriter extends AbstractXm
                                                             PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                             PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                                            PsiXml25ElementWriter<Experiment> experimentWriter,
+                                                            PsiXml25ExperimentWriter experimentWriter,
                                                             PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter
             , PsiXml25ElementWriter<Alias> aliasWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,

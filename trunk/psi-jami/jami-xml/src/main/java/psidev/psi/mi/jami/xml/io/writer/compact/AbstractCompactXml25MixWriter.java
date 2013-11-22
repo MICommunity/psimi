@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 
@@ -75,7 +76,7 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     }
 
     @Override
-    protected void setExperimentWriter(PsiXml25ElementWriter<Experiment> experimentWriter) {
+    protected void setExperimentWriter(PsiXml25ExperimentWriter experimentWriter) {
         super.setExperimentWriter(experimentWriter);
         this.evidenceWriter.setExperimentWriter(experimentWriter);
         this.modelledWriter.setExperimentWriter(experimentWriter);

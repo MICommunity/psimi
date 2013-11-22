@@ -28,7 +28,7 @@ public class CompactXml25ModelledInteractionWriter extends AbstractXml25Modelled
                                                  PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                  PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                  PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                                 PsiXml25ElementWriter<Experiment> experimentWriter,
+                                                 PsiXml25ExperimentWriter experimentWriter,
                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
                 participantWriter != null ? participantWriter : new CompactXml25ModelledParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
