@@ -116,6 +116,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         if (this.streamReader == null){
             try {
                 initialiseStreamReader();
+                Xml25EntryContext.getInstance().initialiseInferredInteractionList();
+                Xml25EntryContext.getInstance().initialiseReferencesList();
             } catch (XMLStreamException e) {
                 createPsiXmlExceptionFrom("Cannot create a XMLStreamReader to parse the MI source", e);
             } catch (IOException e) {

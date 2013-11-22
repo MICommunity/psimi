@@ -8,7 +8,10 @@ import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The xml entry context is a context threadlocal that will be valid for the whole xml entry
@@ -28,8 +31,6 @@ public class Xml25EntryContext {
     private PsiXmlParserListener listener;
 
     private Xml25EntryContext(){
-        this.references = new ArrayList<XmlIdReference>();
-        this.inferredInteractions = new ArrayList<InferredInteraction>();
     }
 
     public static Xml25EntryContext getInstance() {
@@ -120,11 +121,15 @@ public class Xml25EntryContext {
     }
 
     public void registerInferredInteraction(InferredInteraction infer){
-        this.inferredInteractions.add(infer);
+        if (this.inferredInteractions != null){
+            this.inferredInteractions.add(infer);
+        }
     }
 
     public void registerReference(XmlIdReference ref){
-        this.references.add(ref);
+        if (this.references != null){
+            this.references.add(ref);
+        }
     }
 
     public boolean hasInferredInteractions(){
@@ -135,51 +140,63 @@ public class Xml25EntryContext {
         return !references.isEmpty();
     }
 
+    public void initialiseInferredInteractionList(){
+        this.inferredInteractions = new ArrayList<InferredInteraction>();
+    }
+
+    public void initialiseReferencesList(){
+        this.references = new ArrayList<XmlIdReference>();
+    }
+
     public void resolveInteractorAndExperimentRefs(){
-        Iterator<XmlIdReference> refIterator = references.iterator();
-        while(refIterator.hasNext()){
-            XmlIdReference ref = refIterator.next();
-            if (this.elementCache == null ||
-                    (this.elementCache != null && !ref.resolve(this.elementCache))){
-                if (listener != null){
-                    listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
+        if (references != null){
+            Iterator<XmlIdReference> refIterator = references.iterator();
+            while(refIterator.hasNext()){
+                XmlIdReference ref = refIterator.next();
+                if (this.elementCache == null ||
+                        (this.elementCache != null && !ref.resolve(this.elementCache))){
+                    if (listener != null){
+                        listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
+                    }
                 }
+                refIterator.remove();
             }
-            refIterator.remove();
         }
     }
 
     public void resolveInferredInteractionRefs(){
-        Iterator<InferredInteraction> inferredIterator = inferredInteractions.iterator();
-        while(inferredIterator.hasNext()){
-            InferredInteraction inferred = inferredIterator.next();
-            if (!inferred.getParticipants().isEmpty()){
-                Iterator<InferredInteractionParticipant> partIterator = inferred.getParticipants().iterator();
-                List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getParticipants());
-                int currentIndex = 0;
+        if (inferredInteractions != null){
+            Iterator<InferredInteraction> inferredIterator = inferredInteractions.iterator();
+            while(inferredIterator.hasNext()){
+                InferredInteraction inferred = inferredIterator.next();
+                if (!inferred.getParticipants().isEmpty()){
+                    Iterator<InferredInteractionParticipant> partIterator = inferred.getParticipants().iterator();
+                    List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getParticipants());
+                    int currentIndex = 0;
 
-                while (partIterator.hasNext()){
-                    currentIndex++;
-                    InferredInteractionParticipant p1 = partIterator.next();
-                    for (int i = currentIndex; i < partIterator2.size();i++){
-                        InferredInteractionParticipant p2 = partIterator2.get(i);
+                    while (partIterator.hasNext()){
+                        currentIndex++;
+                        InferredInteractionParticipant p1 = partIterator.next();
+                        for (int i = currentIndex; i < partIterator2.size();i++){
+                            InferredInteractionParticipant p2 = partIterator2.get(i);
 
-                        if (p1.getFeature() != null && p2.getFeature() != null){
-                            p1.getFeature().getLinkedFeatures().add(p2.getFeature());
-                            if (p1.getFeature() != p2.getFeature()){
-                                p2.getFeature().getLinkedFeatures().add(p1.getFeature());
+                            if (p1.getFeature() != null && p2.getFeature() != null){
+                                p1.getFeature().getLinkedFeatures().add(p2.getFeature());
+                                if (p1.getFeature() != p2.getFeature()){
+                                    p2.getFeature().getLinkedFeatures().add(p1.getFeature());
+                                }
                             }
                         }
                     }
                 }
-            }
-            else{
-                if (listener != null){
-                    listener.onInvalidSyntax(inferred, new PsiXmlParserException("InferredInteraction must have at least one inferredInteractionParticipant."));
+                else{
+                    if (listener != null){
+                        listener.onInvalidSyntax(inferred, new PsiXmlParserException("InferredInteraction must have at least one inferredInteractionParticipant."));
+                    }
                 }
-            }
 
-            inferredIterator.remove();
+                inferredIterator.remove();
+            }
         }
     }
 }
