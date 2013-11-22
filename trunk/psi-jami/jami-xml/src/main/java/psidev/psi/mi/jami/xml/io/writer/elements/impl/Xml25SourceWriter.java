@@ -5,17 +5,14 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25PublicationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +23,7 @@ import java.util.logging.Logger;
  * @since <pre>11/11/13</pre>
  */
 
-public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
+public class Xml25SourceWriter implements PsiXml25SourceWriter {
 
     private XMLStreamWriter streamWriter;
     private XMLGregorianCalendar calendar;
@@ -47,16 +44,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
         this.publicationWriter = new Xml25PublicationWriter(writer);
         this.attributeWriter = new Xml25AnnotationWriter(writer);
         this.secondaryRefWriter = new Xml25SecondaryXrefWriter(writer);
-
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        DatatypeFactory datatypeFactory = null;
-        try {
-            datatypeFactory = DatatypeFactory.newInstance();
-            this.calendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-        } catch (DatatypeConfigurationException e) {
-            logger.log(Level.SEVERE, "Cannot create a XMLGregorian calendar. This writer will not write any release date.", e);
-            this.calendar = null;
-        }
+        this.calendar = null;
     }
 
     public Xml25SourceWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
@@ -71,15 +59,7 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
         this.publicationWriter = publicationWriter!=null ? publicationWriter : new Xml25PublicationWriter(writer);
         this.attributeWriter = attributeWriter!=null? attributeWriter : new Xml25AnnotationWriter(writer);
         this.secondaryRefWriter = secondaryRefWriter!=null?secondaryRefWriter: new Xml25SecondaryXrefWriter(writer);
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        DatatypeFactory datatypeFactory = null;
-        try {
-            datatypeFactory = DatatypeFactory.newInstance();
-            this.calendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-        } catch (DatatypeConfigurationException e) {
-            logger.log(Level.SEVERE, "Cannot create a XMLGregorian calendar. This writer will not write any release date.", e);
-            this.calendar = null;
-        }
+        this.calendar = null;
     }
 
     @Override
@@ -254,5 +234,15 @@ public class Xml25SourceWriter implements PsiXml25ElementWriter<Source> {
 
     protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
+    }
+
+    @Override
+    public XMLGregorianCalendar getDefaultReleaseDate() {
+        return this.calendar;
+    }
+
+    @Override
+    public void setDefaultReleaseDate(XMLGregorianCalendar date) {
+        this.calendar = date;
     }
 }

@@ -290,7 +290,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
             this.secondaryRefWriter.setDefaultRefType(null);
             this.secondaryRefWriter.setDefaultRefTypeAc(null);
             for (Object ref : object.getXrefs()){
-                this.secondaryRefWriter.write(ref);
+                this.secondaryRefWriter.write((Xref)ref);
             }
         }
 

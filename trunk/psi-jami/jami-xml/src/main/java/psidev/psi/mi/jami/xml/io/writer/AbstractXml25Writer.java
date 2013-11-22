@@ -10,10 +10,12 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -34,7 +36,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private boolean isInitialised = false;
     private PsiXml25InteractionWriter<T> interactionWriter;
     private PsiXml25InteractionWriter<ModelledInteraction> complexWriter;
-    private PsiXml25ElementWriter<Source> sourceWriter;
+    private PsiXml25SourceWriter sourceWriter;
     private PsiXml25ObjectCache elementCache;
     private List<T> interactionsToWrite;
     private Iterator<? extends T> interactionsIterator;
@@ -364,7 +366,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return complexWriter;
     }
 
-    protected PsiXml25ElementWriter<Source> getSourceWriter() {
+    protected PsiXml25SourceWriter getSourceWriter() {
         return sourceWriter;
     }
 
@@ -372,11 +374,19 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return elementCache;
     }
 
-    public void setSourceWriter(PsiXml25ElementWriter<Source> sourceWriter) {
+    public void setSourceWriter(PsiXml25SourceWriter sourceWriter) {
         if (sourceWriter == null){
             throw new IllegalArgumentException("The source writer cannot be null");
         }
         this.sourceWriter = sourceWriter;
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        DatatypeFactory datatypeFactory = null;
+        try {
+            datatypeFactory = DatatypeFactory.newInstance();
+            this.sourceWriter.setDefaultReleaseDate(datatypeFactory.newXMLGregorianCalendar(gregorianCalendar));
+        } catch (DatatypeConfigurationException e) {
+            System.out.println(e);
+        }
     }
 
     protected void setCurrentSource(Source currentSource) {
