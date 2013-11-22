@@ -60,6 +60,14 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         return participant;
     }
 
+    public void setFeature(Feature feature) {
+        this.feature = feature;
+    }
+
+    public void setParticipant(Entity participant) {
+        this.participant = participant;
+    }
+
     @Override
     public Locator sourceLocation() {
         return (Locator)getSourceLocator();
