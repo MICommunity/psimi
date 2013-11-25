@@ -107,10 +107,12 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
         // initialise interaction
         setInteractionWriter(new ExpandedXml25BasicInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new ExpandedXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
     }
 }

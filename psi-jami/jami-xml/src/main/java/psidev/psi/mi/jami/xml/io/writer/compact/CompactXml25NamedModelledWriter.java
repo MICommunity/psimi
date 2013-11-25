@@ -116,7 +116,8 @@ public class CompactXml25NamedModelledWriter extends AbstractCompactXml25Writer<
         setComplexWriter(new CompactXml25NamedModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
                 attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
-                aliasWriter));
+                aliasWriter,
+                checksumWriter));
         // initialise interaction
         setInteractionWriter(getComplexWriter());
     }

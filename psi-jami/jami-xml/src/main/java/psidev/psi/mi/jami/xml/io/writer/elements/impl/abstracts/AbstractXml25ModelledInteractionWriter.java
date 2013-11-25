@@ -33,9 +33,10 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
                                                   PsiXml25XrefWriter secondaryRefWriter, PsiXml25ParticipantWriter<P> participantWriter,
                                                   PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                                   PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ExperimentWriter experimentWriter,
-                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter) {
+                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,
+                                                  PsiXml25ElementWriter<Checksum> checksumWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter,
-                interactionTypeWriter, attributeWriter, inferredInteractionWriter, experimentWriter);
+                interactionTypeWriter, attributeWriter, inferredInteractionWriter, experimentWriter, checksumWriter);
         this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new Xml25ConfidenceWriter(writer);
         this.parameterWriter = parameterWriter != null ? parameterWriter : new Xml25ParameterWriter(writer, objectIndex);
     }

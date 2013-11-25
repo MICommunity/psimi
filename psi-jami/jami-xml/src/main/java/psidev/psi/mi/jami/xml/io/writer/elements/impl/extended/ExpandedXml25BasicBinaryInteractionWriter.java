@@ -29,10 +29,10 @@ public class ExpandedXml25BasicBinaryInteractionWriter extends AbstractXml25Inte
                                                      PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                                      PsiXml25ParticipantWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                      PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter,
-                                                     PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter) {
+                                                     PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
                 participantWriter != null ? participantWriter : new ExpandedXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, experimentWriter, aliasWriter,
-                inferredInteractionWriter);
+                inferredInteractionWriter, checksumWriter);
     }
 
     @Override

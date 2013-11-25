@@ -149,11 +149,13 @@ public class CompactXml25EvidenceWriter extends AbstractCompactXml25Writer<Inter
         // initialise interaction
         setInteractionWriter(new CompactXml25InteractionEvidenceWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, experimentWriter, aliasWriter, inferredInteractionWriter, availabilityWriter, confidenceWriter, parameterWriter));
+                attributeWriter, experimentWriter, aliasWriter, inferredInteractionWriter, availabilityWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new CompactXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, aliasWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter));
+                attributeWriter, aliasWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
     }
 }
 

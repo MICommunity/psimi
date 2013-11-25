@@ -123,11 +123,13 @@ public class LightCompactXml25NamedBinaryWriter extends AbstractCompactXml25Writ
         // initialise interaction
         setInteractionWriter(new CompactXml25NamedBinaryInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, aliasWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, aliasWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new CompactXml25NamedModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
                 attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
-                aliasWriter));
+                aliasWriter,
+                checksumWriter));
     }
 }

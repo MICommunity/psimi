@@ -36,6 +36,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     private PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter;
     private Experiment defaultExperiment;
     private PsiXml25ExperimentWriter experimentWriter;
+    private PsiXml25ElementWriter<Checksum> checksumWriter;
 
     public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                           PsiXml25ParticipantWriter<P> participantWriter){
@@ -58,13 +59,14 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.attributeWriter = new Xml25AnnotationWriter(writer);
         this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
         this.experimentWriter = new Xml25ExperimentWriter(writer, objectIndex);
+        this.checksumWriter = new Xml25ChecksumWriter(writer);
     }
 
     public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                              PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                             PsiXml25ExperimentWriter experimentWriter) {
+                                             PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
         }
@@ -84,6 +86,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         this.attributeWriter = attributeWriter != null ? attributeWriter : new Xml25AnnotationWriter(writer);
         this.inferredInteractionWriter = inferredInteractionWriter != null ? inferredInteractionWriter : new Xml25InferredInteractionWriter(writer, objectIndex);
         this.experimentWriter = experimentWriter != null ? experimentWriter : new Xml25ExperimentWriter(writer, objectIndex);
+        this.checksumWriter =checksumWriter != null ? checksumWriter : new Xml25ChecksumWriter(writer);
     }
 
     @Override
@@ -167,6 +170,19 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
             this.streamWriter.writeStartElement("attributeList");
             for (Object ann : object.getAnnotations()){
                 this.attributeWriter.write((Annotation)ann);
+            }
+            for (Object c : object.getChecksums()){
+                this.checksumWriter.write((Checksum)c);
+            }
+            // write end attributeList
+            this.streamWriter.writeEndElement();
+        }
+        // write checksum
+        else if (!object.getChecksums().isEmpty()){
+            // write start attribute list
+            this.streamWriter.writeStartElement("attributeList");
+            for (Object c : object.getChecksums()){
+                this.checksumWriter.write((Checksum)c);
             }
             // write end attributeList
             this.streamWriter.writeEndElement();
