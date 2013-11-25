@@ -136,13 +136,10 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
         // write attributes
         Stoichiometry stc = object.getStoichiometry();
         if (!object.getAnnotations().isEmpty()){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object ann : object.getAnnotations()){
                 this.attributeWriter.write((Annotation)ann);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write stoichiometry attribute if not null
             if (stc != null){
@@ -150,18 +147,14 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
             }
             // write end rattributeList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
         // write stoichiometry attribute if not null
         else if (stc != null){
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeStoichiometryAttribute(stc);
             // write end rattributeList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
@@ -183,46 +176,35 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
         }
         // write end attribute
         this.streamWriter.writeEndElement();
-        getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeFeatures(P object) throws XMLStreamException {
         if (!object.getFeatures().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write start feature list
             this.streamWriter.writeStartElement("featureList");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             for (Object feature : object.getFeatures()){
                 this.featureWriter.write((F)feature);
-                getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end featureList
             getStreamWriter().writeEndElement();
-            getStreamWriter().writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeNames(P object) throws XMLStreamException {
         boolean hasAliases = !object.getAliases().isEmpty();
         if (hasAliases){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             this.streamWriter.writeStartElement("names");
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             // write aliases
             for (Object alias : object.getAliases()){
                 this.aliasWriter.write((Alias)alias);
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             }
             // write end names
             this.streamWriter.writeEndElement();
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 
     protected void writeBiologicalRole(P object) throws XMLStreamException {
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         this.biologicalRoleWriter.write(object.getBiologicalRole());
-        this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
     }
 
     protected void writeInteractor(P object) throws XMLStreamException {
@@ -235,12 +217,10 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
                 writeMolecule(interactor);
             }
             else{
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
                 this.streamWriter.writeStartElement("interactionRef");
                 int id = this.objectIndex.extractIdForInteractor(interactor);
                 this.streamWriter.writeCharacters(Integer.toString(id));
                 this.streamWriter.writeEndElement();
-                this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
 
                 // register this complex in case it has not been written yet
                 this.objectIndex.registerSubComplex((Complex)interactor);
@@ -263,9 +243,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
 
     protected void writeXref(P object) throws XMLStreamException {
         if (!object.getXrefs().isEmpty()){
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
             writeXrefFromParticipantXrefs(object);
-            this.streamWriter.writeCharacters(PsiXml25Utils.LINE_BREAK);
         }
     }
 

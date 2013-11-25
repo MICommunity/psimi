@@ -33,7 +33,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
@@ -48,7 +48,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
@@ -68,7 +68,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
@@ -90,7 +90,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "  <attributeList>\n" +
@@ -116,7 +116,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
@@ -131,7 +131,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "  <confidenceList>\n" +
@@ -156,7 +156,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "  <attributeList>\n" +
@@ -183,7 +183,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "  <attributeList>\n" +
@@ -207,7 +207,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
@@ -228,7 +228,7 @@ public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>unspecified method</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0686\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";

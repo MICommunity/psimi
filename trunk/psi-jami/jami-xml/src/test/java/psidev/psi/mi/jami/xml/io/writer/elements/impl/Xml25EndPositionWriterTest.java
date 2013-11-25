@@ -23,7 +23,7 @@ public class Xml25EndPositionWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>certain</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</endStatus>\n" +
             "<end position=\"1\"/>";
@@ -32,7 +32,7 @@ public class Xml25EndPositionWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>range</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" id=\"MI:0338\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0338\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</endStatus>\n" +
             "<endInterval begin=\"1\" end=\"4\"/>";
@@ -41,7 +41,7 @@ public class Xml25EndPositionWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</endStatus>";
 

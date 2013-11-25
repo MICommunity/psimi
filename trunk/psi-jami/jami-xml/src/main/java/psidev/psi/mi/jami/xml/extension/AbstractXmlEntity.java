@@ -157,12 +157,12 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
     public void setStoichiometry(Integer stoichiometry) {
         if (stoichiometry == null){
-            if (this.jaxbAttributeWrapper != null){
+            if (this.jaxbAttributeWrapper == null){
                 this.jaxbAttributeWrapper.stoichiometry = null;
             }
         }
         else {
-            if (this.jaxbAttributeWrapper != null){
+            if (this.jaxbAttributeWrapper == null){
                 initialiseAnnotationWrapper();
             }
             this.jaxbAttributeWrapper.stoichiometry = new DefaultStoichiometry(stoichiometry, stoichiometry);
@@ -171,12 +171,12 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
     public void setStoichiometry(Stoichiometry stoichiometry) {
         if (stoichiometry == null){
-            if (this.jaxbAttributeWrapper != null){
+            if (this.jaxbAttributeWrapper == null){
                 this.jaxbAttributeWrapper.stoichiometry = null;
             }
         }
         else {
-            if (this.jaxbAttributeWrapper != null){
+            if (this.jaxbAttributeWrapper == null){
                 initialiseAnnotationWrapper();
             }
             this.jaxbAttributeWrapper.stoichiometry = stoichiometry;

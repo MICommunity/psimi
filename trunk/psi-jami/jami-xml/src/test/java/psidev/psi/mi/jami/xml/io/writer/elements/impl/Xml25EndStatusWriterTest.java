@@ -3,10 +3,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
@@ -54,7 +54,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</endStatus>";
     private String endStatusPar = "<endStatus>\n" +
@@ -62,7 +62,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</endStatus>";
     private String endStatusFirstIdentifier = "<endStatus>\n" +
@@ -87,7 +87,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
-        CvTerm endStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
+        CvTerm endStatus = CvTermUtils.createUndeterminedStatus();
 
         Xml25EndStatusWriter writer = new Xml25EndStatusWriter(createStreamWriter());
         writer.write(endStatus);
@@ -98,7 +98,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_fullName() throws XMLStreamException, IOException {
-        CvTerm endStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
+        CvTerm endStatus = CvTermUtils.createUndeterminedStatus();
         endStatus.setFullName("undetermined position");
 
         Xml25EndStatusWriter writer = new Xml25EndStatusWriter(createStreamWriter());
@@ -110,7 +110,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_aliases() throws XMLStreamException, IOException {
-        CvTerm endStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
+        CvTerm endStatus = CvTermUtils.createUndeterminedStatus();
         endStatus.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         endStatus.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
@@ -123,7 +123,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_mod() throws XMLStreamException, IOException {
-        CvTerm endStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
+        CvTerm endStatus = CvTermUtils.createUndeterminedStatus();
         endStatus.setMODIdentifier(endStatus.getMIIdentifier());
         endStatus.setMIIdentifier(null);
 
@@ -136,7 +136,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_par() throws XMLStreamException, IOException {
-        CvTerm endStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
+        CvTerm endStatus = CvTermUtils.createUndeterminedStatus();
         endStatus.setPARIdentifier(endStatus.getMIIdentifier());
         endStatus.setMIIdentifier(null);
         Xml25EndStatusWriter writer = new Xml25EndStatusWriter(createStreamWriter());
@@ -148,7 +148,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_first_identifier() throws XMLStreamException, IOException {
-        CvTerm endStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
+        CvTerm endStatus = CvTermUtils.createUndeterminedStatus();
         endStatus.getIdentifiers().iterator().next().getDatabase().setShortName("test");
         endStatus.getIdentifiers().iterator().next().getDatabase().setMIIdentifier(null);
         endStatus.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));

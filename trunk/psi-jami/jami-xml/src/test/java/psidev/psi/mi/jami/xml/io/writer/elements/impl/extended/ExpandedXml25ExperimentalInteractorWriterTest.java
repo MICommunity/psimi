@@ -33,7 +33,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
             "        <shortLabel>protein</shortLabel>\n" +
             "      </names>\n" +
             "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "      </xref>\n" +
             "    </interactorType>\n" +
             "  </interactor>\n"+
@@ -49,7 +49,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
             "        <shortLabel>protein</shortLabel>\n" +
             "      </names>\n" +
             "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "      </xref>\n" +
             "    </interactorType>\n" +
             "  </interactor>\n"+
@@ -65,7 +65,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
             "        <shortLabel>protein</shortLabel>\n" +
             "      </names>\n" +
             "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "      </xref>\n" +
             "    </interactorType>\n" +
             "  </interactor>\n"+
@@ -84,7 +84,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
             "        <shortLabel>protein</shortLabel>\n" +
             "      </names>\n" +
             "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "      </xref>\n" +
             "    </interactorType>\n" +
             "  </interactor>\n"+

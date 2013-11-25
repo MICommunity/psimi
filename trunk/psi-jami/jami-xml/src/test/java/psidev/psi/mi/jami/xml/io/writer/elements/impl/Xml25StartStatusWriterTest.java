@@ -27,7 +27,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</startStatus>";
     private String startStatusFullName = "<startStatus>\n" +
@@ -36,7 +36,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
             "    <fullName>undetermined position</fullName>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</startStatus>";
     private String startStatusAliases = "<startStatus>\n" +
@@ -46,7 +46,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
             "    <alias type=\"test\">test name</alias>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</startStatus>";
     private String startStatusMod = "<startStatus>\n" +
@@ -54,7 +54,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</startStatus>";
     private String endStatusPar = "<startStatus>\n" +
@@ -62,7 +62,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</startStatus>";
     private String startStatusFirstIdentifier = "<startStatus>\n" +
@@ -70,7 +70,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"test\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"test\" id=\"MI:0339\" refType=\"identity\"/>\n"+
             "    <secondaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
