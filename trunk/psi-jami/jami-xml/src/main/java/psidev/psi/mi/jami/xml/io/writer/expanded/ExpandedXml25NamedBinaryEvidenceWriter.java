@@ -119,11 +119,12 @@ public class ExpandedXml25NamedBinaryEvidenceWriter extends AbstractExpandedXml2
         setInteractionWriter(new ExpandedXml25NamedBinaryInteractionEvidenceWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
                 attributeWriter, inferredInteractionWriter, experimentWriter, availabilityWriter, confidenceWriter, parameterWriter,
-                aliasWriter));
+                aliasWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new ExpandedXml25NamedModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
                 attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
-                aliasWriter));
+                checksumWriter,aliasWriter));
     }
 }

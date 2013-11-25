@@ -33,11 +33,12 @@ public class ExpandedXml25NamedModelledInteractionWriter extends AbstractXml25Mo
                                                       PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                       PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
                                                       PsiXml25ExperimentWriter experimentWriter,
-                                                      PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter
+                                                      PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,
+                                                      PsiXml25ElementWriter<Checksum> checksumWriter
             , PsiXml25ElementWriter<Alias> aliasWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
                 participantWriter != null ? participantWriter : new ExpandedXml25ModelledParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
-                inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter);
+                inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter, checksumWriter);
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
     }
 

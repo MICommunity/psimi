@@ -113,7 +113,8 @@ public class CompactXml25ModelledWriter extends AbstractCompactXml25Writer<Model
         // initialise complex
         setComplexWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
         // initialise interaction
         setInteractionWriter(getComplexWriter());
     }

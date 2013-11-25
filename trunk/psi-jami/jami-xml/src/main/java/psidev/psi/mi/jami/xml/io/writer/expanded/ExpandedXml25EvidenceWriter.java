@@ -116,11 +116,13 @@ public class ExpandedXml25EvidenceWriter extends AbstractExpandedXml25Writer<Int
         // initialise interaction
         setInteractionWriter(new ExpandedXml25InteractionEvidenceWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, availabilityWriter, confidenceWriter, parameterWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, availabilityWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new ExpandedXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
     }
 }
 

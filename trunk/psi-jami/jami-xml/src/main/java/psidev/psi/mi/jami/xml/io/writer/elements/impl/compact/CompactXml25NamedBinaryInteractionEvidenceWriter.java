@@ -34,9 +34,10 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriter extends AbstractXm
                                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
                                                             PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<String> availabilityWriter,
                                                             PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,
-                                                            PsiXml25ElementWriter<Alias> aliasWriter) {
+                                                            PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
         super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter != null ? participantWriter : new CompactXml25ParticipantEvidenceWriter(writer, objectIndex),
-                interactionTypeWriter, attributeWriter, inferredInteractionWriter, experimentWriter, availabilityWriter, confidenceWriter, parameterWriter);
+                interactionTypeWriter, attributeWriter, inferredInteractionWriter, experimentWriter, availabilityWriter, confidenceWriter, parameterWriter,
+                checksumWriter);
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
     }
 

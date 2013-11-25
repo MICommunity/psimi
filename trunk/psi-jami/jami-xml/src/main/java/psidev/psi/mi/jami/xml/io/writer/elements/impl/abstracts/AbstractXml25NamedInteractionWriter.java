@@ -30,8 +30,8 @@ public abstract class AbstractXml25NamedInteractionWriter <I extends Interaction
     }
 
     protected AbstractXml25NamedInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                                  PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter, attributeWriter, inferredInteractionWriter, experimentWriter);
+                                                  PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter, attributeWriter, inferredInteractionWriter, experimentWriter, checksumWriter);
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
     }
 

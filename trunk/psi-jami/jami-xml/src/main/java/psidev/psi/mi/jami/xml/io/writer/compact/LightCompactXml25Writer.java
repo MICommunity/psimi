@@ -121,10 +121,12 @@ public class LightCompactXml25Writer extends AbstractCompactXml25Writer<Interact
         // initialise interaction
         setInteractionWriter(new CompactXml25BasicInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new CompactXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
     }
 }

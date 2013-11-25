@@ -120,10 +120,12 @@ public class LightCompactXml25BinaryWriter extends AbstractCompactXml25Writer<Bi
         // initialise interaction
         setInteractionWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25BasicBinaryInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter,
+                checksumWriter));
         // initialise complex
         setComplexWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter));
+                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                checksumWriter));
     }
 }
