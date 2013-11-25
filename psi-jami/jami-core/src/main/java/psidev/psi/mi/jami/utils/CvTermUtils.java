@@ -193,7 +193,7 @@ public class CvTermUtils {
 
     public static CvTerm createMICvTerm(String name, String MI){
         if (MI != null){
-            return new DefaultCvTerm(name, new DefaultXref(CvTermUtils.getPsimi(), MI, CvTermUtils.getIdentity()));
+            return new DefaultCvTerm(name, new DefaultXref(new DefaultCvTerm(CvTerm.PSI_MI, CvTerm.PSI_MI_MI), MI, new DefaultCvTerm(Xref.IDENTITY, Xref.IDENTITY_MI)));
         }
         else {
             return new DefaultCvTerm(name);
@@ -202,7 +202,7 @@ public class CvTermUtils {
 
     public static CvTerm createMODCvTerm(String name, String MOD){
         if (MOD != null){
-            return new DefaultCvTerm(name, new DefaultXref(CvTermUtils.getPsimod(), MOD, CvTermUtils.getIdentity()));
+            return new DefaultCvTerm(name, new DefaultXref(new DefaultCvTerm(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI), MOD, CvTermUtils.getIdentity()));
         }
         else {
             return new DefaultCvTerm(name);
@@ -211,7 +211,7 @@ public class CvTermUtils {
 
     public static CvTerm createPARCvTerm(String name, String PAR){
         if (PAR != null){
-            return new DefaultCvTerm(name, new DefaultXref(CvTermUtils.getPsipar(), PAR, CvTermUtils.getIdentity()));
+            return new DefaultCvTerm(name, new DefaultXref(new DefaultCvTerm(CvTerm.PSI_PAR), PAR, CvTermUtils.getIdentity()));
         }
         else {
             return new DefaultCvTerm(name);
