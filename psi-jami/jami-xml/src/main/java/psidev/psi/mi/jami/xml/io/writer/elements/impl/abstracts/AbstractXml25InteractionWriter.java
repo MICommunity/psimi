@@ -64,9 +64,9 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
 
     public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                             PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                             PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
+                                             PsiXml25ExperimentWriter experimentWriter, PsiXml25ParticipantWriter<P> participantWriter,
+                                             PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                             PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25InteractionWriter");
         }

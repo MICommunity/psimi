@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25Name
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.ExpandedXml25ModelledInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25PrimaryXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SecondaryXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
@@ -89,28 +90,32 @@ public class ExpandedXml25ModelledWriter extends AbstractExpandedXml25Writer<Mod
         PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25InferredInteractionWriter(getStreamWriter(), getElementCache());
         PsiXml25ElementWriter<CvTerm> identificationMethodWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ParticipantIdentificationMethodWriter(getStreamWriter(), getElementCache(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXml25ElementWriter<CvTerm> featureDetectionWriter = new Xml25FeatureDetectionMethodWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXml25ExperimentWriter experimentWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ExperimentWriter(getStreamWriter(), getElementCache(), aliasWriter, publicationWriter,
-                primaryRefWriter, secondaryRefWriter, nonExperimentalHostOrganismWriter, detectionMethodWriter,
-                identificationMethodWriter, featureDetectionWriter, attributeWriter, confidenceWriter);
+        PsiXml25ExperimentWriter experimentWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ExperimentWriter(getStreamWriter(), getElementCache(), aliasWriter,
+                publicationWriter, primaryRefWriter, secondaryRefWriter,
+                nonExperimentalHostOrganismWriter, detectionMethodWriter,
+                identificationMethodWriter, featureDetectionWriter, confidenceWriter,
+                attributeWriter);
         PsiXml25ParameterWriter parameterWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ParameterWriter(getStreamWriter(), getElementCache());
         PsiXml25ElementWriter<ModelledFeature> modelledFeatureWriter = new Xml25NamedModelledFeatureWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, featureTypeWriter, attributeWriter,rangeWriter, aliasWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter,attributeWriter);
         PsiXml25ParticipantWriter<ModelledParticipant> modelledParticipantWriter = new ExpandedXml25NamedModelledParticipantWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter, bioRoleWriter, modelledFeatureWriter, attributeWriter,
-                interactorWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
+                bioRoleWriter, modelledFeatureWriter, attributeWriter);
 
         // initialise source
-        setSourceWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SourceWriter(getStreamWriter(), aliasWriter, publicationWriter,
-                attributeWriter, primaryRefWriter, secondaryRefWriter));
+        setSourceWriter(new Xml25SourceWriter(getStreamWriter(), aliasWriter, publicationWriter,
+                primaryRefWriter, secondaryRefWriter, attributeWriter));
         // initialise complex
         setComplexWriter(new ExpandedXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, aliasWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
+                confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
         // initialise interaction
         setInteractionWriter(new ExpandedXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, aliasWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
+                aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
+                confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
     }
 }

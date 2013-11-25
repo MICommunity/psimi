@@ -30,17 +30,16 @@ public class CompactXml25NamedModelledBinaryInteractionWriter extends AbstractXm
     }
 
     public CompactXml25NamedModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                                            PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                                            PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                                            PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                                            PsiXml25ExperimentWriter experimentWriter,
-                                                            PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,
-                                                            PsiXml25ElementWriter<Checksum> checksumWriter
-            , PsiXml25ElementWriter<Alias> aliasWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ModelledParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
-                inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter, checksumWriter);
+                                                            PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                                            PsiXml25XrefWriter secondaryRefWriter, PsiXml25ExperimentWriter experimentWriter,
+                                                            PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
+                                                            PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
+                                                            PsiXml25ParameterWriter parameterWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
+                                                            PsiXml25ElementWriter<Checksum> checksumWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter != null ? participantWriter : new CompactXml25ModelledParticipantWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
+
     }
 
     @Override

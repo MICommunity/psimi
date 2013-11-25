@@ -27,7 +27,8 @@ public class ExpandedXml25ExperimentalInteractorWriter extends AbstractXml25Expe
         this.interactorWriter = new Xml25InteractorWriter(writer, objectIndex);
     }
 
-    public ExpandedXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Interactor> interactorWriter) {
+    public ExpandedXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                                     PsiXml25ElementWriter<Interactor> interactorWriter) {
         super(writer, objectIndex);
         this.interactorWriter = interactorWriter != null ? interactorWriter : new Xml25InteractorWriter(writer, objectIndex);
     }

@@ -24,11 +24,16 @@ public class ExpandedXml25ModelledInteractionWriter extends AbstractXml25Modelle
         super(writer, objectIndex, new ExpandedXml25ModelledParticipantWriter(writer, objectIndex));
     }
 
-    public ExpandedXml25ModelledInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter, PsiXml25ExperimentWriter experimentWriter,
-                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new ExpandedXml25ModelledParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, aliasWriter, inferredInteractionWriter, experimentWriter,
-                confidenceWriter, parameterWriter, checksumWriter);
+    public ExpandedXml25ModelledInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                                  PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ExperimentWriter experimentWriter,
+                                                  PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter,
+                                                  PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
+                                                  PsiXml25ParameterWriter parameterWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
+                                                  PsiXml25ElementWriter<Checksum> checksumWriter) {
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter != null ? participantWriter : new ExpandedXml25ModelledParticipantWriter(writer, objectIndex),
+                inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
     }
 
     @Override

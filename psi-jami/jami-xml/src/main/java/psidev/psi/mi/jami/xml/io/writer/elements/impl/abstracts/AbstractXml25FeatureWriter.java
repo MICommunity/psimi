@@ -48,8 +48,8 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
 
     protected AbstractXml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                          PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                         PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                         PsiXml25ElementWriter<Range> rangeWriter) {
+                                         PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Range> rangeWriter,
+                                         PsiXml25ElementWriter<Annotation> attributeWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25FeatureWriter");
         }

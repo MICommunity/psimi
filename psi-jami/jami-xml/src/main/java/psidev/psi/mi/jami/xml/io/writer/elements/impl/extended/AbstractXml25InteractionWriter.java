@@ -29,10 +29,15 @@ public abstract class AbstractXml25InteractionWriter<I extends Interaction, P ex
         this.inferredInteractionWriter = new Xml25InferredInteractionWriter(writer, objectIndex);
     }
 
-    public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1,
+    public AbstractXml25InteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                          PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                          PsiXml25XrefWriter secondaryRefWriter, PsiXml25ExperimentWriter experimentWriter,
+                                          PsiXml25ParticipantWriter<P> participantWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1,
+                                          PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                           PsiXml25ElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter, attributeWriter, new psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25InferredInteractionWriter(writer, objectIndex), experimentWriter,
-                aliasWriter, checksumWriter);
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter, new psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25InferredInteractionWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
+                checksumWriter);
         inferredInteractionWriter = inferredInteractionWriter1;
     }
 

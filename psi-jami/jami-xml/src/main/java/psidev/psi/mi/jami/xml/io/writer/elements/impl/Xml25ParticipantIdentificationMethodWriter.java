@@ -22,7 +22,8 @@ public class Xml25ParticipantIdentificationMethodWriter extends AbstractXml25CvT
         super(writer);
     }
 
-    public Xml25ParticipantIdentificationMethodWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25ParticipantIdentificationMethodWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                                                      PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

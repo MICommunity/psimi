@@ -22,8 +22,10 @@ public class Xml25HostOrganismWriter extends AbstractXml25OrganismWriter {
         super(writer);
     }
 
-    public Xml25HostOrganismWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter, PsiXml25ElementWriter<CvTerm> cellTypeWriter) {
-        super(writer, aliasWriter, tissueWriter, compartmentWriter, cellTypeWriter);
+    public Xml25HostOrganismWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                                   PsiXml25ElementWriter<CvTerm> cellTypeWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter,
+                                   PsiXml25ElementWriter<CvTerm> tissueWriter) {
+        super(writer, aliasWriter, cellTypeWriter, compartmentWriter, tissueWriter);
     }
 
     @Override

@@ -24,8 +24,10 @@ public class Xml25FeatureWriter extends AbstractXml25FeatureWriter<Feature> {
         super(writer, objectIndex);
     }
 
-    public Xml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Range> rangeWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, attributeWriter, rangeWriter);
+    public Xml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+                              PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
     }
 
     @Override

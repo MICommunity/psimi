@@ -6,12 +6,9 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.datatype.DatatypeConfigurationException;

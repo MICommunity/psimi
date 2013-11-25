@@ -22,7 +22,8 @@ public class Xml25InteractionTypeWriter extends AbstractXml25CvTermWriter {
         super(writer);
     }
 
-    public Xml25InteractionTypeWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25InteractionTypeWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                                      PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

@@ -39,7 +39,8 @@ public class Xml25ConfidenceWriter implements PsiXml25ElementWriter<Confidence> 
         this.typeWriter = new Xml25ConfidenceTypeWriter(writer);
     }
 
-    public Xml25ConfidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<CvTerm> typeWriter){
+    public Xml25ConfidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                 PsiXml25ElementWriter<CvTerm> typeWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ConfidenceWriter");
         }

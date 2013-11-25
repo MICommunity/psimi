@@ -57,7 +57,7 @@ public class Xml25ExperimentWriter implements PsiXml25ExperimentWriter {
                                  PsiXml25PublicationWriter publicationWriter,
                                  PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                  PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
-                                 PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Confidence> confidenceWriter) {
+                                 PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ExperimentWriter");
         }

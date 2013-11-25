@@ -24,8 +24,10 @@ public class Xml25SourceWriter extends psidev.psi.mi.jami.xml.io.writer.elements
         super(writer);
     }
 
-    public Xml25SourceWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25PublicationWriter publicationWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
-        super(writer, aliasWriter, publicationWriter, attributeWriter, primaryRefWriter, secondaryRefWriter);
+    public Xml25SourceWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                             PsiXml25PublicationWriter publicationWriter, PsiXml25XrefWriter primaryRefWriter,
+                             PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, aliasWriter, publicationWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
     }
 
     @Override

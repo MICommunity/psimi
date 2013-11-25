@@ -32,16 +32,17 @@ public class ExpandedXml25ParticipantEvidenceWriter extends AbstractXml25Partici
 
     public ExpandedXml25ParticipantEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                                   PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
-                                                  PsiXml25ElementWriter<FeatureEvidence> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                                  PsiXml25ElementWriter<Interactor> interactorWriter, ExpandedPsiXml25ElementWriter<ExperimentalInteractor> experimentalInteractorWriter,
-                                                  PsiXml25ElementWriter<CvTerm> experimentalPreparationWriter,
-                                                  PsiXml25ElementWriter<CvTerm> identificationMethodWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
-                                                  PsiXml25ElementWriter<CvTerm> experimentalRoleWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter,
-                                                  PsiXml25ParameterWriter parameterWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter != null ? featureWriter : new Xml25FeatureEvidenceWriter(writer, objectIndex), attributeWriter, interactorWriter,
-                experimentalPreparationWriter,identificationMethodWriter, confidenceWriter, experimentalRoleWriter, hostOrganismWriter, parameterWriter);
+                                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Interactor> interactorWriter,
+                                                  PsiXml25ElementWriter identificationMethodWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
+                                                  PsiXml25ElementWriter experimentalRoleWriter, PsiXml25ElementWriter experimentalPreparationWriter,
+                                                  ExpandedPsiXml25ElementWriter<ExperimentalInteractor> experimentalInteractorWriter, PsiXml25ElementWriter<FeatureEvidence> featureWriter,
+                                                  PsiXml25ElementWriter<Organism> hostOrganismWriter,
+                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, identificationMethodWriter, biologicalRoleWriter, experimentalRoleWriter, experimentalPreparationWriter,
+                featureWriter != null ? featureWriter : new Xml25FeatureEvidenceWriter(writer, objectIndex),
+                hostOrganismWriter, parameterWriter, confidenceWriter, attributeWriter);
         this.experimentalInteractorWriter = experimentalInteractorWriter != null ? experimentalInteractorWriter : new ExpandedXml25ExperimentalInteractorWriter(writer, objectIndex);
+
     }
 
     @Override

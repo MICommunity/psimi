@@ -41,8 +41,8 @@ public abstract class AbstractXml25OrganismWriter implements PsiXml25ElementWrit
     }
 
     public AbstractXml25OrganismWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
-                                       PsiXml25ElementWriter<CvTerm> tissueWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter,
-                                       PsiXml25ElementWriter<CvTerm> cellTypeWriter){
+                                       PsiXml25ElementWriter<CvTerm> cellTypeWriter, PsiXml25ElementWriter<CvTerm> compartmentWriter,
+                                       PsiXml25ElementWriter<CvTerm> tissueWriter){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25OrganismWriter");
         }

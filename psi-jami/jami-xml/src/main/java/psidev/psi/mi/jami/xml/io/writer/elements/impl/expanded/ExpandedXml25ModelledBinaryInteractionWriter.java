@@ -27,15 +27,12 @@ public class ExpandedXml25ModelledBinaryInteractionWriter extends AbstractXml25M
 
     public ExpandedXml25ModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                                         PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                                        PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                                        PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                                        PsiXml25ExperimentWriter experimentWriter,
+                                                        PsiXml25ExperimentWriter experimentWriter, PsiXml25ParticipantWriter<ModelledParticipant> participantWriter,
+                                                        PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
                                                         PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,
-                                                        PsiXml25ElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new ExpandedXml25ModelledParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
-                inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
-                checksumWriter);
+                                                        PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter != null ? participantWriter : new ExpandedXml25ModelledParticipantWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
     }
 
     @Override
