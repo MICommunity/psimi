@@ -24,12 +24,12 @@ public class CompactXml25BasicInteractionWriter extends AbstractXml25Interaction
 
     public CompactXml25BasicInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                               PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                              PsiXml25ParticipantWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter,
-                                              PsiXml25ExperimentWriter experimentWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter, inferredInteractionWriter,
-                experimentWriter, checksumWriter);
+                                              PsiXml25ExperimentWriter experimentWriter, PsiXml25ParticipantWriter<Participant> participantWriter,
+                                              PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
+                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter,
+                attributeWriter, checksumWriter);
     }
 
     @Override

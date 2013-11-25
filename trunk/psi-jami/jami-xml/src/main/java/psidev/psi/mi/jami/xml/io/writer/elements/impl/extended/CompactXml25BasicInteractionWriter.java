@@ -25,14 +25,14 @@ public class CompactXml25BasicInteractionWriter extends AbstractXml25Interaction
     }
 
     public CompactXml25BasicInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                              PsiXml25ParticipantWriter<Participant> participantWriter, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                              PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Alias> aliasWriter,
-                                              PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter, PsiXml25ExperimentWriter experimentWriter,
+                                              PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                              PsiXml25XrefWriter secondaryRefWriter, PsiXml25ExperimentWriter experimentWriter,
+                                              PsiXml25ParticipantWriter<Participant> participantWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1,
+                                              PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
                                               PsiXml25ElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex), interactionTypeWriter, attributeWriter,
-                experimentWriter, aliasWriter,inferredInteractionWriter, checksumWriter);
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter != null ? participantWriter : new CompactXml25ParticipantWriter(writer, objectIndex),
+                inferredInteractionWriter1, interactionTypeWriter, attributeWriter, checksumWriter);
     }
 
     @Override

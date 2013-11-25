@@ -25,8 +25,13 @@ public class Xml25NamedExperimentWriter extends Xml25ExperimentWriter {
         this.aliasWriter = new Xml25AliasWriter(writer);
     }
 
-    public Xml25NamedExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25PublicationWriter publicationWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Confidence> confidenceWriter) {
-        super(writer, objectIndex, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter, detectionMethodWriter, attributeWriter, confidenceWriter);
+    public Xml25NamedExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                      PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25PublicationWriter publicationWriter,
+                                      PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+                                      PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
+                                      PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter, detectionMethodWriter,
+                confidenceWriter, attributeWriter);
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
     }
 

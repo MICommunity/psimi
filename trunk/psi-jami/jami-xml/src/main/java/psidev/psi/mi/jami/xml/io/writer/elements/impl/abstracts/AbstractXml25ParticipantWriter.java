@@ -57,9 +57,9 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
 
     public AbstractXml25ParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
                                              PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                             PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter biologicalRoleWriter,
-                                             PsiXml25ElementWriter<F> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                             PsiXml25ElementWriter<Interactor> interactorWriter) {
+                                             PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Interactor> interactorWriter,
+                                             PsiXml25ElementWriter biologicalRoleWriter, PsiXml25ElementWriter<F> featureWriter,
+                                             PsiXml25ElementWriter<Annotation> attributeWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXml25ParticipantWriter");
         }

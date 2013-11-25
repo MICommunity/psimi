@@ -22,7 +22,8 @@ public class Xml25StartStatusWriter extends AbstractXml25CvTermWriter {
         super(writer);
     }
 
-    public Xml25StartStatusWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25StartStatusWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                                  PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

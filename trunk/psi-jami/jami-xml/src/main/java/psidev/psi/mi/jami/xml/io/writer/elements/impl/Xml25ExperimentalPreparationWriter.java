@@ -22,7 +22,8 @@ public class Xml25ExperimentalPreparationWriter extends AbstractXml25CvTermWrite
         super(writer);
     }
 
-    public Xml25ExperimentalPreparationWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25ExperimentalPreparationWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                                              PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

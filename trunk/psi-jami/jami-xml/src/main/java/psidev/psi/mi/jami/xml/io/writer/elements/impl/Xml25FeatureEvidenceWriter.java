@@ -24,7 +24,9 @@ public class Xml25FeatureEvidenceWriter extends AbstractXml25FeatureEvidenceWrit
         super(writer, objectIndex);
     }
 
-    public Xml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, attributeWriter, rangeWriter, detectionMethodWriter);
+    public Xml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                      PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+                                      PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter, PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, detectionMethodWriter, rangeWriter, attributeWriter);
     }
 }

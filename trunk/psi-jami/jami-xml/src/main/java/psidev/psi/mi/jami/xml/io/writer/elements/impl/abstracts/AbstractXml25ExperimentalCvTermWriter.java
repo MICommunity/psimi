@@ -30,7 +30,9 @@ public abstract class AbstractXml25ExperimentalCvTermWriter extends AbstractXml2
         this.objectIndex = objectIndex;
     }
 
-    public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter writer,PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public AbstractXml25ExperimentalCvTermWriter(XMLStreamWriter writer,PsiXml25ObjectCache objectIndex,
+                                                 PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                                 PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
         if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXml25ExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");

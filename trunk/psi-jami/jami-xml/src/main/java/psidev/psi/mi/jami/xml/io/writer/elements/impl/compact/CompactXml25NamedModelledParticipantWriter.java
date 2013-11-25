@@ -25,8 +25,13 @@ public class CompactXml25NamedModelledParticipantWriter extends AbstractXml25Nam
         super(writer, objectIndex, new Xml25ModelledFeatureWriter(writer, objectIndex));
     }
 
-    public CompactXml25NamedModelledParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<ModelledFeature> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Interactor> interactorWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter, attributeWriter, interactorWriter);
+    public CompactXml25NamedModelledParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                                      PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                                      PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Interactor> interactorWriter,
+                                                      PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<ModelledFeature> featureWriter,
+                                                      PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, biologicalRoleWriter,
+                featureWriter != null ? featureWriter : new Xml25ModelledFeatureWriter(writer, objectIndex), attributeWriter);
     }
 
     @Override

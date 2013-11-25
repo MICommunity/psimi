@@ -18,7 +18,8 @@ import javax.xml.stream.XMLStreamWriter;
  */
 
 public class Xml25InteractionDetectionMethodWriter extends AbstractXml25CvTermWriter {
-    public Xml25InteractionDetectionMethodWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25InteractionDetectionMethodWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
+                                                 PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter) {
         super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

@@ -30,7 +30,8 @@ public class Xml25RangeWriter implements PsiXml25ElementWriter<Range>{
         this.endPositionWriter = new Xml25EndPositionWriter(writer);
     }
 
-    public Xml25RangeWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Position> startPositionWriter, PsiXml25ElementWriter<Position> endPositionWriter) {
+    public Xml25RangeWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Position> startPositionWriter,
+                            PsiXml25ElementWriter<Position> endPositionWriter) {
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25RangeWriter");
         }

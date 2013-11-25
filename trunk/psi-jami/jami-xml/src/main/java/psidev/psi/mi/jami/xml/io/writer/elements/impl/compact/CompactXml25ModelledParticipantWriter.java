@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ModelledFeatureWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25NamedModelledFeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -24,8 +25,13 @@ public class CompactXml25ModelledParticipantWriter extends AbstractXml25Particip
         super(writer, objectIndex, new Xml25ModelledFeatureWriter(writer, objectIndex));
     }
 
-    public CompactXml25ModelledParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<ModelledFeature> featureWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Interactor> interactorWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, biologicalRoleWriter, featureWriter, attributeWriter, interactorWriter);
+    public CompactXml25ModelledParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                                 PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                                 PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Interactor> interactorWriter,
+                                                 PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<ModelledFeature> featureWriter,
+                                                 PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter,interactorWriter,
+                biologicalRoleWriter, featureWriter != null ? featureWriter : new Xml25NamedModelledFeatureWriter(writer, objectIndex), attributeWriter);
     }
 
     @Override

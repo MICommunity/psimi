@@ -25,11 +25,11 @@ public class Xml25NamedFeatureEvidenceWriter extends AbstractXml25FeatureEvidenc
     }
 
     public Xml25NamedFeatureEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                           PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                           PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                           PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
-                                           PsiXml25ElementWriter<Alias> aliasWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, attributeWriter, rangeWriter, detectionMethodWriter);
+                                           PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
+                                           PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> featureTypeWriter,
+                                           PsiXml25ElementWriter<CvTerm> detectionMethodWriter,PsiXml25ElementWriter<Range> rangeWriter,
+                                           PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, detectionMethodWriter, rangeWriter, attributeWriter);
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
     }
 

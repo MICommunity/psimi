@@ -96,39 +96,39 @@ public class LightCompactXml25NamedWriter extends AbstractCompactXml25Writer<Int
         PsiXml25ElementWriter<Position> endWriter = new Xml25EndPositionWriter(getStreamWriter(), endStatusWriter);
         PsiXml25ElementWriter<Range> rangeWriter = new Xml25RangeWriter(getStreamWriter(), beginWriter, endWriter);
         PsiXml25ElementWriter<Feature> featureWriter = new Xml25NamedFeatureWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, featureTypeWriter, attributeWriter,rangeWriter, aliasWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
         PsiXml25ParticipantWriter<Participant> participantWriter = new CompactXml25NamedParticipantWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter, bioRoleWriter, featureWriter, attributeWriter,
-                interactorWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
+                bioRoleWriter, featureWriter, attributeWriter);
         PsiXml25ElementWriter<CvTerm> interactionTypeWriter = new Xml25InteractionTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter = new Xml25InferredInteractionWriter(getStreamWriter(), getElementCache());
-        PsiXml25ExperimentWriter experimentWriter = new Xml25NamedExperimentWriter(getStreamWriter(), getElementCache(), aliasWriter, publicationWriter,
+        PsiXml25ExperimentWriter experimentWriter = new Xml25ExperimentWriter(getStreamWriter(), getElementCache(), publicationWriter,
                 primaryRefWriter, secondaryRefWriter, hostOrganismWriter, detectionMethodWriter,
-                attributeWriter, confidenceWriter);
+                confidenceWriter, attributeWriter);
         PsiXml25ParameterWriter parameterWriter = new Xml25ParameterWriter(getStreamWriter(), getElementCache());
         PsiXml25ElementWriter<ModelledFeature> modelledFeatureWriter = new Xml25NamedModelledFeatureWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, featureTypeWriter, attributeWriter,rangeWriter, aliasWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
         PsiXml25ParticipantWriter<ModelledParticipant> modelledParticipantWriter = new CompactXml25NamedModelledParticipantWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter, bioRoleWriter, modelledFeatureWriter, attributeWriter,
-                interactorWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
+                bioRoleWriter, modelledFeatureWriter, attributeWriter);
 
         // initialise source
         setSourceWriter(new Xml25SourceWriter(getStreamWriter(), aliasWriter, publicationWriter,
-                attributeWriter, primaryRefWriter, secondaryRefWriter));
+                primaryRefWriter, secondaryRefWriter, attributeWriter));
         // initialise experiment
         setExperimentWriter(experimentWriter);
         // initialise interactor
         setInteractorWriter(interactorWriter);
         // initialise interaction
         setInteractionWriter(new CompactXml25NamedInteractionWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, participantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, aliasWriter,
-                checksumWriter));
+                aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                participantWriter, inferredInteractionWriter, interactionTypeWriter,
+                attributeWriter,checksumWriter));
         // initialise complex
         setComplexWriter(new CompactXml25NamedModelledInteractionWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, modelledParticipantWriter, interactionTypeWriter,
-                attributeWriter, inferredInteractionWriter, experimentWriter, confidenceWriter, parameterWriter,
-                aliasWriter,
+                aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
+                modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
+                confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
     }
 }

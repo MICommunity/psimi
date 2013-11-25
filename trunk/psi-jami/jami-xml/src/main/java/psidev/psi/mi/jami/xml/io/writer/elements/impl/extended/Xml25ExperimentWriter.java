@@ -33,8 +33,14 @@ public class Xml25ExperimentWriter extends Xml25NamedExperimentWriter {
         this.featureDetectionMethodWriter = new Xml25FeatureDetectionMethodWriter(writer);
     }
 
-    public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25PublicationWriter publicationWriter, PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter, PsiXml25ElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXml25ElementWriter<CvTerm> featureDetectionMethodWriter, PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Confidence> confidenceWriter) {
-        super(writer, objectIndex, aliasWriter, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter, detectionMethodWriter, attributeWriter, confidenceWriter);
+    public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                 PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25PublicationWriter publicationWriter,
+                                 PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
+                                 PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
+                                 PsiXml25ElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXml25ElementWriter<CvTerm> featureDetectionMethodWriter,
+                                 PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+        super(writer, objectIndex, aliasWriter, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter,
+                detectionMethodWriter, confidenceWriter, attributeWriter);
         this.participantIdentificationMethodWriter = participantIdentificationMethodWriter != null ? participantIdentificationMethodWriter : new Xml25ParticipantIdentificationMethodWriter(writer);
         this.featureDetectionMethodWriter = featureDetectionMethodWriter != null ? featureDetectionMethodWriter : new Xml25FeatureDetectionMethodWriter(writer);
     }
