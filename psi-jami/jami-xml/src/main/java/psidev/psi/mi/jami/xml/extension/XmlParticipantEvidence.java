@@ -62,6 +62,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
     protected void initialiseExperimentalRoleWrapper() {
         this.jaxbExperimentalRoleWrapper = new JAXBExperimentalRoleWrapper();
+        this.jaxbExperimentalRoleWrapper.experimentalRoles.add(new XmlCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI));
     }
 
     protected void initialiseConfidenceWrapper() {

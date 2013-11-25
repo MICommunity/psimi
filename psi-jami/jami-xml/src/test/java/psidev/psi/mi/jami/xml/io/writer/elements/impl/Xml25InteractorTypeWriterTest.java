@@ -26,7 +26,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" id=\"MI:0362\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</interactorType>";
     private String typeFullName = "<interactorType>\n" +
@@ -35,7 +35,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
             "    <fullName>inference</fullName>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" id=\"MI:0362\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</interactorType>";
     private String typeAliases = "<interactorType>\n" +
@@ -45,7 +45,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
             "    <alias type=\"test\">test name</alias>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" id=\"MI:0362\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</interactorType>";
     private String typeMod = "<interactorType>\n" +
@@ -53,7 +53,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" id=\"MI:0362\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</interactorType>";
     private String typePar = "<interactorType>\n" +
@@ -61,7 +61,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0362\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</interactorType>";
     private String typeFirstIdentifier = "<interactorType>\n" +
@@ -69,7 +69,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"test\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"test\" id=\"MI:0362\" refType=\"identity\"/>\n"+
             "    <secondaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+

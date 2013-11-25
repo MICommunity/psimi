@@ -32,7 +32,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
@@ -47,7 +47,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
@@ -63,7 +63,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
@@ -81,7 +81,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
@@ -98,7 +98,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
@@ -111,7 +111,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "  <organism ncbiTaxId=\"9606\">\n" +
@@ -129,7 +129,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "  <sequence>AAGGLLA</sequence>\n" +
@@ -143,7 +143,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "  <attributeList>\n" +
@@ -161,7 +161,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>protein</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0326\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";

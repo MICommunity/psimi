@@ -3,10 +3,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
@@ -54,7 +54,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" id=\"MI:0499\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</biologicalRole>";
     private String bioRolePar = "<biologicalRole>\n" +
@@ -62,7 +62,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0499\" refType=\"identity\"/>\n"+
             "  </xref>\n"+
             "</biologicalRole>";
     private String bioRoleFirstIdentifier = "<biologicalRole>\n" +
@@ -87,7 +87,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        CvTerm bioRole = CvTermUtils.createUnspecifiedRole();
                 
         Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
         writer.write(bioRole);
@@ -98,7 +98,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
 
     @Test
     public void test_write_cv_fullName() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        CvTerm bioRole = CvTermUtils.createUnspecifiedRole();
         bioRole.setFullName("unspecified role");
 
         Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
@@ -110,7 +110,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
 
     @Test
     public void test_write_cv_aliases() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        CvTerm bioRole = CvTermUtils.createUnspecifiedRole();
         bioRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         bioRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
@@ -123,7 +123,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
 
     @Test
     public void test_write_cv_mod() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        CvTerm bioRole = CvTermUtils.createUnspecifiedRole();
         bioRole.setMODIdentifier(bioRole.getMIIdentifier());
         bioRole.setMIIdentifier(null);
 
@@ -136,7 +136,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
 
     @Test
     public void test_write_cv_par() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        CvTerm bioRole = CvTermUtils.createUnspecifiedRole();
         bioRole.setPARIdentifier(bioRole.getMIIdentifier());
         bioRole.setMIIdentifier(null);
         Xml25BiologicalRoleWriter writer = new Xml25BiologicalRoleWriter(createStreamWriter());
@@ -148,7 +148,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
 
     @Test
     public void test_write_cv_first_identifier() throws XMLStreamException, IOException {
-        CvTerm bioRole = new DefaultCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        CvTerm bioRole = CvTermUtils.createUnspecifiedRole();
         bioRole.getIdentifiers().iterator().next().getDatabase().setShortName("test");
         bioRole.getIdentifiers().iterator().next().getDatabase().setMIIdentifier(null);
         bioRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));

@@ -25,7 +25,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>certain</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </startStatus>\n" +
             "  <begin position=\"1\"/>\n"+
@@ -34,7 +34,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>certain</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </endStatus>\n" +
             "  <end position=\"4\"/>\n"+
@@ -45,7 +45,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>range</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0338\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0338\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </startStatus>\n" +
             "  <beginInterval begin=\"1\" end=\"2\"/>\n"+
@@ -54,7 +54,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>range</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0338\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0338\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </endStatus>\n" +
             "  <endInterval begin=\"4\" end=\"5\"/>\n"+
@@ -65,7 +65,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>range</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0338\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0338\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </startStatus>\n" +
             "  <beginInterval begin=\"1\" end=\"2\"/>\n"+
@@ -74,7 +74,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>certain</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </endStatus>\n" +
             "  <end position=\"4\"/>\n"+

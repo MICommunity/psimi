@@ -29,7 +29,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -39,7 +39,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -48,7 +48,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -65,7 +65,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -75,7 +75,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -84,7 +84,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -101,7 +101,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -111,7 +111,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -120,7 +120,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -138,7 +138,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -148,7 +148,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -157,7 +157,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -174,7 +174,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -184,7 +184,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -193,7 +193,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -206,7 +206,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:xxx1\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" id=\"MI:xxx1\" refType=\"identity\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -216,7 +216,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -225,7 +225,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -238,7 +238,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -248,7 +248,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -257,7 +257,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
@@ -275,7 +275,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0252\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -285,7 +285,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </startStatus>\n" +
             "      <begin position=\"1\"/>\n"+
@@ -294,7 +294,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "          <shortLabel>certain</shortLabel>\n"+
             "        </names>\n"+
             "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" id=\"MI:0335\" refType=\"identity\"/>\n"+
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
