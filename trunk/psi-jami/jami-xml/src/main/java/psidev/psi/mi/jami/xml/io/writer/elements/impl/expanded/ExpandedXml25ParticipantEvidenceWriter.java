@@ -39,6 +39,6 @@ public class ExpandedXml25ParticipantEvidenceWriter extends AbstractXml25Partici
 
     @Override
     protected void writeMolecule(Interactor interactor) throws XMLStreamException {
-        super.writeMoleculeRef(interactor);
+        super.writeMoleculeDescription(interactor);
     }
 }

@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ModelledFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25NamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -19,7 +19,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public class ExpandedXml25NamedModelledParticipantWriter  extends AbstractXml25ParticipantWriter<ModelledParticipant, ModelledFeature> implements ExpandedPsiXml25ElementWriter<ModelledParticipant> {
+public class ExpandedXml25NamedModelledParticipantWriter  extends AbstractXml25NamedParticipantWriter<ModelledParticipant, ModelledFeature> implements ExpandedPsiXml25ElementWriter<ModelledParticipant> {
     public ExpandedXml25NamedModelledParticipantWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
         super(writer, objectIndex, new Xml25ModelledFeatureWriter(writer, objectIndex));
     }
