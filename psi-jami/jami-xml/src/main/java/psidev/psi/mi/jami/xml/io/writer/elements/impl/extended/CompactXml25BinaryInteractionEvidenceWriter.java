@@ -46,6 +46,7 @@ public class CompactXml25BinaryInteractionEvidenceWriter extends AbstractXml25In
 
     @Override
     protected void writeExperiments(BinaryInteractionEvidence object) throws XMLStreamException {
+        super.writeExperiments(object);
         writeExperimentRef(object);
     }
 

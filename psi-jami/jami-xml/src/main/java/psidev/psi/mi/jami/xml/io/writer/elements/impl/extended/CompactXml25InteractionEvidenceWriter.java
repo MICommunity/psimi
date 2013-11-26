@@ -44,6 +44,7 @@ public class CompactXml25InteractionEvidenceWriter extends AbstractXml25Interact
 
     @Override
     protected void writeExperiments(InteractionEvidence object) throws XMLStreamException {
+        super.writeExperiments(object);
         writeExperimentRef(object);
     }
 }
