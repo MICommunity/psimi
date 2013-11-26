@@ -399,7 +399,7 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"4\">\n" +
-            "      <interactorRef>4</interactorRef>\n" +
+            "      <interactorRef>5</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -752,5 +752,20 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_parameters, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
+        BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
+        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        interaction.addParticipant(participant);
+        interaction.setAvailability("copyright");
+        elementCache.clear();
+
+        CompactXml25BinaryInteractionEvidenceWriter writer = new CompactXml25BinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_availability, output.toString());
     }
 }

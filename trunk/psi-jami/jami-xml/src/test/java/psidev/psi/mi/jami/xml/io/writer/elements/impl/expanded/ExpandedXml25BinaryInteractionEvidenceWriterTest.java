@@ -6,10 +6,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.impl.DefaultNamedBinaryInteractionEvidence;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
-import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.ParameterValue;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
@@ -684,7 +681,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
             "</interaction>";
 
     private String interaction_availability = "<interaction id=\"1\">\n" +
-            "  <availabilityRef>2</availabilityRef>\n" +
+            "  <availability id=\"2\">copyright</availability>\n" +
             "  <experimentList>\n" +
             "    <experimentDescription id=\"3\">\n" +
             "      <bibref>\n" +
@@ -704,7 +701,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"4\">\n" +
-            "      <interactor id=\"4\">\n" +
+            "      <interactor id=\"5\">\n" +
             "        <names>\n" +
             "          <shortLabel>protein test</shortLabel>\n" +
             "        </names>\n" +
@@ -1161,5 +1158,21 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_parameters, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
+        BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
+        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        interaction.addParticipant(participant);
+        interaction.setAvailability("copyright");
+        elementCache.clear();
+
+        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        ExpandedXml25BinaryInteractionEvidenceWriter writer = new ExpandedXml25BinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_availability, output.toString());
     }
 }
