@@ -28,7 +28,6 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     private boolean isInferred;
     private boolean isNegative;
     private Collection<VariableParameterValueSet> variableParameterValueSets;
-    private Boolean modelled;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -315,7 +314,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public boolean isModelled() {
-        return modelled != null ? modelled : false;
+        return isInferred();
     }
 
     @Override
@@ -337,12 +336,12 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
      *
      */
     public void setModelled(boolean value) {
-        this.modelled = value;
+        setInferred(value);
     }
 
     @XmlElement(name = "modelled", defaultValue = "false", type = Boolean.class)
     public void setJAXBModelled(Boolean value) {
-        this.modelled = value;
+        setModelled(value);
     }
 
     /**
