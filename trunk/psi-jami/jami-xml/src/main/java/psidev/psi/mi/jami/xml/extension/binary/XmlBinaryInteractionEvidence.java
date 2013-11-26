@@ -24,7 +24,6 @@ import java.util.List;
 @XmlTransient
 public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence, ExtendedPsi25InteractionEvidence{
     private Xref imexId;
-    private Experiment experiment;
     private String availability;
     private Collection<Parameter> parameters;
     private boolean isInferred = false;
@@ -118,16 +117,30 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
     }
 
     public Experiment getExperiment() {
-        return this.experiment;
+        if (getExperiments().isEmpty()){
+            return null;
+        }
+        return getExperiments().iterator().next();
     }
 
     public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+        if (experiment != null){
+            if (!getExperiments().isEmpty()){
+                getExperiments().remove(0);
+            }
+            getExperiments().add(0, experiment);
+        }
+        else{
+            if (!getExperiments().isEmpty()){
+                this.getExperiments().remove(0);
+            }
+        }
     }
 
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
-        if (this.experiment != null){
-            this.experiment.removeInteractionEvidence(this);
+        Experiment current = getExperiment();
+        if (current != null){
+            current.removeInteractionEvidence(this);
         }
 
         if (experiment != null){
