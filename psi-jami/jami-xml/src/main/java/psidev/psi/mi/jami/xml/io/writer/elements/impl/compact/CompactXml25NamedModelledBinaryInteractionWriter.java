@@ -90,6 +90,10 @@ public class CompactXml25NamedModelledBinaryInteractionWriter extends AbstractXm
             for (Object c : object.getChecksums()){
                 getChecksumWriter().write((Checksum)c);
             }
+            // can only write the FIRST cooperative effect
+            if (!object.getCooperativeEffects().isEmpty()){
+                writeCooperativeEffect(object);
+            }
             // write complex expansion if any
             if (object.getComplexExpansion() != null){
                 super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
@@ -104,9 +108,30 @@ public class CompactXml25NamedModelledBinaryInteractionWriter extends AbstractXm
             for (Object c : object.getChecksums()){
                 getChecksumWriter().write((Checksum)c);
             }
+            // can only write the FIRST cooperative effect
+            if (!object.getCooperativeEffects().isEmpty()){
+                writeCooperativeEffect(object);
+            }
             // write complex expansion if any
             if (object.getComplexExpansion() != null){
                 super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // can only write the FIRST cooperative effect
+        else if (!object.getCooperativeEffects().isEmpty()){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            writeCooperativeEffect(object);
+            // write complex expansion if any
+
+            if (object.getComplexExpansion() != null){
+                // write start attribute list
+                getStreamWriter().writeStartElement("attributeList");
+                super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
+                // write end attributeList
+                getStreamWriter().writeEndElement();
             }
             // write end attributeList
             getStreamWriter().writeEndElement();

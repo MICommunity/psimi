@@ -83,8 +83,14 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
     }
 
     @Override
-    protected void writeModelled(I object) {
-        // do nothing
+    protected void writeModelled(I object) throws XMLStreamException {
+        // we say we have a modelled = true if the interaction is inferred
+        if (object.isInferred()){
+            getStreamWriter().writeStartElement("modelled");
+            getStreamWriter().writeCharacters(Boolean.toString(object.isInferred()));
+            // write end intra molecular
+            getStreamWriter().writeEndElement();
+        }
     }
 
     @Override

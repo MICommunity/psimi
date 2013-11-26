@@ -41,4 +41,72 @@ public class ExpandedXml25ModelledBinaryInteractionWriter extends AbstractXml25M
     protected void writeExperiments(ModelledBinaryInteraction object) throws XMLStreamException {
         writeExperimentDescription(object);
     }
+
+    @Override
+    protected void writeAttributes(ModelledBinaryInteraction object) throws XMLStreamException {
+        // write attributes
+        if (!object.getAnnotations().isEmpty()){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            for (Object ann : object.getAnnotations()){
+                getAttributeWriter().write((Annotation)ann);
+            }
+            for (Object c : object.getChecksums()){
+                getChecksumWriter().write((Checksum)c);
+            }
+            // can only write the FIRST cooperative effect
+            if (!object.getCooperativeEffects().isEmpty()){
+                writeCooperativeEffect(object);
+            }
+            // write complex expansion if any
+            if (object.getComplexExpansion() != null){
+                super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // write checksum
+        else if (!object.getChecksums().isEmpty()){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            for (Object c : object.getChecksums()){
+                getChecksumWriter().write((Checksum)c);
+            }
+            // can only write the FIRST cooperative effect
+            if (!object.getCooperativeEffects().isEmpty()){
+                writeCooperativeEffect(object);
+            }
+            // write complex expansion if any
+            if (object.getComplexExpansion() != null){
+                super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // can only write the FIRST cooperative effect
+        else if (!object.getCooperativeEffects().isEmpty()){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            writeCooperativeEffect(object);
+            // write complex expansion if any
+
+            if (object.getComplexExpansion() != null){
+                // write start attribute list
+                getStreamWriter().writeStartElement("attributeList");
+                super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
+                // write end attributeList
+                getStreamWriter().writeEndElement();
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // write complex expansion if any
+        else if (object.getComplexExpansion() != null){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            super.writeAttribute(object.getComplexExpansion().getShortName(), object.getComplexExpansion().getMIIdentifier());
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+    }
 }
