@@ -5,7 +5,10 @@ import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.NamedFeature;
+import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
@@ -251,6 +254,90 @@ public class Xml25NamedFeatureWriterTest extends AbstractXml25WriterTest {
             "  </attributeList>\n"+
             "</feature>";
 
+    private String feature_interactionEffect = "<feature id=\"1\">\n" +
+            "  <featureRangeList>\n" +
+            "    <featureRange>\n" +
+            "      <startStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </startStatus>\n" +
+            "      <begin position=\"1\"/>\n"+
+            "      <endStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </endStatus>\n" +
+            "      <end position=\"4\"/>\n"+
+            "    </featureRange>\n"+
+            "  </featureRangeList>\n" +
+            "  <attributeList>\n" +
+            "    <attribute name=\"decreasing-ptm\" nameAc=\"MI:1223\"/>\n"+
+            "  </attributeList>\n"+
+            "</feature>";
+
+    private String feature_interactionDependency = "<feature id=\"1\">\n" +
+            "  <featureRangeList>\n" +
+            "    <featureRange>\n" +
+            "      <startStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </startStatus>\n" +
+            "      <begin position=\"1\"/>\n"+
+            "      <endStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </endStatus>\n" +
+            "      <end position=\"4\"/>\n"+
+            "    </featureRange>\n"+
+            "  </featureRangeList>\n" +
+            "  <attributeList>\n" +
+            "    <attribute name=\"resulting-ptm\" nameAc=\"MI:0639\"/>\n"+
+            "  </attributeList>\n"+
+            "</feature>";
+
+    private String feature_participantRef = "<feature id=\"1\">\n" +
+            "  <featureRangeList>\n" +
+            "    <featureRange>\n" +
+            "      <startStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </startStatus>\n" +
+            "      <begin position=\"1\"/>\n"+
+            "      <endStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </endStatus>\n" +
+            "      <end position=\"4\"/>\n"+
+            "    </featureRange>\n"+
+            "  </featureRangeList>\n" +
+            "  <attributeList>\n" +
+            "    <attribute name=\"participant-ref\" nameAc=\"MI:1151\">2</attribute>\n"+
+            "  </attributeList>\n"+
+            "</feature>";
+
     private String feature_registered = "<feature id=\"2\">\n" +
             "  <featureRangeList>\n" +
             "    <featureRange>\n" +
@@ -397,6 +484,50 @@ public class Xml25NamedFeatureWriterTest extends AbstractXml25WriterTest {
         streamWriter.flush();
 
         Assert.assertEquals(this.featureAttributes, output.toString());
+    }
+
+    @Test
+    public void test_write_feature_interaction_effect() throws XMLStreamException, IOException, IllegalRangeException {
+        Feature feature = new DefaultNamedFeature();
+        feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
+        feature.setInteractionDependency(CvTermUtils.createMICvTerm("decreasing-ptm", "MI:1223"));
+        elementCache.clear();
+
+        Xml25NamedFeatureWriter writer = new Xml25NamedFeatureWriter(createStreamWriter(), this.elementCache);
+        writer.write(feature);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.feature_interactionEffect, output.toString());
+    }
+
+    @Test
+    public void test_write_feature_interaction_dependency() throws XMLStreamException, IOException, IllegalRangeException {
+        Feature feature = new DefaultNamedFeature();
+        feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
+        feature.setInteractionEffect(CvTermUtils.createMICvTerm("resulting-ptm", "MI:0639"));
+
+        elementCache.clear();
+
+        Xml25NamedFeatureWriter writer = new Xml25NamedFeatureWriter(createStreamWriter(), this.elementCache);
+        writer.write(feature);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.feature_interactionDependency, output.toString());
+    }
+
+    @Test
+    public void test_write_feature_participant_ref() throws XMLStreamException, IOException, IllegalRangeException {
+        Feature feature = new DefaultNamedFeature();
+        Range range = RangeUtils.createRangeFromString("1-4");
+        feature.getRanges().add(range);
+        range.setParticipant(new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        elementCache.clear();
+
+        Xml25NamedFeatureWriter writer = new Xml25NamedFeatureWriter(createStreamWriter(), this.elementCache);
+        writer.write(feature);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.feature_participantRef, output.toString());
     }
 
     @Test

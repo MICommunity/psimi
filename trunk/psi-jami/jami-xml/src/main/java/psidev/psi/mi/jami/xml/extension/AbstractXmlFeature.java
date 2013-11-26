@@ -206,6 +206,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     public void setInteractionEffect(CvTerm effect) {
         if (this.jaxbAttributeWrapper == null && effect != null){
             initialiseAnnotationWrapper();
+            this.jaxbAttributeWrapper.interactionEffect = effect;
         }
         else if (this.jaxbAttributeWrapper != null){
             this.jaxbAttributeWrapper.interactionEffect = effect;
@@ -219,10 +220,12 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
     public void setInteractionDependency(CvTerm interactionDependency) {
         if (this.jaxbAttributeWrapper == null && interactionDependency != null){
             initialiseAnnotationWrapper();
+            this.jaxbAttributeWrapper.interactionDependency = interactionDependency;
         }
         else if (this.jaxbAttributeWrapper != null){
             this.jaxbAttributeWrapper.interactionDependency = interactionDependency;
-        }    }
+        }
+    }
 
     public P getParticipant() {
         return this.participant;
