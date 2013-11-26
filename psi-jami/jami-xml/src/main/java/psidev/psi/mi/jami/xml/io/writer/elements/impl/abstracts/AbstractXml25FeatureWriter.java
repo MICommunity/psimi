@@ -10,7 +10,9 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Abstract writer for Xml25Feature.
@@ -103,9 +105,118 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
             for (Object ann : object.getAnnotations()){
                 this.attributeWriter.write((Annotation)ann);
             }
+            // write interaction dependency
+            if (object.getInteractionDependency() != null){
+                writeAttribute(object.getInteractionDependency().getShortName(), object.getInteractionDependency().getMIIdentifier(), null);
+            }
+            // write interaction effect
+            if (object.getInteractionEffect() != null){
+                writeAttribute(object.getInteractionEffect().getShortName(), object.getInteractionEffect().getMIIdentifier(), null);
+            }
+            // write participant ref
+            if (!object.getRanges().isEmpty()){
+                Set<Integer> participantSet = new HashSet<Integer>();
+                for (Object obj : object.getRanges()){
+                    Range range = (Range)obj;
+                    if (range.getParticipant() != null){
+                        Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
+                        if (!participantSet.contains(id)){
+                            participantSet.add(id);
+                            writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
+                        }
+                    }
+                }
+            }
             // write end attributeList
             getStreamWriter().writeEndElement();
         }
+        // write interaction dependency
+        else if (object.getInteractionDependency() != null){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            writeAttribute(object.getInteractionDependency().getShortName(), object.getInteractionDependency().getMIIdentifier(), null);
+            // write interaction effect
+            if (object.getInteractionEffect() != null){
+                writeAttribute(object.getInteractionEffect().getShortName(), object.getInteractionEffect().getMIIdentifier(), null);
+            }
+            // write participant ref
+            if (!object.getRanges().isEmpty()){
+                Set<Integer> participantSet = new HashSet<Integer>();
+                for (Object obj : object.getRanges()){
+                    Range range = (Range)obj;
+                    if (range.getParticipant() != null){
+                        Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
+                        if (!participantSet.contains(id)){
+                            participantSet.add(id);
+                            writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
+                        }
+                    }
+                }
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // write interaction effect
+        else if (object.getInteractionEffect() != null){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            writeAttribute(object.getInteractionEffect().getShortName(), object.getInteractionEffect().getMIIdentifier(), null);
+            // write participant ref
+            if (!object.getRanges().isEmpty()){
+                Set<Integer> participantSet = new HashSet<Integer>();
+                for (Object obj : object.getRanges()){
+                    Range range = (Range)obj;
+                    if (range.getParticipant() != null){
+                        Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
+                        if (!participantSet.contains(id)){
+                            participantSet.add(id);
+                            writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
+                        }
+                    }
+                }
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // write participant ref
+        else if (!object.getRanges().isEmpty()){
+
+            Set<Integer> participantSet = new HashSet<Integer>();
+            for (Object obj : object.getRanges()){
+                Range range = (Range)obj;
+                if (range.getParticipant() != null){
+                    Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
+                    if (!participantSet.contains(id)){
+                        participantSet.add(id);
+                    }
+                }
+            }
+            if (!participantSet.isEmpty()){
+                // write start attribute list
+                getStreamWriter().writeStartElement("attributeList");
+                for (Integer id : participantSet){
+                    writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
+                }
+                // write end attributeList
+                getStreamWriter().writeEndElement();
+            }
+        }
+    }
+
+    protected void writeAttribute(String name, String nameAc, String description) throws XMLStreamException {
+        // write start
+        this.streamWriter.writeStartElement("attribute");
+        // write topic
+        this.streamWriter.writeAttribute("name", name);
+        if (nameAc!= null){
+            this.streamWriter.writeAttribute("nameAc", nameAc);
+        }
+        // write description
+        if (description != null){
+            this.streamWriter.writeCharacters(description);
+        }
+        // write end attribute
+        this.streamWriter.writeEndElement();
     }
 
     protected void writeRanges(F object) throws XMLStreamException {
