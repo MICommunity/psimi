@@ -194,7 +194,7 @@ public class InteractionUtils {
         return binary;
     }
 
-    public static CvTerm collectComplexExpansionMethodFromAnnotations(Collection<? extends Annotation> annotations){
+    public static Annotation collectComplexExpansionMethodFromAnnotations(Collection<? extends Annotation> annotations){
         if (annotations == null || annotations.isEmpty()){
              return null;
         }
@@ -206,7 +206,7 @@ public class InteractionUtils {
                     || AnnotationUtils.doesAnnotationHaveTopic(annot, null, ComplexExpansionMethod.MATRIX)
                     || AnnotationUtils.doesAnnotationHaveTopic(annot, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI, ComplexExpansionMethod.BIPARTITE_EXPANSION)
                     || AnnotationUtils.doesAnnotationHaveTopic(annot, null, ComplexExpansionMethod.BIPARTITE)){
-                 return annot.getTopic();
+                 return annot;
             }
         }
 

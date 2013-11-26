@@ -24,6 +24,8 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
     private boolean hasInitialisedA;
     private boolean hasInitialisedB;
 
+    private Collection<Annotation> annotations;
+
     public AbstractBinaryInteractionWrapper(I interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The wrappedInteraction of a AbstractBinaryInteractionWrapper cannot be null");
@@ -33,9 +35,12 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
         }
         this.wrappedInteraction = interaction;
 
-        this.complexExpansion = InteractionUtils.collectComplexExpansionMethodFromAnnotations(interaction.getAnnotations());
-        if (complexExpansion != null){
-            interaction.getAnnotations().remove(complexExpansion);
+        Annotation annot = InteractionUtils.collectComplexExpansionMethodFromAnnotations(interaction.getAnnotations());
+        this.annotations = new ArrayList<Annotation>(this.wrappedInteraction.getAnnotations());
+
+        if (annot != null){
+            this.complexExpansion = annot.getTopic();
+            this.annotations.remove(complexExpansion);
         }
     }
 
