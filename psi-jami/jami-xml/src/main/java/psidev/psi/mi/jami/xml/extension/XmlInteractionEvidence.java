@@ -122,10 +122,13 @@ public class XmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEv
     }
 
     public void setAvailability(String availability) {
-        if (this.availability == null && this.availability != null){
+        if (this.availability == null && availability != null){
             this.availability = new Availability();
+            this.availability.setValue(availability);
         }
-        this.availability.setValue(availability);
+        else if (availability != null){
+            this.availability.setValue(availability);
+        }
     }
 
     public boolean isNegative() {
