@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.binary.impl;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.InteractionUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import java.util.*;
 
@@ -36,11 +37,12 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
         this.wrappedInteraction = interaction;
 
         Annotation annot = InteractionUtils.collectComplexExpansionMethodFromAnnotations(interaction.getAnnotations());
-        this.annotations = new ArrayList<Annotation>(this.wrappedInteraction.getAnnotations());
+        this.annotations = new AnnotationList();
+        ((AnnotationList)this.annotations).addAllOnly(interaction.getAnnotations());
 
         if (annot != null){
             this.complexExpansion = annot.getTopic();
-            this.annotations.remove(complexExpansion);
+            ((AnnotationList)this.annotations).removeOnly(complexExpansion);
         }
     }
 
@@ -124,7 +126,7 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
     }
 
     public Collection<Annotation> getAnnotations() {
-        return wrappedInteraction.getAnnotations();
+        return this.annotations;
     }
 
     public Date getUpdatedDate() {
@@ -260,5 +262,27 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
 
     protected I getWrappedInteraction() {
         return wrappedInteraction;
+    }
+
+    ////////////////////////////////////// Inner class
+    private class AnnotationList extends AbstractListHavingProperties<Annotation>{
+
+        private AnnotationList() {
+        }
+
+        @Override
+        protected void processAddedObjectEvent(Annotation added) {
+            wrappedInteraction.getAnnotations().add(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(Annotation removed) {
+            wrappedInteraction.getAnnotations().remove(removed);
+        }
+
+        @Override
+        protected void clearProperties() {
+            wrappedInteraction.getAnnotations().clear();
+        }
     }
 }
