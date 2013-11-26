@@ -355,6 +355,22 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
         return experimentWriter;
     }
 
+    protected PsiXml25ElementWriter<Checksum> getChecksumWriter() {
+        return checksumWriter;
+    }
+
+    protected void writeAttribute(String name, String nameAc) throws XMLStreamException {
+        // write start
+        this.streamWriter.writeStartElement("attribute");
+        // write topic
+        this.streamWriter.writeAttribute("name", name);
+        if (nameAc!= null){
+            this.streamWriter.writeAttribute("nameAc", nameAc);
+        }
+        // write end attribute
+        this.streamWriter.writeEndElement();
+    }
+
     private Collection<Set<Feature>> collectInferredInteractionsFrom(T object){
         BindingSiteCliqueFinder<T,Feature> cliqueFinder = new BindingSiteCliqueFinder<T, Feature>(object);
         return cliqueFinder.getAllMaximalCliques();
