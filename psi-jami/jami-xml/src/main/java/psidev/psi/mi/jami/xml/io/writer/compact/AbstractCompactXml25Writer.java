@@ -124,39 +124,6 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         this.interactors = interactors;
     }
 
-    @Override
-    protected void writeInteractionListContent() {
-        try {
-            while (getInteractionsIterator().hasNext()){
-                setCurrentInteraction(getInteractionsIterator().next());
-                Source source = extractSourceFromInteraction();
-                // write first entry
-                if (isStarted()){
-                    setStarted(false);
-                    setCurrentSource(source);
-                    writeStartEntryContent();
-                }
-                // write next entry after closing first one
-                else if (getCurrentSource() != source){
-                    // write subComplexes
-                    writeEndEntryContent();
-                    // change current source
-                    setCurrentSource(source);
-                    // write start entry
-                    writeStartEntryContent();
-                }
-
-                // write interaction
-                writeInteraction();
-            }
-
-            // write final end entry
-            writeEndEntryContent();
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Cannot write interactions ", e);
-        }
-    }
-
     protected void registerAllInteractionsProperties() {
         // clear and initialise sets if not done yet
         getInteractors().clear();
