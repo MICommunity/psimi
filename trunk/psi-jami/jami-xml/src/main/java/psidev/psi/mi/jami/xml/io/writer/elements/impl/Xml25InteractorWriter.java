@@ -59,6 +59,7 @@ public class Xml25InteractorWriter implements PsiXml25ElementWriter<Interactor> 
         if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ExperimentWriter. It is necessary for generating an id to an experimentDescription");
         }
+        this.objectIndex = objectIndex;
         this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
         this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new Xml25PrimaryXrefWriter(writer);
         this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new Xml25SecondaryXrefWriter(writer);

@@ -186,9 +186,9 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             this.streamWriter.writeDefaultNamespace(PsiXml25Utils.NAMESPACE_URI);
             this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
             this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_LOCATION);
+            this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
             this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
             this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
-            this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
         } catch (XMLStreamException e) {
             throw new MIIOException("Cannot write the start of the entrySet root node.", e);
         }
@@ -340,7 +340,9 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     protected abstract Source extractSourceFromInteraction();
 
     protected void writeSource() throws XMLStreamException {
-        this.sourceWriter.write(this.currentSource);
+        if (this.currentSource != null){
+            this.sourceWriter.write(this.currentSource);
+        }
     }
 
     protected void writeStartEntry() throws XMLStreamException {
@@ -370,6 +372,9 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     }
 
     protected PsiXml25ObjectCache getElementCache() {
+        if (elementCache == null){
+           initialiseDefaultElementCache();
+        }
         return elementCache;
     }
 

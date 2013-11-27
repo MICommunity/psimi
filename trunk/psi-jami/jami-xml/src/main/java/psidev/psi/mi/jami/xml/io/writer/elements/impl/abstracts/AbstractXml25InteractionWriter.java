@@ -348,7 +348,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     }
 
     protected void initialiseDefaultExperiment(){
-        this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for modelled interactions that are not interaction evidences.",(String)null,(Date)null));
+        this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null));
     }
 
     protected PsiXml25ElementWriter<Experiment> getExperimentWriter() {
