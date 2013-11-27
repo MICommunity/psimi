@@ -63,10 +63,10 @@ public class CompactXml25NamedBinaryEvidenceWriter extends AbstractCompactXml25W
     @Override
     protected Source extractSourceFromInteraction() {
         Experiment exp = getCurrentInteraction().getExperiment();
-        if (exp != null && exp.getPublication() != null){
+        if (exp != null && exp.getPublication() != null && exp.getPublication().getSource() != null){
             return exp.getPublication().getSource();
         }
-        return null;
+        return super.extractSourceFromInteraction();
     }
 
     @Override

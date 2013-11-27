@@ -6,13 +6,16 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -41,10 +44,13 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private Source currentSource;
     private T currentInteraction;
     private boolean writeComplexesAsInteractors=false;
+    private Set<T> processedInteractions;
+
+    private Source defaultSource;
+    private XMLGregorianCalendar defaultReleaseDate;
 
     public AbstractXml25Writer(){
         this.interactionsToWrite = new ArrayList<T>();
-
     }
 
     public AbstractXml25Writer(File file) throws IOException, XMLStreamException {
@@ -143,6 +149,23 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
         if (options.containsKey(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
             setWriteComplexesAsInteractors(this.writeComplexesAsInteractors = (Boolean)options.get(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION));
+        }
+
+        if (options.containsKey(PsiXml25Utils.XML_INTERACTION_SET_OPTION)){
+            setInteractionSet((Set<T>) options.get(PsiXml25Utils.XML_INTERACTION_SET_OPTION));
+        }
+        // use the default cache option
+        else{
+            initialiseDefaultInteractionSet();
+        }
+        // default source
+        if (options.containsKey(PsiXml25Utils.DEFAULT_SOURCE_OPTION)){
+            setDefaultSource((Source)options.get(PsiXml25Utils.DEFAULT_SOURCE_OPTION));
+        }
+
+        // default release date
+        if (options.containsKey(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION)){
+            setDefaultReleaseDate((XMLGregorianCalendar)options.get(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION));
         }
 
         isInitialised = true;
@@ -244,6 +267,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
                 this.elementCache = null;
                 this.interactionsToWrite.clear();
                 this.interactionsIterator = null;
+                this.processedInteractions = null;
             }
         }
     }
@@ -259,6 +283,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
                 this.elementCache = null;
                 this.interactionsToWrite.clear();
                 this.interactionsIterator = null;
+                this.processedInteractions = null;
             }
         }
     }
@@ -267,6 +292,55 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.writeComplexesAsInteractors = writeComplexesAsInteractors;
         this.interactionWriter.setComplexAsInteractor(writeComplexesAsInteractors);
         this.complexWriter.setComplexAsInteractor(writeComplexesAsInteractors);
+    }
+
+    public void setInteractionSet(Set<T> processedInteractions) {
+        this.processedInteractions = processedInteractions;
+    }
+
+    public void setSourceWriter(PsiXml25SourceWriter sourceWriter) {
+        if (sourceWriter == null){
+            throw new IllegalArgumentException("The source writer cannot be null");
+        }
+        this.sourceWriter = sourceWriter;
+        this.sourceWriter.setDefaultReleaseDate(this.defaultReleaseDate);
+    }
+    public void setComplexWriter(PsiXml25InteractionWriter<ModelledInteraction> complexWriter) {
+        if (complexWriter == null){
+            throw new IllegalArgumentException("The Complex writer cannot be null");
+        }
+        this.complexWriter = complexWriter;
+    }
+
+    public void setElementCache(PsiXml25ObjectCache elementCache) {
+        if (elementCache == null){
+            initialiseDefaultElementCache();
+        }
+        else{
+            this.elementCache = elementCache;
+        }
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public void setDefaultSource(Source defaultSource) {
+        this.defaultSource = defaultSource;
+    }
+
+    public void setDefaultReleaseDate(XMLGregorianCalendar defaultReleaseDate) {
+        this.defaultReleaseDate = defaultReleaseDate;
+        if (this.sourceWriter != null){
+            this.sourceWriter.setDefaultReleaseDate(this.defaultReleaseDate);
+        }
+    }
+
+    protected Set<T> getProcessedInteractions() {
+        if (processedInteractions == null){
+            initialiseDefaultInteractionSet();
+        }
+        return processedInteractions;
     }
 
     protected void writeEndEntryContent() throws XMLStreamException {
@@ -287,6 +361,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
                 if (started){
                     started = false;
                     this.currentSource = source;
+                    getProcessedInteractions().clear();
                     writeStartEntryContent();
 
                 }
@@ -296,12 +371,15 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
                     writeEndEntryContent();
                     // change current source
                     this.currentSource = source;
+                    getProcessedInteractions().clear();
                     // write start entry
                     writeStartEntryContent();
                 }
 
                 // write interaction
-                writeInteraction();
+                if (getProcessedInteractions().add(this.currentInteraction)){
+                    writeInteraction();
+                }
             }
 
             // write final end entry
@@ -338,7 +416,16 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
          }
     }
 
-    protected abstract Source extractSourceFromInteraction();
+    protected Source extractSourceFromInteraction(){
+        if (this.defaultSource == null && this.defaultReleaseDate != null){
+           initialiseDefaultSource();
+        }
+        return this.defaultSource;
+    }
+
+    protected void initialiseDefaultSource() {
+        this.defaultSource = new DefaultSource("Unknown source");
+    }
 
     protected void writeSource() throws XMLStreamException {
         if (this.currentSource != null){
@@ -375,30 +462,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return elementCache;
     }
 
-    public void setSourceWriter(PsiXml25SourceWriter sourceWriter) {
-        if (sourceWriter == null){
-            throw new IllegalArgumentException("The source writer cannot be null");
-        }
-        this.sourceWriter = sourceWriter;
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        DatatypeFactory datatypeFactory = null;
-        try {
-            datatypeFactory = DatatypeFactory.newInstance();
-            this.sourceWriter.setDefaultReleaseDate(datatypeFactory.newXMLGregorianCalendar(gregorianCalendar));
-        } catch (DatatypeConfigurationException e) {
-            System.out.println(e);
-        }
-    }
-
     protected void setCurrentSource(Source currentSource) {
         this.currentSource = currentSource;
-    }
-
-    public void setComplexWriter(PsiXml25InteractionWriter<ModelledInteraction> complexWriter) {
-        if (complexWriter == null){
-            throw new IllegalArgumentException("The Complex writer cannot be null");
-        }
-        this.complexWriter = complexWriter;
     }
 
     protected Source getCurrentSource() {
@@ -411,15 +476,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected void setInteractionsIterator(Iterator<? extends T> interactionsIterator) {
         this.interactionsIterator = interactionsIterator;
-    }
-
-    public void setElementCache(PsiXml25ObjectCache elementCache) {
-        if (elementCache == null){
-            initialiseDefaultElementCache();
-        }
-        else{
-            this.elementCache = elementCache;
-        }
     }
 
     protected void setInteractionWriter(PsiXml25InteractionWriter<T> interactionWriter) {
@@ -445,12 +501,12 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return started;
     }
 
-    public void setStarted(boolean started) {
-        this.started = started;
-    }
-
     protected boolean writeComplexesAsInteractors() {
         return writeComplexesAsInteractors;
+    }
+
+    protected void initialiseDefaultInteractionSet() {
+        this.processedInteractions = Collections.newSetFromMap(new IdentityHashMap<T, Boolean>());
     }
 
     private void initialiseStreamWriter(XMLStreamWriter writer) {

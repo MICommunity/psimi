@@ -47,7 +47,7 @@ public class ExpandedXml25NamedModelledWriter extends AbstractExpandedXml25Write
 
     @Override
     protected Source extractSourceFromInteraction() {
-        return getCurrentInteraction().getSource();
+        return getCurrentInteraction().getSource() != null ? getCurrentInteraction().getSource() : super.extractSourceFromInteraction();
     }
 
     @Override

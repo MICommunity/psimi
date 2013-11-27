@@ -56,6 +56,16 @@ public class CompactXml25NamedModelledWriter extends AbstractCompactXml25Writer<
     }
 
     @Override
+    protected void registerInteractionProperties() {
+        super.registerInteractionProperties();
+        for (CooperativeEffect effect : getCurrentInteraction().getCooperativeEffects()){
+            for (ModelledInteraction interaction : effect.getAffectedInteractions()){
+                registerAllInteractorsAndExperimentsFrom(interaction);
+            }
+        }
+    }
+
+    @Override
     protected Source extractSourceFromInteraction() {
         return getCurrentInteraction().getSource();
     }
