@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25ParticipantEvidence;
 import psidev.psi.mi.jami.xml.extension.XmlParticipantEvidence;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

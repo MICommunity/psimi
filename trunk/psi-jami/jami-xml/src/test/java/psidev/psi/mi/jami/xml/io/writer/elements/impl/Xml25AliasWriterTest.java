@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

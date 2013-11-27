@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

@@ -5,7 +5,6 @@ import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

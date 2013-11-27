@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

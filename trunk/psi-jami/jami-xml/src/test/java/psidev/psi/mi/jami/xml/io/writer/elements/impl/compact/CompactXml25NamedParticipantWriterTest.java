@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

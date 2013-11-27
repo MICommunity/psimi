@@ -5,7 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Source;
 import psidev.psi.mi.jami.xml.extension.XmlSource;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

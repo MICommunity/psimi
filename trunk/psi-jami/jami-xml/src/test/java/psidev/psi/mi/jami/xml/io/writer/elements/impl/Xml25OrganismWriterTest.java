@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
