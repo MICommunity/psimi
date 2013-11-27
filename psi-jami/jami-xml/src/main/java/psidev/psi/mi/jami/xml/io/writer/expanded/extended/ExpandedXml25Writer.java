@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.xml.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25MixWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -42,5 +43,10 @@ public class ExpandedXml25Writer extends AbstractExpandedXml25MixWriter<Interact
         setModelledWriter(new ExpandedXml25ModelledWriter(getStreamWriter(), getElementCache()));
         setEvidenceWriter(new ExpandedXml25EvidenceWriter(getStreamWriter(), getElementCache()));
         setLightWriter(new LightExpandedXml25Writer(getStreamWriter(), getElementCache()));
+    }
+
+    @Override
+    protected void initialiseDefaultSource() {
+        setDefaultSource(new XmlSource("Unknown source"));
     }
 }

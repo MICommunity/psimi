@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25NamedModelledParticipantWriter;
@@ -125,5 +126,10 @@ public class LightExpandedXml25BinaryWriter extends AbstractExpandedXml25Writer<
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+    }
+
+    @Override
+    protected void initialiseDefaultSource() {
+        setDefaultSource(new XmlSource("Unknown source"));
     }
 }
