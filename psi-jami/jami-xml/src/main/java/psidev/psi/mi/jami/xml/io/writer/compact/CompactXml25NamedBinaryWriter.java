@@ -38,8 +38,8 @@ public class CompactXml25NamedBinaryWriter extends AbstractCompactXml25MixWriter
 
     @Override
     protected void initialiseDelegateWriters() {
-        setModelledWriter(new CompactXml25NamedModelledBinaryWriter(getStreamWriter()));
-        setEvidenceWriter(new CompactXml25NamedBinaryEvidenceWriter(getStreamWriter()));
-        setLightWriter(new LightCompactXml25NamedBinaryWriter(getStreamWriter()));
+        setModelledWriter(new CompactXml25NamedModelledBinaryWriter(getStreamWriter(), getElementCache()));
+        setEvidenceWriter(new CompactXml25NamedBinaryEvidenceWriter(getStreamWriter(), getElementCache()));
+        setLightWriter(new LightCompactXml25NamedBinaryWriter(getStreamWriter(), getElementCache()));
     }
 }

@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.compact;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
@@ -61,8 +62,8 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         this.subInteractionsToWrite = new ArrayList<T>();
     }
 
-    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter streamWriter) {
-        super(streamWriter);
+    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter streamWriter, PsiXml25ObjectCache elementCache) {
+        super(streamWriter, elementCache);
         this.type = type;
         this.subInteractionsToWrite = new ArrayList<T>();
     }

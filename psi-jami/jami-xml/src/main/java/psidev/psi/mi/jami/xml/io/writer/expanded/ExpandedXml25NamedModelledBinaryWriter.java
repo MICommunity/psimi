@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25NamedModelledBinaryInteractionWriter;
@@ -43,9 +44,10 @@ public class ExpandedXml25NamedModelledBinaryWriter extends AbstractExpandedXml2
         super(ModelledBinaryInteraction.class, writer);
     }
 
-    public ExpandedXml25NamedModelledBinaryWriter(XMLStreamWriter streamWriter) {
-        super(ModelledBinaryInteraction.class, streamWriter);
+    public ExpandedXml25NamedModelledBinaryWriter(XMLStreamWriter streamWriter, PsiXml25ObjectCache cache) {
+        super(ModelledBinaryInteraction.class, streamWriter, cache);
     }
+
 
     @Override
     protected Source extractSourceFromInteraction() {
