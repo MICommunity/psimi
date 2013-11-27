@@ -3,10 +3,10 @@ package psidev.psi.mi.jami.xml.io.writer.compact.extended;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
+import psidev.psi.mi.jami.xml.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXml25MixWriter;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -43,5 +43,10 @@ public class CompactXml25BinaryWriter extends AbstractCompactXml25MixWriter<Bina
         setModelledWriter(new CompactXml25ModelledBinaryWriter(getStreamWriter(), getElementCache()));
         setEvidenceWriter(new CompactXml25BinaryEvidenceWriter(getStreamWriter(), getElementCache()));
         setLightWriter(new LightCompactXml25BinaryWriter(getStreamWriter(), getElementCache()));
+    }
+
+    @Override
+    protected void initialiseDefaultSource() {
+        setDefaultSource(new XmlSource("Unknown source"));
     }
 }

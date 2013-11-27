@@ -159,14 +159,15 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         else{
             initialiseDefaultInteractionSet();
         }
-        // default source
-        if (options.containsKey(PsiXml25Utils.DEFAULT_SOURCE_OPTION)){
-            setDefaultSource((Source)options.get(PsiXml25Utils.DEFAULT_SOURCE_OPTION));
-        }
 
         // default release date
         if (options.containsKey(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION)){
             setDefaultReleaseDate((XMLGregorianCalendar)options.get(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION));
+        }
+
+        // default source
+        if (options.containsKey(PsiXml25Utils.DEFAULT_SOURCE_OPTION)){
+            setDefaultSource((Source)options.get(PsiXml25Utils.DEFAULT_SOURCE_OPTION));
         }
 
         isInitialised = true;
