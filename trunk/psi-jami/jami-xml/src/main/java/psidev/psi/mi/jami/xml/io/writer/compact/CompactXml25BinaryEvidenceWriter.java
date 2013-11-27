@@ -110,7 +110,7 @@ public class CompactXml25BinaryEvidenceWriter extends AbstractCompactXml25Writer
         PsiXml25ParameterWriter parameterWriter = new Xml25ParameterWriter(getStreamWriter(), getElementCache());
         PsiXml25ParticipantWriter<ParticipantEvidence> participantWriter = new CompactXml25ParticipantEvidenceWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
-                bioRoleWriter, identificationMethodWriter, expRoleWriter, expPreparationWriter, featureWriter,
+                identificationMethodWriter, bioRoleWriter, expRoleWriter, expPreparationWriter, featureWriter,
                 hostOrganismWriter, confidenceWriter, parameterWriter, attributeWriter);
         PsiXml25ElementWriter<CvTerm> interactionTypeWriter = new Xml25InteractionTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXml25ElementWriter<Set<Feature>> inferredInteractionWriter = new Xml25InferredInteractionWriter(getStreamWriter(), getElementCache());
