@@ -145,5 +145,7 @@ public class CompactXml25ModelledBinaryWriter extends AbstractCompactXml25Writer
                 inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        // use same default experiment
+        getComplexWriter().setDefaultExperiment(getInteractionWriter().getDefaultExperiment());
     }
 }
