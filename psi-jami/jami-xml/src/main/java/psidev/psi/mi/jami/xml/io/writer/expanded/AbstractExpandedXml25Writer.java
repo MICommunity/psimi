@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
@@ -50,7 +50,7 @@ public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends
 
     @Override
     protected void initialiseDefaultElementCache() {
-        setElementCache(new InMemoryIdentityObjectCache());
+        setElementCache(new InMemoryLightIdentityObjectCache());
     }
 
     @Override

@@ -43,6 +43,9 @@ public class PsiXml25Utils {
     public static final String ATTRIBUTELIST_TAG = "attributeList";
     public static final String ATTRIBUTE_TAG = "attribute";
     public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";
+    public static final String COMPACT_XML_EXPERIMENT_SET = "compact_xml_experiment_set_key";
+    public static final String COMPACT_XML_INTERACTOR_SET = "compact_xml_interactor_set_key";
+    public static final String COMPACT_XML_AVAILABILITY_SET = "compact_xml_availability_set_key";
     public static final String WRITE_COMPLEX_AS_INTERACTOR_OPTION = "write_complex_as_interactor_key";
 
     public static final String LINE_BREAK = "\n";
@@ -53,7 +56,7 @@ public class PsiXml25Utils {
     public final static String PSI_SCHEMA_LOCATION = "http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd";
     public final static String SCHEMA_LOCATION_ATTRIBUTE = "schemaLocation";
     public final static String MINOR_VERSION_ATTRIBUTE="minorVersion";
-    public final static String VERSION_ATTRIBUTE="version=";
+    public final static String VERSION_ATTRIBUTE="version";
     public final static String LEVEL_ATTRIBUTE="level";
 
     public static CooperativeEffect extractCooperativeEffectFrom(Collection<Annotation> annots, Collection<Experiment> experiments,
