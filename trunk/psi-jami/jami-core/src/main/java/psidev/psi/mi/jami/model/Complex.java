@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Complex extends Interactor, ModelledInteraction {
+public interface Complex extends Interactor, ModelledInteraction, NamedInteraction<ModelledParticipant> {
 
     public static final String COMPLEX="complex";
     public static final String COMPLEX_MI="MI:0314";
