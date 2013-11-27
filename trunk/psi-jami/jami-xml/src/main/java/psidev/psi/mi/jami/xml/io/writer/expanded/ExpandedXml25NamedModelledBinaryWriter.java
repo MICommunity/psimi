@@ -49,7 +49,7 @@ public class ExpandedXml25NamedModelledBinaryWriter extends AbstractExpandedXml2
 
     @Override
     protected Source extractSourceFromInteraction() {
-        return getCurrentInteraction().getSource();
+        return getCurrentInteraction().getSource() != null ? getCurrentInteraction().getSource() : super.extractSourceFromInteraction();
     }
 
     @Override

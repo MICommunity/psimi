@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
@@ -85,11 +84,6 @@ public abstract class AbstractExpandedXml25MixWriter<I extends Interaction, M ex
         this.modelledWriter.setWriteComplexesAsInteractors(writeComplexesAsInteractors);
         this.evidenceWriter.setWriteComplexesAsInteractors(writeComplexesAsInteractors);
         this.lightWriter.setWriteComplexesAsInteractors(writeComplexesAsInteractors);
-    }
-
-    @Override
-    protected Source extractSourceFromInteraction() {
-        return null;
     }
 
     @Override

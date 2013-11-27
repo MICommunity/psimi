@@ -118,11 +118,6 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     }
 
     @Override
-    protected Source extractSourceFromInteraction() {
-        return null;
-    }
-
-    @Override
     public void write(Iterator<? extends I> interactions) throws MIIOException {
         if (this.modelledWriter == null || this.evidenceWriter == null){
             throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");

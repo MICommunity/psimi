@@ -47,11 +47,6 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
     }
 
     @Override
-    protected Source extractSourceFromInteraction() {
-        return null;
-    }
-
-    @Override
     protected void initialiseSubWriters() {
         // basic sub writers
         PsiXml25ElementWriter<Alias> aliasWriter = new Xml25AliasWriter(getStreamWriter());

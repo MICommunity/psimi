@@ -58,7 +58,17 @@ public class CompactXml25ModelledBinaryWriter extends AbstractCompactXml25Writer
 
     @Override
     protected Source extractSourceFromInteraction() {
-        return getCurrentInteraction().getSource();
+        return getCurrentInteraction().getSource() != null ? getCurrentInteraction().getSource() : super.extractSourceFromInteraction();
+    }
+
+    @Override
+    protected void registerInteractionProperties() {
+        super.registerInteractionProperties();
+        for (CooperativeEffect effect : getCurrentInteraction().getCooperativeEffects()){
+            for (ModelledInteraction interaction : effect.getAffectedInteractions()){
+                registerAllInteractorsAndExperimentsFrom(interaction);
+            }
+        }
     }
 
     @Override

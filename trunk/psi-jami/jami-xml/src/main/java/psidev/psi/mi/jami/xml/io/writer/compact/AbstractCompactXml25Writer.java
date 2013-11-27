@@ -71,22 +71,22 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
     public void initialiseContext(Map<String, Object> options) {
         super.initialiseContext(options);
 
-        if (options.containsKey(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET)){
-            setExperimentSet((Set<Experiment>) options.get(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET));
+        if (options.containsKey(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET_OPTION)){
+            setExperimentSet((Set<Experiment>) options.get(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET_OPTION));
         }
         // use the default cache option
         else{
             initialiseDefaultExperimentSet();
         }
-        if (options.containsKey(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET)){
-            setAvailabilitySet((Set<String>) options.get(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET));
+        if (options.containsKey(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET_OPTION)){
+            setAvailabilitySet((Set<String>) options.get(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET_OPTION));
         }
         // use the default cache option
         else{
             initialiseDefaultAvailabilitySet();
         }
-        if (options.containsKey(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET)){
-            setInteractorSet((Set<Interactor>) options.get(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET));
+        if (options.containsKey(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET_OPTION)){
+            setInteractorSet((Set<Interactor>) options.get(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET_OPTION));
         }
         // use the default cache option
         else{
@@ -145,24 +145,26 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
             registerInteractionProperties();
         }
 
+        boolean keepRegistering = true;
         while (getInteractionsIterator().hasNext()){
             T inter = getInteractionsIterator().next();
             setCurrentInteraction(inter);
-            this.subInteractionsToWrite.add(inter);
-
             Source source = extractSourceFromInteraction();
-            // write next entry after closing first one
-            if (getCurrentSource() != source){
-                // stops here for the current entry
-                break;
-            }
-            else{
-                registerInteractionProperties();
+            this.subInteractionsToWrite.add(inter);
+            if(keepRegistering){
+                // write next entry after closing first one
+                if (getCurrentSource() != source){
+                    // stops here for the current entry
+                    keepRegistering = false;
+                }
+                else{
+                    registerInteractionProperties();
+                }
             }
         }
 
         // reset pointers
-        setInteractionsIterator(this.subInteractionsToWrite.iterator());
+        setInteractionsIterator(new ArrayList<T>(this.subInteractionsToWrite).iterator());
         setCurrentSource(firstSource);
         setCurrentInteraction(firstInteraction);
         setStarted(started);
@@ -325,7 +327,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         return type;
     }
 
-    private void registerInteractionProperties() {
+    protected void registerInteractionProperties() {
         T interaction = getCurrentInteraction();
         // register all experiments
         registerExperiment(interaction);

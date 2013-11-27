@@ -49,11 +49,6 @@ public class LightExpandedXml25NamedBinaryWriter extends AbstractExpandedXml25Wr
     }
 
     @Override
-    protected Source extractSourceFromInteraction() {
-        return null;
-    }
-
-    @Override
     protected void initialiseSubWriters() {
         // basic sub writers
         PsiXml25ElementWriter<Alias> aliasWriter = new Xml25AliasWriter(getStreamWriter());

@@ -58,11 +58,6 @@ public class LightCompactXml25NamedWriter extends AbstractCompactXml25Writer<Int
     }
 
     @Override
-    protected Source extractSourceFromInteraction() {
-        return null;
-    }
-
-    @Override
     protected void initialiseSubWriters() {
         // basic sub writers
         PsiXml25ElementWriter<Alias> aliasWriter = new Xml25AliasWriter(getStreamWriter());

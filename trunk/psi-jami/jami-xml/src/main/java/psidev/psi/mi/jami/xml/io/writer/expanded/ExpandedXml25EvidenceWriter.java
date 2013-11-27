@@ -49,10 +49,10 @@ public class ExpandedXml25EvidenceWriter extends AbstractExpandedXml25Writer<Int
     @Override
     protected Source extractSourceFromInteraction() {
         Experiment exp = getCurrentInteraction().getExperiment();
-        if (exp != null && exp.getPublication() != null){
-           return exp.getPublication().getSource();
+        if (exp != null && exp.getPublication() != null && exp.getPublication().getSource() != null){
+            return exp.getPublication().getSource();
         }
-        return null;
+        return super.extractSourceFromInteraction();
     }
 
     @Override
