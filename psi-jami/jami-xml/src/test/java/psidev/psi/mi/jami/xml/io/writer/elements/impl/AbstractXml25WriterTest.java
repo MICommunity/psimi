@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import javanet.staxutils.IndentingXMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;

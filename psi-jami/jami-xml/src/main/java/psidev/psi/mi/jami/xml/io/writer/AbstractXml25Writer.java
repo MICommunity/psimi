@@ -306,6 +306,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
             // write final end entry
             writeEndEntryContent();
+            this.started = true;
         } catch (XMLStreamException e) {
             throw new MIIOException("Cannot write interactions ", e);
         }
@@ -367,10 +368,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         return complexWriter;
     }
 
-    protected PsiXml25SourceWriter getSourceWriter() {
-        return sourceWriter;
-    }
-
     protected PsiXml25ObjectCache getElementCache() {
         if (elementCache == null){
            initialiseDefaultElementCache();
@@ -414,10 +411,6 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected void setInteractionsIterator(Iterator<? extends T> interactionsIterator) {
         this.interactionsIterator = interactionsIterator;
-    }
-
-    protected List<T> getInteractionsToWrite() {
-        return interactionsToWrite;
     }
 
     public void setElementCache(PsiXml25ObjectCache elementCache) {

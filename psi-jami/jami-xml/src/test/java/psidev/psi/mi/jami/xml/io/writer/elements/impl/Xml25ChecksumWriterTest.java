@@ -5,7 +5,6 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

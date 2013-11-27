@@ -4,7 +4,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.PositionUtils;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

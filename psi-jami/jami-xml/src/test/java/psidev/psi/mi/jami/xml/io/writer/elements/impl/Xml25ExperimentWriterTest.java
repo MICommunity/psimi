@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25WriterTest;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;
