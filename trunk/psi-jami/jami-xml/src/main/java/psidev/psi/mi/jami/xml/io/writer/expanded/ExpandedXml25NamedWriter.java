@@ -38,8 +38,8 @@ public class ExpandedXml25NamedWriter extends AbstractExpandedXml25MixWriter<Int
 
     @Override
     protected void initialiseDelegateWriters() {
-        setModelledWriter(new ExpandedXml25NamedModelledWriter(getStreamWriter()));
-        setEvidenceWriter(new ExpandedXml25NamedEvidenceWriter(getStreamWriter()));
-        setLightWriter(new LightExpandedXml25NamedWriter(getStreamWriter()));
+        setModelledWriter(new ExpandedXml25NamedModelledWriter(getStreamWriter(), getElementCache()));
+        setEvidenceWriter(new ExpandedXml25NamedEvidenceWriter(getStreamWriter(), getElementCache()));
+        setLightWriter(new LightExpandedXml25NamedWriter(getStreamWriter(), getElementCache()));
     }
 }

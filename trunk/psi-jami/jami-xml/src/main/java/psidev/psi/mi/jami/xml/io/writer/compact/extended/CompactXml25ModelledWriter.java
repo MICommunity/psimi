@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.compact.extended;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXml25Writer;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
@@ -43,8 +44,8 @@ public class CompactXml25ModelledWriter extends AbstractCompactXml25Writer<Model
         super(ModelledInteraction.class, writer);
     }
 
-    public CompactXml25ModelledWriter(XMLStreamWriter streamWriter) {
-        super(ModelledInteraction.class, streamWriter);
+    public CompactXml25ModelledWriter(XMLStreamWriter streamWriter, PsiXml25ObjectCache cache) {
+        super(ModelledInteraction.class, streamWriter, cache);
     }
 
     @Override

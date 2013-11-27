@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
@@ -54,8 +55,8 @@ public class ExpandedXml25EvidenceWriter extends AbstractExpandedXml25Writer<Int
         super(InteractionEvidence.class, writer);
     }
 
-    public ExpandedXml25EvidenceWriter(XMLStreamWriter streamWriter) {
-        super(InteractionEvidence.class, streamWriter);
+    public ExpandedXml25EvidenceWriter(XMLStreamWriter streamWriter, PsiXml25ObjectCache cache) {
+        super(InteractionEvidence.class, streamWriter, cache);
     }
 
     @Override

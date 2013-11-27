@@ -38,8 +38,8 @@ public class CompactXml25NamedWriter extends AbstractCompactXml25MixWriter<Inter
 
     @Override
     protected void initialiseDelegateWriters() {
-        setModelledWriter(new CompactXml25NamedModelledWriter(getStreamWriter()));
-        setEvidenceWriter(new CompactXml25NamedEvidenceWriter(getStreamWriter()));
-        setLightWriter(new LightCompactXml25NamedWriter(getStreamWriter()));
+        setModelledWriter(new CompactXml25NamedModelledWriter(getStreamWriter(), getElementCache()));
+        setEvidenceWriter(new CompactXml25NamedEvidenceWriter(getStreamWriter(), getElementCache()));
+        setLightWriter(new LightCompactXml25NamedWriter(getStreamWriter(), getElementCache()));
     }
 }

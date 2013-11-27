@@ -38,8 +38,8 @@ public class CompactXml25Writer extends AbstractCompactXml25MixWriter<Interactio
 
     @Override
     protected void initialiseDelegateWriters() {
-        setModelledWriter(new CompactXml25ModelledWriter(getStreamWriter()));
-        setEvidenceWriter(new CompactXml25EvidenceWriter(getStreamWriter()));
-        setLightWriter(new LightCompactXml25Writer(getStreamWriter()));
+        setModelledWriter(new CompactXml25ModelledWriter(getStreamWriter(), getElementCache()));
+        setEvidenceWriter(new CompactXml25EvidenceWriter(getStreamWriter(), getElementCache()));
+        setLightWriter(new LightCompactXml25Writer(getStreamWriter(), getElementCache()));
     }
 }

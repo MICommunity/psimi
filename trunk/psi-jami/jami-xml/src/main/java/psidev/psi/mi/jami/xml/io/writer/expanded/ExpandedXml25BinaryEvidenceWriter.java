@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25BinaryInteractionEvidenceWriter;
@@ -43,8 +44,8 @@ public class ExpandedXml25BinaryEvidenceWriter extends AbstractExpandedXml25Writ
         super(BinaryInteractionEvidence.class, writer);
     }
 
-    public ExpandedXml25BinaryEvidenceWriter(XMLStreamWriter streamWriter) {
-        super(BinaryInteractionEvidence.class, streamWriter);
+    public ExpandedXml25BinaryEvidenceWriter(XMLStreamWriter streamWriter, PsiXml25ObjectCache elementCache) {
+        super(BinaryInteractionEvidence.class, streamWriter, elementCache);
     }
 
     @Override

@@ -38,8 +38,8 @@ public class ExpandedXml25Writer extends AbstractExpandedXml25MixWriter<Interact
 
     @Override
     protected void initialiseDelegateWriters() {
-        setModelledWriter(new ExpandedXml25ModelledWriter(getStreamWriter()));
-        setEvidenceWriter(new ExpandedXml25EvidenceWriter(getStreamWriter()));
-        setLightWriter(new LightExpandedXml25Writer(getStreamWriter()));
+        setModelledWriter(new ExpandedXml25ModelledWriter(getStreamWriter(), getElementCache()));
+        setEvidenceWriter(new ExpandedXml25EvidenceWriter(getStreamWriter(), getElementCache()));
+        setLightWriter(new LightExpandedXml25Writer(getStreamWriter(), getElementCache()));
     }
 }

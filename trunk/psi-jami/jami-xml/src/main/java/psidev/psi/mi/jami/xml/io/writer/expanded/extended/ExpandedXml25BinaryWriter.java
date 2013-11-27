@@ -39,8 +39,8 @@ public class ExpandedXml25BinaryWriter extends AbstractExpandedXml25MixWriter<Bi
 
     @Override
     protected void initialiseDelegateWriters() {
-        setModelledWriter(new ExpandedXml25ModelledBinaryWriter(getStreamWriter()));
-        setEvidenceWriter(new ExpandedXml25BinaryEvidenceWriter(getStreamWriter()));
-        setLightWriter(new LightExpandedXml25BinaryWriter(getStreamWriter()));
+        setModelledWriter(new ExpandedXml25ModelledBinaryWriter(getStreamWriter(), getElementCache()));
+        setEvidenceWriter(new ExpandedXml25BinaryEvidenceWriter(getStreamWriter(), getElementCache()));
+        setLightWriter(new LightExpandedXml25BinaryWriter(getStreamWriter(), getElementCache()));
     }
 }

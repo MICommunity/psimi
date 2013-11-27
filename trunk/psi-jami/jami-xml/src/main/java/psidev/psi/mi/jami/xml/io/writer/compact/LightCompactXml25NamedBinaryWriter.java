@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.compact;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25NamedBinaryInteractionWriter;
@@ -44,10 +45,9 @@ public class LightCompactXml25NamedBinaryWriter extends AbstractCompactXml25Writ
         super(BinaryInteraction.class, writer);
     }
 
-    public LightCompactXml25NamedBinaryWriter(XMLStreamWriter streamWriter) {
-        super(BinaryInteraction.class, streamWriter);
+    public LightCompactXml25NamedBinaryWriter(XMLStreamWriter streamWriter, PsiXml25ObjectCache cache) {
+        super(BinaryInteraction.class, streamWriter, cache);
     }
-
     @Override
     protected void registerAvailabilities(BinaryInteraction interaction) {
         // nothing to do
