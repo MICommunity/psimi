@@ -5,8 +5,8 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 

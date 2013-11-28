@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import java.util.Set;
 
 /**
- * Index that can assign/retrieve an id for a given MI object.
+ * Index that can assign/retrieve an id for a given MI object in a compact XML environment
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
@@ -66,5 +67,18 @@ public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends
 
     protected Class<T> getInteractionType() {
         return type;
+    }
+
+    protected void writeInteraction() throws XMLStreamException {
+        // write interaction
+        super.writeInteraction();
+        // remove experiments
+        getElementCache().removeObject(getInteractionWriter().extractDefaultExperimentFrom(getCurrentInteraction()));
+    }
+
+    protected void writeComplex(ModelledInteraction modelled) {
+        super.writeComplex(modelled);
+        // remove experiments
+        getElementCache().removeObject(getComplexWriter().extractDefaultExperimentFrom(modelled));
     }
 }

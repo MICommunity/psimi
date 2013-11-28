@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

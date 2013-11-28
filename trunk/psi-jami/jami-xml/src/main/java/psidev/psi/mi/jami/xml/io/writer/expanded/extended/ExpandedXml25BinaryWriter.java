@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.extension.XmlSource;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExtendedInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25MixWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -48,5 +50,24 @@ public class ExpandedXml25BinaryWriter extends AbstractExpandedXml25MixWriter<Bi
     @Override
     protected void initialiseDefaultSource() {
         setDefaultSource(new XmlSource("Unknown source"));
+    }
+
+    @Override
+    protected void writeInteraction() throws XMLStreamException {
+        // write interaction
+        super.writeInteraction();
+        // remove experiments
+        for (Object exp : ((PsiXml25ExtendedInteractionWriter)getInteractionWriter()).extractDefaultExperimentsFrom(getCurrentInteraction())){
+            getElementCache().removeObject(exp);
+        }
+    }
+
+    @Override
+    protected void writeComplex(ModelledInteraction modelled) {
+        super.writeComplex(modelled);
+        // remove experiments
+        for (Object exp : ((PsiXml25ExtendedInteractionWriter)getComplexWriter()).extractDefaultExperimentsFrom(modelled)){
+            getElementCache().removeObject(exp);
+        }
     }
 }
