@@ -53,9 +53,13 @@ public class Xml25EntryContext {
         if (this.elementCache != null){
             this.elementCache.clear();
         }
-        this.references.clear();
+        if (this.references != null){
+            this.references.clear();
+        }
         this.currentEntry = null;
-        this.inferredInteractions.clear();
+        if (this.inferredInteractions != null){
+            this.inferredInteractions.clear();
+        }
     }
 
     public Entry getCurrentEntry() {

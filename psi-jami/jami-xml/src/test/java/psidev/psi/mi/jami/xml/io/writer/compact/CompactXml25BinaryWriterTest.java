@@ -1456,7 +1456,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedBinaryWriter writer = new CompactXml25NamedBinaryWriter(stringWriter);
+        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
