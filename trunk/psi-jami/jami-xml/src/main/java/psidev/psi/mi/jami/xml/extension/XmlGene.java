@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultGene;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -22,56 +22,83 @@ public class XmlGene extends DefaultGene implements ExtendedPsi25Interactor, Fil
     private PsiXmLocator sourceLocator;
 
     public XmlGene(String name) {
-        super(name);
+        super(name, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlGene(String name, String fullName) {
-        super(name, fullName);
+        super(name, fullName, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlGene(String name, Organism organism) {
-        super(name, organism);
+        super(name, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())),
+                organism);
     }
 
     public XmlGene(String name, String fullName, Organism organism) {
-        super(name, fullName, organism);
+        super(name, fullName, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())),
+                organism);
     }
 
     public XmlGene(String name, Xref uniqueId) {
-        super(name, uniqueId);
+        super(name, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())),
+                uniqueId);
     }
 
     public XmlGene(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, uniqueId);
+        super(name, fullName, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())),
+                uniqueId);
     }
 
     public XmlGene(String name, Organism organism, Xref uniqueId) {
-        super(name, organism, uniqueId);
+        super(name, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())),
+                organism, uniqueId);
     }
 
     public XmlGene(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, organism, uniqueId);
+        super(name, fullName, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())),
+                organism, uniqueId);
     }
 
-    public XmlGene(String name, String fullName, String ensembl) {
-        super(name, fullName);
+    public XmlGene(String name, String fullName, CvTerm type, Xref ensembl) {
+        super(name, fullName, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier()))
+                , ensembl);
+    }
 
-        if (ensembl != null){
-            setEnsembl(ensembl);
+    public XmlGene(String name, CvTerm type, Xref ensembl) {
+        super(name, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), ensembl);
+    }
+
+    public XmlGene(String name, CvTerm type, Organism organism, Xref ensembl) {
+        super(name, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), organism, ensembl);
+    }
+
+    public XmlGene(String name, String fullName, CvTerm type, Organism organism, Xref ensembl) {
+        super(name, fullName, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), organism, ensembl);
+    }
+
+    public XmlGene(String name, CvTerm type, Xref uniqueId, Xref ensembl) {
+        super(name, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), uniqueId, ensembl);
+    }
+
+    public XmlGene(String name, String fullName, CvTerm type, Xref uniqueId, Xref ensembl) {
+        super(name, fullName, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), uniqueId, ensembl);
+    }
+
+    public XmlGene(String name, CvTerm type, Organism organism, Xref uniqueId, Xref ensembl) {
+        super(name, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId, ensembl);
+    }
+
+    public XmlGene(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId, Xref ensembl) {
+        super(name, fullName, type != null ? type : new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId, ensembl);
+    }
+
+    @Override
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())));
         }
-    }
-
-    public XmlGene(String name, Organism organism, String ensembl) {
-        super(name, organism);
-        if (ensembl != null){
-            setEnsembl(ensembl);
-        }
-    }
-
-    public XmlGene(String name, String fullName, Organism organism, String ensembl) {
-        super(name, fullName, organism);
-        if (ensembl != null){
-            setEnsembl(ensembl);
+        else {
+            super.setInteractorType(interactorType);
         }
     }
 

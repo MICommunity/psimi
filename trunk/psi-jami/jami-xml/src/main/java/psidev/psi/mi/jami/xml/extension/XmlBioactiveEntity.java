@@ -2,9 +2,7 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
@@ -25,110 +23,135 @@ public class XmlBioactiveEntity extends DefaultBioactiveEntity implements Extend
     private PsiXmLocator sourceLocator;
 
     public XmlBioactiveEntity(String name, CvTerm type) {
-        super(name, type);
+        super(name, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+        super(name, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+        super(name, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+        super(name, fullName, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+        super(name, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+        super(name, fullName, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
 
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, String uniqueChebi) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())));
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name, CvTerm type, Organism organism, String uniqueChebi) {
-        super(name, type, organism);
+        super(name, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, String uniqueChebi) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name) {
-        super(name, CvTermUtils.createBioactiveEntityType());
+        super(name, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+        );
     }
 
     public XmlBioactiveEntity(String name, String fullName) {
-        super(name, fullName, CvTermUtils.createBioactiveEntityType());
+        super(name, fullName, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+        );
     }
 
     public XmlBioactiveEntity(String name, Organism organism) {
-        super(name, CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , organism);
     }
 
     public XmlBioactiveEntity(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, fullName, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , organism);
     }
 
     public XmlBioactiveEntity(String name, Xref uniqueId) {
-        super(name, CvTermUtils.createBioactiveEntityType(), uniqueId);
+        super(name, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , uniqueId);
     }
 
     public XmlBioactiveEntity(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createBioactiveEntityType(), uniqueId);
+        super(name, fullName, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , uniqueId);
     }
 
     public XmlBioactiveEntity(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
+        super(name, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , organism, uniqueId);
     }
 
     public XmlBioactiveEntity(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
+        super(name, fullName, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , organism, uniqueId);
 
     }
 
     public XmlBioactiveEntity(String name, String fullName, String uniqueChebi) {
-        super(name, fullName, CvTermUtils.createBioactiveEntityType());
+        super(name, fullName, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+        );
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name, Organism organism, String uniqueChebi) {
-        super(name, CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public XmlBioactiveEntity(String name, String fullName, Organism organism, String uniqueChebi) {
-        super(name, fullName, CvTermUtils.createBioactiveEntityType(), organism);
+        super(name, fullName, new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier()))
+                , organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
+        }
+    }
+
+    @Override
+    /**
+     * Sets the interactor type of this bioactive entity.
+     * If the given interactorType is null, it sets the interactorType to 'bioactive entity'(MI:1100)
+     */
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())));
+        }
+        else {
+            super.setInteractorType(interactorType);
         }
     }
 

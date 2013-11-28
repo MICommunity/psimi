@@ -52,14 +52,14 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
     public XmlExperiment(Publication publication){
 
         this.publication = publication;
-        this.interactionDetectionMethod = CvTermUtils.createUnspecifiedMethod();
+        this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, new XmlXref(CvTermUtils.createPsiMiDatabase(), Experiment.UNSPECIFIED_METHOD_MI, CvTermUtils.createIdentityQualifier()));
     }
 
     public XmlExperiment(Publication publication, CvTerm interactionDetectionMethod){
 
         this.publication = publication;
         if (interactionDetectionMethod == null){
-            this.interactionDetectionMethod = CvTermUtils.createUnspecifiedMethod();
+            this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, new XmlXref(CvTermUtils.createPsiMiDatabase(), Experiment.UNSPECIFIED_METHOD_MI, CvTermUtils.createIdentityQualifier()));
         }
         else {
             this.interactionDetectionMethod = interactionDetectionMethod;
@@ -153,7 +153,7 @@ public class XmlExperiment implements ExtendedPsi25Experiment, FileSourceContext
      */
     public void setInteractionDetectionMethod(CvTerm value) {
         if (value == null){
-            this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
+            this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, new XmlXref(CvTermUtils.createPsiMiDatabase(), Experiment.UNSPECIFIED_METHOD_MI, CvTermUtils.createIdentityQualifier()));
         }
         else{
             this.interactionDetectionMethod = value;

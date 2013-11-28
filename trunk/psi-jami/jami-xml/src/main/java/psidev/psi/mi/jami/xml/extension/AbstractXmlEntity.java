@@ -52,7 +52,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-        this.biologicalRole = CvTermUtils.createUnspecifiedRole();
+        this.biologicalRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-        this.biologicalRole = bioRole != null ? bioRole : CvTermUtils.createUnspecifiedRole();
+        this.biologicalRole = bioRole != null ? bioRole : new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -103,6 +103,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         this.namesContainer.setFullName(name);
     }
 
+    @Override
     public List<Alias> getAliases() {
         if (namesContainer == null){
             namesContainer = new NamesContainer();
@@ -213,7 +214,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
      */
     public void setBiologicalRole(CvTerm bioRole) {
         if (bioRole == null){
-            this.biologicalRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+            this.biologicalRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
         }
         else {
             biologicalRole = bioRole;

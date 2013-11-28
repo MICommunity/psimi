@@ -6,6 +6,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -62,7 +63,6 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
     protected void initialiseExperimentalRoleWrapper() {
         this.jaxbExperimentalRoleWrapper = new JAXBExperimentalRoleWrapper();
-        this.jaxbExperimentalRoleWrapper.experimentalRoles.add(new XmlCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI));
     }
 
     protected void initialiseConfidenceWrapper() {
@@ -125,7 +125,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
             initialiseExperimentalRoleWrapper();
         }
         if (this.jaxbExperimentalRoleWrapper.experimentalRoles.isEmpty()){
-            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(new XmlCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI));
+            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(0, new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier())));
         }
         return this.jaxbExperimentalRoleWrapper.experimentalRoles.get(0);
     }
@@ -133,7 +133,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     public void setExperimentalRole(CvTerm expRole) {
         if (this.jaxbExperimentalRoleWrapper == null && expRole != null){
             initialiseExperimentalRoleWrapper();
-            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(expRole);
+            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(0, expRole);
         }
         else if (expRole != null){
             if (!this.jaxbExperimentalRoleWrapper.experimentalRoles.isEmpty()){
@@ -217,6 +217,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     public List<CvTerm> getExperimentalRoles() {
         if (this.jaxbExperimentalRoleWrapper == null){
             initialiseExperimentalRoleWrapper();
+            this.jaxbExperimentalRoleWrapper.experimentalRoles.add(0, new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier())));
         }
         return this.jaxbExperimentalRoleWrapper.experimentalRoles;
     }

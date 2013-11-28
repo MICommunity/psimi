@@ -2,10 +2,9 @@ package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -24,67 +23,77 @@ public class XmlProtein extends DefaultProtein implements ExtendedPsi25Interacto
     private PsiXmLocator sourceLocator;
 
     public XmlProtein(String name, CvTerm type) {
-        super(name, type);
+        super(name, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlProtein(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlProtein(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+        super(name, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlProtein(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlProtein(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+        super(name, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlProtein(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+        super(name, fullName, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlProtein(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+        super(name, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
     public XmlProtein(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+        super(name, fullName, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
     public XmlProtein(String name) {
-        super(name);
+        super(name, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlProtein(String name, String fullName) {
-        super(name, fullName);
+        super(name, fullName, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlProtein(String name, Organism organism) {
-        super(name, organism);
+        super(name, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlProtein(String name, String fullName, Organism organism) {
-        super(name, fullName, organism);
+        super(name, fullName, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlProtein(String name, Xref uniqueId) {
-        super(name, uniqueId);
+        super(name, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlProtein(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, uniqueId);
+        super(name, fullName, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlProtein(String name, Organism organism, Xref uniqueId) {
-        super(name, organism, uniqueId);
+        super(name, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
     public XmlProtein(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, organism, uniqueId);
+        super(name, fullName, new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
+    }
+
+    @Override
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())));
+        }
+        else {
+            super.setInteractorType(interactorType);
+        }
     }
 
     /**
