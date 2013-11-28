@@ -7,8 +7,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.util.Collection;
-
 /**
  * Default implementation for proteins and peptides
  *
@@ -125,7 +123,7 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     }
 
     public void setUniprotkb(String ac) {
-        Collection<Xref> proteinIdentifiers = getIdentifiers();
+        ProteinIdentifierList proteinIdentifiers = (ProteinIdentifierList)getIdentifiers();
 
         // add new uniprotkb if not null
         if (ac != null){
@@ -133,10 +131,10 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old uniprotkb if not null
             if (this.uniprotkb != null){
-                proteinIdentifiers.remove(this.uniprotkb);
+                proteinIdentifiers.removeOnly(this.uniprotkb);
             }
             this.uniprotkb = new DefaultXref(uniprotkbDatabase, ac, identityQualifier);
-            proteinIdentifiers.add(this.uniprotkb);
+            proteinIdentifiers.addOnly(this.uniprotkb);
         }
         // remove all uniprotkb if the collection is not empty
         else if (!proteinIdentifiers.isEmpty()) {
@@ -150,7 +148,7 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     }
 
     public void setRefseq(String ac) {
-        Collection<Xref> proteinIdentifiers = getIdentifiers();
+        ProteinIdentifierList proteinIdentifiers = (ProteinIdentifierList)getIdentifiers();
 
         // add new refseq if not null
         if (ac != null){
@@ -158,10 +156,10 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old refseq if not null
             if (this.refseq != null){
-                proteinIdentifiers.remove(this.refseq);
+                proteinIdentifiers.removeOnly(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
-            proteinIdentifiers.add(this.refseq);
+            proteinIdentifiers.addOnly(this.refseq);
         }
         // remove all refseq if the collection is not empty
         else if (!proteinIdentifiers.isEmpty()) {
@@ -175,17 +173,17 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     }
 
     public void setGeneName(String name) {
-        Collection<Alias> proteinAliases = getAliases();
+        ProteinAliasList proteinAliases = (ProteinAliasList)getAliases();
 
         // add new gene name if not null
         if (name != null){
             CvTerm geneNameType = CvTermUtils.createGeneNameAliasType();
             // first remove old gene name if not null
             if (this.geneName != null){
-                proteinAliases.remove(this.geneName);
+                proteinAliases.removeOnly(this.geneName);
             }
             this.geneName = new DefaultAlias(geneNameType, name);
-            proteinAliases.add(this.geneName);
+            proteinAliases.addOnly(this.geneName);
         }
         // remove all gene names if the collection is not empty
         else if (!proteinAliases.isEmpty()) {
@@ -199,16 +197,16 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     }
 
     public void setRogid(String rogid) {
-        Collection<Checksum> proteinChecksums = getChecksums();
+        ProteinChecksumList proteinChecksums = (ProteinChecksumList)getChecksums();
 
         if (rogid != null){
             CvTerm rogidMethod = CvTermUtils.createRogid();
             // first remove old rogid
             if (this.rogid != null){
-                proteinChecksums.remove(this.rogid);
+                proteinChecksums.removeOnly(this.rogid);
             }
             this.rogid = new DefaultChecksum(rogidMethod, rogid);
-            proteinChecksums.add(this.rogid);
+            proteinChecksums.addOnly(this.rogid);
         }
         // remove all smiles if the collection is not empty
         else if (!proteinChecksums.isEmpty()) {

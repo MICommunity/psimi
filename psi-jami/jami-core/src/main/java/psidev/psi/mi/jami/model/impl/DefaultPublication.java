@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -179,7 +178,7 @@ public class DefaultPublication implements Publication {
     }
 
     public void setPubmedId(String pubmedId) {
-        Collection<Xref> identifiers = getIdentifiers();
+        PublicationIdentifierList identifiers = (PublicationIdentifierList)getIdentifiers();
 
         // add new pubmed if not null
         if (pubmedId != null){
@@ -187,10 +186,10 @@ public class DefaultPublication implements Publication {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old pubmed if not null
             if (this.pubmedId != null){
-                identifiers.remove(this.pubmedId);
+                identifiers.removeOnly(this.pubmedId);
             }
             this.pubmedId = new DefaultXref(pubmedDatabase, pubmedId, identityQualifier);
-            identifiers.add(this.pubmedId);
+            identifiers.addOnly(this.pubmedId);
         }
         // remove all pubmed if the collection is not empty
         else if (!identifiers.isEmpty()) {
@@ -204,17 +203,17 @@ public class DefaultPublication implements Publication {
     }
 
     public void setDoi(String doi) {
-        Collection<Xref> identifiers = getIdentifiers();
+        PublicationIdentifierList identifiers = (PublicationIdentifierList)getIdentifiers();
         // add new doi if not null
         if (doi != null){
             CvTerm doiDatabase = CvTermUtils.createDoiDatabase();
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old doi if not null
             if (this.doi != null){
-                identifiers.remove(this.doi);
+                identifiers.removeOnly(this.doi);
             }
             this.doi = new DefaultXref(doiDatabase, doi, identityQualifier);
-            identifiers.add(this.doi);
+            identifiers.addOnly(this.doi);
         }
         // remove all doi if the collection is not empty
         else if (!identifiers.isEmpty()) {
@@ -235,17 +234,17 @@ public class DefaultPublication implements Publication {
     }
 
     public void assignImexId(String identifier) {
-        Collection<Xref> xrefs = getXrefs();
+        PublicationXrefList xrefs = (PublicationXrefList)getXrefs();
         // add new imex if not null
         if (identifier != null){
             CvTerm imexDatabase = CvTermUtils.createImexDatabase();
             CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
             // first remove old imex if not null
             if (this.imexId != null){
-                xrefs.remove(this.imexId);
+                xrefs.removeOnly(this.imexId);
             }
             this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
-            xrefs.add(this.imexId);
+            xrefs.addOnly(this.imexId);
 
             this.curationDepth = CurationDepth.IMEx;
         }

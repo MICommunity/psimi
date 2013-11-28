@@ -8,8 +8,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.util.Collection;
-
 /**
  * Default implementation for gene
  *
@@ -73,6 +71,46 @@ public class DefaultGene extends DefaultMolecule implements Gene {
         }
     }
 
+    public DefaultGene(String name, CvTerm type, Xref ensembl) {
+        super(name, type != null ? type : CvTermUtils.createGeneInteractorType());
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, String fullName, CvTerm type, Xref ensembl) {
+        super(name, fullName, type != null ? type : CvTermUtils.createGeneInteractorType());
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, CvTerm type, Organism organism, Xref ensembl) {
+        super(name, type != null ? type : CvTermUtils.createGeneInteractorType(), organism);
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, String fullName, CvTerm type, Organism organism, Xref ensembl) {
+        super(name, fullName, type != null ? type : CvTermUtils.createGeneInteractorType(), organism);
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, CvTerm type, Xref uniqueId, Xref ensembl) {
+        super(name, type != null ? type : CvTermUtils.createGeneInteractorType(), uniqueId);
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, String fullName, CvTerm type, Xref uniqueId, Xref ensembl) {
+        super(name, fullName, type != null ? type : CvTermUtils.createGeneInteractorType(), uniqueId);
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, CvTerm type, Organism organism, Xref uniqueId, Xref ensembl) {
+        super(name, type != null ? type : CvTermUtils.createGeneInteractorType(), organism, uniqueId);
+        this.ensembl = ensembl;
+    }
+
+    public DefaultGene(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId, Xref ensembl) {
+        super(name, fullName, type != null ? type : CvTermUtils.createGeneInteractorType(), organism, uniqueId);
+        this.ensembl = ensembl;
+    }
+
     public DefaultGene(String name, Organism organism, String ensembl) {
         super(name, CvTermUtils.createGeneInteractorType(), organism);
         if (ensembl != null){
@@ -107,7 +145,7 @@ public class DefaultGene extends DefaultMolecule implements Gene {
     }
 
     public void setEnsembl(String ac) {
-        Collection<Xref> geneIdentifiers = getIdentifiers();
+        GeneIdentifierList geneIdentifiers = (GeneIdentifierList)getIdentifiers();
 
         // add new ensembl if not null
         if (ac != null){
@@ -115,10 +153,10 @@ public class DefaultGene extends DefaultMolecule implements Gene {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old ensembl if not null
             if (this.ensembl != null){
-                geneIdentifiers.remove(this.ensembl);
+                geneIdentifiers.removeOnly(this.ensembl);
             }
             this.ensembl = new DefaultXref(ensemblDatabase, ac, identityQualifier);
-            geneIdentifiers.add(this.ensembl);
+            geneIdentifiers.addOnly(this.ensembl);
         }
         // remove all ensembl if the collection is not empty
         else if (!geneIdentifiers.isEmpty()) {
@@ -132,7 +170,7 @@ public class DefaultGene extends DefaultMolecule implements Gene {
     }
 
     public void setEnsemblGenome(String ac) {
-        Collection<Xref> geneIdentifiers = getIdentifiers();
+        GeneIdentifierList geneIdentifiers = (GeneIdentifierList)getIdentifiers();
 
         // add new ensembl genomes if not null
         if (ac != null){
@@ -140,10 +178,10 @@ public class DefaultGene extends DefaultMolecule implements Gene {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old ensembl genome if not null
             if (this.ensemblGenome != null){
-                geneIdentifiers.remove(this.ensemblGenome);
+                geneIdentifiers.removeOnly(this.ensemblGenome);
             }
             this.ensemblGenome = new DefaultXref(ensemblGenomesDatabase, ac, identityQualifier);
-            geneIdentifiers.add(this.ensemblGenome);
+            geneIdentifiers.addOnly(this.ensemblGenome);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!geneIdentifiers.isEmpty()) {
@@ -157,7 +195,7 @@ public class DefaultGene extends DefaultMolecule implements Gene {
     }
 
     public void setEntrezGeneId(String id) {
-        Collection<Xref> geneIdentifiers = getIdentifiers();
+        GeneIdentifierList geneIdentifiers = (GeneIdentifierList)getIdentifiers();
 
         // add new entrez gene id genomes if not null
         if (id != null){
@@ -165,10 +203,10 @@ public class DefaultGene extends DefaultMolecule implements Gene {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old entrez gene id if not null
             if (this.entrezGeneId!= null){
-                geneIdentifiers.remove(this.entrezGeneId);
+                geneIdentifiers.removeOnly(this.entrezGeneId);
             }
             this.entrezGeneId = new DefaultXref(entrezDatabase, id, identityQualifier);
-            geneIdentifiers.add(this.entrezGeneId);
+            geneIdentifiers.addOnly(this.entrezGeneId);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!geneIdentifiers.isEmpty()) {
@@ -182,7 +220,7 @@ public class DefaultGene extends DefaultMolecule implements Gene {
     }
 
     public void setRefseq(String ac) {
-        Collection<Xref> geneIdentifiers = getIdentifiers();
+        GeneIdentifierList geneIdentifiers = (GeneIdentifierList)getIdentifiers();
 
         // add new refseq if not null
         if (ac != null){
@@ -190,10 +228,10 @@ public class DefaultGene extends DefaultMolecule implements Gene {
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
-                geneIdentifiers.remove(this.refseq);
+                geneIdentifiers.removeOnly(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
-            geneIdentifiers.add(this.refseq);
+            geneIdentifiers.addOnly(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!geneIdentifiers.isEmpty()) {

@@ -6,8 +6,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.util.Collection;
-
 /**
  * Default implementation for bioactive entity
  *
@@ -162,7 +160,7 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
     }
 
     public void setChebi(String id) {
-        Collection<Xref> bioactiveEntityIdentifiers = getIdentifiers();
+        BioctiveEntityIdentifierList bioactiveEntityIdentifiers = (BioctiveEntityIdentifierList)getIdentifiers();
 
         // add new chebi if not null
         if (id != null){
@@ -170,10 +168,10 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.chebi != null){
-                bioactiveEntityIdentifiers.remove(this.chebi);
+                bioactiveEntityIdentifiers.removeOnly(this.chebi);
             }
             this.chebi = new DefaultXref(chebiDatabase, id, identityQualifier);
-            bioactiveEntityIdentifiers.add(this.chebi);
+            bioactiveEntityIdentifiers.addOnly(this.chebi);
         }
         // remove all chebi if the collection is not empty
         else if (!bioactiveEntityIdentifiers.isEmpty()) {
@@ -187,16 +185,16 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
     }
 
     public void setSmile(String smile) {
-        Collection<Checksum> bioactiveEntityChecksums = getChecksums();
+        BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
 
         if (smile != null){
             CvTerm smileMethod = CvTermUtils.createSmile();
             // first remove old smile
             if (this.smile != null){
-                bioactiveEntityChecksums.remove(this.smile);
+                bioactiveEntityChecksums.removeOnly(this.smile);
             }
             this.smile = new DefaultChecksum(smileMethod, smile);
-            bioactiveEntityChecksums.add(this.smile);
+            bioactiveEntityChecksums.addOnly(this.smile);
         }
         // remove all smiles if the collection is not empty
         else if (!bioactiveEntityChecksums.isEmpty()) {
@@ -210,16 +208,16 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
     }
 
     public void setStandardInchiKey(String key) {
-        Collection<Checksum> bioactiveEntityChecksums = getChecksums();
+        BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
 
         if (key != null){
             CvTerm inchiKeyMethod = CvTermUtils.createStandardInchiKey();
             // first remove old standard inchi key
             if (this.standardInchiKey != null){
-                bioactiveEntityChecksums.remove(this.standardInchiKey);
+                bioactiveEntityChecksums.removeOnly(this.standardInchiKey);
             }
             this.standardInchiKey = new DefaultChecksum(inchiKeyMethod, key);
-            bioactiveEntityChecksums.add(this.standardInchiKey);
+            bioactiveEntityChecksums.addOnly(this.standardInchiKey);
         }
         // remove all standard inchi keys if the collection is not empty
         else if (!bioactiveEntityChecksums.isEmpty()) {
@@ -233,16 +231,16 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
     }
 
     public void setStandardInchi(String inchi) {
-        Collection<Checksum> bioactiveEntityChecksums = getChecksums();
+        BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
 
         if (inchi != null){
             CvTerm inchiMethod = CvTermUtils.createStandardInchi();
             // first remove standard inchi
             if (this.standardInchi != null){
-                bioactiveEntityChecksums.remove(this.standardInchi);
+                bioactiveEntityChecksums.removeOnly(this.standardInchi);
             }
             this.standardInchi = new DefaultChecksum(inchiMethod, inchi);
-            bioactiveEntityChecksums.add(this.standardInchi);
+            bioactiveEntityChecksums.addOnly(this.standardInchi);
         }
         // remove all standard inchi if the collection is not empty
         else if (!bioactiveEntityChecksums.isEmpty()) {
