@@ -282,7 +282,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     }
 
     public void setPhysicalProperties(String properties) {
-        Collection<Annotation> complexAnnotationList = getAnnotations();
+        ComplexAnnotationList complexAnnotationList = (ComplexAnnotationList)getAnnotations();
 
         // add new physical properties if not null
         if (properties != null){
@@ -290,10 +290,10 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             CvTerm complexPhysicalProperties = CvTermUtils.createComplexPhysicalProperties();
             // first remove old physical property if not null
             if (this.physicalProperties != null){
-                complexAnnotationList.remove(this.physicalProperties);
+                complexAnnotationList.removeOnly(this.physicalProperties);
             }
             this.physicalProperties = new DefaultAnnotation(complexPhysicalProperties, properties);
-            complexAnnotationList.add(this.physicalProperties);
+            complexAnnotationList.addOnly(this.physicalProperties);
         }
         // remove all physical properties if the collection is not empty
         else if (!complexAnnotationList.isEmpty()) {

@@ -121,15 +121,15 @@ public abstract class AbstractInteraction<T extends Participant> implements Inte
     }
 
     public void setRigid(String rigid) {
-        Collection<Checksum> checksums = getChecksums();
+        InteractionChecksumList checksums = (InteractionChecksumList)getChecksums();
         if (rigid != null){
             CvTerm rigidMethod = CvTermUtils.createRigid();
             // first remove old rigid
             if (this.rigid != null){
-                checksums.remove(this.rigid);
+                checksums.removeOnly(this.rigid);
             }
             this.rigid = new DefaultChecksum(rigidMethod, rigid);
-            checksums.add(this.rigid);
+            checksums.addOnly(this.rigid);
         }
         // remove all smiles if the collection is not empty
         else if (!checksums.isEmpty()) {

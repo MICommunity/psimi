@@ -8,8 +8,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.util.Collection;
-
 /**
  * Default implementation for NucleicAcid.
  *
@@ -114,7 +112,7 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
     }
 
     public void setDdbjEmblGenbank(String id) {
-        Collection<Xref> nucleicAcidIdentifiers = getIdentifiers();
+        NucleicAcidIdentifierList nucleicAcidIdentifiers = (NucleicAcidIdentifierList)getIdentifiers();
 
         // add new ddbj/embl/genbank if not null
         if (id != null){
@@ -122,10 +120,10 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old ddbj/embl/genbank if not null
             if (this.ddbjEmblGenbank != null){
-                nucleicAcidIdentifiers.remove(this.ddbjEmblGenbank);
+                nucleicAcidIdentifiers.removeOnly(this.ddbjEmblGenbank);
             }
             this.ddbjEmblGenbank = new DefaultXref(ddbjEmblGenbankDatabase, id, identityQualifier);
-            nucleicAcidIdentifiers.add(this.ddbjEmblGenbank);
+            nucleicAcidIdentifiers.addOnly(this.ddbjEmblGenbank);
         }
         // remove all ddbj/embl/genbank if the collection is not empty
         else if (!nucleicAcidIdentifiers.isEmpty()) {
@@ -139,7 +137,7 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
     }
 
     public void setRefseq(String id) {
-        Collection<Xref> nucleicAcidIdentifiers = getIdentifiers();
+        NucleicAcidIdentifierList nucleicAcidIdentifiers = (NucleicAcidIdentifierList)getIdentifiers();
 
         // add new refseq if not null
         if (id != null){
@@ -147,10 +145,10 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
             CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
-                nucleicAcidIdentifiers.remove(this.refseq);
+                nucleicAcidIdentifiers.removeOnly(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, id, identityQualifier);
-            nucleicAcidIdentifiers.add(this.refseq);
+            nucleicAcidIdentifiers.addOnly(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!nucleicAcidIdentifiers.isEmpty()) {
