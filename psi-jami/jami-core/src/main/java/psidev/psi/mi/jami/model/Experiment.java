@@ -14,6 +14,8 @@ public interface Experiment {
 
     public static String UNSPECIFIED_METHOD = "unspecified method";
     public static String UNSPECIFIED_METHOD_MI = "MI:0686";
+    public static String INFERRED_BY_CURATOR = "inferred by curator";
+    public static String INFERRED_BY_CURATOR_MI = "MI:0364";
 
     /**
      * The publication where the experiment has been described.
