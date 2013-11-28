@@ -80,6 +80,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         // did not parse the entry set yet
         if (this.entrySet == null){
             initialiseEntryContext(Xml25EntryContext.getInstance());
+            Xml25EntryContext.getInstance().initialiseInferredInteractionList();
+            Xml25EntryContext.getInstance().initialiseReferencesList();
             this.entrySet = parseEntrySet();
             this.entryIterator = this.entrySet.getEntries().iterator();
         }

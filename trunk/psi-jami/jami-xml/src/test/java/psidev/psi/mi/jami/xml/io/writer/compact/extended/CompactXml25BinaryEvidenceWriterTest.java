@@ -1308,10 +1308,10 @@ public class CompactXml25BinaryEvidenceWriterTest {
         CompactXml25BinaryEvidenceWriter writer = new CompactXml25BinaryEvidenceWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new XmlProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
         BinaryInteractionEvidence interaction2 = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant2 = new DefaultParticipantEvidence(participant.getInteractor());
+        ParticipantEvidence participant2 = new XmlParticipantEvidence(participant.getInteractor());
         interaction2.addParticipant(participant2);
         interaction.setExperiment(new XmlExperiment(new DefaultPublication(new XmlXref(CvTermUtils.createPubmedDatabase(), "xxxxxx", CvTermUtils.createIdentityQualifier()))));
         interaction2.setExperiment(interaction.getExperiment());
@@ -1350,7 +1350,7 @@ public class CompactXml25BinaryEvidenceWriterTest {
         StringWriter stringWriter = new StringWriter();
 
         Complex complex = new XmlComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new XmlProtein("test protein")));
+        complex.getParticipants().add(new XmlModelledParticipant(new XmlProtein("test protein")));
 
         CompactXml25BinaryEvidenceWriter writer = new CompactXml25BinaryEvidenceWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
@@ -1395,10 +1395,10 @@ public class CompactXml25BinaryEvidenceWriterTest {
         CompactXml25BinaryEvidenceWriter writer = new CompactXml25BinaryEvidenceWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new XmlProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
         BinaryInteractionEvidence interaction2 = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant2 = new DefaultParticipantEvidence(new XmlProtein("protein test2"));
+        ParticipantEvidence participant2 = new XmlParticipantEvidence(new XmlProtein("protein test2"));
         interaction2.addParticipant(participant2);
         interaction.setExperiment(new XmlExperiment(new DefaultPublication(new XmlXref(CvTermUtils.createPubmedDatabase(), "xxxxxx", CvTermUtils.createIdentityQualifier()))));
         interaction2.setExperiment(interaction.getExperiment());
@@ -1420,10 +1420,10 @@ public class CompactXml25BinaryEvidenceWriterTest {
         CompactXml25BinaryEvidenceWriter writer = new CompactXml25BinaryEvidenceWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new XmlProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
         BinaryInteractionEvidence interaction2 = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant2 = new DefaultParticipantEvidence(new XmlProtein("protein test2"));
+        ParticipantEvidence participant2 = new XmlParticipantEvidence(new XmlProtein("protein test2"));
         interaction2.addParticipant(participant2);
         interaction.setExperiment(new XmlExperiment(new DefaultPublication(new XmlXref(CvTermUtils.createPubmedDatabase(), "xxxxxx", CvTermUtils.createIdentityQualifier()))));
         interaction2.setExperiment(interaction.getExperiment());
@@ -1472,12 +1472,12 @@ public class CompactXml25BinaryEvidenceWriterTest {
         CompactXml25BinaryEvidenceWriter writer = new CompactXml25BinaryEvidenceWriter(stringWriter);
 
         XmlBinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new XmlProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
         XmlBinaryInteractionEvidence interaction2 = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant2 = new DefaultParticipantEvidence(new XmlProtein("protein test2"));
+        ParticipantEvidence participant2 = new XmlParticipantEvidence(new XmlProtein("protein test2"));
         interaction2.addParticipant(participant2);
-        Source source = new DefaultSource("mint");
+        Source source = new XmlSource("mint");
         interaction.setExperiment(new XmlExperiment(new DefaultPublication(new XmlXref(CvTermUtils.createPubmedDatabase(), "xxxxxx", CvTermUtils.createIdentityQualifier()))));
         interaction2.setExperiment(interaction.getExperiment());
         interaction.getExperiment().getPublication().setSource(source);
@@ -1487,7 +1487,7 @@ public class CompactXml25BinaryEvidenceWriterTest {
         BinaryInteractionEvidence interaction4 = new XmlBinaryInteractionEvidence();
         interaction4.addParticipant(participant2);
         interaction4.setExperiment(interaction3.getExperiment());
-        Source source2 = new DefaultSource("intact");
+        Source source2 = new XmlSource("intact");
         interaction3.getExperiment().getPublication().setSource(source2);
         try {
             DatatypeFactory datatypeFactory = null;

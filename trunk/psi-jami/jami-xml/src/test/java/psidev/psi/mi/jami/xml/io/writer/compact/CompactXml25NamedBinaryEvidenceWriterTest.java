@@ -1323,6 +1323,7 @@ public class CompactXml25NamedBinaryEvidenceWriterTest {
     }
 
     @Test
+    @Ignore
     public void test_single_interaction_complexes() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
