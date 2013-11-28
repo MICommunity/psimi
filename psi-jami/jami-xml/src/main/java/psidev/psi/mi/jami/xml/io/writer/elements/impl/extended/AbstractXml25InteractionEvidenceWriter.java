@@ -2,8 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.extension.BibRef;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AvailabilityWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ConfidenceWriter;
@@ -12,6 +14,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +54,7 @@ public abstract class AbstractXml25InteractionEvidenceWriter<I extends Interacti
 
     @Override
     protected void initialiseDefaultExperiment() {
-        super.initialiseDefaultExperiment();
+        super.setDefaultExperiment(new XmlExperiment(new BibRef("Mock publication for interactions that do not have experimental details.", (String) null, (Date) null)));
         this.parameterWriter.setDefaultExperiment(getDefaultExperiment());
     }
 

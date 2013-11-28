@@ -46,7 +46,8 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
 
     @Override
     protected void initialiseDefaultExperiment() {
-        setDefaultExperiment(new DefaultExperiment(new DefaultPublication("Mock publication and experiment for modelled interactions that are not interaction evidences.",(String)null,(Date)null)));
+        Experiment defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication and experiment for modelled interactions that are not interaction evidences.",(String)null,(Date)null));
+        setDefaultExperiment(defaultExperiment);
         this.parameterWriter.setDefaultExperiment(getDefaultExperiment());
     }
 

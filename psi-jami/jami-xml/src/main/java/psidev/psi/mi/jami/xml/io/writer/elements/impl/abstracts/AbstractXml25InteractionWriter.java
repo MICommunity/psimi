@@ -3,9 +3,9 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.analysis.graph.BindingSiteCliqueFinder;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
@@ -142,9 +142,6 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     }
 
     public void setDefaultExperiment(Experiment defaultExperiment) {
-        if (defaultExperiment == null){
-            throw new IllegalArgumentException("The default experiment is mandatory");
-        }
         this.defaultExperiment = defaultExperiment;
     }
 
@@ -348,7 +345,7 @@ public abstract class AbstractXml25InteractionWriter<T extends Interaction, P ex
     }
 
     protected void initialiseDefaultExperiment(){
-        this.defaultExperiment = new XmlExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null));
+        this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null));
     }
 
     protected PsiXml25ElementWriter<Experiment> getExperimentWriter() {
