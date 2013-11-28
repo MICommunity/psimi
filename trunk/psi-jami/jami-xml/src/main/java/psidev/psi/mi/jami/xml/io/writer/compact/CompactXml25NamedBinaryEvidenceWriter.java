@@ -146,5 +146,6 @@ public class CompactXml25NamedBinaryEvidenceWriter extends AbstractCompactXml25W
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }

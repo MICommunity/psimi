@@ -125,5 +125,6 @@ public class LightCompactXml25Writer extends AbstractCompactXml25Writer<Interact
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }

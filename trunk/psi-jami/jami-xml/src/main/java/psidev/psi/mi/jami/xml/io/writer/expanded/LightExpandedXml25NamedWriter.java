@@ -112,5 +112,6 @@ public class LightExpandedXml25NamedWriter extends AbstractExpandedXml25Writer<I
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }

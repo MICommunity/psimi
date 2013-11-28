@@ -108,5 +108,6 @@ public class ExpandedXml25NamedModelledWriter extends AbstractExpandedXml25Write
                 checksumWriter));
         // initialise interaction
         setInteractionWriter(getComplexWriter());
+        setAnnotationsWriter(attributeWriter);
     }
 }

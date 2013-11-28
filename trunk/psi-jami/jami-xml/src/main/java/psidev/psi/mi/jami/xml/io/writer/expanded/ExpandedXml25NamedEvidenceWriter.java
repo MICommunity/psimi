@@ -127,5 +127,6 @@ public class ExpandedXml25NamedEvidenceWriter extends AbstractExpandedXml25Write
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }

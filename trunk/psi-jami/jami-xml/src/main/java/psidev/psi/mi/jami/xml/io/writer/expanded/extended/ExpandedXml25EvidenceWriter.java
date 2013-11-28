@@ -145,6 +145,7 @@ public class ExpandedXml25EvidenceWriter extends AbstractExpandedXml25Writer<Int
                 inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 
     @Override

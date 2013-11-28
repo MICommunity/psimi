@@ -129,5 +129,6 @@ public class CompactXml25ModelledWriter extends AbstractCompactXml25Writer<Model
                 checksumWriter));
         // initialise interaction
         setInteractionWriter(getComplexWriter());
+        setAnnotationsWriter(attributeWriter);
     }
 }

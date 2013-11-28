@@ -119,6 +119,7 @@ public class ExpandedXml25ModelledWriter extends AbstractExpandedXml25Writer<Mod
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 
     @Override

@@ -125,6 +125,7 @@ public class ExpandedXml25ModelledBinaryWriter extends AbstractExpandedXml25Writ
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 
     @Override
