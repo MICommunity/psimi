@@ -419,9 +419,13 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
          while (this.elementCache.hasRegisteredSubComplexes()){
              Set<ModelledInteraction> registeredComplexes = this.elementCache.clearRegisteredSubComplexes();
              for (ModelledInteraction modelled : registeredComplexes){
-                 this.complexWriter.write(modelled);
+                 writeComplex(modelled);
              }
          }
+    }
+
+    protected void writeComplex(ModelledInteraction modelled) {
+        this.complexWriter.write(modelled);
     }
 
     protected Source extractSourceFromInteraction(){

@@ -218,7 +218,7 @@ public abstract class AbstractXml25ParticipantWriter<P extends Participant, F ex
             }
             else{
                 this.streamWriter.writeStartElement("interactionRef");
-                int id = this.objectIndex.extractIdForInteractor(interactor);
+                int id = this.objectIndex.extractIdForComplex(complex);
                 this.streamWriter.writeCharacters(Integer.toString(id));
                 this.streamWriter.writeEndElement();
 

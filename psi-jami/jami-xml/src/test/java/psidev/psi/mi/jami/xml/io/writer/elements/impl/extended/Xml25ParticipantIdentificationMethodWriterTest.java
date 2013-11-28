@@ -5,8 +5,8 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalCvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 

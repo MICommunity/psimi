@@ -126,4 +126,23 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
     protected void initialiseDefaultSource() {
         setDefaultSource(new XmlSource("Unknown source"));
     }
+
+    @Override
+    protected void writeInteraction() throws XMLStreamException {
+        // write interaction
+        super.writeInteraction();
+        // remove experiments
+        for (Object exp : ((PsiXml25ExtendedInteractionWriter)getInteractionWriter()).extractDefaultExperimentsFrom(getCurrentInteraction())){
+            getElementCache().removeObject(exp);
+        }
+    }
+
+    @Override
+    protected void writeComplex(ModelledInteraction modelled) {
+        super.writeComplex(modelled);
+        // remove experiments
+        for (Object exp : ((PsiXml25ExtendedInteractionWriter)getComplexWriter()).extractDefaultExperimentsFrom(modelled)){
+            getElementCache().removeObject(exp);
+        }
+    }
 }
