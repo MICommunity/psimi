@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultNamedExperiment;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.extension.BibRef;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
@@ -50,7 +50,8 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
 
     @Override
     protected void initialiseDefaultExperiment() {
-        setDefaultExperiment(new XmlExperiment(new DefaultPublication("Mock publication and experiment for modelled interactions that are not interaction evidences.", (String) null, (Date) null)));
+        Experiment defaultExperiment = new XmlExperiment(new BibRef("Mock publication and experiment for modelled interactions that are not interaction evidences.", (String) null, (Date) null));
+        setDefaultExperiment(defaultExperiment);
         this.parameterWriter.setDefaultExperiment(getDefaultExperiment());
     }
 
@@ -69,8 +70,8 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
                 CooperativityEvidence evidence = effect.getCooperativityEvidences().iterator().next();
                 // set first experiment as default experiment
                 if (evidence.getPublication() != null){
-                    exp = new DefaultNamedExperiment(evidence.getPublication());
-                    ((NamedExperiment)exp).setFullName(evidence.getPublication().getTitle());
+                    exp = new XmlExperiment(evidence.getPublication());
+                    ((XmlExperiment)exp).setFullName(evidence.getPublication().getTitle());
                 }
             }
         }

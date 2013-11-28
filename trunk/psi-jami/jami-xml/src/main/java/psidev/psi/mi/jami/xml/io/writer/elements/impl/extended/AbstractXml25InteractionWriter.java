@@ -2,14 +2,17 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.extension.BibRef;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25NamedInteractionWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,5 +80,10 @@ public abstract class AbstractXml25InteractionWriter<I extends Interaction, P ex
             }
             getStreamWriter().writeEndElement();
         }
+    }
+
+    @Override
+    protected void initialiseDefaultExperiment() {
+        super.setDefaultExperiment(new XmlExperiment(new BibRef("Mock publication for interactions that do not have experimental details.", (String) null, (Date) null)));
     }
 }
