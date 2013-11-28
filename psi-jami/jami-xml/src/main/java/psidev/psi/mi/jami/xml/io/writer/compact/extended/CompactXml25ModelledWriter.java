@@ -141,6 +141,7 @@ public class CompactXml25ModelledWriter extends AbstractCompactXml25Writer<Model
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
         getComplexWriter().setDefaultExperiment(getInteractionWriter().getDefaultExperiment());
+        setAnnotationsWriter(attributeWriter);
     }
 
     @Override

@@ -6,11 +6,13 @@ import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -48,6 +50,9 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     private Source defaultSource;
     private XMLGregorianCalendar defaultReleaseDate;
+
+    private Collection<Annotation> entryAnnotations=null;
+    private PsiXml25ElementWriter<Annotation> annotationsWriter=null;
 
     public AbstractXml25Writer(){
         this.interactionsToWrite = new ArrayList<T>();
@@ -343,6 +348,17 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
     }
 
+    public void setEntryAnnotations(Collection<Annotation> entryAnnotations) {
+        this.entryAnnotations = entryAnnotations;
+    }
+
+    public void setAnnotationsWriter(PsiXml25ElementWriter<Annotation> annotationsWriter) {
+        if (annotationsWriter == null){
+            throw new IllegalArgumentException("The annotations writer cannot be null");
+        }
+        this.annotationsWriter = annotationsWriter;
+    }
+
     protected Set<Interaction> getProcessedInteractions() {
         if (processedInteractions == null){
             initialiseDefaultInteractionSet();
@@ -355,8 +371,20 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         writeSubComplexInEntry();
         // write end interactionsList
         writeEndInteractionList();
+        // write annotations if any
+        writeEntryAttributes();
         // write end previous entry
         writeEndEntry();
+    }
+
+    protected void writeEntryAttributes() throws XMLStreamException {
+        if (this.entryAnnotations != null && !this.entryAnnotations.isEmpty()){
+            this.streamWriter.writeStartElement(PsiXml25Utils.ATTRIBUTELIST_TAG);
+            for (Annotation annotation : this.entryAnnotations){
+                this.annotationsWriter.write(annotation);
+            }
+            this.streamWriter.writeEndElement();
+        }
     }
 
     protected void writeInteractionListContent() {

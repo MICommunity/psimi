@@ -160,6 +160,7 @@ public class CompactXml25EvidenceWriter extends AbstractCompactXml25Writer<Inter
                 experimentWriter, modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 
     @Override

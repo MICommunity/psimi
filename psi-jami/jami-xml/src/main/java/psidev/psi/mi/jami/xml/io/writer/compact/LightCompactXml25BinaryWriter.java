@@ -124,5 +124,6 @@ public class LightCompactXml25BinaryWriter extends AbstractCompactXml25Writer<Bi
                 inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }

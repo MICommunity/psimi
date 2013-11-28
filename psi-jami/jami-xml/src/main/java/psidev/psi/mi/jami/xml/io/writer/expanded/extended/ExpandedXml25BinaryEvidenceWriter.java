@@ -146,6 +146,7 @@ public class ExpandedXml25BinaryEvidenceWriter extends AbstractExpandedXml25Writ
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                  confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 
     @Override

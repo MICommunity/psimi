@@ -114,5 +114,6 @@ public class ExpandedXml25NamedModelledBinaryWriter extends AbstractExpandedXml2
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }

@@ -139,5 +139,6 @@ public class CompactXml25NamedModelledBinaryWriter extends AbstractCompactXml25W
                 checksumWriter));
         // use same default experiment
         getComplexWriter().setDefaultExperiment(getInteractionWriter().getDefaultExperiment());
+        setAnnotationsWriter(attributeWriter);
     }
 }

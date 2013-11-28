@@ -112,5 +112,6 @@ public class LightExpandedXml25BinaryWriter extends AbstractExpandedXml25Writer<
                 modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,
                 checksumWriter));
+        setAnnotationsWriter(attributeWriter);
     }
 }
