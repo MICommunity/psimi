@@ -7,7 +7,10 @@ import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.io.parser.*;
 import psidev.psi.mi.jami.tab.io.writer.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.xml.PsiXml25Type;
 import psidev.psi.mi.jami.xml.io.parser.*;
+import psidev.psi.mi.jami.xml.io.writer.compact.*;
+import psidev.psi.mi.jami.xml.io.writer.expanded.*;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import java.util.HashMap;
@@ -45,121 +48,175 @@ public class PsiJami {
     public static void initialiseMixedInteractionWriters() {
         InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
 
-        Map<String, Object> supportedOptions28 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed, MitabVersion.v2_5, false, true);
+        // MITAB writers
+        Map<String, Object> supportedOptions28 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed, MitabVersion.v2_5, false, true);
         writerFactory.registerDataSourceWriter(Mitab25Writer.class, supportedOptions28);
-
-        Map<String, Object> supportedOptions29 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed, MitabVersion.v2_5, true, true);
+        Map<String, Object> supportedOptions29 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed, MitabVersion.v2_5, true, true);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25Writer.class, supportedOptions29);
-
-        Map<String, Object> supportedOptions30 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed_binary, MitabVersion.v2_5, false, false);
+        Map<String, Object> supportedOptions30 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed_binary, MitabVersion.v2_5, false, false);
         writerFactory.registerDataSourceWriter(Mitab25BinaryWriter.class, supportedOptions30);
-
-        Map<String, Object> supportedOptions31 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed_binary, MitabVersion.v2_5, true, false);
+        Map<String, Object> supportedOptions31 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed_binary, MitabVersion.v2_5, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25BinaryWriter.class, supportedOptions31);
-
-        Map<String, Object> supportedOptions32 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed, MitabVersion.v2_6, false, true);
+        Map<String, Object> supportedOptions32 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed, MitabVersion.v2_6, false, true);
         writerFactory.registerDataSourceWriter(Mitab26Writer.class, supportedOptions32);
-
-        Map<String, Object> supportedOptions33 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed, MitabVersion.v2_6, true, true);
+        Map<String, Object> supportedOptions33 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed, MitabVersion.v2_6, true, true);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26Writer.class, supportedOptions33);
-
-        Map<String, Object> supportedOptions34 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed_binary, MitabVersion.v2_6, false, false);
+        Map<String, Object> supportedOptions34 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed_binary, MitabVersion.v2_6, false, false);
         writerFactory.registerDataSourceWriter(Mitab26BinaryWriter.class, supportedOptions34);
-
-        Map<String, Object> supportedOptions35 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed_binary, MitabVersion.v2_6, true, false);
+        Map<String, Object> supportedOptions35 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed_binary, MitabVersion.v2_6, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26BinaryWriter.class, supportedOptions35);
-
-        Map<String, Object> supportedOptions36 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed, MitabVersion.v2_7, false, true);
+        Map<String, Object> supportedOptions36 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed, MitabVersion.v2_7, false, true);
         writerFactory.registerDataSourceWriter(Mitab27Writer.class, supportedOptions36);
-
-        Map<String, Object> supportedOptions37 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed, MitabVersion.v2_7, true, true);
+        Map<String, Object> supportedOptions37 = createMITABInteractionWriterOptions( InteractionObjectCategory.mixed, MitabVersion.v2_7, true, true);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27Writer.class, supportedOptions37);
-
-        Map<String, Object> supportedOptions38 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed_binary, MitabVersion.v2_7, false, false);
+        Map<String, Object> supportedOptions38 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed_binary, MitabVersion.v2_7, false, false);
         writerFactory.registerDataSourceWriter(Mitab27BinaryWriter.class, supportedOptions38);
-
-        Map<String, Object> supportedOptions39 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.mixed_binary, MitabVersion.v2_7, true, false);
+        Map<String, Object> supportedOptions39 = createMITABInteractionWriterOptions(InteractionObjectCategory.mixed_binary, MitabVersion.v2_7, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27BinaryWriter.class, supportedOptions39);
+
+        // XML writers
+        Map<String, Object> supportedOptions4 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXml25Type.compact, false, false);
+        writerFactory.registerDataSourceWriter(CompactXml25Writer.class, supportedOptions4);
+        Map<String, Object> supportedOptions5 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXml25Type.expanded, false, false);
+        writerFactory.registerDataSourceWriter(ExpandedXml25Writer.class, supportedOptions5);
+        Map<String, Object> supportedOptions6 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXml25Type.compact, false, false);
+        writerFactory.registerDataSourceWriter(CompactXml25BinaryWriter.class, supportedOptions6);
+        Map<String, Object> supportedOptions7 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXml25Type.expanded, false, false);
+        writerFactory.registerDataSourceWriter(ExpandedXml25BinaryWriter.class, supportedOptions7);
+
+        Map<String, Object> supportedOptions44 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXml25Type.compact, false, true);
+        writerFactory.registerDataSourceWriter(CompactXml25NamedWriter.class, supportedOptions44);
+        Map<String, Object> supportedOptions55 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXml25Type.expanded, false, true);
+        writerFactory.registerDataSourceWriter(ExpandedXml25NamedWriter.class, supportedOptions55);
+        Map<String, Object> supportedOptions66 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXml25Type.compact, false, true);
+        writerFactory.registerDataSourceWriter(CompactXml25NamedBinaryWriter.class, supportedOptions66);
+        Map<String, Object> supportedOptions77 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXml25Type.expanded, false, true);
+        writerFactory.registerDataSourceWriter(ExpandedXml25NamedBinaryWriter.class, supportedOptions77);
+
+        Map<String, Object> supportedOptions8 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXml25Type.compact, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25Writer.class, supportedOptions8);
+        Map<String, Object> supportedOptions9 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXml25Type.expanded, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25Writer.class, supportedOptions9);
+        Map<String, Object> supportedOptions10 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXml25Type.compact, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25BinaryWriter.class, supportedOptions10);
+        Map<String, Object> supportedOptions11 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXml25Type.expanded, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25BinaryWriter.class, supportedOptions11);
     }
 
     public static void initialiseModelledInteractionWriters() {
         InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
 
-        Map<String, Object> supportedOptions16 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled, MitabVersion.v2_5, false, true);
-        writerFactory.registerDataSourceWriter(Mitab25ModelledInteractionWriter.class, supportedOptions16);
-
-        Map<String, Object> supportedOptions17 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled, MitabVersion.v2_5, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25ModelledInteractionWriter.class, supportedOptions17);
-
-        Map<String, Object> supportedOptions18 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled_binary, MitabVersion.v2_5, false, false);
+        // MITAB options
+        Map<String, Object> supportedOptions16 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled, MitabVersion.v2_5, false, true);
+        writerFactory.registerDataSourceWriter(Mitab25ModelledWriter.class, supportedOptions16);
+        Map<String, Object> supportedOptions17 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled, MitabVersion.v2_5, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25ModelledWriter.class, supportedOptions17);
+        Map<String, Object> supportedOptions18 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled_binary, MitabVersion.v2_5, false, false);
         writerFactory.registerDataSourceWriter(Mitab25ModelledBinaryWriter.class, supportedOptions18);
-
-        Map<String, Object> supportedOptions19 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled_binary, MitabVersion.v2_5, true, false);
+        Map<String, Object> supportedOptions19 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled_binary, MitabVersion.v2_5, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25ModelledBinaryWriter.class, supportedOptions19);
-
-        Map<String, Object> supportedOptions20 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled, MitabVersion.v2_6, false, true);
-        writerFactory.registerDataSourceWriter(Mitab26ModelledInteractionWriter.class, supportedOptions20);
-
-        Map<String, Object> supportedOptions21 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled, MitabVersion.v2_6, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledInteractionWriter.class, supportedOptions21);
-
-        Map<String, Object> supportedOptions22 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled_binary, MitabVersion.v2_6, false, false);
+        Map<String, Object> supportedOptions20 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled, MitabVersion.v2_6, false, true);
+        writerFactory.registerDataSourceWriter(Mitab26ModelledWriter.class, supportedOptions20);
+        Map<String, Object> supportedOptions21 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled, MitabVersion.v2_6, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledWriter.class, supportedOptions21);
+        Map<String, Object> supportedOptions22 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled_binary, MitabVersion.v2_6, false, false);
         writerFactory.registerDataSourceWriter(Mitab26ModelledBinaryWriter.class, supportedOptions22);
-
-        Map<String, Object> supportedOptions23 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled_binary, MitabVersion.v2_6, true, false);
+        Map<String, Object> supportedOptions23 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled_binary, MitabVersion.v2_6, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledBinaryWriter.class, supportedOptions23);
-
-        Map<String, Object> supportedOptions24 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled, MitabVersion.v2_7, false, true);
-        writerFactory.registerDataSourceWriter(Mitab27ModelledInteractionWriter.class, supportedOptions24);
-
-        Map<String, Object> supportedOptions25 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled, MitabVersion.v2_7, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27ModelledInteractionWriter.class, supportedOptions25);
-
-        Map<String, Object> supportedOptions26 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled_binary, MitabVersion.v2_7, false, false);
+        Map<String, Object> supportedOptions24 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled, MitabVersion.v2_7, false, true);
+        writerFactory.registerDataSourceWriter(Mitab27ModelledWriter.class, supportedOptions24);
+        Map<String, Object> supportedOptions25 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled, MitabVersion.v2_7, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27ModelledWriter.class, supportedOptions25);
+        Map<String, Object> supportedOptions26 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled_binary, MitabVersion.v2_7, false, false);
         writerFactory.registerDataSourceWriter(Mitab27ModelledBinaryWriter.class, supportedOptions26);
-
-        Map<String, Object> supportedOptions27 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.modelled_binary, MitabVersion.v2_7, true, false);
+        Map<String, Object> supportedOptions27 = createMITABInteractionWriterOptions(InteractionObjectCategory.modelled_binary, MitabVersion.v2_7, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27ModelledBinaryWriter.class, supportedOptions27);
+
+        // XML 2.5 options
+        Map<String, Object> supportedOptions4 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXml25Type.compact, false, false);
+        writerFactory.registerDataSourceWriter(CompactXml25ModelledWriter.class, supportedOptions4);
+        Map<String, Object> supportedOptions5 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXml25Type.expanded, false, false);
+        writerFactory.registerDataSourceWriter(ExpandedXml25ModelledWriter.class, supportedOptions5);
+        Map<String, Object> supportedOptions6 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXml25Type.compact, false, false);
+        writerFactory.registerDataSourceWriter(CompactXml25ModelledBinaryWriter.class, supportedOptions6);
+        Map<String, Object> supportedOptions7 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXml25Type.expanded, false, false);
+        writerFactory.registerDataSourceWriter(ExpandedXml25ModelledBinaryWriter.class, supportedOptions7);
+
+        Map<String, Object> supportedOptions44 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXml25Type.compact, false, true);
+        writerFactory.registerDataSourceWriter(CompactXml25NamedModelledWriter.class, supportedOptions44);
+        Map<String, Object> supportedOptions55 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXml25Type.expanded, false, true);
+        writerFactory.registerDataSourceWriter(ExpandedXml25NamedModelledWriter.class, supportedOptions55);
+        Map<String, Object> supportedOptions66 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXml25Type.compact, false, true);
+        writerFactory.registerDataSourceWriter(CompactXml25NamedModelledBinaryWriter.class, supportedOptions66);
+        Map<String, Object> supportedOptions77 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXml25Type.expanded, false, true);
+        writerFactory.registerDataSourceWriter(ExpandedXml25NamedModelledBinaryWriter.class, supportedOptions77);
+
+        Map<String, Object> supportedOptions8 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXml25Type.compact, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25ModelledWriter.class, supportedOptions8);
+        Map<String, Object> supportedOptions9 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXml25Type.expanded, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25ModelledWriter.class, supportedOptions9);
+        Map<String, Object> supportedOptions10 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXml25Type.compact, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25ModelledBinaryWriter.class, supportedOptions10);
+        Map<String, Object> supportedOptions11 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXml25Type.expanded, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25ModelledBinaryWriter.class, supportedOptions11);
     }
 
     public static void initialiseInteractionEvidenceWriters() {
         InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
-
-        Map<String, Object> supportedOptions4 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.evidence, MitabVersion.v2_5, false, true);
-        writerFactory.registerDataSourceWriter(Mitab25InteractionEvidenceWriter.class, supportedOptions4);
-
-        Map<String, Object> supportedOptions5 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.evidence, MitabVersion.v2_5, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25InteractionEvidenceWriter.class, supportedOptions5);
-
-        Map<String, Object> supportedOptions6 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.binary_evidence, MitabVersion.v2_5, false, false);
+        // writers for MITAB
+        Map<String, Object> supportedOptions4 = createMITABInteractionWriterOptions(InteractionObjectCategory.evidence, MitabVersion.v2_5, false, true);
+        writerFactory.registerDataSourceWriter(Mitab25EvidenceWriter.class, supportedOptions4);
+        Map<String, Object> supportedOptions5 = createMITABInteractionWriterOptions(InteractionObjectCategory.evidence, MitabVersion.v2_5, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25EvidenceWriter.class, supportedOptions5);
+        Map<String, Object> supportedOptions6 = createMITABInteractionWriterOptions(InteractionObjectCategory.binary_evidence, MitabVersion.v2_5, false, false);
         writerFactory.registerDataSourceWriter(Mitab25BinaryEvidenceWriter.class, supportedOptions6);
-
-        Map<String, Object> supportedOptions7 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.binary_evidence, MitabVersion.v2_5, true, false);
+        Map<String, Object> supportedOptions7 = createMITABInteractionWriterOptions(InteractionObjectCategory.binary_evidence, MitabVersion.v2_5, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab25BinaryEvidenceWriter.class, supportedOptions7);
-
-        Map<String, Object> supportedOptions8 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.evidence, MitabVersion.v2_6, false, true);
-        writerFactory.registerDataSourceWriter(Mitab26InteractionEvidenceWriter.class, supportedOptions8);
-
-        Map<String, Object> supportedOptions9 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.evidence, MitabVersion.v2_6, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26InteractionEvidenceWriter.class, supportedOptions9);
-
-        Map<String, Object> supportedOptions10 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.binary_evidence, MitabVersion.v2_6, false, false);
+        Map<String, Object> supportedOptions8 = createMITABInteractionWriterOptions(InteractionObjectCategory.evidence, MitabVersion.v2_6, false, true);
+        writerFactory.registerDataSourceWriter(Mitab26EvidenceWriter.class, supportedOptions8);
+        Map<String, Object> supportedOptions9 = createMITABInteractionWriterOptions(InteractionObjectCategory.evidence, MitabVersion.v2_6, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26EvidenceWriter.class, supportedOptions9);
+        Map<String, Object> supportedOptions10 = createMITABInteractionWriterOptions(InteractionObjectCategory.binary_evidence, MitabVersion.v2_6, false, false);
         writerFactory.registerDataSourceWriter(Mitab26BinaryEvidenceWriter.class, supportedOptions10);
-
-        Map<String, Object> supportedOptions11 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.binary_evidence, MitabVersion.v2_6, true, false);
+        Map<String, Object> supportedOptions11 = createMITABInteractionWriterOptions(InteractionObjectCategory.binary_evidence, MitabVersion.v2_6, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab26BinaryEvidenceWriter.class, supportedOptions11);
-
-        Map<String, Object> supportedOptions12 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.evidence, MitabVersion.v2_7, false, true);
-        writerFactory.registerDataSourceWriter(Mitab27InteractionEvidenceWriter.class, supportedOptions12);
-
-        Map<String, Object> supportedOptions13 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.evidence, MitabVersion.v2_7, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27InteractionEvidenceWriter.class, supportedOptions13);
-
-        Map<String, Object> supportedOptions14 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.binary_evidence, MitabVersion.v2_7, false, false);
+        Map<String, Object> supportedOptions12 = createMITABInteractionWriterOptions(InteractionObjectCategory.evidence, MitabVersion.v2_7, false, true);
+        writerFactory.registerDataSourceWriter(Mitab27EvidenceWriter.class, supportedOptions12);
+        Map<String, Object> supportedOptions13 = createMITABInteractionWriterOptions(InteractionObjectCategory.evidence, MitabVersion.v2_7, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27EvidenceWriter.class, supportedOptions13);
+        Map<String, Object> supportedOptions14 = createMITABInteractionWriterOptions(InteractionObjectCategory.binary_evidence, MitabVersion.v2_7, false, false);
         writerFactory.registerDataSourceWriter(Mitab27BinaryEvidenceWriter.class, supportedOptions14);
-
-        Map<String, Object> supportedOptions15 = createInteractionWriterOptions(MIFileType.mitab.toString(), InteractionObjectCategory.binary_evidence, MitabVersion.v2_7, true, false);
+        Map<String, Object> supportedOptions15 = createMITABInteractionWriterOptions(InteractionObjectCategory.binary_evidence, MitabVersion.v2_7, true, false);
         writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.tab.io.writer.extended.Mitab27BinaryEvidenceWriter.class, supportedOptions15);
+
+        // xml 25 writers
+        Map<String, Object> supportedOptions1 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXml25Type.compact, false, false);
+        writerFactory.registerDataSourceWriter(CompactXml25EvidenceWriter.class, supportedOptions1);
+        Map<String, Object> supportedOptions2 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXml25Type.expanded, false, false);
+        writerFactory.registerDataSourceWriter(ExpandedXml25EvidenceWriter.class, supportedOptions2);
+        Map<String, Object> supportedOptions3 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXml25Type.compact, false, false);
+        writerFactory.registerDataSourceWriter(CompactXml25BinaryEvidenceWriter.class, supportedOptions3);
+        Map<String, Object> supportedOptions16 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXml25Type.expanded, false, false);
+        writerFactory.registerDataSourceWriter(ExpandedXml25BinaryEvidenceWriter.class, supportedOptions16);
+
+        Map<String, Object> supportedOptions44 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXml25Type.compact, false, true);
+        writerFactory.registerDataSourceWriter(CompactXml25NamedEvidenceWriter.class, supportedOptions44);
+        Map<String, Object> supportedOptions55 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXml25Type.expanded, false, true);
+        writerFactory.registerDataSourceWriter(ExpandedXml25NamedEvidenceWriter.class, supportedOptions55);
+        Map<String, Object> supportedOptions66 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXml25Type.compact, false, true);
+        writerFactory.registerDataSourceWriter(CompactXml25NamedBinaryEvidenceWriter.class, supportedOptions66);
+        Map<String, Object> supportedOptions77 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXml25Type.expanded, false, true);
+        writerFactory.registerDataSourceWriter(ExpandedXml25NamedBinaryEvidenceWriter.class, supportedOptions77);
+
+        Map<String, Object> supportedOptions17 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXml25Type.compact, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25EvidenceWriter.class, supportedOptions17);
+        Map<String, Object> supportedOptions18 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXml25Type.expanded, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25EvidenceWriter.class, supportedOptions18);
+        Map<String, Object> supportedOptions19 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXml25Type.compact, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25BinaryEvidenceWriter.class, supportedOptions19);
+        Map<String, Object> supportedOptions20 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXml25Type.expanded, true, true);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25BinaryEvidenceWriter.class, supportedOptions20);
+
     }
 
     public static void initialiseAllMIDataSources() {
@@ -258,9 +315,9 @@ public class PsiJami {
         datasourceFactory.registerDataSource(Xml25BinaryEvidenceSource.class, supportedOptions2222);
     }
 
-    private static Map<String, Object> createInteractionWriterOptions(String outputFormat, InteractionObjectCategory interactionCategory, MitabVersion version, boolean extended, boolean needCompleExpansion) {
+    private static Map<String, Object> createMITABInteractionWriterOptions(InteractionObjectCategory interactionCategory, MitabVersion version, boolean extended, boolean needCompleExpansion) {
         Map<String, Object> supportedOptions4 = new HashMap<String, Object>(9);
-        supportedOptions4.put(InteractionWriterFactory.OUTPUT_FORMAT_OPTION_KEY, outputFormat);
+        supportedOptions4.put(InteractionWriterFactory.OUTPUT_FORMAT_OPTION_KEY, MIFileType.mitab.toString());
         supportedOptions4.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, interactionCategory);
         if (needCompleExpansion){
             supportedOptions4.put(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
@@ -269,6 +326,33 @@ public class PsiJami {
         supportedOptions4.put(MitabUtils.MITAB_VERSION_OPTION, version);
         supportedOptions4.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, null);
         supportedOptions4.put(MitabUtils.MITAB_EXTENDED_OPTION, extended);
+        return supportedOptions4;
+    }
+
+    private static Map<String, Object> createXML25InteractionWriterOptions(InteractionObjectCategory interactionCategory, PsiXml25Type type,
+                                                                           boolean extended, boolean writeNames) {
+        Map<String, Object> supportedOptions4 = new HashMap<String, Object>(14);
+        supportedOptions4.put(InteractionWriterFactory.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
+        supportedOptions4.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, interactionCategory);
+        supportedOptions4.put(PsiXml25Utils.XML_TYPE_OPTION, type);
+        supportedOptions4.put(PsiXml25Utils.XML25_EXTENDED_OPTION, extended);
+        supportedOptions4.put(PsiXml25Utils.XML25_NAMES_OPTION, writeNames);
+        supportedOptions4.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, null);
+        switch (type){
+            case compact:
+                supportedOptions4.put(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET_OPTION, null);
+                supportedOptions4.put(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET_OPTION, null);
+                supportedOptions4.put(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET_OPTION, null);
+                break;
+            default:
+                break;
+        }
+        supportedOptions4.put(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION, null);
+        supportedOptions4.put(PsiXml25Utils.XML_INTERACTION_SET_OPTION, null);
+        supportedOptions4.put(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION, null);
+        supportedOptions4.put(PsiXml25Utils.DEFAULT_SOURCE_OPTION, null);
+        supportedOptions4.put(PsiXml25Utils.XML_ENTRY_ATTRIBUTES_OPTION, null);
+        supportedOptions4.put(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION, null);
         return supportedOptions4;
     }
 
@@ -286,7 +370,6 @@ public class PsiJami {
         Map<String, Object> supportedOptions1 = createDataSourceOptions(inputFormat, streaming, objectCategory);
         supportedOptions1.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, null);
         supportedOptions1.put(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION, null);
-        supportedOptions1.put(PsiXml25Utils.COMPLEX_CACHE_OPTION, null);
         return supportedOptions1;
     }
 }
