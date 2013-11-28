@@ -2,12 +2,12 @@ package psidev.psi.mi.jami.xml.extension.binary;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.extension.Availability;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.extension.XmlXref;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
             if (this.imexId != null){
                 interactionXrefs.removeOnly(this.imexId);
             }
-            this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
+            this.imexId = new XmlXref(imexDatabase, identifier, imexPrimaryQualifier);
             interactionXrefs.addOnly(this.imexId);
         }
         else {

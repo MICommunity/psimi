@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Polymer;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -53,40 +51,40 @@ public class XmlPolymer extends XmlMolecule implements Polymer{
     }
 
     public XmlPolymer(String name) {
-        super(name);
+        super(name, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlPolymer(String name, String fullName) {
-        super(name, fullName);
+        super(name, fullName, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public XmlPolymer(String name, Organism organism) {
-        super(name, organism);
+        super(name, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlPolymer(String name, String fullName, Organism organism) {
-        super(name, fullName, organism);
+        super(name, fullName, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
     public XmlPolymer(String name, Xref uniqueId) {
-        super(name, uniqueId);
+        super(name, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlPolymer(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, uniqueId);
+        super(name, fullName, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
     public XmlPolymer(String name, Organism organism, Xref uniqueId) {
-        super(name, organism, uniqueId);
+        super(name, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
     public XmlPolymer(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, organism, uniqueId);
+        super(name, fullName, new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
     @Override
     protected void createDefaultInteractorType() {
-        setInteractorType(new XmlCvTerm(Polymer.POLYMER, Polymer.POLYMER_MI));
+        setInteractorType(new XmlCvTerm(Polymer.POLYMER, new XmlXref(CvTermUtils.createPsiMiDatabase(),Polymer.POLYMER_MI, CvTermUtils.createIdentityQualifier())));
     }
 
     public String getSequence() {

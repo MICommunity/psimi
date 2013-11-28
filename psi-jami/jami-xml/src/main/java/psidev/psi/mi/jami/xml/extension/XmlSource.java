@@ -122,7 +122,7 @@ public class XmlSource extends AbstractXmlCvTerm implements ExtendedPsi25Source
             if (urlAnnot != null){
                 sourceAnnotationList.removeOnly(urlAnnot);
             }
-            getAttributeWrapper().url = new DefaultAnnotation(urlTopic, url);
+            getAttributeWrapper().url = new XmlAnnotation(urlTopic, url);
             sourceAnnotationList.addOnly(getAttributeWrapper().url);
         }
         // remove all url if the collection is not empty
@@ -148,7 +148,7 @@ public class XmlSource extends AbstractXmlCvTerm implements ExtendedPsi25Source
             if (postalAnnot != null){
                 sourceAnnotationList.removeOnly(postalAnnot);
             }
-            getAttributeWrapper().postalAddress = new DefaultAnnotation(postalTopic, address);
+            getAttributeWrapper().postalAddress = new XmlAnnotation(postalTopic, address);
             sourceAnnotationList.addOnly(getAttributeWrapper().postalAddress);
         }
         // remove all url if the collection is not empty

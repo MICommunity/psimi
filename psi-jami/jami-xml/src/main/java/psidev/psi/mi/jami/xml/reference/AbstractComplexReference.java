@@ -118,6 +118,11 @@ public abstract class AbstractComplexReference extends AbstractInteractorReferen
     }
 
     @Override
+    public Collection<Alias> getAliases() {
+        return super.getAliases();
+    }
+
+    @Override
     public Collection<Xref> getIdentifiers() {
         return super.getIdentifiers();
     }
