@@ -125,6 +125,22 @@ public class DefaultGene extends DefaultMolecule implements Gene {
         }
     }
 
+    public DefaultGene(String name, CvTerm type) {
+        super(name, type != null ? type : CvTermUtils.createGeneInteractorType());
+    }
+
+    public DefaultGene(String name, String fullName, CvTerm type) {
+        super(name, fullName, type != null ? type : CvTermUtils.createGeneInteractorType());
+    }
+
+    public DefaultGene(String name, CvTerm type, Organism organism) {
+        super(name, type != null ? type : CvTermUtils.createGeneInteractorType(), organism);
+    }
+
+    public DefaultGene(String name, String fullName, CvTerm type, Organism organism) {
+        super(name, fullName, type != null ? type : CvTermUtils.createGeneInteractorType(), organism);
+    }
+
     @Override
     protected void initialiseIdentifiers() {
         initialiseIdentifiersWith(new GeneIdentifierList());
