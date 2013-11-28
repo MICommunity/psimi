@@ -45,6 +45,7 @@ public class PsiXml25Utils {
     public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";
     public static final String XML_TYPE_OPTION = "xml25_type_key";
     public static final String XML_ENTRY_ATTRIBUTES_OPTION = "xml25_entry_attributes_key";
+    public static final String XML25_EXTENDED_OPTION = "xml25_extended_key";
     public static final String COMPACT_XML_EXPERIMENT_SET_OPTION = "compact_xml_experiment_set_key";
     public static final String COMPACT_XML_INTERACTOR_SET_OPTION = "compact_xml_interactor_set_key";
     public static final String COMPACT_XML_AVAILABILITY_SET_OPTION = "compact_xml_availability_set_key";
