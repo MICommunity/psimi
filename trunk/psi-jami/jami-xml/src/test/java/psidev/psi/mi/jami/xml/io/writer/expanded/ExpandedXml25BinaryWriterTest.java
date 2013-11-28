@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import junit.framework.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
@@ -10,7 +9,6 @@ import psidev.psi.mi.jami.binary.impl.DefaultNamedModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.io.writer.compact.CompactXml25BinaryWriter;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -19,7 +17,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for CompactXml25BinaryWriter
+ * Unit tester for ExpandedXml25BinaryWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,46 +30,40 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -101,59 +93,40 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test2</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -175,13 +148,39 @@ public class ExpandedXml25BinaryWriterTest {
             "          </participant>\n"+
             "        </participantList>\n" +
             "      </interaction>\n"+
-            "      <interaction id=\"6\">\n" +
+            "      <interaction id=\"5\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
             "          <participant id=\"7\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test2</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -211,46 +210,40 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
-            "        </experimentList>\n" +
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "              </xref>\n" +
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n" +
+            "              </names>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "              </xref>\n" +
+            "            </interactionDetectionMethod>\n" +
+            "          </experimentDescription>\n" +
+            "        </experimentList>\n"+
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -274,11 +267,37 @@ public class ExpandedXml25BinaryWriterTest {
             "      </interaction>\n"+
             "      <interaction id=\"5\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"6\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"7\">\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -308,64 +327,28 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "      <experimentDescription id=\"2\">\n" +
-            "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
-            "        </names>\n" +
-            "        <bibref>\n" +
-            "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
-            "          </attributeList>\n" +
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>test protein</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactionRef>6</interactionRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactionRef>4</interactionRef>\n" +
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -387,16 +370,45 @@ public class ExpandedXml25BinaryWriterTest {
             "          </participant>\n"+
             "        </participantList>\n" +
             "      </interaction>\n"+
-            "      <interaction id=\"6\">\n" +
+            "      <interaction id=\"4\">\n" +
             "        <names>\n" +
             "          <shortLabel>test complex</shortLabel>\n"+
             "        </names>\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>2</experimentRef>\n"+
+            "          <experimentDescription id=\"5\">\n" +
+            "            <names>\n" +
+            "              <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "            </names>\n" +
+            "            <bibref>\n" +
+            "              <attributeList>\n" +
+            "                <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "              </attributeList>\n" +
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"7\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "          <participant id=\"6\">\n" +
+            "            <interactor id=\"7\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>test protein</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -416,46 +428,40 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>test complex</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>complex</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0314\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>test complex</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>complex</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0314\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -485,46 +491,40 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -549,46 +549,40 @@ public class ExpandedXml25BinaryWriterTest {
             "    </interactionList>\n"+
             "  </entry>\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -618,59 +612,40 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test2</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -692,13 +667,39 @@ public class ExpandedXml25BinaryWriterTest {
             "          </participant>\n"+
             "        </participantList>\n" +
             "      </interaction>\n"+
-            "      <interaction id=\"6\">\n" +
+            "      <interaction id=\"5\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
             "          <participant id=\"7\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test2</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -723,59 +724,40 @@ public class ExpandedXml25BinaryWriterTest {
             "    </interactionList>\n"+
             "  </entry>\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test2</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -797,13 +779,39 @@ public class ExpandedXml25BinaryWriterTest {
             "          </participant>\n"+
             "        </participantList>\n" +
             "      </interaction>\n"+
-            "      <interaction id=\"6\">\n" +
+            "      <interaction id=\"5\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
             "          <participant id=\"7\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test2</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -838,46 +846,40 @@ public class ExpandedXml25BinaryWriterTest {
             "        <shortLabel>intact</shortLabel>\n"+
             "      </names>\n"+
             "    </source>\n"+
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -912,59 +914,40 @@ public class ExpandedXml25BinaryWriterTest {
             "        <shortLabel>mint</shortLabel>\n"+
             "      </names>\n"+
             "    </source>\n"+
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test2</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -986,13 +969,39 @@ public class ExpandedXml25BinaryWriterTest {
             "          </participant>\n"+
             "        </participantList>\n" +
             "      </interaction>\n"+
-            "      <interaction id=\"6\">\n" +
+            "      <interaction id=\"5\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
             "          <participant id=\"7\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test2</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -1022,59 +1031,40 @@ public class ExpandedXml25BinaryWriterTest {
             "        <shortLabel>intact</shortLabel>\n"+
             "      </names>\n"+
             "    </source>\n"+
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test2</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -1096,13 +1086,103 @@ public class ExpandedXml25BinaryWriterTest {
             "          </participant>\n"+
             "        </participantList>\n" +
             "      </interaction>\n"+
-            "      <interaction id=\"6\">\n" +
+            "      <interaction id=\"5\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
             "          <participant id=\"7\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test2</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
+            "            <biologicalRole>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified role</shortLabel>\n" +
+            "              </names>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "              </xref>\n" +
+            "            </biologicalRole>\n" +
+            "            <experimentalRoleList>\n" +
+            "              <experimentalRole>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>unspecified role</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </experimentalRole>\n" +
+            "            </experimentalRoleList>\n" +
+            "          </participant>\n"+
+            "        </participantList>\n" +
+            "      </interaction>\n"+
+            "    </interactionList>\n"+
+            "  </entry>\n" +
+            "</entrySet>";
+    private String interaction_availability = "<?xml version='1.0' encoding='UTF-8'?>\n" +
+            "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
+            "  <entry>\n" +
+            "    <interactionList>\n" +
+            "      <interaction id=\"1\">\n" +
+            "        <availability id=\"2\">copyright</availability>\n" +
+            "        <experimentList>\n" +
+            "          <experimentDescription id=\"3\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
+            "        </experimentList>\n" +
+            "        <participantList>\n" +
+            "          <participant id=\"4\">\n" +
+            "            <interactor id=\"5\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -1132,50 +1212,41 @@ public class ExpandedXml25BinaryWriterTest {
             "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
-            "    <availabilityList>\n" +
-            "      <availability id=\"1\">copyright</availability>\n" +
-            "    </availabilityList>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"2\">\n" +
-            "        <bibref>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"4\">\n" +
-            "        <availabilityRef>1</availabilityRef>\n" +
+            "      <interaction id=\"1\">\n" +
+            "        <availability id=\"2\">copyright</availability>\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>2</experimentRef>\n"+
+            "          <experimentDescription id=\"3\">\n" +
+            "            <bibref>\n" +
+            "              <xref>\n" +
+            "                <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"5\">\n" +
-            "            <interactorRef>3</interactorRef>\n" +
+            "          <participant id=\"4\">\n" +
+            "            <interactor id=\"5\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -1200,49 +1271,43 @@ public class ExpandedXml25BinaryWriterTest {
             "    </interactionList>\n"+
             "  </entry>\n" +
             "  <entry>\n" +
-            "    <experimentList>\n" +
-            "      <experimentDescription id=\"1\">\n" +
-            "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
-            "        </names>\n" +
-            "        <bibref>\n" +
-            "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
-            "          </attributeList>\n" +
-            "        </bibref>\n" +
-            "        <interactionDetectionMethod>\n" +
-            "          <names>\n" +
-            "            <shortLabel>unspecified method</shortLabel>\n"+
-            "          </names>\n"+
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "          </xref>\n"+
-            "        </interactionDetectionMethod>\n"+
-            "      </experimentDescription>\n"+
-            "    </experimentList>\n" +
-            "    <interactorList>\n" +
-            "      <interactor id=\"2\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n"+
-            "    </interactorList>\n" +
             "    <interactionList>\n" +
-            "      <interaction id=\"3\">\n" +
+            "      <interaction id=\"1\">\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"2\">\n" +
+            "            <names>\n" +
+            "              <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "            </names>\n" +
+            "            <bibref>\n" +
+            "              <attributeList>\n" +
+            "                <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "              </attributeList>\n" +
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"4\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"3\">\n" +
+            "            <interactor id=\"4\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -1265,11 +1330,40 @@ public class ExpandedXml25BinaryWriterTest {
             "          <shortLabel>test complex</shortLabel>\n"+
             "        </names>\n" +
             "        <experimentList>\n" +
-            "          <experimentRef>1</experimentRef>\n"+
+            "          <experimentDescription id=\"6\">\n" +
+            "            <names>\n" +
+            "              <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "            </names>\n" +
+            "            <bibref>\n" +
+            "              <attributeList>\n" +
+            "                <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "              </attributeList>\n" +
+            "            </bibref>\n" +
+            "            <interactionDetectionMethod>\n" +
+            "              <names>\n" +
+            "                <shortLabel>unspecified method</shortLabel>\n"+
+            "              </names>\n"+
+            "              <xref>\n" +
+            "                <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "              </xref>\n"+
+            "            </interactionDetectionMethod>\n"+
+            "          </experimentDescription>\n"+
             "        </experimentList>\n" +
             "        <participantList>\n" +
-            "          <participant id=\"6\">\n" +
-            "            <interactorRef>2</interactorRef>\n" +
+            "          <participant id=\"7\">\n" +
+            "            <interactor id=\"8\">\n" +
+            "              <names>\n" +
+            "                <shortLabel>protein test</shortLabel>\n" +
+            "              </names>\n" +
+            "              <interactorType>\n" +
+            "                <names>\n" +
+            "                  <shortLabel>protein</shortLabel>\n" +
+            "                </names>\n" +
+            "                <xref>\n" +
+            "                  <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "                </xref>\n" +
+            "              </interactorType>\n" +
+            "            </interactor>\n"+
             "            <biologicalRole>\n" +
             "              <names>\n" +
             "                <shortLabel>unspecified role</shortLabel>\n" +
@@ -1286,13 +1380,13 @@ public class ExpandedXml25BinaryWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter();
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter();
         writer.write(new DefaultNamedBinaryInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter();
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter();
         writer.initialiseContext(null);
     }
 
@@ -1300,7 +1394,7 @@ public class ExpandedXml25BinaryWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1314,11 +1408,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1338,11 +1431,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1361,11 +1453,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1385,11 +1476,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1409,14 +1499,13 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_single_interaction_complexes() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
@@ -1437,7 +1526,7 @@ public class ExpandedXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
@@ -1457,7 +1546,7 @@ public class ExpandedXml25BinaryWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1473,11 +1562,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1498,11 +1586,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1526,7 +1613,7 @@ public class ExpandedXml25BinaryWriterTest {
     public void test_interaction_source() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1550,11 +1637,10 @@ public class ExpandedXml25BinaryWriterTest {
     }
 
     @Test
-    @Ignore
     public void test_interactions_different_sources() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1598,7 +1684,7 @@ public class ExpandedXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("protein test")));
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        ExpandedXml25BinaryWriter writer = new ExpandedXml25BinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         interaction.setAvailability("copyright");
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex.getParticipants().iterator().next().getInteractor());
