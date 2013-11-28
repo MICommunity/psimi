@@ -142,8 +142,14 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     }
 
     @Override
-    public void setInteractionSet(Set<I> processedInteractions) {
+    public void setInteractionSet(Set<Interaction> processedInteractions) {
         super.setInteractionSet(processedInteractions);
+        if (this.modelledWriter != null){
+            this.modelledWriter.setInteractionSet(processedInteractions);
+        }
+        if (this.evidenceWriter != null){
+            this.evidenceWriter.setInteractionSet(processedInteractions);
+        }
         if (this.lightWriter != null){
             this.lightWriter.setInteractionSet(processedInteractions);
         }

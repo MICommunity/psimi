@@ -44,7 +44,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private Source currentSource;
     private T currentInteraction;
     private boolean writeComplexesAsInteractors=false;
-    private Set<T> processedInteractions;
+    private Set<Interaction> processedInteractions;
 
     private Source defaultSource;
     private XMLGregorianCalendar defaultReleaseDate;
@@ -153,7 +153,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
 
         if (options.containsKey(PsiXml25Utils.XML_INTERACTION_SET_OPTION)){
-            setInteractionSet((Set<T>) options.get(PsiXml25Utils.XML_INTERACTION_SET_OPTION));
+            setInteractionSet((Set<Interaction>) options.get(PsiXml25Utils.XML_INTERACTION_SET_OPTION));
         }
         // use the default cache option
         else{
@@ -299,7 +299,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
     }
 
-    public void setInteractionSet(Set<T> processedInteractions) {
+    public void setInteractionSet(Set<Interaction> processedInteractions) {
         this.processedInteractions = processedInteractions;
     }
 
@@ -343,7 +343,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
     }
 
-    protected Set<T> getProcessedInteractions() {
+    protected Set<Interaction> getProcessedInteractions() {
         if (processedInteractions == null){
             initialiseDefaultInteractionSet();
         }
@@ -518,7 +518,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     }
 
     protected void initialiseDefaultInteractionSet() {
-        this.processedInteractions = Collections.newSetFromMap(new IdentityHashMap<T, Boolean>());
+        this.processedInteractions = Collections.newSetFromMap(new IdentityHashMap<Interaction, Boolean>());
     }
 
     private void initialiseStreamWriter(XMLStreamWriter writer) {
