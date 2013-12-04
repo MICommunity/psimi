@@ -491,4 +491,40 @@ public class CvTermUtils {
             }
         }
     }
+
+    public static Xref getPsiMiReference(CvTerm term){
+        if (term == null){
+            return null;
+        }
+        else if (term.getMIIdentifier() == null){
+            return null;
+        }
+        else{
+            return XrefUtils.collectFirstIdentifierWithDatabaseAndId(term.getIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI, term.getMIIdentifier());
+        }
+    }
+
+    public static Xref getPsiModReference(CvTerm term){
+        if (term == null){
+            return null;
+        }
+        else if (term.getMODIdentifier() == null){
+            return null;
+        }
+        else{
+            return XrefUtils.collectFirstIdentifierWithDatabaseAndId(term.getIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD, term.getMODIdentifier());
+        }
+    }
+
+    public static Xref getPsiParReference(CvTerm term){
+        if (term == null){
+            return null;
+        }
+        else if (term.getPARIdentifier() == null){
+            return null;
+        }
+        else{
+            return XrefUtils.collectFirstIdentifierWithDatabaseAndId(term.getIdentifiers(), null, CvTerm.PSI_PAR, term.getPARIdentifier());
+        }
+    }
 }
