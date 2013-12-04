@@ -100,6 +100,85 @@ public class XrefUtils {
     }
 
     /**
+     * Method to know if a Xref is from the same database (dbId is the MI identifier and dbName is the database shortname)
+     * @param ref : the Xref
+     * @param dbId : the database MI identifier
+     * @param dbName : the database shortname
+     * @param id: database id
+     * @return true if the Xref has a database MI which is dbId or database shortname which is dbName
+     */
+    public static boolean doesXrefHaveDatabaseAndId(Xref ref, String dbId, String dbName, String id){
+
+        if (ref == null || (dbName == null && dbId == null)){
+            return false;
+        }
+
+        CvTerm database = ref.getDatabase();
+        // we can compare identifiers
+        if (dbId != null && database.getMIIdentifier() != null){
+            // we have the same database id
+            if (database.getMIIdentifier().equals(dbId)){
+                return ref.getId().equals(id);
+            }
+            else{
+                return false;
+            }
+        }
+        // we need to compare dbNames
+        else if (dbName != null) {
+            if (dbName.equalsIgnoreCase(database.getShortName())){
+                return ref.getId().equals(id);
+            }
+            else{
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Method to know if a Xref has the same qualifier (qualifierId is the MI identifier and qualifierName is the qualifier shortname)
+     * @param ref : the Xref
+     * @param qualifierId : the qualifier MI identifier
+     * @param qualifierName : the qualifier shortname
+     * @param id: database id
+     * @return true if the Xref has a qualifier MI which is qualifierId or qualifier shortname which is qualifierName
+     */
+    public static boolean doesXrefHaveQualifierAndId(Xref ref, String qualifierId, String qualifierName, String id){
+
+        if (ref == null || (qualifierName == null && qualifierId == null)){
+            return false;
+        }
+
+        CvTerm qualifier = ref.getQualifier();
+        if (qualifier == null){
+            return false;
+        }
+        // we can compare identifiers
+        if (qualifierId != null && qualifier.getMIIdentifier() != null){
+            // we have the same database id
+            if (qualifier.getMIIdentifier().equals(qualifierId)){
+                return ref.getId().equals(id);
+            }
+            else{
+                return false;
+            }
+        }
+        // we need to compare dbNames
+        else if (qualifierName != null) {
+            if (qualifierName.equalsIgnoreCase(qualifier.getShortName())){
+                return ref.getId().equals(id);
+            }
+            else{
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Method to return a sub collection of identifiers (qualifier identity or secondary) in a list of Xrefs
      * @param refs
      * @return the sublist of identifiers (qualifier identity or secondary) from the list of Xrefs
@@ -184,6 +263,80 @@ public class XrefUtils {
 
         for (Xref ref : refs){
             if (isXrefFromDatabase(ref, dbId, dbName) && doesXrefHaveQualifier(ref, qualifierId, qualifierName)){
+                identifiers.add(ref);
+            }
+        }
+
+        return identifiers;
+    }
+
+    /**
+     * Collect all cross references having a specific qualifier
+     * @param refs
+     * @param qualifierId
+     * @param qualifierName
+     * @param id
+     * @return
+     */
+    public static Collection<Xref> collectAllXrefsHavingQualifierAndId(Collection<? extends Xref> refs, String qualifierId, String qualifierName, String id){
+
+        if (refs == null || refs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
+
+        for (Xref ref : refs){
+            if (doesXrefHaveQualifierAndId(ref, qualifierId, qualifierName, id)){
+                identifiers.add(ref);
+            }
+        }
+
+        return identifiers;
+    }
+
+    /**
+     * Collect all cross references having a specific database
+     * @param refs
+     * @param dbId
+     * @param dbName
+     * @param id
+     * @return
+     */
+    public static Collection<Xref> collectAllXrefsHavingDatabaseAndId(Collection<? extends Xref> refs, String dbId, String dbName, String id){
+
+        if (refs == null || refs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
+
+        for (Xref ref : refs){
+            if (doesXrefHaveDatabaseAndId(ref, dbId, dbName, id)){
+                identifiers.add(ref);
+            }
+        }
+
+        return identifiers;
+    }
+
+    /**
+     * Collect all cross references having a specific database and qualifier
+     * @param refs
+     * @param dbId
+     * @param dbName
+     * @param qualifierId
+     * @param qualifierName
+     * @param id
+     * @return
+     */
+    public static Collection<Xref> collectAllXrefsHavingDatabaseQualifierAndId(Collection<? extends Xref> refs, String dbId, String dbName, String id, String qualifierId, String qualifierName){
+
+        if (refs == null || refs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
+
+        for (Xref ref : refs){
+            if (isXrefFromDatabase(ref, dbId, dbName) && doesXrefHaveQualifierAndId(ref, qualifierId, qualifierName, id)){
                 identifiers.add(ref);
             }
         }
@@ -285,7 +438,7 @@ public class XrefUtils {
         }
 
         for (Xref xref : refs){
-            if (isXrefAnIdentifier(xref)){
+            if (isXrefAnIdentifier(xref) && isXrefFromDatabase(xref, dbId, dbName)){
                 return xref;
             }
         }
@@ -306,6 +459,53 @@ public class XrefUtils {
 
             while (refIterator.hasNext()){
                 if (isXrefFromDatabase(refIterator.next(), dbId, dbName)){
+                    refIterator.remove();
+                }
+            }
+        }
+    }
+
+    /**
+     * This method will return the first Xref from this database having :
+     * - identity qualifier
+     * - secondary identifier if no identity qualifier
+     * - first Xref from this database if no identity or secondary qualifier
+     * It will return null if there are no Xrefs with this database id/name
+     * @param refs : the collection of Xrefs
+     * @param dbId : the database id to look for
+     * @param dbName : the database name to look for
+     * @param id
+     * @return the first identifier having this database name/id, null if no Xrefs with this database name/id
+     */
+    public static Xref collectFirstIdentifierWithDatabaseAndId(Collection<? extends Xref> refs, String dbId, String dbName, String id){
+
+        if (refs == null || (dbName == null && dbId == null) || id == null){
+            return null;
+        }
+
+        for (Xref xref : refs){
+            if (isXrefAnIdentifier(xref) && doesXrefHaveDatabaseAndId(xref, dbId, dbName, id)){
+                return xref;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Remove all Xrefs having this database name/database id from the collection of xrefs
+     * @param refs : the collection of Xrefs
+     * @param dbId : the database id to look for
+     * @param dbName : the database name to look for
+     * @param id
+     */
+    public static void removeAllXrefsWithDatabaseAndId(Collection<? extends Xref> refs, String dbId, String dbName, String id){
+
+        if (refs != null){
+            Iterator<? extends Xref> refIterator = refs.iterator();
+
+            while (refIterator.hasNext()){
+                if (doesXrefHaveDatabaseAndId(refIterator.next(), dbId, dbName, id)){
                     refIterator.remove();
                 }
             }
@@ -342,6 +542,14 @@ public class XrefUtils {
 
     public static Xref createSecondaryXref(String databaseName, String id){
         return createXrefWithQualifier(databaseName, null, id, Xref.SECONDARY, Xref.SECONDARY_MI);
+    }
+
+    public static Xref createPrimaryXref(String databaseName, String databaseMi, String id){
+        return createXrefWithQualifier(databaseName, databaseMi, id, Xref.PRIMARY, Xref.PRIMARY_MI);
+    }
+
+    public static Xref createPrimaryXref(String databaseName, String id){
+        return createXrefWithQualifier(databaseName, null, id, Xref.PRIMARY, Xref.PRIMARY_MI);
     }
 
     public static Xref createUniprotIdentity(String uniprot){
