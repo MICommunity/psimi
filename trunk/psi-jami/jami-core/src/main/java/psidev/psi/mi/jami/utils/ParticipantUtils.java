@@ -1,9 +1,11 @@
 package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultModelledParticipant;
+import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
@@ -19,9 +21,17 @@ import java.util.Collection;
 
 public class ParticipantUtils {
 
-     public static ParticipantEvidence createUnknownBasicExperimentalParticipant(){
-         return new DefaultParticipantEvidence(InteractionUtils.createEmptyBasicExperimentalInteraction(), InteractorUtils.createUnknownBasicInteractor(), new DefaultCvTerm("unspecified method"));
-     }
+    public static ParticipantEvidence createUnknownBasicParticipantEvidence(){
+        return new DefaultParticipantEvidence(InteractionUtils.createEmptyBasicExperimentalInteraction(), InteractorUtils.createUnknownBasicInteractor(), null);
+    }
+
+    public static Participant createUnknownBasicParticipant(){
+        return new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor());
+    }
+
+    public static ModelledParticipant createBasicModelledParticipant(){
+        return new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+    }
 
     /**
      * Method to know if a participant evidence has a putative self experimental or biological role
@@ -177,7 +187,7 @@ public class ParticipantUtils {
 
         if (doesParticipantHaveExperimentalRole(participant, Participant.FLUORESCENCE_DONOR_ROLE_MI, Participant.FLUORESCENCE_DONOR_ROLE)
                 || doesParticipantHaveExperimentalRole(participant, Participant.SUPPRESSOR_GENE_ROLE_MI, Participant.SUPPRESSOR_GENE_ROLE) ){
-             return true;
+            return true;
         }
 
         return false;
@@ -238,7 +248,7 @@ public class ParticipantUtils {
             }
             // check for the participant coming first in alphabetical order
             else if (firstShortNameAlphabeticalOrder == null) {
-                 firstShortNameAlphabeticalOrder = p;
+                firstShortNameAlphabeticalOrder = p;
             }
             else {
                 String firstName = firstShortNameAlphabeticalOrder.getInteractor().getShortName().trim().toLowerCase();
