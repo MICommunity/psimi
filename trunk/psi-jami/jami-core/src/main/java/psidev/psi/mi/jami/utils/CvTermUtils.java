@@ -36,6 +36,38 @@ public class CvTermUtils {
     private static CvTerm self;
     private static CvTerm unknownInteractorType;
 
+    /**
+     * Gets the unique identifier of a CvObject. If it has PSI MI Identifier (miIdentifier) return it, otherwise returns the MOD identifier,
+     * If no MOD identifier, returns the PAR identifier.
+     * if no PAR identifier, returns the first identifier in the list of identifiers.
+     *
+     * @param cvObject The object to get the identifier from.
+     * @return The identifier. Will be null if no miIdentifier or identity xref is found.
+     * @since 1.8.0
+     */
+    public static String getBestIdentifier(CvTerm cvObject) {
+        if (cvObject == null) return null;
+
+        // try the PSI MI first
+        if (cvObject.getMIIdentifier() != null) {
+            return cvObject.getMIIdentifier();
+        }
+        // try the PSI MOD second
+        else if (cvObject.getMODIdentifier() != null) {
+            return cvObject.getMODIdentifier();
+        }
+        // try the PSI PAR third
+        else if (cvObject.getPARIdentifier() != null) {
+            return cvObject.getPARIdentifier();
+        }
+        else if (!cvObject.getIdentifiers().isEmpty()) {
+           return cvObject.getIdentifiers().iterator().next().getId();
+        }
+        else{
+            return null;
+        }
+    }
+
     public static CvTerm getGene() {
         if (gene == null){
             gene = createGeneNameAliasType();
