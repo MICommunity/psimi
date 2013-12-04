@@ -156,7 +156,7 @@ public class XrefUtilsTest {
         Xref differentQualifier = XrefUtils.createXrefWithQualifier(Xref.UNIPROTKB, "P12348", Xref.SEE_ALSO);
         List<Xref> xrefs = Arrays.asList(secondary, identity, noQualifier, differentQualifier);
 
-        Xref selection = XrefUtils.collectFirstIdentifierWithDatabase(xrefs, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+        Xref selection = XrefUtils.collectFirstIdentifierWithDatabase(xrefs, Xref.ENSEMBL_MI, Xref.ENSEMBL);
         Assert.assertEquals(secondary, selection);
     }
 

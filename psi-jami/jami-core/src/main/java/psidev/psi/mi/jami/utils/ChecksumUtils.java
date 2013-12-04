@@ -84,20 +84,8 @@ public class ChecksumUtils {
         }
 
         for (Checksum checksum : checksums){
-            CvTerm method = checksum.getMethod();
-            // we can compare method ids
-            if (methodId != null && method.getMIIdentifier() != null){
-                // we have the same method id
-                if (method.getMIIdentifier().equals(methodId)){
-                    return checksum;
-                }
-            }
-            // we need to compare methodName
-            else if (methodName != null && methodName.equalsIgnoreCase(method.getShortName())) {
-                // we have the same method name
-                if (method.getShortName().equalsIgnoreCase(methodName)){
-                    return checksum;
-                }
+            if (doesChecksumHaveMethod(checksum, methodId, methodName)){
+                return checksum;
             }
         }
 
@@ -117,6 +105,112 @@ public class ChecksumUtils {
 
             while (checksumIterator.hasNext()){
                 if (doesChecksumHaveMethod(checksumIterator.next(), methodId, methodName)){
+                    checksumIterator.remove();
+                }
+            }
+        }
+    }
+
+    /**
+     * To check if a checksum does have a specific method
+     * @param checksum
+     * @param methodId
+     * @param methodName
+     * @param value
+     * @return true if the checksum has the method with given name/identifier
+     */
+    public static boolean doesChecksumHaveMethodAndValue(Checksum checksum, String methodId, String methodName, String value){
+
+        if (checksum == null || (methodName == null && methodId == null) || value == null){
+            return false;
+        }
+
+        CvTerm method = checksum.getMethod();
+        // we can compare identifiers
+        if (methodId != null && method.getMIIdentifier() != null){
+            // we have the same method id
+            if (method.getMIIdentifier().equals(methodId)){
+               return checksum.getValue().equals(value);
+            }
+            else{
+                return false;
+            }
+        }
+        // we need to compare methodNames
+        else if (methodName != null) {
+            if (methodName.equalsIgnoreCase(method.getShortName())){
+                return checksum.getValue().equals(value);
+            }
+            else{
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Collect all checksum having a specific method
+     * @param checksums
+     * @param methodId
+     * @param methodName
+     * @param value
+     * @return
+     */
+    public static Collection<Checksum> collectAllChecksumsHavingMethodAndValue(Collection<? extends Checksum> checksums, String methodId, String methodName, String value){
+
+        if (checksums == null || checksums.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Checksum> selectedChecksums = new ArrayList<Checksum>(checksums.size());
+
+        for (Checksum checksum : checksums){
+            if (doesChecksumHaveMethodAndValue(checksum, methodId, methodName, value)){
+                selectedChecksums.add(checksum);
+            }
+        }
+
+        return selectedChecksums;
+    }
+
+    /**
+     * This method will return the first Checksum having this methodId/method name
+     * It will return null if there are no Checksums with this method id/name
+     * @param checksums : the collection of Checksum
+     * @param methodId : the method id to look for
+     * @param methodName : the method name to look for
+     * @param value
+     * @return the first checksum having this method name/id, null if no Checksum with this method name/id
+     */
+    public static Checksum collectFirstChecksumWithMethodAndValue(Collection<? extends Checksum> checksums, String methodId, String methodName, String value){
+
+        if (checksums == null || (methodName == null && methodId == null)){
+            return null;
+        }
+
+        for (Checksum checksum : checksums){
+            if (doesChecksumHaveMethodAndValue(checksum, methodId, methodName, value)){
+                return checksum;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Remove all Checksum having this method name/method id from the collection of checksums
+     * @param checksums : the collection of Checksum
+     * @param methodId : the method id to look for
+     * @param methodName : the method name to look for
+     * @param value: the value
+     */
+    public static void removeAllChecksumWithMethod(Collection<? extends Checksum> checksums, String methodId, String methodName, String value){
+
+        if (checksums != null){
+            Iterator<? extends Checksum> checksumIterator = checksums.iterator();
+
+            while (checksumIterator.hasNext()){
+                if (doesChecksumHaveMethodAndValue(checksumIterator.next(), methodId, methodName, value)){
                     checksumIterator.remove();
                 }
             }
