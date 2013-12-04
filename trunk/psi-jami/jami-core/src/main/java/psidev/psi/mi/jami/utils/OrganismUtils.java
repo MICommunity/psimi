@@ -61,4 +61,21 @@ public class OrganismUtils {
     public static Organism createUnknownOrganism(){
         return createSpecialistOrganism(-3);
     }
+
+    public static Organism createInVitroOrganism() {
+        return createSpecialistOrganism(-1);
+    }
+
+    public static Organism createChemicalSynthesisOrganism() {
+        return createSpecialistOrganism(-2);
+    }
+
+    public static Organism createInVivoOrganism() {
+        return createSpecialistOrganism(-4);
+    }
+
+    public static Organism createInSilicoOrganism() {
+        return createSpecialistOrganism(-5);
+    }
+
 }
