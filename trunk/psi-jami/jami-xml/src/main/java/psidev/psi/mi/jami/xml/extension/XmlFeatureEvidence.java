@@ -166,7 +166,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, F
         }
 
         if (originalParticipant != null){
-            XmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
+            AbstractXmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
             if (interaction != null){
                 List<XmlExperiment> originalExperiments = interaction.getOriginalExperiments();
                 if (originalExperiments != null && !originalExperiments.isEmpty()){

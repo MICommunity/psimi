@@ -1,9 +1,11 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml254;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.xml.extension.AbstractXmlAnnotation;
+import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
 
@@ -16,7 +18,7 @@ import javax.xml.bind.annotation.*;
  * @version $Id$
  * @since <pre>18/07/13</pre>
  */
-@XmlType(name = "defaultAttribute")
+@XmlRootElement(name = "attribute", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlAnnotation extends AbstractXmlAnnotation {
 

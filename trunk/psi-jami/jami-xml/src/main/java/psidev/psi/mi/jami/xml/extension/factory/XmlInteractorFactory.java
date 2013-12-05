@@ -80,7 +80,7 @@ public class XmlInteractorFactory extends InteractorFactory{
         return (ExtendedPsi25Interactor)super.createInteractorFromIdentityXrefs(xrefs, name);
     }
 
-    public Interactor createInteractorFromXmlInteractorInstance(XmlInteractor source){
+    public Interactor createInteractorFromXmlInteractorInstance(AbstractXmlInteractor source){
         ExtendedPsi25Interactor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getInteractorType(), source.getShortName());
         if (reloadedInteractorDependingOnType == null){
             reloadedInteractorDependingOnType = createInteractorFromIdentityXrefs(source.getIdentifiers(), source.getShortName());

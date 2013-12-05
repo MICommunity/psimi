@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
 import psidev.psi.mi.jami.xml.extension.XmlXref;
 
@@ -30,7 +30,7 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
     private Collection<Confidence> confidences;
     private boolean isNegative;
     private Collection<VariableParameterValueSet> variableParameterValueSets;
-    private Availability xmlAvailability;
+    private AbstractAvailability xmlAvailability;
     private Boolean isModelled;
     private List<Experiment> experiments;
 
@@ -222,12 +222,12 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
     }
 
     @Override
-    public Availability getXmlAvailability() {
+    public AbstractAvailability getXmlAvailability() {
         return this.xmlAvailability;
     }
 
     @Override
-    public void setXmlAvailability(Availability availability) {
+    public void setXmlAvailability(AbstractAvailability availability) {
         this.xmlAvailability = availability;
     }
 

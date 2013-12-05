@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant> {
-    private XmlInteractionEvidence interactionEvidence;
+    private AbstractXmlInteractionEvidence interactionEvidence;
     private Organism organism;
     private CvTerm interactorType;
     private Collection<InteractionEvidence> interactionEvidences;
@@ -32,7 +32,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     private Collection<CooperativeEffect> cooperativeEffects;
     private Collection<ModelledParticipant> modelledParticipants;
 
-    public XmlInteractionEvidenceComplexWrapper(XmlInteractionEvidence interaction){
+    public XmlInteractionEvidenceComplexWrapper(AbstractXmlInteractionEvidence interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }

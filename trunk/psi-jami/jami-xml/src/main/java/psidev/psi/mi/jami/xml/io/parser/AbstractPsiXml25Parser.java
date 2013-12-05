@@ -6,18 +6,15 @@ import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.xml.Entry;
-import psidev.psi.mi.jami.xml.InMemoryPsiXml25Cache;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
-import psidev.psi.mi.jami.xml.Xml25EntryContext;
+import psidev.psi.mi.jami.xml.*;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
@@ -69,13 +66,14 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
     private boolean useDefaultCache = true;
     private String currentElement;
 
+    private PsiXmlVersion version = null;
+
     public AbstractPsiXml25Parser(File file) throws JAXBException {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
         this.originalFile = file;
         loadedInteractions = new ArrayList<T>();
-        this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -85,7 +83,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         this.originalStream = inputStream;
         loadedInteractions = new ArrayList<T>();
-        this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
 
     }
@@ -96,7 +93,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         this.originalURL = url;
         loadedInteractions = new ArrayList<T>();
-        this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
 
     }
@@ -107,7 +103,6 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         this.originalReader = reader;
         loadedInteractions = new ArrayList<T>();
-        this.unmarshaller = createJAXBUnmarshaller();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -161,14 +156,18 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         // entry set
         else if (PsiXml25Utils.ENTRYSET_TAG.equals(currentElement)){
-            initialiseEntryContext(entryContext);
+
             // read the entrySet
             try {
+                // check the version
                 if (this.streamReader.hasNext()){
                     streamReader.next();
                 }
+                initialiseEntryContext(entryContext);
             } catch (XMLStreamException e) {
                 throw createPsiXmlExceptionFrom("Impossible to parse entry set.", e);
+            } catch (JAXBException e) {
+                throw createPsiXmlExceptionFrom("Impossible to create JAXB unmarshaller.", e);
             }
             // get next elements
             this.currentElement = getNextPsiXml25StartElement();
@@ -221,6 +220,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     public void reInit() throws MIIOException{
         loadedInteractions.clear();
+        this.version = null;
         if (this.indexOfObjects != null){
             this.indexOfObjects.clear();
         }
@@ -322,6 +322,51 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             }
             String start = null;
             String namespaceURI = null;
+            String currentNamespace = null;
+
+            // if we don't have a version yet, find it
+            if (this.version == null){
+                do {
+                    start = null;
+                    namespaceURI = null;
+                    // Skip all elements that are not from PSI-XML 2.5 schema and that are not start elements
+                    while (this.streamReader.hasNext() && !this.streamReader.isStartElement()){
+                        this.streamReader.next();
+                    }
+
+                    // get next event without parsing it
+                    if (this.streamReader.isStartElement()){
+                        start = this.streamReader.getLocalName();
+                        namespaceURI = this.streamReader.getNamespaceURI();
+                    }
+                }
+                while(start != null &&
+                        (namespaceURI == null
+                                || (!PsiXml25Utils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())
+                        && !PsiXml25Utils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim()))));
+
+                if (namespaceURI != null && PsiXml25Utils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())){
+                    this.version = PsiXmlVersion.v2_5_4;
+                    return start;
+                }
+                else if (namespaceURI != null && PsiXml25Utils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())){
+                    this.version = PsiXmlVersion.v2_5_3;
+                    return start;
+                }
+                else{
+                    return null;
+                }
+            }
+            else if (PsiXmlVersion.v2_5_4.equals(this.version)){
+                currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+            }
+            else if (PsiXmlVersion.v2_5_3.equals(this.version)){
+                currentNamespace = PsiXml25Utils.Xml253_NAMESPACE_URI;
+            }
+            else{
+                currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+            }
+
             do {
                 start = null;
                 namespaceURI = null;
@@ -337,7 +382,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 }
             }
             while(start != null &&
-                    (namespaceURI == null || !PsiXml25Utils.NAMESPACE_URI.equals(namespaceURI.trim())));
+                    (namespaceURI == null || !currentNamespace.equals(namespaceURI.trim())));
             return start;
         }
         catch (XMLStreamException e){
@@ -359,7 +404,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
      *
      * @return the unmarshaller with the class context
      */
-    protected abstract Unmarshaller createJAXBUnmarshaller() throws JAXBException;
+    protected abstract Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException;
+
+    protected abstract Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException;
 
     /**
      * Process an entry that is opened (source, experimentList, etc) and read the first interaction
@@ -444,8 +491,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                 Entry currentEntry = entryContext.getCurrentEntry();
                 // load attribute
                 while (this.currentElement != null && PsiXml25Utils.ATTRIBUTE_TAG.equals(this.currentElement)) {
-                    JAXBElement<XmlAnnotation> attribute = this.unmarshaller.unmarshal(streamReader, XmlAnnotation.class);
-                    currentEntry.getAnnotations().add(attribute.getValue());
+                    Annotation attribute = (Annotation)this.unmarshaller.unmarshal(streamReader);
+                    currentEntry.getAnnotations().add(attribute);
                     this.currentElement = getNextPsiXml25StartElement();
                 }                    }
             else{
@@ -507,9 +554,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             if (this.currentElement != null){
                 // load experimentDescription
                 while (this.currentElement != null && PsiXml25Utils.INTERACTOR_TAG.equals(this.currentElement)) {
-                    JAXBElement<XmlInteractor> interactorElement = unmarshaller.unmarshal(this.streamReader, XmlInteractor.class);
+                    AbstractXmlInteractor interactorElement = (AbstractXmlInteractor)unmarshaller.unmarshal(this.streamReader);
                     this.interactorFactory.
-                            createInteractorFromXmlInteractorInstance(interactorElement.getValue());
+                            createInteractorFromXmlInteractorInstance(interactorElement);
                     this.currentElement = getNextPsiXml25StartElement();
                 }
             }
@@ -571,10 +618,10 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     protected void parseSource(Xml25EntryContext entryContext) throws PsiXmlParserException {
 
-        JAXBElement<XmlSource> sourceElement = null;
+        ExtendedPsi25Source sourceElement = null;
         try {
-            sourceElement = this.unmarshaller.unmarshal(this.streamReader, XmlSource.class);
-            entryContext.getCurrentEntry().setSource(sourceElement.getValue());
+            sourceElement = (ExtendedPsi25Source)this.unmarshaller.unmarshal(this.streamReader);
+            entryContext.getCurrentEntry().setSource(sourceElement);
             this.currentElement = getNextPsiXml25StartElement();
         } catch (JAXBException e) {
             throw createPsiXmlExceptionFrom("Cannot parse the source of the entry.",e);
@@ -687,11 +734,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
     }
 
-    protected abstract T unmarshallInteraction() throws JAXBException;
-
-    protected T unmarshallInteraction(Class<? extends T> interactionClass) throws JAXBException {
-        JAXBElement<? extends T> element = this.unmarshaller.unmarshal(streamReader, interactionClass);
-        return element.getValue();
+    protected T unmarshallInteraction() throws JAXBException{
+        return (T) this.unmarshaller.unmarshal(this.streamReader);
     }
 
     protected void processAvailabilityList(Xml25EntryContext entryContext) throws PsiXmlParserException {
@@ -709,8 +753,8 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
                 // load availability
                 while (this.currentElement != null && PsiXml25Utils.AVAILABILITY_TAG.equals(this.currentElement)) {
-                    JAXBElement<Availability> availabilityElement = unmarshaller.unmarshal(this.streamReader, Availability.class);
-                    entry.getAvailabilities().add(availabilityElement.getValue());
+                    AbstractAvailability availabilityElement = (AbstractAvailability) unmarshaller.unmarshal(this.streamReader);
+                    entry.getAvailabilities().add(availabilityElement);
                     this.currentElement = getNextPsiXml25StartElement();
                 }
             }
@@ -745,12 +789,33 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     protected void skipNextElement() throws PsiXmlParserException {
         try{
+            String currentNamespace = null;
+            switch (this.version){
+                case v2_5_4:
+                    currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+                    break;
+                case v2_5_3:
+                    currentNamespace = PsiXml25Utils.Xml253_NAMESPACE_URI;
+                    break;
+                default:
+                    currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+                    break;
+            }
+
+            boolean isFromPsiNamespace = false;
             do{
                 if (this.streamReader.hasNext()){
                     streamReader.next();
                 }
+                else{
+                    isFromPsiNamespace = true;
+                }
+                // only look if we have a start or end element
+                if (this.streamReader.isEndElement() || this.streamReader.isStartElement()){
+                   isFromPsiNamespace = this.streamReader.getNamespaceURI() != null && currentNamespace.equals(this.streamReader.getNamespaceURI().trim());
+                }
             }
-            while (this.streamReader.hasNext() && !this.streamReader.isEndElement() && !this.streamReader.isStartElement());
+            while (!isFromPsiNamespace);
         }
         catch (XMLStreamException e){
             throw createPsiXmlExceptionFrom("Cannot parse next start/end elements", e);
@@ -770,6 +835,10 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         }
         // skip the node
         skipNextElement();
+    }
+
+    public PsiXmlVersion getVersion() {
+        return version;
     }
 
     private void initialiseStreamReader() throws XMLStreamException, IOException {
@@ -865,13 +934,27 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.unmarshaller = null;
         this.indexOfObjects = null;
         this.useDefaultCache = true;
+        this.version = null;
 
         // release the thread local
         Xml25EntryContext.getInstance().clear();
         Xml25EntryContext.remove();
     }
 
-    private void initialiseEntryContext(Xml25EntryContext entryContext) {
+    private void initialiseEntryContext(Xml25EntryContext entryContext) throws JAXBException {
+        // create unmarshaller knowing the version
+        switch (this.version){
+            case v2_5_4:
+                this.unmarshaller = createXml254JAXBUnmarshaller();
+                break;
+            case v2_5_3:
+                this.unmarshaller = createXml253JAXBUnmarshaller();
+                break;
+            default:
+                this.unmarshaller = createXml254JAXBUnmarshaller();
+                break;
+        }
+
         entryContext.clear();
         this.hasReadEntrySet = true;
         entryContext.setListener(this.listener);

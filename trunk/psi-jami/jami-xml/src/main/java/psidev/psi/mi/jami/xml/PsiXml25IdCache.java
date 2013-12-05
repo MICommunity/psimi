@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
 
 /**
  * Index that can retrieve a MI object given its id
@@ -25,14 +25,14 @@ public interface PsiXml25IdCache {
      * @param id
      * @param object
      */
-    public void registerAvailability(int id, Availability object);
+    public void registerAvailability(int id, AbstractAvailability object);
 
     /**
      *
      * @param id
      * @return the availability registered with this id, null if it does not exist
      */
-    public Availability getAvailability(int id);
+    public AbstractAvailability getAvailability(int id);
 
     /**
      * Register an experiment with an id

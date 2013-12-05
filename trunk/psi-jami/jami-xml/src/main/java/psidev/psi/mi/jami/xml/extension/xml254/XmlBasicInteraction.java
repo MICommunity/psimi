@@ -1,36 +1,39 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml254;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * Xml implementation of ModelledInteraction
+ * Xml implementation of interaction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlType(name = "defaultModelledInteraction")
+@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
+public class XmlBasicInteraction extends AbstractXmlBasicInteraction{
 
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    public XmlModelledInteraction() {
+    public XmlBasicInteraction() {
+        super();
     }
 
-    public XmlModelledInteraction(String shortName) {
+    public XmlBasicInteraction(String shortName) {
         super(shortName);
     }
 
-    public XmlModelledInteraction(String shortName, CvTerm type) {
+    public XmlBasicInteraction(String shortName, CvTerm type) {
         super(shortName, type);
     }
 
@@ -46,14 +49,24 @@ public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
         super.setJAXBXref(value);
     }
 
+    @Override
+    public boolean isIntraMolecular() {
+        return super.isIntraMolecular();
+    }
+
+    @Override
+    public void setIntraMolecular(boolean intra) {
+        super.setIntraMolecular(intra);
+    }
+
     @XmlElement(name = "intraMolecular", defaultValue = "false", type = Boolean.class)
-    public void setJAXBIntraMolecular(boolean intra) {
+    public void setJAXBIntraMolecular(Boolean intra) {
         super.setIntraMolecular(intra);
     }
 
     @XmlAttribute(name = "id", required = true)
     public void setJAXBId(int value) {
-        super.setJAXBId(value);
+        super.setId(value);
     }
 
     @Override
@@ -64,7 +77,7 @@ public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
 
     @XmlElement(name="participantList", required = true)
     public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
-        super.setJAXBParticipantWrapper(jaxbParticipantWrapper);
+        super.setParticipantWrapper(jaxbParticipantWrapper);
     }
 
     @Override
@@ -97,18 +110,23 @@ public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
         }
     }
 
-    @XmlElement(name="confidenceList")
-    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
-        super.setJAXBConfidenceWrapper(wrapper);
+    @Override
+    protected void initialiseParticipantWrapper() {
+        super.setParticipantWrapper(new JAXBParticipantWrapper());
     }
 
-    @XmlElement(name="parameterList")
-    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
-        super.setJAXBParameterWrapper(wrapper);
-    }
+    ////////////////////////////////////////////////////// classes
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="basicParticipantWrapper")
+    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<Participant> {
 
-    @XmlElement(name="experimentList")
-    public void setJAXBExperimentWrapper(JAXBExperimentWrapper value) {
-        super.setJAXBExperimentWrapper(value);
+        public JAXBParticipantWrapper(){
+            super();
+        }
+
+        @XmlElement(type=XmlParticipant.class, name="participant", required = true)
+        public List<Participant> getJAXBParticipants() {
+            return super.getJAXBParticipants();
+        }
     }
 }

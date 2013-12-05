@@ -1,10 +1,12 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import com.sun.xml.bind.annotation.XmlLocation;
+import com.sun.xml.bind.Locatable;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * A text describing the availability of data, e.g. a copyright statement.
@@ -25,16 +27,27 @@ import javax.xml.bind.annotation.*;
  *
  *
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "defaultAvailability")
-public class Availability extends AbstractAvailability
+@XmlTransient
+public abstract class AbstractAvailability implements FileSourceContext, Locatable
 {
 
-    @XmlLocation
-    @XmlTransient
-    private Locator locator;
+    private String value;
+    private int id;
+    private PsiXmLocator sourceLocator;
 
-    public Availability() {
+    public AbstractAvailability() {
+    }
+
+    /**
+     * Gets the value of the value property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getValue() {
+        return value;
     }
 
     /**
@@ -45,18 +58,28 @@ public class Availability extends AbstractAvailability
      *     {@link String }
      *
      */
-    @XmlValue
     public void setValue(String value) {
-        super.setValue(value);
+        this.value = value;
+    }
+
+    /**
+     * Gets the value of the id property.
+     *
+     */
+    public int getId() {
+        return id;
     }
 
     /**
      * Sets the value of the id property.
      *
      */
-    @XmlAttribute(name = "id", required = true)
     public void setId(int value) {
-        super.setId(value);
+        this.id = value;
+        Xml25EntryContext.getInstance().registerAvailability(this.id, this);
+        if (getSourceLocator() != null){
+            sourceLocator.setObjectId(this.id);
+        }
     }
 
     @Override
@@ -64,21 +87,16 @@ public class Availability extends AbstractAvailability
         return (Locator)getSourceLocator();
     }
 
-    @Override
     public FileSourceLocator getSourceLocator() {
-        if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
-        }
-        return super.getSourceLocator();
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = (PsiXmLocator)sourceLocator;
     }
 
     @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            super.setSourceLocator(null);
-        }
-        else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
-        }
+    public String toString() {
+        return "Availability: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

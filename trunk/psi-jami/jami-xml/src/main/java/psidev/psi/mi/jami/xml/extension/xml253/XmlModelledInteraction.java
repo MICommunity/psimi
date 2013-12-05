@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml253;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlType(name = "defaultModelledInteraction")
+@XmlRootElement(name = "interaction", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
 

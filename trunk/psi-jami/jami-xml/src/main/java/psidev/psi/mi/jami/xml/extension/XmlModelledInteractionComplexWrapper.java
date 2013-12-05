@@ -24,11 +24,11 @@ import java.util.List;
 @XmlTransient
 public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant>{
 
-    private XmlModelledInteraction modelledInteraction;
+    private AbstractXmlModelledInteraction modelledInteraction;
     private Organism organism;
     private CvTerm interactorType;
 
-    public XmlModelledInteractionComplexWrapper(XmlModelledInteraction modelled){
+    public XmlModelledInteractionComplexWrapper(AbstractXmlModelledInteraction modelled){
         if (modelled == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null xmlModelledInteraction");
         }

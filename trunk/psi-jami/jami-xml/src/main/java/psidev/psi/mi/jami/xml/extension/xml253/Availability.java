@@ -1,8 +1,10 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml253;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
+import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
 
@@ -25,8 +27,8 @@ import javax.xml.bind.annotation.*;
  *
  *
  */
+@XmlRootElement(name = "availability", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "defaultAvailability")
 public class Availability extends AbstractAvailability
 {
 
