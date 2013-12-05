@@ -3,7 +3,8 @@ package psidev.psi.mi.jami.commons;
 import java.io.*;
 
 /**
- * The openedInputStream contains a temporary file and the type of dataSourceFile it represents.
+ * The openedInputStream contains a PushbackReader reader that can read the opened input stream
+ * and the type of dataSourceFile it represents.
  *
  * It needs to be closed after being used.
  *
@@ -14,35 +15,25 @@ import java.io.*;
 
 public class OpenedInputStream {
 
-    private InputStream stream;
-    private File file;
-
+    private PushbackReader reader;
     private MIFileType source;
 
-    public OpenedInputStream(File file, MIFileType source) throws FileNotFoundException {
-        this.file = file;
-        stream = new FileInputStream(file);
+    public OpenedInputStream(PushbackReader reader, MIFileType source) throws FileNotFoundException {
+        this.reader = reader;
         this.source = source;
     }
 
-    public InputStream getCopiedStream() {
-        return stream;
+    public PushbackReader getReader() {
+        return reader;
     }
 
     public MIFileType getSource() {
         return source;
     }
 
-    public void close(){
-        if (stream != null){
-            try {
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (file != null){
-            file.delete();
+    public void close() throws IOException {
+        if (this.reader != null){
+            reader.close();
         }
     }
 }

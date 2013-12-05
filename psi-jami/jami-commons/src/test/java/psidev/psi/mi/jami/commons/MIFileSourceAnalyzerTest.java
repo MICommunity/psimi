@@ -69,10 +69,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675.xml").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.psi25_xml, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
@@ -82,10 +82,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_blank_lines.xml").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.psi25_xml, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
@@ -95,10 +95,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_no_encoding.xml").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.psi25_xml, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
@@ -158,10 +158,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675.txt").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.mitab, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
@@ -171,10 +171,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_content_with_blank_line.txt").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.mitab, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
@@ -184,10 +184,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_no_title.txt").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.mitab, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
@@ -197,10 +197,10 @@ public class MIFileSourceAnalyzerTest {
 
         InputStream stream = MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_empty.txt").openStream();
 
-        OpenedInputStream openedStream = analyzer.extractMIFileTypeAndCopiedInputStream(stream);
+        OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
         Assert.assertEquals(MIFileType.other, openedStream.getSource());
-        Assert.assertNotNull(openedStream.getCopiedStream());
+        Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
     }
