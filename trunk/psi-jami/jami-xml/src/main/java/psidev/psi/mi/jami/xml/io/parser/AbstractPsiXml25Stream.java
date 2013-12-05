@@ -7,20 +7,18 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
-import psidev.psi.mi.jami.xml.reference.XmlIdReference;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.reference.XmlIdReference;
+import psidev.psi.mi.jami.xml.utils.PsiXmlDataSourceOptions;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -89,7 +87,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     @Override
     public Iterator<T> getInteractionsIterator() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contains at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
         try {
@@ -115,7 +113,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     @Override
     public boolean validateSyntax() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml interaction datasource should contains at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
         if (isValid != null){
@@ -184,13 +182,13 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         Reader sourceReader = null;
 
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the PsiXml interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalArgumentException("The options for the PsiXml interaction datasource should contains at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         else if (options == null){
             return;
         }
-        else if (options.containsKey(MIDataSourceFactory.INPUT_OPTION_KEY)){
-            Object input = options.get(MIDataSourceFactory.INPUT_OPTION_KEY);
+        else if (options.containsKey(MIFileDataSourceOptions.INPUT_OPTION_KEY)){
+            Object input = options.get(MIFileDataSourceOptions.INPUT_OPTION_KEY);
             if (input instanceof URL){
                 sourceUrl = (URL) input;
             }
@@ -236,19 +234,19 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the Psi xml interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalArgumentException("The options for the Psi xml interaction datasource should contains at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
-        if (options.containsKey(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY)){
-            initialiseExpansionMethod((ComplexExpansionMethod<T,? extends BinaryInteraction>)options.get(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY));
+        if (options.containsKey(MIDataSourceOptions.COMPLEX_EXPANSION_OPTION_KEY)){
+            initialiseExpansionMethod((ComplexExpansionMethod<T,? extends BinaryInteraction>)options.get(MIDataSourceOptions.COMPLEX_EXPANSION_OPTION_KEY));
         }
 
-        if (options.containsKey(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY)){
-            setMIFileParserListener((MIFileParserListener) options.get(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY));
+        if (options.containsKey(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY)){
+            setMIFileParserListener((MIFileParserListener) options.get(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY));
         }
 
-        if (options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25IdCache)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
+        if (options.containsKey(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION)){
+            this.elementCache = (PsiXml25IdCache)options.get(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION);
         }
 
         // initialise parser after reading all options

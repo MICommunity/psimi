@@ -42,18 +42,6 @@ public class PsiXml25Utils {
     public static final String AVAILABILITY_TAG = "availability";
     public static final String ATTRIBUTELIST_TAG = "attributeList";
     public static final String ATTRIBUTE_TAG = "attribute";
-    public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";
-    public static final String XML_TYPE_OPTION = "xml25_type_key";
-    public static final String XML_ENTRY_ATTRIBUTES_OPTION = "xml25_entry_attributes_key";
-    public static final String XML25_EXTENDED_OPTION = "xml25_extended_key";
-    public static final String XML25_NAMES_OPTION = "xml25_names_key";
-    public static final String COMPACT_XML_EXPERIMENT_SET_OPTION = "compact_xml_experiment_set_key";
-    public static final String COMPACT_XML_INTERACTOR_SET_OPTION = "compact_xml_interactor_set_key";
-    public static final String COMPACT_XML_AVAILABILITY_SET_OPTION = "compact_xml_availability_set_key";
-    public static final String XML_INTERACTION_SET_OPTION = "xml_interaction_set_key";
-    public static final String DEFAULT_RELEASE_DATE_OPTION = "default_release_date_key";
-    public static final String DEFAULT_SOURCE_OPTION = "default_source_key";
-    public static final String WRITE_COMPLEX_AS_INTERACTOR_OPTION = "write_complex_as_interactor_key";
 
     public static final String LINE_BREAK = "\n";
     public static final int XML_BUFFER_SIZE = 512;

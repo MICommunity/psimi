@@ -1,30 +1,30 @@
-package psidev.psi.mi.jami.xml;
+package psidev.psi.mi.jami.xml.cache;
 
 import psidev.psi.mi.jami.model.*;
 
 import java.util.*;
 
 /**
- *
  * It keeps a in memory cache of objects having an id.
  * The cache is based on a in memory Identity map.
  *
+ * It will only keep experiments, interactions, features and participants in memory.
+ * It will ignore interactors and availability
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>12/11/13</pre>
+ * @since <pre>19/11/13</pre>
  */
 
-public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
+public class InMemoryLightIdentityObjectCache implements PsiXml25ObjectCache {
     private int current;
     private Map<Object, Integer> identityMap;
     private Set<ModelledInteraction> complexes;
-    private Map<String, Integer> availabilityMap;
 
-    public InMemoryIdentityObjectCache(){
+    public InMemoryLightIdentityObjectCache(){
         this.current = 0;
         this.identityMap = new IdentityHashMap<Object, Integer>();
         this.complexes = new HashSet<ModelledInteraction>();
-        this.availabilityMap = new HashMap<String, Integer>();
     }
 
     @Override
@@ -32,12 +32,7 @@ public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
         if (av == null){
             return 0;
         }
-        Integer id = this.availabilityMap.get(av);
-        if (id == null){
-            id = nextId();
-            this.availabilityMap.put(av, id);
-        }
-        return id;
+        return nextId();
     }
 
     @Override
@@ -47,7 +42,7 @@ public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
 
     @Override
     public int extractIdForInteractor(Interactor o) {
-        return extractIdFor(o);
+        return nextId();
     }
 
     @Override
@@ -74,15 +69,11 @@ public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
         this.current = 0;
         this.identityMap.clear();
         this.complexes.clear();
-        this.availabilityMap.clear();
     }
 
     @Override
     public boolean contains(Object o) {
-        if (this.identityMap.containsKey(o)){
-            return true;
-        }
-        return this.availabilityMap.containsKey(o);
+        return this.identityMap.containsKey(o);
     }
 
     @Override
@@ -105,9 +96,7 @@ public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
     @Override
     public void removeObject(Object o) {
         if (o != null){
-           if (this.identityMap.remove(o) == null){
-               this.availabilityMap.remove(o);
-           }
+            this.identityMap.remove(o);
         }
     }
 

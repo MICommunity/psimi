@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.parser;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
+import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.model.Interaction;
 
 import java.io.File;
@@ -40,7 +40,7 @@ public class Xml25ModelledBinarySourceTest {
 
         dataSource = new Xml25ModelledBinarySource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, Xml25ModelledBinarySourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25ModelledBinarySourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
 
@@ -54,7 +54,7 @@ public class Xml25ModelledBinarySourceTest {
 
         dataSource = new Xml25ModelledBinarySource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, Xml25ModelledBinarySourceTest.class.getResourceAsStream("/samples/empty.xml"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25ModelledBinarySourceTest.class.getResourceAsStream("/samples/empty.xml"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
@@ -72,7 +72,7 @@ public class Xml25ModelledBinarySourceTest {
 
         dataSource = new Xml25ModelledBinarySource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(Xml25ModelledBinarySourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25ModelledBinarySourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -92,7 +92,7 @@ public class Xml25ModelledBinarySourceTest {
 
         dataSource = new Xml25ModelledBinarySource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(Xml25ModelledBinarySourceTest.class.getResource("/samples/empty.xml").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25ModelledBinarySourceTest.class.getResource("/samples/empty.xml").getFile()));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         Assert.assertFalse(iterator.hasNext());
@@ -112,7 +112,7 @@ public class Xml25ModelledBinarySourceTest {
 
         Xml25ModelledBinarySource dataSource = new Xml25ModelledBinarySource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, Xml25ModelledBinarySourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25ModelledBinarySourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<ModelledBinaryInteraction> iterator = dataSource.getInteractionsIterator();
@@ -136,7 +136,7 @@ public class Xml25ModelledBinarySourceTest {
 
         Xml25ModelledBinarySource dataSource = new Xml25ModelledBinarySource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(Xml25ModelledBinarySourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25ModelledBinarySourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<ModelledBinaryInteraction> iterator = dataSource.getInteractionsIterator();

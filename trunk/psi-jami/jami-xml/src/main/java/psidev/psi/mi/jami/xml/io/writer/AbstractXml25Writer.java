@@ -4,18 +4,20 @@ import javanet.staxutils.IndentingXMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
+import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.PsiXmlVersion;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLOutputFactory;
@@ -54,6 +56,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private Collection<Annotation> entryAnnotations=null;
     private PsiXml25ElementWriter<Annotation> annotationsWriter=null;
 
+    private PsiXmlVersion version = PsiXmlVersion.v2_5_4;
+
     public AbstractXml25Writer(){
         this.interactionsToWrite = new ArrayList<T>();
     }
@@ -91,8 +95,8 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     }
 
     public void initialiseContext(Map<String, Object> options) {
-        if (options != null && options.containsKey(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25ObjectCache)options.get(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION);
+        if (options != null && options.containsKey(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION)){
+            this.elementCache = (PsiXml25ObjectCache)options.get(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION);
         }
         // use the default cache option
         else{
@@ -100,13 +104,13 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
 
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         else if (options == null){
             return;
         }
-        else if (options.containsKey(InteractionWriterFactory.OUTPUT_OPTION_KEY)){
-            Object output = options.get(InteractionWriterFactory.OUTPUT_OPTION_KEY);
+        else if (options.containsKey(InteractionWriterOptions.OUTPUT_OPTION_KEY)){
+            Object output = options.get(InteractionWriterOptions.OUTPUT_OPTION_KEY);
 
             if (output instanceof File){
                 try {
@@ -150,15 +154,15 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (options.containsKey(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
-            setWriteComplexesAsInteractors(this.writeComplexesAsInteractors = (Boolean)options.get(PsiXml25Utils.WRITE_COMPLEX_AS_INTERACTOR_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
+            setWriteComplexesAsInteractors(this.writeComplexesAsInteractors = (Boolean)options.get(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION));
         }
 
-        if (options.containsKey(PsiXml25Utils.XML_INTERACTION_SET_OPTION)){
-            setInteractionSet((Set<Interaction>) options.get(PsiXml25Utils.XML_INTERACTION_SET_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.XML_INTERACTION_SET_OPTION)){
+            setInteractionSet((Set<Interaction>) options.get(PsiXmlWriterOptions.XML_INTERACTION_SET_OPTION));
         }
         // use the default cache option
         else{
@@ -166,13 +170,21 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         }
 
         // default release date
-        if (options.containsKey(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION)){
-            setDefaultReleaseDate((XMLGregorianCalendar)options.get(PsiXml25Utils.DEFAULT_RELEASE_DATE_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.DEFAULT_RELEASE_DATE_OPTION)){
+            setDefaultReleaseDate((XMLGregorianCalendar)options.get(PsiXmlWriterOptions.DEFAULT_RELEASE_DATE_OPTION));
         }
 
         // default source
-        if (options.containsKey(PsiXml25Utils.DEFAULT_SOURCE_OPTION)){
-            setDefaultSource((Source)options.get(PsiXml25Utils.DEFAULT_SOURCE_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.DEFAULT_SOURCE_OPTION)){
+            setDefaultSource((Source)options.get(PsiXmlWriterOptions.DEFAULT_SOURCE_OPTION));
+        }
+
+        // version
+        if (options.containsKey(PsiXmlWriterOptions.XML_VERSION_OPTION)){
+            setVersion((PsiXmlVersion)options.get(PsiXmlWriterOptions.XML_VERSION_OPTION));
+        }
+        else{
+            setVersion(PsiXmlVersion.v2_5_4);
         }
 
         isInitialised = true;
@@ -181,7 +193,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void end() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         started = false;
         // write end of entrySet
@@ -201,7 +213,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void start() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         // write start of document (by default, version = 1 and encoding = UTL-8)
         try {
@@ -212,12 +224,33 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         // write start of entrySet
         try {
             this.streamWriter.writeStartElement(PsiXml25Utils.ENTRYSET_TAG);
-            this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml254_NAMESPACE_URI);
-            this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
-            this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_254_LOCATION);
-            this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
-            this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
-            this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
+
+            switch (this.version){
+                case v2_5_4:
+                    this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml254_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_254_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
+                    this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
+                    this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
+                    break;
+                case v2_5_3:
+                    this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml253_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_253_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
+                    this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
+                    this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"3");
+                    break;
+                default:
+                    this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml254_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_254_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
+                    this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
+                    this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
+                    break;
+            }
         } catch (XMLStreamException e) {
             throw new MIIOException("Cannot write the start of the entrySet root node.", e);
         }
@@ -226,7 +259,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void write(T interaction) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionForEntry(interaction);
         writeInteractionListContent();
@@ -235,7 +268,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void write(Collection<? extends T> interactions) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionsForEntry(interactions);
         writeInteractionListContent();
@@ -244,7 +277,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     @Override
     public void write(Iterator<? extends T> interactions) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionsForEntry(interactions);
         writeInteractionListContent();
@@ -357,6 +390,10 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
             throw new IllegalArgumentException("The annotations writer cannot be null");
         }
         this.annotationsWriter = annotationsWriter;
+    }
+
+    public void setVersion(PsiXmlVersion version) {
+        this.version = version;
     }
 
     protected Set<Interaction> getProcessedInteractions() {

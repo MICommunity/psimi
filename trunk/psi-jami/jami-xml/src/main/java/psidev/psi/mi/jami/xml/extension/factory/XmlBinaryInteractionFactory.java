@@ -124,7 +124,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
     }
 
     private void copyBasicXmlInteractionProperties(Interaction interaction, XmlBinaryInteraction binary) {
-        XmlBasicInteraction xmlSource = (XmlBasicInteraction)interaction;
+        AbstractXmlBasicInteraction xmlSource = (AbstractXmlBasicInteraction)interaction;
         InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
         binary.setId(xmlSource.getId());
         binary.getInferredInteractions().addAll(xmlSource.getInferredInteractions());

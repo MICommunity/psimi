@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml;
+package psidev.psi.mi.jami.xml.cache;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.extension.AbstractAvailability;

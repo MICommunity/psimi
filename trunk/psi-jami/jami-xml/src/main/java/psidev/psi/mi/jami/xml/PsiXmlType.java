@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
 /**
- * The type of PSI-XML 2.5.
+ * The type of PSI-XML.
  * It can be compact or expanded
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -9,6 +9,6 @@ package psidev.psi.mi.jami.xml;
  * @since <pre>18/11/13</pre>
  */
 
-public enum PsiXml25Type {
+public enum PsiXmlType {
     compact, expanded
 }

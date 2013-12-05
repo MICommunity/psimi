@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.AbstractEntry;
 import psidev.psi.mi.jami.xml.AbstractEntrySet;
@@ -50,7 +50,7 @@ public abstract class AbstractPsiXml25Source<T extends Interaction> extends Abst
     @Override
     public Collection<T> getInteractions() throws MIIOException {
         if (!isInitialised()){
-            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contains at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml 2.5 interaction datasource should contains at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
         try {
