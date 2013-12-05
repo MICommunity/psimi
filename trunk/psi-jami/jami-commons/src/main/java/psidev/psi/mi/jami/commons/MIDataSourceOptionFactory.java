@@ -1,14 +1,16 @@
 package psidev.psi.mi.jami.commons;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
+import psidev.psi.mi.jami.datasource.MIDataSourceOptions;
+import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
-import psidev.psi.mi.jami.xml.InMemoryPsiXml25Cache;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.PsiXmlVersion;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserLogger;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,7 +176,7 @@ public class MIDataSourceOptionFactory {
      * @return the default options for the PSI-xml 2.5 datasource
      */
     public Map<String, Object> getDefaultXml25Options(Object inputData){
-        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData, null, new InMemoryPsiXml25Cache());
+        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData, null, new InMemoryPsiXml25Cache(), PsiXmlVersion.v2_5_4);
     }
 
     /**
@@ -185,8 +187,8 @@ public class MIDataSourceOptionFactory {
      * @param objectCategory
      * @return the options for the Psi Xml datasource using the provided objectCategory
      */
-    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, Object inputData){
-        return getXml25Options(objectCategory, true, null, inputData, null, new InMemoryPsiXml25Cache());
+    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, Object inputData, PsiXmlVersion version){
+        return getXml25Options(objectCategory, true, null, inputData, null, new InMemoryPsiXml25Cache(), version);
     }
 
     /**
@@ -197,8 +199,8 @@ public class MIDataSourceOptionFactory {
      * @param streaming : tru if we want to read the interactions in a streaming way
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
-    public Map<String, Object> getXml25Options(boolean streaming, Object inputData){
-        return getXml25Options(null, streaming, null, inputData, null, new InMemoryPsiXml25Cache());
+    public Map<String, Object> getXml25Options(boolean streaming, Object inputData, PsiXmlVersion version){
+        return getXml25Options(null, streaming, null, inputData, null, new InMemoryPsiXml25Cache(), version);
     }
 
     /**
@@ -207,10 +209,11 @@ public class MIDataSourceOptionFactory {
      * It will keep the parsed objects having an id in memory.
      * @param listener
      * @param inputData is the mitab data to read
+     * @param version the version
      * @return the options for the PSI-XML datasource with the provided listener
      */
-    public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData){
-        return getXml25Options(null, true, listener, inputData, null, new InMemoryPsiXml25Cache());
+    public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData, PsiXmlVersion version){
+        return getXml25Options(null, true, listener, inputData, null, new InMemoryPsiXml25Cache(), version);
     }
 
     /**
@@ -221,15 +224,23 @@ public class MIDataSourceOptionFactory {
      * @param input : the MI source containing data
      * @param expansionMethod: the complex expansion method
      * @param objectCache: cache for parsed objects having an id
+     * @param version: Psi xml version
      * @return the Xml 2.5 datasource options
      */
-    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod, PsiXml25IdCache objectCache){
+    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod, PsiXml25IdCache objectCache,
+                                               PsiXmlVersion version){
         Map<String, Object> options = getOptions(MIFileType.psi25_xml, objectCategory, streaming, listener, input);
         if (expansionMethod != null){
-            options.put(MIDataSourceFactory.COMPLEX_EXPANSION_OPTION_KEY, expansionMethod);
+            options.put(MIDataSourceOptions.COMPLEX_EXPANSION_OPTION_KEY, expansionMethod);
         }
         if (objectCache != null){
-            options.put(PsiXml25Utils.ELEMENT_WITH_ID_CACHE_OPTION, objectCache);
+            options.put(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION, objectCache);
+        }
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
         }
         return options;
     }
@@ -246,13 +257,13 @@ public class MIDataSourceOptionFactory {
     public Map<String, Object> getOptions(MIFileType type, InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
-        options.put(MIDataSourceFactory.INPUT_FORMAT_OPTION_KEY, type.toString());
-        options.put(MIDataSourceFactory.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
-        options.put(MIDataSourceFactory.STREAMING_OPTION_KEY, streaming);
+        options.put(MIFileDataSourceOptions.INPUT_FORMAT_OPTION_KEY, type.toString());
+        options.put(MIDataSourceOptions.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
+        options.put(MIFileDataSourceOptions.STREAMING_OPTION_KEY, streaming);
         if (listener != null){
-            options.put(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY, listener);
+            options.put(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY, listener);
         }
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, input);
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, input);
         return options;
     }
 }
