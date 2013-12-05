@@ -31,4 +31,11 @@ public class InteractionWriterOptions {
      * that can write a specific file format. It may not be adapted to more specialised writers such as database writers.
      */
     public static final String OUTPUT_FORMAT_OPTION_KEY = "output_format_key";
+
+    /**
+     * The option to describe the type of interaction object we want to write.
+     * It has to be an enum of type InteractionObjectCategory. If this option is not provided,
+     * the default value will vary depending on the type of the interaction writer.
+     */
+    public static final String INTERACTION_OBJECT_OPTION_KEY = "interaction_object_key";
 }
