@@ -26,12 +26,6 @@ public class MIDataSourceFactory {
 
     private Map<Class<? extends MIDataSource>, Map<String, Object>> registeredDataSources;
 
-    public static final String INPUT_OPTION_KEY = "input_key";
-    public static final String STREAMING_OPTION_KEY = "streaming_key";
-    public static final String INTERACTION_OBJECT_OPTION_KEY = "interaction_object_key";
-    public static final String PARSER_LISTENER_OPTION_KEY = "parser_listener_key";
-    public static final String INPUT_FORMAT_OPTION_KEY = "input_format_key";
-    public static final String COMPLEX_EXPANSION_OPTION_KEY = "complex_expansion_key";
     private Class interactionSourceClass = InteractionStream.class;
 
     private MIDataSourceFactory(){
