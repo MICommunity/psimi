@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.ExperimentalCvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;

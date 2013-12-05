@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;

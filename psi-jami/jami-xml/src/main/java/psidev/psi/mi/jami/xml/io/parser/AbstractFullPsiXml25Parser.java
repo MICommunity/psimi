@@ -4,6 +4,8 @@ import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.*;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -260,6 +262,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     protected AbstractEntrySet<AbstractEntry<T>> parseEntrySet() throws PsiXmlParserException {
         if (this.reader != null){
             try {
+                initialiseEntryContext(Xml25EntryContext.getInstance());
+
                 return (AbstractEntrySet<AbstractEntry<T>>) this.unmarshaller.unmarshal(this.reader);
             } catch (JAXBException e) {
                 throw createPsiXmlExceptionFrom("Error parsing entrySet from a file.", e);

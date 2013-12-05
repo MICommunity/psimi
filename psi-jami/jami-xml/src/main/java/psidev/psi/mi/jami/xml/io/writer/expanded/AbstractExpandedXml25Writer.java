@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.xml.InMemoryLightIdentityObjectCache;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryLightIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 
 import javax.xml.stream.XMLStreamException;

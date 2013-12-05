@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AvailabilityWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ConfidenceWriter;

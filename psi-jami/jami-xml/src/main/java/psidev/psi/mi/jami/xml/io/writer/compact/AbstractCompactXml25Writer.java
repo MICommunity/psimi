@@ -2,12 +2,13 @@ package psidev.psi.mi.jami.xml.io.writer.compact;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -72,22 +73,22 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
     public void initialiseContext(Map<String, Object> options) {
         super.initialiseContext(options);
 
-        if (options.containsKey(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET_OPTION)){
-            setExperimentSet((Set<Experiment>) options.get(PsiXml25Utils.COMPACT_XML_EXPERIMENT_SET_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.COMPACT_XML_EXPERIMENT_SET_OPTION)){
+            setExperimentSet((Set<Experiment>) options.get(PsiXmlWriterOptions.COMPACT_XML_EXPERIMENT_SET_OPTION));
         }
         // use the default cache option
         else{
             initialiseDefaultExperimentSet();
         }
-        if (options.containsKey(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET_OPTION)){
-            setAvailabilitySet((Set<String>) options.get(PsiXml25Utils.COMPACT_XML_AVAILABILITY_SET_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.COMPACT_XML_AVAILABILITY_SET_OPTION)){
+            setAvailabilitySet((Set<String>) options.get(PsiXmlWriterOptions.COMPACT_XML_AVAILABILITY_SET_OPTION));
         }
         // use the default cache option
         else{
             initialiseDefaultAvailabilitySet();
         }
-        if (options.containsKey(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET_OPTION)){
-            setInteractorSet((Set<Interactor>) options.get(PsiXml25Utils.COMPACT_XML_INTERACTOR_SET_OPTION));
+        if (options.containsKey(PsiXmlWriterOptions.COMPACT_XML_INTERACTOR_SET_OPTION)){
+            setInteractorSet((Set<Interactor>) options.get(PsiXmlWriterOptions.COMPACT_XML_INTERACTOR_SET_OPTION));
         }
         // use the default cache option
         else{

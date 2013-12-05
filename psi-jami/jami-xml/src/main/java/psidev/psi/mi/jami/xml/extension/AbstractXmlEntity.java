@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
 import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;

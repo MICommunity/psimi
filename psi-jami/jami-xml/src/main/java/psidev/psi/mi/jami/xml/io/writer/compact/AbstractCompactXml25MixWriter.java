@@ -1,9 +1,10 @@
 package psidev.psi.mi.jami.xml.io.writer.compact;
 
+import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.PsiXmlVersion;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
@@ -125,7 +126,22 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
         }
         if (this.lightWriter != null){
             this.lightWriter.setAvailabilitySet(availabilities);
-        }    }
+        }
+    }
+
+    @Override
+    public void setVersion(PsiXmlVersion version) {
+        super.setVersion(version);
+        if (this.modelledWriter != null){
+            this.modelledWriter.setVersion(version);
+        }
+        if (this.evidenceWriter != null){
+            this.evidenceWriter.setVersion(version);
+        }
+        if (this.lightWriter != null){
+            this.lightWriter.setVersion(version);
+        }
+    }
 
     @Override
     public void setInteractorSet(Set<Interactor> interactors) {
@@ -217,7 +233,7 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     @Override
     public void write(Iterator<? extends I> interactions) throws MIIOException {
         if (this.modelledWriter == null || this.evidenceWriter == null || this.lightWriter == null){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         List<E> evidences = new ArrayList<E>();
         List<M> modelledList = new ArrayList<M>();
@@ -289,7 +305,7 @@ public abstract class AbstractCompactXml25MixWriter<I extends Interaction, M ext
     @Override
     public void write(I interaction) throws MIIOException {
         if (this.modelledWriter == null || this.evidenceWriter == null || this.lightWriter == null){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         if (this.evidenceWriter.getInteractionType() != null && this.evidenceWriter.getInteractionType().isAssignableFrom(interaction.getClass())){
             this.evidenceWriter.write((E)interaction);

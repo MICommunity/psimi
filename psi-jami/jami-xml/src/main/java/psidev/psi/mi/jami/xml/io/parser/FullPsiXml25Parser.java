@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.AbstractEntry;
 import psidev.psi.mi.jami.xml.AbstractEntrySet;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 

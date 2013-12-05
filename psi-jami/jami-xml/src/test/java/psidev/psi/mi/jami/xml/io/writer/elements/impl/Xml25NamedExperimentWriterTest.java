@@ -4,8 +4,8 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.stream.XMLStreamException;

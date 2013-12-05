@@ -9,8 +9,8 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultParameter;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

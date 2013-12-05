@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.extension.XmlParameter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;

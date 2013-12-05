@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.*;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.*;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;

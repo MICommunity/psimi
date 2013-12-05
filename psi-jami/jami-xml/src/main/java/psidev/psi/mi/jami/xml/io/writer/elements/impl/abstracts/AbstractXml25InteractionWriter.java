@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 

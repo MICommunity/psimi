@@ -28,7 +28,7 @@ import java.util.Arrays;
 public class ExpandedXml25NamedModelledBinaryWriterTest {
     private String interaction = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -84,7 +84,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_multiple = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -187,7 +187,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_same_experiment_interactors = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -290,7 +290,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_complexes = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -384,7 +384,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_complexes_as_interactor = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -440,7 +440,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_different_entries1 = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -547,7 +547,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_different_entries2 = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +
@@ -748,7 +748,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_source = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <source releaseDate=\"2013-09-02Z\">\n" +
@@ -809,7 +809,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_different_source = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <source releaseDate=\"2013-09-02Z\">\n" +
@@ -1020,7 +1020,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     private String interaction_cooperative = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<entrySet xmlns=\"http://psi.hupo.org/mi/mif\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd\" " +
+            "xsi:schemaLocation=\"http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd\" " +
             "level=\"2\" version=\"5\" minorVersion=\"4\">\n" +
             "  <entry>\n" +
             "    <interactionList>\n" +

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.extension.factory.XmlBinaryInteractionFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;

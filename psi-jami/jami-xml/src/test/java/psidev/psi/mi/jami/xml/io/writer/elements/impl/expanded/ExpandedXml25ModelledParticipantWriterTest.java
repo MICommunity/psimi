@@ -8,8 +8,8 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.xml.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
