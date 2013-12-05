@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.commons;
 
+import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+
 import java.io.*;
 
 /**
@@ -161,31 +163,28 @@ public class MIFileAnalyzer {
     /**
      * Recognize the MIFileDataSource from the inputStream.
      * Because it needs to open the inputStream to analyze its content, it will return an OpenedInputStream which contains the MIFileType and
-     * a copy of the inputStream it opened which should be used instead of the given 'stream' which have been opened and closed. As for a normal InputStream, it needs to be closed after being used.
+     * a PushbackReader which should be used instead of the given 'stream' which have been opened. As for a normal InputStream, it needs to be closed after being used.
      * It will recognize psi25-xml and mitab files. If it is neither of them, it will return an OpenedInputStream MIFileType.other
      *
      * @param stream : the stream to recognize
      * @return
      * @throws java.io.IOException
      */
-    public OpenedInputStream extractMIFileTypeAndCopiedInputStream(InputStream stream) throws IOException {
-
+    public OpenedInputStream extractMIFileTypeFrom(InputStream stream) throws IOException {
         if (stream == null){
             throw new IOException("The input stream cannot be null.");
         }
         else {
 
-            File temp = MIFileUtils.storeAsTemporaryFile(stream, "molecular_interaction_stream" + System.currentTimeMillis(), ".txt");
-            return readTemporaryFile(temp);
-
-
+            PushbackReader reader = new PushbackReader(new InputStreamReader(stream), PsiXml25Utils.XML_BUFFER_SIZE);
+            return readOpenedStream(reader);
         }
     }
 
     /**
      * Recognize the MIFileDataSource from the reader.
      * Because it needs to open the reader to analyze its content, it will return an OpenedInputStream which contains the MIFileType and
-     * a copy of the inputStream it opened which should be used instead of the given 'stream' which have been opened and closed. As for a normal InputStream, it needs to be closed after being used.
+     * a PushbackReader which should be used instead of the given 'stream' which have been opened.. As for a normal InputStream, it needs to be closed after being used.
      * It will recognize psi25-xml and mitab files. If it is neither of them, it will return an OpenedInputStream MIFileType.other
      *
      * @param reader : the reader for the source to recognize
@@ -199,10 +198,9 @@ public class MIFileAnalyzer {
         }
         else {
 
-            File temp = MIFileUtils.storeAsTemporaryFile(reader, "molecular_interaction_stream" + System.currentTimeMillis(), ".txt");
-
+            PushbackReader reader2 = new PushbackReader(reader, PsiXml25Utils.XML_BUFFER_SIZE);
             // check first line
-            return readTemporaryFile(temp);
+            return readOpenedStream(reader2);
         }
     }
 
@@ -221,7 +219,7 @@ public class MIFileAnalyzer {
             throw new IOException("The input stream cannot be null.");
         }
         else {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            PushbackReader reader = new PushbackReader(new InputStreamReader(stream), PsiXml25Utils.XML_BUFFER_SIZE);
             MIFileType type = MIFileType.other;
             try{
                 type = identifyMIFileTypeAndConsume(reader);
@@ -249,7 +247,7 @@ public class MIFileAnalyzer {
             throw new IOException("The input reader cannot be null.");
         }
         else {
-            BufferedReader reader2 = new BufferedReader(reader);
+            PushbackReader reader2 = new PushbackReader(reader, PsiXml25Utils.XML_BUFFER_SIZE);
             MIFileType type = MIFileType.other;
             try{
                 type = identifyMIFileTypeAndConsume(reader2);
@@ -262,60 +260,42 @@ public class MIFileAnalyzer {
         }
     }
 
-    private MIFileType identifyMIFileTypeAndConsume(BufferedReader reader) throws IOException {
-        // check first line
-        String line = reader.readLine();
+    private MIFileType identifyMIFileTypeAndConsume(PushbackReader reader) throws IOException {
+        char[] buffer = new char[PsiXml25Utils.XML_BUFFER_SIZE];
+
+        // read BUFFER_SIZE into the buffer
+        int c = reader.read( buffer, 0, PsiXml25Utils.XML_BUFFER_SIZE );
+        // build a string representation for it
+        final String line = String.valueOf( buffer );
+
+        MIFileType type;
 
         if (line == null){
-            return MIFileType.other;
-        }
-
-        // skip empty lines or break lines or xml encode line
-        while (line != null && (line.trim().length() == 0 || line.trim().equals(System.getProperty("line.separator")))){
-            line = reader.readLine();
-        }
-
-        if (line == null){
-            return MIFileType.other;
+            type = MIFileType.other;
         }
         // we have xml
-        else if (line.trim().startsWith("<?xml")){
-            if (line.contains("<entrySet")){
-                return MIFileType.psi25_xml;
-            }
-
-            String line2 = reader.readLine();
-            if (line2 != null && line2.startsWith("<entrySet")){
-                return MIFileType.psi25_xml;
-            }
-            else {
-                return MIFileType.other;
-            }
+        else if (line.contains("<entrySet")){
+            type = MIFileType.psi25_xml;
         }
-        else if (line.startsWith("<entrySet")){
-            return MIFileType.psi25_xml;
-        }
-        else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
-            return MIFileType.mitab;
+        else if (line.toLowerCase().trim().contains(MITAB_25_TITLE.toLowerCase())){
+            type = MIFileType.mitab;
         }
         else if (line.contains("\t")){
-            return MIFileType.mitab;
+            type = MIFileType.mitab;
         }
         else{
-            return MIFileType.other;
+            type = MIFileType.other;
         }
+
+        if (c > -1){
+            reader.unread( buffer, 0, c );
+        }
+        return type;
     }
 
-    private OpenedInputStream readTemporaryFile(File temp) throws IOException {
+    private OpenedInputStream readOpenedStream(PushbackReader temp) throws IOException {
         // check first line
-        BufferedReader reader = new BufferedReader(new FileReader(temp));
-
-        try {
-            MIFileType type = identifyMIFileTypeAndConsume(reader);
-            return new OpenedInputStream(temp, type);
-        }
-        finally {
-            reader.close();
-        }
+        MIFileType type = identifyMIFileTypeAndConsume(temp);
+        return new OpenedInputStream(temp, type);
     }
 }
