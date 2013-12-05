@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.extension.*;
+import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.JAXBContext;
@@ -15,7 +15,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -29,19 +28,19 @@ import java.net.URL;
  */
 
 public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Participant>>{
-    public Xml25Parser(File file) throws XMLStreamException, JAXBException {
+    public Xml25Parser(File file){
         super(file);
     }
 
-    public Xml25Parser(InputStream inputStream) throws XMLStreamException, JAXBException {
+    public Xml25Parser(InputStream inputStream){
         super(inputStream);
     }
 
-    public Xml25Parser(URL url) throws IOException, XMLStreamException, JAXBException {
+    public Xml25Parser(URL url){
         super(url);
     }
 
-    public Xml25Parser(Reader reader) throws XMLStreamException, JAXBException {
+    public Xml25Parser(Reader reader){
         super(reader);
     }
 

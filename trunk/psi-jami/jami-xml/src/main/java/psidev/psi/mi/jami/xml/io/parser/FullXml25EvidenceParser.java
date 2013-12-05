@@ -1,15 +1,13 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.xml.ExperimentalEntrySet;
+import psidev.psi.mi.jami.xml.Xml253ExperimentalEntrySet;
+import psidev.psi.mi.jami.xml.Xml254ExperimentalEntrySet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -23,7 +21,7 @@ import java.net.URL;
  */
 
 public class FullXml25EvidenceParser extends AbstractFullPsiXml25Parser<InteractionEvidence>{
-    public FullXml25EvidenceParser(File file) throws JAXBException {
+    public FullXml25EvidenceParser(File file) throws JAXBException, FileNotFoundException {
         super(file);
     }
 
@@ -40,8 +38,14 @@ public class FullXml25EvidenceParser extends AbstractFullPsiXml25Parser<Interact
     }
 
     @Override
-    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(ExperimentalEntrySet.class);
+    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(Xml254ExperimentalEntrySet.class);
+        return ctx.createUnmarshaller();
+    }
+
+    @Override
+    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(Xml253ExperimentalEntrySet.class);
         return ctx.createUnmarshaller();
     }
 }

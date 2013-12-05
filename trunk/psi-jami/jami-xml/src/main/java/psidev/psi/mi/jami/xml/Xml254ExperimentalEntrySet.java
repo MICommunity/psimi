@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * ExperimentalEntrySet implementation for JAXB read only
+ * Xml254ExperimentalEntrySet implementation for JAXB read only
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,7 +17,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "entrySet", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class ExperimentalEntrySet extends AbstractEntrySet<ExperimentalEntry>{
+public class Xml254ExperimentalEntrySet extends AbstractEntrySet<ExperimentalEntry>{
     @XmlLocation
     @XmlTransient
     private Locator locator;

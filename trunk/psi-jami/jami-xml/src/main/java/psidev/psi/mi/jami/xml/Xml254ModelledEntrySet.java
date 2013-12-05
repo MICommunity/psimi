@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * Basic EntrySet implementation for JAXB read only .
+ * Modelled EntrySet implementation for JAXB read only
  *
  * Ignore all experimental details
  *
@@ -19,13 +19,13 @@ import java.util.List;
  */
 @XmlRootElement(name = "entrySet", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class BasicEntrySet extends AbstractEntrySet<BasicEntry>{
+public class Xml254ModelledEntrySet extends AbstractEntrySet<ModelledEntry>{
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    @XmlElement(type=BasicEntry.class, name="entry", required = true)
-    public List<BasicEntry> getEntries() {
+    @XmlElement(type=ModelledEntry.class, name="entry", required = true)
+    public List<ModelledEntry> getEntries() {
         return super.getEntries();
     }
 

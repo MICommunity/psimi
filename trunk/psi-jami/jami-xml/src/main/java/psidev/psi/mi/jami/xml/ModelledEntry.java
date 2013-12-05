@@ -39,11 +39,6 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
         super.setSource(source);
     }
 
-    @XmlElement(name = "availabilityList")
-    public void setJAXBAvailabilityWrapper(JAXBAvailabilitiesWrapper wrapper) {
-        super.setAvailabilitiesWrapper(wrapper);
-    }
-
     @XmlElement(name = "experimentList")
     public void setJAXBExperimentWrapper(JAXBExperimentsWrapper wrapper){
         this.experimentsWrapper = wrapper;

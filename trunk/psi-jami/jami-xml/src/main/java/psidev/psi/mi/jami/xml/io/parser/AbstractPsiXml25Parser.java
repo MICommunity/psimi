@@ -68,7 +68,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     private PsiXmlVersion version = null;
 
-    public AbstractPsiXml25Parser(File file) throws JAXBException {
+    public AbstractPsiXml25Parser(File file) {
         if (file == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
@@ -77,7 +77,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         this.interactorFactory = new XmlInteractorFactory();
     }
 
-    public AbstractPsiXml25Parser(InputStream inputStream) throws JAXBException {
+    public AbstractPsiXml25Parser(InputStream inputStream) {
         if (inputStream == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
@@ -87,7 +87,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     }
 
-    public AbstractPsiXml25Parser(URL url) throws JAXBException {
+    public AbstractPsiXml25Parser(URL url) {
         if (url == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
@@ -97,7 +97,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
 
     }
 
-    public AbstractPsiXml25Parser(Reader reader) throws JAXBException {
+    public AbstractPsiXml25Parser(Reader reader) {
         if (reader == null){
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
@@ -133,7 +133,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         // the eventreader does not have any new events
         if (currentElement == null){
             if (!hasReadEntrySet && listener != null){
-                listener.onInvalidSyntax(new DefaultFileSourceContext(new PsiXmLocator(1,1,null)), new PsiXmlParserException("ExperimentalEntrySet root term not found. PSI-XML is not valid."));
+                listener.onInvalidSyntax(new DefaultFileSourceContext(new PsiXmLocator(1,1,null)), new PsiXmlParserException("Xml254ExperimentalEntrySet root term not found. PSI-XML is not valid."));
             }
             return null;
         }
@@ -837,7 +837,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
         skipNextElement();
     }
 
-    public PsiXmlVersion getVersion() {
+    protected PsiXmlVersion getVersion() {
         return version;
     }
 
