@@ -212,9 +212,9 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         // write start of entrySet
         try {
             this.streamWriter.writeStartElement(PsiXml25Utils.ENTRYSET_TAG);
-            this.streamWriter.writeDefaultNamespace(PsiXml25Utils.NAMESPACE_URI);
+            this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml254_NAMESPACE_URI);
             this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
-            this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_LOCATION);
+            this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_254_LOCATION);
             this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
             this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
             this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");

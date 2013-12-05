@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.extension.*;
+import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.JAXBContext;
@@ -13,7 +13,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 
 /**
@@ -42,9 +45,23 @@ public class Xml25ModelledParser extends AbstractPsiXml25Parser<ModelledInteract
     }
 
     @Override
-    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(XmlModelledInteraction.class, XmlExperiment.class, XmlInteractor.class,
-                Availability.class, XmlSource.class, XmlAnnotation.class);
+    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.extension.xml254.XmlModelledInteraction.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlSource.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlAnnotation.class);
+        return ctx.createUnmarshaller();
+    }
+    @Override
+    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.extension.xml253.XmlModelledInteraction.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlSource.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlAnnotation.class);
         return ctx.createUnmarshaller();
     }
 
@@ -89,10 +106,5 @@ public class Xml25ModelledParser extends AbstractPsiXml25Parser<ModelledInteract
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());
-    }
-
-    @Override
-    protected ModelledInteraction unmarshallInteraction() throws JAXBException {
-        return super.unmarshallInteraction(XmlModelledInteraction.class);
     }
 }

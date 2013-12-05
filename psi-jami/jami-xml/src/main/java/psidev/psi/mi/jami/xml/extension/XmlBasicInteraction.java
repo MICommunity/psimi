@@ -16,9 +16,9 @@ import java.util.List;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
+@XmlType(name = "defaultBasicInteraction")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlBasicInteraction extends AbstractXmlInteraction<Participant>{
+public class XmlBasicInteraction extends AbstractXmlBasicInteraction{
 
     @XmlLocation
     @XmlTransient

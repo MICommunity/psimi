@@ -6,13 +6,14 @@
 //
 
 
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml253;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -29,15 +30,16 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * The JAXB binding is designed to be read-only and is not designed for writing
  * 
  */
+@XmlRootElement(name = "source", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "defaultSource")
 public class XmlSource extends AbstractXmlSource
 {
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    public XmlSource() {
+    public XmlSource(){
+        super();
     }
 
     public XmlSource(String shortName) {
@@ -53,7 +55,7 @@ public class XmlSource extends AbstractXmlSource
     }
 
     public XmlSource(String shortName, String url, String address, Publication bibRef) {
-        super(shortName, url, address, bibRef);
+        super(shortName,url, address, bibRef);
     }
 
     public XmlSource(String shortName, Xref ontologyId, String url, String address, Publication bibRef) {
@@ -85,7 +87,7 @@ public class XmlSource extends AbstractXmlSource
      *
      * @param value
      *     allowed object is
-     *     {@link NamesContainer }
+     *     {@link psidev.psi.mi.jami.xml.extension.NamesContainer }
      *
      */
     @XmlElement(name = "names", required = true)
@@ -99,7 +101,7 @@ public class XmlSource extends AbstractXmlSource
      *
      * @param value
      *     allowed object is
-     *     {@link XrefContainer }
+     *     {@link psidev.psi.mi.jami.xml.extension.XrefContainer }
      *
      */
     @XmlElement(name = "xref", required = true)
@@ -121,7 +123,7 @@ public class XmlSource extends AbstractXmlSource
     @XmlAttribute(name = "releaseDate")
     @XmlSchemaType(name = "date")
     public void setJAXBReleaseDate(XMLGregorianCalendar value) {
-        super.setJAXBReleaseDate(value);
+        super.setReleaseDate(value);
     }
 
     @XmlElement(name="attributeList")

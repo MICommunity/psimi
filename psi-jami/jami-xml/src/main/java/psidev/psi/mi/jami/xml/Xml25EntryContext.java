@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
@@ -82,7 +82,7 @@ public class Xml25EntryContext {
         this.elementCache = elementCache;
     }
 
-    public void registerAvailability(int id, Availability o){
+    public void registerAvailability(int id, AbstractAvailability o){
         if (this.elementCache != null){
             this.elementCache.registerAvailability(id, o);
         }

@@ -6,9 +6,7 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
-import psidev.psi.mi.jami.xml.extension.XmlBasicInteraction;
-import psidev.psi.mi.jami.xml.extension.XmlInteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.XmlModelledInteraction;
+import psidev.psi.mi.jami.xml.extension.*;
 import psidev.psi.mi.jami.xml.extension.binary.*;
 
 /**
@@ -79,17 +77,17 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
 
     @Override
     public BinaryInteraction createBinaryInteractionWrapperFrom(Interaction interaction) {
-        return new XmlBinaryInteractionWrapper((XmlBasicInteraction)interaction);
+        return new XmlBinaryInteractionWrapper((AbstractXmlBasicInteraction)interaction);
     }
 
     @Override
     public BinaryInteractionEvidence createBinaryInteractionEvidenceWrapperFrom(InteractionEvidence interaction) {
-        return new XmlBinaryInteractionEvidenceWrapper((XmlInteractionEvidence)interaction);
+        return new XmlBinaryInteractionEvidenceWrapper((AbstractXmlInteractionEvidence)interaction);
     }
 
     @Override
     public ModelledBinaryInteraction createModelledBinaryInteractionWrapperFrom(ModelledInteraction interaction) {
-        return new XmlModelledBinaryInteractionWrapper((XmlModelledInteraction)interaction);
+        return new XmlModelledBinaryInteractionWrapper((AbstractXmlModelledInteraction)interaction);
     }
 
     @Override
@@ -108,7 +106,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
     }
 
     private void copyXmlInteractionEvidenceProperties(InteractionEvidence interaction, XmlBinaryInteractionEvidence binary) {
-        XmlInteractionEvidence xmlSource = (XmlInteractionEvidence)interaction;
+        AbstractXmlInteractionEvidence xmlSource = (AbstractXmlInteractionEvidence)interaction;
         InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, binary, false, true);
         binary.setId(xmlSource.getId());
         binary.getInferredInteractions().addAll(xmlSource.getInferredInteractions());
@@ -140,7 +138,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
     }
 
     private void copyXmlModelledInteractionProperties(ModelledInteraction interaction, XmlModelledBinaryInteraction binary) {
-        XmlModelledInteraction xmlSource = (XmlModelledInteraction)interaction;
+        AbstractXmlModelledInteraction xmlSource = (AbstractXmlModelledInteraction)interaction;
         InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
         binary.setId(xmlSource.getId());
         binary.getInferredInteractions().addAll(xmlSource.getInferredInteractions());

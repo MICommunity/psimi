@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.extension.Availability;
 
 import java.util.HashMap;
@@ -33,15 +34,15 @@ public class InMemoryPsiXml25Cache implements PsiXml25IdCache {
     }
 
     @Override
-    public void registerAvailability(int id, Availability object) {
+    public void registerAvailability(int id, AbstractAvailability object) {
         this.mapOfReferencedObjects.put(id, object);
     }
 
     @Override
-    public Availability getAvailability(int id) {
+    public AbstractAvailability getAvailability(int id) {
         Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Availability){
-            return (Availability)object;
+        if (object instanceof AbstractAvailability){
+            return (AbstractAvailability)object;
         }
         return null;
     }

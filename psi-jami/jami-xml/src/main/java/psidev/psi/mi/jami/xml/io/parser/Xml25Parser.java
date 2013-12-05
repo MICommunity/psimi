@@ -14,7 +14,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 
 /**
@@ -43,9 +46,21 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
     }
 
     @Override
-    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(XmlBasicInteraction.class, XmlExperiment.class, XmlInteractor.class,
-                Availability.class, XmlSource.class, XmlAnnotation.class);
+    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.extension.xml254.XmlBasicInteraction.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlSource.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlAnnotation.class);
+        return ctx.createUnmarshaller();
+    }
+    @Override
+    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.extension.xml253.XmlBasicInteraction.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlSource.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlAnnotation.class);
         return ctx.createUnmarshaller();
     }
 
@@ -133,10 +148,5 @@ public class Xml25Parser extends AbstractPsiXml25Parser<Interaction<? extends Pa
             }
         }
         setCurrentElement(getNextPsiXml25StartElement());
-    }
-
-    @Override
-    protected Interaction<? extends Participant> unmarshallInteraction() throws JAXBException {
-        return super.unmarshallInteraction(XmlBasicInteraction.class);
     }
 }

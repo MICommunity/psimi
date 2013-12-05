@@ -16,8 +16,8 @@ import java.util.List;
 
 public interface ExtendedPsi25InteractionEvidence extends ExtendedPsi25Interaction<ParticipantEvidence>, InteractionEvidence{
 
-    public Availability getXmlAvailability();
-    public void setXmlAvailability(Availability availability);
+    public AbstractAvailability getXmlAvailability();
+    public void setXmlAvailability(AbstractAvailability availability);
     public boolean isModelled();
     public void setModelled(boolean modelled);
     public List<Experiment> getExperiments();

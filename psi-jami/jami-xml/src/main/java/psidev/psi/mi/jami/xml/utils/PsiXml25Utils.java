@@ -57,10 +57,12 @@ public class PsiXml25Utils {
 
     public static final String LINE_BREAK = "\n";
 
-    public final static String NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
+    public final static String Xml254_NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
+    public final static String Xml253_NAMESPACE_URI = "";
     public final static String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema-instance";
     public final static String XML_SCHEMA_PREFIX = "xsi";
-    public final static String PSI_SCHEMA_LOCATION = "http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd";
+    public final static String PSI_SCHEMA_254_LOCATION = "http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd";
+    public final static String PSI_SCHEMA_253_LOCATION = "net:sf:psidev:mi http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF253.xsd";
     public final static String SCHEMA_LOCATION_ATTRIBUTE = "schemaLocation";
     public final static String MINOR_VERSION_ATTRIBUTE="minorVersion";
     public final static String VERSION_ATTRIBUTE="version";

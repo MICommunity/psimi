@@ -161,7 +161,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
             @Override
             protected void processAddedObjectEvent(Interactor added) {
                 // register new interactor instance according to type
-                this.interactorFactory.createInteractorFromXmlInteractorInstance((XmlInteractor)added);
+                this.interactorFactory.createInteractorFromXmlInteractorInstance((AbstractXmlInteractor)added);
             }
 
             @Override
@@ -179,7 +179,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="entryAvailabilitiesWrapper")
     public static class JAXBAvailabilitiesWrapper implements Locatable, FileSourceContext {
-        private List<Availability> availabilities;
+        private List<AbstractAvailability> availabilities;
         private PsiXmLocator sourceLocator;
         @XmlLocation
         @XmlTransient
@@ -211,11 +211,11 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
         }
 
         protected void initialiseAvailabilities(){
-            availabilities = new ArrayList<Availability>();
+            availabilities = new ArrayList<AbstractAvailability>();
         }
 
         @XmlElement(type=Availability.class, name="availability", required = true)
-        public List<Availability> getJAXBAvailabilities() {
+        public List<AbstractAvailability> getJAXBAvailabilities() {
             return availabilities;
         }
 

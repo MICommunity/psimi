@@ -6,9 +6,9 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.Entry;
+import psidev.psi.mi.jami.xml.extension.AbstractXmlBasicInteraction;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
 import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.extension.XmlBasicInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
@@ -24,15 +24,15 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participant>, FileSourceContext, ExtendedPsi25Interaction<Participant>{
-    private XmlBasicInteraction wrappedInteraction;
+    private AbstractXmlBasicInteraction wrappedInteraction;
     private BinaryInteractionWrapper binaryWrapper;
 
-    public XmlBinaryInteractionWrapper(XmlBasicInteraction interaction){
+    public XmlBinaryInteractionWrapper(AbstractXmlBasicInteraction interaction){
         this.wrappedInteraction = interaction;
         this.binaryWrapper = new BinaryInteractionWrapper(interaction);
     }
 
-    public XmlBinaryInteractionWrapper(XmlBasicInteraction interaction, CvTerm complexExpansion){
+    public XmlBinaryInteractionWrapper(AbstractXmlBasicInteraction interaction, CvTerm complexExpansion){
         this(interaction);
         this.binaryWrapper = new BinaryInteractionWrapper(interaction, complexExpansion);
     }

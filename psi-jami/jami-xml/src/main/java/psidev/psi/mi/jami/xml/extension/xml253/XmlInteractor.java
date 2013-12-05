@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml253;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.*;
 
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.*;
  * @since <pre>23/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "defaultInteractor")
+@XmlRootElement(name = "interactor", namespace = "net:sf:psidev:mi")
 public class XmlInteractor extends AbstractXmlInteractor{
 
     @XmlLocation
@@ -96,7 +97,7 @@ public class XmlInteractor extends AbstractXmlInteractor{
      *
      * @param value
      *     allowed object is
-     *     {@link NamesContainer }
+     *     {@link psidev.psi.mi.jami.xml.extension.NamesContainer }
      *
      */
     @XmlElement(name = "names", required = true)
@@ -109,7 +110,7 @@ public class XmlInteractor extends AbstractXmlInteractor{
      *
      * @param value
      *     allowed object is
-     *     {@link InteractorXrefContainer }
+     *     {@link psidev.psi.mi.jami.xml.extension.InteractorXrefContainer }
      *
      */
     @XmlElement(name = "xref")
@@ -150,7 +151,7 @@ public class XmlInteractor extends AbstractXmlInteractor{
      *
      * @return
      *     possible object is
-     *     {@link XmlAnnotation }
+     *     {@link psidev.psi.mi.jami.xml.extension.XmlAnnotation }
      *
      */
     @XmlElement(name="attributeList")

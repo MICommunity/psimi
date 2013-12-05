@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml;
 
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Source;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -21,7 +21,7 @@ public class Entry {
 
     private ExtendedPsi25Source source;
     private List<Annotation> annotations;
-    private List<Availability> availabilities;
+    private List<AbstractAvailability> availabilities;
     private boolean hasLoadedFullEntry = false;
 
     public Entry(){
@@ -35,7 +35,7 @@ public class Entry {
         this.source = source;
     }
 
-    public List<Availability> getAvailabilities() {
+    public List<AbstractAvailability> getAvailabilities() {
         if (availabilities == null){
             initialiseAvailabilities();
         }
@@ -58,14 +58,14 @@ public class Entry {
     }
 
     protected void initialiseAvailabilities() {
-        availabilities = new ArrayList<Availability>();
+        availabilities = new ArrayList<AbstractAvailability>();
     }
 
     protected void initialiseAnnotations() {
         annotations = new ArrayList<Annotation>();
     }
 
-    protected void initialiseAvailabilitiesWith(List<Availability> availabilities) {
+    protected void initialiseAvailabilitiesWith(List<AbstractAvailability> availabilities) {
         if (availabilities == null){
             this.availabilities = Collections.EMPTY_LIST;
         }

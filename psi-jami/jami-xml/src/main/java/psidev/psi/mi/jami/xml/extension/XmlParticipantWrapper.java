@@ -196,8 +196,8 @@ public class XmlParticipantWrapper implements ModelledParticipant{
 
     @Override
     public ModelledInteraction getInteraction() {
-        if (this.parent == null && this.participant.getInteraction() instanceof XmlBasicInteraction){
-            this.parent = new XmlBasicInteractionComplexWrapper((XmlBasicInteraction)this.participant.getInteraction());
+        if (this.parent == null && this.participant.getInteraction() instanceof AbstractXmlBasicInteraction){
+            this.parent = new XmlBasicInteractionComplexWrapper((AbstractXmlBasicInteraction)this.participant.getInteraction());
         }
         return this.parent;
     }

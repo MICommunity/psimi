@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml253;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.*;
 
@@ -16,8 +17,8 @@ import javax.xml.bind.annotation.*;
  * @version $Id$
  * @since <pre>25/07/13</pre>
  */
+@XmlRootElement(name = "experimentDescription", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "defaultExperiment")
 public class XmlExperiment extends AbstractXmlExperiment{
 
     @XmlLocation
@@ -44,7 +45,7 @@ public class XmlExperiment extends AbstractXmlExperiment{
      *
      * @param value
      *     allowed object is
-     *     {@link NamesContainer }
+     *     {@link psidev.psi.mi.jami.xml.extension.NamesContainer }
      *
      */
     @XmlElement(name = "names")
@@ -62,7 +63,7 @@ public class XmlExperiment extends AbstractXmlExperiment{
      *
      * @param value
      *     allowed object is
-     *     {@link XrefContainer }
+     *     {@link psidev.psi.mi.jami.xml.extension.XrefContainer }
      *
      */
     @XmlElement(name = "xref")
@@ -80,7 +81,7 @@ public class XmlExperiment extends AbstractXmlExperiment{
      *
      * @param value
      *     allowed object is
-     *     {@link XmlCvTerm }
+     *     {@link psidev.psi.mi.jami.xml.extension.XmlCvTerm }
      *
      */
     @XmlElement(name = "interactionDetectionMethod", required = true, type = XmlCvTerm.class)
@@ -93,7 +94,7 @@ public class XmlExperiment extends AbstractXmlExperiment{
      *
      * @param value
      *     allowed object is
-     *     {@link XmlCvTerm }
+     *     {@link psidev.psi.mi.jami.xml.extension.XmlCvTerm }
      *
      */
     @XmlElement(name = "participantIdentificationMethod", type = XmlCvTerm.class)
@@ -106,7 +107,7 @@ public class XmlExperiment extends AbstractXmlExperiment{
      *
      * @param value
      *     allowed object is
-     *     {@link XmlCvTerm }
+     *     {@link psidev.psi.mi.jami.xml.extension.XmlCvTerm }
      *
      */
     @XmlElement(name = "featureDetectionMethod", type = XmlCvTerm.class)

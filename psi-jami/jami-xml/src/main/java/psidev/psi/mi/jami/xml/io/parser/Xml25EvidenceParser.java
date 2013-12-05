@@ -1,13 +1,15 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 
 /**
@@ -37,14 +39,25 @@ public class Xml25EvidenceParser extends AbstractPsiXml25Parser<InteractionEvide
     }
 
     @Override
-    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(XmlAnnotation.class, XmlInteractionEvidence.class, XmlExperiment.class, XmlInteractor.class,
-                Availability.class, XmlSource.class);
+    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.extension.xml254.XmlInteractionEvidence.class,
+                psidev.psi.mi.jami.xml.extension.xml254.Availability.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlSource.class,
+                psidev.psi.mi.jami.xml.extension.xml254.XmlAnnotation.class);
         return ctx.createUnmarshaller();
     }
-
     @Override
-    protected InteractionEvidence unmarshallInteraction() throws JAXBException {
-        return super.unmarshallInteraction(XmlInteractionEvidence.class);
+    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.extension.xml253.XmlInteractionEvidence.class,
+                psidev.psi.mi.jami.xml.extension.xml253.Availability.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlSource.class,
+                psidev.psi.mi.jami.xml.extension.xml253.XmlAnnotation.class);
+        return ctx.createUnmarshaller();
     }
 }

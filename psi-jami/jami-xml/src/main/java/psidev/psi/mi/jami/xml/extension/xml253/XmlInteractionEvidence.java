@@ -1,36 +1,39 @@
-package psidev.psi.mi.jami.xml.extension;
+package psidev.psi.mi.jami.xml.extension.xml253;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.xml.extension.*;
+import psidev.psi.mi.jami.xml.extension.Availability;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * Xml implementation of ModelledInteraction
+ * Xml implementation of InteractionEvidence
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlType(name = "defaultModelledInteraction")
+@XmlRootElement(name = "interaction", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
+public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence{
 
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    public XmlModelledInteraction() {
+    public XmlInteractionEvidence() {
+        super();
     }
 
-    public XmlModelledInteraction(String shortName) {
+    public XmlInteractionEvidence(String shortName) {
         super(shortName);
     }
 
-    public XmlModelledInteraction(String shortName, CvTerm type) {
+    public XmlInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
     }
 
@@ -46,9 +49,9 @@ public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
         super.setJAXBXref(value);
     }
 
-    @XmlElement(name = "intraMolecular", defaultValue = "false", type = Boolean.class)
-    public void setJAXBIntraMolecular(boolean intra) {
-        super.setIntraMolecular(intra);
+    @XmlElement(name = "intraMolecular", defaultValue = "false")
+    public void setJAXBIntraMolecular(Boolean intra) {
+        super.setJAXBIntraMolecular(intra);
     }
 
     @XmlAttribute(name = "id", required = true)
@@ -64,7 +67,7 @@ public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
 
     @XmlElement(name="participantList", required = true)
     public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
-        super.setJAXBParticipantWrapper(jaxbParticipantWrapper);
+        super.setParticipantWrapper(jaxbParticipantWrapper);
     }
 
     @Override
@@ -97,18 +100,86 @@ public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
         }
     }
 
+    /**
+     * Gets the value of the confidenceList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link java.util.ArrayList< psidev.psi.mi.jami.model.Confidence> }
+     *
+     */
     @XmlElement(name="confidenceList")
     public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
         super.setJAXBConfidenceWrapper(wrapper);
     }
 
+    /**
+     * Gets the value of the parameterList property.
+     *
+     * @return
+     *     possible object is
+     *     {@link java.util.ArrayList< psidev.psi.mi.jami.model.ModelledParameter> }
+     *
+     */
     @XmlElement(name="parameterList")
     public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
         super.setJAXBParameterWrapper(wrapper);
     }
 
+    /**
+     * Sets the value of the availability property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link psidev.psi.mi.jami.xml.extension.Availability }
+     *
+     */
+    @XmlElement(name = "availability")
+    public void setJAXBAvailability(Availability value) {
+        super.setJAXBAvailability(value);
+    }
+
+    /**
+     * Sets the value of the availabilityRef property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *
+     */
+    @XmlElement(name = "availabilityRef")
+    public void setJAXBAvailabilityRef(Integer value) {
+        super.setJAXBAvailabilityRef(value);
+    }
+
+    /**
+     * Sets the value of the experimentList property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link java.util.ArrayList< psidev.psi.mi.jami.xml.extension.XmlExperiment > }
+     *
+     */
     @XmlElement(name="experimentList")
     public void setJAXBExperimentWrapper(JAXBExperimentWrapper value) {
         super.setJAXBExperimentWrapper(value);
+    }
+
+    @XmlElement(name = "modelled", defaultValue = "false", type = Boolean.class)
+    public void setJAXBModelled(Boolean value) {
+        super.setJAXBModelled(value);
+    }
+
+    /**
+     * Sets the value of the negative property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *
+     */
+    @XmlElement(name = "negative", defaultValue = "false", type = Boolean.class)
+    public void setJAXBNegative(Boolean value) {
+        super.setJAXBNegative(value);
     }
 }

@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.Entry;
-import psidev.psi.mi.jami.xml.extension.Availability;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.extension.XmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
@@ -25,15 +22,15 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvidence,FileSourceContext,ExtendedPsi25InteractionEvidence{
-    private XmlInteractionEvidence wrappedInteraction;
+    private AbstractXmlInteractionEvidence wrappedInteraction;
     private BinaryInteractionEvidenceWrapper binaryWrapper;
 
-    public XmlBinaryInteractionEvidenceWrapper(XmlInteractionEvidence interaction){
+    public XmlBinaryInteractionEvidenceWrapper(AbstractXmlInteractionEvidence interaction){
         this.wrappedInteraction = interaction;
         this.binaryWrapper = new BinaryInteractionEvidenceWrapper(interaction);
     }
 
-    public XmlBinaryInteractionEvidenceWrapper(XmlInteractionEvidence interaction, CvTerm complexExpansion){
+    public XmlBinaryInteractionEvidenceWrapper(AbstractXmlInteractionEvidence interaction, CvTerm complexExpansion){
         this(interaction);
         this.binaryWrapper = new BinaryInteractionEvidenceWrapper(interaction, complexExpansion);
     }
@@ -252,12 +249,12 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public Availability getXmlAvailability() {
+    public AbstractAvailability getXmlAvailability() {
         return this.wrappedInteraction.getXmlAvailability();
     }
 
     @Override
-    public void setXmlAvailability(Availability availability) {
+    public void setXmlAvailability(AbstractAvailability availability) {
         this.wrappedInteraction.setXmlAvailability(availability);
     }
 

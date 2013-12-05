@@ -27,7 +27,7 @@ import java.util.*;
 
 public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant> {
 
-    private XmlBasicInteraction interaction;
+    private AbstractXmlBasicInteraction interaction;
     private SynchronizedModelledParticipantList modelledParticipants;
     private Collection<InteractionEvidence> interactionEvidences;
     private Collection<ModelledConfidence> modelledConfidences;
@@ -37,7 +37,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     private Organism organism;
     private CvTerm interactorType;
 
-    public XmlBasicInteractionComplexWrapper(XmlBasicInteraction interaction){
+    public XmlBasicInteractionComplexWrapper(AbstractXmlBasicInteraction interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
@@ -327,7 +327,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
         this.interaction.setSourceLocator(locator);
     }
 
-    public XmlBasicInteraction getWrappedInteraction(){
+    public AbstractXmlBasicInteraction getWrappedInteraction(){
         return this.interaction;
     }
 

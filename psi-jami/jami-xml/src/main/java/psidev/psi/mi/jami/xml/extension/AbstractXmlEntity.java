@@ -448,8 +448,8 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     return true;
                 }
                 // convert interaction evidence in a complex
-                else if (object instanceof XmlInteractionEvidence){
-                    interactor = new XmlInteractionEvidenceComplexWrapper((XmlInteractionEvidence)object);
+                else if (object instanceof AbstractXmlInteractionEvidence){
+                    interactor = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)object);
                     return true;
                 }
                 // set the complex
@@ -458,13 +458,13 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
                     return true;
                 }
                 // wrap modelled interaction
-                else if (object instanceof XmlModelledInteraction){
-                    interactor = new XmlModelledInteractionComplexWrapper((XmlModelledInteraction)object);
+                else if (object instanceof AbstractXmlModelledInteraction){
+                    interactor = new XmlModelledInteractionComplexWrapper((AbstractXmlModelledInteraction)object);
                     return true;
                 }
                 // wrap basic interaction
-                else if (object instanceof XmlBasicInteraction){
-                    interactor = new XmlBasicInteractionComplexWrapper((XmlBasicInteraction)object);
+                else if (object instanceof AbstractXmlBasicInteraction){
+                    interactor = new XmlBasicInteractionComplexWrapper((AbstractXmlBasicInteraction)object);
                     return true;
                 }
                 else{

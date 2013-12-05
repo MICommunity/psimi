@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.reference;
 
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
-import psidev.psi.mi.jami.xml.extension.Availability;
+import psidev.psi.mi.jami.xml.extension.AbstractAvailability;
 
 /**
  * Abstract class for Availability ref
@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.xml.extension.Availability;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractAvailabilityRef extends Availability implements XmlIdReference{
+public abstract class AbstractAvailabilityRef extends AbstractAvailability implements XmlIdReference{
     protected int ref;
 
     public AbstractAvailabilityRef(int ref) {
