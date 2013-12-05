@@ -14,7 +14,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -28,19 +27,19 @@ import java.net.URL;
  */
 
 public class Xml25ModelledParser extends AbstractPsiXml25Parser<ModelledInteraction>{
-    public Xml25ModelledParser(File file) throws XMLStreamException, JAXBException {
+    public Xml25ModelledParser(File file) {
         super(file);
     }
 
-    public Xml25ModelledParser(InputStream inputStream) throws XMLStreamException, JAXBException {
+    public Xml25ModelledParser(InputStream inputStream){
         super(inputStream);
     }
 
-    public Xml25ModelledParser(URL url) throws IOException, XMLStreamException, JAXBException {
+    public Xml25ModelledParser(URL url) {
         super(url);
     }
 
-    public Xml25ModelledParser(Reader reader) throws XMLStreamException, JAXBException {
+    public Xml25ModelledParser(Reader reader){
         super(reader);
     }
 

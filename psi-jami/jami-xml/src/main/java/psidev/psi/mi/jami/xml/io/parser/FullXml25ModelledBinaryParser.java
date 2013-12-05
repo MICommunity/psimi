@@ -24,7 +24,7 @@ import java.net.URL;
  */
 
 public class FullXml25ModelledBinaryParser extends AbstractPsixml25BinaryParser<ModelledInteraction,ModelledBinaryInteraction> implements FullPsiXml25Parser<ModelledInteraction>{
-    public FullXml25ModelledBinaryParser(File file) throws JAXBException {
+    public FullXml25ModelledBinaryParser(File file) throws JAXBException, FileNotFoundException {
         super(new FullXml25ModelledParser(file));
     }
 

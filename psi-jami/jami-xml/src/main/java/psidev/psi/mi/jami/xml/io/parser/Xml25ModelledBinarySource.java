@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -62,6 +59,8 @@ public class Xml25ModelledBinarySource extends AbstractPsiXml25BinarySource<Mode
             parser.setCacheOfObjects(getElementCache());
             setParser(parser);
         } catch (JAXBException e) {
+            throw new MIIOException("Impossible to read with provided file",e);
+        } catch (FileNotFoundException e) {
             throw new MIIOException("Impossible to read with provided file",e);
         }
     }

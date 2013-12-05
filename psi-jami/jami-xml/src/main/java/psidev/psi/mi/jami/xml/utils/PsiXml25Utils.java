@@ -56,6 +56,7 @@ public class PsiXml25Utils {
     public static final String WRITE_COMPLEX_AS_INTERACTOR_OPTION = "write_complex_as_interactor_key";
 
     public static final String LINE_BREAK = "\n";
+    public static final int XML_BUFFER_SIZE = 512;
 
     public final static String Xml254_NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
     public final static String Xml253_NAMESPACE_URI = "";

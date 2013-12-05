@@ -24,7 +24,7 @@ import java.net.URL;
  */
 
 public class FullXml25BinaryEvidenceParser extends AbstractPsixml25BinaryParser<InteractionEvidence, BinaryInteractionEvidence> implements FullPsiXml25Parser<InteractionEvidence>{
-    public FullXml25BinaryEvidenceParser(File file) throws JAXBException {
+    public FullXml25BinaryEvidenceParser(File file) throws JAXBException, FileNotFoundException {
         super(new FullXml25EvidenceParser(file));
     }
 

@@ -24,6 +24,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
     private JAXBExperimentsWrapper experimentsWrapper;
+    private JAXBAvailabilitiesWrapper availabilitiesWrapper;
+
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -38,7 +40,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
 
     @XmlElement(name = "availabilityList")
     public void setJAXBAvailabilityWrapper(JAXBAvailabilitiesWrapper wrapper) {
-        super.setAvailabilitiesWrapper(wrapper);
+        this.availabilitiesWrapper = wrapper;
     }
 
     @XmlElement(name = "experimentList")
@@ -79,7 +81,61 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
         }
     }
 
+    @Override
+    protected void initialiseAvailabilities() {
+        super.initialiseAvailabilitiesWith(this.availabilitiesWrapper != null ? this.availabilitiesWrapper.availabilities : null);
+    }
+
     //////////////////////////////// class wrapper
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="entryAvailabilitiesWrapper")
+    public static class JAXBAvailabilitiesWrapper implements Locatable, FileSourceContext {
+        private List<AbstractAvailability> availabilities;
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+
+        public JAXBAvailabilitiesWrapper(){
+            initialiseAvailabilities();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseAvailabilities(){
+            availabilities = new ArrayList<AbstractAvailability>();
+        }
+
+        @XmlElement(type=Availability.class, name="availability", required = true)
+        public List<AbstractAvailability> getJAXBAvailabilities() {
+            return availabilities;
+        }
+
+        @Override
+        public String toString() {
+            return "Entry availability List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="experimentsWrapper")

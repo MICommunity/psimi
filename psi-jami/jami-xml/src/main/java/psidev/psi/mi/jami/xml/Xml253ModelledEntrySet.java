@@ -17,9 +17,9 @@ import java.util.List;
  * @version $Id$
  * @since <pre>07/11/13</pre>
  */
-@XmlRootElement(name = "entrySet", namespace = "http://psi.hupo.org/mi/mif")
+@XmlRootElement(name = "entrySet", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class ModelledEntrySet extends AbstractEntrySet<ModelledEntry>{
+public class Xml253ModelledEntrySet extends AbstractEntrySet<ModelledEntry>{
     @XmlLocation
     @XmlTransient
     private Locator locator;

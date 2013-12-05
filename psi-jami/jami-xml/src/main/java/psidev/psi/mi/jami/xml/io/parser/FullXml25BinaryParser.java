@@ -10,10 +10,7 @@ import psidev.psi.mi.jami.xml.AbstractEntrySet;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -28,7 +25,7 @@ import java.net.URL;
 
 public class FullXml25BinaryParser extends AbstractPsixml25BinaryParser<Interaction<? extends Participant>,BinaryInteraction> implements FullPsiXml25Parser<Interaction<? extends Participant>>{
 
-    public FullXml25BinaryParser(File file) throws JAXBException {
+    public FullXml25BinaryParser(File file) throws JAXBException, FileNotFoundException {
         super(new FullXml25Parser(file));
     }
 

@@ -3,14 +3,13 @@ package psidev.psi.mi.jami.xml.io.parser;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.ModelledInteractionStream;
-import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.io.iterator.Xml25ModelledInteractionIterator;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -45,59 +44,34 @@ public class Xml25ModelledStreamSource extends AbstractPsiXml25Stream<ModelledIn
 
     @Override
     protected void initialiseXmlParser(Reader reader) {
-        try {
-            Xml25ModelledParser parser = new Xml25ModelledParser(reader);
-            parser.setListener(this);
-            parser.setCacheOfObjects(getElementCache());
-            setParser(parser);
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Impossible to read with provided reader ",e);
-        } catch (JAXBException e) {
-            throw new MIIOException("Impossible to read with provided reader",e);
-        }      }
+        Xml25ModelledParser parser = new Xml25ModelledParser(reader);
+        parser.setListener(this);
+        parser.setCacheOfObjects(getElementCache());
+        setParser(parser);
+    }
 
     @Override
     protected void initialiseXmlParser(File file) {
-        try {
-            Xml25ModelledParser parser = new Xml25ModelledParser(file);
-            parser.setListener(this);
-            parser.setCacheOfObjects(getElementCache());
-            setParser(parser);
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Impossible to parse the file "+file.getName(),e);
-        } catch (JAXBException e) {
-            throw new MIIOException("Impossible to parse the file "+file.getName(),e);
-        }
+        Xml25ModelledParser parser = new Xml25ModelledParser(file);
+        parser.setListener(this);
+        parser.setCacheOfObjects(getElementCache());
+        setParser(parser);
     }
 
     @Override
     protected void initialiseXmlParser(InputStream input) {
-        try {
-            Xml25ModelledParser parser = new Xml25ModelledParser(input);
-            parser.setListener(this);
-            parser.setCacheOfObjects(getElementCache());
-            setParser(parser);
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Impossible to parse the inputstream ",e);
-        } catch (JAXBException e) {
-            throw new MIIOException("Impossible to parse the inputstream ",e);
-        }
+        Xml25ModelledParser parser = new Xml25ModelledParser(input);
+        parser.setListener(this);
+        parser.setCacheOfObjects(getElementCache());
+        setParser(parser);
     }
 
     @Override
     protected void initialiseXmlParser(URL url) {
-        try {
-            Xml25ModelledParser parser = new Xml25ModelledParser(url);
-            parser.setListener(this);
-            parser.setCacheOfObjects(getElementCache());
-            setParser(parser);
-        } catch (IOException e) {
-            throw new MIIOException("Impossible to read the url "+url.toExternalForm(),e);
-        } catch (XMLStreamException e) {
-            throw new MIIOException("Impossible to parse the url "+url.toExternalForm(),e);
-        } catch (JAXBException e) {
-            throw new MIIOException("Impossible to parse the url "+url.toExternalForm(),e);
-        }
+        Xml25ModelledParser parser = new Xml25ModelledParser(url);
+        parser.setListener(this);
+        parser.setCacheOfObjects(getElementCache());
+        setParser(parser);
     }
 
     @Override

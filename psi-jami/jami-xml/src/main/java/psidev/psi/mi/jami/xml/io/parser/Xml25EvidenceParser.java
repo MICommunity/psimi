@@ -5,9 +5,7 @@ import psidev.psi.mi.jami.model.InteractionEvidence;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -22,19 +20,19 @@ import java.net.URL;
 
 public class Xml25EvidenceParser extends AbstractPsiXml25Parser<InteractionEvidence>{
 
-    public Xml25EvidenceParser(File file) throws XMLStreamException, JAXBException {
+    public Xml25EvidenceParser(File file) {
         super(file);
     }
 
-    public Xml25EvidenceParser(InputStream inputStream) throws XMLStreamException, JAXBException {
+    public Xml25EvidenceParser(InputStream inputStream) {
         super(inputStream);
     }
 
-    public Xml25EvidenceParser(URL url) throws IOException, XMLStreamException, JAXBException {
+    public Xml25EvidenceParser(URL url) {
         super(url);
     }
 
-    public Xml25EvidenceParser(Reader reader) throws XMLStreamException, JAXBException {
+    public Xml25EvidenceParser(Reader reader) {
         super(reader);
     }
 

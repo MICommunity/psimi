@@ -32,11 +32,6 @@ public class BasicEntry extends AbstractEntry<Interaction>{
         super.setSource(source);
     }
 
-    @XmlElement(name = "availabilityList")
-    public void setJAXBAvailabilityWrapper(JAXBAvailabilitiesWrapper wrapper) {
-        super.setAvailabilitiesWrapper(wrapper);
-    }
-
     @XmlElement(name = "interactorList")
     public void setJAXBInteractorsWrapper(JAXBInteractorsWrapper wrapper){
         super.setInteractorsWrapper(wrapper);

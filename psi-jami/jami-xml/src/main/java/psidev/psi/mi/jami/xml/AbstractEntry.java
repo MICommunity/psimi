@@ -29,7 +29,6 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
     private PsiXmLocator sourceLocator;
     private JAXBInteractorsWrapper interactorsWrapper;
     private JAXBInteractionsWrapper<T> interactionsWrapper;
-    private JAXBAvailabilitiesWrapper availabilitiesWrapper;
     private JAXBAnnotationsWrapper annotationsWrapper;
 
     public AbstractEntry() {
@@ -88,17 +87,8 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
         }
     }
 
-    protected void setAvailabilitiesWrapper(JAXBAvailabilitiesWrapper wrapper){
-        this.availabilitiesWrapper = wrapper;
-    }
-
     protected void setAnnotationsWrapper(JAXBAnnotationsWrapper wrapper){
         this.annotationsWrapper = wrapper;
-    }
-
-    @Override
-    protected void initialiseAvailabilities() {
-        super.initialiseAvailabilitiesWith(this.availabilitiesWrapper != null ? this.availabilitiesWrapper.availabilities : null);
     }
 
     @Override
@@ -173,55 +163,6 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
             protected void clearProperties() {
                 // nothing
             }
-        }
-    }
-
-    @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="entryAvailabilitiesWrapper")
-    public static class JAXBAvailabilitiesWrapper implements Locatable, FileSourceContext {
-        private List<AbstractAvailability> availabilities;
-        private PsiXmLocator sourceLocator;
-        @XmlLocation
-        @XmlTransient
-        private Locator locator;
-
-        public JAXBAvailabilitiesWrapper(){
-            initialiseAvailabilities();
-        }
-
-        @Override
-        public Locator sourceLocation() {
-            return (Locator)getSourceLocator();
-        }
-
-        public FileSourceLocator getSourceLocator() {
-            if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
-            }
-            return sourceLocator;
-        }
-
-        public void setSourceLocator(FileSourceLocator sourceLocator) {
-            if (sourceLocator == null){
-                this.sourceLocator = null;
-            }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-            }
-        }
-
-        protected void initialiseAvailabilities(){
-            availabilities = new ArrayList<AbstractAvailability>();
-        }
-
-        @XmlElement(type=Availability.class, name="availability", required = true)
-        public List<AbstractAvailability> getJAXBAvailabilities() {
-            return availabilities;
-        }
-
-        @Override
-        public String toString() {
-            return "Entry availability List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
