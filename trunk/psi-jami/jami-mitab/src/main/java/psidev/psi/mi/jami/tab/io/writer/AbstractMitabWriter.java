@@ -3,12 +3,12 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
+import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabVersion;
-import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.tab.utils.MitabWriterOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -84,10 +84,10 @@ public abstract class AbstractMitabWriter<T extends Interaction<? extends Partic
     public void initialiseContext(Map<String, Object> options) {
 
         if (options == null && this.binaryWriter == null){
-            throw new IllegalArgumentException("The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the Mitab writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
-        else if (options.containsKey(InteractionWriterFactory.OUTPUT_OPTION_KEY)){
-            Object output = options.get(InteractionWriterFactory.OUTPUT_OPTION_KEY);
+        else if (options.containsKey(InteractionWriterOptions.OUTPUT_OPTION_KEY)){
+            Object output = options.get(InteractionWriterOptions.OUTPUT_OPTION_KEY);
 
             if (output instanceof File){
                 try {
@@ -115,15 +115,15 @@ public abstract class AbstractMitabWriter<T extends Interaction<? extends Partic
             }
         }
         else if (this.binaryWriter == null){
-            throw new IllegalArgumentException("The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the Mitab writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (options.containsKey(MitabUtils.MITAB_HEADER_OPTION)){
-            setWriteHeader((Boolean)options.get(MitabUtils.MITAB_HEADER_OPTION));
+        if (options.containsKey(MitabWriterOptions.MITAB_HEADER_OPTION)){
+            setWriteHeader((Boolean)options.get(MitabWriterOptions.MITAB_HEADER_OPTION));
         }
 
-        if (options.containsKey(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY)){
-            initialiseExpansionMethod((ComplexExpansionMethod<T,B>)options.get(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY));
+        if (options.containsKey(InteractionWriterOptions.COMPLEX_EXPANSION_OPTION_KEY)){
+            initialiseExpansionMethod((ComplexExpansionMethod<T,B>)options.get(InteractionWriterOptions.COMPLEX_EXPANSION_OPTION_KEY));
         }
         else {
             initialiseExpansionMethod(null);
@@ -132,13 +132,13 @@ public abstract class AbstractMitabWriter<T extends Interaction<? extends Partic
 
     public void end() throws MIIOException {
         if (binaryWriter == null){
-            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
     }
 
     public void start() throws MIIOException {
         if (binaryWriter == null){
-            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         this.binaryWriter.start();
         hasStarted = true;
@@ -146,7 +146,7 @@ public abstract class AbstractMitabWriter<T extends Interaction<? extends Partic
 
     public void write(T interaction) throws MIIOException {
         if (this.binaryWriter == null){
-            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
         this.binaryWriter.write(getExpansionMethod().expand(interaction));

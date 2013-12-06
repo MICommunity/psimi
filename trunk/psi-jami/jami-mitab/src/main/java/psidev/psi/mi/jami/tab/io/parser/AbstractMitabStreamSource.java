@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
@@ -82,13 +81,13 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
 
     public void initialiseContext(Map<String, Object> options) {
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         else if (options == null){
             return;
         }
-        else if (options.containsKey(MIDataSourceFactory.INPUT_OPTION_KEY)){
-            Object input = options.get(MIDataSourceFactory.INPUT_OPTION_KEY);
+        else if (options.containsKey(MIFileDataSourceOptions.INPUT_OPTION_KEY)){
+            Object input = options.get(MIFileDataSourceOptions.INPUT_OPTION_KEY);
             if (input instanceof URL){
                initialiseURL((URL) input);
             }
@@ -134,11 +133,11 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
-        if (options.containsKey(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY)){
-            setMIFileParserListener((MIFileParserListener) options.get(MIDataSourceFactory.PARSER_LISTENER_OPTION_KEY));
+        if (options.containsKey(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY)){
+            setMIFileParserListener((MIFileParserListener) options.get(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY));
         }
 
         isInitialised = true;
@@ -222,7 +221,7 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
 
     public boolean validateSyntax() {
         if (!isInitialised){
-            throw new IllegalStateException("The Mitab interaction datasource has not been initialised. The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The Mitab interaction datasource has not been initialised. The options for the Mitab interaction datasource should contain at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
 
         if (lineParser.hasFinished() && isValid == null){
@@ -519,7 +518,7 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
 
     public Iterator<T> getInteractionsIterator() {
         if (!isInitialised){
-            throw new IllegalStateException("The Mitab interaction datasource has not been initialised. The options for the Mitab interaction datasource should contain at least "+ MIDataSourceFactory.INPUT_OPTION_KEY + " to know where to read the interactions from.");
+            throw new IllegalStateException("The Mitab interaction datasource has not been initialised. The options for the Mitab interaction datasource should contain at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
         }
         // reset parser if possible
         if (lineParser.hasFinished()){

@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.mitab.io.parser;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
+import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.tab.io.parser.LightMitabStreamSource;
 
@@ -41,7 +41,7 @@ public class LightMitabStreamSourceTest {
 
         dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
 
@@ -55,7 +55,7 @@ public class LightMitabStreamSourceTest {
 
         dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
@@ -76,7 +76,7 @@ public class LightMitabStreamSourceTest {
 
         dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -104,7 +104,7 @@ public class LightMitabStreamSourceTest {
 
         dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -129,7 +129,7 @@ public class LightMitabStreamSourceTest {
 
         LightMitabStreamSource dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, MitabModelledStreamSourceTest.class.getResourceAsStream("/samples/mitab27_line_too_many_columns.txt"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
@@ -155,7 +155,7 @@ public class LightMitabStreamSourceTest {
 
         LightMitabStreamSource dataSource = new LightMitabStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIDataSourceFactory.INPUT_OPTION_KEY, new File(MitabModelledStreamSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(MitabModelledStreamSourceTest.class.getResource("/samples/mitab27_line_too_many_columns.txt").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         Iterator<Interaction> iterator = dataSource.getInteractionsIterator();

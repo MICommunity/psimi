@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.mitab.io.writer;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
+import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.io.writer.LightMitab27Writer;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.tab.utils.MitabWriterOptions;
 import psidev.psi.mi.jami.utils.*;
 
 import java.io.StringWriter;
@@ -84,9 +85,9 @@ public class LightMitab27WriterTest {
         StringWriter writer = new StringWriter();
         LightMitab27Writer binaryWriter = new LightMitab27Writer();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MitabUtils.MITAB_HEADER_OPTION, false);
-        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
-        options.put(InteractionWriterFactory.COMPLEX_EXPANSION_OPTION_KEY, new SpokeExpansion());
+        options.put(MitabWriterOptions.MITAB_HEADER_OPTION, false);
+        options.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, writer);
+        options.put(InteractionWriterOptions.COMPLEX_EXPANSION_OPTION_KEY, new SpokeExpansion());
         binaryWriter.initialiseContext(options);
 
         ModelledInteraction binary = createModelledInteraction();
