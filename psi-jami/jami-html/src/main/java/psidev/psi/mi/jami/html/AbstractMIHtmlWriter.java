@@ -283,7 +283,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         this.writeHeader = writeHeader;
     }
 
-    protected abstract void writeCooperativeEffects(T interaction);
+    protected abstract void writeCooperativeEffects(T interaction) throws IOException;
 
     protected abstract void writeConfidences(T interaction) throws IOException;
 
