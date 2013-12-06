@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.utils.MitabWriterOptions;
 import psidev.psi.mi.jami.xml.PsiXmlType;
+import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
@@ -167,17 +168,18 @@ public class MIWriterOptionFactory {
      * @param type: compact or expanded. It is expanded by default
      * @return
      */
-    public Map<String, Object> getDefaultXml25Options(InteractionObjectCategory objectCategory, PsiXmlType type){
+    public Map<String, Object> getDefaultXml25Options(InteractionObjectCategory objectCategory, PsiXmlType type,
+                                                      PsiXmlVersion version){
         if (type == null){
-            return getDefaultExpandedXml25Options(objectCategory);
+            return getDefaultExpandedXml25Options(objectCategory, version);
         }
         switch (type){
             case compact:
-                return getDefaultCompactXml25Options(objectCategory);
+                return getDefaultCompactXml25Options(objectCategory, version);
             case expanded:
-                return getDefaultExpandedXml25Options(objectCategory);
+                return getDefaultExpandedXml25Options(objectCategory, version);
             default:
-                return getDefaultExpandedXml25Options(objectCategory);
+                return getDefaultExpandedXml25Options(objectCategory, version);
         }
     }
 
@@ -188,7 +190,8 @@ public class MIWriterOptionFactory {
      * @param objectCategory : the interaction object type to write
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
-    public Map<String, Object> getDefaultExpandedXml25Options(InteractionObjectCategory objectCategory){
+    public Map<String, Object> getDefaultExpandedXml25Options(InteractionObjectCategory objectCategory,
+                                                              PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -207,6 +210,13 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, false);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, false);
+        options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -217,9 +227,11 @@ public class MIWriterOptionFactory {
      * It will not write PsiXml25 extended object features
      * It will use an identity cache to generate ids for the different interactions/experiments/interactors/participants/features
      * @param objectCategory : the interaction object type to write
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
-    public Map<String, Object> getDefaultCompactXml25Options(InteractionObjectCategory objectCategory){
+    public Map<String, Object> getDefaultCompactXml25Options(InteractionObjectCategory objectCategory,
+                                                             PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -240,6 +252,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, false);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, false);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -251,10 +269,12 @@ public class MIWriterOptionFactory {
      * @param defaultSource : default source if no source provided
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, Source defaultSource,
-                                                       XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations){
+                                                       XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
+                                                       PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -285,6 +305,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, false);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, false);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -295,11 +321,13 @@ public class MIWriterOptionFactory {
      * @param defaultSource : default source if no source provided
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, Source defaultSource,
                                                       XMLGregorianCalendar defaultReleaseDate,
-                                                      Collection<Annotation> defaultEntryAnnotations){
+                                                      Collection<Annotation> defaultEntryAnnotations,
+                                                      PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -332,6 +360,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, false);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, false);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -342,10 +376,12 @@ public class MIWriterOptionFactory {
      * @param objectCategory : the interaction object type to write
      * @param elementCache: the cache of objects necessary to assign ids to the different MI elements
      * @param interactionSet : the instance of set for the interactions that we want to use in compact and expanded mode
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
-                                                       Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended){
+                                                       Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
+                                                       PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -367,6 +403,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, writeComplexAsInteractors);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, extended);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -381,11 +423,13 @@ public class MIWriterOptionFactory {
      * @param interactionSet : the instance of set for the interactions that we want to use in compact and expanded mode
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
      * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
                                                       Set<Experiment> experimentSet,Set<Interactor> interactorSet,Set<String> availabilitySet,
-                                               Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended){
+                                               Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
+                                               PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -416,6 +460,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, writeComplexAsInteractors);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, extended);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -432,12 +482,14 @@ public class MIWriterOptionFactory {
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
      * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
                                                        Set<Interaction> interactionSet, Source defaultSource,
                                                        XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                                       boolean writeComplexAsInteractors, boolean extended){
+                                                       boolean writeComplexAsInteractors, boolean extended,
+                                                       PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -470,6 +522,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, writeComplexAsInteractors);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, extended);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -486,13 +544,15 @@ public class MIWriterOptionFactory {
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
      * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
                                                       Set<Experiment> experimentSet,Set<Interactor> interactorSet,Set<String> availabilitySet,
                                                       Set<Interaction> interactionSet, Source defaultSource,
                                                       XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                                      boolean writeComplexAsInteractors, boolean extended){
+                                                      boolean writeComplexAsInteractors, boolean extended,
+                                                      PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -534,6 +594,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, writeComplexAsInteractors);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, extended);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 
@@ -551,6 +617,7 @@ public class MIWriterOptionFactory {
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
      * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, PsiXmlType xmlType,
@@ -558,7 +625,8 @@ public class MIWriterOptionFactory {
                                                Set<Interactor> interactorSet, Set<String> availabilitySet,
                                                Set<Interaction> interactionSet, Source defaultSource,
                                                XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                               boolean writeComplexAsInteractors, boolean extended){
+                                               boolean writeComplexAsInteractors, boolean extended,
+                                               PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psi25_xml.toString());
@@ -600,6 +668,12 @@ public class MIWriterOptionFactory {
         }
         options.put(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION, writeComplexAsInteractors);
         options.put(PsiXmlWriterOptions.XML25_EXTENDED_OPTION, extended);
+        if (version != null){
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, version);
+        }
+        else{
+            options.put(PsiXmlWriterOptions.XML_VERSION_OPTION, PsiXmlVersion.v2_5_4);
+        }
         return options;
     }
 }
