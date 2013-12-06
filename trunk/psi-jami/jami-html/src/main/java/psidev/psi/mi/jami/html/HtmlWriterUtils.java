@@ -14,7 +14,9 @@ import psidev.psi.mi.jami.model.*;
 
 public class HtmlWriterUtils {
 
-    public static String getHtmlAnchorFor(InteractionEvidence interaction){
+    public final static String NEW_LINE = System.getProperty("line.separator");
+
+    public static String getHtmlAnchorFor(Interaction interaction){
 
         if (interaction != null){
             // first extract file context
@@ -28,13 +30,9 @@ public class HtmlWriterUtils {
                 }
             }
 
-            // get IMEx id
-            if (interaction.getImexId() != null){
-                return interaction.getImexId();
-            }
-
-            if (!interaction.getIdentifiers().isEmpty()){
-                return interaction.getIdentifiers().iterator().next().getId();
+            // get unique id
+            if (interaction.getIdentifiers().size() == 1){
+                return ((Xref)interaction.getIdentifiers().iterator().next()).getId();
             }
 
             return Integer.toString(interaction.hashCode());
@@ -61,7 +59,7 @@ public class HtmlWriterUtils {
         return null;
     }
 
-    public static String getHtmlAnchorFor(ParticipantEvidence participant){
+    public static String getHtmlAnchorFor(Participant participant){
 
         if (participant != null){
             // first extract file context
@@ -93,8 +91,8 @@ public class HtmlWriterUtils {
                 }
             }
 
-            if (!participant.getIdentifiers().isEmpty()){
-                return participant.getIdentifiers().iterator().next().getId();
+            if (participant.getPreferredIdentifier() != null){
+                return participant.getPreferredIdentifier().getId();
             }
 
             return Integer.toString(participant.hashCode());
@@ -102,7 +100,7 @@ public class HtmlWriterUtils {
         return null;
     }
 
-    public static String getHtmlAnchorFor(FeatureEvidence feature){
+    public static String getHtmlAnchorFor(Feature feature){
 
         if (feature != null){
             // first extract file context
@@ -116,8 +114,8 @@ public class HtmlWriterUtils {
                 }
             }
 
-            if (!feature.getIdentifiers().isEmpty()){
-                return feature.getIdentifiers().iterator().next().getId();
+            if (feature.getIdentifiers().size() == 1){
+                return ((Xref)feature.getIdentifiers().iterator().next()).getId();
             }
 
             return Integer.toString(feature.hashCode());
