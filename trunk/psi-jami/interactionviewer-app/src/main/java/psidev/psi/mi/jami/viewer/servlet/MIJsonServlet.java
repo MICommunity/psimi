@@ -23,12 +23,12 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.json.MIJsonBinaryWriter;
-import psidev.psi.mi.jami.json.MIJsonWriter;
+import psidev.psi.mi.jami.json.MIJsonBinaryEvidenceWriter;
+import psidev.psi.mi.jami.json.MIJsonEvidenceWriter;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.InMemoryPsiXml25Index;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -202,11 +202,11 @@ public class MIJsonServlet extends HttpServlet{
         switch (fileType){
             case mitab:
                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionObjectCategory.binary_evidence, true, null, dataStream));
-               interactionWriter = new MIJsonBinaryWriter(writer, this.fetcher);
+               interactionWriter = new MIJsonBinaryEvidenceWriter(writer, this.fetcher);
                break;
             case psi25_xml:
-                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXml25Options(InteractionObjectCategory.evidence, true, null, dataStream, null, new InMemoryPsiXml25Index(), new InMemoryPsiXml25Index()));
-                interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
+                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXml25Options(InteractionObjectCategory.evidence, true, null, dataStream, null, new InMemoryPsiXml25Cache()));
+                interactionWriter = new MIJsonEvidenceWriter(writer, this.fetcher, this.expansionMethod);
                 break;
             default:
                 dataStream.close();
