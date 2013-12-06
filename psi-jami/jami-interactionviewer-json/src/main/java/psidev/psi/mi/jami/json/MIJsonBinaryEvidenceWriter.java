@@ -5,8 +5,8 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
+import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.*;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @since <pre>03/07/13</pre>
  */
 
-public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEvidence> {
+public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInteractionEvidence> {
 
     private boolean isInitialised = false;
     private Writer writer;
@@ -39,12 +39,12 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
     private Collection<FeatureEvidence> otherFeatures;
     private OntologyTermFetcher fetcher;
 
-    public MIJsonBinaryWriter(){
+    public MIJsonBinaryEvidenceWriter(){
         processedInteractors = new HashSet<String>();
         initialiseFeatureCollections();
     }
 
-    public MIJsonBinaryWriter(File file, OntologyTermFetcher fetcher) throws IOException {
+    public MIJsonBinaryEvidenceWriter(File file, OntologyTermFetcher fetcher) throws IOException {
 
         initialiseFile(file);
         processedInteractors = new HashSet<String>();
@@ -55,7 +55,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         this.fetcher = fetcher;
     }
 
-    public MIJsonBinaryWriter(OutputStream output, OntologyTermFetcher fetcher) {
+    public MIJsonBinaryEvidenceWriter(OutputStream output, OntologyTermFetcher fetcher) {
 
         initialiseOutputStream(output);
         processedInteractors = new HashSet<String>();
@@ -66,7 +66,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
         this.fetcher = fetcher;
     }
 
-    public MIJsonBinaryWriter(Writer writer, OntologyTermFetcher fetcher) {
+    public MIJsonBinaryEvidenceWriter(Writer writer, OntologyTermFetcher fetcher) {
 
         initialiseWriter(writer);
         processedInteractors = new HashSet<String>();
@@ -79,13 +79,13 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
     public void initialiseContext(Map<String, Object> options) {
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
         else if (options == null){
             return;
         }
-        else if (options.containsKey(InteractionWriterFactory.OUTPUT_OPTION_KEY)){
-            Object output = options.get(InteractionWriterFactory.OUTPUT_OPTION_KEY);
+        else if (options.containsKey(InteractionWriterOptions.OUTPUT_OPTION_KEY)){
+            Object output = options.get(InteractionWriterOptions.OUTPUT_OPTION_KEY);
 
             if (output instanceof File){
                 try {
@@ -112,15 +112,15 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
                 throw new IllegalArgumentException("Impossible to write in the provided output "+output.getClass().getName() + ", a File, OuputStream, Writer or file path was expected.");
             }
 
-            if (options.containsKey(MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY)){
-                this.fetcher = (OntologyTermFetcher) options.get(MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY);
+            if (options.containsKey(MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY)){
+                this.fetcher = (OntologyTermFetcher) options.get(MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY);
             }
             else{
                 logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalArgumentException("The options for the json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         isInitialised = true;
@@ -128,7 +128,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
     public void start() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
         try {
             writeStart();
@@ -139,7 +139,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
     public void end() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
         try {
             writeEnd();
@@ -150,7 +150,7 @@ public class MIJsonBinaryWriter implements InteractionWriter<BinaryInteractionEv
 
     public void write(BinaryInteractionEvidence interaction) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterFactory.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonUtils.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
+            throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         try{
