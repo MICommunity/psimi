@@ -226,6 +226,10 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             throw new IllegalArgumentException("The options for the HTML writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
+        if (options.containsKey(HtmlWriterOptions.WRITE_HTML_HEADER_BODY_OPTION)){
+            setWriteHeader((Boolean)options.get(HtmlWriterOptions.WRITE_HTML_HEADER_BODY_OPTION));
+        }
+
         isInitialised = true;
     }
 
@@ -273,6 +277,10 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                 this.writeHeader = true;
             }
         }
+    }
+
+    public void setWriteHeader(boolean writeHeader) {
+        this.writeHeader = writeHeader;
     }
 
     protected abstract void writeCooperativeEffects(T interaction);
