@@ -45,10 +45,6 @@ public class MitabUtils {
     public static final String [] SPECIAL_CHARACTERS = new String[]{FIELD_SEPARATOR,
             XREF_SEPARATOR, "(", ")"};
 
-    public static final String MITAB_VERSION_OPTION = "mitab_version_key";
-    public static final String MITAB_HEADER_OPTION = "mitab_header_key";
-    public static final String MITAB_EXTENDED_OPTION = "mitab_extended_key";
-
     /**
      * Build the header and return an array of String which is an array of column names
      * @param version

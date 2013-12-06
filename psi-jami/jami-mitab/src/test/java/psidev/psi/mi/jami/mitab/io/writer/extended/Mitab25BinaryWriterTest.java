@@ -5,13 +5,14 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
+import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.io.writer.extended.Mitab25BinaryWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.tab.utils.MitabWriterOptions;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
@@ -85,8 +86,8 @@ public class Mitab25BinaryWriterTest {
         StringWriter writer = new StringWriter();
         Mitab25BinaryWriter binaryWriter = new Mitab25BinaryWriter();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MitabUtils.MITAB_HEADER_OPTION, false);
-        options.put(InteractionWriterFactory.OUTPUT_OPTION_KEY, writer);
+        options.put(MitabWriterOptions.MITAB_HEADER_OPTION, false);
+        options.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, writer);
         binaryWriter.initialiseContext(options);
 
         BinaryInteractionEvidence binary = createBinaryInteractionEvidence();
