@@ -20,18 +20,19 @@ import java.io.Writer;
 public class LightMIHtmlWriter extends AbstractMIHtmlWriter<Interaction, Participant, Feature>{
 
     public LightMIHtmlWriter() {
+        super(new MIModelledHtmlWriter());
     }
 
     public LightMIHtmlWriter(File file) throws IOException {
-        super(file);
+        super(file, new MIModelledHtmlWriter());
     }
 
     public LightMIHtmlWriter(OutputStream output) {
-        super(output);
+        super(output, new MIModelledHtmlWriter());
     }
 
     public LightMIHtmlWriter(Writer writer) {
-        super(writer);
+        super(writer, new MIModelledHtmlWriter());
     }
 
     @Override

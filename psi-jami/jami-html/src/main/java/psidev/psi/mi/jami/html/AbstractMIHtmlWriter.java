@@ -22,36 +22,41 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
     private boolean isInitialised = false;
     private boolean writeHeader = true;
 
-    private Set<Complex> complexesToWrite;
+    private Set<ModelledInteraction> complexesToWrite;
     private Set<Object> processedObjects;
+    private AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature> complexWriter;
 
-    public AbstractMIHtmlWriter(){
-        complexesToWrite = new HashSet<Complex>();
+    public AbstractMIHtmlWriter(AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature> complexWriter){
+        complexesToWrite = new HashSet<ModelledInteraction>();
         processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+        this.complexWriter = complexWriter;
     }
 
-    public AbstractMIHtmlWriter(File file) throws IOException {
+    public AbstractMIHtmlWriter(File file, AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature> complexWriter) throws IOException {
 
         initialiseFile(file);
         isInitialised = true;
-        complexesToWrite = new HashSet<Complex>();
+        complexesToWrite = new HashSet<ModelledInteraction>();
         processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+        this.complexWriter = complexWriter;
     }
 
-    public AbstractMIHtmlWriter(OutputStream output) {
+    public AbstractMIHtmlWriter(OutputStream output, AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature> complexWriter) {
 
         initialiseOutputStream(output);
         isInitialised = true;
-        complexesToWrite = new HashSet<Complex>();
+        complexesToWrite = new HashSet<ModelledInteraction>();
         processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+        this.complexWriter = complexWriter;
     }
 
-    public AbstractMIHtmlWriter(Writer writer) {
+    public AbstractMIHtmlWriter(Writer writer, AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature> complexWriter) {
 
         initialiseWriter(writer);
         isInitialised = true;
-        complexesToWrite = new HashSet<Complex>();
+        complexesToWrite = new HashSet<ModelledInteraction>();
         processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+        this.complexWriter = complexWriter;
     }
 
     public void write(T interaction) throws MIIOException {
@@ -59,101 +64,108 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             throw new IllegalStateException("The HTML writer was not initialised. The options for the PSI-MI HTML Writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         try {
-            // start table
-            writer.write("    <table style=\"border-bottom: 1px solid #fff\" cellspacing=\"1\">");
-            writer.write(HtmlWriterUtils.NEW_LINE);
+            // add interaction as processed object
+            if (this.processedObjects.add(interaction)){
+                // start table
+                writer.write("    <table style=\"border-bottom: 1px solid #fff\" cellspacing=\"1\">");
+                writer.write(HtmlWriterUtils.NEW_LINE);
 
-            // writer interaction anchor
-            writeInteractionAnchor(interaction);
+                // writer interaction anchor
+                writeInteractionAnchor(interaction);
 
-            // write name
-            writeProperty("Name", interaction.getShortName());
+                // write name
+                writeProperty("Name", interaction.getShortName());
 
-            // write general properties
-            writeGeneralProperties(interaction);
+                // write general properties
+                writeGeneralProperties(interaction);
 
-            // write identifiers
-            if (!interaction.getIdentifiers().isEmpty()){
-                for (Object object : interaction.getIdentifiers()){
-                    Xref ref = (Xref)object;
-                    if (ref.getQualifier() != null){
-                        writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
-                    }
-                    else {
-                        writeProperty(ref.getDatabase().getShortName(), ref.getId());
-                    }
-                }
-            }
-
-            // write experiment
-            writeExperiment(interaction);
-
-            // write participants
-            if (!interaction.getParticipants().isEmpty()){
-                writeSubTitle("Participants: ");
-                for (Object participant : interaction.getParticipants()){
-                    writeParticipant((P)participant);
-                }
-            }
-
-            // write type
-            writeCvTerm("Interaction type", interaction.getInteractionType());
-
-            // write xrefs
-            if (!interaction.getXrefs().isEmpty()){
-                for (Object object : interaction.getXrefs()){
-                    Xref ref = (Xref)object;
-                    if (ref.getQualifier() != null){
-                        writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
-                    }
-                    else {
-                        writeProperty(ref.getDatabase().getShortName(), ref.getId());
+                // write identifiers
+                if (!interaction.getIdentifiers().isEmpty()){
+                    for (Object object : interaction.getIdentifiers()){
+                        Xref ref = (Xref)object;
+                        if (ref.getQualifier() != null){
+                            writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
+                        }
+                        else {
+                            writeProperty(ref.getDatabase().getShortName(), ref.getId());
+                        }
                     }
                 }
-            }
 
-            // write parameters
-            writeParameters(interaction);
+                // write experiment
+                writeExperiment(interaction);
 
-            // write confidences
-            writeConfidences(interaction);
-
-            // write cooperative effects
-            writeCooperativeEffects(interaction);
-
-            // write annotations
-            if (!interaction.getAnnotations().isEmpty()){
-                for (Object object : interaction.getAnnotations()){
-                    Annotation ref = (Annotation)object;
-                    if (ref.getValue() != null){
-                        writeProperty(ref.getTopic().getShortName(), ref.getValue());
-                    }
-                    else {
-                        writeTag(ref.getTopic().getShortName());
+                // write participants
+                if (!interaction.getParticipants().isEmpty()){
+                    writeSubTitle("Participants: ");
+                    for (Object participant : interaction.getParticipants()){
+                        writeParticipant((P)participant);
                     }
                 }
-            }
 
-            // write checksums
-            if (!interaction.getChecksums().isEmpty()){
-                for (Object object : interaction.getChecksums()){
-                    Checksum ref = (Checksum)object;
-                    writeProperty(ref.getMethod().getShortName(), ref.getValue());
+                // write type
+                writeCvTerm("Interaction type", interaction.getInteractionType());
+
+                // write xrefs
+                if (!interaction.getXrefs().isEmpty()){
+                    for (Object object : interaction.getXrefs()){
+                        Xref ref = (Xref)object;
+                        if (ref.getQualifier() != null){
+                            writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
+                        }
+                        else {
+                            writeProperty(ref.getDatabase().getShortName(), ref.getId());
+                        }
+                    }
                 }
+
+                // write parameters
+                writeParameters(interaction);
+
+                // write confidences
+                writeConfidences(interaction);
+
+                // write cooperative effects
+                writeCooperativeEffects(interaction);
+
+                // write annotations
+                if (!interaction.getAnnotations().isEmpty()){
+                    for (Object object : interaction.getAnnotations()){
+                        Annotation ref = (Annotation)object;
+                        if (ref.getValue() != null){
+                            writeProperty(ref.getTopic().getShortName(), ref.getValue());
+                        }
+                        else {
+                            writeTag(ref.getTopic().getShortName());
+                        }
+                    }
+                }
+
+                // write checksums
+                if (!interaction.getChecksums().isEmpty()){
+                    for (Object object : interaction.getChecksums()){
+                        Checksum ref = (Checksum)object;
+                        writeProperty(ref.getMethod().getShortName(), ref.getValue());
+                    }
+                }
+
+                // write created date
+                if (interaction.getCreatedDate() != null){
+                    writeProperty("Creation date", interaction.getCreatedDate().toString());
+                }
+
+                // write updated date
+                if (interaction.getUpdatedDate() != null){
+                    writeProperty("Last update", interaction.getUpdatedDate().toString());
+                }
+                writer.write(HtmlWriterUtils.NEW_LINE);
+                // end table
+                writer.write("    </table><br/>");
+
+                // write all remaining complexes
+                writeSubComplexes();
             }
 
-            // write created date
-            if (interaction.getCreatedDate() != null){
-                writeProperty("Creation date", interaction.getCreatedDate().toString());
-            }
-
-            // write updated date
-            if (interaction.getUpdatedDate() != null){
-                writeProperty("Last update", interaction.getUpdatedDate().toString());
-            }
-            writer.write(HtmlWriterUtils.NEW_LINE);
-            // end table
-            writer.write("    </table><br/>");
         } catch (IOException e) {
             throw new MIIOException("Impossible to write interaction "+interaction.toString());
         }
@@ -174,6 +186,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
     }
 
     public void start() throws MIIOException {
+        this.processedObjects.clear();
+        this.complexesToWrite.clear();
         try {
             if (writeHeader){
                 writeStartDocument();
@@ -189,6 +203,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
     public void end() throws MIIOException {
         try {
+            this.processedObjects.clear();
+            this.complexesToWrite.clear();
             writerEndBody();
             if (writeHeader){
                 writeEndDocument();
@@ -272,6 +288,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                     writer = null;
                     this.writeHeader = true;
                     this.complexesToWrite.clear();
+                    this.processedObjects.clear();
                 }
             }
         }
@@ -288,6 +305,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                 writer = null;
                 this.writeHeader = true;
                 this.complexesToWrite.clear();
+                this.processedObjects.clear();
             }
         }
     }
@@ -491,6 +509,10 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             writer.write(anchor);
             writer.write("</a></td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
+
+            if (this.processedObjects.add(interactor)){
+                this.complexesToWrite.add((Complex)interactor);
+            }
         }
         // normal interactor
         else{
@@ -752,7 +774,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         }
     }
 
-    protected void writeInteractionAnchor(T interaction) throws IOException {
+    protected void writeInteractionAnchor(Interaction interaction) throws IOException {
         String htmlAnchor = HtmlWriterUtils.getHtmlAnchorFor(interaction);
         writer.write("        <tr>");
         writer.write(HtmlWriterUtils.NEW_LINE);
@@ -856,6 +878,37 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         return writer;
     }
 
+    protected Set<Object> getProcessedObjects() {
+        return processedObjects;
+    }
+
+    protected Set<ModelledInteraction> getComplexesToWrite() {
+        return complexesToWrite;
+    }
+
+    protected AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature> getComplexWriter() {
+        return complexWriter;
+    }
+
+    protected void writeModelledInteraction(ModelledInteraction c) {
+        if (this.complexWriter != null){
+            this.complexWriter.write(c);
+            this.processedObjects.addAll(this.complexWriter.getProcessedObjects());
+            this.complexesToWrite.addAll(this.complexWriter.getComplexesToWrite());
+        }
+    }
+
+    private void writeSubComplexes() {
+        while(!this.complexesToWrite.isEmpty()){
+            Collection<ModelledInteraction> complexesToWrite = new ArrayList<ModelledInteraction>(this.complexesToWrite);
+            this.complexesToWrite.clear();
+            for (ModelledInteraction c : complexesToWrite){
+                // write complexes
+                writeModelledInteraction(c);
+            }
+        }
+    }
+
     private String convertSequence(Polymer polymer) {
         if (polymer.getSequence() == null){
             return null;
@@ -890,6 +943,9 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         }
 
         this.writer = writer;
+        if (this.complexWriter != null){
+            this.complexWriter.initialiseWriter(writer);
+        }
     }
 
     private void initialiseOutputStream(OutputStream output) {
@@ -898,6 +954,9 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         }
 
         this.writer = new OutputStreamWriter(output);
+        if (this.complexWriter != null){
+            this.complexWriter.initialiseWriter(this.writer);
+        }
     }
 
     private void initialiseFile(File file) throws IOException {
@@ -909,5 +968,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         }
 
         this.writer = new BufferedWriter(new FileWriter(file));
+        if (this.complexWriter != null){
+            this.complexWriter.initialiseWriter(this.writer);
+        }
     }
 }

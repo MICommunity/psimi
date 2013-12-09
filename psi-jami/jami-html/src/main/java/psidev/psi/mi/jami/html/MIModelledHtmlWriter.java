@@ -2,7 +2,10 @@ package psidev.psi.mi.jami.html;
 
 import psidev.psi.mi.jami.model.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Arrays;
 
 /**
@@ -13,7 +16,23 @@ import java.util.Arrays;
  * @since <pre>06/12/13</pre>
  */
 
-public class MIHtmlModelledWriter extends AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature>{
+public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteraction, ModelledParticipant, ModelledFeature>{
+    public MIModelledHtmlWriter() {
+        super(null);
+    }
+
+    public MIModelledHtmlWriter(File file) throws IOException {
+        super(file, null);
+    }
+
+    public MIModelledHtmlWriter(OutputStream output) {
+        super(output, null);
+    }
+
+    public MIModelledHtmlWriter(Writer writer) {
+        super(writer, null);
+    }
+
     @Override
     protected void writeCooperativeEffects(ModelledInteraction interaction) throws IOException {
         if (!interaction.getCooperativeEffects().isEmpty()){
@@ -29,6 +48,22 @@ public class MIHtmlModelledWriter extends AbstractMIHtmlWriter<ModelledInteracti
                         writeProperty("Cooperative effect value", effect.getCooperativeEffectValue().toString());
                     }
                     Allostery allostery = (Allostery)effect;
+                    String anchor = HtmlWriterUtils.getHtmlAnchorFor(allostery.getAllostericMolecule());
+                    writeProperty("Allosteric molecule", "<a href=\"#"+anchor+"\">Participant "+anchor+"</a>");
+
+                    switch (allostery.getAllostericEffector().getEffectorType()){
+                        case molecule:
+                            String anchor2 = HtmlWriterUtils.getHtmlAnchorFor(((MoleculeEffector)allostery.getAllostericEffector()).getMolecule());
+                            writeProperty("Molecule effector", "<a href=\"#"+anchor2+"\">Participant "+anchor2+"</a>");
+                            break;
+                        case feature_modification:
+                            String anchor3 = HtmlWriterUtils.getHtmlAnchorFor(((FeatureModificationEffector)allostery.getAllostericEffector()).getFeatureModification());
+                            writeProperty("Feature modification", "<a href=\"#"+anchor3+"\">Feature "+anchor3+"</a>");
+                            break;
+                        default:
+                            break;
+                    }
+
                     if (allostery.getAllostericMechanism() != null){
                         writeCvTerm("Allosteric mechanism", allostery.getAllostericMechanism());
                     }
@@ -50,6 +85,12 @@ public class MIHtmlModelledWriter extends AbstractMIHtmlWriter<ModelledInteracti
                     }
                     for (CooperativityEvidence evidence : effect.getCooperativityEvidences()){
                         writePublication(evidence.getPublication());
+                    }
+                }
+
+                for (ModelledInteraction modelled : effect.getAffectedInteractions()){
+                    if (getProcessedObjects().add(modelled)){
+                        getComplexesToWrite().add(modelled);
                     }
                 }
             }
@@ -198,5 +239,10 @@ public class MIHtmlModelledWriter extends AbstractMIHtmlWriter<ModelledInteracti
     @Override
     protected void writeParticipantIdentificationMethods(ModelledParticipant participant) throws IOException {
         // do nothing
+    }
+
+    @Override
+    protected void writeModelledInteraction(ModelledInteraction c) {
+        write(c);
     }
 }
