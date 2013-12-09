@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.html;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
 
 /**
  * Utility class for writing molecular interactions in html
@@ -16,12 +15,12 @@ public class HtmlWriterUtils {
 
     public final static String NEW_LINE = System.getProperty("line.separator");
 
-    public static String getHtmlAnchorFor(Interaction interaction){
+    public static String getHtmlAnchorFor(Object object){
 
-        if (interaction != null){
+        if (object != null){
             // first extract file context
-            if (interaction instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext) interaction;
+            if (object instanceof FileSourceContext){
+                FileSourceContext context = (FileSourceContext) object;
 
                 if (context.getSourceLocator() != null){
                     FileSourceLocator locator = context.getSourceLocator();
@@ -30,95 +29,7 @@ public class HtmlWriterUtils {
                 }
             }
 
-            // get unique id
-            if (interaction.getIdentifiers().size() == 1){
-                return ((Xref)interaction.getIdentifiers().iterator().next()).getId();
-            }
-
-            return Integer.toString(interaction.hashCode());
-        }
-        return null;
-    }
-
-    public static String getHtmlAnchorFor(Experiment experiment){
-
-        if (experiment != null){
-            // first extract file context
-            if (experiment instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext) experiment;
-
-                if (context.getSourceLocator() != null){
-                    FileSourceLocator locator = context.getSourceLocator();
-
-                    return locator.toString();
-                }
-            }
-
-            return Integer.toString(experiment.hashCode());
-        }
-        return null;
-    }
-
-    public static String getHtmlAnchorFor(Participant participant){
-
-        if (participant != null){
-            // first extract file context
-            if (participant instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext) participant;
-
-                if (context.getSourceLocator() != null){
-                    FileSourceLocator locator = context.getSourceLocator();
-
-                    return locator.toString();
-                }
-            }
-            return Integer.toString(participant.hashCode());
-        }
-        return null;
-    }
-
-    public static String getHtmlAnchorFor(Interactor participant){
-
-        if (participant != null){
-            // first extract file context
-            if (participant instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext) participant;
-
-                if (context.getSourceLocator() != null){
-                    FileSourceLocator locator = context.getSourceLocator();
-
-                    return locator.toString();
-                }
-            }
-
-            if (participant.getPreferredIdentifier() != null){
-                return participant.getPreferredIdentifier().getId();
-            }
-
-            return Integer.toString(participant.hashCode());
-        }
-        return null;
-    }
-
-    public static String getHtmlAnchorFor(Feature feature){
-
-        if (feature != null){
-            // first extract file context
-            if (feature instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext) feature;
-
-                if (context.getSourceLocator() != null){
-                    FileSourceLocator locator = context.getSourceLocator();
-
-                    return locator.toString();
-                }
-            }
-
-            if (feature.getIdentifiers().size() == 1){
-                return ((Xref)feature.getIdentifiers().iterator().next()).getId();
-            }
-
-            return Integer.toString(feature.hashCode());
+            return Integer.toString(object.hashCode());
         }
         return null;
     }

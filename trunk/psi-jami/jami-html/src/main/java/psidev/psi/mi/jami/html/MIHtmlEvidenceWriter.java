@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.html;
 
+import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Arrays;
 
 /**
  * HTML writer for PSI-MI interaction evidences. This writer is based on the JAMI interfaces
@@ -114,9 +114,8 @@ public class MIHtmlEvidenceWriter extends AbstractMIHtmlWriter<InteractionEviden
             // write
             getWriter().write("</table>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("</td>");
+            getWriter().write("</td></tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().flush();
         }
     }
 
@@ -256,7 +255,7 @@ public class MIHtmlEvidenceWriter extends AbstractMIHtmlWriter<InteractionEviden
 
             // write authors
             if (!publication.getAuthors().isEmpty()){
-                writeProperty("Authors", Arrays.toString(publication.getAuthors().toArray()));
+                writeProperty("Authors", StringUtils.join(publication.getAuthors().toArray(), ", "));
             }
 
             // write publication date
@@ -303,7 +302,7 @@ public class MIHtmlEvidenceWriter extends AbstractMIHtmlWriter<InteractionEviden
 
             getWriter().write("</table>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("</td>");
+            getWriter().write("</td></tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
         }
     }
