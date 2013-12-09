@@ -7,9 +7,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Abstract class for MI HTML writer
@@ -24,26 +22,36 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
     private boolean isInitialised = false;
     private boolean writeHeader = true;
 
-    public AbstractMIHtmlWriter(){
+    private Set<Complex> complexesToWrite;
+    private Set<Object> processedObjects;
 
+    public AbstractMIHtmlWriter(){
+        complexesToWrite = new HashSet<Complex>();
+        processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
     public AbstractMIHtmlWriter(File file) throws IOException {
 
         initialiseFile(file);
         isInitialised = true;
+        complexesToWrite = new HashSet<Complex>();
+        processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
     public AbstractMIHtmlWriter(OutputStream output) {
 
         initialiseOutputStream(output);
         isInitialised = true;
+        complexesToWrite = new HashSet<Complex>();
+        processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
     public AbstractMIHtmlWriter(Writer writer) {
 
         initialiseWriter(writer);
         isInitialised = true;
+        complexesToWrite = new HashSet<Complex>();
+        processedObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
     public void write(T interaction) throws MIIOException {
@@ -168,7 +176,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
     public void start() throws MIIOException {
         try {
             if (writeHeader){
-                writerStartDocument();
+                writeStartDocument();
                 writeHeader();
                 writerStartBody();
             }
@@ -182,6 +190,9 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
     public void end() throws MIIOException {
         try {
             writerEndBody();
+            if (writeHeader){
+                writeEndDocument();
+            }
         } catch (IOException e) {
             throw new MIIOException("Cannot write the end body tag.", e);
         }
@@ -260,6 +271,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                     isInitialised = false;
                     writer = null;
                     this.writeHeader = true;
+                    this.complexesToWrite.clear();
                 }
             }
         }
@@ -275,6 +287,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                 isInitialised = false;
                 writer = null;
                 this.writeHeader = true;
+                this.complexesToWrite.clear();
             }
         }
     }
@@ -366,15 +379,20 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                 writeSubTitle("Feature ranges: ");
                 for (Object ref : feature.getRanges()){
                     Range range = (Range)ref;
-                    writeTag(RangeUtils.convertRangeToString(range));
+                    if (range.getParticipant() == null){
+                        writeTag(RangeUtils.convertRangeToString(range));
+                    }
+                    else{
+                        String anchor2 = HtmlWriterUtils.getHtmlAnchorFor(range.getParticipant());
+                        writeProperty(RangeUtils.convertRangeToString(range), "<a href=\"#"+anchor2+"\">Participant "+anchor2+"</a>");
+                    }
                 }
             }
 
             writer.write("</table>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("</td>");
+            writer.write("</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.flush();
         }
     }
 
@@ -421,10 +439,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             }
             writer.write("</table>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("</td>");
+            writer.write("</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-
-            writer.flush();
         }
     }
 
@@ -458,15 +474,26 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             writer.write("</table>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("</td>");
+            writer.write("</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-
-            writer.flush();
         }
     }
 
     protected void writeInteractor(Interactor interactor) throws IOException {
-        if (interactor != null){
+        // we have an interaction as participant of another interaction
+        if (interactor instanceof Complex){
+            String anchor = HtmlWriterUtils.getHtmlAnchorFor(interactor);
+            writer.write("        <tr>");
+            writer.write(HtmlWriterUtils.NEW_LINE);
+            writer.write("            <td class=\"table-title\" colspan=\"2\"><a href=\"#");
+            writer.write(anchor);
+            writer.write("\">Interactor ");
+            writer.write(anchor);
+            writer.write("</a></td></tr>");
+            writer.write(HtmlWriterUtils.NEW_LINE);
+        }
+        // normal interactor
+        else{
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(interactor);
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -554,9 +581,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             writer.write("</table>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("</td>");
+            writer.write("</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.flush();
         }
     }
 
@@ -652,8 +678,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             writer.write("</table>");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("</td>");
+            writer.write("</tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.flush();
         }
     }
 
@@ -684,9 +710,10 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         if (property != null){
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
+            writer.write("            <td class=\"table-title\" colspan=\"2\">");
             writer.write(property);
             writer.write("</td>");
+            writer.write("        </tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
         }
     }
@@ -720,6 +747,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             writer.write(qualifier);
             writer.write("]</font>");
             writer.write("</td>");
+            writer.write("        </tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
         }
     }
@@ -754,8 +782,12 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         writer.write("</body>");
     }
 
-    protected void writerStartDocument() throws IOException {
+    protected void writeStartDocument() throws IOException {
         writer.write("<html>");
+    }
+
+    protected void writeEndDocument() throws IOException {
+        writer.write("</html>");
     }
 
     protected void writeHeader() throws IOException {
