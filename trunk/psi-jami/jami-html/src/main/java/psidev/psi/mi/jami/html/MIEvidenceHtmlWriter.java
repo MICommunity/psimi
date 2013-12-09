@@ -16,21 +16,22 @@ import java.io.Writer;
  * @since <pre>02/04/13</pre>
  */
 
-public class MIHtmlEvidenceWriter extends AbstractMIHtmlWriter<InteractionEvidence, ParticipantEvidence, FeatureEvidence>{
+public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEvidence, ParticipantEvidence, FeatureEvidence>{
 
-    public MIHtmlEvidenceWriter() {
+    public MIEvidenceHtmlWriter() {
+        super(new MIModelledHtmlWriter());
     }
 
-    public MIHtmlEvidenceWriter(File file) throws IOException {
-        super(file);
+    public MIEvidenceHtmlWriter(File file) throws IOException {
+        super(file, new MIModelledHtmlWriter());
     }
 
-    public MIHtmlEvidenceWriter(OutputStream output) {
-        super(output);
+    public MIEvidenceHtmlWriter(OutputStream output) {
+        super(output, new MIModelledHtmlWriter());
     }
 
-    public MIHtmlEvidenceWriter(Writer writer) {
-        super(writer);
+    public MIEvidenceHtmlWriter(Writer writer) {
+        super(writer, new MIModelledHtmlWriter());
     }
 
     @Override
