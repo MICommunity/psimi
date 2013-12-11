@@ -52,4 +52,8 @@ public abstract class AbstractRuleWrapper<O> extends AbstractMIRule<O> {
             this.rules.add(rule);
         }
     }
+
+    public Collection<ObjectRule<O>> getRules() {
+        return rules;
+    }
 }
