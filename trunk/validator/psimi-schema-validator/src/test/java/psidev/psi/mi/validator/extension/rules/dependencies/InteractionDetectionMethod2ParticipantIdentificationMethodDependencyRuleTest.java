@@ -2,7 +2,12 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -30,12 +35,10 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
      */
     @Test
     public void check_Protein_Complementation_Ok() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
         exp.setInteractionDetectionMethod( buildDetectionMethod( PROTEIN_COMPLEMENTATION_MI_REF, "protein complementation assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, PROTEIN_COMPLEMENTATION_MI_REF, "protein complementation assay" );
@@ -48,7 +51,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule rule =
                 new InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule( ontologyMaganer );
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+        for (ParticipantEvidence p : interaction.getParticipants()){
             messages.addAll(rule.check( p ));
 
         }
@@ -64,14 +67,11 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
      */
     @Test
     public void check_Protein_Complementation_Warning() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( PROTEIN_COMPLEMENTATION_MI_REF, "protein complementation assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, PROTEIN_COMPLEMENTATION_MI_REF, "protein complementation assay" );
@@ -84,7 +84,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule rule =
                 new InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule( ontologyMaganer );
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+        for (ParticipantEvidence p : interaction.getParticipants()){
             messages.addAll(rule.check( p ));
 
         }
@@ -100,15 +100,11 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
      */
     @Test
     public void check_Protein_Complementation_child_Warning() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0588", "3 hybrid method" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0588", "3 hybrid method" );
@@ -121,7 +117,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule rule =
                 new InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule( ontologyMaganer );
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+        for (ParticipantEvidence p : interaction.getParticipants()){
             messages.addAll(rule.check( p ));
 
         }
@@ -130,22 +126,16 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         Assert.assertEquals( 1, messages.size() );
     }
 
-    private void addParticipant( Interaction interaction,
+    private void addParticipant( InteractionEvidence interaction,
                                  String partIdMi, String partIdName ) {
 
-        final Participant participant = new Participant();
-        participant.setInteractor( new Interactor());
-        participant.getParticipantIdentificationMethods().clear();
-        participant.getParticipantIdentificationMethods().add( buildParticipantIdentificationMethod( partIdMi, partIdName ));
-        interaction.addParticipantEvidence( participant );
+        final ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
+        participant.getIdentificationMethods().add(buildParticipantIdentificationMethod(partIdMi, partIdName));
+        interaction.addParticipant(participant);
     }
 
-    private ParticipantIdentificationMethod buildParticipantIdentificationMethod( String mi, String name ) {
-        final ParticipantIdentificationMethod detectionMethod = new ParticipantIdentificationMethod();
-        detectionMethod.setXref( new Xref() );
-        detectionMethod.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, mi, IDENTITY, IDENTITY_MI_REF ) );
-        detectionMethod.setNames( new Names() );
-        detectionMethod.getNames().setShortLabel( name );
+    private CvTerm buildParticipantIdentificationMethod( String mi, String name ) {
+        final CvTerm detectionMethod = CvTermUtils.createMICvTerm(name, mi);
         return detectionMethod;
     }
 }

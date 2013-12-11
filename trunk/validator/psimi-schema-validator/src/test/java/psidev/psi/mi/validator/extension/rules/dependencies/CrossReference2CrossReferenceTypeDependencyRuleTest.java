@@ -2,6 +2,13 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultExperiment;
+import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -30,17 +37,9 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
      */
     @Test
     public void check_Pubmed_Interaction_ok() throws Exception {
-        Interaction interaction = new Interaction();
-
-        DbReference database = new DbReference();
-        database.setDb("go");
-        database.setDbAc("MI:0448");
-        database.setRefType("process");
-        database.setRefTypeAc("MI:0359");
-        Xref xRef = new Xref();
-        xRef.setPrimaryRef(database);
-
-        interaction.setXref(xRef);
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        Xref xRef = XrefUtils.createXrefWithQualifier("go", "MI:0448", "test", "process", "MI:0359");
+        interaction.getXrefs().add(xRef);
 
         InteractionCrossReference2CrossReferenceTypeDependencyRule rule =
                 new InteractionCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
@@ -55,17 +54,9 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
      */
     @Test
     public void check_Pubmed_Interaction_error() throws Exception {
-        Interaction interaction = new Interaction();
-
-        DbReference database = new DbReference();
-        database.setDb("pubmed");
-        database.setDbAc("MI:0446");
-        database.setRefType("primary-reference");
-        database.setRefTypeAc("MI:0358");
-        Xref xRef = new Xref();
-        xRef.setPrimaryRef(database);
-
-        interaction.setXref(xRef);
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        Xref xRef = XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "test", "primary-reference", "MI:0358");
+        interaction.getXrefs().add(xRef);
 
         InteractionCrossReference2CrossReferenceTypeDependencyRule rule =
                 new InteractionCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
@@ -81,17 +72,9 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
      */
     @Test
     public void check_Pubmed_Experiment_Xref_ok() throws Exception {
-        ExperimentDescription exp = new ExperimentDescription();
-
-        DbReference database = new DbReference();
-        database.setDb("pubmed");
-        database.setDbAc("MI:0446");
-        database.setRefType("primary-reference");
-        database.setRefTypeAc("MI:0358");
-        Xref xRef = new Xref();
-        xRef.setPrimaryRef(database);
-
-        exp.setXref(xRef);
+        Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Xref xRef = XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "test", "primary-reference", "MI:0358");
+        exp.getXrefs().add(xRef);
 
         ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
                 new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
@@ -107,20 +90,9 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
      */
     @Test
     public void check_Pubmed_Experiment_BibRef_ok() throws Exception {
-        ExperimentDescription exp = new ExperimentDescription();
-
-        DbReference database = new DbReference();
-        database.setDb("pubmed");
-        database.setDbAc("MI:0446");
-        database.setRefType("primary-reference");
-        database.setRefTypeAc("MI:0358");
-        Xref xRef = new Xref();
-        xRef.setPrimaryRef(database);
-
-        Bibref bib = new Bibref();
-        bib.setXref(xRef);
-
-        exp.setBibref(bib);
+        Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Xref xRef = XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "test", "primary-reference", "MI:0358");
+        exp.getPublication().getXrefs().add(xRef);
 
         ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
                 new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
@@ -136,17 +108,9 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
      */
     @Test
     public void check_Pubmed_Experiment_BibRef_error() throws Exception {
-        ExperimentDescription exp = new ExperimentDescription();
-
-        DbReference database = new DbReference();
-        database.setDb("pubmed");
-        database.setDbAc("MI:0446");
-        database.setRefType("identical object");
-        database.setRefTypeAc("MI:0356");
-        Xref xRef = new Xref();
-        xRef.setPrimaryRef(database);
-
-        exp.setXref(xRef);
+        Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Xref xRef = XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "test", "identical object", "MI:0356");
+        exp.getXrefs().add(xRef);
 
         ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
                 new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );

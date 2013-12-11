@@ -16,11 +16,12 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import org.junit.AfterClass;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.exception.IllegalRangeException;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -28,7 +29,8 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.io.InputStream;
 import java.util.Collection;
 
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY_MI_REF;
 
 /**
  * Abstract rule test.
@@ -60,183 +62,97 @@ public abstract class AbstractRuleTest {
         }
     }
 
-    protected ExperimentDescription buildExperiment( int taxid ) {
-        final Bibref bibref = new Bibref();
-        final Xref xref = new Xref();
-        xref.setPrimaryRef( new DbReference( "pubmed", "MI:0446", "1234567", "primary-reference", "MI:0358" ) );
-        bibref.setXref( xref );
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
-        exp.setId( 7 );
-        final Organism organism = new Organism();
-        organism.setNcbiTaxId( taxid );
-        exp.getHostOrganisms().add( organism );
+    protected Experiment buildExperiment( int taxid ) {
+        final Publication bibref = new DefaultPublication(XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "1234567", "primary-reference", "MI:0358" ));
+        Experiment exp = new DefaultExperiment( bibref);
+        final Organism organism = new DefaultOrganism(taxid);
+        exp.setHostOrganism(organism);
         return exp;
     }
 
     protected Organism buildOrganism( int taxid ) {
 
-        final Organism organism = new Organism();
-        organism.setNcbiTaxId( taxid );
+        final Organism organism = new DefaultOrganism(taxid);
         return organism;
     }
 
-    protected Interaction buildInteraction( InteractionDetectionMethod detection, ExperimentalRole... roles ) {
+    protected InteractionEvidence buildInteraction( CvTerm detection, CvTerm role ) {
 
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0018", "2hybrid" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
-        int id = 100;
-
-        for ( ExperimentalRole role : roles ) {
-
-            final Participant p1 = new Participant();
-            p1.setId( ( ++id ) );
-            p1.setInteractor( buildProtein( "P12345" ) );
-            p1.getExperimentalRoles().add( role );
-            interaction.getParticipants().add( p1 );
-        }
+        final ParticipantEvidence p1 = new DefaultParticipantEvidence(buildProtein( "P12345" ) );
+        p1.setExperimentalRole(role);
+        interaction.addParticipant(p1);
 
         return interaction;
     }
 
-    protected Interaction buildInteractionDeterministic() {
-        return buildInteraction( buildDetectionMethod( "MI:0018", "2hybrid" ),
-                buildExperimentalRole( "MI:0496", "bait" ),
-                buildExperimentalRole( "MI:0498", "prey" )
+    protected InteractionEvidence buildInteractionDeterministic() {
+        return buildInteraction( buildDetectionMethod("MI:0018", "2hybrid"),
+                buildExperimentalRole( "MI:0496", "bait" )
         );
     }
 
-    protected Participant buildParticipantDeterministic() {
-        final Participant p1 = new Participant();
-        p1.setId( ( 1 ) );
+    protected ParticipantEvidence buildParticipantDeterministic() {
+        final ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
         p1.setInteractor( buildProtein( "P12345" ) );
-        p1.getExperimentalRoles().add( buildExperimentalRole( "MI:0496", "bait" ) );
+        p1.setExperimentalRole( buildExperimentalRole( "MI:0496", "bait" ) );
         p1.setBiologicalRole( buildBiologicalRole( "MI:0918", "donor"));
 
         return p1;
     }
 
-    protected Feature buildCertainFeature (long beginPosition, long endPosition){
+    protected FeatureEvidence buildCertainFeature (long beginPosition, long endPosition){
 
-        Feature feature = new Feature();
+        FeatureEvidence feature = new DefaultFeatureEvidence();
 
-        Xref ref = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0117", "identity", "MI:0356"));
-        Names names = new Names();
-        names.setShortLabel("binding site");
+        CvTerm featureType = CvTermUtils.createMICvTerm("binding site", "MI:0117");
 
-        FeatureType featureType = new FeatureType();
-        featureType.setXref(ref);
-        featureType.setNames(names);
+        feature.setType(featureType);
 
-        feature.setFeatureType(featureType);
-
-        Xref refStart = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0335", "identity", "MI:0356"));
-        Names namesStart = new Names();
-        names.setShortLabel("certain");
-        RangeStatus start = new RangeStatus();
-        start.setNames(namesStart);
-        start.setXref(refStart);
-
-        Xref refEnd = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0335", "identity", "MI:0356"));
-        Names namesEnd = new Names();
-        names.setShortLabel("certain");
-        RangeStatus end = new RangeStatus();
-        end.setNames(namesEnd);
-        end.setXref(refEnd);
-
-        Range certain = new Range (start, new Position(beginPosition), end, new Position(endPosition));
+        Range certain = RangeUtils.createCertainRange(3);
         feature.getRanges().add(certain);
 
         return feature;
     }
 
-    protected Feature buildUndeterminedFeature (){
+    protected FeatureEvidence buildUndeterminedFeature () throws IllegalRangeException {
 
-        Feature feature = new Feature();
+        FeatureEvidence feature = new DefaultFeatureEvidence();
 
-        Xref ref = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0507", "identity", "MI:0356"));
-        Names names = new Names();
-        names.setShortLabel("tag");
-
-        FeatureType featureType = new FeatureType();
-        featureType.setXref(ref);
-        featureType.setNames(names);
-
-        feature.setFeatureType(featureType);
-
-        Xref refStart = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0339", "identity", "MI:0356"));
-        Names namesStart = new Names();
-        names.setShortLabel("undetermined");
-        RangeStatus start = new RangeStatus();
-        start.setNames(namesStart);
-        start.setXref(refStart);
-
-        Xref refEnd = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0339", "identity", "MI:0356"));
-        Names namesEnd = new Names();
-        names.setShortLabel("undetermined");
-        RangeStatus end = new RangeStatus();
-        end.setNames(namesEnd);
-        end.setXref(refEnd);
-
-        Range undetermined = new Range (start, new Position(0), end, new Position(0));
-        feature.getRanges().add(undetermined);
+        CvTerm featureType = CvTermUtils.createMICvTerm("tag", "MI:0507");
+        feature.setType(featureType);
+        feature.getRanges().add(RangeUtils.createRangeFromString("?-?"));
 
         return feature;
     }
 
-    protected Interactor buildProtein( String uniprotAc ) {
-        Interactor interactor = new Interactor();
-        interactor.setXref( new Xref() );
-        interactor.getXref().setPrimaryRef( new DbReference( UNIPROTKB, UNIPROTKB_MI_REF, uniprotAc, IDENTITY, IDENTITY_MI_REF ) );
-        interactor.setNames( new Names() );
-        interactor.getNames().setShortLabel( uniprotAc );
-        interactor.setInteractorType( new InteractorType() );
-        interactor.getInteractorType().setXref( new Xref( ) );
-        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.PROTEIN_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
-        interactor.setSequence( "TEST" ); /// and yes ! TEST is a valid protein sequence ;) 
+    protected Protein buildProtein( String uniprotAc ) {
+        Protein interactor = new DefaultProtein(uniprotAc);
+        interactor.setUniprotkb(uniprotAc);
+        interactor.setSequence("TEST"); /// and yes ! TEST is a valid protein sequence ;)
         return interactor;
     }
 
-    protected Interactor buildSmallMolecule( String chebiAc ) {
-        Interactor interactor = new Interactor();
-        interactor.setXref( new Xref() );
-        interactor.getXref().setPrimaryRef( new DbReference( CHEBI, CHEBI_MI_REF, chebiAc, IDENTITY, IDENTITY_MI_REF ) );
-        interactor.setNames( new Names() );
-        interactor.getNames().setShortLabel( chebiAc );
-        interactor.setInteractorType( new InteractorType() );
-        interactor.getInteractorType().setXref( new Xref( ) );
-        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.SMALL_MOLECULE_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
+    protected BioactiveEntity buildSmallMolecule( String chebiAc ) {
+        BioactiveEntity interactor = new DefaultBioactiveEntity(chebiAc);
+        interactor.setChebi(chebiAc);
         return interactor;
     }
 
-    protected Interactor buildNucleicAcid( String acid ) {
-        Interactor interactor = new Interactor();
-        interactor.setXref( new Xref() );
-        interactor.getXref().setPrimaryRef( new DbReference( EMBL, EMBL_MI_REF, acid, IDENTITY, IDENTITY_MI_REF ) );
-        interactor.setNames( new Names() );
-        interactor.getNames().setShortLabel( acid );
-        interactor.setInteractorType( new InteractorType() );
-        interactor.getInteractorType().setXref( new Xref( ) );
-        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.NUCLEIC_ACID_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
+    protected NucleicAcid buildNucleicAcid( String acid ) {
+        NucleicAcid interactor = new DefaultNucleicAcid(acid);
+        interactor.setDdbjEmblGenbank(acid);
         return interactor;
     }
 
-    protected Interactor buildRibonucleicAcid( String acid ) {
-        Interactor interactor = new Interactor();
-        interactor.setXref( new Xref() );
-        interactor.getXref().setPrimaryRef( new DbReference( EMBL, EMBL_MI_REF, acid, IDENTITY, IDENTITY_MI_REF ) );
-        interactor.setNames( new Names() );
-        interactor.getNames().setShortLabel( acid );
-        interactor.setInteractorType( new InteractorType() );
-        interactor.getInteractorType().setXref( new Xref( ) );
-        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.NUCLEIC_ACID_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
+    protected NucleicAcid buildRibonucleicAcid( String acid ) {
+        NucleicAcid interactor = new DefaultNucleicAcid(acid);
+        interactor.setDdbjEmblGenbank(acid);
+        interactor.setInteractorType(CvTermUtils.createMICvTerm("rna", RuleUtils.RNA_MI_REF));
         return interactor;
     }
 
@@ -256,15 +172,11 @@ public abstract class AbstractRuleTest {
     }
 
     protected void updateInteractorType( Interactor interactor, String typeMiRef ) {
-        interactor.getInteractorType().getXref().getPrimaryRef().setId( typeMiRef );
+        interactor.getInteractorType().setMIIdentifier(typeMiRef);
     }
 
     protected void updateInteractorIdentity( Interactor interactor, String dbRef, String id ) {
-        if( ! interactor.hasXref() ) {
-            interactor.setXref( new Xref( ) );
-        }
-
-        interactor.getXref().setPrimaryRef( new DbReference( "db", dbRef, id, IDENTITY, IDENTITY_MI_REF) );
+        interactor.getIdentifiers().add( XrefUtils.createXrefWithQualifier( "db", dbRef, id, IDENTITY, IDENTITY_MI_REF) );
     }
 
     protected void setDetectionMethod( InteractionEvidence interaction, String detectionMi, String detectionName ) {

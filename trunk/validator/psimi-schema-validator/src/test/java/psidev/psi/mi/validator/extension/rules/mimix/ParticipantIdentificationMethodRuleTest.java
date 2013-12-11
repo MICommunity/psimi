@@ -2,8 +2,15 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -26,72 +33,29 @@ public class ParticipantIdentificationMethodRuleTest extends AbstractRuleTest {
     @Test
     public void validate_OneParticipantDetectionMethod() throws Exception {
 
-        final Xref partDetMetXref = new Xref();
-        partDetMetXref.setPrimaryRef( new DbReference( "psi-mi", "MI:0488", "MI:0396", "identical object", "MI:0356" ) );
-        final Names partDetMetName = new Names();
-        partDetMetName.setFullName("predetermined participant");
+        CvTerm partDetMet = CvTermUtils.createMICvTerm("predetermined participant", "MI:0396");
 
-        ParticipantIdentificationMethod partDetMet = new ParticipantIdentificationMethod();
-        partDetMet.setNames(partDetMetName);
-        partDetMet.setXref(partDetMetXref);
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
 
-        ExperimentDescription exp = new ExperimentDescription();
-        exp.setParticipantIdentificationMethod(partDetMet);
-
-        Interaction interaction = new Interaction();
-        interaction.getExperiments().add(exp);
-
-        populatesParticipants(interaction);
+        populatesParticipants(interaction, partDetMet);
 
         ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interaction .getParticipants().iterator().next());
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
 
-    // the rule doesn't check anymore if the term is valid as a controlled vocabulary rule does it
-    /*@Test
-    public void validate_WrongParticipantDetectionMethodID() throws Exception {
-
-        final Xref partDetMetXref = new Xref();
-        partDetMetXref.setPrimaryRef( new DbReference( "psi-mi", "MI:0488", "MI:0252", "identical object", "MI:0356" ) );
-        final Names partDetMetName = new Names();
-        partDetMetName.setFullName("predetermined participant");
-
-        ParticipantIdentificationMethod partDetMet = new ParticipantIdentificationMethod();
-        partDetMet.setNames(partDetMetName);
-        partDetMet.setXref(partDetMetXref);
-
-        ExperimentDescription exp = new ExperimentDescription();
-        exp.setParticipantIdentificationMethod(partDetMet);
-
-        Interaction interaction = new Interaction();
-        interaction.getExperiments().add(exp);
-
-        populatesParticipants(interaction);
-
-        ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
-
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
-        Assert.assertNotNull( messages );
-        System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
-    }*/
-
     @Test
     public void validate_NoParticipantDetectionMethod() throws Exception {
 
-        ExperimentDescription exp = new ExperimentDescription();
-
         ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
-        Interaction interaction = new Interaction();
-        interaction.getExperiments().add(exp);
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
 
-        populatesParticipants(interaction);
+        populatesParticipants(interaction, null);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interaction .getParticipants().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 2, messages.size() );
@@ -100,29 +64,15 @@ public class ParticipantIdentificationMethodRuleTest extends AbstractRuleTest {
     @Test
     public void validate_OneParticipantDetectionMethodAtTheParticipantLevel() throws Exception {
 
-        final Xref partDetMetXref = new Xref();
-        partDetMetXref.setPrimaryRef( new DbReference( "psi-mi", "MI:0488", "MI:0396", "identical object", "MI:0356" ) );
-        final Names partDetMetName = new Names();
-        partDetMetName.setFullName("predetermined participant");
+        CvTerm partDetMet = CvTermUtils.createMICvTerm("predetermined participant", "MI:0396");
 
-        ParticipantIdentificationMethod partDetMet = new ParticipantIdentificationMethod();
-        partDetMet.setNames(partDetMetName);
-        partDetMet.setXref(partDetMetXref);
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
 
-        ExperimentDescription exp = new ExperimentDescription();
-
-        Interaction interaction = new Interaction();
-        interaction.getExperiments().add(exp);
-
-        populatesParticipants(interaction);
-
-        for (Participant p : interaction.getParticipants()){
-            p.getParticipantIdentificationMethods().add(partDetMet);
-        }
+        populatesParticipants(interaction, partDetMet);
 
         ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interaction .getParticipants().iterator().next() );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -131,35 +81,29 @@ public class ParticipantIdentificationMethodRuleTest extends AbstractRuleTest {
     public void validate_NoParticipantDetectionCrossReferences() throws Exception {
 
 
-        ParticipantIdentificationMethod partDetMet = new ParticipantIdentificationMethod();
-
-        ExperimentDescription exp = new ExperimentDescription();
-        exp.setParticipantIdentificationMethod(partDetMet);
+        CvTerm partDetMet = new DefaultCvTerm("test");
 
         ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
-        Interaction interaction = new Interaction();
-        interaction.getExperiments().add(exp);
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
 
-        populatesParticipants(interaction);
+        populatesParticipants(interaction, partDetMet);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interaction .getParticipants().iterator().next() );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
 
-    private void populatesParticipants(Interaction interaction){
-        Participant p1 = new Participant();
-        Names name1 = new Names();
-        name1.setShortLabel("p1");
-        p1.setNames(name1);
-
-        Participant p2 = new Participant();
-        Names name2 = new Names();
-        name2.setShortLabel("p2");
-        p2.setNames(name2);
-
-        interaction.getParticipants().add(p1);
-        interaction.getParticipants().add(p2);
+    private void populatesParticipants(InteractionEvidence interaction, CvTerm partMethod){
+        ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("p1"));
+        if (partMethod != null){
+            p1.getIdentificationMethods().add(partMethod);
+        }
+        ParticipantEvidence p2 = new DefaultParticipantEvidence(new DefaultProtein("p2"));
+        if (partMethod != null){
+            p2.getIdentificationMethods().add(partMethod);
+        }
+        interaction.addParticipant(p1);
+        interaction.addParticipant(p2);
     }
 }

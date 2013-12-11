@@ -4,16 +4,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.validator.ValidatorReport;
-import psidev.psi.mi.xml.PsimiXmlLightweightReader;
-import psidev.psi.mi.xml.PsimiXmlReader;
-import psidev.psi.mi.xml.model.EntrySet;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import psidev.psi.tools.validator.xpath.XPathHelper;
-import psidev.psi.tools.validator.xpath.XPathResult;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,8 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Mi25Validator Tester.
@@ -312,31 +303,6 @@ public class Mi25ValidatorTest {
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737.xml" );
         printMessages( messages );
         Assert.assertTrue( messages.isEmpty() );
-    }
-
-    @Test
-    public void useXpathExpressionOnPsimiModel() throws Exception {
-        PsimiXmlReader reader = new PsimiXmlReader();
-        EntrySet es = reader.read( buildInputStream( "10409737-error1.xml" ) );
-        List<XPathResult> pathResults =
-                XPathHelper.evaluateXPath( "entries/interactions/participants/interactor", es );
-        System.out.println( pathResults.size() );
-    }
-
-    @Test
-    public void useXpathExpressionOnPsimiLightweightModel() throws Exception {
-        PsimiXmlLightweightReader reader = new PsimiXmlLightweightReader( buildInputStream( "10409737.xml" ) );
-        List<IndexedEntry> entries = reader.getIndexedEntries();
-        for ( IndexedEntry entry : entries ) {
-            Iterator<Interaction> ii = entry.unmarshallInteractionIterator();
-            while ( ii.hasNext() ) {
-                Interaction interaction = ii.next();
-                List<XPathResult> pathResults = XPathHelper.evaluateXPath( "participants/interactor/xref/primaryRef/@id", interaction );
-                for ( XPathResult pathResult : pathResults ) {
-                    System.out.println( pathResult.getResult() );
-                }
-            }
-        }
     }
 
     @Test

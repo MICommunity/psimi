@@ -92,6 +92,9 @@ public class Mi25Validator extends Validator {
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+
+        // refilter object rules
+        setObjectRules(new ArrayList<ObjectRule>(getObjectRules()));
     }
 
     public Mi25Validator( OntologyManager ontologyManager,
@@ -337,6 +340,58 @@ public class Mi25Validator extends Validator {
 
     public ValidatorReport getMIValidatorReport() {
         return validatorReport;
+    }
+
+    public AliasRuleWrapper getAliasRuleWrapper() {
+        return aliasRuleWrapper;
+    }
+
+    public ConfidenceRuleWrapper getConfidenceRuleWrapper() {
+        return confidenceRuleWrapper;
+    }
+
+    public AnnotationRuleWrapper getAnnotationRuleWrapper() {
+        return annotationRuleWrapper;
+    }
+
+    public ExperimentRuleWrapper getExperimentRuleWrapper() {
+        return experimentRuleWrapper;
+    }
+
+    public FeatureEvidenceRuleWrapper getFeatureRuleWrapper() {
+        return featureRuleWrapper;
+    }
+
+    public InteractionEvidenceRuleWrapper getInteractionEvidenceRuleWrapper() {
+        return interactionEvidenceRuleWrapper;
+    }
+
+    public InteractorRuleWrapper getInteractorRuleWrapper() {
+        return interactorRuleWrapper;
+    }
+
+    public OrganismRuleWrapper getOrganismRuleWrapper() {
+        return organismRuleWrapper;
+    }
+
+    public ParameterRuleWrapper getParameterRuleWrapper() {
+        return parameterRuleWrapper;
+    }
+
+    public ParticipantEvidenceRuleWrapper getParticipantRuleWrapper() {
+        return participantRuleWrapper;
+    }
+
+    public PublicationRuleWrapper getPublicationRuleWrapper() {
+        return publicationRuleWrapper;
+    }
+
+    public XrefRuleWrapper getXrefRuleWrapper() {
+        return xrefRuleWrapper;
+    }
+
+    public MIFileSyntaxListenerRule getSyntaxRule() {
+        return syntaxRule;
     }
 
     @Override

@@ -15,20 +15,18 @@
  */
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Participant;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Xref;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.ValidatorException;
-import org.junit.Test;
 import junit.framework.Assert;
+import org.junit.Test;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
+import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
+import psidev.psi.tools.validator.ValidatorException;
+import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.Collection;
+
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * InteractionSourceIdentityXrefRule Tester.
@@ -45,12 +43,11 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_ok_1_identity() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
-        // remove Xrefs
-        interaction.setXref( new Xref( ) );
+        final InteractionEvidence interaction = buildInteractionDeterministic();
+        interaction.getXrefs().clear();
 
         // add a valid one
-        interaction.getXref().setPrimaryRef( new DbReference( INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF ) );
+        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
@@ -61,12 +58,12 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_ok_2_identities() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
+        final InteractionEvidence interaction = buildInteractionDeterministic();
 
         // add a valid one
-        interaction.setXref( new Xref( ) );
-        interaction.getXref().setPrimaryRef( new DbReference( INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF ) );
-        interaction.getXref().getSecondaryRef().add( new DbReference( IMEX, IMEX_MI_REF, "IM-123", IDENTITY, IDENTITY_MI_REF ) );
+        interaction.getXrefs().clear();
+        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
+        interaction.getXrefs().add( XrefUtils.createXrefWithQualifier( IMEX, IMEX_MI_REF, "IM-123", IDENTITY, IDENTITY_MI_REF ) );
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
@@ -77,12 +74,12 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_ok_2_identities_1_correct() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
+        final InteractionEvidence interaction = buildInteractionDeterministic();
 
         // add a valid one
-        interaction.setXref( new Xref( ) );
-        interaction.getXref().setPrimaryRef( new DbReference( INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF ) );
-        interaction.getXref().getSecondaryRef().add( new DbReference( RESID, RESID_MI_REF, "xyz", IDENTITY, IDENTITY_MI_REF ) );
+        interaction.getXrefs().clear();
+        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
+        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(RESID, RESID_MI_REF, "xyz", IDENTITY, IDENTITY_MI_REF));
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
@@ -93,11 +90,11 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_fail_1_incorrect_identity() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
+        final InteractionEvidence interaction = buildInteractionDeterministic();
 
         // add a valid one
-        interaction.setXref( new Xref( ) );
-        interaction.getXref().setPrimaryRef( new DbReference( RESID, RESID_MI_REF, "xyz", IDENTITY, IDENTITY_MI_REF ) );
+        interaction.getXrefs().clear();
+        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(RESID, RESID_MI_REF, "xyz", IDENTITY, IDENTITY_MI_REF));
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );

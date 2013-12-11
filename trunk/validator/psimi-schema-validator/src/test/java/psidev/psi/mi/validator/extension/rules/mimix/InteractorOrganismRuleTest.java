@@ -2,9 +2,9 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class InteractorOrganismRuleTest extends AbstractRuleTest {
     public void check_has_organism() throws Exception {
         final InteractorOrganismRule rule = new InteractorOrganismRule( ontologyMaganer );
 
-        final Interactor protein = buildProtein("P12345");
+        final Protein protein = buildProtein("P12345");
 
         final Organism organism = buildOrganism( 9606 );
         protein.setOrganism(organism);
@@ -37,7 +37,7 @@ public class InteractorOrganismRuleTest extends AbstractRuleTest {
     public void check_no_organisms() throws Exception {
         final InteractorOrganismRule rule = new InteractorOrganismRule( ontologyMaganer );
 
-        final Interactor protein = buildProtein("P12345");
+        final Protein protein = buildProtein("P12345");
 
         final Collection<ValidatorMessage> messages = rule.check( protein );
         Assert.assertNotNull(messages);

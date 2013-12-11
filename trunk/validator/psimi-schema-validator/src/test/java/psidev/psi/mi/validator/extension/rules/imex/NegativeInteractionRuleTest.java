@@ -2,8 +2,8 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -21,7 +21,7 @@ public class NegativeInteractionRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_ok() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
+        final InteractionEvidence interaction = buildInteractionDeterministic();
         Assert.assertFalse(interaction.isNegative());
 
         NegativeInteractionRule rule = new NegativeInteractionRule( ontologyMaganer );
@@ -32,7 +32,7 @@ public class NegativeInteractionRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_negative() throws ValidatorException {
-        Interaction interaction = buildInteractionDeterministic();
+        InteractionEvidence interaction = buildInteractionDeterministic();
         interaction.setNegative(true);
         Assert.assertTrue(interaction.isNegative());
 
