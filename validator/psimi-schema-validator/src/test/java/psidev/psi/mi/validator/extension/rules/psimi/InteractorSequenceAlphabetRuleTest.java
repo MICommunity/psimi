@@ -17,10 +17,9 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.validator.extension.rules.psimi.InteractorSequenceAlphabetRule;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -41,7 +40,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_error() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         interactor.setSequence( "ZZZ" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
@@ -52,7 +51,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_ok() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         interactor.setSequence( "QDCEGHI" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
@@ -63,7 +62,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_dna_error() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.DNA_MI_REF );
         interactor.setSequence( "TGCXabc" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
@@ -75,7 +74,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_dna_ok() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.DNA_MI_REF );
         interactor.setSequence( "AAAAAAAAAATTCGCGCGCG" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
@@ -87,7 +86,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_smallmolecule_ok() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
         interactor.setSequence( null );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
@@ -101,7 +100,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
     public void check_polysaccharide_ok() throws Exception {
         // polysaccharide is a polymer but here wasn't given a sequence, we expect one INFO message. (not anymore as we have a uniprot identity!)
         // TODO find out why using the OBO flat file loader fails to load MI:0904 !!
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.POLYSACCHARIDE_MI_REF );
         interactor.setSequence( null );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );

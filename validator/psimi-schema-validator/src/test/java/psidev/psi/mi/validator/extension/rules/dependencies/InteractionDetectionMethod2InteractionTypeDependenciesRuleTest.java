@@ -2,6 +2,9 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -32,29 +35,17 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_Cross_Linking_ok() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0915", IDENTITY, IDENTITY_MI_REF ) );
-
-        Names name = new Names();
-
-        name.setFullName("physical association");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("physical association", "MI:0915");
+        interaction.setInteractionType(type);
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-4);
 
         // set the host organism
-        host.setNcbiTaxId(-4);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -79,26 +70,17 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_Cross_Linking_Wrong_HostOrganism() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0915", IDENTITY, IDENTITY_MI_REF ) );
-        Names name = new Names();
-        name.setFullName("physical association");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("physical association", "MI:0915");
+        interaction.setInteractionType(type);
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-2);
 
         // set the host organism
-        host.setNcbiTaxId(-2);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -121,26 +103,17 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_Cross_Linking_Direct_Association_MatchingHostOrganism() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0407", IDENTITY, IDENTITY_MI_REF ) );
-        Names name = new Names();
-        name.setFullName("direct interaction");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("direct interaction", "MI:0407");
+        interaction.setInteractionType(type);
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-1);
 
         // set the host organism
-        host.setNcbiTaxId(-1);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -165,26 +138,17 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_Cross_Linking_Direct_Association_NonMatchingNumberOfParticipants() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0407", IDENTITY, IDENTITY_MI_REF ) );
-        Names name = new Names();
-        name.setFullName("direct interaction");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("direct interaction", "MI:0407");
+        interaction.setInteractionType(type);
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-1);
 
         // set the host organism
-        host.setNcbiTaxId(-1);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -207,26 +171,18 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_ribonuclease_assay_rna_cleavage_ok() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0902", IDENTITY, IDENTITY_MI_REF ) );
-        Names name = new Names();
-        name.setFullName("rna cleavage");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("rna cleavage", "MI:0902");
+        interaction.setInteractionType(type);
+
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-1);
 
         // set the host organism
-        host.setNcbiTaxId(-1);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0920", "ribonuclease assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0920", "ribonuclease assay" );
@@ -249,28 +205,17 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_ribonuclease_assay_rna_cleavage_children_warning() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0571", IDENTITY, IDENTITY_MI_REF ) );
-        Names name = new Names();
-        name.setFullName("mrna cleavage");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("mrna cleavage", "MI:0571");
+        interaction.setInteractionType(type);
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-1);
 
         // set the host organism
-        host.setNcbiTaxId(-1);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0920", "ribonuclease assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0920", "ribonuclease assay" );
@@ -294,26 +239,17 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
      */
     @Test
     public void check_chromatography_numberPrey_warning() throws Exception {
-        Interaction interaction = new Interaction();
-        interaction.setId( 1 );
-        InteractionType type = new InteractionType();
-        Xref ref = new Xref();
-        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0915", IDENTITY, IDENTITY_MI_REF ) );
-        Names name = new Names();
-        name.setFullName("physical association");
-        type.setNames(name);
-        type.setXref(ref);
-        interaction.getInteractionTypes().add(type);
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        CvTerm type = CvTermUtils.createMICvTerm("physical association", "MI:0915");
+        interaction.setInteractionType(type);
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
+        Organism host = new DefaultOrganism(-1);
 
         // set the host organism
-        host.setNcbiTaxId(-1);
-        exp.getHostOrganisms().add(host);
+        exp.setHostOrganism(host);
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0004", "affinity chromatography" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0004", "affinity chromatography" );
@@ -333,13 +269,11 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
     }
 
 
-    private void addParticipant( Interaction interaction,
+    private void addParticipant( InteractionEvidence interaction,
                                  String expRoleMi, String expRoleName ) {
 
-        final Participant participant = new Participant();
-        participant.setInteractor( new Interactor());
-        participant.getExperimentalRoles().clear();
-        participant.getExperimentalRoles().add( buildExperimentalRole( expRoleMi, expRoleName ));
-        interaction.addParticipantEvidence( participant );
+        final ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
+        participant.setExperimentalRole(buildExperimentalRole(expRoleMi, expRoleName));
+        interaction.addParticipant(participant);
     }
 }

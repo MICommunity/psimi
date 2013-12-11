@@ -17,9 +17,9 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.Collection;
@@ -41,7 +41,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_ok_uniprot() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "P12345" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
@@ -52,7 +52,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_ok_refseq() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, REFSEQ_MI_REF, "P12345" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
@@ -63,7 +63,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_smallmolecule_ok() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
         updateInteractorIdentity( interactor, CHEBI_MI_REF, "CHEBI:00001" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
@@ -74,7 +74,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_fail() throws Exception {
-        final Interactor interactor = buildProtein( "P12345" );
+        final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, CYGD_MI_REF, "XYZ" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );

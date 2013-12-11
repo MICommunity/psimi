@@ -2,9 +2,10 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.imex.InteractionImexPrimaryRuleTest;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -26,7 +27,7 @@ public class InteractionParticipantRuleTest extends AbstractRuleTest {
 
     @Test
     public void validate_interaction_with_participants() throws Exception {
-        Interaction interaction = buildInteractionDeterministic();
+        InteractionEvidence interaction = buildInteractionDeterministic();
 
         Assert.assertFalse(interaction.getParticipants().isEmpty());
 
@@ -38,7 +39,7 @@ public class InteractionParticipantRuleTest extends AbstractRuleTest {
 
     @Test
     public void validate_interaction_without_participants() throws Exception {
-        Interaction interaction = new Interaction();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
 
         Assert.assertTrue(interaction.getParticipants().isEmpty());
 

@@ -2,11 +2,15 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.validator.ValidatorMessage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -25,15 +29,13 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_pmid() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        final Xref xref = new Xref();
-        xref.setPrimaryRef( new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" ) );
-        bibref.setXref( xref );
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        final Publication bibref = new DefaultPublication();
+        final Xref xref = XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "123", "primary-reference", "MI:0358");
+        bibref.getXrefs().add(xref);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -41,15 +43,13 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_doi() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        final Xref xref = new Xref();
-        xref.setPrimaryRef( new DbReference( "doi", "MI:0574", "doi:12345677", "primary-reference", "MI:0358" ) );
-        bibref.setXref( xref );
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        final Publication bibref = new DefaultPublication();
+        final Xref xref = XrefUtils.createXrefWithQualifier( "doi", "MI:0574", "doi:12345677", "primary-reference", "MI:0358" );
+        bibref.getXrefs().add(xref);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -57,20 +57,17 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_PubmedOrDOI_PrimaryReferenceType() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        DbReference primary = new DbReference( "intact", "MI:0469", "EBI-2432100", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
-        Collection<DbReference> secondary = new ArrayList<DbReference>();
-        secondary.add(secondary1);
-        secondary.add(secondary2);
-        final Xref xref = new Xref(primary, secondary);
-        bibref.setXref( xref );
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        final Publication bibref = new DefaultPublication();
+        Xref primary = XrefUtils.createXrefWithQualifier( "intact", "MI:0469", "EBI-2432100", "primary-reference", "MI:0358" );
+        Xref secondary1 = XrefUtils.createXrefWithQualifier( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
+        Xref secondary2 = XrefUtils.createXrefWithQualifier( "DOI", "MI:0574", "1234","identity", "MI:0356" );
+        bibref.getXrefs().add( primary );
+        bibref.getXrefs().add( secondary1 );
+        bibref.getXrefs().add(secondary2);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -78,20 +75,17 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_Fail_PubmedOrDOI_PrimaryReferenceType() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        DbReference primary = new DbReference( "intact", "MI:0469", "EBI-2432100", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "pubmed", "MI:0446", "123", "identity", "MI:0356" );
-        DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
-        Collection<DbReference> secondary = new ArrayList<DbReference>();
-        secondary.add(secondary1);
-        secondary.add(secondary2);
-        final Xref xref = new Xref(primary, secondary);
-        bibref.setXref( xref );
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        final Publication bibref = new DefaultPublication();
+        Xref primary = XrefUtils.createXrefWithQualifier( "intact", "MI:0469", "EBI-2432100", "primary-reference", "MI:0358" );
+        Xref secondary1 = XrefUtils.createXrefWithQualifier( "pubmed", "MI:0446", "123", "identity", "MI:0356" );
+        Xref secondary2 = XrefUtils.createXrefWithQualifier( "DOI", "MI:0574", "1234","identity", "MI:0356" );
+        bibref.getXrefs().add( primary );
+        bibref.getXrefs().add(secondary1);
+        bibref.getXrefs().add(secondary2);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 3, messages.size() );
@@ -100,20 +94,17 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_ImexId() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        DbReference primary = new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "intact", "MI:0469", "IM-111", "imex-primary", "MI:0662" );
-        DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
-        Collection<DbReference> secondary = new ArrayList<DbReference>();
-        secondary.add(secondary1);
-        secondary.add(secondary2);
-        final Xref xref = new Xref(primary, secondary);
-        bibref.setXref( xref );
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        final Publication bibref = new DefaultPublication();
+        Xref primary = XrefUtils.createXrefWithQualifier( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
+        Xref secondary1 = XrefUtils.createXrefWithQualifier( "intact", "MI:0469", "IM-111", "imex-primary", "MI:0662" );
+        Xref secondary2 = XrefUtils.createXrefWithQualifier( "DOI", "MI:0574", "1234","identity", "MI:0356" );
+        bibref.getXrefs().add( primary );
+        bibref.getXrefs().add(secondary1);
+        bibref.getXrefs().add(secondary2);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -122,12 +113,11 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_fail() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        final Publication bibref = new DefaultPublication();
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         // should conplain about author-list, contact-email and publication title missing
         Assert.assertEquals( 3, messages.size() );
@@ -136,16 +126,16 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_without_identifier() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
-        exp.setNames( new Names() );
-        exp.getNames().setFullName( "publication title" );
-        exp.getAttributes().add( new Attribute( null, "contact-email", "author@institute.co.uk" ) );
-        exp.getAttributes().add( new Attribute( null, "author-list", "author1, author2, author3..." ) );
+        final Publication bibref = new DefaultPublication();
+        bibref.setTitle("publication title");
+        bibref.getAnnotations().add( new DefaultAnnotation(  new DefaultCvTerm("contact-email"), "author@institute.co.uk" ) );
+        bibref.getAuthors().add( "author1" );
+        bibref.getAuthors().add( "author2" );
+        bibref.getAuthors().add( "author3" );
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -154,16 +144,16 @@ public class PublicationRuleTest extends AbstractRuleTest {
     @Test
     public void validate_without_identifier2() throws Exception {
 
-        final Bibref bibref = new Bibref();
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
-        exp.setNames( new Names() );
-        exp.getNames().setFullName( "publication title" );
-        exp.getAttributes().add( new Attribute( "MI:0634", "", "author@institute.co.uk" ) );
-        exp.getAttributes().add( new Attribute( "MI:0636", "", "author1, author2, author3..." ) );
+        final Publication bibref = new DefaultPublication();
+        bibref.setTitle("publication title");
+        bibref.getAnnotations().add( new DefaultAnnotation( new DefaultCvTerm("test", "MI:0634"), "author@institute.co.uk" ) );
+        bibref.getAuthors().add("author1");
+        bibref.getAuthors().add( "author2" );
+        bibref.getAuthors().add( "author3" );
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( bibref );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }

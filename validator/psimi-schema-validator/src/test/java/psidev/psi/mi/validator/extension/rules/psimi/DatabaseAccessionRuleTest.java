@@ -2,11 +2,11 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
-import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -30,11 +30,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
     @Test
     public void valid_ProteinUniprot() throws ValidatorException {
 
-        Interactor interactor = buildProtein("Q01314");
+        Protein interactor = buildProtein("Q01314");
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -43,11 +43,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
     @Test
     public void valid_ProteinUniprot_BadUniprotAc() throws ValidatorException {
 
-        Interactor interactor = buildProtein("AKT1_BOVIN");
+        Protein interactor = buildProtein("AKT1_BOVIN");
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -56,11 +56,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
     @Test
     public void valid_ProteinUniprot_AccessionNull() throws ValidatorException {
 
-        Interactor interactor = buildProtein(null);
+        Protein interactor = buildProtein(null);
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -69,15 +69,12 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
     @Test
     public void valid_ProteinUniprot_SeveralDatabaseMatchingName() throws ValidatorException {
 
-        Interactor interactor = buildProtein("Q01314");
-
-        DbReference ref = interactor.getXref().getAllDbReferences().iterator().next();
-        ref.setDbAc(null);
-        ref.setDb("uniprot");
+        Protein interactor = new DefaultProtein("Q01314");
+        interactor.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("uniprot"), "Q01314"));
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -86,15 +83,12 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
     @Test
     public void valid_ProteinUniprot_OneDatabaseMatchingName() throws ValidatorException {
 
-        Interactor interactor = buildProtein("Q01314");
-
-        DbReference ref = interactor.getXref().getAllDbReferences().iterator().next();
-        ref.setDbAc(null);
-        ref.setDb("uniprot knowledge base");
+        Protein interactor = new DefaultProtein("Q01314");
+        interactor.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("uniprot knowledge base"), "Q01314"));
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );

@@ -2,11 +2,10 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -35,13 +34,9 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
     @Test
     public void check_Cross_Linking_ok() throws Exception {
         InteractionEvidence interaction = new DefaultInteractionEvidence();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -54,7 +49,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
         InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
                 new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+        for (ParticipantEvidence p : interaction.getParticipants()){
             messages.addAll(rule.check( p ));
 
         }
@@ -71,12 +66,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
     @Test
     public void check_Cross_Linking_Warning() throws Exception {
         InteractionEvidence interaction = new DefaultInteractionEvidence();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-        Organism host = new Organism();
-
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
         interaction.setExperiment( exp );
 
@@ -91,7 +81,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
         InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
                 new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+        for (ParticipantEvidence p : interaction.getParticipants()){
             messages.addAll(rule.check( p ));
 
         }
@@ -108,14 +98,10 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
     @Test
     public void check_Cross_Linking_child_Warning() throws Exception {
         InteractionEvidence interaction = new DefaultInteractionEvidence();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-        Organism host = new Organism();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0430", "nucleic acid uv cross-linking assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0430", "nucleic acid uv cross-linking assay" );
@@ -128,7 +114,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
         InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
                 new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+        for (ParticipantEvidence p : interaction.getParticipants()){
             messages.addAll(rule.check( p ));
 
         }
@@ -143,7 +129,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
                                  String expRoleMi, String expRoleName ) {
 
         final ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
-        participant.setExperimentalRole( buildExperimentalRole( expRoleMi, expRoleName ));
-        interaction.addParticipant( participant );
+        participant.setExperimentalRole(buildExperimentalRole(expRoleMi, expRoleName));
+        interaction.addParticipant(participant);
     }
 }
