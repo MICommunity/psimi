@@ -1,18 +1,18 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Attribute;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * This rule checks that each interaction has a figure legend attached to it
@@ -22,9 +22,9 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class InteractionFigureLegendRule extends Mi25InteractionRule{
+public class InteractionFigureLegendRule extends AbstractMIRule<InteractionEvidence> {
     public InteractionFigureLegendRule(OntologyManager ontologyManager) {
-        super(ontologyManager);
+        super(ontologyManager, InteractionEvidence.class);
 
         // describe the rule.
         setName("Interaction Figure Legend Check");
@@ -32,48 +32,34 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
         addTip( "figure-legend accession in the PSI-MI ontology is " + RuleUtils.FIGURE_LEGEND );    }
 
     @Override
-    public Collection<ValidatorMessage> check(Interaction interaction) throws ValidatorException {
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+    public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
+        Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        Mi25Context context = new Mi25Context();
-        context.setInteractionId(interaction.getId());
+        if (!interaction.getAnnotations().isEmpty()){
+            Collection<Annotation> attributes = interaction.getAnnotations();
 
-        if (interaction.hasAttributes()){
-            Collection<Attribute> attributes = interaction.getAttributes();
+            if (AnnotationUtils.collectAllAnnotationsHavingTopic(attributes, Annotation.FIGURE_LEGEND_MI, Annotation.FIGURE_LEGEND).isEmpty()){
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
-            boolean hasFigureLegend = false;
-
-            for (Attribute attribute : attributes){
-                if (attribute.getNameAc() != null){
-                    if (RuleUtils.FIGURE_LEGEND_MI_REF.equals(attribute.getNameAc())){
-                        hasFigureLegend = true;
-                    }
-                }
-                else if (attribute.getName() != null){
-                    if (RuleUtils.FIGURE_LEGEND.equalsIgnoreCase(attribute.getName())){
-                        hasFigureLegend = true;
-                    }
-                }
-            }
-
-            if (!hasFigureLegend){
-                messages.add( new ValidatorMessage( "Interaction with "+attributes.size()+" annotations but without a figure legend. A figure legend is recommended by IMEx.'",
+                messages=Collections.singleton( new ValidatorMessage( "Interaction with "+attributes.size()+" annotations but without a figure legend. A figure legend is recommended by IMEx.'",
                         MessageLevel.WARN,
                         context,
                         this ) );
             }
         }
         else {
-            messages.add( new ValidatorMessage( "Interaction without a figure legend. A figure legend is recommended by IMEx.'",
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
+            messages=Collections.singleton(new ValidatorMessage("Interaction without a figure legend. A figure legend is recommended by IMEx.'",
                     MessageLevel.WARN,
                     context,
-                    this ) );
+                    this));
         }
 
         return messages;
     }
 
     public String getId() {
-        return "R34";
+        return "R35";
     }
 }

@@ -2,11 +2,15 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -27,14 +31,10 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
      */
     @Test
     public void check_Phosphotransfer_ok() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0841", "phosphotransfer assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperimentAndAddInteractionEvidence(exp);
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0841", "phosphotransfer assay" );
@@ -46,7 +46,11 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
 
         InteractionDetectionMethod2BiologicalRoleDependencyRule rule =
                 new InteractionDetectionMethod2BiologicalRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipants()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -58,15 +62,11 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
      */
     @Test
     public void check_Phosphotransfer_Warning() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-        Organism host = new Organism();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
+        final Experiment exp = new DefaultExperiment(new DefaultPublication());
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0841", "phosphotransfer assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperiment( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0841", "phosphotransfer assay" );
@@ -78,18 +78,21 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
 
         InteractionDetectionMethod2BiologicalRoleDependencyRule rule =
                 new InteractionDetectionMethod2BiologicalRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipants()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
     }
 
-    private void addParticipant( Interaction interaction,
+    private void addParticipant( InteractionEvidence interaction,
                                  String bioMi, String bioName ) {
 
-        final Participant participant = new Participant();
-        participant.setInteractor( new Interactor());
+        final ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
         participant.setBiologicalRole( buildBiologicalRole( bioMi, bioName ));
-        interaction.getParticipants().add( participant );
+        interaction.addParticipant(participant);
     }
 }

@@ -3,8 +3,10 @@
                 xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
 
     <name>IMEx</name>
-
-    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.CrossReference2CrossReferenceTypeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.ExperimentCrossReference2CrossReferenceTypeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractionCrossReference2CrossReferenceTypeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractorCrossReference2CrossReferenceTypeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureCrossReference2CrossReferenceTypeDependencyRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureType2FeatureDetectionMethodDependencyRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureType2FeatureRangeDependencyRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2BiologicalRoleDependencyRule"/>

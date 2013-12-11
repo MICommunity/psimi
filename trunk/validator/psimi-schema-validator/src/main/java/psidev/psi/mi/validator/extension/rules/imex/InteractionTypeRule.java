@@ -2,18 +2,17 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.InteractionType;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,12 +23,12 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class InteractionTypeRule extends Mi25InteractionRule{
+public class InteractionTypeRule extends AbstractMIRule<InteractionEvidence>{
 
     private static final Log log = LogFactory.getLog(InteractionTypeRule.class);
 
     public InteractionTypeRule(OntologyManager ontologyManager) {
-        super(ontologyManager);
+        super(ontologyManager, InteractionEvidence.class);
 
         // describe the rule.
         setName("Interaction Type Check");
@@ -39,22 +38,13 @@ public class InteractionTypeRule extends Mi25InteractionRule{
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
 
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        List<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        Mi25Context context = new Mi25Context();
-        context.setInteractionId(interaction.getId());
-
-        if (interaction.hasInteractionTypes()){
-            Collection<InteractionType> interactionTypes = interaction.getInteractionTypes();
-
-            for (InteractionType type : interactionTypes){
-                RuleUtils.checkPsiMIXRef(type, messages, context, this, RuleUtils.INTERACTION_TYPE);
-            }
-        }
-        else {
-            messages.add( new ValidatorMessage( "The interaction does not have any interaction types. At least one interaction type is required by IMEx.'",
+        if (interaction.getInteractionType() == null){
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            messages.add( new ValidatorMessage( "The interaction does not have an interaction type. At least one interaction type is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
                     this ) );
@@ -64,6 +54,6 @@ public class InteractionTypeRule extends Mi25InteractionRule{
     }
 
     public String getId() {
-        return "R40";
+        return "R42";
     }
 }

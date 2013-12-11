@@ -2,11 +2,16 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
@@ -29,7 +34,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
      */
     @Test
     public void check_Cross_Linking_ok() throws Exception {
-        Interaction interaction = new Interaction();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
         final ExperimentDescription exp = new ExperimentDescription();
         exp.setId( 2 );
         exp.setNames( new Names() );
@@ -48,7 +53,11 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
 
         InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
                 new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -61,7 +70,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
      */
     @Test
     public void check_Cross_Linking_Warning() throws Exception {
-        Interaction interaction = new Interaction();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
         final ExperimentDescription exp = new ExperimentDescription();
         exp.setId( 2 );
         exp.setNames( new Names() );
@@ -69,7 +78,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
         Organism host = new Organism();
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperiment( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -81,7 +90,11 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
 
         InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
                 new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -94,7 +107,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
      */
     @Test
     public void check_Cross_Linking_child_Warning() throws Exception {
-        Interaction interaction = new Interaction();
+        InteractionEvidence interaction = new DefaultInteractionEvidence();
         final ExperimentDescription exp = new ExperimentDescription();
         exp.setId( 2 );
         exp.setNames( new Names() );
@@ -114,7 +127,11 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
 
         InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
                 new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -122,13 +139,11 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
 
 
 
-    private void addParticipant( Interaction interaction,
+    private void addParticipant( InteractionEvidence interaction,
                                  String expRoleMi, String expRoleName ) {
 
-        final Participant participant = new Participant();
-        participant.setInteractor( new Interactor());
-        participant.getExperimentalRoles().clear();
-        participant.getExperimentalRoles().add( buildExperimentalRole( expRoleMi, expRoleName ));
-        interaction.getParticipants().add( participant );
+        final ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
+        participant.setExperimentalRole( buildExperimentalRole( expRoleMi, expRoleName ));
+        interaction.addParticipant( participant );
     }
 }

@@ -3,7 +3,6 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -19,7 +18,7 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
     /**
      *
-     * @throws OntologyLoaderException
+     * @throws psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException
      */
     public CrossReference2CrossReferenceTypeDependencyRuleTest() throws OntologyLoaderException {
         super( CrossReference2CrossReferenceTypeDependencyRuleTest.class.getResourceAsStream( "/config/ontologies.xml" ) );
@@ -43,8 +42,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         interaction.setXref(xRef);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        InteractionCrossReference2CrossReferenceTypeDependencyRule rule =
+                new InteractionCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
@@ -68,8 +67,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         interaction.setXref(xRef);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        InteractionCrossReference2CrossReferenceTypeDependencyRule rule =
+                new InteractionCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
@@ -94,8 +93,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         exp.setXref(xRef);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
+                new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
         System.out.println(messages);
@@ -123,8 +122,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         exp.setBibref(bib);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
+                new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
         System.out.println(messages);
@@ -147,13 +146,10 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
         Xref xRef = new Xref();
         xRef.setPrimaryRef(database);
 
-        Bibref bib = new Bibref();
-        bib.setXref(xRef);
+        exp.setXref(xRef);
 
-        exp.setBibref(bib);
-
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
+                new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
         System.out.println(messages);

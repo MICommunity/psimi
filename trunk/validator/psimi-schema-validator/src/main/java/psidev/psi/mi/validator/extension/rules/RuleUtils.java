@@ -15,18 +15,20 @@
  */
 package psidev.psi.mi.validator.extension.rules;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utilities for the MI25 Rules.
@@ -154,15 +156,13 @@ public final class RuleUtils {
     ///////////////////////////
     // Utility methods
 
-    public static void checkOrganism( OntologyManager ontologyManager,
+    public static Collection<ValidatorMessage> checkOrganism( OntologyManager ontologyManager,
                                       Organism organism,
-                                      Mi25Context context,
-                                      Collection<ValidatorMessage> messages,
                                       Rule rule,
                                       String objectType,
                                       String organismType ) {
 
-        int taxId = organism.getNcbiTaxId();
+        int taxId = organism.getTaxId();
         switch ( taxId ) {
 
             // special cases in PSI-MI that do not exist in NEWT
@@ -178,96 +178,97 @@ public final class RuleUtils {
                 break;
 
             case 1:
+                Mi25Context context = RuleUtils.buildContext(organism, "organism");
                 // this is the root of newt, which users are not suppose to use to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+                return Collections.singleton( new ValidatorMessage( objectType + " with an invalid " + organismType +
                         " for which the taxid was: '" + taxId +
                         "'. Please choose a child term of the NEWT root.",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-                break;
 
             case 0:
+                context = RuleUtils.buildContext(organism, "organism");
                 // this is the root of newt, which users are not suppose to use to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+                return Collections.singleton(( new ValidatorMessage( objectType + " with an invalid " + organismType +
                         " for which the taxid was: '" + taxId +
                         "'. Please choose a valid NEWT term.",
                         MessageLevel.ERROR,
                         context,
-                        rule ) );
-                break;
+                        rule ) ));
 
             default:
                 // check in NEWT if the taxid exists
                 if ( taxId < 0 ) {
+                    context = RuleUtils.buildContext(organism, "organism");
                     // break here
-                    messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+                    return Collections.singleton(( new ValidatorMessage( objectType + " with an invalid " + organismType +
                             " for which the taxid was: '" + taxId + "'.",
                             MessageLevel.ERROR,
                             context,
-                            rule ) );
+                            rule ) ));
                 } else {
                     // TODO optimize via caching of valid taxid for a period of time (in a same file it is very likely that we will see only a handful of taxids.)
                     final OntologyAccess newt = ontologyManager.getOntologyAccess( "NEWT" );
                     final OntologyTermI newtTerm = newt.getTermForAccession( String.valueOf( taxId ) );
                     if ( newtTerm == null ) {
                         // could not find it
+                        context = RuleUtils.buildContext(organism, "organism");
                         final String msg = objectType + " with an invalid " + organismType + ", the taxid given was '" +
                                 taxId + "' which cannot be found in NEWT.";
-                        messages.add( new ValidatorMessage( msg,
+                        return Collections.singleton(( new ValidatorMessage( msg,
                                 MessageLevel.ERROR,
                                 context,
-                                rule ) );
+                                rule ) ));
                     }
                 }
         }
+        return Collections.EMPTY_LIST;
     }
 
-    public static void checkImexOrganism( OntologyManager ontologyManager,
+    public static Collection<ValidatorMessage> checkImexOrganism( OntologyManager ontologyManager,
                                           Organism organism,
-                                          Mi25Context context,
-                                          Collection<ValidatorMessage> messages,
                                           Rule rule,
                                           String objectType,
                                           String organismType ) {
 
-        int taxId = organism.getNcbiTaxId();
+        int taxId = organism.getTaxId();
         switch ( taxId ) {
 
             // special cases for Imex
             case -5:
+                Mi25Context context = RuleUtils.buildContext(organism, "organism");
                 // IMEX doesn't allow to use this term to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with a " + organismType +
+                return Collections.singletonList(new ValidatorMessage(objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
                         "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2",
                         MessageLevel.ERROR,
                         context,
-                        rule ) );
-                break;
+                        rule));
             case -4:
+                context = RuleUtils.buildContext(organism, "organism");
                 // IMEX doesn't allow to use this term to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with a " + organismType +
+                return Collections.singletonList( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
                         "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2.",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-                break;
             case -3:
+                context = RuleUtils.buildContext(organism, "organism");
                 // IMEX doesn't allow to use this term to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with a " + organismType +
+                return Collections.singletonList( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
                         "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2.",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-                break;
             default:
-                checkOrganism(ontologyManager, organism, context, messages, rule, objectType, organismType);
+                return checkOrganism(ontologyManager, organism, rule, objectType, organismType);
         }
     }
 
-    public static boolean isOfType( OntologyManager ontologyManager, final InteractorType type, final String miRef, final boolean includeChildren ) {
+    public static boolean isOfType( OntologyManager ontologyManager, final CvTerm type, final String miRef, final boolean includeChildren ) {
 
         if ( type == null ) {
             throw new IllegalArgumentException( "You must give a non null type" );
@@ -277,47 +278,7 @@ public final class RuleUtils {
             throw new IllegalArgumentException( "You must give a non null miRef" );
         }
 
-        String typeId = null;
-
-        if( type.getXref() != null ) {
-            typeId = type.getXref().getPrimaryRef().getId();
-        }
-
-        if( typeId != null ) {
-            if ( includeChildren ) {
-                final OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
-                final Set<OntologyTermI> terms = mi.getValidTerms( miRef, true, true );
-
-                for ( OntologyTermI term : terms ) {
-                    if ( typeId.equals( term.getTermAccession() ) ) {
-                        return true;
-                    }
-                }
-            } else {
-                if ( miRef.equals( typeId ) ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean isOfType( OntologyManager ontologyManager, final FeatureType type, final String miRef, final boolean includeChildren ) {
-
-        if ( type == null ) {
-            throw new IllegalArgumentException( "You must give a non null type" );
-        }
-
-        if ( miRef == null ) {
-            throw new IllegalArgumentException( "You must give a non null miRef" );
-        }
-
-        String typeId = null;
-
-        if( type.getXref() != null ) {
-            typeId = type.getXref().getPrimaryRef().getId();
-        }
+        String typeId = type.getMIIdentifier();
 
         if( typeId != null ) {
             if ( includeChildren ) {
@@ -356,7 +317,7 @@ public final class RuleUtils {
     }
 
     public static boolean isSmallMolecule( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.SMALL_MOLECULE_MI_REF, false );
+        return isOfType( ontologyManager, interactor.getInteractorType(), BioactiveEntity.BIOACTIVE_ENTITY_MI, false );
     }
 
     public static boolean isNucleicAcid( OntologyManager ontologyManager, Interactor interactor ) {
@@ -364,90 +325,21 @@ public final class RuleUtils {
     }
 
     public static boolean isProtein( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.PROTEIN_MI_REF, false );
+        return isOfType( ontologyManager, interactor.getInteractorType(), Protein.PROTEIN_MI, false );
     }
 
     public static boolean isPeptide( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.PEPTIDE_MI_REF, false );
+        return isOfType( ontologyManager, interactor.getInteractorType(), Protein.PEPTIDE_MI, false );
     }
 
     public static boolean isBindingSite( OntologyManager ontologyManager, Feature feature ) {
-        return isOfType( ontologyManager, feature.getFeatureType(), RuleUtils.BINDING_SITE, true );
+        return isOfType( ontologyManager, feature.getType(), RuleUtils.BINDING_SITE, true );
     }
 
-    /**
-     * Builds a new colelction of references filtered according to the given parameters. If both filters are null, we
-     * get a new collection containing all references given.
-     *
-     * @param xrefs      the collection of reference to build upon.
-     * @param typeMiRef a Type Ref MI identifier, can be null.
-     * @param dbMiRef   a database MI identifier, can be null.
-     * @return a non null collection of references.
-     */
-    public static Collection<DbReference> searchReferences( Collection<DbReference> xrefs,
-                                                            String typeMiRef,
-                                                            String dbMiRef,
-                                                            String accession ) {
-
-        Collection<DbReference> refs = new ArrayList<DbReference>();
-
-        if( xrefs != null ) {
-            for ( DbReference ref : xrefs ) {
-                if ( dbMiRef != null && !dbMiRef.equals( ref.getDbAc() ) ) {
-                    continue;
-                }
-                if ( typeMiRef != null && !typeMiRef.equals( ref.getRefTypeAc() ) ) {
-                    continue;
-                }
-                if ( accession != null && !accession.equals( ref.getId() ) ) {
-                    continue;
-                }
-                refs.add( ref );
-            }
-        }
-
-        return refs;
-    }
-
-    /**
-     * Builds a new collection of references filtered according to the given parameters. If both filters are null, we
-     * get a new collection containing all references given.
-     *
-     * @param xrefs      the collection of reference to build upon.
-     * @param typeMiRefs a collection of  type reference MI identifier, can be null.
-     * @param dbMiRefs   a collection of database MI identifier, can be null.
-     * @param accessions   a collection of accession number supposed to match DbReference.id, can be null.
-     * @return a non null collection of references.
-     */
-    public static Collection<DbReference> searchReferences( Collection<DbReference> xrefs,
-                                                            Collection<String> typeMiRefs,
-                                                            Collection<String> dbMiRefs,
-                                                            Collection<String> accessions ) {
-
-        Collection<DbReference> refs = new ArrayList<DbReference>();
-
-        if( xrefs != null ) {
-            for ( DbReference ref : xrefs ) {
-                if ( dbMiRefs != null && !dbMiRefs.contains( ref.getDbAc() ) ) {
-                    continue;
-                }
-                if ( typeMiRefs != null && !typeMiRefs.contains( ref.getRefTypeAc() ) ) {
-                    continue;
-                }
-                if ( accessions != null && !accessions.contains( ref.getId() ) ) {
-                    continue;
-                }
-                refs.add( ref );
-            }
-        }
-
-        return refs;
-    }
-
-    public static Set<String> collectIds( Collection<DbReference> refs ) {
+    public static Set<String> collectNames( Collection<OntologyTermI> refs ) {
         Set<String> ids = new HashSet<String>( refs.size() );
-        for ( DbReference ref : refs ) {
-            ids.add( ref.getId() );
+        for ( OntologyTermI termI : refs ) {
+            ids.add( termI.getPreferredName().toLowerCase().trim());
         }
         return ids;
     }
@@ -460,291 +352,47 @@ public final class RuleUtils {
         return ids;
     }
 
-    /**
-     * Builds a new collection of attributes filtered according to the given parameters. If both filters are null, we
-     * get a new collection containing all attributess given.
-     *
-     * @param attributes the collection of attributes to build upon.
-     * @param name       a name filter, can be null.
-     * @param nameAc     accession number of the name attribute, can be null.
-     * @return a non null collection of attributes.
-     */
-    public static Collection<Attribute> searchAttributes( Collection<Attribute> attributes, String name, String nameAc, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule) {
-
-        Collection<Attribute> foundAttributes = new ArrayList<Attribute>( attributes.size() );
-
-        for ( Attribute attribute : attributes ) {
-            if( nameAc != null){
-                if (!nameAc.equals( attribute.getNameAc() )) {
-
-                    if (name != null){
-                        if (name.equalsIgnoreCase( attribute.getName() )){
-                            messages.add( new ValidatorMessage( "The attribute " + name + " (name attribute)  is associated with a nameAc which points to a different PSI-MI term. The nameAc always overwrites the name attribute in the attribute elements so the current attribute is not identified as " + name + " and it may not be what you wanted.",
-                                    MessageLevel.WARN,
-                                    context,
-                                    rule ) );
-                        }
-                    }
-
-                    continue;
-
-                }
-            }
-            if( name != null) {
-                if (!name.equalsIgnoreCase( attribute.getName() )){
-                    continue;
-                }
-            }
-            foundAttributes.add( attribute );
+    public static String extractObjectLabelFromXPath(String xpath){
+        if (xpath == null){
+            return null;
         }
-
-        return foundAttributes;
-    }
-
-    public static Collection<DbReference> findByReferenceType( Collection<DbReference> dbReferences, String mi, String name, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
-        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
-        for ( DbReference reference : dbReferences ) {
-            if (mi != null){
-                if (reference.hasRefTypeAc()){
-                    if (mi.equals( reference.getRefTypeAc() )){
-                        selectedReferences.add( reference );
-                    }
-                    else if (name != null){
-                        if (name.equalsIgnoreCase( reference.getDb() )){
-                            messages.add( new ValidatorMessage( "The reference Type " + name + " (refType attribute)  is associated with a refTypeAc which points to a different PSI-MI term. The refTypeAc always overwrites the refType attribute in the cross references so the current reference type is not identified as " + name + " and it may not be what you wanted.",
-                                    MessageLevel.WARN,
-                                    context,
-                                    rule ) );
-                        }
-                    }
-                }
-            }
-            else if (name != null && reference.hasRefType()){
-                if (name.equalsIgnoreCase( reference.getRefType() )){
-                    selectedReferences.add( reference );
-                }
-            }
+        else if (xpath.contains("/features/")){
+            return "feature";
         }
-        return selectedReferences;
-    }
-
-    public static  Collection<DbReference> findByDatabaseAndReferenceType( Collection<DbReference> dbReferences, String dbmi, String dbname, String qmi, String qname, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
-        Collection<DbReference> selectedDatabases = findByDatabase(dbReferences, dbmi, dbname, messages, context, rule);
-        Collection<DbReference> selectedReferenceTypes = findByReferenceType(selectedDatabases, qmi, qname, messages, context, rule);
-
-        return selectedReferenceTypes;
-    }
-
-    public static Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
-        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
-        for ( DbReference reference : dbReferences ) {
-
-            if (mi != null && reference.hasDbAc()){
-                if (mi.equals( reference.getDbAc() )){
-                    selectedReferences.add( reference );
-                }
-                else if (name != null){
-                    if (name.equalsIgnoreCase( reference.getDb() )){
-                        messages.add( new ValidatorMessage( "The database " + name + " (db attribute)  is associated with a dbAc which points to a different PSI-MI term. The dbAc always overwrites the db attribute in the cross references so the current database is not identified as " + name + " and it may not be what you wanted.",
-                                MessageLevel.WARN,
-                                context,
-                                rule ) );
-                    }
-                }
-            }
-            else if(name != null && reference.getDb() != null){
-                if (name.equals( reference.getDb() )){
-                    selectedReferences.add( reference );
-                }
-            }
+        else if (xpath.contains("/interactor/")){
+            return "interactor";
         }
-        return selectedReferences;
-    }
-
-    public static Collection<Attribute> findByAttributeName( Collection<Attribute> attributes, String mi, String name ) {
-        Collection<Attribute> selectedAttribute = new ArrayList<Attribute>( attributes.size() );
-        for ( Attribute attribute : attributes ) {
-            if (mi != null && attribute.hasNameAc()){
-                if (mi.equals( attribute.getNameAc() )){
-                    selectedAttribute.add( attribute );
-                }
-            }
-            else if(name != null && attribute.getName() != null){
-                if (name.equalsIgnoreCase( attribute.getName() )){
-                    selectedAttribute.add( attribute );
-                }
-            }
+        else if (xpath.contains("/participants/")){
+            return "participant";
         }
-        return selectedAttribute;
-    }
-
-    /**
-     * Checks that a psi mi cross reference is present and well formatted. The controlled vocabulary rules will already check if the controlled vocabulary is valid
-     * @param container
-     * @param messages
-     * @param context
-     * @param rule
-     * @param mi
-     */
-    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
-        Xref xref = container.getXref();
-        String containerName = container.getClass().getSimpleName();
-
-        if (xref != null){
-            Collection<DbReference> allDbRef = xref.getAllDbReferences();
-
-            if (!allDbRef.isEmpty()){
-                // search for database : db="psi-mi" dbAc="MI:0488"
-                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
-
-                if (!psiMiReferences.isEmpty()){
-                    // There is only one psi-mi database reference for an InteractionDetectionMethod
-                    if (psiMiReferences.size() != 1){
-
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
-                            MessageLevel.ERROR,
-                            context,
-                            rule ) );
-                }
-            }
-            else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
-                        MessageLevel.ERROR,
-                        context,
-                        rule ) );
-
-            }
+        else if (xpath.contains("/experiment/")){
+            return "experiment";
         }
-        else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488' in the XRef/primaryRef element) with type 'identity'(refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of \"+ mi +\").",
-                    MessageLevel.ERROR,
-                    context,
-                    rule ) );
-
+        else if (xpath.contains("interaction")){
+            return "interaction";
+        }
+        else{
+            return null;
         }
     }
 
-    /**
-     * Checks that a psi mi cross reference is present and well formatted. The controlled vocabulary rules will already check if the controlled vocabulary is valid
-     * @param container
-     * @param messages
-     * @param context
-     * @param rule
-     * @param mi
-     */
-    public static void checkPsiMIOrModXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
-        Xref xref = container.getXref();
-        String containerName = container.getClass().getSimpleName();
-
-        if (xref != null){
-            Collection<DbReference> allDbRef = xref.getAllDbReferences();
-
-            if (!allDbRef.isEmpty()){
-                // search for database : db="psi-mi" dbAc="MI:0488"
-                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
-                Collection<DbReference> psiModReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0897", "psi-mod","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
-
-                if (!psiModReferences.isEmpty() && !psiMiReferences.isEmpty()){
-                    messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and "+ psiMiReferences.size() +" psi-mi cross references with type 'identity'. As it is confusing, it is better to give only one identity cross reference (psi-mi or psi-mod)",
-                            MessageLevel.WARN,
-                            context,
-                            rule ) );
-                }
-                else if (!psiModReferences.isEmpty()){
-                    if (psiModReferences.size() != 1){
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and only one is allowed.",
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
-
-                }
-                else if (!psiMiReferences.isEmpty()){
-                    // There is only one psi-mi database reference for an InteractionDetectionMethod
-                    if (psiMiReferences.size() != 1){
-
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
-                            MessageLevel.ERROR,
-                            context,
-                            rule ) );
-                }
-            }
-            else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
-                        MessageLevel.ERROR,
-                        context,
-                        rule ) );
-
-            }
+    public static Mi25Context buildContext( Object object ) {
+        Mi25Context context = new Mi25Context();
+        if (object instanceof FileSourceContext){
+            context.setLocator(((FileSourceContext) object).getSourceLocator());
         }
-        else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897' in the XRef/primaryRef element) with type 'identity'(refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of \"+ mi +\").",
-                    MessageLevel.ERROR,
-                    context,
-                    rule ) );
 
-        }
+        return context;
     }
 
-    public static void checkPresenceOfAttributeInExperiment(ExperimentDescription experiment, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, String attMi, String attname){
-        // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
-        if (experiment.hasAttributes()){
-            // The attributes of the experiment
-            Collection<Attribute> attributes = experiment.getAttributes();
-            // The attributes with a name/MI attName/attMI
-            Collection<Attribute> attributeName = RuleUtils.findByAttributeName(attributes, attMi, attname);
-
-            if (attributeName.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment does not have an attribute '"+attname+"' ("+attMi+") and it is required for IMEx. ",
-                        MessageLevel.ERROR,
-                        context,
-                        experimentRule ) );
-            }
-        }
-        else {
-            messages.add( new ValidatorMessage( "The experiment does not have any attributes. At least one attribute '"+attname+"' ("+attMi+") is required for IMEx. ",
-                    MessageLevel.ERROR,
-                    context,
-                    experimentRule ) );
+    public static Mi25Context buildContext( Object object, String objectLabel ) {
+        Mi25Context context;
+        context = new Mi25Context();
+        if (object instanceof FileSourceContext){
+            context.setLocator(((FileSourceContext) object).getSourceLocator());
         }
 
-    }
-
-    /**
-     * Find the experiments of the interaction that the experimentRef referred to
-     * @param interaction
-     * @param experimentRefs
-     * @return
-     */
-    public static Collection<ExperimentDescription> collectExperiment(Interaction interaction, Collection<ExperimentRef> experimentRefs) {
-        ArrayList<ExperimentDescription> collectedExps = new ArrayList<ExperimentDescription>();
-
-        if( experimentRefs != null && !experimentRefs.isEmpty() ) {
-            for (ExperimentRef ref : experimentRefs) {
-                for (ExperimentDescription ed : interaction.getExperiments()) {
-                    if( ed.getId() == ref.getRef() ) {
-                        collectedExps.add( ed );
-                    }
-                }
-            }
-        } else {
-            collectedExps.addAll( interaction.getExperiments() );
-        }
-
-        return collectedExps;
+        context.setObjectLabel(objectLabel);
+        return context;
     }
 }

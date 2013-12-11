@@ -1,14 +1,14 @@
 package psidev.psi.mi.validator.extension.rules;
 
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 /**
@@ -25,100 +25,60 @@ public class PublicationRuleUtils {
     private static Pattern IMEx_INTERACTION_ID = Pattern.compile( "IM-[0-9]+-[0-9]+" );
 
     /**
-     * Checks if the pubmed ids in a collection of pubmed references are valid. Add new ValidatorMessage to messages if not.
-     * @param pubmeds
-     * @param messages
-     * @param context
-     * @param experimentRule
-     */
-    public static void checkPubmedId(Collection<DbReference> pubmeds, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule){
-
-        int emptyPmids = 0;
-        for ( DbReference pubmed : pubmeds ) {
-            final String pmid = pubmed.getId();
-            if( pmid != null) {
-                if (pmid.trim().length() > 0){
-                    try {
-                        Integer.parseInt( pmid );
-                    } catch ( NumberFormatException e ) {
-                        messages.add( new ValidatorMessage( "You have specified an invalid pubmed id: '" + pmid + "'",
-                                MessageLevel.WARN,
-                                context,
-                                experimentRule) );
-                    }
-                }
-
-            } else {
-                emptyPmids++;
-            }
-        }
-
-        if( emptyPmids > 0 ) {
-            messages.add( new ValidatorMessage( "You have specified "+ emptyPmids +" pubmed identifier with an empty value.",
-                    MessageLevel.WARN,
-                    context,
-                    experimentRule) );
-        }
-    }
-
-    /**
      * Checks if the imex ids in a collection of imex-primary references are valid. Add new ValidatorMessage to messages if not.
-     * @param imexPrimaryReferences
-     * @param messages
-     * @param context
+     * @param imexPrimaryReference
+     * @param pub
      * @param experimentRule
      */
-    public static void checkImexId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+    public static Collection<ValidatorMessage> checkImexId(String imexPrimaryReference, Publication pub, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
-        if (!imexPrimaryReferences.isEmpty()){
-            for ( DbReference imex  : imexPrimaryReferences ) {
-                final String imexId = imex.getId();
-                if( imexId != null) {
-                    if (imexId.trim().length() > 0 ){
-                        if (!IMEx_ID.matcher(imexId).matches()){
-                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx).",
-                                    MessageLevel.ERROR,
-                                    context,
-                                    experimentRule ) );
-                        }
-                    }
+        if (imexPrimaryReference != null){
+            if (imexPrimaryReference.trim().length() > 0 ){
+                if (!IMEx_ID.matcher(imexPrimaryReference).matches()){
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
 
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx).",
+                    return Collections.singletonList(new ValidatorMessage("The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
                             MessageLevel.ERROR,
                             context,
-                            experimentRule ) );
+                            experimentRule));
                 }
             }
+            else {
+                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
+                return Collections.singletonList( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
+                        MessageLevel.ERROR,
+                        context,
+                        experimentRule ) );
+            }
         }
+        return Collections.EMPTY_LIST;
     }
 
-    public static void checkImexInteractionId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+    public static Collection<ValidatorMessage> checkImexInteractionId(String imexPrimaryReference, InteractionEvidence interaction, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
-        if (!imexPrimaryReferences.isEmpty()){
-            for ( DbReference imex  : imexPrimaryReferences ) {
-                final String imexId = imex.getId();
-                if( imexId != null) {
-                    if (imexId.trim().length() > 0 ){
-                        if (!IMEx_INTERACTION_ID.matcher(imexId).matches()){
-                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx-xx).",
-                                    MessageLevel.ERROR,
-                                    context,
-                                    experimentRule ) );
-                        }
-                    }
+        if (!imexPrimaryReference.isEmpty()){
+            if (imexPrimaryReference.trim().length() > 0 ){
+                if (!IMEx_INTERACTION_ID.matcher(imexPrimaryReference).matches()){
+                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx-xx).",
+                    return Collections.singletonList( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
                             MessageLevel.ERROR,
                             context,
                             experimentRule ) );
                 }
             }
+            else {
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
+                return Collections.singletonList( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
+                        MessageLevel.ERROR,
+                        context,
+                        experimentRule ) );
+            }
         }
+        return Collections.EMPTY_LIST;
     }
 }

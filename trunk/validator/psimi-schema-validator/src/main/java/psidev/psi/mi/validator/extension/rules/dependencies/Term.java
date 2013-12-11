@@ -1,9 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.dependencies;
 
-import psidev.psi.mi.xml.model.CvType;
-import psidev.psi.mi.xml.model.DbReference;
+import psidev.psi.mi.jami.model.CvTerm;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -83,7 +81,7 @@ public class Term {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
 
-        Term term = ( Term ) o;
+        Term term = (Term) o;
 
         if (id != null){
             if ( !id.equals( term.id ) ) return false;
@@ -129,15 +127,15 @@ public class Term {
                 '}';
     }
 
-    public static Term buildTerm( CvType cv ) {
+    public static Term buildTerm( CvTerm cv ) {
         if (cv == null){
             return null;
         }
-        final String id = getMiIdentifier( cv );
+        final String id = cv.getMIIdentifier();
         if( id == null ) {
             return null;
         }
-        return new Term( id, cv.getNames().getShortLabel() );
+        return new Term( id, cv.getShortName() );
     }
 
     public static String printTerm( Term term ) {
@@ -172,28 +170,5 @@ public class Term {
             }
         }
         return sb.toString();
-    }
-
-    private static String getMiIdentifier( CvType cv ) {
-
-        Collection<DbReference> refs = new ArrayList<DbReference>();
-        if (cv != null){
-            if( cv.getXref() != null ) {
-                refs.add( cv.getXref().getPrimaryRef() );
-                refs.addAll( cv.getXref().getSecondaryRef() );
-
-                for ( Iterator<DbReference> iterator = refs.iterator(); iterator.hasNext(); ) {
-                    DbReference ref = iterator.next();
-
-                    if ( "MI:0488".equals( ref.getDbAc() ) || "psi-mi".equals( ref.getDb() ) ) {
-                        if ( "MI:0356".equals( ref.getRefTypeAc() ) || "identity".equals( ref.getRefType() ) ) {
-                            return ref.getId();
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
     }
 }

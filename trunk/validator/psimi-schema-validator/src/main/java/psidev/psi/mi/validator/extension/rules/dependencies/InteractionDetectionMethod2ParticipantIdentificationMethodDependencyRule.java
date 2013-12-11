@@ -1,9 +1,13 @@
 package psidev.psi.mi.validator.extension.rules.dependencies;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
@@ -13,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Rule that allows to check whether the interaction detection method specified matches the participant detection methods.
@@ -23,13 +28,13 @@ import java.util.Collection;
  * @version $Id: InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule extends Mi25InteractionRule {
+public class InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule extends AbstractMIRule<ParticipantEvidence> {
 
     //private static DependencyMappingInteractionDetectionMethod2InteractionType mapping;
     private DependencyMapping mapping = new DependencyMapping();
 
     public InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule( OntologyManager ontologyManager ) {
-        super( ontologyManager );
+        super( ontologyManager,ParticipantEvidence.class );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
@@ -59,49 +64,39 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
      * For each experiment associated with this interaction, collect all respective participants and their identification method and
      * check if the dependencies are correct.
      *
-     * @param interaction an interaction to check on.
+     * @param participant a participant to check on.
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( ParticipantEvidence participant ) throws ValidatorException {
 
-        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        // experiments for detecting the interaction
-        final Collection<ExperimentDescription> experiments = interaction.getExperiments();
-        // participants of the interaction
-        final Collection<Participant> participants = interaction.getParticipants();
+        if (participant.getInteraction() != null){
+            InteractionEvidence interaction = participant.getInteraction();
+            Experiment exp = interaction.getExperiment();
 
-        for ( ExperimentDescription experiment : experiments ) {
+            if (exp != null){
+                CvTerm detMethod = exp.getInteractionDetectionMethod();
+                if (detMethod != null){
 
-            final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
-            ParticipantIdentificationMethod participantMethod = experiment.getParticipantIdentificationMethod();
-
-            for ( Participant p : participants ) {
-                // build a context in case of error
-                Mi25Context context = new Mi25Context();
-                context.setInteractionId( interaction.getId() );
-                context.setExperimentId( experiment.getId());
-                context.setParticipantId( p.getId());
-
-                if (p.hasParticipantIdentificationMethods()){
-                    Collection<ParticipantIdentificationMethod> participantIdentification = p.getParticipantIdentificationMethods();
-
-                    for (ParticipantIdentificationMethod pm : participantIdentification){
-                        messages.addAll( mapping.check( method, pm, context, this ) );
+                    if (!participant.getIdentificationMethods().isEmpty()){
+                        messages = new ArrayList<ValidatorMessage>(participant.getIdentificationMethods().size());
+                        for (CvTerm method : participant.getIdentificationMethods()){
+                            // build a context in case of error
+                            Mi25Context context = RuleUtils.buildContext(participant, "participant");
+                            context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
+                            messages.addAll( mapping.check( detMethod, method, context, this ) );
+                        }
                     }
                 }
-                else if (participantMethod != null) {
-                    messages.addAll( mapping.check( method, participantMethod, context, this ) );
-                }
             }
-
-        } // experiments
+        }
 
         return messages;
     }
 
     public String getId() {
-        return "R49";
+        return "R43";
     }
 }

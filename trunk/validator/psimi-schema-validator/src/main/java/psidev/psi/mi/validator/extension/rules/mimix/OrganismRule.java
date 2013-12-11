@@ -1,16 +1,13 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * <b> check every experiment host organism has an attribute taxid and that is is defined in NEWT. </b>.
@@ -20,10 +17,10 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class OrganismRule extends ObjectRule<Organism> {
+public class OrganismRule extends AbstractMIRule<Organism> {
 
     public OrganismRule(OntologyManager ontologyMaganer) {
-        super( ontologyMaganer );
+        super( ontologyMaganer, Organism.class );
 
         // describe the rule.
         setName( "Organism Check" );
@@ -36,15 +33,6 @@ public class OrganismRule extends ObjectRule<Organism> {
         addTip( "By convention, the taxid for 'in silico' is -5" );
     }
 
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof Organism){
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * Checks that each experiment has an host organisms element with a valid tax id as attribute.
      * Tax id must be a positive integer or -1
@@ -54,18 +42,12 @@ public class OrganismRule extends ObjectRule<Organism> {
      */
     public Collection<ValidatorMessage> check( Organism organism ) throws ValidatorException {
 
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-
-        Mi25Context context = new Mi25Context();
-
         // check on host organism
-        RuleUtils.checkOrganism(ontologyManager, organism, context, messages, this,
-                "Experiment or Interactor", "host organism");
-
-        return messages;
+        return RuleUtils.checkOrganism(ontologyManager, organism, this,
+                "Experiment or Interactor", "organism");
     }
 
     public String getId() {
-        return "R22";
+        return "R27";
     }
 }

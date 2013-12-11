@@ -8,7 +8,7 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
  * @since <pre>26-Apr-2010</pre>
  */
 
-public class ValidatorRuleException extends RuntimeException{
+public class ValidatorRuleException extends RuntimeException {
     public ValidatorRuleException() {
         super();
     }

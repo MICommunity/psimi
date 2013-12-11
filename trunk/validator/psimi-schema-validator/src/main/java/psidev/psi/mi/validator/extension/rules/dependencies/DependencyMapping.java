@@ -3,8 +3,8 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
@@ -76,7 +76,7 @@ public class DependencyMapping {
 
         Term term = new Term( columns[0], columns[1] );
         if( columns[2] != null && columns[2].length() > 0 ) {
-            boolean isChildrenIncluded = Boolean.valueOf( columns[2] );
+            boolean isChildrenIncluded = Boolean.valueOf(columns[2]);
 
             if (isChildrenIncluded || !isChildrenIncluded){
                 term.setIncludeChildren(isChildrenIncluded);
@@ -98,7 +98,7 @@ public class DependencyMapping {
 
         Term secondTerm = new Term(columns[3], columns[4]);
         if( columns[5] != null && columns[5].length() > 0 ) {
-            boolean isChildrenIncluded = Boolean.valueOf( columns[5] );
+            boolean isChildrenIncluded = Boolean.valueOf(columns[5]);
 
             if (isChildrenIncluded || !isChildrenIncluded){
                 secondTerm.setIncludeChildren(isChildrenIncluded);
@@ -135,8 +135,8 @@ public class DependencyMapping {
      * Builds the dependencies from a file (tab file).
      * @param mi
      * @param url
-     * @throws IOException
-     * @throws ValidatorException
+     * @throws java.io.IOException
+     * @throws psidev.psi.tools.validator.ValidatorException
      */
     public void buildMappingFromFile( OntologyAccess mi, URL url) throws IOException, ValidatorException {
 
@@ -277,7 +277,7 @@ public class DependencyMapping {
      * @param mi
      */
     protected void loadDependencies(Term term, AssociatedTerm secondTerm, OntologyAccess mi, int lineCount){
-        Set<AssociatedTerm> associatedTermSet = new HashSet<AssociatedTerm> ();
+        Set<AssociatedTerm> associatedTermSet = new HashSet<AssociatedTerm>();
         if (term == null || secondTerm == null){
             log.error("The first term and the second term of a dependency can't be null : first term = " + term + "and second term = " + secondTerm);
         }
@@ -288,7 +288,7 @@ public class DependencyMapping {
         }
         else {
             // contains all the existing associated term we want to remove.
-            Set<AssociatedTerm> associatedTermToReplace = new HashSet<AssociatedTerm> ();
+            Set<AssociatedTerm> associatedTermToReplace = new HashSet<AssociatedTerm>();
 
             for (Term oldTerm : this.dependencies.keySet()){
                 // There is already a term in the dependency map with the same id/name as 'term'.
@@ -435,7 +435,7 @@ public class DependencyMapping {
      * @param rule
      * @return a list of messages
      */
-    protected Collection<ValidatorMessage> writeValidatorMessages(CvType term1, CvType term2, Term firstTermOfDependency, Term secondTermDependency,
+    protected Collection<ValidatorMessage> writeValidatorMessages(CvTerm term1, CvTerm term2, Term firstTermOfDependency, Term secondTermDependency,
                                                                   Collection<AssociatedTerm> associatedTermDependency,
                                                                   Mi25Context context, AbstractRule rule) {
 
@@ -467,8 +467,8 @@ public class DependencyMapping {
                     hasFoundADependency = true;
                 }
                 else if (level.equals(DependencyLevel.ERROR)) {
-                    final String msg = "The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                            "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" cannot be associated together.";
+                    final String msg = "The " + term1.getClass().getSimpleName() + " "+ Term.printTerm(firstTermOfDependency)+" " +
+                            "and the " + term2.getClass().getSimpleName() + " "+ Term.printTerm(secondTermDependency)+" cannot be associated together.";
                     messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                 }
             }
@@ -478,9 +478,9 @@ public class DependencyMapping {
             Set<AssociatedTerm> req = getRequiredDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
 
-            msg.append("The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                    "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" cannot be associated together." +
-                    " It is possible to associate "+Term.printTerm(firstTermOfDependency)+" with : ");
+            msg.append("The " + term1.getClass().getSimpleName() + " "+ Term.printTerm(firstTermOfDependency)+" " +
+                    "and the " + term2.getClass().getSimpleName() + " "+ Term.printTerm(secondTermDependency)+" cannot be associated together." +
+                    " It is possible to associate "+ Term.printTerm(firstTermOfDependency)+" with : ");
             writePossibleDependenciesFor(req, msg);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -488,8 +488,8 @@ public class DependencyMapping {
         else if (!hasFoundADependency && isARecommendedValue){
             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
-            msg.append("The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                    "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" should not be associated together. " +
+            msg.append("The " + term1.getClass().getSimpleName() + " "+ Term.printTerm(firstTermOfDependency)+" " +
+                    "and the " + term2.getClass().getSimpleName() + " "+ Term.printTerm(secondTermDependency)+" should not be associated together. " +
                     Term.printTerm(firstTermOfDependency) +" is usually associated with : ");
             writePossibleDependenciesFor(rec, msg);
 
@@ -523,8 +523,8 @@ public class DependencyMapping {
      * @param rule
      * @return a list of messages should any error be found.
      */
-    public Collection<ValidatorMessage> check( CvType term1,
-                                               CvType term2,
+    public Collection<ValidatorMessage> check( CvTerm term1,
+                                               CvTerm term2,
                                                Mi25Context context,
                                                AbstractRule rule) {
 
@@ -540,14 +540,14 @@ public class DependencyMapping {
                 if( secondTermDependency == null ) {
                     Set<AssociatedTerm> required = getRequiredDependenciesFor(firstTermOfDependency);
                     if (!required.isEmpty()){
-                        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
+                        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
                         String msg = "When the " + term1.getClass().getSimpleName() + " is " + Term.printTerm(firstTermOfDependency) + ", it must be associated with : ";
                         final StringBuffer sb = new StringBuffer( 1024 );
                         sb.append( msg );
 
                         writePossibleDependenciesFor(required, sb);
-                        messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
+                        messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context, rule ) );
                         return messages;
                     }
                     else {
@@ -555,11 +555,11 @@ public class DependencyMapping {
                         Set<AssociatedTerm> recommended = getRecommendedDependenciesFor(firstTermOfDependency);
                         if (!recommended.isEmpty()){
 
-                            Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
+                            Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("When the " + term1.getClass().getSimpleName() + " is "+Term.printTerm(firstTermOfDependency)+", it should be associated with : ");
+                            msg.append("When the " + term1.getClass().getSimpleName() + " is "+ Term.printTerm(firstTermOfDependency)+", it should be associated with : ");
                             writePossibleDependenciesFor(recommended, msg);
-                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context, rule ) );
 
                             return messages;
                         }

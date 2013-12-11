@@ -16,6 +16,10 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import org.junit.AfterClass;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
@@ -236,30 +240,18 @@ public abstract class AbstractRuleTest {
         return interactor;
     }
 
-    protected InteractionDetectionMethod buildDetectionMethod( String mi, String name ) {
-        final InteractionDetectionMethod detectionMethod = new InteractionDetectionMethod();
-        detectionMethod.setXref( new Xref() );
-        detectionMethod.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, mi, IDENTITY, IDENTITY_MI_REF ) );
-        detectionMethod.setNames( new Names() );
-        detectionMethod.getNames().setShortLabel( name );
+    protected CvTerm buildDetectionMethod( String mi, String name ) {
+        final CvTerm detectionMethod = CvTermUtils.createMICvTerm(name, mi);
         return detectionMethod;
     }
 
-    protected ExperimentalRole buildExperimentalRole( String mi, String name ) {
-        final ExperimentalRole role = new ExperimentalRole();
-        role.setXref( new Xref() );
-        role.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, mi, IDENTITY, IDENTITY_MI_REF ) );
-        role.setNames( new Names() );
-        role.getNames().setShortLabel( name );
+    protected CvTerm buildExperimentalRole( String mi, String name ) {
+        final CvTerm role = CvTermUtils.createMICvTerm(name, mi);
         return role;
     }
 
-    protected BiologicalRole buildBiologicalRole( String mi, String name ) {
-        final BiologicalRole role = new BiologicalRole();
-        role.setXref( new Xref() );
-        role.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, mi, IDENTITY, IDENTITY_MI_REF ) );
-        role.setNames( new Names() );
-        role.getNames().setShortLabel( name );
+    protected CvTerm buildBiologicalRole( String mi, String name ) {
+        final CvTerm role = CvTermUtils.createMICvTerm(name, mi);
         return role;
     }
 
@@ -275,9 +267,8 @@ public abstract class AbstractRuleTest {
         interactor.getXref().setPrimaryRef( new DbReference( "db", dbRef, id, IDENTITY, IDENTITY_MI_REF) );
     }
 
-    protected void setDetectionMethod( Interaction interaction, String detectionMi, String detectionName ) {
-        final ExperimentDescription exp = interaction.getExperiments().iterator().next();
-
+    protected void setDetectionMethod( InteractionEvidence interaction, String detectionMi, String detectionName ) {
+        final Experiment exp = interaction.getExperiment();
         exp.setInteractionDetectionMethod( buildDetectionMethod( detectionMi, detectionName ) );
     }
 

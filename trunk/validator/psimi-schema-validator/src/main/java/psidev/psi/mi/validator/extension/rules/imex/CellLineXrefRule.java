@@ -1,19 +1,18 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.CellType;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY_MI_REF;
 
@@ -25,10 +24,10 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY_MI_REF;
  * @since <pre>25/01/11</pre>
  */
 
-public class CellLineXrefRule extends ObjectRule<CellType>{
+public class CellLineXrefRule extends AbstractMIRule<Organism>{
 
     public CellLineXrefRule( OntologyManager ontologyManager ) {
-        super( ontologyManager );
+        super( ontologyManager, Organism.class );
 
         // describe the rule.
         setName("Cell line XRef Check");
@@ -40,33 +39,29 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
         addTip( "Identity accession in the PSI-MI ontology is " + IDENTITY_MI_REF );
     }
 
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof CellType){
-            return true;
-        }
-        return false;
-    }
-
     /**
-     * @param cellType to check on.
+     * @param organism to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( CellType cellType) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Organism organism) throws ValidatorException {
 
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        if (organism.getCellType() == null){
+            return Collections.EMPTY_LIST;
+        }
 
-        Mi25Context context = new Mi25Context();
+        Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
+        CvTerm cellType = organism.getCellType();
 
-        if (cellType.getXref() != null){
-            Xref ref = cellType.getXref();
+        if (!cellType.getIdentifiers().isEmpty() || !cellType.getXrefs().isEmpty()){
 
-            Collection<DbReference> cabriReferences = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
-            Collection<DbReference> cellReferences = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
-            Collection<DbReference> allPubmeds = RuleUtils.findByDatabaseAndReferenceType( ref.getAllDbReferences(), "MI:0446", "pubmed", "MI:0358", "primary-reference", messages, context, this);
+            Collection<psidev.psi.mi.jami.model.Xref> cabriReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI);
+            Collection<psidev.psi.mi.jami.model.Xref> cellReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY);
+            Collection<psidev.psi.mi.jami.model.Xref> allPubmeds = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(cellType.getXrefs(), psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
 
             if (cabriReferences.isEmpty() && cellReferences.isEmpty() && allPubmeds.isEmpty()){
-                messages.add( new ValidatorMessage( "The cellType " + (cellType.getNames() != null ? cellType.getNames().getShortLabel() : "") + " does not have a CABRI or Cell Ontology cross reference with a qualifier 'identity' and it is strongly recommended. " +
+                Mi25Context context = RuleUtils.buildContext(cellType, "cell type");
+                context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
+                messages=Collections.singleton( new ValidatorMessage( "The cellType " + cellType.getShortName() + " does not have a CABRI or Cell Ontology cross reference with a qualifier 'identity' and it is strongly recommended. " +
                         "If the cell line cannot be identified but one of these databases, at least one pubmed primary reference is necessary.'",
                         MessageLevel.WARN,
                         context,
@@ -74,7 +69,9 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The cellType " + (cellType.getNames() != null ? cellType.getNames().getShortLabel() : "") + " does not have any cross references and at least one cross reference to CABRI or Cell Ontology with " +
+            Mi25Context context = RuleUtils.buildContext(cellType, "cell type");
+            context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
+            messages=Collections.singleton( new ValidatorMessage( "The cellType " + cellType.getShortName() + " does not have any cross references and at least one cross reference to CABRI or Cell Ontology with " +
                     "qualifier 'identity' is strongly recommended. If the cell line cannot be identified but one of these databases, at least one pubmed primary reference is necessary.'",
                     MessageLevel.WARN,
                     context,
@@ -85,6 +82,6 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
     }
 
     public String getId() {
-        return "R26";
+        return "R31";
     }
 }

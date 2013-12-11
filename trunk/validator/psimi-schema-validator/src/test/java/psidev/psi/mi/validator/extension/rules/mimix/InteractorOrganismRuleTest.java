@@ -10,7 +10,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * Tester of ProteinOrganismRule
+ * Tester of InteractorOrganismRule
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -21,7 +21,7 @@ public class InteractorOrganismRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_has_organism() throws Exception {
-        final ProteinOrganismRule rule = new ProteinOrganismRule( ontologyMaganer );
+        final InteractorOrganismRule rule = new InteractorOrganismRule( ontologyMaganer );
 
         final Interactor protein = buildProtein("P12345");
 
@@ -35,7 +35,7 @@ public class InteractorOrganismRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_no_organisms() throws Exception {
-        final ProteinOrganismRule rule = new ProteinOrganismRule( ontologyMaganer );
+        final InteractorOrganismRule rule = new InteractorOrganismRule( ontologyMaganer );
 
         final Interactor protein = buildProtein("P12345");
 

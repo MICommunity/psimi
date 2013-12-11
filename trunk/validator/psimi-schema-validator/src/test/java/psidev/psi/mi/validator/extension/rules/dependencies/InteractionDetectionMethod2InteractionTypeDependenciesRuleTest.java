@@ -3,7 +3,6 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -21,7 +20,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
 
     /**
      *
-     * @throws OntologyLoaderException
+     * @throws psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException
      */
     public InteractionDetectionMethod2InteractionTypeDependenciesRuleTest() throws OntologyLoaderException {
         super( InteractionDetectionMethod2InteractionTypeDependenciesRuleTest.class.getResourceAsStream( "/config/ontologies.xml" ) );
@@ -341,6 +340,6 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         participant.setInteractor( new Interactor());
         participant.getExperimentalRoles().clear();
         participant.getExperimentalRoles().add( buildExperimentalRole( expRoleMi, expRoleName ));
-        interaction.getParticipants().add( participant );
+        interaction.addParticipantEvidence( participant );
     }
 }

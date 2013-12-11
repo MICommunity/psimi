@@ -1,16 +1,13 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * <b> check every experiment host organism has a valid attribute taxid. </b>.
@@ -21,10 +18,10 @@ import java.util.List;
  * @since 2.0
  *
  */
-public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
+public class TaxIdHostOrganismRule extends AbstractMIRule<Organism> {
 
     public TaxIdHostOrganismRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+        super( ontologyMaganer, Organism.class );
 
         // describe the rule.
         setName( "TaxId Organism Check" );
@@ -36,14 +33,6 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
         //addTip( "By convention, the taxid for 'in vivo' is -4" );
     }
 
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof Organism){
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Checks that each organisms element has a valid tax id as attribute.
      * Tax id must be a positive integer or -1
@@ -53,17 +42,11 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
      */
     public Collection<ValidatorMessage> check( Organism organism ) throws ValidatorException {
 
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-
-        Mi25Context context = new Mi25Context();
-
-        RuleUtils.checkImexOrganism( ontologyManager, organism, context, messages, this,
-                                          "Experiment or Interactor", "organism" );
-
-        return messages;
+        return RuleUtils.checkImexOrganism( ontologyManager, organism,this,
+                "Experiment or Interactor", "organism" );
     }
 
     public String getId() {
-        return "R33";
+        return "R34";
     }
 }

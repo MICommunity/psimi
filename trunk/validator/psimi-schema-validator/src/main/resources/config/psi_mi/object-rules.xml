@@ -4,11 +4,15 @@
 
     <name>PSI-MI</name>
 
-    <rule class="psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.InteractorSequenceAlphabetRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.FeatureRangeRule"/>
-    <!--<rule class="psidev.psi.mi.validator.extension.rules.ProteinOrganismRule"/>-->
-    <!--<rule class="psidev.psi.mi.validator.extension.rules.InteractorNameRule"/>-->
-    <!--<rule class="psidev.psi.mi.validator.extension.rules.ParticipantSeqXrefRule"/>-->
-    
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractorSequenceAlphabetRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingExperimentPublicationRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseXrefSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AnnotationSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ParameterSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractionExperimentRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ConfidenceSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractionParticipantRule"/>
 </objectRuleList>
