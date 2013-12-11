@@ -47,7 +47,7 @@ public class PsiXml25Utils {
     public static final int XML_BUFFER_SIZE = 512;
 
     public final static String Xml254_NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
-    public final static String Xml253_NAMESPACE_URI = "";
+    public final static String Xml253_NAMESPACE_URI = "net:sf:psidev:mi";
     public final static String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema-instance";
     public final static String XML_SCHEMA_PREFIX = "xsi";
     public final static String PSI_SCHEMA_254_LOCATION = "http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd";

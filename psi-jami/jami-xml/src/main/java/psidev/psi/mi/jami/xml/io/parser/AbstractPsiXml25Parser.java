@@ -342,10 +342,9 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
                         namespaceURI = this.streamReader.getNamespaceURI();
                     }
                 }
-                while(start != null &&
-                        (namespaceURI == null
+                while(namespaceURI == null
                                 || (!PsiXml25Utils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())
-                        && !PsiXml25Utils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim()))));
+                        && !PsiXml25Utils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())));
 
                 if (namespaceURI != null && PsiXml25Utils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())){
                     this.version = PsiXmlVersion.v2_5_4;
