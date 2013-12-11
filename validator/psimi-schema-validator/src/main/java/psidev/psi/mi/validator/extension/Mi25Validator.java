@@ -394,6 +394,24 @@ public class Mi25Validator extends Validator {
         return syntaxRule;
     }
 
+    public Collection<ObjectRule> getAllRules(){
+        Collection<ObjectRule> allRules = new ArrayList<ObjectRule>(60);
+        allRules.addAll(getObjectRules());
+        allRules.addAll(this.aliasRuleWrapper.getRules());
+        allRules.addAll(this.confidenceRuleWrapper.getRules());
+        allRules.addAll(this.experimentRuleWrapper.getRules());
+        allRules.addAll(this.featureRuleWrapper.getRules());
+        allRules.addAll(this.interactionEvidenceRuleWrapper.getRules());
+        allRules.addAll(this.interactorRuleWrapper.getRules());
+        allRules.addAll(this.organismRuleWrapper.getRules());
+        allRules.addAll(this.parameterRuleWrapper.getRules());
+        allRules.addAll(this.participantRuleWrapper.getRules());
+        allRules.addAll(this.publicationRuleWrapper.getRules());
+        allRules.addAll(this.xrefRuleWrapper.getRules());
+        allRules.addAll(this.aliasRuleWrapper.getRules());
+        return allRules;
+    }
+
     @Override
     protected void instantiateCvRuleManager(OntologyManager manager, CvMapping cvMappingRules) {
         super.setCvRuleManager(new MICvRuleManager(manager, cvMappingRules));
