@@ -1,17 +1,17 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Organism;
+import psidev.psi.mi.validator.extension.rules.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * <b> check every experiment has a host organism. </b>.
@@ -43,29 +43,25 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
      * @param experiment an interaction to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException {
 
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-
-        int experimentId = experiment.getId();
-
-        Mi25Context context = new Mi25Context();
-        context.setExperimentId( experimentId );
+        Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         // check on host organism
-        Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-        if ( hostOrganisms.isEmpty() ) {
+        Organism hostOrganism = experiment.getHostOrganism();
+        if ( hostOrganism == null ) {
+            Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
 
-            messages.add( new ValidatorMessage( "The experiment does not have a host organism and it is required for MIMIx.",
-                                                MessageLevel.ERROR,
-                                                context,
-                                                this ) );
+            messages=Collections.singleton( new ValidatorMessage( "The experiment does not have a host organism and it is required for MIMIx.",
+                    MessageLevel.ERROR,
+                    context,
+                    this ) );
         }
 
         return messages;
     }
 
     public String getId() {
-        return "R18";
+        return "R25";
     }
 }

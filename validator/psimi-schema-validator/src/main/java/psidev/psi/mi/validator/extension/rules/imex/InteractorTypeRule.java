@@ -1,8 +1,9 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -11,6 +12,7 @@ import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,10 +23,10 @@ import java.util.List;
  * @since <pre>24/01/11</pre>
  */
 
-public class InteractorTypeRule extends ObjectRule<Interactor>{
+public class InteractorTypeRule extends AbstractMIRule<Interactor> {
 
-        public InteractorTypeRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+        public InteractorTypeRule(OntologyManager ontologyMaganer) {
+        super( ontologyMaganer, Interactor.class );
 
         // describe the rule.
         setName( "Interactor type check" );
@@ -33,15 +35,6 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
                 "of the remit of IMEx." );
 
         addTip( "The possible interactor types can be found at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof Interactor){
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -54,38 +47,29 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
     public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-
-        int interactorId = interactor.getId();
-        Mi25Context context = buildContext( interactorId );
+        List<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         if (interactor.getInteractorType() == null){
-            messages.add( new ValidatorMessage( "The interactor does not have an interactor type. It is required by IMEx.",
-                            MessageLevel.ERROR,
-                            context,
-                            this ) );
-        }
-        else if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
+            Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
 
-                    messages.add( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
-                            "should be removed from the record.",
-                            MessageLevel.WARN,
-                            context,
-                            this ) );
+            messages=Collections.singletonList( new ValidatorMessage( "The interactor does not have an interactor type and it is required by IMEx.",
+                    MessageLevel.ERROR,
+                    context,
+                    this ) );
         }
         else {
+            if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
+                Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
 
-            RuleUtils.checkPsiMIXRef(interactor.getInteractorType(), messages, context, this, RuleUtils.INTERACTOR_TYPE);
+                messages=Collections.singletonList( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
+                        "should be removed from the record.",
+                        MessageLevel.WARN,
+                        context,
+                        this ) );
+            }
         }
 
         return messages;
-    }
-
-    private Mi25Context buildContext( int interactorId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setInteractorId( interactorId );
-        return context;
     }
 
     public String getId() {

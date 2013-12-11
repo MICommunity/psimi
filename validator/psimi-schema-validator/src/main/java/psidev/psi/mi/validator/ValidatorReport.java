@@ -35,6 +35,9 @@ public class ValidatorReport {
 
     private Collection<ValidatorMessage> semanticMessages;
 
+    private boolean isSyntaxValid = true;
+    private boolean hasSyntaxWarnings = false;
+
     //////////////////
     // Constructors
 
@@ -82,5 +85,23 @@ public class ValidatorReport {
         this.getSyntaxMessages().clear();
         this.getSemanticMessages().clear();
         this.setInteractionCount(0);
+        this.isSyntaxValid = true;
+        this.hasSyntaxWarnings = false;
+    }
+
+    public boolean isSyntaxValid() {
+        return isSyntaxValid;
+    }
+
+    public void setSyntaxValid(boolean syntaxValid) {
+        isSyntaxValid = syntaxValid;
+    }
+
+    public boolean hasSyntaxWarnings() {
+        return hasSyntaxWarnings;
+    }
+
+    public void setSyntaxWarnings(boolean hasSyntaxWarnings) {
+        this.hasSyntaxWarnings = hasSyntaxWarnings;
     }
 }

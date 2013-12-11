@@ -2,22 +2,23 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.xml.model.Feature;
-import psidev.psi.mi.xml.model.FeatureType;
-import psidev.psi.mi.xml.model.Range;
-import psidev.psi.mi.xml.model.RangeStatus;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Rule that allows to check whether the feature type specified matches the feature range status.
@@ -28,14 +29,14 @@ import java.util.Collection;
  * @version $Id: FeatureType2FeatureRangeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> {
+public class FeatureType2FeatureRangeDependencyRule extends AbstractMIRule<Feature> {
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
     private DependencyMapping mapping;
 
     public FeatureType2FeatureRangeDependencyRule( OntologyManager ontologyManager ) {
-        super( ontologyManager );
+        super( ontologyManager, Feature.class );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
@@ -61,14 +62,6 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
 
     }
 
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof Feature){
-            return true;
-        }
-        return false;
-    }
-
     /**
      * For each participants of the interaction, collect all respective feature types and feature range status and
      * check if the dependencies are correct.
@@ -79,22 +72,25 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
      */
     public Collection<ValidatorMessage> check( Feature feature) throws ValidatorException {
 
-        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-        context.setFeatureId( feature.getId());
-
-        if (feature.hasFeatureType()){
+        if (feature.getType() != null){
             Collection<Range> featureRange = feature.getRanges();
-            FeatureType featureType = feature.getFeatureType();
+            CvTerm featureType = feature.getType();
+            messages = new ArrayList<ValidatorMessage>();
 
-            for (Range r : featureRange){
-                RangeStatus startStatus =  r.getStartStatus();
-                RangeStatus endStatus =  r.getEndStatus();
+            if (!feature.getRanges().isEmpty()){
+                for (Range r : featureRange){
+                    // build a context in case of error
+                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    context.addAssociatedContext(RuleUtils.buildContext(featureType, "feature type"));
+                    context.addAssociatedContext(RuleUtils.buildContext(r, "feature range"));
+                    CvTerm startStatus =  r.getStart().getStatus();
+                    CvTerm endStatus =  r.getEnd().getStatus();
 
-                messages.addAll( mapping.check( featureType, startStatus, context, this ) );
-                messages.addAll( mapping.check( featureType, endStatus, context, this ) );
+                    messages.addAll( mapping.check( featureType, startStatus, context, this ) );
+                    messages.addAll( mapping.check( featureType, endStatus, context, this ) );
+                }
             }
         }
 
@@ -102,6 +98,6 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
     }
 
     public String getId() {
-        return "R45";
+        return "R48";
     }
 }

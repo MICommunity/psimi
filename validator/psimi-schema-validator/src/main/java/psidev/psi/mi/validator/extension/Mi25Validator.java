@@ -1,27 +1,29 @@
 package psidev.psi.mi.validator.extension;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.commons.*;
+import psidev.psi.mi.jami.datasource.InteractionStream;
+import psidev.psi.mi.jami.datasource.MIFileDataSource;
+import psidev.psi.mi.jami.factory.MIDataSourceFactory;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.validator.ValidatorReport;
-import psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule;
-import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
-import psidev.psi.mi.xml.PsimiXmlLightweightReader;
-import psidev.psi.mi.xml.PsimiXmlReaderException;
-import psidev.psi.mi.xml.model.*;
-import psidev.psi.mi.xml.xmlindex.IndexedEntry;
+import psidev.psi.mi.validator.ValidatorUtils;
+import psidev.psi.mi.validator.extension.rules.*;
+import psidev.psi.mi.validator.extension.rules.cvmapping.MICvRuleManager;
+import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.OntologyManagerContext;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.*;
 import psidev.psi.tools.validator.preferences.UserPreferences;
-import psidev.psi.tools.validator.rules.Rule;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import psidev.psi.tools.validator.schema.SaxMessage;
-import psidev.psi.tools.validator.schema.SaxReport;
-import psidev.psi.tools.validator.schema.SaxValidatorHandler;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -54,6 +56,26 @@ public class Mi25Validator extends Validator {
 
     private ValidatorReport validatorReport;
 
+    private AliasRuleWrapper aliasRuleWrapper;
+    private AnnotationRuleWrapper annotationRuleWrapper;
+    private ConfidenceRuleWrapper confidenceRuleWrapper;
+    private ExperimentRuleWrapper experimentRuleWrapper;
+    private FeatureEvidenceRuleWrapper featureRuleWrapper;
+    private InteractionEvidenceRuleWrapper interactionEvidenceRuleWrapper;
+    private InteractorRuleWrapper interactorRuleWrapper;
+    private OrganismRuleWrapper organismRuleWrapper;
+    private ParameterRuleWrapper parameterRuleWrapper;
+    private ParticipantEvidenceRuleWrapper participantRuleWrapper;
+    private PublicationRuleWrapper publicationRuleWrapper;
+    private XrefRuleWrapper xrefRuleWrapper;
+    private MIFileSyntaxListenerRule syntaxRule;
+
+    private boolean validateObjectRule = true;
+
+    private MIFileAnalyzer fileAnalyser = new MIFileAnalyzer();
+
+    private Set<Object> processObjects;
+
     /**
      * Creates a MI 25 validator with the default user userPreferences.
      *
@@ -68,6 +90,8 @@ public class Mi25Validator extends Validator {
 
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
         validatorReport = new ValidatorReport();
+        this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
+        this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
     public Mi25Validator( OntologyManager ontologyManager,
@@ -75,6 +99,88 @@ public class Mi25Validator extends Validator {
                           Collection<ObjectRule> objectRules) {
         super( ontologyManager, cvMapping, objectRules);
         validatorReport = new ValidatorReport();
+        this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
+        this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+    }
+
+    @Override
+    public void setObjectRules(Collection<ObjectRule> objectRules){
+
+        if (objectRules != null){
+            getObjectRules().clear();
+
+            // initialise wrappers first
+            this.aliasRuleWrapper = new AliasRuleWrapper(this.ontologyMngr);
+            this.annotationRuleWrapper = new AnnotationRuleWrapper(this.ontologyMngr);
+            this.confidenceRuleWrapper = new ConfidenceRuleWrapper(this.ontologyMngr);
+            this.experimentRuleWrapper = new ExperimentRuleWrapper(this.ontologyMngr);
+            this.featureRuleWrapper = new FeatureEvidenceRuleWrapper(this.ontologyMngr);
+            this.interactionEvidenceRuleWrapper = new InteractionEvidenceRuleWrapper(this.ontologyMngr);
+            this.interactorRuleWrapper = new InteractorRuleWrapper(this.ontologyMngr);
+            this.organismRuleWrapper = new OrganismRuleWrapper(this.ontologyMngr);
+            this.parameterRuleWrapper = new ParameterRuleWrapper(this.ontologyMngr);
+            this.participantRuleWrapper = new ParticipantEvidenceRuleWrapper(this.ontologyMngr);
+            this.publicationRuleWrapper = new PublicationRuleWrapper(this.ontologyMngr);
+            this.xrefRuleWrapper = new XrefRuleWrapper(this.ontologyMngr);
+
+            for (ObjectRule rule : objectRules){
+                // if we have special rules
+                if (rule instanceof AbstractMIRule){
+                    AbstractMIRule miRule = (AbstractMIRule)rule;
+                    if (miRule.getType().isAssignableFrom(Alias.class)){
+                        this.aliasRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Annotation.class)){
+                        this.annotationRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Confidence.class)){
+                        this.confidenceRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Experiment.class)){
+                        this.experimentRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(FeatureEvidence.class)){
+                        this.featureRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(InteractionEvidence.class)){
+                        this.interactionEvidenceRuleWrapper.addRule(miRule);
+                    }
+                    else if (Interactor.class.isAssignableFrom(miRule.getType())){
+                        this.interactorRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Organism.class)){
+                        this.organismRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Parameter.class)){
+                        this.parameterRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(ParticipantEvidence.class)){
+                        this.participantRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Publication.class)){
+                        this.publicationRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Xref.class)){
+                        this.xrefRuleWrapper.addRule(miRule);
+                    }
+                    else{
+                        getObjectRules().add(rule);
+                    }
+                }
+                // collect all other rules as basic object rules
+                else{
+                    getObjectRules().add(rule);
+                }
+            }
+        }
+        else {
+            log.info("No object rule has been loaded.");
+        }
+
+        if (objectRules.isEmpty()){
+            log.info("The list of object rules is empty.");
+            this.validateObjectRule = false;
+        }
     }
 
     ///////////////////////////
@@ -100,57 +206,6 @@ public class Mi25Validator extends Validator {
         return ++uniqId;
     }
 
-    /**
-     * Store the content of the given input stream into a temporary file and return its descriptor.
-     *
-     * @param is the input stream to store.
-     * @return a File descriptor describing a temporary file storing the content of the given input stream.
-     * @throws IOException if an IO error occur.
-     */
-    private File storeAsTemporaryFile( InputStream is ) throws IOException {
-
-        if ( is == null ) {
-            throw new IllegalArgumentException( "You must give a non null InputStream" );
-        }
-        // Create a temp file and write URL content in it.
-        File tempDirectory = new File( System.getProperty( "java.io.tmpdir", "tmp" ) );
-        if ( !tempDirectory.exists() ) {
-            if ( !tempDirectory.mkdirs() ) {
-                throw new IOException( "Cannot create temp directory: " + tempDirectory.getAbsolutePath() );
-            }
-        }
-
-        long id = getUniqueId();
-
-        File tempFile = File.createTempFile( "validator." + id, ".xml", tempDirectory );
-
-        BufferedReader in = new BufferedReader( new InputStreamReader( is ) );
-        try{
-
-            log.info( "The file is temporary store as: " + tempFile.getAbsolutePath() );
-
-            BufferedWriter out = new BufferedWriter( new FileWriter( tempFile ) );
-
-            try{
-                String line;
-                while ( ( line = in.readLine() ) != null ) {
-                    out.write( line );
-                }
-
-
-                out.flush();
-            }
-            finally {
-                out.close();
-            }
-        }
-        finally {
-            in.close();
-        }
-
-        return tempFile;
-    }
-
     /////////////////////////////
     // Validator
 
@@ -162,17 +217,21 @@ public class Mi25Validator extends Validator {
      */
     public ValidatorReport validate( File file ) throws ValidatorException {
         this.validatorReport.clear();
+        this.processObjects.clear();
 
         try {
 
-            // 1. Validate XML input using Schema (MIF)
+            // first check if can parse dataSource and register datasources
+            InteractionStream<InteractionEvidence> interactionSource = parseDataSource(file);
+
+            // 1. Validate file input using Schema (MIF) for xml, normal listeners for mitab
             if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == validateSyntax(file)) {
+                if (false == validateSyntax((MIFileDataSource)interactionSource)) {
                     return this.validatorReport;
                 }
             }
 
-            validateSemantic(file);
+            validateSemantic(interactionSource);
 
             return this.validatorReport;
 
@@ -186,50 +245,25 @@ public class Mi25Validator extends Validator {
 
     /**
      * Validate the syntax of a file.
-     * @param file
+     * @param interactionSource
      * @return false if syntax not valid
      */
-    public boolean validateSyntax(File file){
+    public boolean validateSyntax(MIFileDataSource interactionSource){
         this.validatorReport.getSyntaxMessages().clear();
 
-        return runSyntaxValidation(this.validatorReport, file);
-    }
-
-    /**
-     * validate the syntax of an inputStream
-     * @param streamToValidate
-     * @return false if not valid
-     */
-    public boolean validateSyntax(InputStream streamToValidate){
-        this.validatorReport.getSyntaxMessages().clear();
-
-        return runSyntaxValidation(this.validatorReport, streamToValidate);
+        return runSyntaxValidation(this.validatorReport, interactionSource);
     }
 
     /**
      * validate the semantic of a file and write the results in the report of this validator
-     * @param file
+     * @param interactionSource
      * @throws ValidatorException
-     * @throws PsimiXmlReaderException
      */
-    public void validateSemantic(File file) throws ValidatorException, PsimiXmlReaderException {
+    public void validateSemantic(InteractionStream<InteractionEvidence> interactionSource) throws ValidatorException {
         this.validatorReport.getSemanticMessages().clear();
         this.validatorReport.setInteractionCount(0);
 
-        runSemanticValidation(this.validatorReport, file);
-    }
-
-    /**
-     * validate the semantic of an inputstream and write the results in the report of this validator
-     * @param streamToValidate
-     * @throws ValidatorException
-     * @throws PsimiXmlReaderException
-     */
-    public void validateSemantic(InputStream streamToValidate) throws ValidatorException, PsimiXmlReaderException {
-        this.validatorReport.getSyntaxMessages().clear();
-        this.validatorReport.setInteractionCount(0);
-
-        runSemanticValidation(this.validatorReport, streamToValidate);
+        runSemanticValidation(this.validatorReport, interactionSource);
     }
 
     /**
@@ -241,23 +275,18 @@ public class Mi25Validator extends Validator {
      */
     public ValidatorReport validate( InputStream is ) throws ValidatorException {
 
-        this.validatorReport.clear();
-
+        OpenedInputStream openedStream = null;
         try {
-            File tempFile = storeAsTemporaryFile( is );
+            openedStream = this.fileAnalyser.extractMIFileTypeFrom(is);
+            if (openedStream == null || openedStream.getSource().equals(MIFileType.other)){
+                throw new ValidatorException("Cannot parse the MI input source because the format is not recognized");
+            }
+            long id = getUniqueId();
 
-            // close the original inputStream as it has been successfully read
-            is.close();
-
+            File tempFile = MIFileUtils.storeAsTemporaryFile(openedStream.getReader(), "validator."+id, openedStream.getSource().equals(MIFileType.psi25_xml) ? ".xml" : ".txt");
 
             // 1. Validate XML input using Schema (MIF)
-            if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == validateSyntax(tempFile)) {
-                    return this.validatorReport;
-                }
-            }
-
-            validateSemantic(tempFile);
+            validate(tempFile);
 
             tempFile.delete();
 
@@ -267,77 +296,37 @@ public class Mi25Validator extends Validator {
             throw new ValidatorException( "Unable to process input stream", e );
         } finally{
             clearThreadLocals();
+            if (openedStream != null){
+                // close the original inputStream as it has been successfully read
+                try {
+                    openedStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     /**
-     * Validates a PSI-MI 2.5 EntrySet.
+     * Validates an interaction evidence source.
      *
      * @param es the entrySet to validate.
      * @return a collection of messages
      * @throws ValidatorException
      */
-    public ValidatorReport validate( EntrySet es ) throws ValidatorException {
+    public ValidatorReport validate( InteractionStream<InteractionEvidence> es ) throws ValidatorException {
 
         this.validatorReport.clear();
+        this.processObjects.clear();
 
         try{
-            for ( Entry entry : es.getEntries() ) {
-                boolean hasExperimentList = false;
-                boolean hasInteractorList = false;
-
-                if (entry.hasExperiments()){
-                    hasExperimentList = true;
-                    for ( ExperimentDescription experiment : entry.getExperiments() ) {
-
-                        // cv mapping
-                        Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
-
-                        if( ! messages.isEmpty() ){
-                            checkExperiment(messages, experiment);
-                        }
-                        else{
-                            checkExperiment(messages, experiment);
-                        }
-
-                        this.validatorReport.getSemanticMessages().addAll(messages);
-                    }
-                }
-
-                if (entry.hasInteractors()){
-                    hasInteractorList = true;
-                    for ( Interactor interactor : entry.getInteractors() ) {
-                        // cv mapping
-                        Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
-
-                        if( ! messages.isEmpty() ){
-                            checkInteractor(messages, interactor);
-                        }
-                        else{
-                            checkInteractor(messages, interactor);
-                        }
-
-                        this.validatorReport.getSemanticMessages().addAll(messages);
-                    }
-                }
-
-                for ( Interaction interaction : entry.getInteractions() ) {
-
-                    // cv mapping
-                    Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
-                    if( ! messages.isEmpty() )
-                        messages = convertToMi25Messages( messages, interaction );
-
-                    // object rule
-                    checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
-
-                    this.validatorReport.getSemanticMessages().addAll(messages);
+            if ( userPreferences.isSaxValidationEnabled() && es instanceof MIFileDataSource) {
+                if (false == validateSyntax((MIFileDataSource)es)) {
+                    return this.validatorReport;
                 }
             }
 
-            // cluster all messages!!
-            Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(this.validatorReport.getSemanticMessages());
-            this.validatorReport.setSemanticMessages(clusteredValidatorMessages);
+            validateSemantic(es);
         }
         finally{
             clearThreadLocals();
@@ -346,89 +335,103 @@ public class Mi25Validator extends Validator {
         return this.validatorReport;
     }
 
+    public ValidatorReport getMIValidatorReport() {
+        return validatorReport;
+    }
+
+    @Override
+    protected void instantiateCvRuleManager(OntologyManager manager, CvMapping cvMappingRules) {
+        super.setCvRuleManager(new MICvRuleManager(manager, cvMappingRules));
+    }
+
+
     //////////////////////////////
     // Private
 
     /**
-     * Runs the semantic validation and append messages to the given report.
+     * Runs the XML syntax validation and append messages to the report if any.
      *
-     * @param report the report to be completed.
-     * @param nis the data stream to be validated.
-     * @throws PsimiXmlReaderException
-     * @throws ValidatorException
+     * @param report report in which errors should be reported.
+     * @param interactionSource MI file source to be validated.
+     * @return true is the validation passed, false otherwise.
      */
-    private void runSemanticValidation(ValidatorReport report, InputStream nis) throws PsimiXmlReaderException, ValidatorException {
+    private boolean runSyntaxValidation(ValidatorReport report, MIFileDataSource interactionSource) {
 
-        // Build the collection of messages in which we will accumulate the output of the validator
-        Collection<ValidatorMessage> messages = report.getSemanticMessages();
-
-        List<IndexedEntry> entries = null;
-
+        if (log.isDebugEnabled()) log.debug("[File Syntax Validation] enabled via user preferences" );
         try {
-            // then run the object rules (if any)
-            final Set<ObjectRule> rules = getObjectRules();
-            if ( (rules != null && !rules.isEmpty()) || getCvRuleManager() != null) {
-                if( entries == null ) {
-                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
-                    entries = psiReader.getIndexedEntries();
-                }
+            Collection<ValidatorMessage> messages = this.syntaxRule.check(interactionSource);
+            return processSyntaxValidation(report, messages);
 
-                processSemanticValidation(report, messages, entries);
+        } catch (Exception e) {
+            log.error("Parsing error while running file syntax validation", e);
+            String msg = "An unexpected error occured while running the syntax validation";
+            if( e.getMessage() != null ) {
+                msg = msg + ": " + e.getMessage();
+            }
+            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
+            report.getSyntaxMessages().add(message);
+
+            return false; // abort
+        }
+    }
+
+    private boolean processSyntaxValidation(ValidatorReport report, Collection<ValidatorMessage> messages) {
+        if ( !messages.isEmpty() ) {
+
+            if (log.isDebugEnabled()) log.debug( "[Syntax Validation] File with syntax errors/warnings." );
+            report.getSyntaxMessages().addAll( messages );
+
+            // check if we have FATAL message level
+            for (ValidatorMessage message : messages){
+                // we have one syntax fatal error. We don't need to do semantic validation
+                if (message.getLevel().equals(MessageLevel.FATAL)){
+                    report.setSyntaxValid(false);
+                }
+                else {
+                    report.setSyntaxWarnings(true);
+                }
             }
 
-        } catch(Exception e){
-            PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
+            // show an error message
+            if (log.isDebugEnabled()) {
+                log.debug( messages.size() + " message" + ( messages.size() > 1 ? "s" : "" ) + "" );
+            }
+            if (log.isDebugEnabled() && !report.isSyntaxValid()) log.debug( "Abort semantic validation." );
 
-            StringBuffer messageBuffer = schemaRule.createMessageFromException(e);
-            messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
-                    "to be fixed before finishing the validation of the file.");
-
-            Mi25ClusteredContext context = new Mi25ClusteredContext();
-
-            messages.clear();
-            messages.add( new ValidatorMessage( messageBuffer.toString(),
-                    MessageLevel.FATAL,
-                    context,
-                    schemaRule ) );
+            // cluster all messages!!
+            Collection<ValidatorMessage> clusteredValidatorMessages = ValidatorUtils.clusterByMessagesAndRules(report.getSyntaxMessages());
+            report.setSyntaxMessages(clusteredValidatorMessages);
+            return report.isSyntaxValid();
+        } else {
+            if (log.isDebugEnabled()) log.debug( "[Syntax Validation] File is valid." );
         }
-        finally {
-            clearThreadLocals();
-        }
+
+        return true;
     }
 
     /**
      * Runs the semantic validation and append messages to the given report.
      *
      * @param report the report to be completed.
-     * @param file the file to be validated.
-     * @throws PsimiXmlReaderException
+     * @param interactionSource the interaction source to be validated.
      * @throws ValidatorException
      */
-    private void runSemanticValidation(ValidatorReport report, File file) throws PsimiXmlReaderException, ValidatorException {
+    private void runSemanticValidation(ValidatorReport report, InteractionStream<InteractionEvidence> interactionSource) throws ValidatorException {
 
         // Build the collection of messages in which we will accumulate the output of the validator
         Collection<ValidatorMessage> messages = report.getSemanticMessages();
 
-        List<IndexedEntry> entries = null;
-
         try {
             // then run the object rules (if any)
-            final Set<ObjectRule> rules = getObjectRules();
-            if ( (rules != null && !rules.isEmpty()) || getCvRuleManager() != null) {
-                if( entries == null ) {
-                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( file );
-                    entries = psiReader.getIndexedEntries();
-                }
-
-                processSemanticValidation(report, messages, entries);
+            if ( this.validateObjectRule || getCvRuleManager() != null) {
+                processSemanticValidation(report, messages, interactionSource);
             }
 
         } catch(Exception e){
-            PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
-
-            StringBuffer messageBuffer = schemaRule.createMessageFromException(e);
-            messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
-                    "to be fixed before finishing the validation of the file.");
+            StringBuffer messageBuffer = new StringBuffer();
+            messageBuffer.append("\n The validator reported at least " + messages.size() + " semantic messages but the error while parsing the MI file need " +
+                    "to be able to finish the semantic validation. Error message thrown : ");
+            messageBuffer.append(ExceptionUtils.getMessage(e));
 
             Mi25Context context = new Mi25Context();
 
@@ -436,510 +439,343 @@ public class Mi25Validator extends Validator {
             messages.add( new ValidatorMessage( messageBuffer.toString(),
                     MessageLevel.FATAL,
                     context,
-                    schemaRule ) );
+                    this.syntaxRule ) );
         }
     }
 
-    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, List<IndexedEntry> entries) throws PsimiXmlReaderException, ValidatorException {
-        for ( IndexedEntry entry : entries ) {
-            boolean hasExperimentList = false;
-            boolean hasInteractorList = false;
+    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, InteractionStream<InteractionEvidence> interactionSource) throws ValidatorException {
+        // now process interactions
+        Iterator<InteractionEvidence> interactionIterator = interactionSource.getInteractionsIterator();
+        int number = 0;
+        while ( interactionIterator.hasNext() ) {
+            InteractionEvidence interaction = interactionIterator.next();
 
-            final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
+            // check using cv mapping rules
+            messages.addAll(super.checkCvMapping(interaction, "/interactionEvidence/"));
 
-            if (experimentIterator.hasNext()){
-                hasExperimentList = true;
-
-                while ( experimentIterator.hasNext() ) {
-                    ExperimentDescription experiment = experimentIterator.next();
-
-                    // check using cv mapping rules
-                    Collection<ValidatorMessage> validatorMessages =
-                            super.checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
-
-                    if (validatorMessages != null){
-                        validatorMessages = convertToMi25Messages( validatorMessages, experiment );
-
-                        validatorMessages.addAll(checkExperiment(validatorMessages, experiment));
-                    }
-                    else {
-                        validatorMessages = checkExperiment(validatorMessages, experiment);
-                    }
-
-                    if( !validatorMessages.isEmpty() ) {
-                        long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
-                        updateLineNumber( validatorMessages, lineNumber );
-                    }
-
-                    // append messages to the global collection
-                    messages.addAll( validatorMessages );
-                }
+            // check object rules
+            if (validateObjectRule){
+                checkInteraction(messages, interaction);
             }
-
-            // now process interactors
-            final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
-
-            if (interactorIterator.hasNext()){
-                hasInteractorList = true;
-
-                while ( interactorIterator.hasNext() ) {
-                    Interactor interactor = interactorIterator.next();
-
-                    // check using cv mapping rules
-                    Collection<ValidatorMessage> validatorMessages =
-                            super.checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
-
-                    if (validatorMessages != null){
-                        validatorMessages = convertToMi25Messages( validatorMessages, interactor );
-
-                        validatorMessages.addAll(checkInteractor(validatorMessages, interactor));
-                    }
-                    else {
-                        validatorMessages = checkInteractor(validatorMessages, interactor);
-                    }
-
-                    if( !validatorMessages.isEmpty() ) {
-                        long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
-                        updateLineNumber( validatorMessages, lineNumber );
-                    }
-
-                    // append messages to the global collection
-                    messages.addAll( validatorMessages );
-                }
-            }
-
-            // now process interactions
-            Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
-            while ( interactionIterator.hasNext() ) {
-                Interaction interaction = interactionIterator.next();
-
-                // check using cv mapping rules
-                Collection<ValidatorMessage> interactionMessages =
-                        super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
-
-                if (interactionMessages != null){
-                    interactionMessages = convertToMi25Messages( interactionMessages, interaction );
-
-                    interactionMessages.addAll(checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList));
-                }
-                else {
-                    interactionMessages = checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList);
-                }
-
-                // add line number
-                if( !interactionMessages.isEmpty() ) {
-                    long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
-                    updateLineNumber( interactionMessages, lineNumber );
-                }
-
-                // append messages to the global collection
-                messages.addAll( interactionMessages );
-            }
+            number++;
         }
 
+        // add count of interactions
+        report.setInteractionCount(number);
+
         // cluster all messages!!
-        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
+        Collection<ValidatorMessage> clusteredValidatorMessages = ValidatorUtils.clusterByMessagesAndRules(report.getSemanticMessages());
         report.setSemanticMessages(clusteredValidatorMessages);
     }
 
-    private Collection<ValidatorMessage> checkInteraction(Collection<ValidatorMessage> messages, Interaction interaction, boolean hasExperimentList, boolean hasInteractorList) throws ValidatorException {
+    private void checkInteraction(Collection<ValidatorMessage> messages, InteractionEvidence interaction) throws ValidatorException {
         // run the interaction specialized rules
-        Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
-
-        if (!hasExperimentList){
-            for (ExperimentDescription experiment : interaction.getExperiments()){
-                checkExperiment(interactionMessages, experiment);
-            }
+        messages.addAll(this.interactionEvidenceRuleWrapper.check(interaction));
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(interaction));
         }
 
+        // validate experiment if not done yet
+        Experiment exp = interaction.getExperiment();
+        if (exp != null && this.processObjects.add(exp)){
+            checkExperiment(messages, exp);
+        }
+
+        // validate participants
+        for (ParticipantEvidence p : interaction.getParticipants()){
+            checkParticipant(messages, p, interaction);
+        }
+
+        // validate confidences
         for (Confidence c : interaction.getConfidences()){
-            checkConfidence(interactionMessages, c);
+            checkConfidence(messages, c, interaction, "interaction");
         }
 
-        for (InteractionType it : interaction.getInteractionTypes()){
-            // run the interaction type specialized rules
-            interactionMessages.addAll(super.validate( it ));
+        // validate parameters
+        for (Parameter p : interaction.getParameters()){
+            checkParameter(messages, p, interaction, "interaction");
         }
 
-        for (Participant p : interaction.getParticipants()){
-            checkParticipant(interactionMessages, p, hasInteractorList);
-
-            for (Feature f : p.getFeatures()){
-                checkFeature(interactionMessages, f);
-            }
+        // validate identifier
+        for (Xref ref : interaction.getIdentifiers()){
+            checkXref(messages, ref, interaction, "interaction");
         }
 
-        // append messages to the global collection
-        if( ! interactionMessages.isEmpty() )
-            messages.addAll( convertToMi25Messages( interactionMessages, interaction ) );
-        return interactionMessages;
+        // validate xref
+        for (Xref ref : interaction.getXrefs()){
+            checkXref(messages, ref, interaction, "interaction");
+        }
+
+        // validate annotations
+        for (Annotation a : interaction.getAnnotations()){
+            checkAnnotation(messages, a, interaction, "interaction");
+        }
     }
 
-    private Collection<ValidatorMessage> checkExperiment(Collection<ValidatorMessage> messages, ExperimentDescription experiment) throws ValidatorException {
+    private void checkAnnotation(Collection<ValidatorMessage> messages, Annotation a, Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> annotationMessages = this.annotationRuleWrapper.check(a);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(a));
+        }
+        // add context
+        for (ValidatorMessage message : annotationMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
+        }
+    }
+
+    private void checkXref(Collection<ValidatorMessage> messages, Xref ref, Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> refMessages = this.xrefRuleWrapper.check(ref);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(ref));
+        }
+        // add context
+        for (ValidatorMessage message : refMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
+        }
+    }
+
+    private void checkParameter(Collection<ValidatorMessage> messages, Parameter c, Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> paramMessages = this.parameterRuleWrapper.check(c);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(c));
+        }
+        // add context
+        for (ValidatorMessage message : paramMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
+        }
+    }
+
+    private void checkConfidence(Collection<ValidatorMessage> messages, Confidence c , Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> confMessages = this.confidenceRuleWrapper.check(c);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(c));
+        }
+        // add context
+        for (ValidatorMessage message : confMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
+        }
+    }
+
+    private void checkExperiment(Collection<ValidatorMessage> messages, Experiment experiment) throws ValidatorException {
         // run the experiment specialized rules
-        Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
+        messages.addAll(this.experimentRuleWrapper.check(experiment));
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(experiment));
+        }
 
-        // run the bibref specialized rules
-        validatorMessages.addAll(super.validate( experiment.getBibref() ));
+        // run the publication specialized rules
+        Publication publication = experiment.getPublication();
+        if (publication != null){
+            checkPublication(messages, publication, experiment);
+        }
 
-        // run the feature detection method specialized rules
-        validatorMessages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
+        // validate host organism
+        if (experiment.getHostOrganism() != null){
+            checkOrganism(messages, experiment.getHostOrganism(), experiment, "experiment");
+        }
 
-        // run the interaction detection method specialized rules
-        validatorMessages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
-
-        // run the participant identification method specialized rules
-        validatorMessages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
-
+        // validate confidences
         for (Confidence c : experiment.getConfidences()){
-            checkConfidence(validatorMessages, c);
+            checkConfidence(messages, c, experiment, "experiment");
         }
 
-        for (Organism o : experiment.getHostOrganisms()){
-            checkOrganism(validatorMessages, o);
+        // validate xref
+        for (Xref ref : experiment.getXrefs()){
+            checkXref(messages, ref, experiment, "experiment");
         }
 
-        if( ! validatorMessages.isEmpty() )
-            messages.addAll( convertToMi25Messages( validatorMessages, experiment ) );
-        return validatorMessages;
+        // validate annotations
+        for (Annotation a : experiment.getAnnotations()){
+            checkAnnotation(messages, a, experiment, "experiment");
+        }
     }
 
-    private Collection<ValidatorMessage> checkInteractor(Collection<ValidatorMessage> messages, Interactor interactor) throws ValidatorException {
-        // run the interactor specialized rules
-        final Collection<ValidatorMessage> validatorMessages = super.validate( interactor );
-
-        // run the interactor type specialized rules
-        validatorMessages.addAll(super.validate( interactor.getInteractorType() ));
-
-        if (interactor.getOrganism() != null){
-            Organism o = interactor.getOrganism();
-
-            checkOrganism(validatorMessages, o);
+    private void checkPublication(Collection<ValidatorMessage> messages, Publication p, Experiment parent) throws ValidatorException {
+        Collection<ValidatorMessage> confMessages = this.publicationRuleWrapper.check(p);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(p));
+        }
+        // add context
+        for (ValidatorMessage message : confMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "experiment"));
+            messages.add(message);
         }
 
-        if( ! validatorMessages.isEmpty() )
-            messages.addAll( convertToMi25Messages( validatorMessages, interactor ) );
+        // validate identifier
+        for (Xref ref : p.getIdentifiers()){
+            checkXref(messages, ref, p, "publication");
+        }
 
-        return validatorMessages;
+        // validate xref
+        for (Xref ref : p.getXrefs()){
+            checkXref(messages, ref, p, "publication");
+        }
+
+        // validate annotations
+        for (Annotation a : p.getAnnotations()){
+            checkAnnotation(messages, a, p, "publication");
+        }
     }
 
-    private void checkParticipant(Collection<ValidatorMessage> validatorMessages, Participant p, boolean hasInteractorList) throws ValidatorException {
+    private void checkParticipant(Collection<ValidatorMessage> messages, ParticipantEvidence p, InteractionEvidence parent) throws ValidatorException {
         // run the participant specialized rules
-        validatorMessages.addAll(super.validate( p ));
-
-        if (p.getInteractor() != null && !hasInteractorList){
-            checkInteractor(validatorMessages, p.getInteractor());
+        Collection<ValidatorMessage> partMessages = (this.participantRuleWrapper.check(p));
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(p));
+        }
+        // add context
+        for (ValidatorMessage message : partMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "interaction"));
+            messages.add(message);
         }
 
-        // run the biological roles specialized rules
-        validatorMessages.addAll(super.validate( p.getBiologicalRole() ));
-
-        for (ParticipantIdentificationMethod m : p.getParticipantIdentificationMethods()){
-            // run the participant identification specialized rules
-            validatorMessages.addAll(super.validate( m ));
-        }
-        for (ExperimentalRole role : p.getExperimentalRoles()){
-            // run the experimental role specialized rules
-            validatorMessages.addAll(super.validate( role ));
-        }
-        for (Confidence c : p.getConfidenceList()){
-            // run the confidence specialized rules
-            validatorMessages.addAll(super.validate( c ));
+        // validate interactor
+        if (p.getInteractor() != null && this.processObjects.add(p.getInteractor())){
+            checkInteractor(messages, p.getInteractor());
         }
 
-        for (ExperimentalPreparation ep : p.getExperimentalPreparations()){
-            // run the experimental preparation specialized rules
-            validatorMessages.addAll(super.validate( ep ));
+        // validate features
+        for (FeatureEvidence f : p.getFeatures()){
+            checkFeature(messages, f, p, parent);
         }
 
-        for (ExperimentalInteractor ei : p.getExperimentalInteractors()){
-            // run the experimental interactor specialized rules
-            if (ei.getInteractor() != null && !hasInteractorList){
-                checkInteractor(validatorMessages, ei.getInteractor());
-            }
+        // validate confidences
+        for (Confidence c : p.getConfidences()){
+            checkConfidence(messages, c, p, "participant");
         }
 
-        for (HostOrganism o : p.getHostOrganisms()){
-            checkOrganism(validatorMessages, o.getOrganism());
+        // validate parameters
+        for (Parameter param : p.getParameters()){
+            checkParameter(messages, param, p, "participant");
         }
-    }
 
-    private void checkFeature(Collection<ValidatorMessage> validatorMessages, Feature f ) throws ValidatorException {
-        // run the feature specialized rules
-        validatorMessages.addAll(super.validate( f ));
+        // validate alias
+        for (Alias alias : p.getAliases()){
+            checkAlias(messages, alias, p, "participant");
+        }
 
-        // run the feature detection method specialized rules
-        validatorMessages.addAll(super.validate( f.getFeatureDetectionMethod() ));
+        // validate xref
+        for (Xref ref : p.getXrefs()){
+            checkXref(messages, ref, p, "participant");
+        }
 
-        // run the feature type specialized rules
-        validatorMessages.addAll(super.validate( f.getFeatureType() ));
+        // validate annotations
+        for (Annotation a : p.getAnnotations()){
+            checkAnnotation(messages, a, p, "participant");
+        }
 
-        for (Range r : f.getRanges()){
-            // run the start status specialized rules
-            validatorMessages.addAll(super.validate( r.getStartStatus() ));
-
-            // run the end status specialized rules
-            validatorMessages.addAll(super.validate( r.getEndStatus() ));
+        // validate expressed in organism
+        if (p.getExpressedInOrganism() != null){
+            checkOrganism(messages, p.getExpressedInOrganism(), p, "participant");
         }
     }
 
-    private void checkConfidence(Collection<ValidatorMessage> validatorMessages, Confidence c ) throws ValidatorException {
-        if (c.getUnit() != null){
-            // run the unit specialized rules
-            validatorMessages.addAll(super.validate( c.getUnit() ));
-        }
-    }
-
-    private void checkOrganism(Collection<ValidatorMessage> validatorMessages, Organism o ) throws ValidatorException {
+    private void checkOrganism(Collection<ValidatorMessage> messages, Organism o, Object parent, String label ) throws ValidatorException {
 
         // run the organism specialized rules
-        validatorMessages.addAll(super.validate( o ));
-
-        if (o.getCellType() != null){
-            // run the celltype specialized rules
-            validatorMessages.addAll(super.validate( o.getCellType() ));
+        Collection<ValidatorMessage> organismMessages = (this.organismRuleWrapper.check(o));
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(o));
         }
-
-        if (o.getTissue() != null){
-            // run the tissue specialized rules
-            validatorMessages.addAll(super.validate( o.getTissue() ));
+        // add context
+        for (ValidatorMessage message : organismMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
         }
-
-        if (o.getCompartment() != null){
-            // run the compartment specialized rules
-            validatorMessages.addAll(super.validate( o.getCompartment() ));
+        // validate aliases
+        for (Alias alias : o.getAliases()){
+            checkAlias(messages, alias, o, "organism");
         }
     }
 
-    /**
-     * Runs the XML syntax validation and append messages to the report if any.
-     *
-     * @param report report in which errors should be reported.
-     * @param nis stream of data to be validated.
-     * @return true is the validation passed, false otherwise.
-     */
-    private boolean runSyntaxValidation(ValidatorReport report, InputStream nis) {
-
-        if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
-        SaxReport saxReport = null;
-        try {
-            saxReport = SaxValidatorHandler.validate( nis );
-        } catch (Exception e) {
-            log.error("SAX error while running syntax validation", e);
-            String msg = "An unexpected error occured while running the syntax validation";
-            if( e.getMessage() != null ) {
-                msg = msg + ": " + e.getMessage();
-            }
-            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
-            report.getSyntaxMessages().add(message);
-
-            return false; // abort
+    private void checkAlias(Collection<ValidatorMessage> messages, Alias alias, Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> aliasMessages = this.aliasRuleWrapper.check(alias);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(alias));
         }
-
-        return processSyntaxValidation(report, saxReport);
-    }
-
-    /**
-     * Runs the XML syntax validation and append messages to the report if any.
-     *
-     * @param report report in which errors should be reported.
-     * @param file file to be validated.
-     * @return true is the validation passed, false otherwise.
-     */
-    private boolean runSyntaxValidation(ValidatorReport report, File file) {
-
-        if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
-        SaxReport saxReport = null;
-        try {
-            saxReport = SaxValidatorHandler.validate( file );
-        } catch (Exception e) {
-            log.error("SAX error while running syntax validation", e);
-            String msg = "An unexpected error occured while running the syntax validation";
-            if( e.getMessage() != null ) {
-                msg = msg + ": " + e.getMessage();
-            }
-            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
-            report.getSyntaxMessages().add(message);
-
-            return false; // abort
-        }
-
-        return processSyntaxValidation(report, saxReport);
-    }
-
-    private boolean processSyntaxValidation(ValidatorReport report, SaxReport saxReport) {
-        if ( !saxReport.isValid() ) {
-
-            if (log.isDebugEnabled()) log.debug( "[SAX Validation] File not PSI 2.5 valid." );
-
-            // show an error message
-            Collection<SaxMessage> messages = saxReport.getMessages();
-            if (log.isDebugEnabled()) {
-                log.debug( messages.size() + " message" + ( messages.size() > 1 ? "s" : "" ) + "" );
-            }
-            Collection<ValidatorMessage> validatorMessages = new ArrayList<ValidatorMessage>( messages.size() );
-            for ( SaxMessage saxMessage : messages ) {
-                // convert SaxMessage into a ValidatorMessage
-                ValidatorMessage vm = new ValidatorMessage( saxMessage, MessageLevel.FATAL );
-                validatorMessages.add( vm );
-            }
-
-            report.getSyntaxMessages().addAll( validatorMessages );
-
-            if (log.isDebugEnabled()) log.debug( "Abort semantic validation." );
-            return false;
-        } else {
-            if (log.isDebugEnabled()) log.debug( "[SAX Validation] File is valid." );
-        }
-
-        return true;
-    }
-
-    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, Interaction interaction ) {
-        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
-
-        for ( ValidatorMessage message : messages ) {
-            Mi25Context context = null;
-
-            if (message.getContext() instanceof Mi25Context){
-                context = (Mi25Context) message.getContext();
-            }
-            else {
-                context = new Mi25Context();
-            }
-
-            context.setInteractionId( interaction.getId() );
-            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
-        }
-
-        return convertedMessages;
-    }
-
-    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, ExperimentDescription experiment ) {
-        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
-
-        for ( ValidatorMessage message : messages ) {
-            Mi25Context context = null;
-
-            if (message.getContext() instanceof Mi25Context){
-                context = (Mi25Context) message.getContext();
-            }
-            else {
-                context = new Mi25Context();
-            }
-
-            context.setExperimentId( experiment.getId() );
-            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
-        }
-
-        return convertedMessages;
-    }
-
-    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, Interactor interactor ) {
-        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
-
-        for ( ValidatorMessage message : messages ) {
-            Mi25Context context = null;
-
-            if (message.getContext() instanceof Mi25Context){
-                context = (Mi25Context) message.getContext();
-            }
-            else {
-                context = new Mi25Context();
-            }
-
-            context.setInteractorId( interactor.getId() );
-            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
-        }
-
-        return convertedMessages;
-    }
-
-    private void updateLineNumber( Collection<ValidatorMessage> validatorMessages, long lineNumber ) {
-        if( lineNumber > 0 ) {
-            for ( ValidatorMessage msg : validatorMessages ) {
-                if( msg.getContext() instanceof Mi25Context ) {
-                    ((Mi25Context) msg.getContext() ).setLineNumber( lineNumber );
-                }
-            }
+        // add context
+        for (ValidatorMessage message : aliasMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
         }
     }
 
-    public Collection<ValidatorMessage> clusterByMessagesAndRules (Collection<ValidatorMessage> messages){
-        Collection<ValidatorMessage> clusteredMessages = new ArrayList<ValidatorMessage>( messages.size() );
-
-        // build a first clustering by message and rule
-        Map<String, Map<Rule, Set<ValidatorMessage>>> clustering = new HashMap<String, Map<Rule, Set<ValidatorMessage>>>();
-        for (ValidatorMessage message : messages){
-
-            if (clustering.containsKey(message.getMessage())){
-                Map<Rule, Set<ValidatorMessage>> messagesCluster = clustering.get(message.getMessage());
-
-                if (messagesCluster.containsKey(message.getRule())){
-                    messagesCluster.get(message.getRule()).add(message);
-                }
-                else{
-                    Set<ValidatorMessage> validatorContexts = new HashSet<ValidatorMessage>();
-                    validatorContexts.add(message);
-                    messagesCluster.put(message.getRule(), validatorContexts);
-                }
-            }
-            else {
-                Map<Rule, Set<ValidatorMessage>> messagesCluster = new HashMap<Rule, Set<ValidatorMessage>>();
-
-                Set<ValidatorMessage> validatorContexts = new HashSet<ValidatorMessage>();
-                validatorContexts.add(message);
-                messagesCluster.put(message.getRule(), validatorContexts);
-
-                clustering.put(message.getMessage(), messagesCluster);
-            }
+    private void checkInteractor(Collection<ValidatorMessage> messages, Interactor interactor) throws ValidatorException {
+        // run the interactor specialized rules
+        messages.addAll(this.interactorRuleWrapper.check(interactor));
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(interactor));
         }
 
-        // build a second cluster by message level
-        Map<MessageLevel, Mi25ClusteredContext> clusteringByMessageLevel = new HashMap<MessageLevel, Mi25ClusteredContext>();
-
-        for (Map.Entry<String, Map<Rule, Set<ValidatorMessage>>> entry : clustering.entrySet()){
-
-            String message = entry.getKey();
-            Map<Rule, Set<ValidatorMessage>> ruleCluster = entry.getValue();
-
-            // cluster by message level and create proper validatorMessage
-            for (Map.Entry<Rule, Set<ValidatorMessage>> ruleEntry : ruleCluster.entrySet()){
-                clusteringByMessageLevel.clear();
-
-                Rule rule = ruleEntry.getKey();
-                Set<ValidatorMessage> validatorMessages = ruleEntry.getValue();
-
-                for (ValidatorMessage validatorMessage : validatorMessages){
-
-                    if (clusteringByMessageLevel.containsKey(validatorMessage.getLevel())){
-                        Mi25ClusteredContext clusteredContext = clusteringByMessageLevel.get(validatorMessage.getLevel());
-
-                        clusteredContext.getContexts().add(validatorMessage.getContext());
-                    }
-                    else{
-                        Mi25ClusteredContext clusteredContext = new Mi25ClusteredContext();
-
-                        clusteredContext.getContexts().add(validatorMessage.getContext());
-
-                        clusteringByMessageLevel.put(validatorMessage.getLevel(), clusteredContext);
-                    }
-                }
-
-                for (Map.Entry<MessageLevel, Mi25ClusteredContext> levelEntry : clusteringByMessageLevel.entrySet()){
-
-                    ValidatorMessage validatorMessage = new ValidatorMessage(message, levelEntry.getKey(), levelEntry.getValue(), rule);
-                    clusteredMessages.add(validatorMessage);
-
-                }
-            }
+        // validate organism
+        if (interactor.getOrganism() != null){
+            checkOrganism(messages, interactor.getOrganism(), interactor, "interactor");
         }
 
-        return clusteredMessages;
+        // validate aliases
+        for (Alias alias : interactor.getAliases()){
+            checkAlias(messages, alias, interactor, "interactor");
+        }
+
+        // validate identifier
+        for (Xref ref : interactor.getIdentifiers()){
+            checkXref(messages, ref, interactor, "interactor");
+        }
+
+        // validate xref
+        for (Xref ref : interactor.getXrefs()){
+            checkXref(messages, ref, interactor, "interactor");
+        }
+
+        // validate annotations
+        for (Annotation a : interactor.getAnnotations()){
+            checkAnnotation(messages, a, interactor, "interactor");
+        }
     }
 
-    public ValidatorReport getMIValidatorReport() {
-        return validatorReport;
+    private void checkFeature(Collection<ValidatorMessage> messages, FeatureEvidence f, ParticipantEvidence parent, InteractionEvidence parent2 ) throws ValidatorException {
+        // run the feature specialized rules
+        Collection<ValidatorMessage> partMessages = (this.featureRuleWrapper.check(f));
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(f));
+        }
+        // add context
+        for (ValidatorMessage message : partMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "participant"));
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent2, "interaction"));
+            messages.add(message);
+        }
+
+        // validate identifier
+        for (Xref ref : f.getIdentifiers()){
+            checkXref(messages, ref, f, "feature");
+        }
+
+        // validate xref
+        for (Xref ref : f.getXrefs()){
+            checkXref(messages, ref, f, "feature");
+        }
+
+        // validate annotations
+        for (Annotation a : f.getAnnotations()){
+            checkAnnotation(messages, a, f, "feature");
+        }
     }
 
     private void clearThreadLocals(){
@@ -949,5 +785,19 @@ public class Mi25Validator extends Validator {
         DatabaseAccessionRule.closeGeneralCacheAdministrator();
         // close GeneralCacheAdministrator for OntologyManagerContext
         OntologyManagerContext.removeInstance();
+    }
+
+    private InteractionStream<InteractionEvidence> parseDataSource(File file) throws IOException {
+        PsiJami.initialiseInteractionEvidenceSources();
+        MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
+        MIDataSourceOptionFactory optionsFactory = MIDataSourceOptionFactory.getInstance();
+
+        // by default we always have interaction evidences
+        InteractionStream<InteractionEvidence> interactionSource = dataSourceFactory.getInteractionSourceWith(optionsFactory.getDefaultOptions(file));
+
+        if (interactionSource == null){
+            throw new IOException("Cannot parse the file "+file.getName());
+        }
+        return interactionSource;
     }
 }

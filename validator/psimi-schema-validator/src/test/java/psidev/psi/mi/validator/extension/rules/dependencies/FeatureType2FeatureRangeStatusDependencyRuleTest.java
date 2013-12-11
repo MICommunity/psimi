@@ -2,14 +2,18 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultPosition;
+import psidev.psi.mi.jami.model.impl.DefaultRange;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.Collection;
-
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * FeatureType2FeatureRangeStatusRule Tester.
@@ -30,7 +34,7 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
     @Test
     public void check_Tag_ok() throws Exception {
 
-        Feature feature = buildFeature( "MI:0507", "tag", "MI:1039", "c-terminal position", "MI:1039", "c-terminal position" );
+        FeatureEvidence feature = buildFeature( "MI:0507", "tag", "MI:1039", "c-terminal position", "MI:1039", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
@@ -47,7 +51,7 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
     @Test
     public void check_Tag_Warning() throws Exception {
 
-        Feature feature = buildFeature( "MI:0507", "tag", "MI:0338", "range", "MI:1039", "c-terminal position" );
+        FeatureEvidence feature = buildFeature( "MI:0507", "tag", "MI:0338", "range", "MI:1039", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
@@ -63,8 +67,8 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
      */
     @Test
     public void check_Tag_Children_Warning() throws Exception {
-       
-        Feature feature = buildFeature( "MI:0239", "biotin tag", "MI:0338", "range", "MI:1039", "c-terminal position" );
+
+        FeatureEvidence feature = buildFeature( "MI:0239", "biotin tag", "MI:0338", "range", "MI:1039", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
@@ -74,44 +78,28 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
         Assert.assertEquals( 1, messages.size() );
     }
 
-    private Feature buildFeature( String typeMi, String typeName,
+    private FeatureEvidence buildFeature( String typeMi, String typeName,
                                  String startMi, String startName,
                                  String endMi, String endName) {
 
 
-        final FeatureType type = new FeatureType();
-        type.setXref( new Xref() );
-        type.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, typeMi, IDENTITY, IDENTITY_MI_REF ) );
-        type.setNames( new Names() );
-        type.getNames().setShortLabel( typeName );
+        final CvTerm type = CvTermUtils.createMICvTerm(typeName, typeMi);
 
-        Feature feature = new Feature();
-        feature.setFeatureType(type);
+        FeatureEvidence feature = new DefaultFeatureEvidence();
+        feature.setType(type);
 
         addFeatureRange(feature, startMi, startName, endMi, endName);
 
         return feature;
     }
 
-    private void addFeatureRange( Feature feature,
+    private void addFeatureRange( FeatureEvidence feature,
                                  String startMi, String startName, String endMi, String endName ) {
 
-        final RangeStatus start = new RangeStatus();
-        final RangeStatus end = new RangeStatus();
+        final CvTerm start = CvTermUtils.createMICvTerm(startName, startMi);
+        final CvTerm end = CvTermUtils.createMICvTerm(endName, endMi);
 
-        start.setXref( new Xref() );
-        start.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, startMi, IDENTITY, IDENTITY_MI_REF ) );
-        start.setNames( new Names() );
-        start.getNames().setShortLabel( startName );
-
-        end.setXref( new Xref() );
-        end.getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, endMi, IDENTITY, IDENTITY_MI_REF ) );
-        end.setNames( new Names() );
-        end.getNames().setShortLabel( endName );
-
-        Range range = new Range();
-        range.setStartStatus(start);
-        range.setEndStatus(end);
+        Range range = new DefaultRange(new DefaultPosition(start, (long)1), new DefaultPosition(end, (long)1));
 
         feature.getRanges().add(range);
     }

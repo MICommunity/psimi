@@ -2,11 +2,12 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Rule that allows to check whether the feature type specified matches the feature detection method.
@@ -26,7 +28,7 @@ import java.util.Collection;
  * @version $Id: FeatureType2FeatureDetectionMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25InteractionRule {
+public class FeatureType2FeatureDetectionMethodDependencyRule extends AbstractMIRule<FeatureEvidence> {
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
@@ -37,7 +39,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
      * @param ontologyManager
      */
     public FeatureType2FeatureDetectionMethodDependencyRule( OntologyManager ontologyManager ) {
-        super( ontologyManager );
+        super( ontologyManager, FeatureEvidence.class );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
@@ -67,71 +69,35 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
      * For each participants of the interaction, collect all respective feature detection methods and feature types and
      * check if the dependencies are correct.
      *
-     * @param interaction to check on.
+     * @param feature to check on.
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check( FeatureEvidence feature) throws ValidatorException {
 
-        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        // The participants of the interaction
-        final Collection<Participant> participants = interaction.getParticipants();
+        Collection<CvTerm> method = feature.getDetectionMethods();
 
-//        experiments.iterator().next().getFeatureDetectionMethod();
+        if (feature.getType() != null){
+            CvTerm featureType = feature.getType();
 
-        for ( Participant participant : participants) {
+            if (!method.isEmpty()){
+                messages = new ArrayList<ValidatorMessage>(method.size());
 
-            // Features of a participant
-            Collection<Feature> features = participant.getFeatures();
-
-            for (Feature feature : features){
-
-                FeatureDetectionMethod method = null;
-
-                if (feature.hasFeatureType()){
-                    FeatureType featureType = feature.getFeatureType();
-
-                    if (feature.hasFeatureDetectionMethod()){
-                        Mi25Context context = new Mi25Context();
-                        context.setInteractionId( interaction.getId() );
-                        context.setParticipantId( participant.getId());
-                        context.setFeatureId( feature.getId());
-
-                        method = feature.getFeatureDetectionMethod();
-                        messages.addAll( mapping.check( featureType, method, context, this ) );
-                    }
-                    else {
-                        // The experiment refs of the feature
-                        final Collection<ExperimentRef> experimentRefs = feature.getExperimentRefs();
-
-                        // The experiments for detecting the interaction
-                        Collection<ExperimentDescription> experiments = RuleUtils.collectExperiment(interaction, experimentRefs);
-
-                        //Collection<ExperimentDescription> experiments = collectExperiment( interaction, feature.getExperimentRefs() );
-                        for (ExperimentDescription experiment : experiments){
-
-                            Mi25Context context = new Mi25Context();
-                            context.setInteractionId( interaction.getId() );
-                            context.setParticipantId( participant.getId());
-                            context.setFeatureId( feature.getId());
-                            context.setExperimentId(experiment.getId());
-
-                            if (experiment.hasFeatureDetectionMethod()){
-                                method = experiment.getFeatureDetectionMethod();
-                                messages.addAll( mapping.check( featureType, method, context, this ) );
-                            }
-                        }
-                    }
+                for (CvTerm met: method){
+                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    context.addAssociatedContext(RuleUtils.buildContext(featureType, "feature type"));
+                    context.addAssociatedContext(RuleUtils.buildContext(met, "feature detection method"));
+                    messages.addAll(mapping.check(featureType, met, context, this)) ;
                 }
             }
-
-        } // features
+        }
 
         return messages;
     }
 
     public String getId() {
-        return "R44";
+        return "R49";
     }
 }

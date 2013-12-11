@@ -1,10 +1,13 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Confidence;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.ConfidenceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.Attribute;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -12,6 +15,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
@@ -24,10 +28,10 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
  * @version $Id$
  * @since 2.0
  */
-public class ConfidenceScoreRule extends Mi25InteractionRule {
+public class ConfidenceScoreRule extends AbstractMIRule<InteractionEvidence> {
 
     public ConfidenceScoreRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+        super( ontologyMaganer, InteractionEvidence.class );
 
         // describe the rule.
         setName( "Confidence Score Definition Check" );
@@ -45,67 +49,60 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
      * @return a collection of validator messages.
      * @exception ValidatorException if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
-
-        int interactionId = interaction.getId();
+    public Collection<ValidatorMessage> check( InteractionEvidence interaction ) throws ValidatorException {
 
         // list of messages to return
-        List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-
-        Mi25Context context = new Mi25Context();
-        context.setInteractionId( interactionId );
+        List<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         // write the rule here ...
 
-        final Collection<Attribute> atts = searchAttributes( interaction.getAttributes(),
-                AUTHOR_CONFIDENCE,
+        final Collection<Annotation> atts = AnnotationUtils.collectAllAnnotationsHavingTopic(interaction.getAnnotations(),
                 AUTHOR_CONFIDENCE_MI_REF,
-                messages,
-                context,
-                this);
+                AUTHOR_CONFIDENCE);
 
         if ( ! atts.isEmpty() ) {
 
             // check that in the list of experiment attached to an interaction there should be
             // at least one with a confidence mapping.
 
-            if( ! interaction.hasExperiments() ) {
-                // error, we should have at least one exp !!
-                messages.add( new ValidatorMessage( "No experiment defined for this interaction, furthermore, given " +
-                        "that the interaction defines an author confidence, the experiment " +
-                        "should have had a confidence mapping." ,
-                        MessageLevel.ERROR,
-                        context,
-                        this ) );
-            } else {
+            if (interaction.getExperiment() != null) {
+                final Collection<Annotation> expAtts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getExperiment().getAnnotations(),
+                        CONFIDENCE_MAPPING_MI_REF,
+                        CONFIDENCE_MAPPING);
 
-                boolean foundOne = false;
-                for ( ExperimentDescription experiment : interaction.getExperiments() ) {
-                    final Collection<Attribute> expAtts = searchAttributes( experiment.getAttributes(),
-                            CONFIDENCE_MAPPING,
-                            CONFIDENCE_MAPPING_MI_REF,
-                            messages,
+                if( expAtts.isEmpty() ) {
+                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
+                    messages = new ArrayList<ValidatorMessage>();
+                    messages.add( new ValidatorMessage( "Could not find a confidence mapping annotation on the experiment attached to this interaction." ,
+                            MessageLevel.ERROR,
                             context,
-                            this);
-                    if( ! expAtts.isEmpty() ) {
-                        foundOne = true;
-                    }
+                            this ) );
                 }
+            }
+        }
 
-                if( ! foundOne ) {
+        final Collection<Confidence> confs = ConfidenceUtils.collectAllConfidencesHavingType(interaction.getConfidences(),
+                Confidence.AUTHOR_BASED_CONFIDENCE_MI,
+                "author score");
 
-                    final int expCount = interaction.getExperiments().size();
+        if ( ! confs.isEmpty() ) {
 
-                    String msg = null;
-                    if( expCount <= 1 ) {
-                        msg = "Could not find a confidence mapping on the experiment attached to this interaction.";
-                        context.setExperimentId( interaction.getExperiments().iterator().next().getId() );
-                    } else {
-                        msg = "Could not find a confidence mapping on any of the "+ expCount +
-                                " experiments attached to this interaction.";
+            // check that in the list of experiment attached to an interaction there should be
+            // at least one with a confidence mapping.
+
+            if( interaction.getExperiment() != null) {
+
+                final Collection<Annotation> expAtts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getExperiment().getAnnotations(),
+                        CONFIDENCE_MAPPING_MI_REF,
+                        CONFIDENCE_MAPPING);
+
+                if( expAtts.isEmpty() ) {
+                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                    if (messages.isEmpty()){
+                        messages = new ArrayList<ValidatorMessage>();
                     }
-
-                    messages.add( new ValidatorMessage( msg ,
+                    messages.add( new ValidatorMessage( "Could not find a confidence mapping on the experiment attached to this interaction." ,
                             MessageLevel.ERROR,
                             context,
                             this ) );
@@ -117,6 +114,6 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
     }
 
     public String getId() {
-        return "R16";
+        return "R23";
     }
 }

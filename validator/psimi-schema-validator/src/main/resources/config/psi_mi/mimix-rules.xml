@@ -8,16 +8,12 @@
         <import type="resource" rules="/config/psi_mi/object-rules.xml"/>
     </importRuleList>
 
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.BiologicalRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ConfidenceScoreRule"/>
-    <!--<rule class="psidev.psi.mi.validator.extension.rules.InteractorNameRule"/>-->
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentBibRefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.PublicationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentParticipantIdentificationMethodRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentalRoleRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ParticipantIdentificationMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorIdentityRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ProteinOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorOrganismRule"/>
 
 </objectRuleList>

@@ -10,7 +10,10 @@ package psidev.psi.mi.validator.extension;
 
 public class Mi25ValidatorConfig{
 
-    private final String crossReference2CrossReferenceType = "/crossReference2Location2CrossRefType.tsv";
+    private final String experimentCrossReference2CrossReferenceType = "/experimentCrossReference2CrossRefType.tsv";
+    private final String interactionCrossReference2CrossReferenceType = "/interactionCrossReference2CrossRefType.tsv";
+    private final String interactorCrossReference2CrossReferenceType = "/interactorCrossReference2CrossRefType.tsv";
+    private final String featureCrossReference2CrossReferenceType = "/featureCrossReference2CrossRefType.tsv";
     private final String featureType2FeatureDetectionMethod = "/featureType2FeatureDetectionMethod.tsv";
     private final String featureType2FeatureRange = "/featureType2FeatureRangeStatus.tsv";
     private final String interactionDetectionMethod2BiologicalRole = "/InteractionDetectionMethod2BiologicalRole.tsv";
@@ -21,8 +24,20 @@ public class Mi25ValidatorConfig{
     public Mi25ValidatorConfig() {
     }
 
-    public String getCrossReference2CrossReferenceType() {
-        return crossReference2CrossReferenceType;
+    public String getExperimentCrossReference2CrossReferenceType() {
+        return experimentCrossReference2CrossReferenceType;
+    }
+
+    public String getInteractionCrossReference2CrossReferenceType() {
+        return interactionCrossReference2CrossReferenceType;
+    }
+
+    public String getInteractorCrossReference2CrossReferenceType() {
+        return interactorCrossReference2CrossReferenceType;
+    }
+
+    public String getFeatureCrossReference2CrossReferenceType() {
+        return featureCrossReference2CrossReferenceType;
     }
 
     public String getFeatureType2FeatureDetectionMethod() {
