@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.datasource;
 
-import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 
 import java.util.Map;
@@ -34,6 +33,10 @@ public class MockExperimentDataSource implements MIFileDataSource {
 
     public MIFileParserListener getFileParserListener() {
         return null;
+    }
+
+    public void setFileParserListener(MIFileParserListener listener) {
+        // do nothing
     }
 
     public boolean validateSyntax() {
