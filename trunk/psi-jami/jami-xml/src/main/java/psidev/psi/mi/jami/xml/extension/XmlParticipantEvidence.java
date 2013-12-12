@@ -84,7 +84,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         if (originalInteraction != null){
 
-            List<XmlExperiment> originalExperiments = originalInteraction.getOriginalExperiments();
+            List<ExtendedPsi25Experiment> originalExperiments = originalInteraction.getOriginalExperiments();
             if (originalExperiments != null && !originalExperiments.isEmpty()){
                 // participant identification method overrides the one in the experiment
                 if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()
@@ -102,7 +102,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
                         this.originalIdentificationMethods = null;
                     }
 
-                    for (XmlExperiment exp : originalExperiments){
+                    for (ExtendedPsi25Experiment exp : originalExperiments){
                         if (exp.getParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
                             this.jaxbParticipantionIdentificationWrapper.identificationMethods.add(exp.getParticipantIdentificationMethod());
                         }

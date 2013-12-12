@@ -319,7 +319,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
         return jaxbExperimentWrapper;
     }
 
-    protected List<XmlExperiment> getOriginalExperiments(){
+    protected List<ExtendedPsi25Experiment> getOriginalExperiments(){
         return jaxbExperimentWrapper != null ? jaxbExperimentWrapper.jaxbExperiments : Collections.EMPTY_LIST;
     }
 
