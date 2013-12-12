@@ -113,7 +113,7 @@ public abstract class AbstractRuleTest {
 
         feature.setType(featureType);
 
-        Range certain = RangeUtils.createCertainRange(3);
+        Range certain = RangeUtils.createCertainRange((int)beginPosition, (int)endPosition);
         feature.getRanges().add(certain);
 
         return feature;

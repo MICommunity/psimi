@@ -176,7 +176,7 @@
             <version>2.0</version>
         </dependency>
 
-        <!-- JAXB -->
+        <!-- JAXB: expects this version -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -188,7 +188,7 @@
             <version>2.2.7</version>
         </dependency>
 
-        <!-- xerces -->
+        <!-- xerces: IMPORTANT to override with the overriden JAXB version -->
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
