@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCooperativeEffect;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
-import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
+import psidev.psi.mi.jami.xml.reference.AbstractComplexRef;
 import psidev.psi.mi.jami.xml.reference.AbstractParticipantRef;
 
 /**
@@ -148,6 +148,13 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
             return "Affected modelled interaction Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
         }
 
+        @Override
+        protected void initialiseParticipantDelegate() {
+            XmlModelledParticipant modelled = new XmlModelledParticipant();
+            modelled.setId(this.ref);
+            setDelegate(modelled);
+        }
+
         public FileSourceLocator getSourceLocator() {
             return this.sourceLocator;
         }
@@ -184,7 +191,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
     /**
      * interaction ref for affected cooperative interaction
      */
-    private class ModelledInteractionRef extends AbstractComplexReference {
+    private class ModelledInteractionRef extends AbstractComplexRef {
         private PsiXmLocator sourceLocator;
 
         public ModelledInteractionRef(int ref, PsiXmLocator locator) {

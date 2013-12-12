@@ -1,8 +1,13 @@
 package psidev.psi.mi.jami.xml.reference;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.extension.XmlExperiment;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstract class for an ModelledInteractionRef
@@ -12,94 +17,288 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractExperimentRef extends AbstractXmlIdReference implements Experiment{
+public abstract class AbstractExperimentRef extends AbstractXmlIdReference implements ExtendedPsi25Experiment{
+    private static final Logger logger = Logger.getLogger("AbstractFeatureRef");
+    private ExtendedPsi25Experiment delegate;
 
     public AbstractExperimentRef(int ref) {
         super(ref);
     }
 
     public Publication getPublication() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have a publication for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getPublication();
     }
 
     public void setPublication(Publication publication) {
-        throw new IllegalStateException("The experiment reference is not resolved and wecannot set a publication for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setPublication(publication);
     }
 
     public void setPublicationAndAddExperiment(Publication publication) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot set a publication for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setPublicationAndAddExperiment(publication);
     }
 
     public Collection<Xref> getXrefs() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have xrefs for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have annotations for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getAnnotations();
     }
 
     public Collection<Confidence> getConfidences() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have confidences for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getConfidences();
     }
 
     public CvTerm getInteractionDetectionMethod() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have an interaction detection method for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getInteractionDetectionMethod();
     }
 
     public void setInteractionDetectionMethod(CvTerm term) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot set an interaction detection method for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setInteractionDetectionMethod(term);
     }
 
     public Organism getHostOrganism() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have a host prganism for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getHostOrganism();
     }
 
     public void setHostOrganism(Organism organism) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot set a host organism for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setHostOrganism(organism);
     }
 
     public Collection<InteractionEvidence> getInteractionEvidences() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have interaction evidences for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getInteractionEvidences();
     }
 
     public boolean addInteractionEvidence(InteractionEvidence evidence) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot add interaction evidence for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.addInteractionEvidence(evidence);
     }
 
     public boolean removeInteractionEvidence(InteractionEvidence evidence) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot remove interaction evidence for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.removeInteractionEvidence(evidence);
     }
 
     public boolean addAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot add interaction evidences for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.addAllInteractionEvidences(evidences);
     }
 
     public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot remove interaction evidences for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.removeAllInteractionEvidences(evidences);
     }
 
     public Collection<VariableParameter> getVariableParameters() {
-        throw new IllegalStateException("The experiment reference is not resolved and we don't have variable parameters for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getVariableParameters();
     }
 
     public boolean addVariableParameter(VariableParameter variableParameter) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot add variable parameters for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.addVariableParameter(variableParameter);
     }
 
     public boolean removeVariableParameter(VariableParameter variableParameter) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot remove a variable parameter for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.removeVariableParameter(variableParameter);
     }
 
     public boolean addAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot add variable parameters for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.addAllVariableParameters(variableParameters);
     }
 
     public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
-        throw new IllegalStateException("The experiment reference is not resolved and we cannot remove variable parameters for experiment id "+ref);
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.removeAllVariableParameters(variableParameters);
+    }
+
+    @Override
+    public void setFeatureDetectionMethod(CvTerm method) {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setFeatureDetectionMethod(method);
+    }
+
+    @Override
+    public CvTerm getFeatureDetectionMethod() {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getFeatureDetectionMethod();
+    }
+
+    @Override
+    public void setParticipantIdentificationMethod(CvTerm method) {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setParticipantIdentificationMethod(method);
+    }
+
+    @Override
+    public CvTerm getParticipantIdentificationMethod() {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getParticipantIdentificationMethod();
+    }
+
+    @Override
+    public List<Organism> getHostOrganisms() {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getHostOrganisms();
+    }
+
+    @Override
+    public void setId(int id) {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setId(id);
+    }
+
+    @Override
+    public int getId() {
+        return this.delegate != null ? this.delegate.getId() : this.ref;
+    }
+
+    @Override
+    public String getShortName() {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getShortName();
+    }
+
+    @Override
+    public void setShortName(String name) {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setShortName(name);
+    }
+
+    @Override
+    public String getFullName() {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getFullName();
+    }
+
+    @Override
+    public void setFullName(String name) {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        this.delegate.setFullName(name);
+    }
+
+    @Override
+    public <A extends Alias> Collection<A> getAliases() {
+        logger.log(Level.WARNING, "The experiment reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseExperimentDelegate();
+        }
+        return this.delegate.getAliases();
     }
 
     @Override
     public String toString() {
         return "Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+    }
+    protected void initialiseExperimentDelegate(){
+        this.delegate = new XmlExperiment();
+        this.delegate.setId(this.ref);
+    }
+
+    protected ExtendedPsi25Experiment getDelegate() {
+        return delegate;
     }
 }

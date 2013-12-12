@@ -1,12 +1,11 @@
 package psidev.psi.mi.jami.xml.listener;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -117,5 +116,25 @@ public class PsiXmlParserLogger implements PsiXmlParserListener {
 
     public void onUnresolvedReference(XmlIdReference ref, String message) {
         logger.log(Level.SEVERE, "Unresolved reference: "+ref.toString()+ ", "+message);
+    }
+
+    @Override
+    public void onSeveralHostOrganismFound(Collection<Organism> organisms, FileSourceLocator locator) {
+        logger.log(Level.WARNING, "Found " + organisms + " host organisms attached to the same experiment. "+locator.toString());
+    }
+
+    @Override
+    public void onSeveralExpressedInOrganismFound(Collection<Organism> organisms, FileSourceLocator locator) {
+        logger.log(Level.WARNING, "Found " + organisms + " host organisms attached to the same participant. "+locator.toString());
+    }
+
+    @Override
+    public void onSeveralExperimentalRolesFound(Collection<CvTerm> roles, FileSourceLocator locator) {
+        logger.log(Level.WARNING, "Found " + roles + " experimental roles attached to the same participant. "+locator.toString());
+    }
+
+    @Override
+    public void onSeveralExperimentsFound(Collection<Experiment> experiments, FileSourceLocator locator) {
+        logger.log(Level.WARNING, "Found " + experiments + " experiments attached to the same interaction. "+locator.toString());
     }
 }

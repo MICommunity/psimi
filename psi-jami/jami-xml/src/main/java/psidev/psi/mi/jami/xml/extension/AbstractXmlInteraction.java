@@ -348,10 +348,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         return "Interaction: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 
-    public void setJAXBIdOnly(int value) {
-        this.id = value;
-    }
-
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         this.jaxbAttributeWrapper = jaxbAttributeWrapper;
     }

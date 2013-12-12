@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.Entry;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.annotation.*;
@@ -346,6 +347,12 @@ public class AbstractXmlExperiment implements ExtendedPsi25Experiment, FileSourc
 
     public void setJAXBHostOrganismWrapper(JAXBHostOrganismWrapper wrapper) {
         this.jaxbHostOrganismWrapper = wrapper;
+        if (this.jaxbHostOrganismWrapper != null && this.jaxbHostOrganismWrapper.hostOrganisms.size() > 1 ){
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
+            if (listener != null){
+               listener.onSeveralHostOrganismFound(this.jaxbHostOrganismWrapper.hostOrganisms, this.jaxbHostOrganismWrapper.getSourceLocator());
+            }
+        }
     }
 
     /**
