@@ -30,7 +30,7 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
         CvTerm cellLine = new DefaultCvTerm("test cell line");
         Xref cabri = XrefUtils.createXrefWithQualifier(RuleUtils.CABRI, RuleUtils.CABRI_MI_REF, "test", RuleUtils.IDENTITY, RuleUtils.IDENTITY_MI_REF);
 
-        cellLine.getXrefs().add(cabri);
+        cellLine.getIdentifiers().add(cabri);
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 
@@ -46,7 +46,7 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
         CvTerm cellLine = new DefaultCvTerm("test cell line");
         Xref cabri = XrefUtils.createXrefWithQualifier(RuleUtils.CELL_ONTOLOGY, RuleUtils.CELL_ONTOLOGY_MI_REF, "test", RuleUtils.IDENTITY, RuleUtils.IDENTITY_MI_REF);
 
-        cellLine.getXrefs().add(cabri);
+        cellLine.getIdentifiers().add(cabri);
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 

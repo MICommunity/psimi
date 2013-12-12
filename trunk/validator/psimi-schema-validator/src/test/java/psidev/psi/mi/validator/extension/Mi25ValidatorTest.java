@@ -117,7 +117,7 @@ public class Mi25ValidatorTest {
         // Defines MI:xxxx as a experimental role
         Collection<ValidatorMessage> messages = getValidationMessage( "10409737-wrongExperimentalRole.xml" );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     @Test
@@ -125,7 +125,7 @@ public class Mi25ValidatorTest {
         // THIs one defines the term MI:0495 that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage("10409737-wrongExperimentalRole_2.xml");
         printMessages(messages);
-        Assert.assertEquals(1, messages.size());
+        Assert.assertEquals(2, messages.size());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class Mi25ValidatorTest {
         // This one defines the term MI:xxxx that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage( "10409737-wrongBiologicalRole.xml" );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     @Test
@@ -141,7 +141,7 @@ public class Mi25ValidatorTest {
         // This one defines the term MI:xxxx that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage("10409737-wrongInteractorType.xml" );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     @Test
@@ -184,7 +184,7 @@ public class Mi25ValidatorTest {
         // This one defines the term MI:xxxx that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage( "10409737-wrongExperimentBibrefDb.xml" );
         printMessages( messages );
-        Assert.assertEquals( 0, messages.size() );    // now it is taken care by an object rule
+        Assert.assertEquals( 1, messages.size() );    // now it is taken care by an object rule
     }
 
     @Test
@@ -192,7 +192,7 @@ public class Mi25ValidatorTest {
         // This one defines a valid PubMed term
         Collection<ValidatorMessage> messages = getValidationMessage( "10409737-experimentWithPubmed.xml"  );
         printMessages( messages );
-        Assert.assertEquals( 0, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
@@ -200,7 +200,7 @@ public class Mi25ValidatorTest {
         // This one defines the term MI:xxxx that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737-experimentWithDOI.xml" );
         printMessages( messages );
-        Assert.assertEquals( 0, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
@@ -209,8 +209,7 @@ public class Mi25ValidatorTest {
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737-wrongFeatureDetectionOnFeature.xml" );
         printMessages( messages );
 
-        // TODO here it throws 2 errors as the featureDetectionMethod on experiment doesn't exist and a rule requires it
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     @Test
@@ -218,7 +217,7 @@ public class Mi25ValidatorTest {
         // This one defines a valid DOI term
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737-wrongFeatureDetectionOnExperiment.xml"  );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     @Test
@@ -234,7 +233,7 @@ public class Mi25ValidatorTest {
         // This one does not defines the term ... the rule should tolerate it
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737-noFeatureType.xml"  );
         printMessages( messages );
-        Assert.assertEquals( 0, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
@@ -242,7 +241,7 @@ public class Mi25ValidatorTest {
         // This one defines the term MI:xxxx that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737-wrongParticipantDetection.xml" );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
 //    @Test
@@ -302,7 +301,7 @@ public class Mi25ValidatorTest {
     public void validate_validFile() throws Exception {
         Collection<ValidatorMessage> messages = getValidationMessage ("10409737.xml" );
         printMessages( messages );
-        Assert.assertTrue( messages.isEmpty() );
+        Assert.assertEquals(1, messages.size() );
     }
 
     @Test
