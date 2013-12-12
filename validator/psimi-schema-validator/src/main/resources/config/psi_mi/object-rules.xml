@@ -14,5 +14,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ParameterSyntaxRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractionExperimentRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ConfidenceSyntaxRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractionParticipantRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingCvTermNameRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ChecksumSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractorNameRule"/>
 </objectRuleList>

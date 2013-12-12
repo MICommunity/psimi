@@ -76,6 +76,6 @@ public class TissueXRefRule extends AbstractMIRule<Organism> {
         return Collections.EMPTY_LIST;
     }
     public String getId() {
-        return "R41";
+        return "R44";
     }
 }

@@ -97,6 +97,6 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
     }
 
     public String getId() {
-        return "R43";
+        return "R46";
     }
 }

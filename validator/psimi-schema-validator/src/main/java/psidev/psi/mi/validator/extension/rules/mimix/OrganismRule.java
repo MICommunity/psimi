@@ -48,6 +48,6 @@ public class OrganismRule extends AbstractMIRule<Organism> {
     }
 
     public String getId() {
-        return "R27";
+        return "R30";
     }
 }

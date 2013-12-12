@@ -82,6 +82,6 @@ public class CellLineXrefRule extends AbstractMIRule<Organism>{
     }
 
     public String getId() {
-        return "R31";
+        return "R34";
     }
 }

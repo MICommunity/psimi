@@ -83,6 +83,6 @@ public class ProteinIdentityRule extends AbstractMIRule<Protein> {
     }
 
     public String getId() {
-        return "R40";
+        return "R43";
     }
 }

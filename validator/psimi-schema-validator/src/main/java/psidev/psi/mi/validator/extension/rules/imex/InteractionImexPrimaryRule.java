@@ -42,6 +42,6 @@ public class InteractionImexPrimaryRule extends AbstractMIRule<InteractionEviden
     }
 
     public String getId() {
-        return "R36";
+        return "R39";
     }
 }

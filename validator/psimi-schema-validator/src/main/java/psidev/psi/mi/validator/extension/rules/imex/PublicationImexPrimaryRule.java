@@ -45,6 +45,6 @@ public class PublicationImexPrimaryRule extends AbstractMIRule<Publication> {
     }
 
     public String getId() {
-        return "R32";
+        return "R35";
     }
 }
