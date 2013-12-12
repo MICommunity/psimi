@@ -45,14 +45,14 @@ public class MIFileAnalyzer {
                 }
 
                 // skip empty lines or break lines or xml encode line
-                while (line != null && (line.trim().length() == 0 || line.trim().equals(System.getProperty("line.separator")) || line.trim().startsWith("<?xml"))){
+                while (line != null && (line.trim().length() == 0 || line.trim().equals(System.getProperty("line.separator")) || line.trim().contains("<?xml"))){
                     line = reader.readLine();
                 }
 
                 if (line == null){
                     return MIFileType.other;
                 }
-                else if (line.startsWith("<entrySet")){
+                else if (line.contains("<entrySet")){
                     return MIFileType.psi25_xml;
                 }
                 else{
@@ -116,23 +116,23 @@ public class MIFileAnalyzer {
                     return MIFileType.other;
                 }
                 // we have xml
-                else if (line.trim().startsWith("<?xml")){
+                else if (line.trim().contains("<?xml")){
                     if (line.contains("<entrySet")){
                         return MIFileType.psi25_xml;
                     }
 
                     String line2 = reader.readLine();
-                    if (line2 != null && line2.startsWith("<entrySet")){
+                    if (line2 != null && line2.contains("<entrySet")){
                         return MIFileType.psi25_xml;
                     }
                     else {
                         return MIFileType.other;
                     }
                 }
-                else if (line.startsWith("<entrySet")){
+                else if (line.contains("<entrySet")){
                     return MIFileType.psi25_xml;
                 }
-                else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
+                else if (line.toLowerCase().trim().contains(MITAB_25_TITLE.toLowerCase())){
                     return MIFileType.mitab;
                 }
                 else if (line.contains("\t")){
