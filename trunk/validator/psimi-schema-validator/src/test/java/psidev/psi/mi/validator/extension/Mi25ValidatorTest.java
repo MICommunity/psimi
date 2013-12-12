@@ -105,11 +105,11 @@ public class Mi25ValidatorTest {
         preferences.setKeepDownloadedOntologiesOnDisk( true );
         aValidator.setUserPreferences( preferences );
 
-        for (ObjectRule rule : aValidator.getObjectRules()){
+        for (ObjectRule rule : aValidator.getAllRules()){
             System.out.print(rule.getClass().getCanonicalName() + "\n");
         }
 
-        Assert.assertEquals( 40, aValidator.getAllRules().size() );
+        Assert.assertEquals( 42, aValidator.getAllRules().size() );
     }
 
     @Test
@@ -148,7 +148,7 @@ public class Mi25ValidatorTest {
     public void validate_Experiment() throws Exception {
         // Test a valid file
         Collection<ValidatorMessage> messages = getValidationMessage("Alzheimer.xml" );
-        printMessages( messages );
+        printMessages(messages);
         Assert.assertEquals( 0, messages.size() );
     }
 
