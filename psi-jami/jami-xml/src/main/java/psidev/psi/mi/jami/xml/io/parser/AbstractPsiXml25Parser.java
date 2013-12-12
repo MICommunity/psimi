@@ -591,7 +591,7 @@ public abstract class AbstractPsiXml25Parser<T extends Interaction> implements P
             if (this.currentElement != null){
                 // load experimentDescription
                 while (this.currentElement != null && PsiXml25Utils.EXPERIMENT_TAG.equals(this.currentElement)) {
-                    unmarshaller.unmarshal(this.streamReader, XmlExperiment.class);
+                    unmarshaller.unmarshal(this.streamReader);
                     this.currentElement = getNextPsiXml25StartElement();
                 }
             }
