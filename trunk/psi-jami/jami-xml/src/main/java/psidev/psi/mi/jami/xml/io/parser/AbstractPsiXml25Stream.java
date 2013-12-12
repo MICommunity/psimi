@@ -109,6 +109,14 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     }
 
     @Override
+    public void setFileParserListener(MIFileParserListener listener) {
+        this.defaultParserListener = listener;
+        if (listener instanceof PsiXmlParserListener){
+            this.parserListener = (PsiXmlParserListener)listener;
+        }
+    }
+
+    @Override
     public boolean validateSyntax() throws MIIOException {
         if (!isInitialised){
             throw new IllegalStateException("The PsiXml interaction datasource has not been initialised. The options for the Psi xml interaction datasource should contains at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
