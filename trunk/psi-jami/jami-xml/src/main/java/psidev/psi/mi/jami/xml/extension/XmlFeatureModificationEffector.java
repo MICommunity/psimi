@@ -92,6 +92,13 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
             return "Allosteric feature effector Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
         }
 
+        @Override
+        protected void initialiseFeatureDelegate() {
+            XmlModelledFeature modelled = new XmlModelledFeature();
+            modelled.setId(this.ref);
+            setDelegate(modelled);
+        }
+
         public FileSourceLocator getSourceLocator() {
             return this.sourceLocator;
         }

@@ -151,6 +151,13 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
             return "Participant Reference in inferred Participant: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
         }
 
+        @Override
+        protected void initialiseParticipantDelegate() {
+            XmlModelledParticipant modelled = new XmlModelledParticipant();
+            modelled.setId(this.ref);
+            setDelegate(modelled);
+        }
+
         public FileSourceLocator getSourceLocator() {
             return getInferredParticipantLocator();
         }
@@ -179,6 +186,13 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         @Override
         public String toString() {
             return "Feature Reference in inferred participant: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+        }
+
+        @Override
+        protected void initialiseFeatureDelegate() {
+            XmlFeature modelled = new XmlFeature();
+            modelled.setId(this.ref);
+            setDelegate(modelled);
         }
 
         public FileSourceLocator getSourceLocator() {

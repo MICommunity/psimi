@@ -12,8 +12,8 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
-import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
-import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;
+import psidev.psi.mi.jami.xml.reference.AbstractComplexRef;
+import psidev.psi.mi.jami.xml.reference.AbstractInteractorRef;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -433,7 +433,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
     //////////////////////////////////////////////////////////// classes
 
-    private class InteractionRef extends AbstractComplexReference{
+    private class InteractionRef extends AbstractComplexRef {
         public InteractionRef(int ref) {
             super(ref);
         }
@@ -491,7 +491,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         }
     }
 
-    private class InteractorRef extends AbstractInteractorReference{
+    private class InteractorRef extends AbstractInteractorRef {
         public InteractorRef(int ref) {
             super(ref);
         }

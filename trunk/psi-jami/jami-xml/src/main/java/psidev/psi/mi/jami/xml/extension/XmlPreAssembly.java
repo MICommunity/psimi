@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.impl.DefaultPreassemby;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
-import psidev.psi.mi.jami.xml.reference.AbstractComplexReference;
+import psidev.psi.mi.jami.xml.reference.AbstractComplexRef;
 
 /**
  * Xml implementation of preassembly
@@ -56,7 +56,7 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
     /**
      * interaction ref for affected cooperative interaction
      */
-    private class ModelledInteractionRef extends AbstractComplexReference {
+    private class ModelledInteractionRef extends AbstractComplexRef {
         private PsiXmLocator sourceLocator;
 
         public ModelledInteractionRef(int ref, PsiXmLocator locator) {

@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.Xml25EntryContext;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -289,6 +291,12 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlElement(name="experimentalRoleList")
     public void setJAXBExperimentalRoleWrapper(JAXBExperimentalRoleWrapper wrapper) {
         this.jaxbExperimentalRoleWrapper = wrapper;
+        if (this.jaxbExperimentalRoleWrapper != null && this.jaxbExperimentalRoleWrapper.experimentalRoles.size() > 1 ){
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onSeveralExperimentalRolesFound(this.jaxbExperimentalRoleWrapper.experimentalRoles, this.jaxbExperimentalRoleWrapper.getSourceLocator());
+            }
+        }
     }
 
     @XmlElement(name="experimentalPreparationList")
@@ -304,6 +312,12 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlElement(name="hostOrganismList")
     public void setJAXBHostOrganismWrapper(JAXBHostOrganismWrapper wrapper) {
         this.jaxbHostOrganismWrapper = wrapper;
+        if (this.jaxbHostOrganismWrapper != null && this.jaxbHostOrganismWrapper.hostOrganisms.size() > 1 ){
+            PsiXmlParserListener listener = Xml25EntryContext.getInstance().getListener();
+            if (listener != null){
+                listener.onSeveralExpressedInOrganismFound(this.jaxbHostOrganismWrapper.hostOrganisms, this.jaxbHostOrganismWrapper.getSourceLocator());
+            }
+        }
     }
 
     @XmlElement(name="parameterList")

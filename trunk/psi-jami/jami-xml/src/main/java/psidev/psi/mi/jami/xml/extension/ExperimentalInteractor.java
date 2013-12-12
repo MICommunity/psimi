@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
-import psidev.psi.mi.jami.xml.reference.AbstractInteractorReference;
+import psidev.psi.mi.jami.xml.reference.AbstractInteractorRef;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.extension.factory.XmlInteractorFactory;
 
@@ -292,7 +292,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
         }
     }
 
-    private class InteractorRef extends AbstractInteractorReference{
+    private class InteractorRef extends AbstractInteractorRef {
         public InteractorRef(int ref) {
             super(ref);
         }

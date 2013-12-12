@@ -2,8 +2,11 @@ package psidev.psi.mi.jami.xml.reference;
 
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Participant;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstract participant reference
@@ -13,89 +16,228 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractParticipantRef<T extends Feature> extends AbstractXmlIdReference implements Entity<T>{
+public abstract class AbstractParticipantRef<T extends Feature> extends AbstractXmlIdReference implements ExtendedPsi25Participant<T>{
+    private static final Logger logger = Logger.getLogger("AbstractParticipantRef");
+    private ExtendedPsi25Participant<T> delegate;
+
     public AbstractParticipantRef(int ref) {
         super(ref);
     }
 
     public Interactor getInteractor() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have an interactor for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getInteractor();
     }
 
     public void setInteractor(Interactor interactor) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot set the interactor for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setInteractor(interactor);
     }
 
     public CvTerm getBiologicalRole() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have a biological role for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getBiologicalRole();
     }
 
     public void setBiologicalRole(CvTerm bioRole) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot set the biological role for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setBiologicalRole(bioRole);
     }
 
     public CausalRelationship getCausalRelationship() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have a causal relationship for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getCausalRelationship();
     }
 
     public void setCausalRelationship(CausalRelationship relationship) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot set a causal relationship for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setCausalRelationship(relationship);
     }
 
     public Collection<Xref> getXrefs() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have xrefs for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have annotations an interactor for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getAnnotations();
     }
 
     public Collection<Alias> getAliases() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have aliases for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getAliases();
     }
 
     public Stoichiometry getStoichiometry() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have a stoichiometry for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getStoichiometry();
     }
 
     public void setStoichiometry(Integer stoichiometry) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot set the stoichiometry for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setStoichiometry(stoichiometry);
     }
 
     public void setStoichiometry(Stoichiometry stoichiometry) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot set the stoichiometry for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setStoichiometry(stoichiometry);
     }
 
     public Collection<T> getFeatures() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have features for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getFeatures();
     }
 
     public ParticipantInteractorChangeListener getChangeListener() {
-        throw new IllegalStateException("The participant reference is not resolved and we don't have a change listener for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getChangeListener();
     }
 
     public void setChangeListener(ParticipantInteractorChangeListener listener) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot set the change listener for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setChangeListener(listener);
     }
 
     public boolean addFeature(T feature) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot add a feature for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.addFeature(feature);
     }
 
     public boolean removeFeature(T feature) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot remove a feature for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.removeFeature(feature);
     }
 
     public boolean addAllFeatures(Collection<? extends T> features) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot add features for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.addAllFeatures(features);
     }
 
     public boolean removeAllFeatures(Collection<? extends T> features) {
-        throw new IllegalStateException("The participant reference is not resolved and we cannot remove features for participant id "+ref);
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.removeAllFeatures(features);
+    }
+
+    @Override
+    public void setId(int id) {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setId(id);
+    }
+
+    @Override
+    public int getId() {
+        return this.delegate != null ? this.delegate.getId() : this.ref;
+    }
+
+    @Override
+    public String getShortName() {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getShortName();
+    }
+
+    @Override
+    public void setShortName(String name) {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setShortName(name);
+    }
+
+    @Override
+    public String getFullName() {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getFullName();
+    }
+
+    @Override
+    public void setFullName(String name) {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setFullName(name);
     }
 
     @Override
     public String toString() {
         return "Participant Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+    }
+
+    protected abstract void initialiseParticipantDelegate();
+
+    protected ExtendedPsi25Participant<T> getDelegate() {
+        return delegate;
+    }
+
+    protected void setDelegate(ExtendedPsi25Participant<T> delegate) {
+        this.delegate = delegate;
     }
 }

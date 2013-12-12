@@ -8,10 +8,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
@@ -25,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
@@ -298,6 +296,46 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         }
         else if (defaultParserListener != null){
             defaultParserListener.onSyntaxWarning(ref, message);
+        }
+    }
+
+    @Override
+    public void onSeveralHostOrganismFound(Collection<Organism> organisms, FileSourceLocator locator) {
+        if (parserListener != null){
+            parserListener.onSeveralHostOrganismFound(organisms, locator);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning((FileSourceContext)organisms.iterator().next(), organisms.size()+" host organism attached to the same experiment");
+        }
+    }
+
+    @Override
+    public void onSeveralExpressedInOrganismFound(Collection<Organism> organisms, FileSourceLocator locator) {
+        if (parserListener != null){
+            parserListener.onSeveralExpressedInOrganismFound(organisms, locator);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning((FileSourceContext)organisms.iterator().next(), organisms.size()+" host organism attached to the same participant");
+        }
+    }
+
+    @Override
+    public void onSeveralExperimentalRolesFound(Collection<CvTerm> roles, FileSourceLocator locator) {
+        if (parserListener != null){
+            parserListener.onSeveralExperimentalRolesFound(roles, locator);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning((FileSourceContext)roles.iterator().next(), roles.size()+" experimental roles attached to the same participant");
+        }
+    }
+
+    @Override
+    public void onSeveralExperimentsFound(Collection<Experiment> experiments, FileSourceLocator locator) {
+        if (parserListener != null){
+            parserListener.onSeveralExperimentsFound(experiments, locator);
+        }
+        else if (defaultParserListener != null){
+            defaultParserListener.onSyntaxWarning((FileSourceContext)experiments.iterator().next(), experiments.size()+" experiments attached to the same interaction");
         }
     }
 

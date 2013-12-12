@@ -1,8 +1,11 @@
 package psidev.psi.mi.jami.xml.reference;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Feature;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstract feature reference
@@ -12,93 +15,208 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractFeatureRef<E extends Entity, F extends Feature> extends AbstractXmlIdReference implements Feature<E,F>{
+public abstract class AbstractFeatureRef<E extends Entity, F extends Feature> extends AbstractXmlIdReference implements ExtendedPsi25Feature<E,F>{
+    private static final Logger logger = Logger.getLogger("AbstractFeatureRef");
+    private ExtendedPsi25Feature<E,F> delegate;
+
     public AbstractFeatureRef(int ref) {
         super(ref);
     }
 
     public String getShortName() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have a shortname for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getShortName();
     }
 
     public void setShortName(String name) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the shortname for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setShortName(name);
     }
 
     public String getFullName() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have a fullname for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getFullName();
     }
 
     public void setFullName(String name) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the fullname for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setFullName(name);
     }
 
     public String getInterpro() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have an interpro identifier for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getInterpro();
     }
 
     public void setInterpro(String interpro) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the interpro identifier for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setInterpro(interpro);
     }
 
     public Collection<Xref> getIdentifiers() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have identifiers for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getIdentifiers();
     }
 
     public Collection<Xref> getXrefs() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have xrefs for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getXrefs();
     }
 
     public Collection<Annotation> getAnnotations() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have annotations for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getAnnotations();
     }
 
     public CvTerm getType() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have a type a  for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getType();
     }
 
     public void setType(CvTerm type) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the type for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setType(type);
     }
 
     public Collection<Range> getRanges() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have ranges for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getRanges();
     }
 
     public CvTerm getInteractionEffect() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have an interaction effect for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getInteractionEffect();
     }
 
     public void setInteractionEffect(CvTerm effect) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the interaction effect for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setInteractionEffect(effect);
     }
 
     public CvTerm getInteractionDependency() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have an interaction dependency for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getInteractionDependency();
     }
 
     public void setInteractionDependency(CvTerm interactionDependency) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the interaction dependency for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setInteractionDependency(interactionDependency);
     }
 
     public E getParticipant() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have a participant for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getParticipant();
     }
 
     public void setParticipant(E participant) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the participant for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setParticipant(participant);
     }
 
     public void setParticipantAndAddFeature(E participant) {
-        throw new IllegalStateException("The feature reference is not resolved and we cannot set the participant for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setParticipantAndAddFeature(participant);
     }
 
     public Collection<F> getLinkedFeatures() {
-        throw new IllegalStateException("The feature reference is not resolved and we don't have linked features for feature id "+ref);
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getLinkedFeatures();
+    }
+
+    @Override
+    public void setId(int id) {
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        this.delegate.setId(id);
+    }
+
+    @Override
+    public int getId() {
+        return this.delegate != null ? this.delegate.getId() : this.ref;
+    }
+
+    @Override
+    public Collection<Alias> getAliases() {
+        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseFeatureDelegate();
+        }
+        return this.delegate.getAliases();
     }
 
     @Override
     public String toString() {
         return "Feature Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+    }
+    protected abstract void initialiseFeatureDelegate();
+
+    protected ExtendedPsi25Feature<E, F> getDelegate() {
+        return delegate;
+    }
+
+    protected void setDelegate(ExtendedPsi25Feature<E, F> delegate) {
+        this.delegate = delegate;
     }
 }
