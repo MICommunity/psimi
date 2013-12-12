@@ -2,12 +2,13 @@ package psidev.psi.mi.validator.extension.rules;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
-import psidev.psi.mi.jami.listener.MIFileParserListener;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.tab.extension.*;
+import psidev.psi.mi.jami.tab.listener.MitabParserListener;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -26,7 +27,7 @@ import java.util.List;
  * @since <pre>10/12/13</pre>
  */
 
-public class MIFileSyntaxListenerRule extends AbstractMIRule<MIFileDataSource> implements MIFileParserListener {
+public class MIFileSyntaxListenerRule extends AbstractMIRule<MIFileDataSource> implements MitabParserListener, PsiXmlParserListener {
     private List<ValidatorMessage> validatorMessages;
 
     public MIFileSyntaxListenerRule(OntologyManager ontologyManager) {
@@ -46,111 +47,75 @@ public class MIFileSyntaxListenerRule extends AbstractMIRule<MIFileDataSource> i
     }
 
     public void onMissingCvTermName(CvTerm term, FileSourceContext context, String message) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Cv without name: "+ message, MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingInteractorName(Interactor interactor, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Interactor without name. At least a shortLabel is expected.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onParticipantWithoutInteractor(Participant participant, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Participant without interactor. A participant must always have an interactor.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onInteractionWithoutParticipants(Interaction interaction, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Interaction without participants. An interaction must always have at least one participant.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onInvalidOrganismTaxid(String taxid, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("The organism taxid "+taxid+" is not a valid taxid.", MessageLevel.WARN, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingParameterValue(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Parameter without a value. Parameters must always have a value and a parameter type.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingParameterType(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Parameter without a parameter type. Parameters must always have a value and a parameter type.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingConfidenceValue(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Confidence without a value. Confidences must always have a value and a confidence type.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingConfidenceType(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Confidence without a confidence type. Confidences must always have a value and a confidence type.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingChecksumValue(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Checksum without a value. Checksum must always have a value and a method.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onMissingChecksumMethod(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Checksum without a value. Checksum must always have a value and a method.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onInvalidPosition(String message, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Invalid range position: "+message, MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onInvalidRange(String message, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Invalid range: "+message, MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onInvalidStoichiometry(String message, FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Invalid stoichiometry: "+message, MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onXrefWithoutDatabase(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Database xref without a database. A database xref must always have a database.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onXrefWithoutId(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Database xref without an id. A database xref must always have an id.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onAnnotationWithoutTopic(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Annotation without a topic. An annotation must always have a topic.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     public void onAliasWithoutName(FileSourceContext context) {
-        if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Alias without a name. An alias must always have a name.", MessageLevel.ERROR, new Mi25Context(context.getSourceLocator()),this));
-        }
+        // do nothing
     }
 
     @Override
@@ -165,5 +130,85 @@ public class MIFileSyntaxListenerRule extends AbstractMIRule<MIFileDataSource> i
 
     public String getId() {
         return "R1";
+    }
+
+    public void onTextFoundInIdentifier(MitabXref xref) {
+        // do nothing
+    }
+
+    public void onTextFoundInConfidence(MitabConfidence conf) {
+        // do nothing
+    }
+
+    public void onMissingExpansionId(MitabCvTerm expansion) {
+        // do nothing
+    }
+
+    public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids) {
+        // do nothing
+    }
+
+    public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn) {
+        // do nothing
+    }
+
+    public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn) {
+        // do nothing
+    }
+
+    public void onSeveralOrganismFound(Collection<MitabOrganism> organisms) {
+        // do nothing
+    }
+
+    public void onSeveralStoichiometryFound(Collection<MitabStoichiometry> stoichiometry) {
+        // do nothing
+    }
+
+    public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors) {
+        // do nothing
+    }
+
+    public void onSeveralSourceFound(Collection<MitabSource> sources) {
+        // do nothing
+    }
+
+    public void onSeveralCreatedDateFound(Collection<MitabDate> dates) {
+        // do nothing
+    }
+
+    public void onSeveralUpdatedDateFound(Collection<MitabDate> dates) {
+        // do nothing
+    }
+
+    public void onAliasWithoutDbSource(MitabAlias alias) {
+        // do nothing
+    }
+
+    public void onSeveralCvTermsFound(Collection<MitabCvTerm> terms, FileSourceContext context, String message) {
+        // do nothing
+    }
+
+    public void onSeveralHostOrganismFound(Collection<MitabOrganism> organisms, FileSourceContext context) {
+        // do nothing
+    }
+
+    public void onUnresolvedReference(XmlIdReference ref, String message) {
+        // do nothing
+    }
+
+    public void onSeveralHostOrganismFound(Collection<Organism> organisms, FileSourceLocator locator) {
+        // do nothing
+    }
+
+    public void onSeveralExpressedInOrganismFound(Collection<Organism> organisms, FileSourceLocator locator) {
+        // do nothing
+    }
+
+    public void onSeveralExperimentalRolesFound(Collection<CvTerm> roles, FileSourceLocator locator) {
+        // do nothing
+    }
+
+    public void onSeveralExperimentsFound(Collection<Experiment> experiments, FileSourceLocator locator) {
+        // do nothing
     }
 }

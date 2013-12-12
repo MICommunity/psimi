@@ -8,9 +8,7 @@ import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -73,6 +71,6 @@ public class InteractorTypeRule extends AbstractMIRule<Interactor> {
     }
 
     public String getId() {
-        return "R38";
+        return "R45";
     }
 }

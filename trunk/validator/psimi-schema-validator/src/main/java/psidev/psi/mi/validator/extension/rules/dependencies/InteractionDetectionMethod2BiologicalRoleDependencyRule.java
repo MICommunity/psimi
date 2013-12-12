@@ -94,6 +94,6 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Abs
     }
 
     public String getId() {
-        return "R46";
+        return "R49";
     }
 }

@@ -48,6 +48,6 @@ public class NegativeInteractionRule extends AbstractMIRule<InteractionEvidence>
     }
 
     public String getId() {
-        return "R39";
+        return "R42";
     }
 }

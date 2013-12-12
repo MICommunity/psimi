@@ -68,7 +68,10 @@ public class Mi25Validator extends Validator {
     private ParticipantEvidenceRuleWrapper participantRuleWrapper;
     private PublicationRuleWrapper publicationRuleWrapper;
     private XrefRuleWrapper xrefRuleWrapper;
+    private CvRuleWrapper cvRuleWrapper;
+    private ChecksumRuleWrapper checksumRuleWrapper;
     private MIFileSyntaxListenerRule syntaxRule;
+    private MIFileGrammarListenerRule grammarRule;
 
     private boolean validateObjectRule = true;
 
@@ -91,6 +94,7 @@ public class Mi25Validator extends Validator {
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
+        this.grammarRule = new MIFileGrammarListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
 
         // refilter object rules
@@ -103,6 +107,7 @@ public class Mi25Validator extends Validator {
         super( ontologyManager, cvMapping, objectRules);
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
+        this.grammarRule = new MIFileGrammarListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
@@ -125,6 +130,8 @@ public class Mi25Validator extends Validator {
             this.participantRuleWrapper = new ParticipantEvidenceRuleWrapper(this.ontologyMngr);
             this.publicationRuleWrapper = new PublicationRuleWrapper(this.ontologyMngr);
             this.xrefRuleWrapper = new XrefRuleWrapper(this.ontologyMngr);
+            this.cvRuleWrapper = new CvRuleWrapper(this.ontologyMngr);
+            this.checksumRuleWrapper = new ChecksumRuleWrapper(this.ontologyMngr);
 
             for (ObjectRule rule : objectRules){
                 // if we have special rules
@@ -165,6 +172,12 @@ public class Mi25Validator extends Validator {
                     }
                     else if (miRule.getType().isAssignableFrom(Xref.class)){
                         this.xrefRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(CvTerm.class)){
+                        this.cvRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(Checksum.class)){
+                        this.checksumRuleWrapper.addRule(miRule);
                     }
                     else{
                         getObjectRules().add(rule);
@@ -394,6 +407,18 @@ public class Mi25Validator extends Validator {
         return syntaxRule;
     }
 
+    public CvRuleWrapper getCvRuleWrapper() {
+        return cvRuleWrapper;
+    }
+
+    public ChecksumRuleWrapper getChecksumRuleWrapper() {
+        return checksumRuleWrapper;
+    }
+
+    public MIFileGrammarListenerRule getGrammarRule() {
+        return grammarRule;
+    }
+
     public Collection<ObjectRule> getAllRules(){
         Collection<ObjectRule> allRules = new ArrayList<ObjectRule>(60);
         allRules.addAll(getObjectRules());
@@ -409,7 +434,13 @@ public class Mi25Validator extends Validator {
         allRules.addAll(this.publicationRuleWrapper.getRules());
         allRules.addAll(this.xrefRuleWrapper.getRules());
         allRules.addAll(this.aliasRuleWrapper.getRules());
+        allRules.addAll(this.cvRuleWrapper.getRules());
+        allRules.addAll(this.checksumRuleWrapper.getRules());
         return allRules;
+    }
+
+    public void setGrammarRule(MIFileGrammarListenerRule grammarRule) {
+        this.grammarRule = grammarRule;
     }
 
     @Override
@@ -495,10 +526,24 @@ public class Mi25Validator extends Validator {
         Collection<ValidatorMessage> messages = report.getSemanticMessages();
 
         try {
+            // report grammar rules
+            if (interactionSource instanceof MIFileDataSource){
+                ((MIFileDataSource)interactionSource).setFileParserListener(this.grammarRule);
+            }
+
             // then run the object rules (if any)
             if ( this.validateObjectRule || getCvRuleManager() != null) {
                 processSemanticValidation(report, messages, interactionSource);
             }
+
+            // report grammar rules
+            if (interactionSource instanceof MIFileDataSource){
+                messages.addAll(this.grammarRule.check((MIFileDataSource)interactionSource));
+            }
+
+            // cluster all messages!!
+            Collection<ValidatorMessage> clusteredValidatorMessages = ValidatorUtils.clusterByMessagesAndRules(report.getSemanticMessages());
+            report.setSemanticMessages(clusteredValidatorMessages);
 
         } catch(Exception e){
             StringBuffer messageBuffer = new StringBuffer();
@@ -535,10 +580,6 @@ public class Mi25Validator extends Validator {
 
         // add count of interactions
         report.setInteractionCount(number);
-
-        // cluster all messages!!
-        Collection<ValidatorMessage> clusteredValidatorMessages = ValidatorUtils.clusterByMessagesAndRules(report.getSemanticMessages());
-        report.setSemanticMessages(clusteredValidatorMessages);
     }
 
     private void checkInteraction(Collection<ValidatorMessage> messages, InteractionEvidence interaction) throws ValidatorException {
@@ -553,6 +594,11 @@ public class Mi25Validator extends Validator {
         Experiment exp = interaction.getExperiment();
         if (exp != null && this.processObjects.add(exp)){
             checkExperiment(messages, exp);
+        }
+
+        // validate interaction type
+        if (interaction.getInteractionType() != null){
+            checkCv(messages, interaction.getInteractionType(), interaction, "interaction");
         }
 
         // validate participants
@@ -583,6 +629,11 @@ public class Mi25Validator extends Validator {
         // validate annotations
         for (Annotation a : interaction.getAnnotations()){
             checkAnnotation(messages, a, interaction, "interaction");
+        }
+
+        // validate checksums
+        for (Checksum a : interaction.getChecksums()){
+            checkChecksum(messages, a, interaction, "interaction");
         }
     }
 
@@ -638,6 +689,32 @@ public class Mi25Validator extends Validator {
         }
     }
 
+    private void checkCv(Collection<ValidatorMessage> messages, CvTerm c , Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> confMessages = this.cvRuleWrapper.check(c);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(c));
+        }
+        // add context
+        for (ValidatorMessage message : confMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
+        }
+    }
+
+    private void checkChecksum(Collection<ValidatorMessage> messages, Checksum c , Object parent, String label) throws ValidatorException {
+        Collection<ValidatorMessage> confMessages = this.checksumRuleWrapper.check(c);
+        // validate with other rules if any
+        if (!getObjectRules().isEmpty()){
+            messages.addAll(super.validate(c));
+        }
+        // add context
+        for (ValidatorMessage message : confMessages){
+            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            messages.add(message);
+        }
+    }
+
     private void checkExperiment(Collection<ValidatorMessage> messages, Experiment experiment) throws ValidatorException {
         // run the experiment specialized rules
         messages.addAll(this.experimentRuleWrapper.check(experiment));
@@ -651,6 +728,9 @@ public class Mi25Validator extends Validator {
         if (publication != null){
             checkPublication(messages, publication, experiment);
         }
+
+        // validate interaction detection method
+        checkCv(messages, experiment.getInteractionDetectionMethod(), experiment, "experiment");
 
         // validate host organism
         if (experiment.getHostOrganism() != null){
@@ -722,6 +802,22 @@ public class Mi25Validator extends Validator {
         // validate features
         for (FeatureEvidence f : p.getFeatures()){
             checkFeature(messages, f, p, parent);
+        }
+
+        // validate biological role
+        checkCv(messages, p.getBiologicalRole(), p, "participant");
+
+        // validate experimental role
+        checkCv(messages, p.getExperimentalRole(), p, "participant");
+
+        // validate identification methods
+        for (CvTerm term : p.getIdentificationMethods()){
+            checkCv(messages, term, p, "participant");
+        }
+
+        // validate experimental preparations
+        for (CvTerm term : p.getExperimentalPreparations()){
+            checkCv(messages, term, p, "participant");
         }
 
         // validate confidences
@@ -800,6 +896,9 @@ public class Mi25Validator extends Validator {
             checkOrganism(messages, interactor.getOrganism(), interactor, "interactor");
         }
 
+        // validate interactor type
+        checkCv(messages, interactor.getInteractorType(), interactor, "interactor");
+
         // validate aliases
         for (Alias alias : interactor.getAliases()){
             checkAlias(messages, alias, interactor, "interactor");
@@ -819,6 +918,11 @@ public class Mi25Validator extends Validator {
         for (Annotation a : interactor.getAnnotations()){
             checkAnnotation(messages, a, interactor, "interactor");
         }
+
+        // validate checksums
+        for (Checksum a : interactor.getChecksums()){
+            checkChecksum(messages, a, interactor, "interactor");
+        }
     }
 
     private void checkFeature(Collection<ValidatorMessage> messages, FeatureEvidence f, ParticipantEvidence parent, InteractionEvidence parent2 ) throws ValidatorException {
@@ -835,6 +939,16 @@ public class Mi25Validator extends Validator {
             messages.add(message);
         }
 
+        // validate feature type
+        if (f.getType() != null){
+            checkCv(messages, f.getType(), f, "feature");
+        }
+
+        // validate feature detection method
+        for (CvTerm term : f.getDetectionMethods()){
+            checkCv(messages, term, f, "feature");
+        }
+
         // validate identifier
         for (Xref ref : f.getIdentifiers()){
             checkXref(messages, ref, f, "feature");
@@ -848,6 +962,12 @@ public class Mi25Validator extends Validator {
         // validate annotations
         for (Annotation a : f.getAnnotations()){
             checkAnnotation(messages, a, f, "feature");
+        }
+
+        // validate feature range status
+        for (Range range : f.getRanges()){
+            checkCv(messages, range.getStart().getStatus(), f, "feature");
+            checkCv(messages, range.getEnd().getStatus(), f, "feature");
         }
     }
 

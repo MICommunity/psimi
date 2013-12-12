@@ -116,6 +116,6 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends Abst
     }
 
     public String getId() {
-        return "R50";
+        return "R52";
     }
 }
