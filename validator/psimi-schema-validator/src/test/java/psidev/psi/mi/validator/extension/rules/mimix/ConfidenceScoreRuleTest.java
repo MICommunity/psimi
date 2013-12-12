@@ -78,21 +78,12 @@ public class ConfidenceScoreRuleTest extends AbstractRuleTest {
                                                         AUTHOR_CONFIDENCE_MI_REF,
                                                         "0.6" ) );
 
-        final Experiment exp = interaction.getExperiment();
-        exp.getAnnotations().add( AnnotationUtils.createAnnotation( CONFIDENCE_MAPPING,
-                                                CONFIDENCE_MAPPING_MI_REF,
-                                                "blah blah blah..." ) );
-
         // add a second experiment
         final Experiment exp2 = buildExperiment( 12345 );
         interaction.setExperimentAndAddInteractionEvidence( exp2);
         exp2.getAnnotations().add( AnnotationUtils.createAnnotation( CONFIDENCE_MAPPING,
                                                 CONFIDENCE_MAPPING_MI_REF,
                                                 "blah blah blah 2..." ) );
-
-        // add a third one without annotation
-        final Experiment exp3 = buildExperiment( 875 );
-        interaction.setExperimentAndAddInteractionEvidence( exp3);
 
         ConfidenceScoreRule rule = new ConfidenceScoreRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
@@ -113,21 +104,6 @@ public class ConfidenceScoreRuleTest extends AbstractRuleTest {
         // add a second experiment
         final Experiment exp2 = buildExperiment( 12345 );
         interaction.setExperimentAndAddInteractionEvidence( exp2);
-
-        ConfidenceScoreRule rule = new ConfidenceScoreRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
-        Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
-    }
-
-    @Test
-    public void check_fail_with_no_experiments() throws ValidatorException {
-        final InteractionEvidence interaction = buildInteractionDeterministic();
-
-        interaction.getAnnotations().add( AnnotationUtils.createAnnotation( AUTHOR_CONFIDENCE,
-                                                        AUTHOR_CONFIDENCE_MI_REF,
-                                                        "0.6" ) );
-        interaction.setExperiment(null);
 
         ConfidenceScoreRule rule = new ConfidenceScoreRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );

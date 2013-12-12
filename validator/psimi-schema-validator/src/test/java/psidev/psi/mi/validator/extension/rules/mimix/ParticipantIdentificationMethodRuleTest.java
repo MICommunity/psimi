@@ -58,7 +58,7 @@ public class ParticipantIdentificationMethodRuleTest extends AbstractRuleTest {
         final Collection<ValidatorMessage> messages = rule.check( interaction .getParticipants().iterator().next() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
-        Assert.assertEquals( 2, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ParticipantIdentificationMethodRuleTest extends AbstractRuleTest {
 
         final Collection<ValidatorMessage> messages = rule.check( interaction .getParticipants().iterator().next() );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
     private void populatesParticipants(InteractionEvidence interaction, CvTerm partMethod){

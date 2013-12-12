@@ -29,7 +29,7 @@ public class TissueXRefRuleTest extends AbstractRuleTest {
     public void test_tissue_has_BRENDA() throws ValidatorException {
         CvTerm tissue = new DefaultCvTerm("test tissue");
         Xref brenda = XrefUtils.createXrefWithQualifier(RuleUtils.BRENDA, RuleUtils.BRENDA_MI_REF, "BTO:0001863", RuleUtils.IDENTITY, RuleUtils.IDENTITY_MI_REF);
-        tissue.getXrefs().add(brenda);
+        tissue.getIdentifiers().add(brenda);
 
         TissueXRefRule rule = new TissueXRefRule(ontologyMaganer);
 
@@ -46,7 +46,7 @@ public class TissueXRefRuleTest extends AbstractRuleTest {
         CvTerm tissue = new DefaultCvTerm("test tissue");
         Xref brenda = XrefUtils.createXrefWithQualifier(RuleUtils.TISSUE_LIST, RuleUtils.TISSUE_LIST_MI_REF, "TS-0006", RuleUtils.IDENTITY, RuleUtils.IDENTITY_MI_REF );
 
-        tissue.getXrefs().add(brenda);
+        tissue.getIdentifiers().add(brenda);
 
         TissueXRefRule rule = new TissueXRefRule(ontologyMaganer);
 

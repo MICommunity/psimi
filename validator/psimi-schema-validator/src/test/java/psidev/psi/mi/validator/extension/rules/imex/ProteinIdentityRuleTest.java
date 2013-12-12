@@ -43,22 +43,24 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
     public void check_protein_ok_uniprot() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
+        interactor.getIdentifiers().clear();
         updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "P12345" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
     public void check_protein_ok_refseq() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
+        interactor.getIdentifiers().clear();
         updateInteractorIdentity( interactor, REFSEQ_MI_REF, "P12345" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
@@ -76,6 +78,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
     public void check_protein_fail() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
+        interactor.getIdentifiers().clear();
         updateInteractorIdentity( interactor, CYGD_MI_REF, "XYZ" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );

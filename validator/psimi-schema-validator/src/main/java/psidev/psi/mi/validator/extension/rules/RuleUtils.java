@@ -124,7 +124,7 @@ public final class RuleUtils {
     public static final String JOURNAL = "MI:0885";
     public static final String AUTHOR_LIST = "MI:0636";
     public static final String LIBRARY_USED = "MI:0672";
-    public static final String FIGURE_LEGEND = "figure-legend";
+    public static final String FIGURE_LEGEND = "figure legend";
     public static final String FIGURE_LEGEND_MI_REF = "MI:0599";
 
     //////////////////////////

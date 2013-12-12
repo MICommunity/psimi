@@ -53,7 +53,7 @@ public class InteractionTypeRuleTest extends AbstractRuleTest {
         Collection<ValidatorMessage> messages = rule.check(interaction);
 
         Assert.assertNotNull(messages);
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
     @Test

@@ -44,10 +44,10 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
     @Test
     public void check_ok_1_identity() throws ValidatorException {
         final InteractionEvidence interaction = buildInteractionDeterministic();
-        interaction.getXrefs().clear();
+        interaction.getIdentifiers().clear();
 
         // add a valid one
-        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
+        interaction.getIdentifiers().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
@@ -61,9 +61,9 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
         final InteractionEvidence interaction = buildInteractionDeterministic();
 
         // add a valid one
-        interaction.getXrefs().clear();
-        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
-        interaction.getXrefs().add( XrefUtils.createXrefWithQualifier( IMEX, IMEX_MI_REF, "IM-123", IDENTITY, IDENTITY_MI_REF ) );
+        interaction.getIdentifiers().clear();
+        interaction.getIdentifiers().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
+        interaction.getIdentifiers().add( XrefUtils.createXrefWithQualifier( IMEX, IMEX_MI_REF, "IM-123", IDENTITY, IDENTITY_MI_REF ) );
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
@@ -77,9 +77,9 @@ public class InteractionSourceIdentityXrefRuleTest extends AbstractRuleTest {
         final InteractionEvidence interaction = buildInteractionDeterministic();
 
         // add a valid one
-        interaction.getXrefs().clear();
-        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
-        interaction.getXrefs().add(XrefUtils.createXrefWithQualifier(RESID, RESID_MI_REF, "xyz", IDENTITY, IDENTITY_MI_REF));
+        interaction.getIdentifiers().clear();
+        interaction.getIdentifiers().add(XrefUtils.createXrefWithQualifier(INTACT, INTACT_MI_REF, "EBI-123456", IDENTITY, IDENTITY_MI_REF));
+        interaction.getIdentifiers().add(XrefUtils.createXrefWithQualifier(RESID, RESID_MI_REF, "xyz", IDENTITY, IDENTITY_MI_REF));
 
         InteractionSourceIdentityXrefRule rule = new InteractionSourceIdentityXrefRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );

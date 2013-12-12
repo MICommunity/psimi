@@ -44,7 +44,7 @@ public class InteractionTypeRule extends AbstractMIRule<InteractionEvidence>{
 
         if (interaction.getInteractionType() == null){
             Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-            messages.add( new ValidatorMessage( "The interaction does not have an interaction type. At least one interaction type is required by IMEx.'",
+            messages=Collections.singletonList( new ValidatorMessage( "The interaction does not have an interaction type. At least one interaction type is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
                     this ) );

@@ -54,10 +54,10 @@ public class TaxIdHostOrganismRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void check_invalid_taxid_zero() throws Exception {
+    public void check_invalid_taxid() throws Exception {
         final TaxIdHostOrganismRule rule = new TaxIdHostOrganismRule( ontologyMaganer );
 
-        final Organism organism = buildOrganism( 0 );
+        final Organism organism = buildOrganism( 1 );
         final Collection<ValidatorMessage> messages = rule.check( organism );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
