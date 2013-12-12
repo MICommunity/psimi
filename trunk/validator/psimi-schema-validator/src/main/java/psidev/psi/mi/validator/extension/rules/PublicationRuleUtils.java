@@ -57,9 +57,8 @@ public class PublicationRuleUtils {
     }
 
     public static Collection<ValidatorMessage> checkImexInteractionId(String imexPrimaryReference, InteractionEvidence interaction, ObjectRule experimentRule){
-
         // If there is a reference type set to 'imex-primary'
-        if (!imexPrimaryReference.isEmpty()){
+        if (imexPrimaryReference != null){
             if (imexPrimaryReference.trim().length() > 0 ){
                 if (!IMEx_INTERACTION_ID.matcher(imexPrimaryReference).matches()){
                     Mi25Context context = RuleUtils.buildContext(interaction, "interaction");

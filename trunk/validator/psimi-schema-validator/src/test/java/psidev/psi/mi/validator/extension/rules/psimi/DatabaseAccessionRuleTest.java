@@ -54,33 +54,6 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void valid_ProteinUniprot_AccessionNull() throws ValidatorException {
-
-        Protein interactor = buildProtein(null);
-
-        DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
-
-        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
-        Assert.assertNotNull( messages );
-        System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
-    }
-
-    @Test
-    public void valid_ProteinUniprot_SeveralDatabaseMatchingName() throws ValidatorException {
-
-        Protein interactor = new DefaultProtein("Q01314");
-        interactor.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("uniprot"), "Q01314"));
-
-        DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
-
-        final Collection<ValidatorMessage> messages = rule.check( interactor.getIdentifiers().iterator().next() );
-        Assert.assertNotNull( messages );
-        System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
-    }
-
-    @Test
     public void valid_ProteinUniprot_OneDatabaseMatchingName() throws ValidatorException {
 
         Protein interactor = new DefaultProtein("Q01314");

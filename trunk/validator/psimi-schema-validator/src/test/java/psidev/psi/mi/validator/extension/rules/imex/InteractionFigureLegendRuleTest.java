@@ -41,7 +41,7 @@ public class InteractionFigureLegendRuleTest extends AbstractRuleTest {
     public void test_interaction_one_figure_legend_no_ac() throws ValidatorException {
         InteractionEvidence interaction = buildInteractionDeterministic();
 
-        Annotation attribute = AnnotationUtils.createAnnotation(RuleUtils.FIGURE_LEGEND, "Fig 1");
+        Annotation attribute = AnnotationUtils.createAnnotation(Annotation.FIGURE_LEGEND, "Fig 1");
         interaction.getAnnotations().add(attribute);
 
         InteractionFigureLegendRule rule =  new InteractionFigureLegendRule(ontologyMaganer);

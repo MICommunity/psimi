@@ -31,7 +31,7 @@ public class PublicationRuleTest extends AbstractRuleTest {
 
         final Publication bibref = new DefaultPublication();
         final Xref xref = XrefUtils.createXrefWithQualifier("pubmed", "MI:0446", "123", "primary-reference", "MI:0358");
-        bibref.getXrefs().add(xref);
+        bibref.getIdentifiers().add(xref);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
@@ -45,7 +45,7 @@ public class PublicationRuleTest extends AbstractRuleTest {
 
         final Publication bibref = new DefaultPublication();
         final Xref xref = XrefUtils.createXrefWithQualifier( "doi", "MI:0574", "doi:12345677", "primary-reference", "MI:0358" );
-        bibref.getXrefs().add(xref);
+        bibref.getIdentifiers().add(xref);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
 
@@ -61,8 +61,8 @@ public class PublicationRuleTest extends AbstractRuleTest {
         Xref primary = XrefUtils.createXrefWithQualifier( "intact", "MI:0469", "EBI-2432100", "primary-reference", "MI:0358" );
         Xref secondary1 = XrefUtils.createXrefWithQualifier( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
         Xref secondary2 = XrefUtils.createXrefWithQualifier( "DOI", "MI:0574", "1234","identity", "MI:0356" );
-        bibref.getXrefs().add( primary );
-        bibref.getXrefs().add( secondary1 );
+        bibref.getIdentifiers().add( primary );
+        bibref.getIdentifiers().add( secondary1 );
         bibref.getXrefs().add(secondary2);
 
         PublicationRule rule = new PublicationRule( ontologyMaganer );
@@ -96,9 +96,9 @@ public class PublicationRuleTest extends AbstractRuleTest {
 
         final Publication bibref = new DefaultPublication();
         Xref primary = XrefUtils.createXrefWithQualifier( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        Xref secondary1 = XrefUtils.createXrefWithQualifier( "intact", "MI:0469", "IM-111", "imex-primary", "MI:0662" );
+        Xref secondary1 = XrefUtils.createXrefWithQualifier( "imex", "MI:0670", "IM-111", "imex-primary", "MI:0662" );
         Xref secondary2 = XrefUtils.createXrefWithQualifier( "DOI", "MI:0574", "1234","identity", "MI:0356" );
-        bibref.getXrefs().add( primary );
+        bibref.getIdentifiers().add( primary );
         bibref.getXrefs().add(secondary1);
         bibref.getXrefs().add(secondary2);
 

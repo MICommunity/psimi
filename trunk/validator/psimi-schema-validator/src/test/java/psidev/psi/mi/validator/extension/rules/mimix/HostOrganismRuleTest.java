@@ -33,16 +33,6 @@ public class HostOrganismRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void check_invalid_negative_taxid() throws Exception {
-        final OrganismRule rule = new OrganismRule( ontologyMaganer );
-
-        final Organism organism = buildOrganism( -6 );
-        final Collection<ValidatorMessage> messages = rule.check( organism );
-        Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
-    }
-
-    @Test
     public void check_invalid_positive_taxid() throws Exception {
         final OrganismRule rule = new OrganismRule( ontologyMaganer );
 
@@ -53,10 +43,10 @@ public class HostOrganismRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void check_invalid_taxid_zero() throws Exception {
+    public void check_invalid_taxid_one() throws Exception {
         final OrganismRule rule = new OrganismRule( ontologyMaganer );
 
-        final Organism organism = buildOrganism( 0 );
+        final Organism organism = buildOrganism( 1 );
         final Collection<ValidatorMessage> messages = rule.check( organism );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );

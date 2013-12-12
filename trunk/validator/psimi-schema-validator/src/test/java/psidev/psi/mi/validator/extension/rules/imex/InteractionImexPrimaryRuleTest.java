@@ -49,7 +49,7 @@ public class InteractionImexPrimaryRuleTest extends AbstractRuleTest {
     public void validate_Wrong_ImexId() throws Exception {
 
         Xref primary = XrefUtils.createXrefWithQualifier( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        Xref secondary1 =  XrefUtils.createXrefWithQualifier( "intact", "MI:0469", "IM-1A1", "imex-primary", "MI:0662" );
+        Xref secondary1 =  XrefUtils.createXrefWithQualifier( "imex", "MI:0670", "IM-1A1", "imex-primary", "MI:0662" );
         Xref secondary2 =  XrefUtils.createXrefWithQualifier( "DOI", "MI:0574", "1234","identity", "MI:0356" );
         InteractionEvidence interaction = new DefaultInteractionEvidence();
         interaction.getXrefs().add(primary);
@@ -79,7 +79,7 @@ public class InteractionImexPrimaryRuleTest extends AbstractRuleTest {
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
 }
