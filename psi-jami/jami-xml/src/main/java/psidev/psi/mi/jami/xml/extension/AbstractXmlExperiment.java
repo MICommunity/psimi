@@ -493,7 +493,7 @@ public class AbstractXmlExperiment implements ExtendedPsi25Experiment, FileSourc
                     this.publication.setPublicationDate(this.jaxbAttributeWrapper.publicationDate);
                     this.jaxbAttributeWrapper.publicationDate = null;
                 }
-                else {
+                else if (this.jaxbAttributeWrapper.publicationDate != null){
                     this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
                             Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI),
                             PsiXml25Utils.YEAR_FORMAT.format(this.jaxbAttributeWrapper.publicationDate)));
