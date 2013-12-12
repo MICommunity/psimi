@@ -24,6 +24,8 @@ public interface MIFileDataSource extends MIDataSource{
      */
     public MIFileParserListener getFileParserListener();
 
+    public void setFileParserListener(MIFileParserListener listener);
+
     /**
      * Validate the syntax of this MIFileDataSource.
      * It returns true if the file syntax is valid, false otherwise.

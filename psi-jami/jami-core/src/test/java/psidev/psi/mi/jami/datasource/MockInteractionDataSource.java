@@ -36,4 +36,7 @@ public class MockInteractionDataSource implements MIFileDataSource {
     public boolean validateSyntax(MIFileParserListener listener) {
         return true;
     }
+    public void setFileParserListener(MIFileParserListener listener) {
+        // do nothing
+    }
 }
