@@ -101,9 +101,9 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
         if (publication != null){
             getWriter().write("        <tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"table-title\">Publication:</td>");
+            getWriter().write("            <td class=\"table-title\" colspan=\"2\">Publication:</td></tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"normal-cell\">");
+            getWriter().write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
             getWriter().write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
@@ -135,6 +135,8 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
 
             // write identifiers
             if (!publication.getIdentifiers().isEmpty()){
+                writeSubTitle("Identifiers: ");
+
                 for (Xref ref : publication.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -147,6 +149,8 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
 
             // write xrefs
             if (!publication.getXrefs().isEmpty()){
+                writeSubTitle("Xrefs: ");
+
                 for (Xref ref : publication.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -159,6 +163,8 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
 
             // write annotations
             if (!publication.getAnnotations().isEmpty()){
+                writeSubTitle("Annotations: ");
+
                 for (Annotation ref : publication.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -171,26 +177,33 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
 
             getWriter().write("</table>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("</td>");
+            getWriter().write("</td></tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
         }
     }
 
     @Override
     protected void writeConfidences(ModelledInteraction interaction) throws IOException {
-        for (Confidence ref : interaction.getModelledConfidences()){
-            writeProperty(ref.getType().getShortName(), ref.getValue());
+        if (!interaction.getModelledConfidences().isEmpty()){
+            writeSubTitle("Confidences: ");
+
+            for (Confidence ref : interaction.getModelledConfidences()){
+                writeProperty(ref.getType().getShortName(), ref.getValue());
+            }
         }
     }
 
     @Override
     protected void writeParameters(ModelledInteraction interaction) throws IOException {
-        for (Parameter ref : interaction.getModelledParameters()){
-            if (ref.getUnit() != null){
-                writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
-            }
-            else {
-                writeProperty(ref.getType().getShortName(), ref.getValue().toString());
+        if (!interaction.getModelledParameters().isEmpty()){
+            writeSubTitle("Parameters: ");
+            for (Parameter ref : interaction.getModelledParameters()){
+                if (ref.getUnit() != null){
+                    writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
+                }
+                else {
+                    writeProperty(ref.getType().getShortName(), ref.getValue().toString());
+                }
             }
         }
     }

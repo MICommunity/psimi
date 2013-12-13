@@ -64,23 +64,27 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             throw new IllegalStateException("The HTML writer was not initialised. The options for the PSI-MI HTML Writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         try {
+            // start new table
+            writer.write(HtmlWriterUtils.NEW_LINE);
+            writer.write("    <table style=\"border-bottom: 1px solid #fff\" cellspacing=\"1\">");
             // add interaction as processed object
             if (this.processedObjects.add(interaction)){
-                // start table
-                writer.write("    <table style=\"border-bottom: 1px solid #fff\" cellspacing=\"1\">");
                 writer.write(HtmlWriterUtils.NEW_LINE);
 
                 // writer interaction anchor
                 writeInteractionAnchor(interaction);
 
                 // write name
-                writeProperty("Name", interaction.getShortName());
+                if (interaction.getShortName() != null){
+                    writeProperty("Name", interaction.getShortName());
+                }
 
                 // write general properties
                 writeGeneralProperties(interaction);
 
                 // write identifiers
                 if (!interaction.getIdentifiers().isEmpty()){
+                    writeSubTitle("Identifiers: ");
                     for (Object object : interaction.getIdentifiers()){
                         Xref ref = (Xref)object;
                         if (ref.getQualifier() != null){
@@ -108,6 +112,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
                 // write xrefs
                 if (!interaction.getXrefs().isEmpty()){
+                    writeSubTitle("Xrefs: ");
                     for (Object object : interaction.getXrefs()){
                         Xref ref = (Xref)object;
                         if (ref.getQualifier() != null){
@@ -130,6 +135,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
                 // write annotations
                 if (!interaction.getAnnotations().isEmpty()){
+                    writeSubTitle("Annotations: ");
                     for (Object object : interaction.getAnnotations()){
                         Annotation ref = (Annotation)object;
                         if (ref.getValue() != null){
@@ -143,6 +149,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
                 // write checksums
                 if (!interaction.getChecksums().isEmpty()){
+                    writeSubTitle("Checksums: ");
                     for (Object object : interaction.getChecksums()){
                         Checksum ref = (Checksum)object;
                         writeProperty(ref.getMethod().getShortName(), ref.getValue());
@@ -158,8 +165,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
                 if (interaction.getUpdatedDate() != null){
                     writeProperty("Last update", interaction.getUpdatedDate().toString());
                 }
-                writer.write(HtmlWriterUtils.NEW_LINE);
-                // end table
+
+                // write end table
                 writer.write("    </table><br/>");
 
                 // write all remaining complexes
@@ -205,6 +212,11 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         try {
             this.processedObjects.clear();
             this.complexesToWrite.clear();
+            writer.write(HtmlWriterUtils.NEW_LINE);
+            // end table
+            writer.write("    </table><br/>");
+            // end div
+            writer.write("    </div>");
             writerEndBody();
             if (writeHeader){
                 writeEndDocument();
@@ -343,6 +355,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write identifiers
             if (!feature.getIdentifiers().isEmpty()){
+                writeSubTitle("Identifiers: ");
                 for (Object object : feature.getIdentifiers()){
                     Xref ref = (Xref)object;
                     if (ref.getQualifier() != null){
@@ -368,6 +381,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write xrefs
             if (!feature.getXrefs().isEmpty()){
+                writeSubTitle("Xrefs: ");
                 for (Object object : feature.getXrefs()){
                     Xref ref = (Xref)object;
                     if (ref.getQualifier() != null){
@@ -381,6 +395,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write annotations
             if (!feature.getAnnotations().isEmpty()){
+                writeSubTitle("Annotations: ");
                 for (Object object : feature.getAnnotations()){
                     Annotation ref = (Annotation)object;
                     if (ref.getValue() != null){
@@ -420,20 +435,21 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         if (term != null){
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
+            writer.write("            <td class=\"table-title\" colspan=\"2\">");
             writer.write(label);
-            writer.write(":</td>");
+            writer.write(":</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"normal-cell\">");
+            writer.write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
 
             // write cv name
-            writeProperty("Name", term.getShortName()+(term.getFullName() != null ? ": "+term.getFullName() : ""));
+            writeProperty("Name", term.getFullName() != null ? term.getFullName() : term.getShortName());
 
             // write identifiers
             if (!term.getIdentifiers().isEmpty()){
+                writeSubTitle("Identifiers: ");
                 for (Xref ref : term.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -446,6 +462,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write xrefs
             if (!term.getXrefs().isEmpty()){
+                writeSubTitle("Xrefs: ");
                 for (Xref ref : term.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -466,11 +483,11 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         if (organism != null){
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
+            writer.write("            <td class=\"table-title\" colspan=\"2\">");
             writer.write(label);
-            writer.write(":</td>");
+            writer.write(":</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"normal-cell\">");
+            writer.write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -519,13 +536,13 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(interactor);
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\"><a name=\"");
+            writer.write("            <td class=\"title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
             writer.write("\">Interactor ");
             writer.write(anchor);
-            writer.write("</a></td>");
+            writer.write("</a></td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"normal-cell\">");
+            writer.write("       <tr><td class=\"normal-cell\" colspan=\"2\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -559,7 +576,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             }
 
             // write aliases
-            if (!interactor.getXrefs().isEmpty()){
+            if (!interactor.getAliases().isEmpty()){
+                writeSubTitle("Aliases: ");
                 for (Alias ref : interactor.getAliases()){
                     if (ref.getType() != null){
                         writeProperty(ref.getType().getShortName(), ref.getName());
@@ -572,6 +590,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write xrefs
             if (!interactor.getXrefs().isEmpty()){
+                writeSubTitle("Xrefs: ");
                 for (Xref ref : interactor.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -584,6 +603,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write annotations
             if (!interactor.getAnnotations().isEmpty()){
+                writeSubTitle("Annotations: ");
                 for (Annotation ref : interactor.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -596,6 +616,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write checksums
             if (!interactor.getChecksums().isEmpty()){
+                writeSubTitle("Checksums: ");
                 for (Checksum ref : interactor.getChecksums()){
                     writeProperty(ref.getMethod().getShortName(), ref.getValue());
                 }
@@ -617,13 +638,13 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(participant);
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\"><a name=\"");
+            writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
             writer.write("\">Participant ");
             writer.write(anchor);
-            writer.write("</a></td>");
+            writer.write("</a></td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"normal-cell\">");
+            writer.write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -664,6 +685,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write xrefs
             if (!participant.getXrefs().isEmpty()){
+                writeSubTitle("Xrefs: ");
                 for (Object object : participant.getXrefs()){
                     Xref ref = (Xref)object;
                     if (ref.getQualifier() != null){
@@ -677,6 +699,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
 
             // write annotations
             if (!participant.getAnnotations().isEmpty()){
+                writeSubTitle("Annotations: ");
                 for (Object object : participant.getAnnotations()){
                     Annotation ref = (Annotation)object;
                     if (ref.getValue() != null){
@@ -699,8 +722,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             // write
             writer.write("</table>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("</td>");
-            writer.write("</tr>");
+            writer.write("</td></tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
         }
     }
@@ -752,6 +774,7 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             writer.write(value);
             writer.write("</td>");
             writer.write(HtmlWriterUtils.NEW_LINE);
+            writer.write("      </tr>");
         }
     }
 
@@ -789,10 +812,12 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
     }
 
     protected void writeInteractionList() throws IOException {
-
+        // start table
+        writer.write("    <div id=\"interactionList\">");
         writer.write(HtmlWriterUtils.NEW_LINE);
         writer.write("    <h2>InteractionList</h2>");
         writer.write(HtmlWriterUtils.NEW_LINE);
+        writer.write("    <table style=\"border-bottom: 1px solid #fff\" cellspacing=\"1\">");
     }
 
     protected void writerStartBody() throws IOException {
