@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.InteractorUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -42,7 +42,7 @@ public class InteractorOrganismRule extends AbstractMIRule<Interactor> {
         Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         if (interactor.getInteractorType() != null && RuleUtils.isProtein(ontologyManager, interactor) && interactor.getOrganism() == null){
-            Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
+            MiContext context = RuleUtils.buildContext(interactor, "interactor");
 
             messages=Collections.singleton(new ValidatorMessage("The protein does not have an organism and it is required for MIMIx.",
                     MessageLevel.ERROR,
@@ -50,7 +50,7 @@ public class InteractorOrganismRule extends AbstractMIRule<Interactor> {
                     this));
         }
         else if ( InteractorUtils.doesInteractorHaveType(interactor, Gene.GENE_MI, Gene.GENE) && interactor.getOrganism() == null){
-            Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
+            MiContext context = RuleUtils.buildContext(interactor, "interactor");
 
             messages=Collections.singleton( new ValidatorMessage( "The gene does not have an organism and it is required for MIMIx.",
                     MessageLevel.ERROR,

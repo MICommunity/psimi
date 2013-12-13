@@ -2,8 +2,8 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.rules.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.rules.MiExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -22,7 +22,7 @@ import java.util.Collections;
  * @since 2.0
  *
  */
-public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
+public class ExperimentHostOrganismRule extends MiExperimentRule {
 
     public ExperimentHostOrganismRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
@@ -50,7 +50,7 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
         // check on host organism
         Organism hostOrganism = experiment.getHostOrganism();
         if ( hostOrganism == null ) {
-            Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
+            MiContext context = RuleUtils.buildContext(experiment, "experiment");
 
             messages=Collections.singleton( new ValidatorMessage( "The experiment does not have a host organism and it is required for MIMIx.",
                     MessageLevel.ERROR,

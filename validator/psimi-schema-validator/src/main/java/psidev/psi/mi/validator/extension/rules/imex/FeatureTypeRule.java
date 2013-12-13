@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -50,7 +50,7 @@ public class FeatureTypeRule extends AbstractMIRule<Feature> {
                 final OntologyTermI dbTerms = access.getTermForAccession(feature.getType().getMODIdentifier());
 
                 if (dbTerms == null){
-                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    MiContext context = RuleUtils.buildContext(feature, "feature");
                     messages = new ArrayList<ValidatorMessage>();
                     messages.add( new ValidatorMessage( "The feature type is not a valid MOD term.",
                             MessageLevel.ERROR,
@@ -63,7 +63,7 @@ public class FeatureTypeRule extends AbstractMIRule<Feature> {
                 final OntologyTermI dbTerms = access.getTermForAccession(feature.getType().getMIIdentifier());
 
                 if (dbTerms == null){
-                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    MiContext context = RuleUtils.buildContext(feature, "feature");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -85,7 +85,7 @@ public class FeatureTypeRule extends AbstractMIRule<Feature> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                        MiContext context = RuleUtils.buildContext(feature, "feature");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }
@@ -98,7 +98,7 @@ public class FeatureTypeRule extends AbstractMIRule<Feature> {
             }
         }
         else {
-            Mi25Context context = RuleUtils.buildContext(feature, "feature");
+            MiContext context = RuleUtils.buildContext(feature, "feature");
 
             messages=Collections.singleton(new ValidatorMessage("The feature does not have a feature type. It is required by IMEx.'",
                     MessageLevel.ERROR,

@@ -10,18 +10,14 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.tools.ontology_manager.impl.OntologyTermImpl;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyImpl;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 
 import java.io.InputStream;
-import java.io.IOException;
 
 /**
- * Mi25Ontology Tester.
+ * MiOntology Tester.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
@@ -29,7 +25,7 @@ import java.io.IOException;
  */
 public class Mi25OntologyTest {
 
-    Mi25Ontology ontology;
+    MiOntology ontology;
 
     @Before
     public void setup() throws Exception {
@@ -45,7 +41,7 @@ public class Mi25OntologyTest {
         OntologyAccess miAccess = om.getOntologyAccess( "MI" );
         Assert.assertNotNull( miAccess );
 
-        ontology = new Mi25Ontology( miAccess );
+        ontology = new MiOntology( miAccess );
     }
 
     @After

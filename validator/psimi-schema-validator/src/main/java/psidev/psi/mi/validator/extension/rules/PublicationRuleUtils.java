@@ -2,7 +2,7 @@ package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -36,7 +36,7 @@ public class PublicationRuleUtils {
         if (imexPrimaryReference != null){
             if (imexPrimaryReference.trim().length() > 0 ){
                 if (!IMEx_ID.matcher(imexPrimaryReference).matches()){
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
 
                     return Collections.singletonList(new ValidatorMessage("The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
                             MessageLevel.ERROR,
@@ -45,7 +45,7 @@ public class PublicationRuleUtils {
                 }
             }
             else {
-                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                MiContext context = RuleUtils.buildContext(pub, "publication");
 
                 return Collections.singletonList( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
                         MessageLevel.ERROR,
@@ -61,7 +61,7 @@ public class PublicationRuleUtils {
         if (imexPrimaryReference != null){
             if (imexPrimaryReference.trim().length() > 0 ){
                 if (!IMEx_INTERACTION_ID.matcher(imexPrimaryReference).matches()){
-                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                    MiContext context = RuleUtils.buildContext(interaction, "interaction");
 
                     return Collections.singletonList( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
                             MessageLevel.ERROR,
@@ -70,7 +70,7 @@ public class PublicationRuleUtils {
                 }
             }
             else {
-                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                MiContext context = RuleUtils.buildContext(interaction, "interaction");
 
                 return Collections.singletonList( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
                         MessageLevel.ERROR,

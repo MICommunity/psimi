@@ -13,15 +13,15 @@ import java.util.List;
  * @since <pre>20/04/11</pre>
  */
 
-public class Mi25ClusteredContext extends Context {
+public class MiClusteredContext extends Context {
 
     List<Context> contexts = new ArrayList<Context>();
 
-    public Mi25ClusteredContext(String context) {
+    public MiClusteredContext(String context) {
         super(context);
     }
 
-    public Mi25ClusteredContext() {
+    public MiClusteredContext() {
         super(null);
     }
 

@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 04.01.2006; 15:37:07
  */
-public class Mi25Ontology {
+public class MiOntology {
 
-    public static final Log log = LogFactory.getLog( Mi25Ontology.class );
+    public static final Log log = LogFactory.getLog( MiOntology.class );
 
     //////////////////////////////
     // Cosntants
@@ -106,7 +106,7 @@ public class Mi25Ontology {
     /////////////////////////////
     // Constructor
 
-    public Mi25Ontology( OntologyAccess ontology ) {
+    public MiOntology(OntologyAccess ontology) {
         if ( ontology == null ) {
             throw new IllegalArgumentException( "You must give a non null ontology" );
         }

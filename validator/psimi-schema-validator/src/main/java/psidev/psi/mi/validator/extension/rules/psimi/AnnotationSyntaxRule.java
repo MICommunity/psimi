@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -47,7 +47,7 @@ public class AnnotationSyntaxRule extends AbstractMIRule<Annotation> {
             if (topic == null ||
                     PsiXml25Utils.UNSPECIFIED.equals(topic.getShortName()) ||
                     MitabUtils.UNKNOWN_DATABASE.equals(topic.getShortName())){
-                Mi25Context annotationContext = RuleUtils.buildContext(annotation, "annotation");
+                MiContext annotationContext = RuleUtils.buildContext(annotation, "annotation");
 
                 messages = Collections.singleton(new ValidatorMessage("Annotations must have a valid and non empty topic.'",
                         MessageLevel.ERROR,
@@ -59,7 +59,7 @@ public class AnnotationSyntaxRule extends AbstractMIRule<Annotation> {
                 final OntologyTermI dbTerm = access.getTermForAccession(topic.getMIIdentifier());
 
                 if (dbTerm == null){
-                    Mi25Context context = RuleUtils.buildContext(annotation, "annotation");
+                    MiContext context = RuleUtils.buildContext(annotation, "annotation");
                     messages = Collections.singleton( new ValidatorMessage( "The annotation topic MI identifier "+topic.getMIIdentifier()+"  does not exist in the PSI-MI ontology. The valid MI terms for annotation topics are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0590&termName=attribute%20name",
                             MessageLevel.ERROR,
                             context,
@@ -78,7 +78,7 @@ public class AnnotationSyntaxRule extends AbstractMIRule<Annotation> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(annotation, "annotation");
+                        MiContext context = RuleUtils.buildContext(annotation, "annotation");
 
                         messages = Collections.singleton( new ValidatorMessage( "The MI identifier "+topic.getMIIdentifier()+" is not a valid MI identifier for annotation topics. The valid MI terms for annotation topics are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0590&termName=attribute%20name",
                                 MessageLevel.ERROR,

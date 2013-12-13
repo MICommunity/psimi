@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -42,7 +42,7 @@ public class MissingCvTermNameRule extends AbstractMIRule<CvTerm> {
                 MitabUtils.UNKNOWN_DATABASE.equals(cv.getShortName()) ||
                 MitabUtils.UNKNOWN_TYPE.equals(cv.getShortName())){
             // list of messages to return
-            Mi25Context experimentContext = RuleUtils.buildContext(cv, "Cv term");
+            MiContext experimentContext = RuleUtils.buildContext(cv, "Cv term");
             return Collections.singletonList(new ValidatorMessage( "Controlled vocabulary terms must have a valid short name.'",
                     MessageLevel.ERROR,
                     experimentContext,

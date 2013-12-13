@@ -5,8 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -37,7 +37,7 @@ public class FeatureType2FeatureRangeDependencyRule extends AbstractMIRule<Featu
 
     public FeatureType2FeatureRangeDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager, Feature.class );
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureRange();
@@ -82,7 +82,7 @@ public class FeatureType2FeatureRangeDependencyRule extends AbstractMIRule<Featu
             if (!feature.getRanges().isEmpty()){
                 for (Range r : featureRange){
                     // build a context in case of error
-                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    MiContext context = RuleUtils.buildContext(feature, "feature");
                     context.addAssociatedContext(RuleUtils.buildContext(featureType, "feature type"));
                     context.addAssociatedContext(RuleUtils.buildContext(r, "feature range"));
                     CvTerm startStatus =  r.getStart().getStatus();

@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -48,7 +48,7 @@ public class InteractorTypeRule extends AbstractMIRule<Interactor> {
         List<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         if (interactor.getInteractorType() == null){
-            Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
+            MiContext context = RuleUtils.buildContext( interactor, "interactor" );
 
             messages=Collections.singletonList( new ValidatorMessage( "The interactor does not have an interactor type and it is required by IMEx.",
                     MessageLevel.ERROR,
@@ -57,7 +57,7 @@ public class InteractorTypeRule extends AbstractMIRule<Interactor> {
         }
         else {
             if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
-                Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
+                MiContext context = RuleUtils.buildContext( interactor, "interactor" );
 
                 messages=Collections.singletonList( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
                         "should be removed from the record.",

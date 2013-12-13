@@ -4,9 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.validator.extension.rules.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
+import psidev.psi.mi.validator.extension.rules.MiExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -29,7 +29,7 @@ import java.util.Collections;
  * @since <pre>26/03/13</pre>
  */
 
-public class ExperimentCrossReference2CrossReferenceTypeDependencyRule extends Mi25ExperimentRule {
+public class ExperimentCrossReference2CrossReferenceTypeDependencyRule extends MiExperimentRule {
 
     private static final Log log = LogFactory.getLog(ExperimentCrossReference2CrossReferenceTypeDependencyRule.class);
 
@@ -47,7 +47,7 @@ public class ExperimentCrossReference2CrossReferenceTypeDependencyRule extends M
      */
     public ExperimentCrossReference2CrossReferenceTypeDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getExperimentCrossReference2CrossReferenceType();
@@ -95,7 +95,7 @@ public class ExperimentCrossReference2CrossReferenceTypeDependencyRule extends M
         if (!databaseReferences.isEmpty()){
             messages = new ArrayList<ValidatorMessage>();
             for ( Xref reference : databaseReferences) {
-                Mi25Context context = RuleUtils.buildContext(reference, "database cross reference");
+                MiContext context = RuleUtils.buildContext(reference, "database cross reference");
                 context.addAssociatedContext(RuleUtils.buildContext(container, "experiment"));
 
                 // build a context in case of error

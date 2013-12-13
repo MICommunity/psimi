@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -55,7 +55,7 @@ public class TissueXRefRule extends AbstractMIRule<Organism> {
             Collection<psidev.psi.mi.jami.model.Xref> tissueRef = XrefUtils.collectAllXrefsHavingDatabase(tissue.getIdentifiers(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST);
 
             if (brendaRef.isEmpty() && tissueRef.isEmpty()){
-                Mi25Context context = RuleUtils.buildContext(tissue, "tissue");
+                MiContext context = RuleUtils.buildContext(tissue, "tissue");
                 context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
                 return Collections.singletonList( new ValidatorMessage( "The tissue " + tissue.getShortName() + " has "+tissue.getIdentifiers().size()+" identifier(s) but none of them is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
                         MessageLevel.WARN,
@@ -64,7 +64,7 @@ public class TissueXRefRule extends AbstractMIRule<Organism> {
             }
         }
         else {
-            Mi25Context context = RuleUtils.buildContext(tissue, "tissue");
+            MiContext context = RuleUtils.buildContext(tissue, "tissue");
             context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
             return Collections.singletonList( new ValidatorMessage( "The tissue " + tissue.getShortName() + " doesn't have any cross references and at least one cross reference to BRENDA or Tissue List " +
                     "qualifier 'identity' is strongly recommended.'",

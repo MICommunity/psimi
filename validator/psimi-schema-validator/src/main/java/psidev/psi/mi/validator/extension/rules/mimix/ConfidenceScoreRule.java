@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ConfidenceUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -71,7 +71,7 @@ public class ConfidenceScoreRule extends AbstractMIRule<InteractionEvidence> {
                         CONFIDENCE_MAPPING);
 
                 if( expAtts.isEmpty() ) {
-                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                    MiContext context = RuleUtils.buildContext(interaction, "interaction");
 
                     messages = new ArrayList<ValidatorMessage>();
                     messages.add( new ValidatorMessage( "Could not find a confidence mapping annotation on the experiment attached to this interaction." ,
@@ -98,7 +98,7 @@ public class ConfidenceScoreRule extends AbstractMIRule<InteractionEvidence> {
                         CONFIDENCE_MAPPING);
 
                 if( expAtts.isEmpty() ) {
-                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                    MiContext context = RuleUtils.buildContext(interaction, "interaction");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }

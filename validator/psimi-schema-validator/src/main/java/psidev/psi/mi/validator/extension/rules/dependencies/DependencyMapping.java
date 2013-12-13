@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
@@ -437,7 +437,7 @@ public class DependencyMapping {
      */
     protected Collection<ValidatorMessage> writeValidatorMessages(CvTerm term1, CvTerm term2, Term firstTermOfDependency, Term secondTermDependency,
                                                                   Collection<AssociatedTerm> associatedTermDependency,
-                                                                  Mi25Context context, AbstractRule rule) {
+                                                                  MiContext context, AbstractRule rule) {
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
@@ -525,7 +525,7 @@ public class DependencyMapping {
      */
     public Collection<ValidatorMessage> check( CvTerm term1,
                                                CvTerm term2,
-                                               Mi25Context context,
+                                               MiContext context,
                                                AbstractRule rule) {
 
         final Term firstTermOfDependency = Term.buildTerm(term1);

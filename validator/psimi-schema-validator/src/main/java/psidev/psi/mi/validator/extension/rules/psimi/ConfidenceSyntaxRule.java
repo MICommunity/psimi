@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -49,7 +49,7 @@ public class ConfidenceSyntaxRule extends AbstractMIRule<Confidence> {
             if (type == null ||
                     PsiXml25Utils.UNSPECIFIED.equals(type.getShortName()) ||
                     MitabUtils.UNKNOWN_TYPE.equals(type.getShortName())){
-                Mi25Context xrefContext = RuleUtils.buildContext(confidence, "confidence");
+                MiContext xrefContext = RuleUtils.buildContext(confidence, "confidence");
                 messages = new ArrayList<ValidatorMessage>();
                 messages.add( new ValidatorMessage( "Confidences must have a valid confidence type.'",
                         MessageLevel.ERROR,
@@ -60,7 +60,7 @@ public class ConfidenceSyntaxRule extends AbstractMIRule<Confidence> {
                 final OntologyTermI dbTerm = access.getTermForAccession(type.getMIIdentifier());
 
                 if (dbTerm == null){
-                    Mi25Context context = RuleUtils.buildContext(confidence, "confidence");
+                    MiContext context = RuleUtils.buildContext(confidence, "confidence");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -82,7 +82,7 @@ public class ConfidenceSyntaxRule extends AbstractMIRule<Confidence> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(confidence, "confidence");
+                        MiContext context = RuleUtils.buildContext(confidence, "confidence");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }
@@ -98,7 +98,7 @@ public class ConfidenceSyntaxRule extends AbstractMIRule<Confidence> {
                     confidence.getValue().trim().length() == 0 ||
                     PsiXml25Utils.UNSPECIFIED.equals(confidence.getValue()) ||
                     MitabUtils.UNKNOWN_ID.equals(confidence.getValue())){
-                Mi25Context xrefContext = RuleUtils.buildContext(confidence, "confidence");
+                MiContext xrefContext = RuleUtils.buildContext(confidence, "confidence");
                 if (messages.isEmpty()){
                     messages = new ArrayList<ValidatorMessage>();
                 }

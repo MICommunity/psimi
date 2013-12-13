@@ -17,7 +17,7 @@ package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -178,7 +178,7 @@ public final class RuleUtils {
                 break;
 
             case 1:
-                Mi25Context context = RuleUtils.buildContext(organism, "organism");
+                MiContext context = RuleUtils.buildContext(organism, "organism");
                 // this is the root of newt, which users are not suppose to use to define their host organism
                 return Collections.singleton( new ValidatorMessage( objectType + " with an invalid " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -237,7 +237,7 @@ public final class RuleUtils {
 
             // special cases for Imex
             case -5:
-                Mi25Context context = RuleUtils.buildContext(organism, "organism");
+                MiContext context = RuleUtils.buildContext(organism, "organism");
                 // IMEX doesn't allow to use this term to define their host organism
                 return Collections.singletonList(new ValidatorMessage(objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -376,8 +376,8 @@ public final class RuleUtils {
         }
     }
 
-    public static Mi25Context buildContext( Object object ) {
-        Mi25Context context = new Mi25Context();
+    public static MiContext buildContext( Object object ) {
+        MiContext context = new MiContext();
         if (object instanceof FileSourceContext){
             context.setLocator(((FileSourceContext) object).getSourceLocator());
         }
@@ -385,9 +385,9 @@ public final class RuleUtils {
         return context;
     }
 
-    public static Mi25Context buildContext( Object object, String objectLabel ) {
-        Mi25Context context;
-        context = new Mi25Context();
+    public static MiContext buildContext( Object object, String objectLabel ) {
+        MiContext context;
+        context = new MiContext();
         if (object instanceof FileSourceContext){
             context.setLocator(((FileSourceContext) object).getSourceLocator());
         }

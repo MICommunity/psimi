@@ -4,8 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -46,7 +46,7 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends Abst
      */
     public FeatureCrossReference2CrossReferenceTypeDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager, Feature.class);
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getFeatureCrossReference2CrossReferenceType();
@@ -94,7 +94,7 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends Abst
         Collection<Xref> identifiers = container.getIdentifiers();
 
         for ( Xref reference : identifiers) {
-            Mi25Context context = RuleUtils.buildContext(reference, "database xref");
+            MiContext context = RuleUtils.buildContext(reference, "database xref");
             context.addAssociatedContext(RuleUtils.buildContext(container, "feature"));
 
             // build a context in case of error
@@ -105,7 +105,7 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends Abst
         Collection<Xref> databaseReferences = container.getXrefs();
 
         for ( Xref reference : databaseReferences) {
-            Mi25Context context = RuleUtils.buildContext(reference, "database xref");
+            MiContext context = RuleUtils.buildContext(reference, "database xref");
             context.addAssociatedContext(RuleUtils.buildContext(container, "feature"));
 
             // build a context in case of error

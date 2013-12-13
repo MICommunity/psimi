@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -62,14 +62,14 @@ public class ProteinIdentityRule extends AbstractMIRule<Protein> {
             if( identities.isEmpty() ) {
 
                 if (interactor.getSequence() != null){
-                    Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
+                    MiContext context = RuleUtils.buildContext(interactor, "interactor");
                     messages=Collections.singletonList(new ValidatorMessage("Proteins should have a Xref to UniProtKB or RefSeq with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
                             this));
                 }
                 else {
-                    Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
+                    MiContext context = RuleUtils.buildContext(interactor, "interactor");
                     messages=Collections.singletonList( new ValidatorMessage( "Proteins should have a Xref to UniProtKB and RefSeq with a ref type 'identity'. If no identity cross references " +
                             "are given, the protein sequence is strongly recommended.",
                             MessageLevel.WARN,

@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.PositionUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -127,14 +127,14 @@ public class BindingDomainSizeRule extends AbstractMIRule<Feature> {
                 }
 
                 if (minSize < 3 && maxSize < 3 && isFeatureSiteDefined){
-                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    MiContext context = RuleUtils.buildContext(feature, "feature");
                     messages=Collections.singleton( new ValidatorMessage( "The binding site does not contain more than three amino acids. For one or two amino acids, the feature type should be any children of mutation instead of binding site.'",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else if (minSize < 3 && maxSize >= 3 && isFeatureSiteDefined){
-                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    MiContext context = RuleUtils.buildContext(feature, "feature");
                     messages=Collections.singleton( new ValidatorMessage( "The minimum size of this binding site is "+minSize+" and binding site should always contain more than three amino acids.'",
                             MessageLevel.WARN,
                             context,

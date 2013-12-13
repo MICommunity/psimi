@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -96,7 +96,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                 }
 
                 if ( !hasPrimary ) {
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
                     messages = new ArrayList<ValidatorMessage>();
                     messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" pubmed identifiers. Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
                             MessageLevel.WARN,
@@ -104,7 +104,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                             this ) );
                 }
                 else if (hasSeveralPrimary){
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
                     messages = new ArrayList<ValidatorMessage>();
                     messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity'.",
                             MessageLevel.WARN,
@@ -132,7 +132,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                 }
 
                 if ( !hasPrimary ) {
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -142,7 +142,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                             this ) );
                 }
                 else if (hasSeveralPrimary){
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -160,7 +160,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
             int countValidEmail = 0;
 
             if ( emails.isEmpty() ) {
-                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                MiContext context = RuleUtils.buildContext(pub, "publication");
                 if (messages.isEmpty()){
                     messages = new ArrayList<ValidatorMessage>();
                 }
@@ -177,7 +177,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                         emptyEmailCount++;
                     } else {
                         if ( !EMAIL_VALIDATOR.matcher( address ).matches() ) {
-                            Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                            MiContext context = RuleUtils.buildContext(pub, "publication");
                             if (messages.isEmpty()){
                                 messages = new ArrayList<ValidatorMessage>();
                             }
@@ -192,7 +192,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                 }
 
                 if ( emptyEmailCount > 0 ) {
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -204,7 +204,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                 }
 
                 if ( countValidEmail == 0 ) {
-                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                    MiContext context = RuleUtils.buildContext(pub, "publication");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -220,7 +220,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
             List<String> authorList = pub.getAuthors();
 
             if ( authorList.isEmpty() ) {
-                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                MiContext context = RuleUtils.buildContext(pub, "publication");
                 if (messages.isEmpty()){
                     messages = new ArrayList<ValidatorMessage>();
                 }
@@ -237,7 +237,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
                         nonEmptyCount++;
                     }
                     if ( nonEmptyCount == 0 ) {
-                        Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                        MiContext context = RuleUtils.buildContext(pub, "publication");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }
@@ -255,7 +255,7 @@ public class PublicationRule extends AbstractMIRule<Publication>{
             String publicationTitle = pub.getTitle();
 
             if ( publicationTitle == null || publicationTitle.trim().length() == 0 ) {
-                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+                MiContext context = RuleUtils.buildContext(pub, "publication");
                 if (messages.isEmpty()){
                     messages = new ArrayList<ValidatorMessage>();
                 }

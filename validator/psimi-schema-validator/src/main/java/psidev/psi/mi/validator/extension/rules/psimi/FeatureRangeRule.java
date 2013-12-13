@@ -2,7 +2,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -71,7 +71,7 @@ public class FeatureRangeRule extends AbstractMIRule<Feature> {
         Collection<psidev.psi.mi.jami.model.Range> ranges = feature .getRanges();
 
         if (ranges.isEmpty()){
-            Mi25Context featureContext = RuleUtils.buildContext(feature, "feature");
+            MiContext featureContext = RuleUtils.buildContext(feature, "feature");
             messages=Collections.singleton(new ValidatorMessage("Feature must have at least one range.'",
                     MessageLevel.ERROR,
                     featureContext,
@@ -83,7 +83,7 @@ public class FeatureRangeRule extends AbstractMIRule<Feature> {
                 List<String> errorMessages = RangeUtils.validateRange(range, sequence);
 
                 for (String error : errorMessages){
-                    Mi25Context rangeContext = RuleUtils.buildContext(range, "feature's range");
+                    MiContext rangeContext = RuleUtils.buildContext(range, "feature's range");
                     rangeContext.addAssociatedContext(RuleUtils.buildContext(feature, "feature"));
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();

@@ -4,9 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.validator.extension.rules.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
+import psidev.psi.mi.validator.extension.rules.MiInteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -26,7 +26,7 @@ import java.util.Collection;
  * @since <pre>26/03/13</pre>
  */
 
-public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends Mi25InteractionRule {
+public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends MiInteractionRule {
 
     private static final Log log = LogFactory.getLog(InteractionCrossReference2CrossReferenceTypeDependencyRule.class);
 
@@ -44,7 +44,7 @@ public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends 
      */
     public InteractionCrossReference2CrossReferenceTypeDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getInteractionCrossReference2CrossReferenceType();
@@ -92,7 +92,7 @@ public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends 
         Collection<Xref> databaseReferences = container.getXrefs();
 
         for ( Xref reference : databaseReferences) {
-            Mi25Context context = RuleUtils.buildContext(reference, "database xref");
+            MiContext context = RuleUtils.buildContext(reference, "database xref");
             context.addAssociatedContext(RuleUtils.buildContext(container, "interaction"));
 
             // build a context in case of error
@@ -103,7 +103,7 @@ public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends 
         Collection<Xref> identifiers = container.getIdentifiers();
 
         for ( Xref reference : identifiers) {
-            Mi25Context context = RuleUtils.buildContext(reference, "database xref");
+            MiContext context = RuleUtils.buildContext(reference, "database xref");
             context.addAssociatedContext(RuleUtils.buildContext(container, "interaction"));
 
             // build a context in case of error

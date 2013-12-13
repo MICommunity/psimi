@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -34,7 +34,7 @@ public class MissingInteractionExperimentRule extends AbstractMIRule<Interaction
 
         if (interactionEvidence.getExperiment() == null){
             // list of messages to return
-            Mi25Context interactionContext = RuleUtils.buildContext(interactionEvidence, "interaction");
+            MiContext interactionContext = RuleUtils.buildContext(interactionEvidence, "interaction");
             return Collections.singletonList(new ValidatorMessage("Interaction evidences must have an experiment.'",
                     MessageLevel.ERROR,
                     interactionContext,
