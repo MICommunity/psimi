@@ -14,6 +14,7 @@ import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -57,18 +58,25 @@ public class InteractorIdentityRule extends AbstractMIRule<Interactor> {
         final OntologyAccess mi = getMiOntology();
 
         // write the rule here ...
-        if( interactor.getInteractorType() != null && (RuleUtils.isSmallMolecule( ontologyManager, interactor ) || RuleUtils.isPolysaccharide( ontologyManager, interactor ))) {
+        if( interactor.getInteractorType() != null && (RuleUtils.isSmallMolecule( ontologyManager, interactor ) || RuleUtils.isPolysaccharide( ontologyManager, interactor ) )) {
 
             final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
             final Set<String> dbRefs = RuleUtils.collectNames( dbs );
 
-            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabases(interactor.getIdentifiers(), dbMiRefs, dbRefs);
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), dbMiRefs, dbRefs, Arrays.asList(Xref.IDENTITY_MI), Arrays.asList(Xref.IDENTITY));
 
             if( identities.isEmpty() ) {
                 MiContext context = RuleUtils.buildContext(interactor, "interactor");
                 messages=Collections.singleton(new ValidatorMessage("Bioactive entities should have an Xref to a bioactive entity database with a ref type 'identity' ",
+                        MessageLevel.WARN,
+                        context,
+                        this));
+            }
+            else if (identities.size() > 1){
+                MiContext context = RuleUtils.buildContext(interactor, "interactor");
+                messages=Collections.singleton(new ValidatorMessage("Bioactive entities should have only one Xref to a bioactive entity database with a ref type 'identity' ",
                         MessageLevel.WARN,
                         context,
                         this));
@@ -82,8 +90,8 @@ public class InteractorIdentityRule extends AbstractMIRule<Interactor> {
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
             final Set<String> dbRefs = RuleUtils.collectNames( dbs );
 
-            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabases(interactor.getIdentifiers(), dbMiRefs, dbRefs);
-            if( identities.isEmpty() ) {
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), dbMiRefs, dbRefs, Arrays.asList(Xref.IDENTITY_MI), Arrays.asList(Xref.IDENTITY));
+            if(identities.isEmpty() ) {
 
                 if (interactor instanceof Polymer && ((Polymer) interactor).getSequence() == null){
                     MiContext context = RuleUtils.buildContext(interactor, "interactor");
@@ -93,7 +101,13 @@ public class InteractorIdentityRule extends AbstractMIRule<Interactor> {
                             this ) );
                 }
             }
-
+            else if (identities.size() > 1){
+                MiContext context = RuleUtils.buildContext(interactor, "interactor");
+                messages=Collections.singleton(new ValidatorMessage("Polymers entities should have only one Xref to a sequence database with a ref type 'identity' ",
+                        MessageLevel.WARN,
+                        context,
+                        this));
+            }
         }
 
         return messages;

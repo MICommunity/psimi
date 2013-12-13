@@ -317,7 +317,7 @@ public final class RuleUtils {
     }
 
     public static boolean isSmallMolecule( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), BioactiveEntity.BIOACTIVE_ENTITY_MI, false );
+        return isOfType( ontologyManager, interactor.getInteractorType(), BioactiveEntity.SMALL_MOLECULE_MI, true );
     }
 
     public static boolean isNucleicAcid( OntologyManager ontologyManager, Interactor interactor ) {

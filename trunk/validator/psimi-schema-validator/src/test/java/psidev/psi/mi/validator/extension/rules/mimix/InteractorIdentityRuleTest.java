@@ -69,6 +69,7 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
     public void check_smallmolecule_fail() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
+        interactor.getIdentifiers().clear();
         updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "CHEBI:0001" );
         InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
@@ -80,6 +81,7 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
     public void check_protein_ok() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
+        interactor.getIdentifiers().clear();
         updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "P12345" );
         InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
@@ -91,6 +93,8 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
     public void check_protein_fail() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
+        interactor.getIdentifiers().clear();
+        interactor.setSequence(null);
         updateInteractorIdentity( interactor, CHEBI_MI_REF, "CHEBI:0001" );
         InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
@@ -102,9 +106,10 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
     public void check_protein_fail_no_identity() throws Exception {
         final Protein interactor = new DefaultProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
-        updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "P12345" );
+        interactor.getIdentifiers().clear();
+        interactor.setSequence(null);
 
-        interactor.getXrefs().add(XrefUtils.createUniprotSecondary("P12345"));
+        interactor.getIdentifiers().add(XrefUtils.createUniprotSecondary("P12345"));
 
         InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
