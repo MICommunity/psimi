@@ -1,8 +1,8 @@
 package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.rules.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.rules.MiExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -20,7 +20,7 @@ import java.util.Collections;
  * @since <pre>26/03/13</pre>
  */
 
-public class MissingExperimentPublicationRule extends Mi25ExperimentRule {
+public class MissingExperimentPublicationRule extends MiExperimentRule {
 
 
     public MissingExperimentPublicationRule(OntologyManager ontologyManager) {
@@ -35,7 +35,7 @@ public class MissingExperimentPublicationRule extends Mi25ExperimentRule {
 
         if (experiment.getPublication() == null){
             // list of messages to return
-            Mi25Context experimentContext = RuleUtils.buildContext(experiment, "experiment");
+            MiContext experimentContext = RuleUtils.buildContext(experiment, "experiment");
             return Collections.singletonList(new ValidatorMessage( "Experiment must have a publication.'",
                     MessageLevel.ERROR,
                     experimentContext,

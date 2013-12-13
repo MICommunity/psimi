@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -43,7 +43,7 @@ public class InteractionTypeRule extends AbstractMIRule<InteractionEvidence>{
         List<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         if (interaction.getInteractionType() == null){
-            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            MiContext context = RuleUtils.buildContext(interaction, "interaction");
             messages=Collections.singletonList( new ValidatorMessage( "The interaction does not have an interaction type. At least one interaction type is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,

@@ -18,7 +18,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -61,7 +61,7 @@ public class InteractionSourceIdentityXrefRule extends AbstractMIRule<Interactio
         // write the rule here ...
 
         if( interaction.getIdentifiers().isEmpty() ) {
-            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            MiContext context = RuleUtils.buildContext(interaction, "interaction");
             messages=Collections.singletonList( new ValidatorMessage( "An interaction requires an identity cross reference to an interaction database (child term of "+ INTERACTION_DATABASE_MI_REF +")." ,
                     MessageLevel.ERROR,
                     context,
@@ -76,7 +76,7 @@ public class InteractionSourceIdentityXrefRule extends AbstractMIRule<Interactio
 
             final Collection<Xref> dbRefs = XrefUtils.searchAllXrefsHavingDatabases(interaction.getIdentifiers(), interactionDbMis, interactionDbs);
             if( dbRefs.isEmpty() ) {
-                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                MiContext context = RuleUtils.buildContext(interaction, "interaction");
                 String dbList = buildDbList( interaction.getIdentifiers() );
                 String msg = null;
                 if( dbList.length() > 0 ) {

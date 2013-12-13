@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -67,7 +67,7 @@ public class InteractorIdentityRule extends AbstractMIRule<Interactor> {
             final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabases(interactor.getIdentifiers(), dbMiRefs, dbRefs);
 
             if( identities.isEmpty() ) {
-                Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
+                MiContext context = RuleUtils.buildContext(interactor, "interactor");
                 messages=Collections.singleton(new ValidatorMessage("Bioactive entities should have an Xref to a bioactive entity database with a ref type 'identity' ",
                         MessageLevel.WARN,
                         context,
@@ -86,7 +86,7 @@ public class InteractorIdentityRule extends AbstractMIRule<Interactor> {
             if( identities.isEmpty() ) {
 
                 if (interactor instanceof Polymer && ((Polymer) interactor).getSequence() == null){
-                    Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
+                    MiContext context = RuleUtils.buildContext(interactor, "interactor");
                     messages=Collections.singleton( new ValidatorMessage( "Polymers should have a sequence or a Xref to a sequence database with a ref type 'identity'",
                             MessageLevel.ERROR,
                             context,

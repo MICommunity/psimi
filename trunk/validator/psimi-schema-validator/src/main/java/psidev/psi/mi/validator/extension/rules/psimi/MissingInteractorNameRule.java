@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -40,7 +40,7 @@ public class MissingInteractorNameRule extends AbstractMIRule<Interactor> {
                 PsiXml25Utils.UNSPECIFIED.equals(interactor.getShortName()) ||
                 MitabUtils.UNKNOWN_NAME.equals(interactor.getShortName())){
             // list of messages to return
-            Mi25Context experimentContext = RuleUtils.buildContext(interactor, "interactor");
+            MiContext experimentContext = RuleUtils.buildContext(interactor, "interactor");
             return Collections.singletonList(new ValidatorMessage( "Interactors must have a valid short name (or alias in MITAB).'",
                     MessageLevel.ERROR,
                     experimentContext,

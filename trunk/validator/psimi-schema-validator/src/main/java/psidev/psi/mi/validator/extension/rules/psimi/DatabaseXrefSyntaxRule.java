@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -51,7 +51,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
                     id.trim().length() == 0 ||
                     PsiXml25Utils.UNSPECIFIED.equals(id) ||
                     MitabUtils.UNKNOWN_ID.equals(id)){
-                Mi25Context xrefContext = RuleUtils.buildContext(xref, "database xref");
+                MiContext xrefContext = RuleUtils.buildContext(xref, "database xref");
                 messages = new ArrayList<ValidatorMessage>();
                 messages.add( new ValidatorMessage( "Database xrefs must have a valid and non empty id.'",
                         MessageLevel.ERROR,
@@ -62,7 +62,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
             if (database == null ||
                     PsiXml25Utils.UNSPECIFIED.equals(database.getShortName()) ||
                     MitabUtils.UNKNOWN_ID.equals(database.getShortName())){
-                Mi25Context xrefContext = RuleUtils.buildContext(xref, "database xref");
+                MiContext xrefContext = RuleUtils.buildContext(xref, "database xref");
 
                 if (messages.isEmpty()){
                     messages = new ArrayList<ValidatorMessage>();
@@ -76,7 +76,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
                 final OntologyTermI dbTerm = access.getTermForAccession(database.getMIIdentifier());
 
                 if (dbTerm == null){
-                    Mi25Context context = RuleUtils.buildContext(xref, "database xref");
+                    MiContext context = RuleUtils.buildContext(xref, "database xref");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -98,7 +98,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(xref, "database xref");
+                        MiContext context = RuleUtils.buildContext(xref, "database xref");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }
@@ -114,7 +114,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
                 final OntologyTermI dbTerm = access.getTermForAccession(qualifier.getMIIdentifier());
 
                 if (dbTerm == null){
-                    Mi25Context context = RuleUtils.buildContext(xref, "database xref");
+                    MiContext context = RuleUtils.buildContext(xref, "database xref");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -136,7 +136,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(xref, "database xref");
+                        MiContext context = RuleUtils.buildContext(xref, "database xref");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }

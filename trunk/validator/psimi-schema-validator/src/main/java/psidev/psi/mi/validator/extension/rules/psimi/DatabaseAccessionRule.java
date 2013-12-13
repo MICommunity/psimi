@@ -5,7 +5,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.validator.extension.rules.dependencies.ValidatorRuleException;
@@ -288,7 +288,7 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
             if (databasePattern != null){
                 // All database accessions must match the regular expression of its database
                 if (!databasePattern.matcher(accession).matches()){
-                    Mi25Context context = RuleUtils.buildContext(xRef, "database xref");
+                    MiContext context = RuleUtils.buildContext(xRef, "database xref");
                     messages.add( new ValidatorMessage( "The database accession "+accession+" does not match the regular expression of this database.",
                             MessageLevel.WARN,
                             context,
@@ -363,7 +363,7 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
                                     }
                                 }
                                 else {
-                                    Mi25Context context = RuleUtils.buildContext(xRef, "database xref");
+                                    MiContext context = RuleUtils.buildContext(xRef, "database xref");
                                     messages.add( new ValidatorMessage( "Several databases can match the same name "+dbName+". Therefore, it is not possible to check if the database accession is valid.",
                                             MessageLevel.INFO,
                                             context,

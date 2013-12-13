@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -46,7 +46,7 @@ public class ParticipantIdentificationMethodRule extends AbstractMIRule<Particip
         Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
         if (participant.getIdentificationMethods().isEmpty()){
-            Mi25Context context = RuleUtils.buildContext(participant, "participant");
+            MiContext context = RuleUtils.buildContext(participant, "participant");
 
             messages=Collections.singleton(new ValidatorMessage(" The participant does not have a participant identification method and it is required for MIMIx",
                     MessageLevel.ERROR,

@@ -1,6 +1,6 @@
 package psidev.psi.mi.validator.client.console;
 
-import psidev.psi.mi.validator.extension.Mi25Validator;
+import psidev.psi.mi.validator.extension.MiValidator;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -38,7 +38,7 @@ public class MI25ConsoleClient {
             f = new FileInputStream( psiFile );
             c = new FileInputStream( configFile );
             // TODO this will not work  !!! has to be fixed.
-            Mi25Validator val = new Mi25Validator( c, null, null );
+            MiValidator val = new MiValidator( c, null, null );
             List messages = ( List ) val.validate( f );
 
             MessageLevel logThreshold = MessageLevel.forName( logLevel );

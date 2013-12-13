@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.Collection;
 
 /**
- * Mi25Validator Tester.
+ * MiValidator Tester.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
@@ -24,9 +24,9 @@ import java.util.Collection;
  */
 public class Mi25ValidatorTest {
 
-    private Mi25Validator aValidator;
+    private MiValidator aValidator;
 
-    private Mi25Validator buildValidator( boolean saxValidationEnabled, boolean isIMEXRulesEnabled ) throws Exception{
+    private MiValidator buildValidator( boolean saxValidationEnabled, boolean isIMEXRulesEnabled ) throws Exception{
         if ( aValidator == null ) {
 
             InputStream ontologyConfig = Mi25ValidatorTest.class.getResource( "/config/ontologies.xml" ).openStream();
@@ -38,11 +38,11 @@ public class Mi25ValidatorTest {
             InputStream objectRuleConfig = null;
 
             if (isIMEXRulesEnabled){
-                objectRuleConfig = Mi25Validator.class.getResource("/config/psi_mi/imex-rules.xml").openStream();
+                objectRuleConfig = MiValidator.class.getResource("/config/psi_mi/imex-rules.xml").openStream();
                 Assert.assertNotNull(objectRuleConfig);
             }
 
-            aValidator = new Mi25Validator( ontologyConfig, cvMappingConfig, objectRuleConfig );
+            aValidator = new MiValidator( ontologyConfig, cvMappingConfig, objectRuleConfig );
 
             // set user preferences
             UserPreferences preferences = new UserPreferences();
@@ -61,11 +61,11 @@ public class Mi25ValidatorTest {
         return aValidator;
     }
 
-    private Mi25Validator buildValidator() throws Exception {
+    private MiValidator buildValidator() throws Exception {
         return buildValidator( false, false );
     }
 
-    private Mi25Validator buildValidatorWithIMEXRules() throws Exception {
+    private MiValidator buildValidatorWithIMEXRules() throws Exception {
         return buildValidator( false, true );
     }
 
@@ -95,10 +95,10 @@ public class Mi25ValidatorTest {
         InputStream ontologyConfig = Mi25ValidatorTest.class.getResource( "/config/ontologies.xml" ).openStream();
         Assert.assertNotNull(ontologyConfig);
 
-        InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
+        InputStream objectRuleConfig = MiValidator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
         Assert.assertNotNull(objectRuleConfig);
 
-        aValidator = new Mi25Validator( ontologyConfig, null, objectRuleConfig );
+        aValidator = new MiValidator( ontologyConfig, null, objectRuleConfig );
 
         // set user preferences
         UserPreferences preferences = new UserPreferences();
@@ -247,7 +247,7 @@ public class Mi25ValidatorTest {
 //    @Test
 //    @Ignore
 //    public void validate_lukasz() throws Exception {
-//        final Mi25Validator mi25Validator = buildValidator();
+//        final MiValidator mi25Validator = buildValidator();
 //        long start = System.currentTimeMillis();
 //        System.out.println( "Starting validation" );
 //        Collection<ValidatorMessage> messages = mi25Validator.validate( new FileInputStream( new File( "C:\\validator-data\\test20081104_A.mif25" ) ) );
@@ -260,7 +260,7 @@ public class Mi25ValidatorTest {
 //    @Test
 //    @Ignore
 //    public void validate_matrixdb() throws Exception {
-//        final Mi25Validator mi25Validator = buildValidator();
+//        final MiValidator mi25Validator = buildValidator();
 //        long start = System.currentTimeMillis();
 //        System.out.println( "Starting validation" );
 //        Collection<ValidatorMessage> messages = mi25Validator.validate( new FileInputStream( new File( "C:\\validator-data\\MatrixBiology_part1.xml" ) ) );

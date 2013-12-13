@@ -4,8 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -40,7 +40,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends AbstractMI
      */
     public FeatureType2FeatureDetectionMethodDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager, FeatureEvidence.class );
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureDetectionMethod();
@@ -86,7 +86,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends AbstractMI
                 messages = new ArrayList<ValidatorMessage>(method.size());
 
                 for (CvTerm met: method){
-                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    MiContext context = RuleUtils.buildContext(feature, "feature");
                     context.addAssociatedContext(RuleUtils.buildContext(featureType, "feature type"));
                     context.addAssociatedContext(RuleUtils.buildContext(met, "feature detection method"));
                     messages.addAll(mapping.check(featureType, met, context, this)) ;

@@ -1,14 +1,14 @@
 package psidev.psi.mi.validator.extension;
 
 /**
- * Mi25ValidatorConfig
+ * MiValidatorConfig
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26-Apr-2010</pre>
  */
 
-public class Mi25ValidatorConfig{
+public class MiValidatorConfig {
 
     private final String experimentCrossReference2CrossReferenceType = "/experimentCrossReference2CrossRefType.tsv";
     private final String interactionCrossReference2CrossReferenceType = "/interactionCrossReference2CrossRefType.tsv";
@@ -21,7 +21,7 @@ public class Mi25ValidatorConfig{
     private final String interactionDetectionMethod2InteractionType = "/InteractionDetection2InteractionTypes.tsv";
     private final String interactionDetectionMethod2ParticipantIdentificationMethod = "/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv";
 
-    public Mi25ValidatorConfig() {
+    public MiValidatorConfig() {
     }
 
     public String getExperimentCrossReference2CrossReferenceType() {

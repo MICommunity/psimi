@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -35,7 +35,7 @@ public class NegativeInteractionRule extends AbstractMIRule<InteractionEvidence>
     public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
 
         if (interaction.isNegative()){
-            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            MiContext context = RuleUtils.buildContext(interaction, "interaction");
 
             return Collections.singletonList( new ValidatorMessage( "Negative interactions are currently outside of the remit of IMEx and " +
                     "should be removed from the record.",

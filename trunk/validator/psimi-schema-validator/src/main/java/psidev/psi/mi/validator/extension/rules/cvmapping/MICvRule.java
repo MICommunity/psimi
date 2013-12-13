@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.cvmapping;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -33,7 +33,7 @@ public class MICvRule extends CvRuleImpl{
      * Build the message and improve context
      */
     public ValidatorMessage buildMessage( String xpath, Recommendation level, String message, Rule rule, List<XPathResult> results,  Object o ) {
-        Mi25Context context = new Mi25Context(xpath);
+        MiContext context = new MiContext(xpath);
         context.setContext(xpath);
         context.setContext(RuleUtils.extractObjectLabelFromXPath(xpath));
 

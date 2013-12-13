@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -37,7 +37,7 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Abs
 
     public InteractionDetectionMethod2ExperimentRoleDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager, ParticipantEvidence.class );
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getInteractionDetectionMethod2ExperimentalRole();
@@ -82,7 +82,7 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Abs
             Experiment exp = interaction.getExperiment();
             if (exp != null){
                 // build a context in case of error
-                Mi25Context context = RuleUtils.buildContext(participant, "participant");
+                MiContext context = RuleUtils.buildContext(participant, "participant");
                 context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
 
                 final CvTerm method = exp.getInteractionDetectionMethod();

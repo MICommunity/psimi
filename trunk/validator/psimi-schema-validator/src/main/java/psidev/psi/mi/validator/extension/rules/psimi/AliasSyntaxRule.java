@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -46,7 +46,7 @@ public class AliasSyntaxRule extends AbstractMIRule<Alias> {
                     alias.getName().trim().length() == 0 ||
                     PsiXml25Utils.UNSPECIFIED.equals(alias.getName()) ||
                     MitabUtils.UNKNOWN_NAME.equals(alias.getName())){
-                Mi25Context aliasContext = RuleUtils.buildContext(alias, "alias");
+                MiContext aliasContext = RuleUtils.buildContext(alias, "alias");
 
                 messages = new ArrayList<ValidatorMessage>();
                 messages.add( new ValidatorMessage( "Aliases must have a valid and non empty name.'",
@@ -60,7 +60,7 @@ public class AliasSyntaxRule extends AbstractMIRule<Alias> {
                 final OntologyTermI dbTerm = access.getTermForAccession(alias.getType().getMIIdentifier());
 
                 if (dbTerm == null){
-                    Mi25Context context = RuleUtils.buildContext(alias, "alias");
+                    MiContext context = RuleUtils.buildContext(alias, "alias");
                     if (messages.isEmpty()){
                        messages = new ArrayList<ValidatorMessage>();
                     }
@@ -82,7 +82,7 @@ public class AliasSyntaxRule extends AbstractMIRule<Alias> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(alias, "alias");
+                        MiContext context = RuleUtils.buildContext(alias, "alias");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }

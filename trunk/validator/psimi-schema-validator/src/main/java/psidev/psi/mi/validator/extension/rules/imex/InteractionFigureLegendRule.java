@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -39,7 +39,7 @@ public class InteractionFigureLegendRule extends AbstractMIRule<InteractionEvide
             Collection<Annotation> attributes = interaction.getAnnotations();
 
             if (AnnotationUtils.collectAllAnnotationsHavingTopic(attributes, Annotation.FIGURE_LEGEND_MI, Annotation.FIGURE_LEGEND).isEmpty()){
-                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                MiContext context = RuleUtils.buildContext(interaction, "interaction");
 
                 messages=Collections.singleton( new ValidatorMessage( "Interaction with "+attributes.size()+" annotations but without a figure legend. A figure legend is recommended by IMEx.'",
                         MessageLevel.WARN,
@@ -48,7 +48,7 @@ public class InteractionFigureLegendRule extends AbstractMIRule<InteractionEvide
             }
         }
         else {
-            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            MiContext context = RuleUtils.buildContext(interaction, "interaction");
 
             messages=Collections.singleton(new ValidatorMessage("Interaction without a figure legend. A figure legend is recommended by IMEx.'",
                     MessageLevel.WARN,

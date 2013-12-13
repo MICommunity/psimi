@@ -35,12 +35,12 @@ import java.util.*;
  * @version $Id$
  * @since 1.0
  */
-public class Mi25Validator extends Validator {
+public class MiValidator extends Validator {
 
     /**
      * Sets up a logger for that class.
      */
-    public static final Log log = LogFactory.getLog( Mi25Validator.class );
+    public static final Log log = LogFactory.getLog( MiValidator.class );
 
     ///**
     //* Plateform specific break line.
@@ -89,9 +89,9 @@ public class Mi25Validator extends Validator {
      * @param objectRuleConfig configuration for the object rules.
      * @throws ValidatorException
      */
-    public Mi25Validator( InputStream ontologyconfig,
-                          InputStream cvMappingConfig,
-                          InputStream objectRuleConfig ) throws ValidatorException, OntologyLoaderException {
+    public MiValidator(InputStream ontologyconfig,
+                       InputStream cvMappingConfig,
+                       InputStream objectRuleConfig) throws ValidatorException, OntologyLoaderException {
 
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
         validatorReport = new ValidatorReport();
@@ -103,9 +103,9 @@ public class Mi25Validator extends Validator {
         setObjectRules(new ArrayList<ObjectRule>(getObjectRules()));
     }
 
-    public Mi25Validator( OntologyManager ontologyManager,
-                          CvMapping cvMapping,
-                          Collection<ObjectRule> objectRules) {
+    public MiValidator(OntologyManager ontologyManager,
+                       CvMapping cvMapping,
+                       Collection<ObjectRule> objectRules) {
         super( ontologyManager, cvMapping, objectRules);
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
@@ -551,7 +551,7 @@ public class Mi25Validator extends Validator {
                     "to be able to finish the semantic validation. Error message thrown : ");
             messageBuffer.append(ExceptionUtils.getMessage(e));
 
-            Mi25Context context = new Mi25Context();
+            MiContext context = new MiContext();
 
             messages.clear();
             messages.add( new ValidatorMessage( messageBuffer.toString(),
@@ -645,7 +645,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : annotationMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -658,7 +658,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : refMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -671,7 +671,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : paramMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -684,7 +684,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : confMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -697,7 +697,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : confMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -710,7 +710,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : confMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -761,7 +761,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : confMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "experiment"));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "experiment"));
             messages.add(message);
         }
 
@@ -790,7 +790,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : partMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "interaction"));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "interaction"));
             messages.add(message);
         }
 
@@ -861,7 +861,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : organismMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
         // validate aliases
@@ -878,7 +878,7 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : aliasMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, label));
             messages.add(message);
         }
     }
@@ -934,8 +934,8 @@ public class Mi25Validator extends Validator {
         }
         // add context
         for (ValidatorMessage message : partMessages){
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "participant"));
-            ((Mi25Context)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent2, "interaction"));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent, "participant"));
+            ((MiContext)message.getContext()).addAssociatedContext(RuleUtils.buildContext(parent2, "interaction"));
             messages.add(message);
         }
 

@@ -1,6 +1,6 @@
 package psidev.psi.mi.validator;
 
-import psidev.psi.mi.validator.extension.Mi25ClusteredContext;
+import psidev.psi.mi.validator.extension.MiClusteredContext;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
@@ -52,7 +52,7 @@ public class ValidatorUtils {
         }
 
         // build a second cluster by message level
-        Map<MessageLevel, Mi25ClusteredContext> clusteringByMessageLevel = new HashMap<MessageLevel, Mi25ClusteredContext>(clustering.size());
+        Map<MessageLevel, MiClusteredContext> clusteringByMessageLevel = new HashMap<MessageLevel, MiClusteredContext>(clustering.size());
         for (Map.Entry<String, Map<Rule, Set<ValidatorMessage>>> entry : clustering.entrySet()){
 
             String message = entry.getKey();
@@ -68,12 +68,12 @@ public class ValidatorUtils {
                 for (ValidatorMessage validatorMessage : validatorMessages){
 
                     if (clusteringByMessageLevel.containsKey(validatorMessage.getLevel())){
-                        Mi25ClusteredContext clusteredContext = clusteringByMessageLevel.get(validatorMessage.getLevel());
+                        MiClusteredContext clusteredContext = clusteringByMessageLevel.get(validatorMessage.getLevel());
 
                         clusteredContext.getContexts().add(validatorMessage.getContext());
                     }
                     else{
-                        Mi25ClusteredContext clusteredContext = new Mi25ClusteredContext();
+                        MiClusteredContext clusteredContext = new MiClusteredContext();
 
                         clusteredContext.getContexts().add(validatorMessage.getContext());
 
@@ -81,7 +81,7 @@ public class ValidatorUtils {
                     }
                 }
 
-                for (Map.Entry<MessageLevel, Mi25ClusteredContext> levelEntry : clusteringByMessageLevel.entrySet()){
+                for (Map.Entry<MessageLevel, MiClusteredContext> levelEntry : clusteringByMessageLevel.entrySet()){
 
                     ValidatorMessage validatorMessage = new ValidatorMessage(message, levelEntry.getKey(), levelEntry.getValue(), rule);
                     clusteredMessages.add(validatorMessage);

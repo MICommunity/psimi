@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -49,7 +49,7 @@ public class ChecksumSyntaxRule extends AbstractMIRule<Checksum> {
             if (method == null ||
                     PsiXml25Utils.UNSPECIFIED.equals(method.getShortName()) ||
                     MitabUtils.UNKNOWN_TYPE.equals(method.getShortName())){
-                Mi25Context xrefContext = RuleUtils.buildContext(checksum, "checksum");
+                MiContext xrefContext = RuleUtils.buildContext(checksum, "checksum");
                 messages = new ArrayList<ValidatorMessage>();
                 messages.add( new ValidatorMessage( "Checksums must have a valid method.'",
                         MessageLevel.ERROR,
@@ -60,7 +60,7 @@ public class ChecksumSyntaxRule extends AbstractMIRule<Checksum> {
                 final OntologyTermI dbTerm = access.getTermForAccession(method.getMIIdentifier());
 
                 if (dbTerm == null){
-                    Mi25Context context = RuleUtils.buildContext(checksum, "checksum");
+                    MiContext context = RuleUtils.buildContext(checksum, "checksum");
                     if (messages.isEmpty()){
                         messages = new ArrayList<ValidatorMessage>();
                     }
@@ -82,7 +82,7 @@ public class ChecksumSyntaxRule extends AbstractMIRule<Checksum> {
                     }
 
                     if (!foundParent){
-                        Mi25Context context = RuleUtils.buildContext(checksum, "checksum");
+                        MiContext context = RuleUtils.buildContext(checksum, "checksum");
                         if (messages.isEmpty()){
                             messages = new ArrayList<ValidatorMessage>();
                         }
@@ -98,7 +98,7 @@ public class ChecksumSyntaxRule extends AbstractMIRule<Checksum> {
                     checksum.getValue().trim().length() == 0 ||
                     PsiXml25Utils.UNSPECIFIED.equals(checksum.getValue()) ||
                     MitabUtils.UNKNOWN_ID.equals(checksum.getValue())){
-                Mi25Context xrefContext = RuleUtils.buildContext(checksum, "checksum");
+                MiContext xrefContext = RuleUtils.buildContext(checksum, "checksum");
                 if (messages.isEmpty()){
                     messages = new ArrayList<ValidatorMessage>();
                 }

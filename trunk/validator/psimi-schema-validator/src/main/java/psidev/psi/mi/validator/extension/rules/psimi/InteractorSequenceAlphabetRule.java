@@ -16,7 +16,7 @@
 package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Polymer;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -120,7 +120,7 @@ public class InteractorSequenceAlphabetRule extends AbstractMIRule<Polymer> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
+                    MiContext context = RuleUtils.buildContext( interactor, "interactor" );
                     messages=Collections.singleton(new ValidatorMessage(message,
                             MessageLevel.WARN,
                             context,
@@ -144,7 +144,7 @@ public class InteractorSequenceAlphabetRule extends AbstractMIRule<Polymer> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
+                    MiContext context = RuleUtils.buildContext( interactor, "interactor" );
                     messages=Collections.singleton( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
@@ -168,7 +168,7 @@ public class InteractorSequenceAlphabetRule extends AbstractMIRule<Polymer> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
+                    MiContext context = RuleUtils.buildContext( interactor, "interactor" );
                     messages=Collections.singleton( new ValidatorMessage(message,
                             MessageLevel.WARN,
                             context,

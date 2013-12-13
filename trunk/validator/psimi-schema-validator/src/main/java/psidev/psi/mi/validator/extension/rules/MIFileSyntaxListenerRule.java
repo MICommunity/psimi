@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
-import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -36,13 +36,13 @@ public class MIFileSyntaxListenerRule extends AbstractMIRule<MIFileDataSource> i
 
     public void onInvalidSyntax(FileSourceContext context, Exception e) {
         if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Invalid syntax : "+ ExceptionUtils.getFullStackTrace(e), MessageLevel.FATAL, new Mi25Context(context.getSourceLocator()),this));
+            this.validatorMessages.add(new ValidatorMessage("Invalid syntax : "+ ExceptionUtils.getFullStackTrace(e), MessageLevel.FATAL, new MiContext(context.getSourceLocator()),this));
         }
     }
 
     public void onSyntaxWarning(FileSourceContext context, String message) {
         if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Syntax warning : "+ message, MessageLevel.WARN, new Mi25Context(context.getSourceLocator()),this));
+            this.validatorMessages.add(new ValidatorMessage("Syntax warning : "+ message, MessageLevel.WARN, new MiContext(context.getSourceLocator()),this));
         }
     }
 

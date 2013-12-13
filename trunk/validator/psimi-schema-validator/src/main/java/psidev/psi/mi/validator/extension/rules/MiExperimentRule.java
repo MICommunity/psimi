@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
+import psidev.psi.mi.validator.extension.MiOntology;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -17,12 +17,12 @@ import java.util.Collection;
  * @version $Id$
  * @since 2.0.0
  */
-public abstract class Mi25ExperimentRule extends AbstractMIRule<Experiment> {
+public abstract class MiExperimentRule extends AbstractMIRule<Experiment> {
 
     //////////////////
     // Constructors
 
-    public Mi25ExperimentRule( OntologyManager ontologyManager ) {
+    public MiExperimentRule(OntologyManager ontologyManager) {
         super( ontologyManager, Experiment.class );
     }
 
@@ -40,7 +40,7 @@ public abstract class Mi25ExperimentRule extends AbstractMIRule<Experiment> {
      * @return the ontology
      * @throws psidev.psi.tools.validator.ValidatorException
      */
-    public Mi25Ontology getMiOntology() throws ValidatorException {
-        return new Mi25Ontology( ontologyManager.getOntologyAccess( "MI" ) );
+    public MiOntology getMiOntology() throws ValidatorException {
+        return new MiOntology( ontologyManager.getOntologyAccess( "MI" ) );
     }
 }

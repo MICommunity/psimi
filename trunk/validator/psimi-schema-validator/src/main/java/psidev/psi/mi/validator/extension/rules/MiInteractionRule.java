@@ -1,7 +1,7 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
+import psidev.psi.mi.validator.extension.MiOntology;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
@@ -18,12 +18,12 @@ import java.util.Collection;
  * @version $Id$
  * @since 2.0.0
  */
-public abstract class Mi25InteractionRule extends AbstractMIRule<Interaction> {
+public abstract class MiInteractionRule extends AbstractMIRule<Interaction> {
 
     //////////////////
     // Constructors
 
-    public Mi25InteractionRule( OntologyManager ontologyManager ) {
+    public MiInteractionRule(OntologyManager ontologyManager) {
         super( ontologyManager, Interaction.class );
     }
 
@@ -51,7 +51,7 @@ public abstract class Mi25InteractionRule extends AbstractMIRule<Interaction> {
      * @return the ontology
      * @throws psidev.psi.tools.validator.ValidatorException
      */
-    public Mi25Ontology getMi25Ontology() throws ValidatorException {
-        return new Mi25Ontology( ontologyManager.getOntologyAccess( "MI" ) );
+    public MiOntology getMi25Ontology() throws ValidatorException {
+        return new MiOntology( ontologyManager.getOntologyAccess( "MI" ) );
     }
 }

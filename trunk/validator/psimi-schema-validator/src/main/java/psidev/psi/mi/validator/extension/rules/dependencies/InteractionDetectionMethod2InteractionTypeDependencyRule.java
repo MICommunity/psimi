@@ -3,8 +3,8 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.MiValidatorContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -42,7 +42,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Ab
 
     public InteractionDetectionMethod2InteractionTypeDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager, InteractionEvidence.class );
-        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
+        MiValidatorContext validatorContext = MiValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getInteractionDetectionMethod2InteractionType();
@@ -89,7 +89,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Ab
 
         if (experiment != null){
             // build a context in case of error
-            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            MiContext context = RuleUtils.buildContext(interaction, "interaction");
             context.addAssociatedContext(RuleUtils.buildContext(experiment, "experiment"));
 
             final CvTerm method = experiment.getInteractionDetectionMethod();
@@ -749,7 +749,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Ab
                                                     int numParticipants,
                                                     int numBaits,
                                                     int numPreys,
-                                                    Mi25Context context,
+                                                    MiContext context,
                                                     InteractionDetectionMethod2InteractionTypeDependencyRule rule) {
 
             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();

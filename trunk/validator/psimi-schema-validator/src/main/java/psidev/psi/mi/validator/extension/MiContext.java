@@ -14,7 +14,7 @@ import java.util.List;
  * @version $Id$
  * @since 04.01.2006; 15:56:04
  */
-public class Mi25Context extends Context {
+public class MiContext extends Context {
 
     //////////////////////////
     // Instance variable
@@ -23,20 +23,20 @@ public class Mi25Context extends Context {
 
     private FileSourceLocator locator;
 
-    private List<Mi25Context> associatedContexts;
+    private List<MiContext> associatedContexts;
 
     //////////////////
     // Constructors
 
-    public Mi25Context( String context ) {
+    public MiContext(String context) {
         super( context );
     }
 
-    public Mi25Context() {
+    public MiContext() {
         super( null );
     }
 
-    public Mi25Context(FileSourceLocator locator) {
+    public MiContext(FileSourceLocator locator) {
         super( locator != null ? locator.toString() : null);
         this.locator = locator;
     }
@@ -45,14 +45,14 @@ public class Mi25Context extends Context {
     // Getters and Setters
 
 
-    public List<Mi25Context> getAssociatedContexts() {
+    public List<MiContext> getAssociatedContexts() {
         if (associatedContexts == null){
-            associatedContexts = new ArrayList<Mi25Context>();
+            associatedContexts = new ArrayList<MiContext>();
         }
         return associatedContexts;
     }
 
-    public void addAssociatedContext(Mi25Context context) {
+    public void addAssociatedContext(MiContext context) {
         if (context != null){
             getAssociatedContexts().add(context);
         }
@@ -82,8 +82,8 @@ public class Mi25Context extends Context {
         this.locator = locator;
     }
 
-    public Mi25Context copy() {
-        Mi25Context clone = new Mi25Context( this.getContext() );
+    public MiContext copy() {
+        MiContext clone = new MiContext( this.getContext() );
 
         clone.setLocator(this.getLocator());
         clone.setObjectLabel(this.getObjectLabel());

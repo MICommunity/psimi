@@ -12,7 +12,7 @@ import psidev.psi.mi.validator.client.gui.dnd.FilesDroppedListener;
 import psidev.psi.mi.validator.client.gui.util.GuiUserPreferences;
 import psidev.psi.mi.validator.client.gui.view.validator.ValidatorTable;
 import psidev.psi.mi.validator.client.gui.view.validator.ValidatorTableRow;
-import psidev.psi.mi.validator.extension.Mi25Validator;
+import psidev.psi.mi.validator.extension.MiValidator;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.Validator;
 import psidev.psi.tools.validator.ValidatorException;
@@ -200,7 +200,7 @@ public class DragAndDropValidator {
         FileInputStream configStream = new FileInputStream( configFile );
         Validator validator = null;
         try {
-            validator = new Mi25Validator( configStream, null, null );
+            validator = new MiValidator( configStream, null, null );
         } catch ( OntologyLoaderException e ) {
             throw new ValidatorException( "", e );
         }
