@@ -147,6 +147,6 @@ public class BindingDomainSizeRule extends AbstractMIRule<Feature> {
     }
 
     public String getId() {
-        return "R33";
+        return "R34";
     }
 }

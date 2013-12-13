@@ -272,6 +272,6 @@ public class PublicationRule extends AbstractMIRule<Publication>{
     }
 
     public String getId() {
-        return "R27";
+        return "R28";
     }
 }

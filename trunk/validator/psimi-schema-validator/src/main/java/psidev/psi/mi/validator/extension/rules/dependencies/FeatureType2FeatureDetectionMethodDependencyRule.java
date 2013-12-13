@@ -98,6 +98,6 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends AbstractMI
     }
 
     public String getId() {
-        return "R51";
+        return "R52";
     }
 }

@@ -110,6 +110,6 @@ public class FeatureTypeRule extends AbstractMIRule<Feature> {
     }
 
     public String getId() {
-        return "R36";
+        return "R37";
     }
 }

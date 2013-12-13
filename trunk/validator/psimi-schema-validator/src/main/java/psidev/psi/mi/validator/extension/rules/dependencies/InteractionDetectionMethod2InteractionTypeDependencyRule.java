@@ -144,7 +144,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Ab
     }
 
     public String getId() {
-        return "R47";
+        return "R48";
     }
 
     //////////////////////

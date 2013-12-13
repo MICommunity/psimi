@@ -98,6 +98,6 @@ public class FeatureType2FeatureRangeDependencyRule extends AbstractMIRule<Featu
     }
 
     public String getId() {
-        return "R50";
+        return "R51";
     }
 }

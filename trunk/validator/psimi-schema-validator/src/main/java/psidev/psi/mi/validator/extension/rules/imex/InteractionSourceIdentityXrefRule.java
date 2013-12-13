@@ -114,6 +114,6 @@ public class InteractionSourceIdentityXrefRule extends AbstractMIRule<Interactio
     }
 
     public String getId() {
-        return "R40";
+        return "R41";
     }
 }

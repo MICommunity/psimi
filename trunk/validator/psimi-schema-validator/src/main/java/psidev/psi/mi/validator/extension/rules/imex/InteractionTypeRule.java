@@ -54,6 +54,6 @@ public class InteractionTypeRule extends AbstractMIRule<InteractionEvidence>{
     }
 
     public String getId() {
-        return "R45";
+        return "R46";
     }
 }

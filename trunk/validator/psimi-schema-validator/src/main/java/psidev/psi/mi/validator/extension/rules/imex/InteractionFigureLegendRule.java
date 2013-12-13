@@ -60,6 +60,6 @@ public class InteractionFigureLegendRule extends AbstractMIRule<InteractionEvide
     }
 
     public String getId() {
-        return "R38";
+        return "R39";
     }
 }

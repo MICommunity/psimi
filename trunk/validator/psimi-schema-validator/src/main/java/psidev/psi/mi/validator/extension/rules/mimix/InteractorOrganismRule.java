@@ -62,6 +62,6 @@ public class InteractorOrganismRule extends AbstractMIRule<Interactor> {
     }
 
     public String getId() {
-        return "R32";
+        return "R33";
     }
 }

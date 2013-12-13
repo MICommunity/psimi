@@ -71,6 +71,6 @@ public class InteractorTypeRule extends AbstractMIRule<Interactor> {
     }
 
     public String getId() {
-        return "R45";
+        return "R42";
     }
 }
