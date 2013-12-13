@@ -145,4 +145,8 @@ public class MIFileParserCompositeListener<T extends MIFileParserListener> imple
             delegate.onAliasWithoutName(context);
         }
     }
+
+    public List<T> getDelegates() {
+        return delegates;
+    }
 }
