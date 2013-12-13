@@ -101,9 +101,9 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
         if (publication != null){
             getWriter().write("        <tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"table-title\" colspan=\"2\">Publication:</td></tr>");
+            getWriter().write("            <td class=\"table-title\">Publication:</td>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
+            getWriter().write("         <td class=\"normal-cell\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
             getWriter().write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);

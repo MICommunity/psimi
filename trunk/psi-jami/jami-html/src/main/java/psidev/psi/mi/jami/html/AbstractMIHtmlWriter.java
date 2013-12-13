@@ -435,11 +435,11 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         if (term != null){
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\" colspan=\"2\">");
+            writer.write("            <td class=\"table-title\">");
             writer.write(label);
-            writer.write(":</td></tr>");
+            writer.write(":</td>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
+            writer.write("         <td class=\"normal-cell\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -483,11 +483,11 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         if (organism != null){
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\" colspan=\"2\">");
+            writer.write("            <td class=\"table-title\">");
             writer.write(label);
-            writer.write(":</td></tr>");
+            writer.write(":</td>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
+            writer.write("         <td class=\"normal-cell\" colspan=\"2\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -536,13 +536,13 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(interactor);
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"title\" colspan=\"2\"><a name=\"");
+            writer.write("            <td class=\"title\"><a name=\"");
             writer.write(anchor);
             writer.write("\">Interactor ");
             writer.write(anchor);
-            writer.write("</a></td></tr>");
+            writer.write("</a></td>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("       <tr><td class=\"normal-cell\" colspan=\"2\">");
+            writer.write("       <td class=\"normal-cell\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
@@ -638,13 +638,13 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(participant);
             writer.write("        <tr>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
+            writer.write("            <td class=\"table-title\"><a name=\"");
             writer.write(anchor);
             writer.write("\">Participant ");
             writer.write(anchor);
-            writer.write("</a></td></tr>");
+            writer.write("</a></td>");
             writer.write(HtmlWriterUtils.NEW_LINE);
-            writer.write("         <tr><td class=\"normal-cell\" colspan=\"2\">");
+            writer.write("         <td class=\"normal-cell\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(HtmlWriterUtils.NEW_LINE);
