@@ -71,13 +71,13 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(experiment);
             getWriter().write("        <tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"title\" colspan=\"2\"><a name=\"");
+            getWriter().write("            <td class=\"table-title\"><a name=\"");
             getWriter().write(anchor);
             getWriter().write("\">Experiment ");
             getWriter().write(anchor);
-            getWriter().write("</a></td></tr>");
+            getWriter().write("</a></td>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("        <tr><td colspan=\"2\" class=\"normal-cell\">");
+            getWriter().write("        <td class=\"normal-cell\">");
             getWriter().write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
 
@@ -238,9 +238,9 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
         if (publication != null){
             getWriter().write("        <tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"table-title\" colspan=\"2\">Publication:</td></tr>");
+            getWriter().write("            <td class=\"table-title\">Publication:</td>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("        <tr><td class=\"normal-cell\" colspan=\"2\">");
+            getWriter().write("        <td class=\"normal-cell\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
             getWriter().write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
