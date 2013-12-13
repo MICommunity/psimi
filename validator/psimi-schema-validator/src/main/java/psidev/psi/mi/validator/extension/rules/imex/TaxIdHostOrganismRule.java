@@ -47,6 +47,6 @@ public class TaxIdHostOrganismRule extends AbstractMIRule<Organism> {
     }
 
     public String getId() {
-        return "R37";
+        return "R38";
     }
 }

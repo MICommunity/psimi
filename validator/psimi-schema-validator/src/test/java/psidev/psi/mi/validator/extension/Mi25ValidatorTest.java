@@ -109,7 +109,7 @@ public class Mi25ValidatorTest {
             System.out.print(rule.getClass().getCanonicalName() + "\n");
         }
 
-        Assert.assertEquals( 42, aValidator.getAllRules().size() );
+        Assert.assertEquals( 43, aValidator.getAllRules().size() );
     }
 
     @Test

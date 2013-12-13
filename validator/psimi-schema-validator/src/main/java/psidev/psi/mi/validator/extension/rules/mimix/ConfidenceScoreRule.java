@@ -114,6 +114,6 @@ public class ConfidenceScoreRule extends AbstractMIRule<InteractionEvidence> {
     }
 
     public String getId() {
-        return "R26";
+        return "R27";
     }
 }

@@ -58,6 +58,6 @@ public class ParticipantIdentificationMethodRule extends AbstractMIRule<Particip
     }
 
     public String getId() {
-        return "R29";
+        return "R30";
     }
 }

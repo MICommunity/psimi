@@ -17,4 +17,5 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingCvTermNameRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ChecksumSyntaxRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractorNameRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.MIFileGrammarRule"/>
 </objectRuleList>

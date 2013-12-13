@@ -8,6 +8,8 @@ import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.tab.listener.MitabParserListener;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.validator.ValidatorUtils;
 import psidev.psi.mi.validator.extension.rules.*;
@@ -71,7 +73,7 @@ public class Mi25Validator extends Validator {
     private CvRuleWrapper cvRuleWrapper;
     private ChecksumRuleWrapper checksumRuleWrapper;
     private MIFileSyntaxListenerRule syntaxRule;
-    private MIFileGrammarListenerRule grammarRule;
+    private MIFileListenerRuleWrapper listenerRule;
 
     private boolean validateObjectRule = true;
 
@@ -94,8 +96,8 @@ public class Mi25Validator extends Validator {
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
-        this.grammarRule = new MIFileGrammarListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+        this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
 
         // refilter object rules
         setObjectRules(new ArrayList<ObjectRule>(getObjectRules()));
@@ -107,8 +109,8 @@ public class Mi25Validator extends Validator {
         super( ontologyManager, cvMapping, objectRules);
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
-        this.grammarRule = new MIFileGrammarListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+        this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
     }
 
     @Override
@@ -178,6 +180,11 @@ public class Mi25Validator extends Validator {
                     }
                     else if (miRule.getType().isAssignableFrom(Checksum.class)){
                         this.checksumRuleWrapper.addRule(miRule);
+                    }
+                    else if (miRule.getType().isAssignableFrom(MIFileDataSource.class)
+                            && miRule instanceof MitabParserListener &&
+                            miRule instanceof PsiXmlParserListener){
+                        this.listenerRule.addRule(miRule);
                     }
                     else{
                         getObjectRules().add(rule);
@@ -415,10 +422,6 @@ public class Mi25Validator extends Validator {
         return checksumRuleWrapper;
     }
 
-    public MIFileGrammarListenerRule getGrammarRule() {
-        return grammarRule;
-    }
-
     public Collection<ObjectRule> getAllRules(){
         Collection<ObjectRule> allRules = new ArrayList<ObjectRule>(60);
         allRules.addAll(getObjectRules());
@@ -436,11 +439,8 @@ public class Mi25Validator extends Validator {
         allRules.addAll(this.aliasRuleWrapper.getRules());
         allRules.addAll(this.cvRuleWrapper.getRules());
         allRules.addAll(this.checksumRuleWrapper.getRules());
+        allRules.addAll(this.listenerRule.getRules());
         return allRules;
-    }
-
-    public void setGrammarRule(MIFileGrammarListenerRule grammarRule) {
-        this.grammarRule = grammarRule;
     }
 
     @Override
@@ -528,7 +528,7 @@ public class Mi25Validator extends Validator {
         try {
             // report grammar rules
             if (interactionSource instanceof MIFileDataSource){
-                ((MIFileDataSource)interactionSource).setFileParserListener(this.grammarRule);
+                ((MIFileDataSource)interactionSource).setFileParserListener(this.listenerRule);
             }
 
             // then run the object rules (if any)
@@ -538,7 +538,7 @@ public class Mi25Validator extends Validator {
 
             // report grammar rules
             if (interactionSource instanceof MIFileDataSource){
-                messages.addAll(this.grammarRule.check((MIFileDataSource)interactionSource));
+                messages.addAll(this.listenerRule.check((MIFileDataSource) interactionSource));
             }
 
             // cluster all messages!!

@@ -26,12 +26,29 @@ import java.util.List;
  * @since <pre>10/12/13</pre>
  */
 
-public class MIFileGrammarListenerRule extends AbstractMIRule<MIFileDataSource> implements MitabParserListener, PsiXmlParserListener {
+public class MIFileGrammarRule extends AbstractMIRule<MIFileDataSource> implements MitabParserListener, PsiXmlParserListener {
     private List<ValidatorMessage> validatorMessages;
 
-    public MIFileGrammarListenerRule(OntologyManager ontologyManager) {
+    public MIFileGrammarRule(OntologyManager ontologyManager) {
         super(ontologyManager, MIFileDataSource.class);
         this.validatorMessages = new ArrayList<ValidatorMessage>();
+        // describe the rule.
+        setName( "MI file grammar check" );
+        setDescription( "Rule that listens to MI file parsing events and report grammar arrors." );
+        addTip( "All participants should have a valid interactor description." );
+        addTip( "All interactions should have at least one participant." );
+        addTip( "All organisms should have a valid taxid syntax (positive integer or -1, -2, -3, -4, and -5)." );
+        addTip( "All feature ranges should have consistent begin and end positions." );
+        addTip( "All range positions should have consistent position and range status." );
+        addTip( "All stoichiometry must be a valid long number." );
+        addTip( "MITAB identifiers (columns 1 to 4) should have a syntax of type db:id and not db:id(text)" );
+        addTip( "MITAB confidences (columns 15) should have a syntax of type confidence_type:confidence_value and not confidence_type:confidence_value(text)" );
+        addTip( "MITAB complex expansion (column 16) should be a valid db cross reference to PSI-MI ontology." );
+        addTip( "MITAB unique identifier columns (1 and 2) should have only one identifier." );
+        addTip( "MITAB unique identifier columns (1 and 2) should not be empty." );
+        addTip( "PSI-XML ids should be unique per entry. Features, participants, interactions, interactors and experiments must have distinct ids per entry." );
+        addTip( "Clustered content should be avoided (several experiments per interaction, several organism per interactors, etc.)." );
+
     }
 
     public void onInvalidSyntax(FileSourceContext context, Exception e) {
@@ -134,7 +151,7 @@ public class MIFileGrammarListenerRule extends AbstractMIRule<MIFileDataSource> 
     }
 
     public String getId() {
-        return "R1";
+        return "R26";
     }
 
     public void onTextFoundInIdentifier(MitabXref xref) {
