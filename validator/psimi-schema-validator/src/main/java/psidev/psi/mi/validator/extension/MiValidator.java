@@ -97,7 +97,6 @@ public class MiValidator extends Validator {
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
-        this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
 
         // refilter object rules
         setObjectRules(new ArrayList<ObjectRule>(getObjectRules()));
@@ -110,7 +109,6 @@ public class MiValidator extends Validator {
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxListenerRule(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
-        this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
     }
 
     @Override
@@ -134,6 +132,7 @@ public class MiValidator extends Validator {
             this.xrefRuleWrapper = new XrefRuleWrapper(this.ontologyMngr);
             this.cvRuleWrapper = new CvRuleWrapper(this.ontologyMngr);
             this.checksumRuleWrapper = new ChecksumRuleWrapper(this.ontologyMngr);
+            this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
 
             for (ObjectRule rule : objectRules){
                 // if we have special rules
@@ -430,6 +429,9 @@ public class MiValidator extends Validator {
     }
 
     public Collection<ObjectRule> getAllRules(){
+        if (!validateObjectRule){
+            return Collections.EMPTY_LIST;
+        }
         Collection<ObjectRule> allRules = new ArrayList<ObjectRule>(60);
         allRules.addAll(getObjectRules());
         allRules.addAll(this.aliasRuleWrapper.getRules());
@@ -544,7 +546,7 @@ public class MiValidator extends Validator {
             }
 
             // report grammar rules
-            if (interactionSource instanceof MIFileDataSource){
+            if (interactionSource instanceof MIFileDataSource && this.listenerRule != null){
                 messages.addAll(this.listenerRule.check((MIFileDataSource) interactionSource));
             }
 
