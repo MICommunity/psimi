@@ -4,7 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import psidev.psi.mi.validator.ValidatorReport;
-import psidev.psi.mi.validator.extension.Mi25Validator;
+import psidev.psi.mi.validator.extension.MiValidator;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -32,15 +32,19 @@ public class ValidatorClient {
      */
     public final static String IMEX = "IMEX";
     /**
-     * the XML syntax scope
+     * the SYNTAX syntax scope
      */
-    public final static String XML = "XML";
+    public final static String SYNTAX = "SYNTAX";
     /**
      * the CV mapping scope
      */
     public final static String CV = "cv";
 
     public final static String XML_EXTENSION = ".xml";
+
+    public final static String TEXT_EXTENSION = ".txt";
+    public final static String TSV_EXTENSION = ".tsv";
+    public final static String CSV_EXTENSION = ".csv";
 
     public final static String ZIP_EXTENSION = ".zip";
 
@@ -52,7 +56,7 @@ public class ValidatorClient {
      * @throws OntologyLoaderException
      * @throws IOException
      */
-    public static Mi25Validator buildValidator(String validationScope) throws ValidatorException, OntologyLoaderException, IOException {
+    public static MiValidator buildValidator(String validationScope) throws ValidatorException, OntologyLoaderException, IOException {
 
         // the ontology
         InputStream ontologyConfig = null;
@@ -61,38 +65,38 @@ public class ValidatorClient {
         // the object rules
         InputStream objectRuleConfig = null;
 
-        Mi25Validator validator = null;
+        MiValidator validator = null;
         try{
             // the ontology
-            ontologyConfig = Mi25Validator.class.getResource( "/config/psi_mi/ontologies.xml" ).openStream();
+            ontologyConfig = MiValidator.class.getResource( "/config/psi_mi/ontologies.xml" ).openStream();
             // the CV mapping file
-            cvMappingConfig = Mi25Validator.class.getResource( "/config/psi_mi/cv-mapping.xml" ).openStream();
+            cvMappingConfig = MiValidator.class.getResource( "/config/psi_mi/cv-mapping.xml" ).openStream();
             // the object rules
             objectRuleConfig = null;
 
-            // XML scope
-            if (validationScope.equalsIgnoreCase(XML)){
-                validator = new Mi25Validator( ontologyConfig, cvMappingConfig, null );
+            // SYNTAX scope
+            if (validationScope.equalsIgnoreCase(SYNTAX)){
+                validator = new MiValidator( ontologyConfig, cvMappingConfig, null );
             }
             // CV scope
             else if (validationScope.equalsIgnoreCase(CV)) {
 
-                validator = new Mi25Validator(ontologyConfig, cvMappingConfig, null);
+                validator = new MiValidator(ontologyConfig, cvMappingConfig, null);
             }
             // MIMIX scope
             else if (validationScope.equalsIgnoreCase(MIMIX)) {
-                objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/mimix-rules.xml" ).openStream();
+                objectRuleConfig = MiValidator.class.getResource( "/config/psi_mi/mimix-rules.xml" ).openStream();
 
-                validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
+                validator = new MiValidator(ontologyConfig, cvMappingConfig, objectRuleConfig);
             }
             // IMEX scope
             else if (validationScope.equalsIgnoreCase(IMEX)) {
-                objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
+                objectRuleConfig = MiValidator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
 
-                validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
+                validator = new MiValidator(ontologyConfig, cvMappingConfig, objectRuleConfig);
             }
             else {
-                System.err.println( validationScope + " is not a valid scope. You can only choose XML, CV, MIMIX or IMEX." );
+                System.err.println( validationScope + " is not a valid scope. You can only choose SYNTAX, CV, MIMIX or IMEX." );
                 System.exit( 1 );
             }
         }
@@ -186,10 +190,10 @@ public class ValidatorClient {
     /**
      *
      * @param scope : the scope of validation
-     * @return  true if the semantic messages are enabled (scope is not XML)
+     * @return  true if the semantic messages are enabled (scope is not SYNTAX)
      */
     public static boolean isSemanticValidationEnabled(String scope){
-        if (XML.equalsIgnoreCase(scope)){
+        if (SYNTAX.equalsIgnoreCase(scope)){
             return true;
         }
         else if (CV.equalsIgnoreCase(scope)){
@@ -274,7 +278,7 @@ public class ValidatorClient {
      * @throws ValidatorException
      * @throws IOException
      */
-    public static void validateFile(File file, Mi25Validator validator, String levelThreshold, String scope) throws ValidatorException, IOException {
+    public static void validateFile(File file, MiValidator validator, String levelThreshold, String scope) throws ValidatorException, IOException {
 
         if (file == null){
             throw new ValidatorException("We can't validate a file which is null.");
@@ -291,7 +295,7 @@ public class ValidatorClient {
 
         // the name of the file
         String exactFileName = file.getName();
-        int indexExtension = exactFileName.indexOf(".xml");
+        int indexExtension = exactFileName.lastIndexOf(".");
         String fileName = exactFileName;
 
         if (indexExtension != -1){
@@ -304,34 +308,33 @@ public class ValidatorClient {
 
                 if (extension != null){
                     // the name of the file without its extension
-                    fileName = exactFileName.substring(0, indexExtension) + "_"+extension.toString()+".txt";
+                    fileName = exactFileName.substring(0, indexExtension) + "_"+extension.toString()+".log";
                 }
                 else {
                     // the name of the file without its extension
-                    fileName = exactFileName.substring(0, indexExtension) + "_invalid.txt";
+                    fileName = exactFileName.substring(0, indexExtension) + "_invalid.log";
                 }
             }
             else {
                 // the name of the file without its extension
-                fileName = exactFileName.substring(0, indexExtension) + "_valid.txt";
+                fileName = exactFileName.substring(0, indexExtension) + "_valid.log";
             }
         }
 
         int indexName = file.getPath().indexOf(exactFileName);
         // the path of the directory where the file will be
         String path = file.getPath().substring(0, indexName);
+        // the outout file
+        File output = new File(path+"report-"+fileName);
+        Writer writer = new BufferedWriter(new FileWriter(output));
 
-        // finally, we set the messages obtained (if any) to the report
-        if (validatorReport.hasSyntaxMessages() || validatorReport.hasSemanticMessages()) {
-            // the outout file
-            File output = new File(path+"report-"+fileName);
-            Writer writer = new BufferedWriter(new FileWriter(output));
-
-            try{
+        try{
+            // finally, we set the messages obtained (if any) to the report
+            if (validatorReport.hasSyntaxMessages() || validatorReport.hasSemanticMessages()) {
+                writer.write("Document contained " +validatorReport.getInteractionCount()+ " interactions.");
                 writer.write("Validator reported " + validatorReport.getSyntaxMessages().size() + " syntax messages \n" );
                 writer.write("Validator reported " + validatorReport.getSemanticMessages().size() + " semantic messages \n" );
                 writer.flush();
-                writer.write("XML syntax validation failed. \n");
 
                 if (validatorReport.hasSyntaxMessages()){
                     for (ValidatorMessage message : validatorReport.getSyntaxMessages()){
@@ -344,8 +347,16 @@ public class ValidatorClient {
                     }
                     writer.write("\n");
                 }
-                else {
-                    writer.write("XML syntax valid. \n \n");
+                if (validatorReport.isSyntaxValid()) {
+                    writer.write("File syntax valid. \n \n");
+                    writer.flush();
+                }
+                else if (validatorReport.hasSyntaxWarnings()) {
+                    writer.write("File syntax valid but with warnings. \n \n");
+                    writer.flush();
+                }
+                else{
+                    writer.write("File syntax invalid. \n");
                     writer.flush();
                 }
 
@@ -378,15 +389,17 @@ public class ValidatorClient {
                     writer.write("\n");
                     writer.write(status + "\n");
 
-                } else {
-
-                    writer.write("Document is valid" + "\n");
-                    writer.flush();
                 }
             }
-            finally {
-                writer.close();
+            else {
+
+                writer.write("Document is valid" + "\n");
+                writer.write("Document contained " +validatorReport.getInteractionCount()+ " interactions.");
+                writer.flush();
             }
+        }
+        finally {
+            writer.close();
         }
     }
 
@@ -411,28 +424,31 @@ public class ValidatorClient {
 
         File dir = new File(filename);
         try {
-            Mi25Validator validator = buildValidator(validationScope);
+            MiValidator validator = buildValidator(validationScope);
 
-            // validate XML and ZIP xmlFiles
+            // validate SYNTAX and ZIP xmlFiles
             String [] xmlExtension = {"xml"};
             String [] zipExtension = {"zip"};
             boolean recursive = true;
 
-            Collection<File> xmlFiles = new ArrayList<File>();
+            Collection<File> miFiles = new ArrayList<File>();
             Collection<File> zipFiles = new ArrayList<File>();
 
             if (dir.isDirectory()){
-                xmlFiles = FileUtils.listFiles(dir, xmlExtension, recursive);
+                miFiles = FileUtils.listFiles(dir, xmlExtension, recursive);
                 zipFiles = FileUtils.listFiles(dir, zipExtension, recursive);
             }
-            else if (dir.getName().endsWith(XML_EXTENSION)) {
-                xmlFiles.add(dir);
+            else if (dir.getName().endsWith(XML_EXTENSION)
+                    || dir.getName().endsWith(TEXT_EXTENSION)
+                    || dir.getName().endsWith(TSV_EXTENSION)
+                    || dir.getName().endsWith(CSV_EXTENSION)) {
+                miFiles.add(dir);
             }
             else if (dir.getName().endsWith(ZIP_EXTENSION)) {
                 zipFiles.add(dir);
             }
 
-            for (File file : xmlFiles) {
+            for (File file : miFiles) {
 
                 System.out.println("Validate File : " + file.getAbsolutePath());
                 validateFile(file, validator, levelThreshold, validationScope);
@@ -465,7 +481,10 @@ public class ValidatorClient {
                     }
                     else{
 
-                        if (entry.getName().endsWith(XML_EXTENSION)){
+                        if (entry.getName().endsWith(XML_EXTENSION)
+                                || entry.getName().endsWith(TEXT_EXTENSION)
+                                || entry.getName().endsWith(TSV_EXTENSION)
+                                || entry.getName().endsWith(CSV_EXTENSION)){
                             System.out.println("Extracting: " +entry.getName());
 
                             String entryName = parentDirectory.getAbsolutePath() + File.separator + entry.getName();

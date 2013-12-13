@@ -11,7 +11,7 @@
 
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-schema-validator-cli</artifactId>
-    <version>2.0.7-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
 
     <name>PSI :: Schema Validator CLI :: PSI-MI Extension</name>
 
@@ -46,9 +46,9 @@
                                      also adding the project build directory -->
                                 <classpath />
                                 <argument>psidev.psi.mi.ValidatorClient</argument>
-                                <!-- The file to validate, when a directory is given, process all files with an extension .XML recursively -->
+                                <!-- The file to validate, when a directory is given, process all files with an extension .SYNTAX recursively -->
                                 <argument>${file}</argument>
-                                <!-- Apply validation given scope (XML, CV, MIMIX, IMEX) -->
+                                <!-- Apply validation given scope (SYNTAX, CV, MIMIX, IMEX) -->
                                 <argument>${scope}</argument>
                                 <!-- If specified, only output messages that are of the same level or more severe -->
                                 <argument>${level}</argument>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
+            <version>4.10</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
