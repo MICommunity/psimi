@@ -74,25 +74,23 @@ public class MIDataSourceOptionFactory {
     /**
      * Create a map with the default options to retrieve the default MI datasource that will read the inputstream content.
      * @param streamToAnalyse : stream to be used to analyze the MIFileType
-     * @param source : stream to be used by the MIFileDataSource
      * @return the default options for the MI datasource corresponding to this source inputstream
      * @throws IOException
      */
-    public Map<String, Object> getDefaultOptions(InputStream streamToAnalyse, InputStream source) throws IOException {
-
-        return getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(streamToAnalyse), source);
+    public Map<String, Object> getDefaultOptions(InputStream streamToAnalyse) throws IOException {
+        OpenedInputStream openedStream = fileAnalyzer.extractMIFileTypeFrom(streamToAnalyse);
+        return getDefaultFileOptions(openedStream.getSource(), openedStream.getReader());
     }
 
     /**
      * Create a map with the default options to retrieve the default MI datasource that will read the reader content.
      * @param readerToAnalyze : reader to be used to analyze the MIFileType
-     * @param sourceReader : reader to be used by the MIFileDataSource
      * @return the default options for the MI datasource corresponding to this source reader
      * @throws IOException
      */
-    public Map<String, Object> getDefaultOptions(Reader readerToAnalyze, Reader sourceReader) throws IOException {
-
-        return getDefaultFileOptions(fileAnalyzer.identifyMIFileTypeFor(readerToAnalyze), sourceReader);
+    public Map<String, Object> getDefaultOptions(Reader readerToAnalyze) throws IOException {
+        OpenedInputStream openedStream = fileAnalyzer.extractMIFileTypeAndCopiedInputStream(readerToAnalyze);
+        return getDefaultFileOptions(openedStream.getSource(), openedStream.getReader());
     }
 
     /**
