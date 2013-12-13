@@ -247,14 +247,21 @@ public class MiValidator extends Validator {
             // first check if can parse dataSource and register datasources
             InteractionStream<InteractionEvidence> interactionSource = parseDataSource(file);
 
-            // 1. Validate file input using Schema (MIF) for xml, normal listeners for mitab
-            if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == validateSyntax((MIFileDataSource)interactionSource)) {
-                    return this.validatorReport;
+            try{
+                // 1. Validate file input using Schema (MIF) for xml, normal listeners for mitab
+                if ( userPreferences.isSaxValidationEnabled() ) {
+                    if (false == validateSyntax((MIFileDataSource)interactionSource)) {
+                        return this.validatorReport;
+                    }
+                }
+
+                validateSemantic(interactionSource);
+            }
+            finally {
+                if (interactionSource != null){
+                    interactionSource.close();
                 }
             }
-
-            validateSemantic(interactionSource);
 
             return this.validatorReport;
 

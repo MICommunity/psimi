@@ -42,6 +42,7 @@ public class InteractorTypeRuleTest extends AbstractRuleTest {
     @Test
     public void test_small_molecule() throws ValidatorException {
         BioactiveEntity small_molecule = buildSmallMolecule("xxx");
+        small_molecule.getIdentifiers().clear();
 
         InteractorTypeRule rule =  new InteractorTypeRule(ontologyMaganer);
 
