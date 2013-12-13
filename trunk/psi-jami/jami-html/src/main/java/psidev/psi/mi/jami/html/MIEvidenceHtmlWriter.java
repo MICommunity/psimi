@@ -41,43 +41,45 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
 
     @Override
     protected void writeConfidences(InteractionEvidence interaction) throws IOException {
-        for (Confidence ref : interaction.getConfidences()){
-            writeProperty(ref.getType().getShortName(), ref.getValue());
+        if (!interaction.getConfidences().isEmpty()){
+            writeSubTitle("Confidences: ");
+
+            for (Confidence ref : interaction.getConfidences()){
+                writeProperty(ref.getType().getShortName(), ref.getValue());
+            }
         }
     }
 
     @Override
     protected void writeParameters(InteractionEvidence interaction) throws IOException {
-        for (Parameter ref : interaction.getParameters()){
-            if (ref.getUnit() != null){
-                writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
-            }
-            else {
-                writeProperty(ref.getType().getShortName(), ref.getValue().toString());
+        if (!interaction.getParameters().isEmpty()){
+            writeSubTitle("Parameters: ");
+            for (Parameter ref : interaction.getParameters()){
+                if (ref.getUnit() != null){
+                    writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
+                }
+                else {
+                    writeProperty(ref.getType().getShortName(), ref.getValue().toString());
+                }
             }
         }
     }
 
     protected void writeExperiment(InteractionEvidence interaction) throws IOException {
-        if (interaction.getExperiment() != null){
-            Experiment experiment = interaction.getExperiment();
+        Experiment experiment = interaction.getExperiment();
+        if (experiment != null){
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(experiment);
             getWriter().write("        <tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"table-title\"><a name=\"");
+            getWriter().write("            <td class=\"title\" colspan=\"2\"><a name=\"");
             getWriter().write(anchor);
             getWriter().write("\">Experiment ");
             getWriter().write(anchor);
-            getWriter().write("</a></td>");
+            getWriter().write("</a></td></tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"normal-cell\">");
-            getWriter().write(HtmlWriterUtils.NEW_LINE);
+            getWriter().write("        <tr><td colspan=\"2\" class=\"normal-cell\">");
             getWriter().write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-
-
-            // write experiment name
-            writeProperty("Name", experiment.toString());
 
             // write publication
             writePublication(experiment.getPublication());
@@ -90,6 +92,7 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
 
             // write xrefs
             if (!experiment.getXrefs().isEmpty()){
+                writeSubTitle("Xrefs: ");
                 for (Xref ref : experiment.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -102,6 +105,7 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
 
             // write annotations
             if (!experiment.getAnnotations().isEmpty()){
+                writeSubTitle("Annotations: ");
                 for (Annotation ref : experiment.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -122,19 +126,26 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
 
     @Override
     protected void writeConfidences(ParticipantEvidence participant) throws IOException {
-        for (Confidence ref : participant.getConfidences()){
-            writeProperty(ref.getType().getShortName(), ref.getValue());
+        if (!participant.getConfidences().isEmpty()){
+            writeSubTitle("Confidences: ");
+
+            for (Confidence ref : participant.getConfidences()){
+                writeProperty(ref.getType().getShortName(), ref.getValue());
+            }
         }
     }
 
     @Override
     protected void writeParameters(ParticipantEvidence participant) throws IOException {
-        for (Parameter ref : participant.getParameters()){
-            if (ref.getUnit() != null){
-                writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
-            }
-            else {
-                writeProperty(ref.getType().getShortName(), ref.getValue().toString());
+        if (!participant.getParameters().isEmpty()){
+            writeSubTitle("Parameters: ");
+            for (Parameter ref : participant.getParameters()){
+                if (ref.getUnit() != null){
+                    writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
+                }
+                else {
+                    writeProperty(ref.getType().getShortName(), ref.getValue().toString());
+                }
             }
         }
     }
@@ -227,9 +238,9 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
         if (publication != null){
             getWriter().write("        <tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"table-title\">Publication:</td>");
+            getWriter().write("            <td class=\"table-title\" colspan=\"2\">Publication:</td></tr>");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
-            getWriter().write("            <td class=\"normal-cell\">");
+            getWriter().write("        <tr><td class=\"normal-cell\" colspan=\"2\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
             getWriter().write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             getWriter().write(HtmlWriterUtils.NEW_LINE);
