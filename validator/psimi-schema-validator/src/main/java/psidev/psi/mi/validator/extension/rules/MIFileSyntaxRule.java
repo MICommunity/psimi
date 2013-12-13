@@ -27,11 +27,14 @@ import java.util.List;
  * @since <pre>10/12/13</pre>
  */
 
-public class MIFileSyntaxListenerRule extends AbstractMIRule<MIFileDataSource> implements MitabParserListener, PsiXmlParserListener {
+public class MIFileSyntaxRule extends AbstractMIRule<MIFileDataSource> implements MitabParserListener, PsiXmlParserListener {
     private List<ValidatorMessage> validatorMessages;
 
-    public MIFileSyntaxListenerRule(OntologyManager ontologyManager) {
+    public MIFileSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager, MIFileDataSource.class);
+        // describe the rule.
+        setName( "MI file syntax checker" );
+        setDescription( "Rule that listens to MI file parsing events and report syntax errors." );
     }
 
     public void onInvalidSyntax(FileSourceContext context, Exception e) {

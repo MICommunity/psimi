@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.reference.XmlIdReference;
 import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -34,7 +35,7 @@ public class MIFileGrammarRule extends AbstractMIRule<MIFileDataSource> implemen
         this.validatorMessages = new ArrayList<ValidatorMessage>();
         // describe the rule.
         setName( "MI file grammar check" );
-        setDescription( "Rule that listens to MI file parsing events and report grammar arrors." );
+        setDescription( "Rule that listens to MI file parsing events and report grammar errors." );
         addTip( "All participants should have a valid interactor description." );
         addTip( "All interactions should have at least one participant." );
         addTip( "All organisms should have a valid taxid syntax (positive integer or -1, -2, -3, -4, and -5)." );
