@@ -39,7 +39,7 @@ public class MIFileSyntaxRule extends AbstractMIRule<MIFileDataSource> implement
 
     public void onInvalidSyntax(FileSourceContext context, Exception e) {
         if (this.validatorMessages != null){
-            this.validatorMessages.add(new ValidatorMessage("Invalid syntax : "+ ExceptionUtils.getFullStackTrace(e), MessageLevel.FATAL, new MiContext(context.getSourceLocator()),this));
+            this.validatorMessages.add(new ValidatorMessage("Invalid syntax : "+ ExceptionUtils.getMessage(e), MessageLevel.FATAL, new MiContext(context.getSourceLocator()),this));
         }
     }
 
