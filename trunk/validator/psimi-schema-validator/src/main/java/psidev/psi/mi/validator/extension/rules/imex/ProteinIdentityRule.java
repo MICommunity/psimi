@@ -41,6 +41,11 @@ public class ProteinIdentityRule extends AbstractMIRule<Protein> {
         addTip( "Identity accession in the PSI-MI ontology is " + IDENTITY_MI_REF );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Protein;
+    }
+
     /**
      * check that each interactor has at least name or a short label.
      *

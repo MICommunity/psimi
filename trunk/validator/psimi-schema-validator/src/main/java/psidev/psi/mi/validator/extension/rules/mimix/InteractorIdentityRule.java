@@ -43,6 +43,11 @@ public class InteractorIdentityRule extends AbstractMIRule<Interactor> {
         addTip( "The term " );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Interactor;
+    }
+
     /**
      * check that each interactor has at least name or a short label.
      *
