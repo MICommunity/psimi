@@ -20,7 +20,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalInteractionEnricher<I extends Interaction<P>, P extends Participant<I,F>, F extends Feature<P,F>>
+public class MinimalInteractionEnricher<I extends Interaction, P extends Participant, F extends Feature>
         implements InteractionEnricher<I , P , F> {
 
     private InteractionEnricherListener listener;

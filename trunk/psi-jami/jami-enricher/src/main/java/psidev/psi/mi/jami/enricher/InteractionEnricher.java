@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public interface InteractionEnricher <I extends Interaction<P> ,  P extends Participant<I,F> , F extends Feature<P,F>> extends MIEnricher<I>{
+public interface InteractionEnricher <I extends Interaction ,  P extends Participant , F extends Feature> extends MIEnricher<I>{
 
     /**
      * The current sub enricher for participants.

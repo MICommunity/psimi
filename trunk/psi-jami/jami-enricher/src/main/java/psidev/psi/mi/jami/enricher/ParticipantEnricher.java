@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
  */
-public interface ParticipantEnricher <P extends Participant, F extends Feature<P,F>> extends MIEnricher<P>{
+public interface ParticipantEnricher <P extends Participant, F extends Feature> extends MIEnricher<P>{
 
     /**
      * Sets the enricher for proteins. If null, proteins will not be enriched.
