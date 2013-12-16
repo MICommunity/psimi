@@ -3,21 +3,19 @@ package psidev.psi.mi.jami.enricher.impl;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalBioactiveEntityUpdater;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,7 +122,7 @@ public class MinimalBioactiveEntityUpdaterTest {
         BioactiveEntity bioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME, TEST_FULLNAME);
         bioactiveEntity.setChebi(CHEBI_ID);
 
-        enricher = new MinimalBioactiveEntityUpdater(null);
+        enricher = new MinimalBioactiveEntityUpdater((BioactiveEntityFetcher)null);
     }
 
 

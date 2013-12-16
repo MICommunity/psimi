@@ -6,11 +6,10 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalPublicationUpdater;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherLogger;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
@@ -22,8 +21,8 @@ import java.util.Date;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,7 +60,7 @@ public class MinimalPublicationUpdaterTest {
     @Test (expected = IllegalArgumentException.class)
     public void test_failure_when_query_publication_is_null() throws EnricherException {
         persistentPublication = null;
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
         fail("Exception should be thrown before this point");
     }
 
@@ -75,6 +74,33 @@ public class MinimalPublicationUpdaterTest {
                 new PublicationEnricherListener() {
                     public void onEnrichmentComplete(Publication publication, EnrichmentStatus status, String message) {
                         fail();
+                    }
+                    public void onEnrichmentError(Publication object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Publication o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Publication o, Annotation removed) {
+
+                    }
+
+                    public void onAddedIdentifier(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedIdentifier(Publication o, Xref removed) {
+
+                    }
+
+                    public void onAddedXref(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Publication o, Xref removed) {
+
                     }
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
@@ -94,9 +120,9 @@ public class MinimalPublicationUpdaterTest {
                 }
         ));
 
-        publicationEnricher.setPublicationFetcher(null);
+        publicationEnricher = new MinimalPublicationUpdater(null);
 
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
     }
 
     @Test
@@ -110,6 +136,34 @@ public class MinimalPublicationUpdaterTest {
                         assertTrue(publication == persistentPublication);
                         Assert.assertEquals(EnrichmentStatus.FAILED, status);
                         persistentInt ++;
+                    }
+
+                    public void onEnrichmentError(Publication object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Publication o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Publication o, Annotation removed) {
+
+                    }
+
+                    public void onAddedIdentifier(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedIdentifier(Publication o, Xref removed) {
+
+                    }
+
+                    public void onAddedXref(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Publication o, Xref removed) {
+
                     }
 
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId) {fail("fail");}
@@ -129,7 +183,7 @@ public class MinimalPublicationUpdaterTest {
                     public void onReleaseDateUpdated(Publication publication, Date oldDate) {fail("fail");}
                 }
         ));
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
 
         Assert.assertEquals(1, persistentInt);
     }
@@ -161,6 +215,34 @@ public class MinimalPublicationUpdaterTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
 
+                    public void onEnrichmentError(Publication object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Publication o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Publication o, Annotation removed) {
+
+                    }
+
+                    public void onAddedIdentifier(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedIdentifier(Publication o, Xref removed) {
+
+                    }
+
+                    public void onAddedXref(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Publication o, Xref removed) {
+
+                    }
+
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
@@ -182,7 +264,7 @@ public class MinimalPublicationUpdaterTest {
                 }
         ));
 
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
 
 
         assertEquals(1 , persistentPublication.getAuthors().size());
@@ -219,6 +301,34 @@ public class MinimalPublicationUpdaterTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
 
+                    public void onEnrichmentError(Publication object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Publication o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Publication o, Annotation removed) {
+
+                    }
+
+                    public void onAddedIdentifier(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedIdentifier(Publication o, Xref removed) {
+
+                    }
+
+                    public void onAddedXref(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Publication o, Xref removed) {
+
+                    }
+
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
@@ -243,7 +353,7 @@ public class MinimalPublicationUpdaterTest {
                 }
         ));
 
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
 
         assertEquals(1 , persistentPublication.getAuthors().size());
         assertEquals( "TEST_A" , persistentPublication.getAuthors().iterator().next() );
@@ -282,6 +392,34 @@ public class MinimalPublicationUpdaterTest {
                         assertTrue(publication == persistentPublication);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
+
+                    public void onEnrichmentError(Publication object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Publication o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Publication o, Annotation removed) {
+
+                    }
+
+                    public void onAddedIdentifier(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedIdentifier(Publication o, Xref removed) {
+
+                    }
+
+                    public void onAddedXref(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Publication o, Xref removed) {
+
+                    }
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
@@ -300,7 +438,7 @@ public class MinimalPublicationUpdaterTest {
                 }
         ));
 
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
 
 
         assertEquals(1 , persistentPublication.getAuthors().size());
@@ -355,6 +493,34 @@ public class MinimalPublicationUpdaterTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
 
+                    public void onEnrichmentError(Publication object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Publication o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Publication o, Annotation removed) {
+
+                    }
+
+                    public void onAddedIdentifier(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedIdentifier(Publication o, Xref removed) {
+
+                    }
+
+                    public void onAddedXref(Publication o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Publication o, Xref removed) {
+
+                    }
+
                     public void onPubmedIdUpdate(Publication publication, String oldPubmedId)       {fail("fail");}
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
@@ -373,7 +539,7 @@ public class MinimalPublicationUpdaterTest {
                 }
         ));
 
-        publicationEnricher.enrichPublication(persistentPublication);
+        publicationEnricher.enrich(persistentPublication);
 
         assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
         assertEquals(1 , persistentPublication.getIdentifiers().size());

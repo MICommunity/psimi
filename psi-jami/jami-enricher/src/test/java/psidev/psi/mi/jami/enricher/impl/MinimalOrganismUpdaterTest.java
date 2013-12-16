@@ -1,15 +1,15 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalOrganismUpdater;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
@@ -43,8 +43,7 @@ public class MinimalOrganismUpdaterTest {
     public void initialiseFetcherAndEnricher() {
         persistentOrganism = null;
         this.fetcher = new MockOrganismFetcher();
-        this.organismEnricher = new MinimalOrganismUpdater();
-        organismEnricher.setOrganismFetcher(fetcher);
+        this.organismEnricher = new MinimalOrganismUpdater(this.fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fullOrganism.getAliases().add(new DefaultAlias("TestAlias"));
@@ -72,9 +71,8 @@ public class MinimalOrganismUpdaterTest {
 
         FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
-        organismEnricher.setOrganismFetcher(fetcher);
 
-        organismEnricher.enrichOrganism(persistentOrganism);
+        organismEnricher.enrich(persistentOrganism);
 
         fail("Exception should be thrown before this point");
     }
@@ -94,13 +92,13 @@ public class MinimalOrganismUpdaterTest {
 
         assertTrue("The test can not be applied as the conditions do not invoke the required response. " +
                 "Change the timesToTry." ,
-                timesToTry < AbstractOrganismEnricher.RETRY_COUNT);
+                timesToTry < 5);
 
         FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
-        organismEnricher.setOrganismFetcher(fetcher);
+        organismEnricher = new MinimalOrganismUpdater(fetcher);
 
-        organismEnricher.enrichOrganism(persistentOrganism);
+        organismEnricher.enrich(persistentOrganism);
 
         assertEquals("mockus mockus", persistentOrganism.getScientificName() );
     }
@@ -116,7 +114,7 @@ public class MinimalOrganismUpdaterTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTerm() throws EnricherException {
         Organism organism = null;
-        organismEnricher.enrichOrganism(organism);
+        organismEnricher.enrich(organism);
         fail("Exception should be thrown before this point");
     }
 
@@ -128,9 +126,9 @@ public class MinimalOrganismUpdaterTest {
     @Test(expected = IllegalStateException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         persistentOrganism = new DefaultOrganism(1234);
-        organismEnricher.setOrganismFetcher(null);
+        organismEnricher = new MinimalOrganismUpdater(null);
         assertNull(organismEnricher.getOrganismFetcher());
-        organismEnricher.enrichOrganism(persistentOrganism);
+        organismEnricher.enrich(persistentOrganism);
         fail("Exception should be thrown before this point");
     }
 
@@ -155,6 +153,10 @@ public class MinimalOrganismUpdaterTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
 
+                    public void onEnrichmentError(Organism object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
 
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {
@@ -169,7 +171,7 @@ public class MinimalOrganismUpdaterTest {
                 }
         ));
 
-        this.organismEnricher.enrichOrganism(persistentOrganism);
+        this.organismEnricher.enrich(persistentOrganism);
 
         assertNotNull(persistentOrganism.getScientificName());
         assertEquals(TEST_SCIENTIFICNAME, persistentOrganism.getScientificName());
@@ -192,6 +194,10 @@ public class MinimalOrganismUpdaterTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
 
+                    public void onEnrichmentError(Organism object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
 
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {
@@ -207,7 +213,7 @@ public class MinimalOrganismUpdaterTest {
                 }
         ));
 
-        this.organismEnricher.enrichOrganism(persistentOrganism);
+        this.organismEnricher.enrich(persistentOrganism);
 
         assertNotNull(persistentOrganism.getScientificName());
         assertEquals(TEST_SCIENTIFICNAME, persistentOrganism.getScientificName());
@@ -229,6 +235,10 @@ public class MinimalOrganismUpdaterTest {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
+
+                    public void onEnrichmentError(Organism object, String message, Exception e) {
+                        Assert.fail();
+                    }
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail();}
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
@@ -238,7 +248,7 @@ public class MinimalOrganismUpdaterTest {
                 }
         ));
 
-        this.organismEnricher.enrichOrganism(persistentOrganism);
+        this.organismEnricher.enrich(persistentOrganism);
 
         assertNotNull(persistentOrganism.getScientificName());
         assertEquals(TEST_SCIENTIFICNAME, persistentOrganism.getScientificName());
@@ -271,6 +281,10 @@ public class MinimalOrganismUpdaterTest {
                         assertEquals(TEST_COMMONNAME , organism.getCommonName());
                     }
 
+                    public void onEnrichmentError(Organism object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
                     public void onScientificNameUpdate(Organism organism, String oldScientificName){fail("Should not reach this point");}
 
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
@@ -280,7 +294,7 @@ public class MinimalOrganismUpdaterTest {
                 }
         ));
 
-        this.organismEnricher.enrichOrganism(persistentOrganism);
+        this.organismEnricher.enrich(persistentOrganism);
 
 
         assertEquals(TEST_COMMONNAME, persistentOrganism.getCommonName());
@@ -308,6 +322,10 @@ public class MinimalOrganismUpdaterTest {
                         assertEquals(TEST_OLD_COMMONNAME, oldCommonName);
                         assertEquals(TEST_COMMONNAME , organism.getCommonName());
                     }
+
+                    public void onEnrichmentError(Organism object, String message, Exception e) {
+                        Assert.fail();
+                    }
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail("Should not reach this point");}
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
@@ -316,7 +334,7 @@ public class MinimalOrganismUpdaterTest {
                 }
         ));
 
-        this.organismEnricher.enrichOrganism(persistentOrganism);
+        this.organismEnricher.enrich(persistentOrganism);
 
         assertNotNull(persistentOrganism.getCommonName());
         assertEquals(TEST_COMMONNAME, persistentOrganism.getCommonName());
@@ -340,6 +358,10 @@ public class MinimalOrganismUpdaterTest {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
+
+                    public void onEnrichmentError(Organism object, String message, Exception e) {
+                        Assert.fail();
+                    }
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail();}
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
@@ -349,7 +371,7 @@ public class MinimalOrganismUpdaterTest {
                 }
         ));
 
-        this.organismEnricher.enrichOrganism(persistentOrganism);
+        this.organismEnricher.enrich(persistentOrganism);
 
         assertNotNull(persistentOrganism.getCommonName());
         assertEquals(TEST_COMMONNAME, persistentOrganism.getCommonName());
