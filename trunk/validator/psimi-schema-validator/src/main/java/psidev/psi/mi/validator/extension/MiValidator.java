@@ -563,11 +563,11 @@ public class MiValidator extends Validator {
 
             MiClusteredContext context = new MiClusteredContext();
 
-            messages.clear();
             messages.add( new ValidatorMessage( messageBuffer.toString(),
                     MessageLevel.FATAL,
                     context,
                     this.syntaxRule ) );
+            report.getSemanticMessages().addAll(messages);
         }
     }
 
