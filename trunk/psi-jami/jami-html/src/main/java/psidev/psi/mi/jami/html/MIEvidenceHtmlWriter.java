@@ -23,15 +23,15 @@ public class MIEvidenceHtmlWriter extends AbstractMIHtmlWriter<InteractionEviden
     }
 
     public MIEvidenceHtmlWriter(File file) throws IOException {
-        super(file, new MIModelledHtmlWriter());
+        super(file, new MIModelledHtmlWriter(file));
     }
 
     public MIEvidenceHtmlWriter(OutputStream output) {
-        super(output, new MIModelledHtmlWriter());
+        super(output, new MIModelledHtmlWriter(output));
     }
 
     public MIEvidenceHtmlWriter(Writer writer) {
-        super(writer, new MIModelledHtmlWriter());
+        super(writer, new MIModelledHtmlWriter(writer));
     }
 
     @Override
