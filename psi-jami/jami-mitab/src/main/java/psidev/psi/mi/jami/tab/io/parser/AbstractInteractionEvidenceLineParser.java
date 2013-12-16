@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
@@ -245,17 +246,76 @@ public abstract class AbstractInteractionEvidenceLineParser<T extends Interactio
         publication.getExperiments().add(experiment);
 
         // then get the host organism
-        if (host.size() > 1){
-            if (getParserListener() != null){
-                getParserListener().onSeveralHostOrganismFound(host, host.iterator().next());
-            }
-            experiment.setHostOrganism(host.iterator().next());
-        }
-        else if (!host.isEmpty()){
-            experiment.setHostOrganism(host.iterator().next());
-        }
+        initialiseHostOrganism(host, experiment);
 
         return experiment;
+    }
+
+    protected void initialiseHostOrganism(Collection<MitabOrganism> organisms, Experiment exp){
+
+        if (organisms.size() > 1){
+            Iterator<MitabOrganism> organismsIterator = organisms.iterator();
+            int taxid=0;
+            String commonName=null;
+            int commonNameLength = 0;
+            int fullNameLength = 0;
+            MitabOrganism currentOrganism=null;
+            boolean hasSeveralOrganisms = false;
+            do {
+
+                MitabOrganism organism = organismsIterator.next();
+                if (currentOrganism == null){
+                    currentOrganism = organism;
+                    commonName = organism.getCommonName();
+                    commonNameLength = commonName.length();
+                    fullNameLength = commonName.length();
+                    taxid = organism.getTaxId();
+                }
+                // we have same organism
+                else if (organism.getTaxId() == taxid){
+                    // we have a new common name
+                    if (organism.getCommonName() != null && organism.getCommonName().length() < commonNameLength){
+                        if (currentOrganism.getScientificName() == null){
+                            currentOrganism.setScientificName(currentOrganism.getCommonName());
+                        }
+                        // we have a synonym for the organism
+                        else {
+                            currentOrganism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, currentOrganism.getCommonName()));
+                        }
+                        currentOrganism.setCommonName(organism.getCommonName());
+                        commonNameLength = organism.getCommonName().length();
+                    }
+                    // we have a full name
+                    else if (currentOrganism.getScientificName() == null){
+                        currentOrganism.setScientificName(organism.getCommonName());
+                        fullNameLength = organism.getCommonName().length();
+                    }
+                    // we have a new fullname
+                    else if (organism.getCommonName().length() < fullNameLength) {
+                        currentOrganism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, currentOrganism.getScientificName()));
+                        currentOrganism.setScientificName(organism.getCommonName());
+                        fullNameLength = organism.getCommonName().length();
+                    }
+                    // we have a synonym for the organism
+                    else {
+                        currentOrganism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, organism.getCommonName()));
+                    }
+                }
+                else{
+                    hasSeveralOrganisms = true;
+                }
+
+            } while(organismsIterator.hasNext());
+
+            if (getParserListener() != null && hasSeveralOrganisms){
+                getParserListener().onSeveralHostOrganismFound(organisms, organisms.iterator().next());
+            }
+
+            exp.setHostOrganism(currentOrganism);
+        }
+        else if (!organisms.isEmpty()){
+            exp.setHostOrganism(organisms.iterator().next());
+        }
     }
 
     protected MitabPublication createPublicationFrom(Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabSource> source){
