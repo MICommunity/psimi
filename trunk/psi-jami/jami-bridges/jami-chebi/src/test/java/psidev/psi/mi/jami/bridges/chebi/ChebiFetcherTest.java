@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.bridges.chebi;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -43,21 +44,18 @@ public class ChebiFetcherTest {
 
     }
 
-
-
-
     public static void report(BioactiveEntity fetched){
 
-        log.info(fetched.getShortName());
-        log.info(fetched.getFullName());
+        Assert.assertNotNull(fetched.getShortName());
+        Assert.assertNotNull(fetched.getFullName());
 
-        log.info(fetched.getSmile());
+        Assert.assertNotNull(fetched.getSmile());
 
-        log.info(fetched.getStandardInchi());
-        log.info(fetched.getStandardInchiKey());
-        log.info(fetched.getAliases().toString());
+        Assert.assertNotNull(fetched.getStandardInchi());
+        Assert.assertNotNull(fetched.getStandardInchiKey());
+        Assert.assertNotNull(fetched.getAliases().toString());
 
-        log.info(fetched.getAnnotations().toString());
-        log.info(fetched.getIdentifiers().toString());
+        Assert.assertTrue(fetched.getAnnotations().isEmpty());
+        Assert.assertFalse(fetched.getIdentifiers().isEmpty());
     }
 }
