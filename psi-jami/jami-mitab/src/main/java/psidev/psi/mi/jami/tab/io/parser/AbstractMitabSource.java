@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Abstract class for an InteractionSource coming from a MITAB file.
  *
- * This datasource only provides interaction iterator
+ * This datasource provides interaction iterator and collection
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -57,6 +57,10 @@ public abstract class AbstractMitabSource<T extends Interaction, P extends Parti
 
     public MIFileParserListener getFileParserListener() {
         return this.delegatedSource.getFileParserListener();
+    }
+
+    public void setFileParserListener(MIFileParserListener listener) {
+        this.delegatedSource.setFileParserListener(listener);
     }
 
     public boolean validateSyntax() throws MIIOException {
