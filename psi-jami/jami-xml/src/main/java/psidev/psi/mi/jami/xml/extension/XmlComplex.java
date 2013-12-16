@@ -104,6 +104,16 @@ public class XmlComplex extends DefaultComplex implements ExtendedPsi25Interacto
     }
 
     @Override
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(new XmlCvTerm(Complex.COMPLEX, new XmlXref(CvTermUtils.createPsiMiDatabase(), Complex.COMPLEX_MI, CvTermUtils.createIdentityQualifier())));
+        }
+        else {
+            super.setInteractorType(interactorType);
+        }
+    }
+
+    @Override
     public void setPhysicalProperties(String properties) {
         Collection<Annotation> complexAnnotationList = getAnnotations();
 

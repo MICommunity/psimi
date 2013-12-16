@@ -33,7 +33,8 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
             throw new IllegalArgumentException("The complex wrapper needs a non null xmlModelledInteraction");
         }
         this.modelledInteraction = modelled;
-        this.interactorType = new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI);
+        this.interactorType = new XmlCvTerm(Complex.COMPLEX, new XmlXref(CvTermUtils.createPsiMiDatabase(),Complex.COMPLEX_MI, CvTermUtils.createIdentityQualifier()));
+
         // add the new generated complex in the referenced complexes
         Xml25EntryContext.getInstance().registerComplex(modelled.getId(), this);
     }
@@ -179,7 +180,7 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     @Override
     public void setInteractorType(CvTerm type) {
         if (type == null){
-            this.interactorType = new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI);
+            this.interactorType = new XmlCvTerm(Complex.COMPLEX, new XmlXref(CvTermUtils.createPsiMiDatabase(),Complex.COMPLEX_MI, CvTermUtils.createIdentityQualifier()));
         }
         else{
             this.interactorType = type;
