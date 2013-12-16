@@ -340,6 +340,7 @@ public final class RuleUtils {
         Set<String> ids = new HashSet<String>( refs.size() );
         for ( OntologyTermI termI : refs ) {
             ids.add( termI.getPreferredName().toLowerCase().trim());
+            ids.addAll( termI.getNameSynonyms());
         }
         return ids;
     }
