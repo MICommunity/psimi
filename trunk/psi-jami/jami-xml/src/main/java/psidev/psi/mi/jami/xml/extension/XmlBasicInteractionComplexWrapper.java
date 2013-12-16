@@ -42,6 +42,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
         this.interaction = interaction;
+        this.interactorType = new XmlCvTerm(Complex.COMPLEX, new XmlXref(CvTermUtils.createPsiMiDatabase(),Complex.COMPLEX_MI, CvTermUtils.createIdentityQualifier()));
         Xml25EntryContext.getInstance().registerComplex(interaction.getId(), this);
     }
 
@@ -247,7 +248,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     @Override
     public void setInteractorType(CvTerm type) {
         if (type == null){
-            this.interactorType = new XmlCvTerm(Complex.COMPLEX, Complex.COMPLEX_MI);
+            this.interactorType = new XmlCvTerm(Complex.COMPLEX, new XmlXref(CvTermUtils.createPsiMiDatabase(),Complex.COMPLEX_MI, CvTermUtils.createIdentityQualifier()));
         }
         else{
             this.interactorType = type;
