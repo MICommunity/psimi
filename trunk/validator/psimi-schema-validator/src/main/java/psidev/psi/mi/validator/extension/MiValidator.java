@@ -815,10 +815,14 @@ public class MiValidator extends Validator {
         }
 
         // validate biological role
-        checkCv(messages, p.getBiologicalRole(), p, "participant");
+        if (p.getBiologicalRole() != null){
+            checkCv(messages, p.getBiologicalRole(), p, "participant");
+        }
 
         // validate experimental role
-        checkCv(messages, p.getExperimentalRole(), p, "participant");
+        if (p.getExperimentalRole() != null){
+            checkCv(messages, p.getExperimentalRole(), p, "participant");
+        }
 
         // validate identification methods
         for (CvTerm term : p.getIdentificationMethods()){
