@@ -15,7 +15,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13
  */
-public class BasicParticipantEnricher<P extends Participant , F extends Feature<P,F>>
+public class BasicParticipantEnricher<P extends Participant , F extends Feature>
         implements ParticipantEnricher<P , F>  {
 
     private ParticipantEnricherListener listener;
