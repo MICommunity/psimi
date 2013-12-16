@@ -46,7 +46,7 @@ public class EnricherUtilTest {
         assertEquals( 2 , newAliases.size());
         assertEquals( 0 , currentAliases.size());
 
-        EnricherUtils.mergeAliases(new DefaultCvTerm("test object to enrich"), newAliases, currentAliases, false, null);
+        EnricherUtils.mergeAliases(new DefaultCvTerm("test object to enrich"), currentAliases, newAliases, false, null);
 
         assertEquals(newAliases.size(), currentAliases.size());
         for(Alias alias : newAliases){
@@ -125,9 +125,9 @@ public class EnricherUtilTest {
         assertEquals( 2 , newAliases.size());
         assertEquals( 2 , currentAliases.size());
 
-        EnricherUtils.mergeAliases(new DefaultCvTerm("test object to enrich"), newAliases, currentAliases, false, null);
+        EnricherUtils.mergeAliases(new DefaultCvTerm("test object to enrich"), currentAliases, newAliases, false, null);
 
-        assertEquals(newAliases.size(), 4);
+        assertEquals(currentAliases.size(), 4);
         for(Alias alias : newAliases){
             assertTrue(currentAliases.contains(alias));
         }
@@ -180,7 +180,7 @@ public class EnricherUtilTest {
         Xref xref_2A = new DefaultXref(cvTermDB_A , "Xref 2,A");
         newXrefs.add(xref_2A);
 
-        EnricherUtils.mergeXrefs(new DefaultCvTerm("test object to enrich"), newXrefs, currentXrefs, false, false, null, null);
+        EnricherUtils.mergeXrefs(new DefaultCvTerm("test object to enrich"), currentXrefs, newXrefs, false, false, null, null);
 
         assertEquals(newXrefs.size(), 2);
         for(Xref xref : newXrefs){
@@ -254,7 +254,7 @@ public class EnricherUtilTest {
         Xref xref_2A = new DefaultXref(cvTermDB_A , "Xref 2,A");
         currentXrefs.add(xref_2A);
 
-        EnricherUtils.mergeXrefs(new DefaultCvTerm("test object to enrich"), newXrefs, currentXrefs, false, false, null, null);
+        EnricherUtils.mergeXrefs(new DefaultCvTerm("test object to enrich"), currentXrefs, newXrefs, false, false, null, null);
 
         assertEquals(4, currentXrefs.size());
         for(Xref xref : newXrefs){

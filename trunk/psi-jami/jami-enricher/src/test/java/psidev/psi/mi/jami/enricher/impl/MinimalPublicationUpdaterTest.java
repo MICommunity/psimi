@@ -22,6 +22,7 @@ import java.util.Date;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -64,7 +65,7 @@ public class MinimalPublicationUpdaterTest {
         fail("Exception should be thrown before this point");
     }
 
-    @Test  (expected = IllegalStateException.class)
+    @Test  (expected = IllegalArgumentException.class)
     public void test_failure_when_fetcher_is_missing() throws EnricherException {
         persistentPublication = new DefaultPublication(TEST_PUBMED_ID);
 
@@ -429,7 +430,7 @@ public class MinimalPublicationUpdaterTest {
                     public void onJournalUpdated(Publication publication, String oldJournal)        {fail("fail");}
                     public void onPublicationDateUpdated(Publication publication, Date oldDate)     {fail("fail");}
                     public void onAuthorAdded(Publication publication, String addedAuthor)          {fail("fail");}
-                    public void onAuthorRemoved(Publication publication, String removedAuthor)      {fail("fail");}
+                    public void onAuthorRemoved(Publication publication, String removedAuthor)      {}
                     public void onXrefAdded(Publication publication, Xref addedXref)                {fail("fail");}
                     public void onXrefRemoved(Publication publication, Xref removedXref)            {fail("fail");}
                     public void onAnnotationAdded(Publication publication, Annotation annotationAdded) {fail("fail");}
@@ -441,7 +442,7 @@ public class MinimalPublicationUpdaterTest {
         publicationEnricher.enrich(persistentPublication);
 
 
-        assertEquals(1 , persistentPublication.getAuthors().size());
+        assertEquals(0 , persistentPublication.getAuthors().size());
 
         assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
         assertEquals(1 , persistentPublication.getIdentifiers().size());
@@ -542,10 +543,10 @@ public class MinimalPublicationUpdaterTest {
         publicationEnricher.enrich(persistentPublication);
 
         assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
-        assertEquals(1 , persistentPublication.getIdentifiers().size());
+        assertEquals(2 , persistentPublication.getIdentifiers().size());
         assertNull(persistentPublication.getTitle());
         assertNull(persistentPublication.getJournal());
-        assertNull(persistentPublication.getDoi());
+        assertNotNull(persistentPublication.getDoi());
         assertNull(persistentPublication.getPublicationDate());
         assertEquals(Collections.EMPTY_LIST , persistentPublication.getAuthors());
         assertEquals(Collections.EMPTY_LIST , persistentPublication.getXrefs());

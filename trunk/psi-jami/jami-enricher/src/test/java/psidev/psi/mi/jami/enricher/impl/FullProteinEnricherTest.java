@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.FullProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
@@ -251,15 +250,15 @@ public class FullProteinEnricherTest {
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
                     public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
-                    public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)      {}
+                    public void onAddedXref(Protein protein, Xref added)                {}
                     public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
                     public void onRemovedChecksum(Protein protein, Checksum removed)    {fail("failed");}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -383,15 +382,15 @@ public class FullProteinEnricherTest {
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
                     public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
-                    public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)      {}
+                    public void onAddedXref(Protein protein, Xref added)                {}
                     public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
                     public void onRemovedChecksum(Protein protein, Checksum removed)    {fail("failed");}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -541,15 +540,15 @@ public class FullProteinEnricherTest {
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
                     public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
-                    public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)      {}
+                    public void onAddedXref(Protein protein, Xref added)                {}
                     public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
                     public void onRemovedChecksum(Protein protein, Checksum removed)    {fail("failed");}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -903,9 +902,9 @@ public class FullProteinEnricherTest {
 
         proteinEnricher.enrich(persistentProtein);
 
-        assertEquals(Protein.PROTEIN,
+        assertEquals(Protein.UNKNOWN_INTERACTOR,
                 persistentProtein.getInteractorType().getShortName());
-        assertEquals(Protein.PROTEIN_MI,
+        assertEquals(Protein.UNKNOWN_INTERACTOR_MI,
                 persistentProtein.getInteractorType().getMIIdentifier());
         assertEquals(1 , persistentInt);
     }
@@ -1467,8 +1466,7 @@ public class FullProteinEnricherTest {
 
         this.proteinEnricher.enrich(protein_without_organism);
 
-        assertNotNull(protein_without_organism.getOrganism());
-        assertEquals(-3 , protein_without_organism.getOrganism().getTaxId());
+        assertNull(protein_without_organism.getOrganism());
     }
 
 
@@ -1513,7 +1511,7 @@ public class FullProteinEnricherTest {
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
                     public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
                     public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
+                    public void onAddedIdentifier(Protein protein, Xref added) {}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
 
                     public void onAddedXref(Protein protein, Xref added) {

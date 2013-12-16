@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.FullProteinUpdater;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
@@ -266,15 +265,15 @@ public class FullProteinUpdaterTest {
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
                     public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
-                    public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)      {}
+                    public void onAddedXref(Protein protein, Xref added)                {}
                     public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
                     public void onRemovedChecksum(Protein protein, Checksum removed)    {fail("failed");}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -402,15 +401,15 @@ public class FullProteinUpdaterTest {
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
                     public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
-                    public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)      {}
+                    public void onAddedXref(Protein protein, Xref added)                {}
                     public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
                     public void onRemovedChecksum(Protein protein, Checksum removed)    {fail("failed");}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -473,7 +472,7 @@ public class FullProteinUpdaterTest {
                     public void onRefseqUpdate(Protein protein, String oldRefseq)       {fail("failed");}
                     public void onGeneNameUpdate(Protein protein, String oldGeneName)   {fail("failed");}
                     public void onRogidUpdate(Protein protein, String oldRogid)         {fail("failed");}
-                    public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence)   {}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
@@ -553,21 +552,21 @@ public class FullProteinUpdaterTest {
                     public void onRefseqUpdate(Protein protein, String oldRefseq)       {fail("failed");}
                     public void onGeneNameUpdate(Protein protein, String oldGeneName)   {fail("failed");}
                     public void onRogidUpdate(Protein protein, String oldRogid)         {fail("failed");}
-                    public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence)   {}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
                     public void onAddedInteractorType(Protein protein)                  {fail("failed");}
                     public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
-                    public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
-                    public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)      {}
+                    public void onAddedXref(Protein protein, Xref added)                {}
+                    public void onRemovedXref(Protein protein, Xref removed)            {}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
                     public void onRemovedChecksum(Protein protein, Checksum removed)    {fail("failed");}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -823,7 +822,7 @@ public class FullProteinUpdaterTest {
                     public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
-                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {}
                     public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
                     public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -892,7 +891,7 @@ public class FullProteinUpdaterTest {
                     public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
-                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {}
 
                     public void onAddedInteractorType(Protein protein)  {
                         assertTrue(protein == persistentProtein);
@@ -1162,7 +1161,7 @@ public class FullProteinUpdaterTest {
                     public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
-                    public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
+                    public void onFullNameUpdate(Protein protein, String oldFullName)  {}
                     public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
                     public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1188,7 +1187,7 @@ public class FullProteinUpdaterTest {
 
         this.proteinEnricher.enrich(persistentProtein);
 
-        assertEquals(TEST_OLD_FULLNAME , persistentProtein.getFullName());
+        assertNull(persistentProtein.getFullName());
         assertEquals(1 , persistentInt);
     }
 
@@ -1394,11 +1393,12 @@ public class FullProteinUpdaterTest {
 
         Protein customProtein = new DefaultProtein(TEST_SHORTNAME);
         customProtein.setUniprotkb(TEST_AC_CUSTOM_PROT);
+        customProtein.setSequence(TEST_OLD_SEQUENCE);
         Collection<Protein> customList = new ArrayList<Protein>();
         customList.add(customProtein);
         mockProteinFetcher.addEntry(TEST_AC_CUSTOM_PROT , customList);
 
-        assertNull(TEST_SEQUENCE , customProtein.getSequence());
+        assertEquals(TEST_OLD_SEQUENCE , customProtein.getSequence());
         assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
 
         proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
@@ -1415,7 +1415,7 @@ public class FullProteinUpdaterTest {
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
                     public void onGeneNameUpdate(Protein protein, String oldGeneName) {fail("Should not reach this point");}
                     public void onRogidUpdate(Protein protein, String oldRogid)  {fail("Should not reach this point");}
-                    public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
+                    public void onSequenceUpdate(Protein protein, String oldSequence) {}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
                     public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
@@ -1771,8 +1771,7 @@ public class FullProteinUpdaterTest {
 
         this.proteinEnricher.enrich(protein_without_organism);
 
-        assertNotNull(protein_without_organism.getOrganism());
-        assertEquals(-3 , protein_without_organism.getOrganism().getTaxId());
+        assertNull(protein_without_organism.getOrganism());
     }
 
 

@@ -76,7 +76,7 @@ public class MinimalFeatureEnricherTest {
         participantEnricher = new BasicParticipantEnricher();
         participantEnricher.setFeatureEnricher(featureEnricher);
         participantEnricher.setProteinEnricher(proteinEnricher);
-        assertNotNull(proteinEnricher.getProteinEnricherListener());
+        proteinEnricher.setProteinEnricherListener((MinimalFeatureEnricher)featureEnricher);
         assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
@@ -264,7 +264,7 @@ public class MinimalFeatureEnricherTest {
         participantEnricher.enrich(persistentParticipant);
 
         assertEquals(1 , persistentFeature.getRanges().size());
-        assertEquals(1 , persistentFeature.getAnnotations().size());
+        assertEquals(0 , persistentFeature.getAnnotations().size());
     }
 
     @Test
@@ -320,7 +320,7 @@ public class MinimalFeatureEnricherTest {
         participantEnricher.enrich(persistentParticipant);
 
         assertEquals(1 , persistentFeature.getRanges().size());
-        assertEquals(1 , persistentFeature.getAnnotations().size());
+        assertEquals(0 , persistentFeature.getAnnotations().size());
     }
 
 

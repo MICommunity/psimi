@@ -184,9 +184,11 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
     @Override
     protected void onEnrichedVersionNotFound(Protein objectToEnrich) throws EnricherException {
-        getProteinEnricherListener().onEnrichmentComplete(
-                objectToEnrich , EnrichmentStatus.FAILED ,
-                "Could not fetch a protein with the provided identifier/sequence.");
+        if (getProteinEnricherListener() != null){
+            getProteinEnricherListener().onEnrichmentComplete(
+                    objectToEnrich , EnrichmentStatus.FAILED ,
+                    "Could not fetch a protein with the provided identifier/sequence.");
+        }
     }
 
     @Override

@@ -439,7 +439,7 @@ public class MinimalBioactiveEntityUpdaterTest {
                     public void onStandardInchiKeyUpdate(BioactiveEntity bioactiveEntity, String oldKey) { fail("failed"); }
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
-                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
+                    public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {}
                     public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
                     public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
@@ -465,7 +465,7 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getFullName());
+        assertNull(persistentBioactiveEntity.getFullName());
         assertEquals(1 , persistentInt);
     }
 
@@ -582,8 +582,8 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
-        assertEquals(2 , persistentInt);
+        assertNull(persistentBioactiveEntity.getStandardInchiKey());
+        assertEquals(1 , persistentInt);
     }
 
     @Test
@@ -641,8 +641,8 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
-        assertEquals(2 , persistentInt);
+        assertEquals(OTHER_TEST_STRING, persistentBioactiveEntity.getStandardInchiKey());
+        assertEquals(1 , persistentInt);
     }
 
     @Test
@@ -812,8 +812,8 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
-        assertEquals(2 , persistentInt);
+        assertNull(persistentBioactiveEntity.getStandardInchi());
+        assertEquals(1 , persistentInt);
     }
 
     @Test
@@ -871,8 +871,8 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getStandardInchi());
-        assertEquals(2 , persistentInt);
+        assertEquals(OTHER_TEST_STRING, persistentBioactiveEntity.getStandardInchi());
+        assertEquals(1 , persistentInt);
     }
 
     @Test
@@ -1043,8 +1043,8 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getSmile());
-        assertEquals(2 , persistentInt);
+        assertNull(persistentBioactiveEntity.getSmile());
+        assertEquals(1 , persistentInt);
     }
 
     @Test
@@ -1102,8 +1102,8 @@ public class MinimalBioactiveEntityUpdaterTest {
 
         enricher.enrich(persistentBioactiveEntity);
 
-        assertEquals(TEST_STRING, persistentBioactiveEntity.getSmile());
-        assertEquals(2 , persistentInt);
+        assertEquals(OTHER_TEST_STRING, persistentBioactiveEntity.getSmile());
+        assertEquals(1 , persistentInt);
     }
 
     @Test

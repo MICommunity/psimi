@@ -36,13 +36,25 @@ public class MinimalOrganismUpdater extends MinimalOrganismEnricher {
 // Common name
         if((organismFetched.getCommonName() != null
                 && ! organismFetched.getCommonName().equalsIgnoreCase(organismToEnrich.getCommonName()))
-                ||(organismFetched.getCommonName() == null && organismToEnrich.getScientificName() != null)){
+                ||(organismFetched.getCommonName() == null && organismToEnrich.getCommonName() != null)){
 
             String oldValue = organismToEnrich.getCommonName();
             organismToEnrich.setCommonName(organismFetched.getCommonName());
             if (getOrganismEnricherListener() != null)
                 getOrganismEnricherListener().onCommonNameUpdate(organismToEnrich, oldValue);
         }
+    }
+
+    @Override
+    protected void processTaxid(Organism organismToEnrich, Organism organismFetched) {
+        if (organismToEnrich.getTaxId() != organismFetched.getTaxId()){
+            int oldTaxid = organismToEnrich.getTaxId();
+            organismToEnrich.setTaxId(organismFetched.getTaxId());
+
+            if(getOrganismEnricherListener() != null)
+                getOrganismEnricherListener().onTaxidUpdate(organismToEnrich, Integer.toString(oldTaxid));
+        }
+
     }
 
 }

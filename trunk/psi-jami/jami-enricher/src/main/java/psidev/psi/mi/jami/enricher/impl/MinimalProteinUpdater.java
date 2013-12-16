@@ -104,7 +104,7 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
 
     @Override
     protected void processInteractorType(Protein entityToEnrich, Protein fetched) throws EnricherException {
-        if (fetched.getInteractorType() != null && DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
+        if (fetched.getInteractorType() != null && !DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
                 getListener().onAddedInteractorType(entityToEnrich);

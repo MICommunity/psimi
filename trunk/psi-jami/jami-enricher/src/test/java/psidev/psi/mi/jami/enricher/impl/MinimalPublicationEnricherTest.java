@@ -107,7 +107,7 @@ public class MinimalPublicationEnricherTest {
         fail("Exception should be thrown before this point");
     }
 
-    @Test  (expected = IllegalStateException.class)
+    @Test  (expected = IllegalArgumentException.class)
     public void test_failure_when_fetcher_is_missing() throws EnricherException {
         persistentPublication = new DefaultPublication(TEST_PUBMED_ID);
 
@@ -476,10 +476,10 @@ public class MinimalPublicationEnricherTest {
         publicationEnricher.enrich(persistentPublication);
 
         assertEquals(TEST_PUBMED_ID , persistentPublication.getPubmedId());
-        assertEquals(1 , persistentPublication.getIdentifiers().size());
+        assertEquals(2 , persistentPublication.getIdentifiers().size());
         assertNull(persistentPublication.getTitle());
         assertNull(persistentPublication.getJournal());
-        assertNull(persistentPublication.getDoi());
+        assertNotNull(persistentPublication.getDoi());
         assertNull(persistentPublication.getPublicationDate());
         assertEquals(Collections.EMPTY_LIST , persistentPublication.getAuthors());
         assertEquals(Collections.EMPTY_LIST , persistentPublication.getXrefs());
