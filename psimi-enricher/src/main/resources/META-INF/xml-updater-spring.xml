@@ -107,6 +107,10 @@
         <property name="writerOptions">
             <map>
                 <entry key="output_format_key" value="psi25_xml"/>
+                <entry key="xml25_type_key" value-type="psidev.psi.mi.jami.xml.PsiXmlType" value="${xml.type}"/>
+                <entry key="write_complex_as_interactor_key" value-type="java.lang.Boolean" value="${xml.complexAsInteractor}"/>
+                <entry key="xml_version_key" value-type="psidev.psi.mi.jami.xml.PsiXmlVersion" value="${xml.version}"/>
+                <entry key="xml25_extended_key" value-type="java.lang.Boolean" value="${xml.extended}" />
             </map>
         </property>
         <property name="output" ref="miFileOutput"/>

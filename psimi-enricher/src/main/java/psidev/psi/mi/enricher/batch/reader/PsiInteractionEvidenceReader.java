@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.PsiJami;
-import psidev.psi.mi.jami.datasource.InteractionSource;
+import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
@@ -27,7 +27,7 @@ import java.util.Iterator;
 
 public class PsiInteractionEvidenceReader implements ItemReader<InteractionEvidence>, ItemStream{
 
-    private InteractionSource interactionDataSource;
+    private InteractionStream<InteractionEvidence> interactionDataSource;
     private int interactionCount = 0;
     private static final String COUNT_OPTION = "interaction_count";
     private Resource resource;
@@ -64,15 +64,13 @@ public class PsiInteractionEvidenceReader implements ItemReader<InteractionEvide
         }
 
         InputStream inputStreamToAnalyse = null;
-        InputStream inputStreamToRead = null;
         try {
             inputStreamToAnalyse = resource.getInputStream();
-            inputStreamToRead = resource.getInputStream();
 
             MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
             MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
 
-            this.interactionDataSource = dataSourceFactory.getInteractionSourceWith(optionFactory.getDefaultOptions(inputStreamToAnalyse, inputStreamToRead));
+            this.interactionDataSource = dataSourceFactory.getInteractionSourceWith(optionFactory.getDefaultOptions(inputStreamToAnalyse));
         } catch (IOException e) {
             logger.warn("Input resource cannot be opened " + resource.getDescription());
             throw new ItemStreamException("Input resource must be readable: "
