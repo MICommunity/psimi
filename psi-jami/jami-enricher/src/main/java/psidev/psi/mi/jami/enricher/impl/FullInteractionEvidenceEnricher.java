@@ -1,7 +1,12 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * Full enricher for Interaction evidence
@@ -29,5 +34,23 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
 
         // PROCESS RIGID
         this.interactionEnricher.processRigid(interactionToEnrich);
+    }
+
+    @Override
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher) {
+        super.setCvTermEnricher(cvTermEnricher);
+        this.interactionEnricher.setCvTermEnricher(cvTermEnricher);
+    }
+
+    @Override
+    public void setParticipantEnricher(ParticipantEnricher<ParticipantEvidence, FeatureEvidence> participantEnricher) {
+        super.setParticipantEnricher(participantEnricher);
+        this.interactionEnricher.setParticipantEnricher(participantEnricher);
+    }
+
+    @Override
+    public void setInteractionEnricherListener(InteractionEnricherListener listener) {
+        super.setInteractionEnricherListener(listener);
+        this.interactionEnricher.setInteractionEnricherListener(listener);
     }
 }

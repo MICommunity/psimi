@@ -4,18 +4,12 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
-import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.BasicParticipantEnricher;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
-import psidev.psi.mi.jami.enricher.impl.MinimalFeatureEnricher;
-import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherLogger;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -136,48 +130,5 @@ public class BasicParticipantEnricherTest {
         assertNotNull(persistentParticipant.getBiologicalRole());
         assertNotNull(persistentParticipant.getBiologicalRole().getFullName());
         assertEquals(1 , persistentInt);
-    }
-
-
-    // == FEATURE ENRICHER TO PROTEIN ENRICHER LINK ======================================================
-
-    /**
-     * Show that when the participantEnricher has a protein enricher and an eligible feature enricher,
-     * they become linked.
-     */
-    @Test
-    public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_first(){
-        ProteinEnricher proteinEnricher = new MinimalProteinEnricher(null);
-
-        participantEnricher.setProteinEnricher(proteinEnricher);
-        assertNull(proteinEnricher.getProteinEnricherListener());
-
-        FeatureEnricher featureEnricher = new MinimalFeatureEnricher();
-
-        participantEnricher.setFeatureEnricher(featureEnricher);
-        assertNotNull(proteinEnricher.getProteinEnricherListener());
-        assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
-    }
-
-    /**
-     * Show that when the participantEnricher has a feature enricher and an eligible protein enricher,
-     * they become linked.
-     */
-    @Test
-    public void test_proteinEnricher_receives_featureEnricher_as_listener_when_added_second(){
-        ProteinEnricher proteinEnricher = new MinimalProteinEnricher(null);
-        FeatureEnricher featureEnricher = new MinimalFeatureEnricher();
-
-        assertNull(participantEnricher.getProteinEnricher());
-
-        participantEnricher.setFeatureEnricher(featureEnricher);
-
-        assertNull(participantEnricher.getProteinEnricher());
-        assertNull(proteinEnricher.getProteinEnricherListener());
-
-        participantEnricher.setProteinEnricher(proteinEnricher);
-
-        assertNotNull(proteinEnricher.getProteinEnricherListener());
-        assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
     }
 }

@@ -48,7 +48,7 @@ public class EnricherUtils {
         while(refIterator.hasNext()){
             Xref ref = refIterator.next();
             boolean containsRef = false;
-            for (Xref ref2 : toEnrichXrefs){
+            for (Xref ref2 : fetchedXrefs){
                 // when we allow to removexrefs, we compare qualifiers as well
                 if (remove){
                     // identical xrefs
@@ -130,7 +130,7 @@ public class EnricherUtils {
         while(aliasIterator.hasNext()){
             Alias alias = aliasIterator.next();
             boolean containsAlias = false;
-            for (Alias alias2 : toEnrichAliases){
+            for (Alias alias2 : fetchedAliases){
                 // identical aliases
                 if (DefaultAliasComparator.areEquals(alias, alias2)){
                     containsAlias = true;
@@ -174,7 +174,7 @@ public class EnricherUtils {
         while(checksumIterator.hasNext()){
             Checksum checksum = checksumIterator.next();
             boolean containsChecksum = false;
-            for (Checksum checksum2 : toEnrichChecksums){
+            for (Checksum checksum2 : fetchedCehcksum){
                 // identical checksum
                 if (DefaultChecksumComparator.areEquals(checksum, checksum2)){
                     containsChecksum = true;

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 
@@ -47,5 +48,11 @@ public class FullCvTermUpdater extends FullCvTermEnricher{
     protected void processXrefs(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getXrefs(), cvTermFetched.getXrefs(), true, false,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
+    }
+
+    @Override
+    public void setCvTermEnricherListener(CvTermEnricherListener listener) {
+        super.setCvTermEnricherListener(listener);
+        this.minimalCvTermUpdater.setCvTermEnricherListener(listener);
     }
 }

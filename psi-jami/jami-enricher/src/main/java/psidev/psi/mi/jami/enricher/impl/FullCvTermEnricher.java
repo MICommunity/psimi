@@ -72,7 +72,7 @@ public class FullCvTermEnricher
         while(annotIterator.hasNext()){
             Annotation annotation = annotIterator.next();
             boolean containsAnnot = false;
-            for (Annotation annotation2 : toEnrichAnnotations){
+            for (Annotation annotation2 : fetchedAnnotations){
                 // identical annotations
                 if (DefaultAnnotationComparator.areEquals(annotation, annotation2)){
                     containsAnnot = true;

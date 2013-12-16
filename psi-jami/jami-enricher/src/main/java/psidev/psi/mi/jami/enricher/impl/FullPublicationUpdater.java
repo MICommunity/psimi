@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -68,5 +70,17 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
             if(getPublicationEnricherListener() != null)
                 getPublicationEnricherListener().onTitleUpdated(publicationToEnrich , oldTitle);
         }
+    }
+
+    @Override
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher) {
+        super.setCvTermEnricher(cvTermEnricher);
+        this.minimalPublicationUpdater.setCvTermEnricher(cvTermEnricher);
+    }
+
+    @Override
+    public void setPublicationEnricherListener(PublicationEnricherListener listener) {
+        super.setPublicationEnricherListener(listener);
+        this.minimalPublicationUpdater.setPublicationEnricherListener(listener);
     }
 }
