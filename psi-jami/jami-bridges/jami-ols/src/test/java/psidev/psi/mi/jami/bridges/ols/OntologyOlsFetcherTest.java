@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,7 +51,7 @@ public class OntologyOlsFetcherTest {
         assertTrue(result.getIdentifiers().iterator().hasNext());
         assertEquals(TEST_TERM_A_IDENTIFIER , result.getIdentifiers().iterator().next().getId());
 
-        assertTrue(result.getChildren().isEmpty());
-        assertTrue(result.getParents().isEmpty());
+        assertFalse(result.getChildren().isEmpty());
+        assertFalse(result.getParents().isEmpty());
     }
 }

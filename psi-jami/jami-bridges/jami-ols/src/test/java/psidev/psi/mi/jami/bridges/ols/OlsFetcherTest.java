@@ -113,23 +113,15 @@ public class OlsFetcherTest {
         assertEquals("MI:0580" , cvTermFetched.getMIIdentifier());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void test_getCvTermByExactName_using_MI_TermName_and_null_databaseName() throws BridgeFailedException {
-        String term = "electron acceptor";
-        String databaseName = null;
-        CvTerm cvTermFetched =  fetcher.fetchByName(term, databaseName);
-
-    }
-
     @Test
     public void test_getCvTermByExactName_using_MI_TermName() throws BridgeFailedException {
         String term = "allosteric change in dynamics";
         //String databaseName = null;
-        Collection<CvTerm> cvTermFetched =  fetcher.fetchByName(term);
+        CvTerm cvTermFetched =  fetcher.fetchByName(term, "psi-mi");
 
-        assertEquals(1, cvTermFetched.size());
-        assertEquals(term, cvTermFetched.iterator().next().getShortName());
-        assertEquals("MI:1166" , cvTermFetched.iterator().next().getMIIdentifier());
+        assertNotNull(cvTermFetched);
+        assertEquals(term, cvTermFetched.getShortName());
+        assertEquals("MI:1166" , cvTermFetched.getMIIdentifier());
     }
 
     @Test
