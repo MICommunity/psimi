@@ -59,25 +59,6 @@ public class MinimalOrganismUpdaterTest {
     // == RETRY ON FAILING FETCHER ============================================================
 
     /**
-     * Creates a scenario where the fetcher always throws a bridge failure exception.
-     * Shows that the query does not repeat infinitely.
-     * @throws psidev.psi.mi.jami.enricher.exception.EnricherException
-     */
-    @Test(expected = EnricherException.class)
-    public void test_bridgeFailure_throws_exception_when_persistent() throws EnricherException {
-        persistentOrganism = new DefaultOrganism(TEST_AC_CUSTOM_ORG);
-
-        int timesToTry = -1;
-
-        FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
-        fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
-
-        organismEnricher.enrich(persistentOrganism);
-
-        fail("Exception should be thrown before this point");
-    }
-
-    /**
      * Creates a scenario where the fetcher does not retrieve an entry on its first attempt.
      * If the enricher re-queries the fetcher, it will eventually receive the entry.
      *
@@ -123,7 +104,7 @@ public class MinimalOrganismUpdaterTest {
      * This should throw an illegal state exception.
      * @throws EnricherException
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         persistentOrganism = new DefaultOrganism(1234);
         organismEnricher = new MinimalOrganismUpdater(null);

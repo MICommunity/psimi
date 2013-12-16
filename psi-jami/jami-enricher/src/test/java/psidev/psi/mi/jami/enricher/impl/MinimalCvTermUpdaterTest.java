@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermUpdater;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
@@ -480,7 +479,7 @@ public class MinimalCvTermUpdaterTest {
             }
 
             public void onShortNameUpdate(CvTerm cv, String oldShortName) {fail();}
-            public void onFullNameUpdate(CvTerm cv, String oldFullName) {fail();}
+            public void onFullNameUpdate(CvTerm cv, String oldFullName) {}
             public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {fail();}
             public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {fail();}
             public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {fail();}
@@ -519,7 +518,7 @@ public class MinimalCvTermUpdaterTest {
         cvTermEnricher.enrich(persistentCvTerm);
 
         assertEquals(other_short_name, persistentCvTerm.getShortName());
-        assertEquals(other_full_name, persistentCvTerm.getFullName());
+        assertNull(persistentCvTerm.getFullName());
         assertEquals(2 , persistentCvTerm.getIdentifiers().size());
 
         // Show no change on maximum fields

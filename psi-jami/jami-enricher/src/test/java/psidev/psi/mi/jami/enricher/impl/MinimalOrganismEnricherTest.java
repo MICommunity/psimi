@@ -68,7 +68,7 @@ public class MinimalOrganismEnricherTest {
 
         FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
-        organismEnricher.setOrganismFetcher(fetcher);
+        organismEnricher = new MinimalOrganismEnricher(fetcher);
 
         organismEnricher.enrich(persistentOrganism);
 
@@ -94,7 +94,7 @@ public class MinimalOrganismEnricherTest {
 
         FailingOrganismFetcher fetcher = new FailingOrganismFetcher(timesToTry);
         fetcher.addEntry(Integer.toString(TEST_AC_CUSTOM_ORG), mockOrganism);
-        organismEnricher.setOrganismFetcher(fetcher);
+        organismEnricher = new MinimalOrganismEnricher(fetcher);
 
         organismEnricher.enrich(persistentOrganism);
 
@@ -121,10 +121,10 @@ public class MinimalOrganismEnricherTest {
      * This should throw an illegal state exception.
      * @throws EnricherException
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         persistentOrganism = new DefaultOrganism(1234);
-        organismEnricher.setOrganismFetcher(null);
+        organismEnricher = new MinimalOrganismEnricher(null);
         assertNull(organismEnricher.getOrganismFetcher());
         organismEnricher.enrich(persistentOrganism);
         fail("Exception should be thrown before this point");

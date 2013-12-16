@@ -59,7 +59,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
 
     @Override
     protected void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
-        if (fetched.getInteractorType() != null && DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
+        if (fetched.getInteractorType() != null && !DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
                 getListener().onAddedInteractorType(entityToEnrich);

@@ -1,9 +1,5 @@
 package psidev.psi.mi.jami.enricher.impl;
 
-import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
-
-
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,17 +7,21 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalProteinEnricher;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherLogger;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static junit.framework.Assert.*;
 
 /**
  * Unit tests for MinimalProteinEnricher
@@ -118,20 +118,6 @@ public class MinimalProteinEnricherTest {
 
 
     // == FAILURE ON NULL ======================================================================
-
-    /**
-     * Attempts to enrich a legal cvTerm but with a null fetcher.
-     * This should throw an illegal state exception.
-     * @throws EnricherException
-     */
-    @Test(expected = IllegalStateException.class)
-    public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
-        persistentProtein = new DefaultProtein("name" , "namename");
-        proteinEnricher.setProteinFetcher(null);
-        assertNull(proteinEnricher.getProteinFetcher());
-        proteinEnricher.enrich(persistentProtein);
-        fail("Exception should be thrown before this point");
-    }
 
 
     /**
@@ -265,15 +251,15 @@ public class MinimalProteinEnricherTest {
                     public void onAddedInteractorType(Protein protein)  {fail();}
                     public void onAddedOrganism(Protein protein)  {fail();}
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
-                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {}
+                    public void onAddedXref(Protein protein, Xref added)  {}
                     public void onRemovedXref(Protein protein, Xref removed) {fail();}
                     public void onAddedAlias(Protein protein, Alias added)  {fail();}
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -403,15 +389,15 @@ public class MinimalProteinEnricherTest {
                     public void onAddedInteractorType(Protein protein)  {fail();}
                     public void onAddedOrganism(Protein protein)  {fail();}
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
-                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {}
+                    public void onAddedXref(Protein protein, Xref added)  {}
                     public void onRemovedXref(Protein protein, Xref removed) {fail();}
                     public void onAddedAlias(Protein protein, Alias added)  {fail();}
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -565,15 +551,15 @@ public class MinimalProteinEnricherTest {
                     public void onAddedInteractorType(Protein protein)  {fail();}
                     public void onAddedOrganism(Protein protein)  {fail();}
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
-                    public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
-                    public void onAddedXref(Protein protein, Xref added)  {fail();}
+                    public void onRemovedIdentifier(Protein protein, Xref removed)  {}
+                    public void onAddedXref(Protein protein, Xref added)  {}
                     public void onRemovedXref(Protein protein, Xref removed) {fail();}
                     public void onAddedAlias(Protein protein, Alias added)  {fail();}
                     public void onRemovedAlias(Protein protein, Alias removed)  {fail();}
                     public void onAddedChecksum(Protein protein, Checksum added)  {fail();}
                     public void onRemovedChecksum(Protein protein, Checksum removed)  {fail();}
                     public void onAddedAnnotation(Protein o, Annotation added) {
-                        Assert.fail();
+
                     }
 
                     public void onRemovedAnnotation(Protein o, Annotation removed) {
@@ -929,9 +915,9 @@ public class MinimalProteinEnricherTest {
 
         proteinEnricher.enrich(persistentProtein);
 
-        assertEquals(Protein.PROTEIN,
+        assertEquals(Protein.UNKNOWN_INTERACTOR,
                 persistentProtein.getInteractorType().getShortName());
-        assertEquals(Protein.PROTEIN_MI,
+        assertEquals(Protein.UNKNOWN_INTERACTOR_MI,
                 persistentProtein.getInteractorType().getMIIdentifier());
         assertEquals(1 , persistentInt);
     }
@@ -1213,7 +1199,7 @@ public class MinimalProteinEnricherTest {
 
         this.proteinEnricher.enrich(persistentProtein);
 
-        assertEquals(TEST_SEQUENCE , persistentProtein.getSequence());
+        assertNull(persistentProtein.getSequence());
         assertEquals(1 , persistentInt);
     }
 
@@ -1573,8 +1559,7 @@ public class MinimalProteinEnricherTest {
 
         this.proteinEnricher.enrich(protein_without_organism);
 
-        assertNotNull(protein_without_organism.getOrganism());
-        assertEquals(-3 , protein_without_organism.getOrganism().getTaxId());
+        assertNull(protein_without_organism.getOrganism());
     }
 
     // TODO  onRefseqUpdate, onGeneNameUpdate

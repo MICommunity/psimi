@@ -126,7 +126,7 @@ public class FullOrganismUpdaterTest {
      * This should throw an illegal state exception.
      * @throws EnricherException
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_enriching_with_null_CvTermFetcher() throws EnricherException {
         persistentOrganism = new DefaultOrganism(1234);
         organismEnricher = new FullOrganismUpdater(null);

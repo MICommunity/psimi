@@ -30,6 +30,7 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
         if (organismFetcher == null){
             throw new IllegalArgumentException("The organism fetcher is required");
         }
+        this.fetcher = organismFetcher;
     }
 
     public int getRetryCount() {
@@ -38,10 +39,6 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
 
     public void setRetryCount(int retryCount) {
         this.retryCount = retryCount;
-    }
-
-    public void setOrganismFetcher(OrganismFetcher fetcher) {
-        this.fetcher = fetcher;
     }
 
     /**
@@ -90,29 +87,24 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
 
     @Override
     protected void enrich(Organism organismToEnrich, Organism organismFetched) throws EnricherException {
-        //Special case where taxid is unknown and fetched organism is known
-        if(organismToEnrich.getTaxId() == -3 && organismFetched.getTaxId() != -3){
-            organismToEnrich.setTaxId(organismFetched.getTaxId());
-            if (getOrganismEnricherListener() != null)
-                getOrganismEnricherListener().onTaxidUpdate(organismToEnrich, "-3");
-        }
-        else if (organismToEnrich.getTaxId() != organismFetched.getTaxId()){
-            if(getOrganismEnricherListener() != null)
-                getOrganismEnricherListener().onEnrichmentComplete(organismToEnrich, EnrichmentStatus.FAILED, "The fetched organism has a taxid " + organismFetched.getTaxId() +" which is different from the original taxid " + organismToEnrich.getTaxId()+". It cannot be enriched.");
-        }
-        else{
-            // Scientific name
-            processScientificName(organismToEnrich, organismFetched);
 
-            //Common name
-            processCommonName(organismToEnrich, organismFetched);
+        processTaxid(organismToEnrich, organismFetched);
 
-            //process other info
-            processOtherProperties(organismToEnrich, organismFetched);
-        }
+        // Scientific name
+        processScientificName(organismToEnrich, organismFetched);
+
+        //Common name
+        processCommonName(organismToEnrich, organismFetched);
+
+        //process other info
+        processOtherProperties(organismToEnrich, organismFetched);
 
         if(listener != null)
             listener.onEnrichmentComplete(organismToEnrich, EnrichmentStatus.SUCCESS, "Organism successfully enriched.");
+    }
+
+    protected void processTaxid(Organism organismToEnrich, Organism organismFetched) {
+        // nothing to do
     }
 
     protected void processOtherProperties(Organism organismToEnrich, Organism organismFetched) {

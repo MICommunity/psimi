@@ -534,6 +534,6 @@ public class FullCvTermUpdaterTest {
         assertEquals(0 , persistentCvTerm.getAnnotations().size());
 
         // Show events were fired
-        assertFalse(reportForEnrichment.contains(identifierAddedKey));
+        assertTrue(reportForEnrichment.contains(identifierAddedKey));
     }
 }
