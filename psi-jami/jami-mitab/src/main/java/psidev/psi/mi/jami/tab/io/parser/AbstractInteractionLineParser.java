@@ -370,7 +370,7 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
 
         if (organisms.size() > 1){
             Iterator<MitabOrganism> organismsIterator = organisms.iterator();
-            Integer taxid=null;
+            int taxid=0;
             String commonName=null;
             int commonNameLength = 0;
             int fullNameLength = 0;
