@@ -24,15 +24,15 @@ public class LightMIHtmlWriter extends AbstractMIHtmlWriter<Interaction, Partici
     }
 
     public LightMIHtmlWriter(File file) throws IOException {
-        super(file, new MIModelledHtmlWriter());
+        super(file, new MIModelledHtmlWriter(file));
     }
 
     public LightMIHtmlWriter(OutputStream output) {
-        super(output, new MIModelledHtmlWriter());
+        super(output, new MIModelledHtmlWriter(output));
     }
 
     public LightMIHtmlWriter(Writer writer) {
-        super(writer, new MIModelledHtmlWriter());
+        super(writer, new MIModelledHtmlWriter(writer));
     }
 
     @Override
