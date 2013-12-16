@@ -555,6 +555,7 @@ public class MiValidator extends Validator {
             report.setSemanticMessages(clusteredValidatorMessages);
 
         } catch(Exception e){
+            log.error("Validation error: ", e);
             StringBuffer messageBuffer = new StringBuffer();
             messageBuffer.append("\n The validator reported at least " + messages.size() + " semantic messages but the error while parsing the MI file need " +
                     "to be fixed in order to finish the semantic validation. Error message thrown : ");
