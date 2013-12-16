@@ -201,6 +201,9 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
      *
      */
     public CvTerm getBiologicalRole() {
+        if (this.biologicalRole == null){
+            this.biologicalRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
+        }
         return this.biologicalRole;
     }
 
