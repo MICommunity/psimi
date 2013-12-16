@@ -557,10 +557,10 @@ public class MiValidator extends Validator {
         } catch(Exception e){
             StringBuffer messageBuffer = new StringBuffer();
             messageBuffer.append("\n The validator reported at least " + messages.size() + " semantic messages but the error while parsing the MI file need " +
-                    "to be able to finish the semantic validation. Error message thrown : ");
+                    "to be fixed in order to finish the semantic validation. Error message thrown : ");
             messageBuffer.append(ExceptionUtils.getMessage(e));
 
-            MiContext context = new MiContext();
+            MiClusteredContext context = new MiClusteredContext();
 
             messages.clear();
             messages.add( new ValidatorMessage( messageBuffer.toString(),
