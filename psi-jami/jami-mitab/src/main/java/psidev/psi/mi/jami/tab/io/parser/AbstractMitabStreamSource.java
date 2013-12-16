@@ -79,6 +79,13 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
         return this.defaultParserListener;
     }
 
+    public void setFileParserListener(MIFileParserListener listener) {
+        this.defaultParserListener = listener;
+        if (listener instanceof MitabParserListener){
+            this.parserListener = (MitabParserListener)listener;
+        }
+    }
+
     public void initialiseContext(Map<String, Object> options) {
         if (options == null && !isInitialised){
             throw new IllegalArgumentException("The options for the Mitab interaction datasource should contain at least "+ MIFileDataSourceOptions.INPUT_OPTION_KEY + " to know where to read the interactions from.");
