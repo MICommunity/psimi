@@ -35,6 +35,11 @@ public class InteractorTypeRule extends AbstractMIRule<Interactor> {
         addTip( "The possible interactor types can be found at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type" );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Interactor;
+    }
+
     /**
      * check that each interactor has at least name or a short label.
      *

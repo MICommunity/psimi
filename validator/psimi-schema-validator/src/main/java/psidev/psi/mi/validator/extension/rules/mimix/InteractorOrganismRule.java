@@ -37,6 +37,11 @@ public class InteractorOrganismRule extends AbstractMIRule<Interactor> {
     }
 
     @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Interactor;
+    }
+
+    @Override
     public Collection<ValidatorMessage> check(Interactor interactor) throws ValidatorException {
 
         Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;

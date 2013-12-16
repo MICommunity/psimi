@@ -34,8 +34,12 @@ public class InteractorCrossReference2CrossReferenceTypeDependencyRule extends A
      */
     private DependencyMapping mapping;
 
-//////////////////
+    //////////////////
 // Constructors
+    @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Interactor;
+    }
 
     /**
      *

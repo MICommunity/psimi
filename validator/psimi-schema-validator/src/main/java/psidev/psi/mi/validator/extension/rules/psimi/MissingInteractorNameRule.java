@@ -33,6 +33,11 @@ public class MissingInteractorNameRule extends AbstractMIRule<Interactor> {
     }
 
     @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Interactor;
+    }
+
+    @Override
     public Collection<ValidatorMessage> check(Interactor interactor) throws ValidatorException {
 
         if (interactor.getShortName() == null ||
