@@ -132,13 +132,29 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
      * @param termAccession
      * @return the cross references of this term in OLS.
      */
-    private Map getTermXRefUncached(String termAccession){
+    private Pattern getTermXRefUncached(String termAccession){
         if (termAccession == null) { return null; }
         final Map metadata;
         try {
             metadata = query.getTermXrefs( termAccession, ontologyId );
+            if (metadata != null){
+                for ( Object k : metadata.keySet() ) {
+                    final String key = (String) k;
+                    // That's the only way OLS provides cross references, all keys are different so we are fishing out keywords :(
+                    if( key != null && key.contains( "xref_analog" )) {
+                        String value = (String) metadata.get( k );
+                        if( value != null ) {
+                            String regularExpression = extractRegularExpressionFromOLS(value);
 
-            return metadata;
+                            if (regularExpression != null){
+                                return Pattern.compile(regularExpression);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
 
         } catch ( RemoteException e ) {
             if ( log.isWarnEnabled() ) {
@@ -184,13 +200,13 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
      * @param termAccession
      * @return
      */
-    private Map getTermXRefs( String key, String termAccession) {
-        if (key == null || termAccession == null) { return new HashMap(); }
+    private Pattern getTermXRefs( String key, String termAccession) {
+        if (key == null || termAccession == null) { return null; }
 
-        Map metadata;
+        Pattern metadata=null;
 
         try {
-            metadata = (Map) getFromCache(key);
+            metadata = (Pattern) getFromCache(key);
             if ( log.isDebugEnabled() ) log.debug( "Using cached terms for key: " + key );
         } catch (NeedsRefreshException e) {
             boolean updated = false;
@@ -223,26 +239,7 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
         // generate from from method specific ID, the ontology ID and the input parameter
         final String myKey = ontologyId + '_' + term.getTermAccession();
 
-        Map metadata = getTermXRefs(myKey, term.getTermAccession());
-
-        if (metadata != null){
-            for ( Object k : metadata.keySet() ) {
-                final String key = (String) k;
-                // That's the only way OLS provides cross references, all keys are different so we are fishing out keywords :(
-                if( key != null && key.contains( "xref_analog" )) {
-                    String value = (String) metadata.get( k );
-                    if( value != null ) {
-                        String regularExpression = extractRegularExpressionFromOLS(value);
-
-                        if (regularExpression != null){
-                            return Pattern.compile(regularExpression);
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
+        return getTermXRefs(myKey, term.getTermAccession());
     }
 
     /**
@@ -324,9 +321,7 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
             // if the ontology access for MI is not null
             if (access != null){
                 if (xRef.getDatabase() != null){
-                    // name of the database
-                    String dbName = xRef.getDatabase().getShortName();
-                    String dbFullName = xRef.getDatabase().getFullName();
+
                     // MI identifier of the database
                     String dbAc = xRef.getDatabase().getMIIdentifier();
                     // accession
@@ -334,48 +329,6 @@ public class DatabaseAccessionRule extends AbstractMIRule<Xref> {
 
                     if (dbAc != null){
                         checkDatabaseCrossReference(access, dbAc, accession, messages, xRef);
-                    }
-                    else {
-                        try {
-                            Map results = query.getTermsByName(dbName, ontologyId, false);
-
-                            if (results == null || results.isEmpty()){
-                                if (dbFullName != null){
-                                    results = query.getTermsByName(dbFullName, ontologyId, false);
-                                }
-                            }
-
-                            if (results.size() == 1){
-                                String MI = (String) results.keySet().iterator().next();
-                                checkDatabaseCrossReference(access, MI, accession, messages, xRef);
-                            }
-                            else {
-                                if (results.containsValue(dbName)){
-                                    Set<String> MISet = results.keySet();
-
-                                    for (String MI : MISet){
-                                        String exactName = (String) results.get(MI);
-
-                                        if (dbName.equalsIgnoreCase(exactName)){
-                                            checkDatabaseCrossReference(access, MI, accession, messages, xRef);
-                                            break;
-                                        }
-                                    }
-                                }
-                                else {
-                                    MiContext context = RuleUtils.buildContext(xRef, "database xref");
-                                    messages.add( new ValidatorMessage( "Several databases can match the same name "+dbName+". Therefore, it is not possible to check if the database accession is valid.",
-                                            MessageLevel.INFO,
-                                            context,
-                                            this ) );
-                                }
-                            }
-
-                        } catch (RemoteException e) {
-                            if ( log.isWarnEnabled() ) {
-                                log.warn( "Error while loading term synonyms from OLS for term: " + dbName, e );
-                            }
-                        }
                     }
                 }
             }
