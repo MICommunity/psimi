@@ -369,6 +369,17 @@ public class Mi25ValidatorTest {
         printMessages( messages );
     }
 
+    @Test
+    @Ignore
+    public void validateSyntax() throws Exception {
+        System.out.println("Start:"+System.currentTimeMillis());
+        final ValidatorReport report = buildValidatorWithIMEXRules().validate(new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psimitab/pmid/2013/24189400.txt").openStream());
+        Collection<ValidatorMessage> messages = report.getSemanticMessages();
+        Assert.assertTrue( messages.size() > 0 );
+        printMessages( messages );
+        System.out.println("End:"+System.currentTimeMillis());
+    }
+
     private void printMessages( Collection<ValidatorMessage> messages ) {
         for ( ValidatorMessage message : messages ) {
             System.out.println( message );
