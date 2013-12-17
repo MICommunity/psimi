@@ -114,7 +114,7 @@ public class MiValidator extends Validator {
     @Override
     public void setObjectRules(Collection<ObjectRule> objectRules){
 
-        if (objectRules != null){
+        if (objectRules != null && !objectRules.isEmpty()){
             getObjectRules().clear();
 
             // initialise wrappers first
@@ -194,13 +194,10 @@ public class MiValidator extends Validator {
                     getObjectRules().add(rule);
                 }
             }
+            this.validateObjectRule = true;
         }
         else {
             log.info("No object rule has been loaded.");
-        }
-
-        if (objectRules.isEmpty()){
-            log.info("The list of object rules is empty.");
             this.validateObjectRule = false;
         }
     }
