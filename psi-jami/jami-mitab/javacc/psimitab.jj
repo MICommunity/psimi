@@ -581,8 +581,8 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
 
 MitabStoichiometry stoichiometry(int columnNumber):
 {
-  long min;
-  long max = 0;
+  int min;
+  int max = 0;
   java.lang.String minString;
   java.lang.String maxString = null;
   int beginLine=0;
@@ -602,7 +602,7 @@ MitabStoichiometry stoichiometry(int columnNumber):
       ]
       {
          try{
-         min = Long.parseLong(minString);
+         min = Integer.parseInt(minString);
          }
          catch(NumberFormatException e){
              min=0;
@@ -610,7 +610,7 @@ MitabStoichiometry stoichiometry(int columnNumber):
          }
          if (maxString != null){
             try{
-            max = Long.parseLong(maxString);
+            max = Integer.parseInt(maxString);
             }
             catch(NumberFormatException e){
                 max=min;
