@@ -15,16 +15,16 @@ import psidev.psi.mi.jami.utils.comparator.participant.StoichiometryComparator;
 
 public class DefaultStoichiometry implements Stoichiometry {
 
-    private long minValue;
-    private long maxValue;
+    private int minValue;
+    private int maxValue;
 
-    public DefaultStoichiometry(long value){
+    public DefaultStoichiometry(int value){
 
         this.minValue = value;
         this.maxValue = value;
     }
 
-    public DefaultStoichiometry(long minValue, long maxValue){
+    public DefaultStoichiometry(int minValue, int maxValue){
         if (minValue > maxValue){
            throw new IllegalArgumentException("The minValue " + minValue + " cannot be bigger than the maxValue " + maxValue);
         }
@@ -33,11 +33,11 @@ public class DefaultStoichiometry implements Stoichiometry {
         this.maxValue = maxValue;
     }
 
-    public long getMinValue() {
+    public int getMinValue() {
         return this.minValue;
     }
 
-    public long getMaxValue() {
+    public int getMaxValue() {
         return this.maxValue;
     }
 

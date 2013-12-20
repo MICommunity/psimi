@@ -41,8 +41,8 @@ public class StoichiometryComparator implements Comparator<Stoichiometry> {
 
             // compare start and then end
 
-            long min1 = stoichiometry1.getMinValue();
-            long min2 = stoichiometry2.getMinValue();
+            int min1 = stoichiometry1.getMinValue();
+            int min2 = stoichiometry2.getMinValue();
 
             if (min1 < min2){
                 return BEFORE;
@@ -51,8 +51,8 @@ public class StoichiometryComparator implements Comparator<Stoichiometry> {
                 return AFTER;
             }
             else {
-                long max1 = stoichiometry1.getMaxValue();
-                long max2 = stoichiometry2.getMaxValue();
+                int max1 = stoichiometry1.getMaxValue();
+                int max2 = stoichiometry2.getMaxValue();
 
                 if (max1 < max2){
                     return BEFORE;
@@ -96,8 +96,8 @@ public class StoichiometryComparator implements Comparator<Stoichiometry> {
         }
 
         int hashcode = 31;
-        hashcode = 31 * hashcode + (int)(stc.getMinValue() ^ (stc.getMinValue() >>> 32));
-        hashcode = 31*hashcode + (int)(stc.getMaxValue() ^ (stc.getMaxValue() >>> 32));
+        hashcode = 31 * hashcode + stc.getMinValue();
+        hashcode = 31*hashcode + stc.getMaxValue();
 
         return hashcode;
     }
