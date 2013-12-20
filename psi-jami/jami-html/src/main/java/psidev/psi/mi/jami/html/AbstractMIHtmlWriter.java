@@ -667,10 +667,10 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             Stoichiometry stc = participant.getStoichiometry();
             if (stc != null){
                 if (stc.getMaxValue() == stc.getMinValue()){
-                    writeProperty("Stoichiometry", Long.toString(participant.getStoichiometry().getMinValue()));
+                    writeProperty("Stoichiometry", Integer.toString(participant.getStoichiometry().getMinValue()));
                 }
                 else{
-                    writeProperty("Stoichiometry", "From "+Long.toString(participant.getStoichiometry().getMinValue())+" to " +Long.toString(participant.getStoichiometry().getMaxValue()));
+                    writeProperty("Stoichiometry", "From "+Integer.toString(participant.getStoichiometry().getMinValue())+" to " +Long.toString(participant.getStoichiometry().getMaxValue()));
                 }
             }
 
