@@ -17,11 +17,11 @@ public class MitabStoichiometry extends DefaultStoichiometry implements FileSour
 
     private FileSourceLocator sourceLocator;
 
-    public MitabStoichiometry(long value) {
+    public MitabStoichiometry(int value) {
         super(value);
     }
 
-    public MitabStoichiometry(long minValue, long maxValue) {
+    public MitabStoichiometry(int minValue, int maxValue) {
         super(minValue, maxValue);
     }
 

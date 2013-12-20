@@ -1114,8 +1114,8 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
   }
 
   final public MitabStoichiometry stoichiometry(int columnNumber) throws ParseException {
-  long min;
-  long max = 0;
+  int min;
+  int max = 0;
   java.lang.String minString;
   java.lang.String maxString = null;
   int beginLine=0;
@@ -1137,7 +1137,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         ;
       }
          try{
-         min = Long.parseLong(minString);
+         min = Integer.parseInt(minString);
          }
          catch(NumberFormatException e){
              min=0;
@@ -1145,7 +1145,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
          }
          if (maxString != null){
             try{
-            max = Long.parseLong(maxString);
+            max = Integer.parseInt(maxString);
             }
             catch(NumberFormatException e){
                 max=min;
