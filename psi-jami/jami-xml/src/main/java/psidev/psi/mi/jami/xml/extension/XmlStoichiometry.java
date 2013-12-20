@@ -18,11 +18,11 @@ public class XmlStoichiometry extends DefaultStoichiometry implements FileSource
 
     private PsiXmLocator sourceLocator;
 
-    public XmlStoichiometry(long value) {
+    public XmlStoichiometry(int value) {
         super(value);
     }
 
-    public XmlStoichiometry(long minValue, long maxValue) {
+    public XmlStoichiometry(int minValue, int maxValue) {
         super(minValue, maxValue);
     }
 
