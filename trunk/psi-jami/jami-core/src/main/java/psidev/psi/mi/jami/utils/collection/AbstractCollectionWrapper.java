@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.utils.collection;
 
-import psidev.psi.mi.jami.model.Xref;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -102,4 +100,8 @@ public abstract class AbstractCollectionWrapper<T> extends ArrayList<T> {
      * @return the processed/wrapped element that will be added
      */
     protected abstract T processOrWrapElementToAdd(T added);
+
+    protected Collection<T> getWrappedList() {
+        return wrappedList;
+    }
 }
