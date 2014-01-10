@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @since <pre>11/02/13</pre>
  */
 
-public abstract class AbstractCollectionWrapper<T> extends ArrayList<T> {
+public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
     private Collection<T> wrappedList;
 
     public AbstractCollectionWrapper(Collection<T> list){
