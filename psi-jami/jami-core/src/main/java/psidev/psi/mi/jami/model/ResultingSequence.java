@@ -43,5 +43,5 @@ public interface ResultingSequence {
      * Sets the original sequence of this object
      * @param sequence
      */
-    public void steOriginalSequence(String sequence);
+    public void setOriginalSequence(String sequence);
 }
