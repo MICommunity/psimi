@@ -87,6 +87,10 @@ public abstract class AbstractCollectionWrapper<T> extends ArrayList<T> {
         this.wrappedList.clear();
     }
 
+    public Collection<T> getWrappedList() {
+        return wrappedList;
+    }
+
     /**
      * Method to know if an element to add needs some processing or being wrapped
      * @param added
@@ -100,8 +104,4 @@ public abstract class AbstractCollectionWrapper<T> extends ArrayList<T> {
      * @return the processed/wrapped element that will be added
      */
     protected abstract T processOrWrapElementToAdd(T added);
-
-    protected Collection<T> getWrappedList() {
-        return wrappedList;
-    }
 }
