@@ -66,7 +66,7 @@ public class DefaultResultingSequence implements ResultingSequence {
         this.newSequence = sequence;
     }
 
-    public void steOriginalSequence(String sequence) {
+    public void setOriginalSequence(String sequence) {
         this.originalSequence = sequence;
     }
 
