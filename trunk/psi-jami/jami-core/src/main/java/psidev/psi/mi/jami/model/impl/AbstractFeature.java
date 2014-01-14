@@ -26,6 +26,7 @@ public abstract class AbstractFeature<P extends Entity, F extends Feature> imple
     private Collection<Annotation> annotations;
     private CvTerm type;
     private Collection<Range> ranges;
+    private Collection<Alias> aliases;
 
     private CvTerm interactionEffect;
     private CvTerm interactionDependency;
@@ -129,6 +130,19 @@ public abstract class AbstractFeature<P extends Entity, F extends Feature> imple
         }
         else {
             this.linkedFeatures = features;
+        }
+    }
+
+    protected void initialiseAliases(){
+        this.aliases = new ArrayList<Alias>();
+    }
+
+    protected void initialiseAliasesWith(Collection<Alias> aliases){
+        if (aliases == null){
+            this.aliases = Collections.EMPTY_LIST;
+        }
+        else {
+            this.aliases = aliases;
         }
     }
 
@@ -248,6 +262,13 @@ public abstract class AbstractFeature<P extends Entity, F extends Feature> imple
             initialiseLinkedFeatures();
         }
         return this.linkedFeatures;
+    }
+
+    public Collection<Alias> getAliases() {
+        if (this.aliases == null){
+            initialiseAliases();
+        }
+        return aliases;
     }
 
     protected void processAddedIdentifierEvent(Xref added) {

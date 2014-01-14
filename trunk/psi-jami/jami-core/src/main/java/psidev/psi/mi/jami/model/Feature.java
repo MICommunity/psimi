@@ -183,4 +183,11 @@ public interface Feature<P extends Entity, F extends Feature> {
      * @return the binding features
      */
     public <T extends F> Collection<T> getLinkedFeatures();
+
+    /**
+     * Collection of aliases for a feature.
+     * The Collection cannot be null and if the experiment does not have any aliases, the method should return an empty Collection.
+     * @return the aliases
+     */
+    public <A extends Alias> Collection<A> getAliases();
 }
