@@ -24,7 +24,7 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
     private Collection<Annotation> annotations;
     private Collection<Alias> aliases;
     private Stoichiometry stoichiometry;
-    private CausalRelationship causalRelationship;
+    private Collection<CausalRelationship> causalRelationships;
     private Collection<F> features;
     private ParticipantInteractorChangeListener changeListener;
 
@@ -68,6 +68,19 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
 
     protected void initialiseFeatures(){
         this.features = new ArrayList<F>();
+    }
+
+    protected void initialiseCausalRelationships(){
+        this.causalRelationships = new ArrayList<CausalRelationship>();
+    }
+
+    protected void initialiseCausalRelationshipsWith(Collection<CausalRelationship> relationships) {
+        if (relationships == null){
+            this.causalRelationships = Collections.EMPTY_LIST;
+        }
+        else {
+            this.causalRelationships = relationships;
+        }
     }
 
     protected void initialiseFeaturesWith(Collection<F> features) {
@@ -134,12 +147,11 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
         }
     }
 
-    public CausalRelationship getCausalRelationship() {
-        return this.causalRelationship;
-    }
-
-    public void setCausalRelationship(CausalRelationship relationship) {
-        this.causalRelationship = relationship;
+    public Collection<CausalRelationship> getCausalRelationships() {
+        if (this.causalRelationships == null){
+            initialiseCausalRelationships();
+        }
+        return this.causalRelationships;
     }
 
     public Collection<Xref> getXrefs() {

@@ -27,7 +27,7 @@ public class DefaultParticipantTest {
         Assert.assertNotNull(p.getAliases());
         Assert.assertNotNull(p.getXrefs());
         Assert.assertNotNull(p.getAnnotations());
-        Assert.assertNull(p.getCausalRelationship());
+        Assert.assertNotNull(p.getCausalRelationships());
         Assert.assertNull(p.getStoichiometry());
         Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), p.getBiologicalRole());
 

@@ -25,7 +25,7 @@ public class ParticipantClonerTest {
 
         Participant sourceParticipant = new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor());
         sourceParticipant.setStoichiometry(new DefaultStoichiometry(3));
-        sourceParticipant.setCausalRelationship(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
+        sourceParticipant.getCausalRelationships().add(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -47,7 +47,7 @@ public class ParticipantClonerTest {
         Assert.assertTrue(targetParticipant.getInteractor() == sourceParticipant.getInteractor());
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
         Assert.assertTrue(targetParticipant.getBiologicalRole() == sourceParticipant.getBiologicalRole());
-        Assert.assertTrue(targetParticipant.getCausalRelationship() == sourceParticipant.getCausalRelationship());
+        Assert.assertTrue(targetParticipant.getCausalRelationships().iterator().next() == sourceParticipant.getCausalRelationships().iterator().next());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class ParticipantClonerTest {
 
         Participant sourceParticipant = new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor());
         sourceParticipant.setStoichiometry(new DefaultStoichiometry(3));
-        sourceParticipant.setCausalRelationship(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
+        sourceParticipant.getCausalRelationships().add(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -76,7 +76,7 @@ public class ParticipantClonerTest {
 
         ModelledParticipant sourceParticipant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         sourceParticipant.setStoichiometry(new DefaultStoichiometry(3));
-        sourceParticipant.setCausalRelationship(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
+        sourceParticipant.getCausalRelationships().add(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -100,7 +100,7 @@ public class ParticipantClonerTest {
         Assert.assertTrue(targetParticipant.getInteractor() == sourceParticipant.getInteractor());
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
         Assert.assertTrue(targetParticipant.getBiologicalRole() == sourceParticipant.getBiologicalRole());
-        Assert.assertTrue(targetParticipant.getCausalRelationship() == sourceParticipant.getCausalRelationship());
+        Assert.assertTrue(targetParticipant.getCausalRelationships().iterator().next() == sourceParticipant.getCausalRelationships().iterator().next());
         Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipant() == sourceParticipant);
     }
 
@@ -109,7 +109,7 @@ public class ParticipantClonerTest {
 
         ModelledParticipant sourceParticipant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         sourceParticipant.setStoichiometry(new DefaultStoichiometry(3));
-        sourceParticipant.setCausalRelationship(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
+        sourceParticipant.getCausalRelationships().add(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -132,7 +132,7 @@ public class ParticipantClonerTest {
 
         ParticipantEvidence sourceParticipant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         sourceParticipant.setStoichiometry(new DefaultStoichiometry(3));
-        sourceParticipant.setCausalRelationship(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
+        sourceParticipant.getCausalRelationships().add(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -166,7 +166,7 @@ public class ParticipantClonerTest {
         Assert.assertTrue(targetParticipant.getInteractor() == sourceParticipant.getInteractor());
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
         Assert.assertTrue(targetParticipant.getBiologicalRole() == sourceParticipant.getBiologicalRole());
-        Assert.assertTrue(targetParticipant.getCausalRelationship() == sourceParticipant.getCausalRelationship());
+        Assert.assertTrue(targetParticipant.getCausalRelationships().iterator().next() == sourceParticipant.getCausalRelationships().iterator().next());
         Assert.assertTrue(targetParticipant.getFeatures().iterator().next().getParticipant() == sourceParticipant);
         Assert.assertTrue(targetParticipant.getExperimentalRole() == sourceParticipant.getExperimentalRole());
         Assert.assertTrue(targetParticipant.getExpressedInOrganism() == sourceParticipant.getExpressedInOrganism());
@@ -182,7 +182,7 @@ public class ParticipantClonerTest {
 
         ParticipantEvidence sourceParticipant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         sourceParticipant.setStoichiometry(new DefaultStoichiometry(3));
-        sourceParticipant.setCausalRelationship(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
+        sourceParticipant.getCausalRelationships().add(new DefaultCausalRelationship(new DefaultCvTerm("decrease"), new DefaultParticipant(new DefaultProtein("p1"))));
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));

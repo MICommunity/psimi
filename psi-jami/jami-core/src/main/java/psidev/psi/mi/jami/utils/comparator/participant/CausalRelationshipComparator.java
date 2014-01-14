@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 
 import java.util.Comparator;
 
@@ -72,8 +72,8 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
                 return comp;
             }
 
-            Participant p1 = causalRelationship1.getTarget();
-            Participant p2 = causalRelationship2.getTarget();
+            Entity p1 = causalRelationship1.getTarget();
+            Entity p2 = causalRelationship2.getTarget();
 
             return participantComparator.compare(p1, p2);
         }

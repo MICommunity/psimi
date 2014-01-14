@@ -46,18 +46,12 @@ public interface Entity<F extends Feature> {
     public void setBiologicalRole(CvTerm bioRole);
 
     /**
-     * The causal relationship of this participant on another participant of the interaction.
-     * It can be null if the participant does not have any causal relationship or it is not relevant
+     * The causal relationships of this participant on other participants of the interaction.
+     * The set of causal relationship cannot be null. If the participant does not have any causal relationship, the method should return an empty Collection.
      * Ex: increasing, decreasing, disrupting, etc.
      * @return the effect of this participant on the interaction
      */
-    public CausalRelationship getCausalRelationship();
-
-    /**
-     * Sets the interaction effect for this participant on another participant of the interaction.
-     * @param relationship : the relationship between this participant and another participant of another interaction
-     */
-    public void setCausalRelationship(CausalRelationship relationship);
+    public Collection<CausalRelationship> getCausalRelationships();
 
     /**
      * Collection of cross references which give more information about the participant.
