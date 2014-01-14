@@ -444,7 +444,8 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
                         || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_CLEAVAGE_MI, Feature.RESULTING_CLEAVAGE)){
                     interactionDependency = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
                     ((XmlCvTerm)interactionDependency).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                     return false;
+                    annotations.add(annotation);
+                    return true;
                 }
                 // we have an interaction effect
                 else if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DECREASING_PTM_MI, Feature.DECREASING_PTM)
@@ -452,7 +453,8 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
                         || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DISRUPTING_PTM_MI, Feature.DISRUPTING_PTM)){
                     interactionEffect = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
                     ((XmlCvTerm)interactionEffect).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                    return false;
+                    annotations.add(annotation);
+                    return true;
                 }
                 else {
                     return addAnnotation(index, annotation);

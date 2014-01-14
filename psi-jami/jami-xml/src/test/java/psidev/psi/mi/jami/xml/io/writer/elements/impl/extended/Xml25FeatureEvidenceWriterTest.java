@@ -3,15 +3,15 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
+import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.NamedFeature;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.extension.XmlFeatureEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -497,7 +497,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_feature_alias() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedFeature feature = new XmlFeatureEvidence();
+        Feature feature = new XmlFeatureEvidence();
         feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
         feature.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "feature synonym"));
         feature.getAliases().add(new DefaultAlias("test"));

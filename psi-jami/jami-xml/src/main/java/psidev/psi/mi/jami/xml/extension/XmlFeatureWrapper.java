@@ -131,6 +131,11 @@ public class XmlFeatureWrapper implements ModelledFeature{
     }
 
     @Override
+    public Collection<Alias> getAliases() {
+        return this.feature.getAliases();
+    }
+
+    @Override
     public Collection<ModelledFeature> getLinkedFeatures() {
         if (this.linkedFeatures == null){
             initialiseLinkedFeatures();

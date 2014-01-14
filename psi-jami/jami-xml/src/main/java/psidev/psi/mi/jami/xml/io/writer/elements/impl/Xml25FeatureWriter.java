@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
@@ -25,9 +22,10 @@ public class Xml25FeatureWriter extends AbstractXml25FeatureWriter<Feature> {
     }
 
     public Xml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                              PsiXml25ElementWriter<Alias> aliasWriter,
                               PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                               PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Range> rangeWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
+        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
     }
 
     @Override
