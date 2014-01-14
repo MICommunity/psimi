@@ -32,7 +32,7 @@ import java.util.*;
 public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPsi25Participant<F>, FileSourceContext, Locatable {
     private Interactor interactor;
     private CvTerm biologicalRole;
-    private CausalRelationship causalRelationship;
+    private Collection<CausalRelationship> causalRelationships;
     private PsiXmLocator sourceLocator;
     private NamesContainer namesContainer;
     private XrefContainer xrefContainer;
@@ -137,12 +137,11 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         }
     }
 
-    public CausalRelationship getCausalRelationship() {
-        return this.causalRelationship;
-    }
-
-    public void setCausalRelationship(CausalRelationship relationship) {
-        this.causalRelationship = relationship;
+    public Collection<CausalRelationship> getCausalRelationships() {
+        if (this.causalRelationships == null){
+            this.causalRelationships = new ArrayList<CausalRelationship>();
+        }
+        return this.causalRelationships;
     }
 
     public Collection<Annotation> getAnnotations() {

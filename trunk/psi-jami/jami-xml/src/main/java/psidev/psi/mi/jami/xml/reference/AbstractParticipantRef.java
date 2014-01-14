@@ -56,20 +56,12 @@ public abstract class AbstractParticipantRef<T extends Feature> extends Abstract
         this.delegate.setBiologicalRole(bioRole);
     }
 
-    public CausalRelationship getCausalRelationship() {
+    public Collection<CausalRelationship> getCausalRelationships() {
         logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
         if (this.delegate == null){
             initialiseParticipantDelegate();
         }
-        return this.delegate.getCausalRelationship();
-    }
-
-    public void setCausalRelationship(CausalRelationship relationship) {
-        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
-        if (this.delegate == null){
-            initialiseParticipantDelegate();
-        }
-        this.delegate.setCausalRelationship(relationship);
+        return this.delegate.getCausalRelationships();
     }
 
     public Collection<Xref> getXrefs() {

@@ -50,13 +50,8 @@ public class XmlParticipantWrapper implements ModelledParticipant{
     }
 
     @Override
-    public CausalRelationship getCausalRelationship() {
-        return this.participant.getCausalRelationship();
-    }
-
-    @Override
-    public void setCausalRelationship(CausalRelationship relationship) {
-        this.participant.setCausalRelationship(relationship);
+    public Collection<CausalRelationship> getCausalRelationships() {
+        return this.participant.getCausalRelationships();
     }
 
     @Override
