@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
@@ -38,8 +38,8 @@ public class DefaultExactCausalRelationshipComparator {
                 return false;
             }
 
-            Participant p1 = rel1.getTarget();
-            Participant p2 = rel2.getTarget();
+            Entity p1 = rel1.getTarget();
+            Entity p2 = rel2.getTarget();
 
             return DefaultExactParticipantComparator.areEquals(p1, p2);
         }
