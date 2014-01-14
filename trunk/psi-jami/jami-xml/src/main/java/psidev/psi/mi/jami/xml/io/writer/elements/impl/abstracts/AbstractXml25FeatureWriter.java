@@ -30,6 +30,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
     private PsiXml25ElementWriter<CvTerm> featureTypeWriter;
     private PsiXml25ElementWriter<Annotation> attributeWriter;
     private PsiXml25ElementWriter<Range> rangeWriter;
+    private PsiXml25ElementWriter<Alias> aliasWriter;
 
     public AbstractXml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
         if (writer == null){
@@ -45,10 +46,12 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
         this.featureTypeWriter = new Xml25FeatureTypeWriter(writer);
         this.attributeWriter = new Xml25AnnotationWriter(writer);
         this.rangeWriter = new Xml25RangeWriter(writer);
+        this.aliasWriter = new Xml25AliasWriter(writer);
 
     }
 
     protected AbstractXml25FeatureWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
+                                         PsiXml25ElementWriter<Alias> aliasWriter,
                                          PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
                                          PsiXml25ElementWriter<CvTerm> featureTypeWriter, PsiXml25ElementWriter<Range> rangeWriter,
                                          PsiXml25ElementWriter<Annotation> attributeWriter) {
@@ -65,6 +68,7 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
         this.featureTypeWriter = featureTypeWriter != null ? featureTypeWriter : new Xml25FeatureTypeWriter(writer);
         this.attributeWriter = attributeWriter != null ? attributeWriter : new Xml25AnnotationWriter(writer);
         this.rangeWriter = rangeWriter != null ? rangeWriter : new Xml25RangeWriter(writer);
+        this.aliasWriter = aliasWriter != null ? aliasWriter : new Xml25AliasWriter(writer);
     }
 
     @Override
@@ -342,19 +346,24 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
     protected void writeNames(F object) throws XMLStreamException {
         boolean hasShortLabel = object.getShortName() != null;
         boolean hasFullLabel = object.getFullName() != null;
-        if (hasShortLabel || hasFullLabel){
-            this.streamWriter.writeStartElement("names");
+        boolean hasAliases = !object.getAliases().isEmpty();
+        if (hasShortLabel || hasFullLabel || hasAliases){
+            getStreamWriter().writeStartElement("names");
             // write shortname
             if (hasShortLabel){
-                this.streamWriter.writeStartElement("shortLabel");
-                this.streamWriter.writeCharacters(object.getShortName());
-                this.streamWriter.writeEndElement();
+                getStreamWriter().writeStartElement("shortLabel");
+                getStreamWriter().writeCharacters(object.getShortName());
+                getStreamWriter().writeEndElement();
             }
             // write fullname
             if (hasFullLabel){
-                this.streamWriter.writeStartElement("fullName");
-                this.streamWriter.writeCharacters(object.getFullName());
-                this.streamWriter.writeEndElement();
+                getStreamWriter().writeStartElement("fullName");
+                getStreamWriter().writeCharacters(object.getFullName());
+                getStreamWriter().writeEndElement();
+            }
+            // write aliases
+            for (Object alias : object.getAliases()){
+                this.aliasWriter.write((Alias)alias);
             }
             // write end names
             getStreamWriter().writeEndElement();

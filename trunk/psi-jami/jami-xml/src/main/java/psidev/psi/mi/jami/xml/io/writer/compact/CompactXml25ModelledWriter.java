@@ -109,7 +109,7 @@ public class CompactXml25ModelledWriter extends AbstractCompactXml25Writer<Model
                 confidenceWriter, attributeWriter);
         PsiXml25ParameterWriter parameterWriter = new Xml25ParameterWriter(getStreamWriter(), getElementCache());
         PsiXml25ElementWriter<ModelledFeature> modelledFeatureWriter = new Xml25ModelledFeatureWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
         PsiXml25ParticipantWriter<ModelledParticipant> modelledParticipantWriter = new CompactXml25ModelledParticipantWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
                 bioRoleWriter, modelledFeatureWriter, attributeWriter);

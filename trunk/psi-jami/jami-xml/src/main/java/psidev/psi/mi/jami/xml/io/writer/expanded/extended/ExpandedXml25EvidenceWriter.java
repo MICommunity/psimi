@@ -124,7 +124,7 @@ public class ExpandedXml25EvidenceWriter extends AbstractExpandedXml25Writer<Int
                 nonExperimentalHostOrganismWriter, detectionMethodWriter,
                 identificationMethodWriter, featureDetectionWriter, confidenceWriter,
                 attributeWriter);
-        PsiXml25ElementWriter<ModelledFeature> modelledFeatureWriter = new Xml25NamedModelledFeatureWriter(getStreamWriter(), getElementCache(),
+        PsiXml25ElementWriter<ModelledFeature> modelledFeatureWriter = new Xml25ModelledFeatureWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter,attributeWriter);
         PsiXml25ParticipantWriter<ModelledParticipant> modelledParticipantWriter = new ExpandedXml25NamedModelledParticipantWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,

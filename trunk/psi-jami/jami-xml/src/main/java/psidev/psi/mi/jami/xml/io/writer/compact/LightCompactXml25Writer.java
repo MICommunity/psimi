@@ -91,7 +91,7 @@ public class LightCompactXml25Writer extends AbstractCompactXml25Writer<Interact
         PsiXml25ElementWriter<Position> endWriter = new Xml25EndPositionWriter(getStreamWriter(), endStatusWriter);
         PsiXml25ElementWriter<Range> rangeWriter = new Xml25RangeWriter(getStreamWriter(), beginWriter, endWriter);
         PsiXml25ElementWriter<Feature> featureWriter = new Xml25FeatureWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter,attributeWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter,attributeWriter);
         PsiXml25ParticipantWriter<Participant> participantWriter = new CompactXml25ParticipantWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
                 bioRoleWriter, featureWriter, attributeWriter);
@@ -102,7 +102,7 @@ public class LightCompactXml25Writer extends AbstractCompactXml25Writer<Interact
                 confidenceWriter, attributeWriter);
         PsiXml25ParameterWriter parameterWriter = new Xml25ParameterWriter(getStreamWriter(), getElementCache());
         PsiXml25ElementWriter<ModelledFeature> modelledFeatureWriter = new Xml25ModelledFeatureWriter(getStreamWriter(), getElementCache(),
-                primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter,attributeWriter);
+                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter,attributeWriter);
         PsiXml25ParticipantWriter<ModelledParticipant> modelledParticipantWriter = new CompactXml25ModelledParticipantWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
                 bioRoleWriter, modelledFeatureWriter, attributeWriter);

@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ModelledFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25NamedModelledFeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -31,7 +30,7 @@ public class CompactXml25ModelledParticipantWriter extends AbstractXml25Particip
                                                  PsiXml25ElementWriter<CvTerm> biologicalRoleWriter, PsiXml25ElementWriter<ModelledFeature> featureWriter,
                                                  PsiXml25ElementWriter<Annotation> attributeWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter,interactorWriter,
-                biologicalRoleWriter, featureWriter != null ? featureWriter : new Xml25NamedModelledFeatureWriter(writer, objectIndex), attributeWriter);
+                biologicalRoleWriter, featureWriter != null ? featureWriter : new Xml25ModelledFeatureWriter(writer, objectIndex), attributeWriter);
     }
 
     @Override
