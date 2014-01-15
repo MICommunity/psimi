@@ -3,11 +3,11 @@ package psidev.psi.mi.jami.model.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.InteractorSet;
+import psidev.psi.mi.jami.model.InteractorPool;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
- * Unit tester for DefaultInteractorSet
+ * Unit tester for DefaultInteractorPool
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,7 +19,7 @@ public class DefaultInteractorSetTest {
     @Test
     public void create_interactor_set_with_shortname(){
 
-        InteractorSet interactor = new DefaultInteractorSet("test");
+        InteractorPool interactor = new DefaultInteractorPool("test");
 
         Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), interactor.getInteractorType());
         Assert.assertEquals("test", interactor.getShortName());
@@ -31,14 +31,14 @@ public class DefaultInteractorSetTest {
         Assert.assertNull(interactor.getOrganism());
         Assert.assertEquals(0, interactor.size());
 
-        interactor = new DefaultInteractorSet("test", (CvTerm) null);
+        interactor = new DefaultInteractorPool("test", (CvTerm) null);
         Assert.assertEquals(CvTermUtils.createMoleculeSetType(), interactor.getInteractorType());
     }
 
     @Test
     public void create_gene_set_interactor_type_null(){
 
-        InteractorSet interactor = new DefaultInteractorSet("test", CvTermUtils.createNucleicAcidInteractorType());
+        InteractorPool interactor = new DefaultInteractorPool("test", CvTermUtils.createNucleicAcidInteractorType());
         Assert.assertEquals(CvTermUtils.createNucleicAcidInteractorType(), interactor.getInteractorType());
 
         interactor.setInteractorType(null);

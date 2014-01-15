@@ -7,45 +7,45 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import java.util.*;
 
 /**
- * Default implementation of EntitySet
+ * Default implementation of EntityPool
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/10/13</pre>
  */
 
-public abstract class AbstractEntitySet<I extends Interaction, F extends Feature, C extends Entity> extends AbstractParticipant<I,F> implements EntitySet<I,F,C>, ParticipantInteractorChangeListener {
+public abstract class AbstractEntityPool<I extends Interaction, F extends Feature, C extends Entity> extends AbstractParticipant<I,F> implements EntityPool<I,F,C>, ParticipantInteractorChangeListener {
 
-    private Set<C> components;
+    private Collection<C> components;
     private CvTerm type;
 
-    public AbstractEntitySet(InteractorSet interactor) {
+    public AbstractEntityPool(InteractorPool interactor) {
         super(interactor);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractEntitySet(InteractorSet interactor, CvTerm bioRole) {
+    public AbstractEntityPool(InteractorPool interactor, CvTerm bioRole) {
         super(interactor, bioRole);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractEntitySet(InteractorSet interactor, Stoichiometry stoichiometry) {
+    public AbstractEntityPool(InteractorPool interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractEntitySet(InteractorSet interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public AbstractEntityPool(InteractorPool interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
         initialiseComponentCandidatesSet();
     }
 
     protected void initialiseComponentCandidatesSet(){
-        this.components = new HashSet<C>();
+        this.components = new ArrayList<C>();
     }
 
     protected void initialiseInteractorCandidatesSetWith(Set<C> interactorCandidates){
         if (interactorCandidates == null){
-            this.components = Collections.EMPTY_SET;
+            this.components = Collections.EMPTY_LIST;
         }
         else {
             this.components = interactorCandidates;
@@ -53,13 +53,13 @@ public abstract class AbstractEntitySet<I extends Interaction, F extends Feature
     }
 
     @Override
-    public InteractorSet getInteractor() {
-        return (InteractorSet) super.getInteractor();
+    public InteractorPool getInteractor() {
+        return (InteractorPool) super.getInteractor();
     }
 
     @Override
     public void setInteractor(Interactor interactor) {
-        throw new UnsupportedOperationException("Cannot set the interactor of an EntitySet as it is an interactorSet that is related to the interactors in the set of entities");
+        throw new UnsupportedOperationException("Cannot set the interactor of an EntityPool as it is an interactorSet that is related to the interactors in the set of entities");
     }
 
     public CvTerm getType() {

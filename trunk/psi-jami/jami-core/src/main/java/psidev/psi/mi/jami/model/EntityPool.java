@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
- * A set of entities that do not interact between each other but that are interacting with other molecules/entities and
+ * A pool of entities that do not interact between each other but that are interacting with other molecules/entities and
  * have common properties (open set of molecules, defined set, etc...).
  *
- * An entity set is a participant but is itself composed of several entities.
+ * An entity pool is a participant but is itself composed of several entities.
  *
  * Ex: a collection of potential interactors but we cannot determine which one interacts
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -14,7 +14,7 @@ import java.util.Set;
  * @since <pre>03/10/13</pre>
  */
 
-public interface EntitySet<I extends Interaction, F extends Feature, C extends Entity> extends Participant<I,F>, Set<C> {
+public interface EntityPool<I extends Interaction, F extends Feature, C extends Entity> extends Participant<I,F>, Collection<C> {
 
     public static final String ENTITY_SET="molecule set";
     public static final String ENTITY_SET_MI="MI:1304";

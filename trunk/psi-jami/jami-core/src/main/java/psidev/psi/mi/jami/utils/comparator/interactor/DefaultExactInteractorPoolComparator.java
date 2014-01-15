@@ -1,14 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.InteractorSet;
+import psidev.psi.mi.jami.model.InteractorPool;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Default exact InteractorSetComparator.
+ * Default exact InteractorPoolComparator.
  * It will first compare the basic interactor properties using DefaultExactInteractorBaseComparator
  * Then it will compare the collection of Interactors using DefaultExactInteractorBaseComparator
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -16,15 +16,15 @@ import java.util.Iterator;
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactInteractorSetComparator {
+public class DefaultExactInteractorPoolComparator {
 
     /**
-     * Use DefaultExactInteractorSetComparator to know if two interactorCandidates are equals.
+     * Use DefaultExactInteractorPoolComparator to know if two interactorCandidates are equals.
      * @param interactorCandidates1
      * @param interactorCandidates2
      * @return true if the two interactorCandidates are equal
      */
-    public static boolean areEquals(InteractorSet interactorCandidates1, InteractorSet interactorCandidates2){
+    public static boolean areEquals(InteractorPool interactorCandidates1, InteractorPool interactorCandidates2){
         if (interactorCandidates1 == null && interactorCandidates2 == null){
             return true;
         }

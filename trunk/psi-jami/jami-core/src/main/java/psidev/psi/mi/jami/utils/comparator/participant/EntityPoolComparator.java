@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntitySet;
+import psidev.psi.mi.jami.model.EntityPool;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Comparator;
 
 /**
- * Basic EntitySetComparator.
+ * Basic EntityPoolComparator.
  *
  * It will first compare the collection of Entities using ParticipantComparator
  *
@@ -16,16 +16,16 @@ import java.util.Comparator;
  * @since <pre>04/10/13</pre>
  */
 
-public class EntitySetComparator implements Comparator<EntitySet> {
+public class EntityPoolComparator implements Comparator<EntityPool> {
 
     protected CollectionComparator<Entity> entityCollectionComparator;
     protected Comparator<Entity> entityBaseComparator;
 
     /**
-     * Creates a new InteractorSetComparator
+     * Creates a new InteractorPoolComparator
      * @param interactorComparator : the interactor comparator required to compare interactors
      */
-    public EntitySetComparator(ParticipantComparator interactorComparator){
+    public EntityPoolComparator(ParticipantComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The participant/entity comparator is required to compare entities. It cannot be null");
         }
@@ -47,7 +47,7 @@ public class EntitySetComparator implements Comparator<EntitySet> {
      * @param interactorCandidates2
      * @return
      */
-    public int compare(EntitySet interactorCandidates1, EntitySet interactorCandidates2) {
+    public int compare(EntityPool interactorCandidates1, EntityPool interactorCandidates2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

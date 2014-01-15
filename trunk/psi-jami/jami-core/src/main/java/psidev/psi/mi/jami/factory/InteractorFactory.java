@@ -169,8 +169,8 @@ public class InteractorFactory {
         return new DefaultInteractor(name, type);
     }
 
-    public InteractorSet createInteractorSet(String name, CvTerm type) {
-        return new DefaultInteractorSet(name, type);
+    public InteractorPool createInteractorSet(String name, CvTerm type) {
+        return new DefaultInteractorPool(name, type);
     }
 
     /**

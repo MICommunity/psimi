@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Interactor;
 /**
  * Unambiguous generic Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorPool.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses UnambiguousBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses UnambiguousProteinComparator for comparing Protein objects.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.Interactor;
  * - Uses UnambiguousNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses UnambiguousPolymerComparator for comparing Polymer objects
  * - Uses UnambiguousComplexComparator for comparing complexes
- * - Uses UnambiguousInteractorSetComparator for comparing interactor candidates
+ * - Uses UnambiguousInteractorPoolComparator for comparing interactor candidates
  * - use UnambiguousInteractorBaseComparator for comparing basic interactors that are not one of the above..
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -31,7 +31,7 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
      * - Uses UnambiguousProteinComparator for comparing Protein objects.
      * - Uses UnambiguousGeneComparator for comparing Gene objects.
      * - Uses UnambiguousNucleicAcidComparator for comparing NucleicAcids objects.
-     * - Uses UnambiguousInteractorSetComparator for comparing interactor candidates
+     * - Uses UnambiguousInteractorPoolComparator for comparing interactor candidates
      * - use UnambiguousInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public UnambiguousInteractorComparator() {
@@ -83,13 +83,13 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
 
     @Override
     /**
-     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
+     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorPool.
      * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
      * - Uses UnambiguousBioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses UnambiguousProteinComparator for comparing Protein objects.
      * - Uses UnambiguousGeneComparator for comparing Gene objects.
      * - Uses UnambiguousNucleicAcidComparator for comparing NucleicAcids objects.
-     * - Uses UnambiguousInteractorSetComparator for comparing interactor candidates
+     * - Uses UnambiguousInteractorPoolComparator for comparing interactor candidates
      * - use UnambiguousInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public int compare(Interactor interactor1, Interactor interactor2) {

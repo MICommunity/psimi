@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
-import psidev.psi.mi.jami.model.InteractorSet;
+import psidev.psi.mi.jami.model.InteractorPool;
 
 /**
- * Unambiguous InteractorSetComparator.
+ * Unambiguous InteractorPoolComparator.
  *
  * It will first compare the basic interactor properties using UnambiguousInteractorBaseComparator
  * Then it will compare the collection of Interactors using UnambiguousInteractorBaseComparator
@@ -13,14 +13,14 @@ import psidev.psi.mi.jami.model.InteractorSet;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousInteractorSetComparator extends InteractorSetComparator {
+public class UnambiguousInteractorPoolComparator extends InteractorPoolComparator {
 
-    private static UnambiguousInteractorSetComparator unambiguousInteractorCandidatesComparator;
+    private static UnambiguousInteractorPoolComparator unambiguousInteractorCandidatesComparator;
 
     /**
-     * Creates a new UnambiguousInteractorSetComparator. It will use a UnambiguousInteractorComparator.
+     * Creates a new UnambiguousInteractorPoolComparator. It will use a UnambiguousInteractorComparator.
      */
-    public UnambiguousInteractorSetComparator() {
+    public UnambiguousInteractorPoolComparator() {
         super(new UnambiguousInteractorComparator());
     }
 
@@ -29,7 +29,7 @@ public class UnambiguousInteractorSetComparator extends InteractorSetComparator 
      * It will first compare the basic interactor properties using UnambiguousInteractorBaseComparator
      * Then it will compare the collection of Interactors using UnambiguousInteractorBaseComparator
      */
-    public int compare(InteractorSet candidat1, InteractorSet candidat2) {
+    public int compare(InteractorPool candidat1, InteractorPool candidat2) {
         return super.compare(candidat1, candidat2);
     }
 
@@ -39,14 +39,14 @@ public class UnambiguousInteractorSetComparator extends InteractorSetComparator 
     }
 
     /**
-     * Use UnambiguousInteractorSetComparator to know if two interactorCandidates are equals.
+     * Use UnambiguousInteractorPoolComparator to know if two interactorCandidates are equals.
      * @param candidat1
      * @param candidat2
      * @return true if the two interactorCandidates are equal
      */
-    public static boolean areEquals(InteractorSet candidat1, InteractorSet candidat2){
+    public static boolean areEquals(InteractorPool candidat1, InteractorPool candidat2){
         if (unambiguousInteractorCandidatesComparator == null){
-            unambiguousInteractorCandidatesComparator = new UnambiguousInteractorSetComparator();
+            unambiguousInteractorCandidatesComparator = new UnambiguousInteractorPoolComparator();
         }
 
         return unambiguousInteractorCandidatesComparator.compare(candidat1, candidat2) == 0;
