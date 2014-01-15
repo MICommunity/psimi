@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
@@ -21,22 +20,22 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 
 public class DefaultModelledFeature extends AbstractFeature<ModelledEntity, ModelledFeature> implements ModelledFeature {
 
-    public DefaultModelledFeature(ModelledParticipant participant) {
+    public DefaultModelledFeature(ModelledEntity participant) {
         super(CvTermUtils.createBiologicalFeatureType());
         setParticipant(participant);
     }
 
-    public DefaultModelledFeature(ModelledParticipant participant, String shortName, String fullName) {
+    public DefaultModelledFeature(ModelledEntity participant, String shortName, String fullName) {
         super(shortName, fullName, CvTermUtils.createBiologicalFeatureType());
         setParticipant(participant);
     }
 
-    public DefaultModelledFeature(ModelledParticipant participant, CvTerm type) {
+    public DefaultModelledFeature(ModelledEntity participant, CvTerm type) {
         super(type);
         setParticipant(participant);
     }
 
-    public DefaultModelledFeature(ModelledParticipant participant, String shortName, String fullName, CvTerm type) {
+    public DefaultModelledFeature(ModelledEntity participant, String shortName, String fullName, CvTerm type) {
         super(shortName, fullName, type);
         setParticipant(participant);
     }
