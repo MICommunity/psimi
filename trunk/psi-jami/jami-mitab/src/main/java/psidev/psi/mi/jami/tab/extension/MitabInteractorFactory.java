@@ -56,8 +56,8 @@ public class MitabInteractorFactory extends InteractorFactory {
     }
 
     @Override
-    public MitabInteractorSet createInteractorSet(String name, CvTerm type) {
-        return new MitabInteractorSet(name, type);
+    public MitabInteractorPool createInteractorSet(String name, CvTerm type) {
+        return new MitabInteractorPool(name, type);
     }
 
     /**

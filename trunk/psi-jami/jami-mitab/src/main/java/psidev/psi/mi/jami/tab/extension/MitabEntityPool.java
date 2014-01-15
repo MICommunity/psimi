@@ -4,31 +4,31 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Stoichiometry;
-import psidev.psi.mi.jami.model.impl.DefaultModelledEntitySet;
+import psidev.psi.mi.jami.model.impl.DefaultEntityPool;
 
 /**
- * Mitab implementation of ModelledEntitySet with a source locator
+ * Mitab implementation of an EntitySet
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>07/10/13</pre>
  */
 
-public class MitabModelledEntitySet extends DefaultModelledEntitySet implements FileSourceContext {
+public class MitabEntityPool extends DefaultEntityPool implements FileSourceContext {
     private FileSourceLocator sourceLocator;
-    public MitabModelledEntitySet(String interactorSetName) {
+    public MitabEntityPool(String interactorSetName) {
         super(interactorSetName);
     }
 
-    public MitabModelledEntitySet(String interactorSetName, CvTerm bioRole) {
+    public MitabEntityPool(String interactorSetName, CvTerm bioRole) {
         super(interactorSetName, bioRole);
     }
 
-    public MitabModelledEntitySet(String interactorSetName, Stoichiometry stoichiometry) {
+    public MitabEntityPool(String interactorSetName, Stoichiometry stoichiometry) {
         super(interactorSetName, stoichiometry);
     }
 
-    public MitabModelledEntitySet(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public MitabEntityPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactorSetName, bioRole, stoichiometry);
     }
 
