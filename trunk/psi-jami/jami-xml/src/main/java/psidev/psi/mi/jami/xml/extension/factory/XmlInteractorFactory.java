@@ -61,8 +61,8 @@ public class XmlInteractorFactory extends InteractorFactory{
     }
 
     @Override
-    public XmlInteractorSet createInteractorSet(String name, CvTerm type) {
-        return new XmlInteractorSet(name, type);
+    public XmlInteractorPool createInteractorSet(String name, CvTerm type) {
+        return new XmlInteractorPool(name, type);
     }
 
     @Override

@@ -13,89 +13,89 @@ import java.util.*;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
+public class XmlInteractorPool extends XmlInteractor implements InteractorPool {
 
-    private Set<Interactor> interactors;
+    private Collection<Interactor> interactors;
 
-    public XmlInteractorSet(){
+    public XmlInteractorPool(){
 
     }
-    public XmlInteractorSet(String name, CvTerm type) {
+    public XmlInteractorPool(String name, CvTerm type) {
         super(name, type);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, CvTerm type) {
+    public XmlInteractorPool(String name, String fullName, CvTerm type) {
         super(name, fullName, type);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, CvTerm type, Organism organism) {
+    public XmlInteractorPool(String name, CvTerm type, Organism organism) {
         super(name, type, organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, CvTerm type, Organism organism) {
+    public XmlInteractorPool(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type, organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, CvTerm type, Xref uniqueId) {
+    public XmlInteractorPool(String name, CvTerm type, Xref uniqueId) {
         super(name, type, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, CvTerm type, Xref uniqueId) {
+    public XmlInteractorPool(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, CvTerm type, Organism organism, Xref uniqueId) {
+    public XmlInteractorPool(String name, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, type, organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
+    public XmlInteractorPool(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, fullName, type, organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name) {
+    public XmlInteractorPool(String name) {
         super(name);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName) {
+    public XmlInteractorPool(String name, String fullName) {
         super(name, fullName);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, Organism organism) {
+    public XmlInteractorPool(String name, Organism organism) {
         super(name, organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, Organism organism) {
+    public XmlInteractorPool(String name, String fullName, Organism organism) {
         super(name, fullName, organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, Xref uniqueId) {
+    public XmlInteractorPool(String name, Xref uniqueId) {
         super(name, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, Xref uniqueId) {
+    public XmlInteractorPool(String name, String fullName, Xref uniqueId) {
         super(name, fullName, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, Organism organism, Xref uniqueId) {
+    public XmlInteractorPool(String name, Organism organism, Xref uniqueId) {
         super(name, organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public XmlInteractorSet(String name, String fullName, Organism organism, Xref uniqueId) {
+    public XmlInteractorPool(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
@@ -172,7 +172,7 @@ public class XmlInteractorSet extends XmlInteractor implements InteractorSet {
 
     @Override
     protected void createDefaultInteractorType() {
-        setInteractorType(new XmlCvTerm(InteractorSet.MOLECULE_SET, InteractorSet.MOLECULE_SET_MI));
+        setInteractorType(new XmlCvTerm(InteractorPool.MOLECULE_SET, InteractorPool.MOLECULE_SET_MI));
     }
 }
 
