@@ -9,37 +9,38 @@ import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * Xml implementation of a set of ModelledEntity that form a single modelled participant
- * Notes: The equals and hashcode methods have NOT been overridden because the XmlModelledEntitySet object is a complex object.
+ * Default XML implementation for Entity set
+ * Notes: The equals and hashcode methods have NOT been overridden because the XmlEntityPool object is a complex object.
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteraction, ModelledFeature, ModelledEntity> implements ModelledEntitySet {
+public class XmlEntityPool extends AbstractXmlEntityPool<Interaction,Feature,Entity> {
 
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    public XmlModelledEntitySet() {
+    public XmlEntityPool() {
         super();
     }
 
-    public XmlModelledEntitySet(String interactorSetName) {
-        super(new XmlInteractorSet(interactorSetName));
+    public XmlEntityPool(String interactorSetName) {
+        super(new XmlInteractorPool(interactorSetName));
     }
 
-    public XmlModelledEntitySet(String interactorSetName, CvTerm bioRole) {
-        super(new XmlInteractorSet(interactorSetName), bioRole);
+    public XmlEntityPool(String interactorSetName, CvTerm bioRole) {
+        super(new XmlInteractorPool(interactorSetName), bioRole);
     }
 
-    public XmlModelledEntitySet(String interactorSetName, Stoichiometry stoichiometry) {
-        super(new XmlInteractorSet(interactorSetName), stoichiometry);
+    public XmlEntityPool(String interactorSetName, Stoichiometry stoichiometry) {
+        super(new XmlInteractorPool(interactorSetName), stoichiometry);
     }
 
-    public XmlModelledEntitySet(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(new XmlInteractorSet(interactorSetName), bioRole, stoichiometry);
+    public XmlEntityPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
+        super(new XmlInteractorPool(interactorSetName), bioRole, stoichiometry);
     }
 
     @Override
@@ -119,15 +120,15 @@ public class XmlModelledEntitySet extends AbstractXmlEntitySet<ModelledInteracti
 
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="modelledEntityFeatureWrapper")
-    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<ModelledFeature> {
+    @XmlType(name="entitySetFeatureWrapper")
+    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<Feature> {
 
         public JAXBFeatureWrapper(){
             super();
         }
 
-        @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)
-        public List<ModelledFeature> getJAXBFeatures() {
+        @XmlElement(type=XmlFeature.class, name="feature", required = true)
+        public List<Feature> getJAXBFeatures() {
             return super.getJAXBFeatures();
         }
     }

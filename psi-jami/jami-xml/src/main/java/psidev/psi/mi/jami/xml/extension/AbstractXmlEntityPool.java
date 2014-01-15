@@ -16,32 +16,32 @@ import java.util.*;
  * @since <pre>04/10/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feature, C extends Entity> extends AbstractXmlParticipant<I,F> implements EntitySet<I,F,C>, ParticipantInteractorChangeListener {
+public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Feature, C extends Entity> extends AbstractXmlParticipant<I,F> implements EntityPool<I,F,C>, ParticipantInteractorChangeListener {
 
     private Set<C> components;
     private CvTerm type;
 
-    protected AbstractXmlEntitySet() {
+    protected AbstractXmlEntityPool() {
         super();
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntitySet(InteractorSet interactor) {
+    public AbstractXmlEntityPool(InteractorPool interactor) {
         super(interactor);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntitySet(InteractorSet interactor, CvTerm bioRole) {
+    public AbstractXmlEntityPool(InteractorPool interactor, CvTerm bioRole) {
         super(interactor, bioRole);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntitySet(InteractorSet interactor, Stoichiometry stoichiometry) {
+    public AbstractXmlEntityPool(InteractorPool interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntitySet(InteractorSet interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public AbstractXmlEntityPool(InteractorPool interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
         initialiseComponentCandidatesSet();
     }
@@ -51,8 +51,8 @@ public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feat
     }
 
     @Override
-    public InteractorSet getInteractor() {
-        return (InteractorSet) super.getInteractor();
+    public InteractorPool getInteractor() {
+        return (InteractorPool) super.getInteractor();
     }
 
     @Override
@@ -198,7 +198,7 @@ public abstract class AbstractXmlEntitySet<I extends Interaction, F extends Feat
 
     @Override
     protected void initialiseUnspecifiedInteractor() {
-        super.setInteractor(new XmlInteractorSet(PsiXml25Utils.UNSPECIFIED));
+        super.setInteractor(new XmlInteractorPool(PsiXml25Utils.UNSPECIFIED));
     }
 
     @Override
