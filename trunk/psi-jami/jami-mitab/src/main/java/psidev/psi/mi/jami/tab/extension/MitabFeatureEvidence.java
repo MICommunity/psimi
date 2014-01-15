@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 
 /**
@@ -20,19 +19,19 @@ public class MitabFeatureEvidence extends DefaultFeatureEvidence implements Mita
     private String text;
     private FileSourceLocator sourceLocator;
 
-    public MitabFeatureEvidence(ParticipantEvidence participant) {
+    public MitabFeatureEvidence(ExperimentalEntity participant) {
         super(participant);
     }
 
-    public MitabFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName) {
+    public MitabFeatureEvidence(ExperimentalEntity participant, String shortName, String fullName) {
         super(participant, shortName, fullName);
     }
 
-    public MitabFeatureEvidence(ParticipantEvidence participant, CvTerm type) {
+    public MitabFeatureEvidence(ExperimentalEntity participant, CvTerm type) {
         super(participant, type);
     }
 
-    public MitabFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
+    public MitabFeatureEvidence(ExperimentalEntity participant, String shortName, String fullName, CvTerm type) {
         super(participant, shortName, fullName, type);
     }
 
