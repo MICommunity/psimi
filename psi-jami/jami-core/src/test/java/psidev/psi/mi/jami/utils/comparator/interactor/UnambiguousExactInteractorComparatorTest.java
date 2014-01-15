@@ -35,7 +35,7 @@ public class UnambiguousExactInteractorComparatorTest {
         BioactiveEntity interactor3 = new DefaultBioactiveEntity("test");
         Protein interactor4 = new DefaultProtein("test");
         NucleicAcid interactor5 = new DefaultNucleicAcid("test");
-        InteractorSet interactor6 = new DefaultInteractorSet("test");
+        InteractorPool interactor6 = new DefaultInteractorPool("test");
         Complex interactor7 = new DefaultComplex("test");
 
         Assert.assertTrue(comparator.compare(interactor1, interactor3) > 0);
@@ -63,7 +63,7 @@ public class UnambiguousExactInteractorComparatorTest {
         BioactiveEntity interactor3 = new DefaultBioactiveEntity("test");
         Protein interactor4 = new DefaultProtein("test");
         NucleicAcid interactor5 = new DefaultNucleicAcid("test");
-        InteractorSet interactor6 = new DefaultInteractorSet("test");
+        InteractorPool interactor6 = new DefaultInteractorPool("test");
         Complex interactor7 = new DefaultComplex("test");
 
         Assert.assertTrue(comparator.compare(interactor1, interactor4) > 0);
@@ -91,7 +91,7 @@ public class UnambiguousExactInteractorComparatorTest {
         BioactiveEntity interactor3 = new DefaultBioactiveEntity("test");
         Protein interactor4 = new DefaultProtein("test");
         NucleicAcid interactor5 = new DefaultNucleicAcid("test");
-        InteractorSet interactor6 = new DefaultInteractorSet("test");
+        InteractorPool interactor6 = new DefaultInteractorPool("test");
         Complex interactor7 = new DefaultComplex("test");
 
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
@@ -119,7 +119,7 @@ public class UnambiguousExactInteractorComparatorTest {
         BioactiveEntity interactor3 = new DefaultBioactiveEntity("test");
         Protein interactor4 = new DefaultProtein("test");
         NucleicAcid interactor5 = new DefaultNucleicAcid("test");
-        InteractorSet interactor6 = new DefaultInteractorSet("test");
+        InteractorPool interactor6 = new DefaultInteractorPool("test");
         Complex interactor7 = new DefaultComplex("test");
 
         Assert.assertTrue(comparator.compare(interactor1, interactor5) > 0);
@@ -147,7 +147,7 @@ public class UnambiguousExactInteractorComparatorTest {
         BioactiveEntity interactor3 = new DefaultBioactiveEntity("test");
         Protein interactor4 = new DefaultProtein("test");
         NucleicAcid interactor5 = new DefaultNucleicAcid("test");
-        InteractorSet interactor6 = new DefaultInteractorSet("test");
+        InteractorPool interactor6 = new DefaultInteractorPool("test");
         Complex interactor7 = new DefaultComplex("test");
 
         Assert.assertTrue(comparator.compare(interactor1, interactor6) > 0);
@@ -175,7 +175,7 @@ public class UnambiguousExactInteractorComparatorTest {
         BioactiveEntity interactor3 = new DefaultBioactiveEntity("test");
         Protein interactor4 = new DefaultProtein("test");
         NucleicAcid interactor5 = new DefaultNucleicAcid("test");
-        InteractorSet interactor6 = new DefaultInteractorSet("test");
+        InteractorPool interactor6 = new DefaultInteractorPool("test");
         Complex interactor7 = new DefaultComplex("test");
 
         Assert.assertTrue(comparator.compare(interactor1, interactor7) > 0);

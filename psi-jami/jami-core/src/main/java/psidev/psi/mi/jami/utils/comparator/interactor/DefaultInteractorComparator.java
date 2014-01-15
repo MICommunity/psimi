@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.*;
 /**
  * Default generic Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorPool.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses DefaultBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses DefaultProteinComparator for comparing Protein objects.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.*;
  * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses DefaultPolymerComparator for comparing Polymer objects
  * - Uses DefaultComplexComparator for comparing complexes
- * - Uses DefaultInteractorSetComparator for comparing interactor candidates
+ * - Uses DefaultInteractorPoolComparator for comparing interactor candidates
  * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -96,10 +96,10 @@ public class DefaultInteractorComparator {
                             else {
 
                                 // both are interactor candidates
-                                boolean isCandidates1 = interactor1 instanceof InteractorSet;
-                                boolean isCandidates2 = interactor2 instanceof InteractorSet;
+                                boolean isCandidates1 = interactor1 instanceof InteractorPool;
+                                boolean isCandidates2 = interactor2 instanceof InteractorPool;
                                 if (isCandidates1 && isCandidates2){
-                                    return DefaultInteractorSetComparator.areEquals((InteractorSet) interactor1, (InteractorSet) interactor2);
+                                    return DefaultInteractorPoolComparator.areEquals((InteractorPool) interactor1, (InteractorPool) interactor2);
                                 }
                                 // the complex is before
                                 else if (isCandidates1 || isCandidates2){

@@ -1,14 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntitySet;
+import psidev.psi.mi.jami.model.EntityPool;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * Generic default participant comparator.
  * Modelled participants come first and then experimental participants.
- * - It uses DefaultEntitySetComparator to compare participant sets
+ * - It uses DefaultEntityPoolComparator to compare participant sets
  * - It uses DefaultComponentComparator to compare components
  * - It uses DefaultParticipantEvidenceComparator to compare experimental participants
  * - It uses DefaultParticipantBaseComparator to compare basic participant properties
@@ -37,10 +37,10 @@ public class DefaultParticipantComparator {
         else {
             // first check if both participants are from the same interface
             // both are experimental participants
-            boolean isParticipantSet1 = participant1 instanceof EntitySet;
-            boolean isParticipantSet2 = participant2 instanceof EntitySet;
+            boolean isParticipantSet1 = participant1 instanceof EntityPool;
+            boolean isParticipantSet2 = participant2 instanceof EntityPool;
             if (isParticipantSet1 && isParticipantSet2){
-                return DefaultEntitySetComparator.areEquals((EntitySet) participant1, (EntitySet) participant2);
+                return DefaultEntityPoolComparator.areEquals((EntityPool) participant1, (EntityPool) participant2);
             }
             // the experimental participant is before
             else if (isParticipantSet1 || isParticipantSet2){

@@ -1,36 +1,33 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.NamedEntity;
-import psidev.psi.mi.jami.model.Stoichiometry;
+import psidev.psi.mi.jami.model.*;
 
 /**
- * Default implementation of Named modelled entity set
+ * Default implementation of Named entity pool
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>13/11/13</pre>
  */
 
-public class DefaultNamedModelledEntitySet extends DefaultModelledEntitySet implements NamedEntity<ModelledFeature>{
+public class DefaultNamedEntityPool extends DefaultEntityPool implements NamedEntity<Feature>{
 
     private String shortName;
     private String fullName;
 
-    public DefaultNamedModelledEntitySet(String interactorSetName) {
+    public DefaultNamedEntityPool(String interactorSetName) {
         super(interactorSetName);
     }
 
-    public DefaultNamedModelledEntitySet(String interactorSetName, CvTerm bioRole) {
+    public DefaultNamedEntityPool(String interactorSetName, CvTerm bioRole) {
         super(interactorSetName, bioRole);
     }
 
-    public DefaultNamedModelledEntitySet(String interactorSetName, Stoichiometry stoichiometry) {
+    public DefaultNamedEntityPool(String interactorSetName, Stoichiometry stoichiometry) {
         super(interactorSetName, stoichiometry);
     }
 
-    public DefaultNamedModelledEntitySet(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public DefaultNamedEntityPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactorSetName, bioRole, stoichiometry);
     }
 

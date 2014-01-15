@@ -6,111 +6,111 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import java.util.*;
 
 /**
- * Default implementation for interactor set
+ * Default implementation for interactor pool
  *
- * Notes: The equals and hashcode methods have NOT been overridden because the InteractorSet object is a complex object.
- * To compare InteractorSet objects, you can use some comparators provided by default:
- * - DefaultInteractorSetComparator
- * - UnambiguousInteractorSetComparator
- * - DefaultExactInteractorSetComparator
- * - UnambiguousExactInteractorSetComparator
+ * Notes: The equals and hashcode methods have NOT been overridden because the InteractorPool object is a complex object.
+ * To compare InteractorPool objects, you can use some comparators provided by default:
+ * - DefaultInteractorPoolComparator
+ * - UnambiguousInteractorPoolComparator
+ * - DefaultExactInteractorPoolComparator
+ * - UnambiguousExactInteractorPoolComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultInteractorSet extends DefaultInteractor implements InteractorSet {
+public class DefaultInteractorPool extends DefaultInteractor implements InteractorPool {
 
-    private Set<Interactor> interactors;
+    private Collection<Interactor> interactors;
 
-    public DefaultInteractorSet(String name, CvTerm type) {
+    public DefaultInteractorPool(String name, CvTerm type) {
         super(name, type != null ? type : CvTermUtils.createMoleculeSetType());
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, CvTerm type) {
+    public DefaultInteractorPool(String name, String fullName, CvTerm type) {
         super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType());
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, CvTerm type, Organism organism) {
+    public DefaultInteractorPool(String name, CvTerm type, Organism organism) {
         super(name, type != null ? type : CvTermUtils.createMoleculeSetType(), organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, CvTerm type, Organism organism) {
+    public DefaultInteractorPool(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType(), organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, CvTerm type, Xref uniqueId) {
+    public DefaultInteractorPool(String name, CvTerm type, Xref uniqueId) {
         super(name, type != null ? type : CvTermUtils.createMoleculeSetType(), uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, CvTerm type, Xref uniqueId) {
+    public DefaultInteractorPool(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType(), uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, CvTerm type, Organism organism, Xref uniqueId) {
+    public DefaultInteractorPool(String name, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, type != null ? type : CvTermUtils.createMoleculeSetType(), organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
+    public DefaultInteractorPool(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, fullName, type != null ? type : CvTermUtils.createMoleculeSetType(), organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name) {
+    public DefaultInteractorPool(String name) {
         super(name);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName) {
+    public DefaultInteractorPool(String name, String fullName) {
         super(name, fullName);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, Organism organism) {
+    public DefaultInteractorPool(String name, Organism organism) {
         super(name, organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, Organism organism) {
+    public DefaultInteractorPool(String name, String fullName, Organism organism) {
         super(name, fullName, organism);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, Xref uniqueId) {
+    public DefaultInteractorPool(String name, Xref uniqueId) {
         super(name, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, Xref uniqueId) {
+    public DefaultInteractorPool(String name, String fullName, Xref uniqueId) {
         super(name, fullName, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, Organism organism, Xref uniqueId) {
+    public DefaultInteractorPool(String name, Organism organism, Xref uniqueId) {
         super(name, organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
-    public DefaultInteractorSet(String name, String fullName, Organism organism, Xref uniqueId) {
+    public DefaultInteractorPool(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     protected void initialiseInteractorCandidatesSet(){
-        this.interactors = new HashSet<Interactor>();
+        this.interactors = new ArrayList<Interactor>();
     }
 
     protected void initialiseInteractorCandidatesSetWith(Set<Interactor> interactorCandidates){
         if (interactorCandidates == null){
-            this.interactors = Collections.EMPTY_SET;
+            this.interactors = Collections.EMPTY_LIST;
         }
         else {
             this.interactors = interactorCandidates;

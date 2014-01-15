@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.EntitySet;
+import psidev.psi.mi.jami.model.EntityPool;
 
 /**
- * Unambiguous EntitySetComparator.
+ * Unambiguous EntityPoolComparator.
  *
  * It will first compare the basic entity properties using UnambiguousEntityBaseComparator
  * Then it will compare the collection of Entities using UnambiguousEntityBaseComparator
@@ -13,14 +13,14 @@ import psidev.psi.mi.jami.model.EntitySet;
  * @since <pre>07/10/13</pre>
  */
 
-public class UnambiguousEntitySetComparator extends EntitySetComparator {
+public class UnambiguousEntityPoolComparator extends EntityPoolComparator {
 
-    private static UnambiguousEntitySetComparator unambiguousEntitySetComparator;
+    private static UnambiguousEntityPoolComparator unambiguousEntitySetComparator;
 
     /**
-     * Creates a new UnambiguousEntitySetComparator. It will use a UnambiguousParticipantComparator.
+     * Creates a new UnambiguousEntityPoolComparator. It will use a UnambiguousParticipantComparator.
      */
-    public UnambiguousEntitySetComparator() {
+    public UnambiguousEntityPoolComparator() {
         super(new UnambiguousParticipantComparator());
     }
 
@@ -29,7 +29,7 @@ public class UnambiguousEntitySetComparator extends EntitySetComparator {
      * It will first compare the basic entity properties using UnambiguousEntityBaseComparator
      * Then it will compare the collection of entities using UnambiguousEntityBaseComparator
      */
-    public int compare(EntitySet candidat1, EntitySet candidat2) {
+    public int compare(EntityPool candidat1, EntityPool candidat2) {
         return super.compare(candidat1, candidat2);
     }
 
@@ -39,14 +39,14 @@ public class UnambiguousEntitySetComparator extends EntitySetComparator {
     }
 
     /**
-     * Use UnambiguousEntitySetComparator to know if two EntityCandidates are equals.
+     * Use UnambiguousEntityPoolComparator to know if two EntityCandidates are equals.
      * @param candidat1
      * @param candidat2
      * @return true if the two entityCandidates are equal
      */
-    public static boolean areEquals(EntitySet candidat1, EntitySet candidat2){
+    public static boolean areEquals(EntityPool candidat1, EntityPool candidat2){
         if (unambiguousEntitySetComparator == null){
-            unambiguousEntitySetComparator = new UnambiguousEntitySetComparator();
+            unambiguousEntitySetComparator = new UnambiguousEntityPoolComparator();
         }
 
         return unambiguousEntitySetComparator.compare(candidat1, candidat2) == 0;

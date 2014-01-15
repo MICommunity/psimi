@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.InteractorSet;
+import psidev.psi.mi.jami.model.InteractorPool;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.*;
 
 /**
- * Basic InteractorSetComparator.
+ * Basic InteractorPoolComparator.
  *
  * It will first compare the collection of Interactors using InteractorComparator
  *
@@ -16,16 +16,16 @@ import java.util.*;
  * @since <pre>17/01/13</pre>
  */
 
-public class InteractorSetComparator implements Comparator<InteractorSet> {
+public class InteractorPoolComparator implements Comparator<InteractorPool> {
 
     protected CollectionComparator<Interactor> interactorCollectionComparator;
     protected Comparator<Interactor> interactorBaseComparator;
 
     /**
-     * Creates a new InteractorSetComparator
+     * Creates a new InteractorPoolComparator
      * @param interactorComparator : the interactor comparator required to compare interactors
      */
-    public InteractorSetComparator(InteractorComparator interactorComparator){
+    public InteractorPoolComparator(InteractorComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
         }
@@ -47,7 +47,7 @@ public class InteractorSetComparator implements Comparator<InteractorSet> {
      * @param interactorCandidates2
      * @return
      */
-    public int compare(InteractorSet interactorCandidates1, InteractorSet interactorCandidates2) {
+    public int compare(InteractorPool interactorCandidates1, InteractorPool interactorCandidates2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

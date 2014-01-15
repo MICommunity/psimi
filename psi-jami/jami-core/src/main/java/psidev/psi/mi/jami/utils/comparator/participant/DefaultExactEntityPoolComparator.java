@@ -1,14 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntitySet;
+import psidev.psi.mi.jami.model.EntityPool;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Default exact EntitySetComparator.
+ * Default exact EntityPoolComparator.
  * It will first compare the basic entity properties using DefaultExactEntityBaseComparator
  * Then it will compare the collection of entities using DefaultExactEntityBaseComparator
  *
@@ -17,15 +17,15 @@ import java.util.Iterator;
  * @since <pre>07/10/13</pre>
  */
 
-public class DefaultExactEntitySetComparator {
+public class DefaultExactEntityPoolComparator {
 
     /**
-     * Use DefaultExactEntitySetComparator to know if two entityCandidates are equals.
+     * Use DefaultExactEntityPoolComparator to know if two entityCandidates are equals.
      * @param interactorCandidates1
      * @param interactorCandidates2
      * @return true if the two entityCandidates are equal
      */
-    public static boolean areEquals(EntitySet interactorCandidates1, EntitySet interactorCandidates2){
+    public static boolean areEquals(EntityPool interactorCandidates1, EntityPool interactorCandidates2){
         if (interactorCandidates1 == null && interactorCandidates2 == null){
             return true;
         }

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.*;
 /**
  * Default exact Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorPool.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses DefaultExactBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses DefaultExactProteinComparator for comparing Protein objects.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.*;
  * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses DefaultExactPolymerComparator for comparing Polymer objects
  * - Uses DefaultExactComplexComparator for comparing complexes
- * - Uses DefaultExactInteractorSetComparator for comparing interactor candidates
+ * - Uses DefaultExactInteractorPoolComparator for comparing interactor candidates
  * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -97,10 +97,10 @@ public class DefaultExactInteractorComparator {
                             else {
 
                                 // both are interactor candidates
-                                boolean isCandidates1 = interactor1 instanceof InteractorSet;
-                                boolean isCandidates2 = interactor2 instanceof InteractorSet;
+                                boolean isCandidates1 = interactor1 instanceof InteractorPool;
+                                boolean isCandidates2 = interactor2 instanceof InteractorPool;
                                 if (isCandidates1 && isCandidates2){
-                                    return DefaultExactInteractorSetComparator.areEquals((InteractorSet) interactor1, (InteractorSet) interactor2);
+                                    return DefaultExactInteractorPoolComparator.areEquals((InteractorPool) interactor1, (InteractorPool) interactor2);
                                 }
                                 // the complex is before
                                 else if (isCandidates1 || isCandidates2){

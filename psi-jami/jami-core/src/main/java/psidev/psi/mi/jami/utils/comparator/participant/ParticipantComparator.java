@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Generic participant comparator.
  * Modelled participants come first and then experimental participants.
- * - It uses EntitySetComparator to compare participant sets
+ * - It uses EntityPoolComparator to compare participant sets
  * - It uses ParticipantEvidenceComparator to compare experimental participants
  * - It uses ModelledParticipantComparator to compare biological participants
  * - It uses ParticipantBaseComparator to compare basic participant properties
@@ -22,7 +22,7 @@ public class ParticipantComparator implements Comparator<Entity> {
     protected ParticipantBaseComparator participantBaseComparator;
     protected ParticipantEvidenceComparator experimentalParticipantComparator;
     protected ModelledParticipantComparator biologicalParticipantComparator;
-    protected EntitySetComparator entitySetComparator;
+    protected EntityPoolComparator entitySetComparator;
 
     public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ParticipantEvidenceComparator experimentalParticipantComparator, ModelledParticipantComparator modelledParticipantComparator){
         if (participantBaseComparator == null){
@@ -37,12 +37,12 @@ public class ParticipantComparator implements Comparator<Entity> {
             throw new IllegalArgumentException("The modelledParticipantComparator is required to compare modelled participant properties. It cannot be null");
         }
         this.biologicalParticipantComparator = modelledParticipantComparator;
-        this.entitySetComparator = new EntitySetComparator(this);
+        this.entitySetComparator = new EntityPoolComparator(this);
     }
 
     /**
      * Modelled participants come first and then experimental participants.
-     * - It uses EntitySetComparator to compare participant sets
+     * - It uses EntityPoolComparator to compare participant sets
      * - It uses ParticipantEvidenceComparator to compare experimental participants
      * - It uses ModelledParticipantComparator to compare biological participants
      * - It uses ParticipantBaseComparator to compare basic participant properties
@@ -67,10 +67,10 @@ public class ParticipantComparator implements Comparator<Entity> {
         else {
             // first check if both participants are from the same interface
             // both are entity sets
-            boolean isEntitySet1 = participant1 instanceof EntitySet;
-            boolean isEntitySet2 = participant2 instanceof EntitySet;
+            boolean isEntitySet1 = participant1 instanceof EntityPool;
+            boolean isEntitySet2 = participant2 instanceof EntityPool;
             if (isEntitySet1 && isEntitySet2){
-                return entitySetComparator.compare((EntitySet) participant1, (EntitySet) participant2);
+                return entitySetComparator.compare((EntityPool) participant1, (EntityPool) participant2);
             }
             // the first entity set participant is before
             else if (isEntitySet1){
@@ -127,7 +127,7 @@ public class ParticipantComparator implements Comparator<Entity> {
         return biologicalParticipantComparator;
     }
 
-    public EntitySetComparator getEntitySetComparator() {
+    public EntityPoolComparator getEntitySetComparator() {
         return entitySetComparator;
     }
 }

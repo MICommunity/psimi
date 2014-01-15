@@ -71,7 +71,7 @@ public class InteractorFactoryTest {
     @Test
     public void test_recognize_interactor_set(){
         Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(new DefaultCvTerm("molecule set"), "test interactor")
-                instanceof DefaultInteractorSet);
+                instanceof DefaultInteractorPool);
     }
 
     @Test

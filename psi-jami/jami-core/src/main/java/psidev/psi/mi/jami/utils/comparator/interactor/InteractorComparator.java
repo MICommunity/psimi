@@ -13,7 +13,7 @@ import java.util.Comparator;
  * - Uses AbstractProteinComparator for comparing Protein objects.
  * - Uses AbstractGeneComparator for comparing Gene objects.
  * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
- * - Uses InteractorSetComparator for comparing interactor candidates
+ * - Uses InteractorPoolComparator for comparing interactor candidates
  * - Uses ComplexComparator for comparing complexes
  * - Uses AbstractPolymerComparator for comparing polymers
  * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
@@ -31,7 +31,7 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected Comparator<NucleicAcid> nucleicAcidComparator;
     protected Comparator<Interactor> interactorBaseComparator;
     protected Comparator<Complex> complexComparator;
-    protected Comparator<InteractorSet> interactorCandidatesComparator;
+    protected Comparator<InteractorPool> interactorCandidatesComparator;
     protected Comparator<Polymer> polymerComparator;
 
     /**
@@ -71,7 +71,7 @@ public class InteractorComparator implements Comparator<Interactor> {
             throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
         }
         this.complexComparator = complexComparator;
-        this.interactorCandidatesComparator = new InteractorSetComparator(this);
+        this.interactorCandidatesComparator = new InteractorPoolComparator(this);
     }
 
     public Comparator<BioactiveEntity> getBioactiveEntityComparator() {
@@ -102,19 +102,19 @@ public class InteractorComparator implements Comparator<Interactor> {
         return polymerComparator;
     }
 
-    public Comparator<InteractorSet> getInteractorCandidatesComparator() {
+    public Comparator<InteractorPool> getInteractorCandidatesComparator() {
         return interactorCandidatesComparator;
     }
 
     /**
      *
-     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
+     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorPool.
      * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
      * - Uses AbstractBioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses AbstractProteinComparator for comparing Protein objects.
      * - Uses AbstractGeneComparator for comparing Gene objects.
      * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
-     * - Uses InteractorSetComparator for comparing interactor candidates
+     * - Uses InteractorPoolComparator for comparing interactor candidates
      * - Uses polymerComparator for comparing Polymer objects.
      * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
 
@@ -211,10 +211,10 @@ public class InteractorComparator implements Comparator<Interactor> {
                             else {
 
                                 // both are interactor candidates
-                                boolean isCandidates1 = interactor1 instanceof InteractorSet;
-                                boolean isCandidates2 = interactor2 instanceof InteractorSet;
+                                boolean isCandidates1 = interactor1 instanceof InteractorPool;
+                                boolean isCandidates2 = interactor2 instanceof InteractorPool;
                                 if (isCandidates1 && isCandidates2){
-                                    return interactorCandidatesComparator.compare((InteractorSet) interactor1, (InteractorSet) interactor2);
+                                    return interactorCandidatesComparator.compare((InteractorPool) interactor1, (InteractorPool) interactor2);
                                 }
                                 // the complex is before
                                 else if (isCandidates1){
