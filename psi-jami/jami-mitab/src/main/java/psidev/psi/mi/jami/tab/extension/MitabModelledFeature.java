@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultModelledFeature;
 
 /**
@@ -20,19 +19,19 @@ public class MitabModelledFeature extends DefaultModelledFeature implements Mita
     private String text;
     private FileSourceLocator sourceLocator;
 
-    public MitabModelledFeature(ModelledParticipant participant) {
+    public MitabModelledFeature(ModelledEntity participant) {
         super(participant);
     }
 
-    public MitabModelledFeature(ModelledParticipant participant, String shortName, String fullName) {
+    public MitabModelledFeature(ModelledEntity participant, String shortName, String fullName) {
         super(participant, shortName, fullName);
     }
 
-    public MitabModelledFeature(ModelledParticipant participant, CvTerm type) {
+    public MitabModelledFeature(ModelledEntity participant, CvTerm type) {
         super(participant, type);
     }
 
-    public MitabModelledFeature(ModelledParticipant participant, String shortName, String fullName, CvTerm type) {
+    public MitabModelledFeature(ModelledEntity participant, String shortName, String fullName, CvTerm type) {
         super(participant, shortName, fullName, type);
     }
 
