@@ -296,6 +296,42 @@ public abstract class AbstractComplexRef extends AbstractInteractorRef implement
     }
 
     @Override
+    public void setSystematicName(String name) {
+        logger.log(Level.WARNING, "The interaction reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (getDelegate() == null){
+            initialiseInteractorDelegate();
+        }
+        getDelegate().setSystematicName(name);
+    }
+
+    @Override
+    public String getSystematicName() {
+        logger.log(Level.WARNING, "The interaction reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (getDelegate() == null){
+            initialiseInteractorDelegate();
+        }
+        return getDelegate().getSystematicName();
+    }
+
+    @Override
+    public void setRecommendedName(String name) {
+        logger.log(Level.WARNING, "The interaction reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (getDelegate() == null){
+            initialiseInteractorDelegate();
+        }
+        getDelegate().setRecommendedName(name);
+    }
+
+    @Override
+    public String getRecommendedName() {
+        logger.log(Level.WARNING, "The interaction reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (getDelegate() == null){
+            initialiseInteractorDelegate();
+        }
+        return getDelegate().getRecommendedName();
+    }
+
+    @Override
     public String toString() {
         return "Interaction Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
     }
