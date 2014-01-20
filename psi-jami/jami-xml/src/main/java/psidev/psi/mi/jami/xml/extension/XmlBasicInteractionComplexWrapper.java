@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.extension;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
@@ -279,6 +280,34 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
         }
         else{
             this.interaction.getAnnotations().add(new XmlAnnotation(CvTermUtils.createMICvTerm(Annotation.COMPLEX_PROPERTIES, Annotation.COMPLEX_PROPERTIES_MI), properties));
+        }
+    }
+
+    @Override
+    public String getRecommendedName() {
+        Alias recommendedName = AliasUtils.collectFirstAliasWithType(this.interaction.getAliases(), Alias.COMPLEX_RECOMMENDED_NAME_MI, Alias.COMPLEX_RECOMMENDED_NAME);
+        return recommendedName != null ? recommendedName.getName() : null;
+    }
+
+    @Override
+    public void setRecommendedName(String name) {
+        AliasUtils.removeAllAliasesWithType(this.interaction.getAliases(), Alias.COMPLEX_RECOMMENDED_NAME_MI, Alias.COMPLEX_RECOMMENDED_NAME);
+        if (name != null){
+            this.interaction.getAliases().add(new XmlAlias(name, CvTermUtils.createMICvTerm(Alias.COMPLEX_RECOMMENDED_NAME, Alias.COMPLEX_RECOMMENDED_NAME_MI)));
+        }
+    }
+
+    @Override
+    public String getSystematicName() {
+        Alias systematicName = AliasUtils.collectFirstAliasWithType(this.interaction.getAliases(), Alias.COMPLEX_SYSTEMATIC_NAME_MI, Alias.COMPLEX_SYSTEMATIC_NAME);
+        return systematicName != null ? systematicName.getName() : null;
+    }
+
+    @Override
+    public void setSystematicName(String name) {
+        AliasUtils.removeAllAliasesWithType(this.interaction.getAliases(), Alias.COMPLEX_SYSTEMATIC_NAME_MI, Alias.COMPLEX_SYSTEMATIC_NAME);
+        if (name != null){
+            this.interaction.getAliases().add(new XmlAlias(name, CvTermUtils.createMICvTerm(Alias.COMPLEX_SYSTEMATIC_NAME, Alias.COMPLEX_SYSTEMATIC_NAME_MI)));
         }
     }
 
