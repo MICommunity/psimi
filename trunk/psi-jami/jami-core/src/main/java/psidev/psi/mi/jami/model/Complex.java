@@ -29,4 +29,36 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * @param properties
      */
     public void setPhysicalProperties(String properties);
+
+    /**
+     * The recommended name of a complex.
+     * It is a shortcut which should point to the first complex recommended name alias in the collection of aliases.
+     * @return
+     */
+    public String getRecommendedName();
+
+    /**
+     * Sets the recommended name of this complex.
+     * It will remove the old recommended name from the collection of aliases and replace it
+     * with the new recommended name. If the new recommended name is null, all the existing recommended names will be removed from the
+     * collection of aliases
+     * @param name
+     */
+    public void setRecommendedName(String name);
+
+    /**
+     * The systematic name of a complex.
+     * It is a shortcut which should point to the first complex systematic name alias in the collection of aliases.
+     * @return
+     */
+    public String getSystematicName();
+
+    /**
+     * Sets the systematic name of this complex.
+     * It will remove the old systematic name from the collection of aliases and replace it
+     * with the new systematic name. If the new systematic name is null, all the existing systematic names will be removed from the
+     * collection of aliases
+     * @param name
+     */
+    public void setSystematicName(String name);
 }
