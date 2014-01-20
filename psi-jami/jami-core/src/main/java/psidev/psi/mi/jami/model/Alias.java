@@ -30,6 +30,11 @@ public interface Alias {
     public static final String LOCUS_NAME_MI = "MI:0305";
     public static final String IUPAC_MI = "MI:2007";
     public static final String IUPAC = "iupac name";
+    public static final String COMPLEX_RECOMMENDED_NAME="complex recommended name";
+    public static final String COMPLEX_RECOMMENDED_NAME_MI="MI:1315";
+    public static final String COMPLEX_SYSTEMATIC_NAME="complex systematic name";
+    public static final String COMPLEX_SYSTEMATIC_NAME_MI="MI:1316";
+
     /**
      * The alias type is a controlled vocabulary term.
      * The type can be null.

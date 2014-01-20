@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -41,6 +42,9 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     private Date updatedDate;
     private Date createdDate;
     private CvTerm interactionType;
+
+    private Alias recommendedName;
+    private Alias systematicName;
 
     public DefaultComplex(String name, CvTerm interactorType) {
         super(name, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType());
@@ -104,6 +108,11 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
 
     public DefaultComplex(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, CvTermUtils.createComplexInteractorType(), organism, uniqueId);
+    }
+
+    @Override
+    protected void initialiseAliases() {
+        initialiseAliasesWith(new ComplexAliasList());
     }
 
     protected void initialiseInteractionEvidences(){
@@ -302,6 +311,56 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         }
     }
 
+    public String getRecommendedName() {
+        return this.recommendedName != null ? this.recommendedName.getName() : null;
+    }
+
+    public void setRecommendedName(String name) {
+        ComplexAliasList complexAliasList = (ComplexAliasList)getAliases();
+
+        // add new recommended name if not null
+        if (name != null){
+
+            CvTerm recommendedName = CvTermUtils.createComplexRecommendedName();
+            // first remove old recommended name if not null
+            if (this.recommendedName != null){
+                complexAliasList.removeOnly(this.recommendedName);
+            }
+            this.recommendedName = new DefaultAlias(recommendedName, name);
+            complexAliasList.addOnly(this.recommendedName);
+        }
+        // remove all recommended name if the collection is not empty
+        else if (!complexAliasList.isEmpty()) {
+            AliasUtils.removeAllAliasesWithType(complexAliasList, Alias.COMPLEX_RECOMMENDED_NAME_MI, Alias.COMPLEX_RECOMMENDED_NAME);
+            recommendedName = null;
+        }
+    }
+
+    public String getSystematicName() {
+        return this.systematicName != null ? this.systematicName.getName() : null;
+    }
+
+    public void setSystematicName(String name) {
+        ComplexAliasList complexAliasList = (ComplexAliasList)getAliases();
+
+        // add new systematic name if not null
+        if (name != null){
+
+            CvTerm systematicName = CvTermUtils.createComplexSystematicName();
+            // first remove systematic name  if not null
+            if (this.systematicName != null){
+                complexAliasList.removeOnly(this.systematicName);
+            }
+            this.systematicName = new DefaultAlias(systematicName, name);
+            complexAliasList.addOnly(this.systematicName);
+        }
+        // remove all systematic name  if the collection is not empty
+        else if (!complexAliasList.isEmpty()) {
+            AliasUtils.removeAllAliasesWithType(complexAliasList, Alias.COMPLEX_SYSTEMATIC_NAME_MI, Alias.COMPLEX_SYSTEMATIC_NAME);
+            systematicName = null;
+        }
+    }
+
     protected void processAddedAnnotationEvent(Annotation added) {
         if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
             physicalProperties = added;
@@ -415,6 +474,29 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         rigid = null;
     }
 
+    protected void processAddedAliasEvent(Alias added) {
+        if (recommendedName == null && AliasUtils.doesAliasHaveType(added, Alias.COMPLEX_RECOMMENDED_NAME_MI, Alias.COMPLEX_RECOMMENDED_NAME)){
+            recommendedName = added;
+        }
+        else if (systematicName == null && AliasUtils.doesAliasHaveType(added, Alias.COMPLEX_SYSTEMATIC_NAME_MI, Alias.COMPLEX_SYSTEMATIC_NAME)){
+            systematicName = added;
+        }
+    }
+
+    protected void processRemovedAliasEvent(Alias removed) {
+        if (recommendedName != null && recommendedName.equals(removed)){
+            recommendedName = AliasUtils.collectFirstAliasWithType(getAliases(), Alias.COMPLEX_RECOMMENDED_NAME_MI, Alias.COMPLEX_RECOMMENDED_NAME);
+        }
+        else if (systematicName != null && systematicName.equals(removed)){
+            systematicName = AliasUtils.collectFirstAliasWithType(getAliases(), Alias.COMPLEX_SYSTEMATIC_NAME_MI, Alias.COMPLEX_SYSTEMATIC_NAME);
+        }
+    }
+
+    protected void clearPropertiesLinkedToAliases() {
+        this.recommendedName = null;
+        this.systematicName = null;
+    }
+
     private class ComplexAnnotationList extends AbstractListHavingProperties<Annotation> {
         public ComplexAnnotationList(){
             super();
@@ -454,6 +536,27 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         @Override
         protected void clearProperties() {
             clearPropertiesLinkedToChecksums();
+        }
+    }
+
+    private class ComplexAliasList extends AbstractListHavingProperties<Alias> {
+        public ComplexAliasList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(Alias added) {
+            processAddedAliasEvent(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(Alias removed) {
+            processRemovedAliasEvent(removed);
+        }
+
+        @Override
+        protected void clearProperties() {
+            clearPropertiesLinkedToAliases();
         }
     }
 }

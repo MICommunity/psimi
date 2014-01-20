@@ -433,6 +433,13 @@ public class CvTermUtils {
     public static CvTerm createLocusName(){
         return createMICvTerm(Alias.LOCUS_NAME, Alias.LOCUS_NAME_MI);
     }
+    public static CvTerm createComplexRecommendedName(){
+        return createMICvTerm(Alias.COMPLEX_RECOMMENDED_NAME, Alias.COMPLEX_RECOMMENDED_NAME_MI);
+    }
+
+    public static CvTerm createComplexSystematicName(){
+        return createMICvTerm(Alias.COMPLEX_SYSTEMATIC_NAME, Alias.COMPLEX_SYSTEMATIC_NAME_MI);
+    }
 
     public static CvTerm createUnspecifiedRole(){
         return createMICvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
