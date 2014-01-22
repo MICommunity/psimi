@@ -6,9 +6,9 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.Entry;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
@@ -104,7 +104,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
 
         // add new rigid if not null
         if (rigid != null){
-            CvTerm rigidTopic = new DefaultCvTerm(Checksum.RIGID);
+            CvTerm rigidTopic = CvTermUtils.createRigid();
             // first remove old rigid if not null
             if (rigidAnnot != null){
                 checksums.removeOnly(rigidAnnot);
@@ -114,7 +114,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         }
         // remove all rigid if the collection is not empty
         else if (!checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(checksums, null, Checksum.RIGID);
+            ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.RIGID_MI, Checksum.RIGID);
             jaxbAttributeWrapper.rigid = null;
         }
     }
@@ -513,7 +513,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
 
             private boolean processAnnotation(Integer index, Annotation annotation) {
                 if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, null, Checksum.RIGID)){
+                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.RIGID_MI, Checksum.RIGID)){
                     XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXml25Utils.UNSPECIFIED);
                     checksum.setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
                     checksums.add(checksum);
