@@ -124,7 +124,7 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
             if (XrefUtils.isXrefFromDatabase(ref, Xref.IMEX_MI, Xref.IMEX) && XrefUtils.doesXrefHaveQualifier(ref, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
                 interaction.getXrefs().add(ref);
             }
-            else if (XrefUtils.isXrefFromDatabase(ref, null, Checksum.RIGID) || XrefUtils.isXrefFromDatabase(ref, null, Checksum.IRIGID)){
+            else if (XrefUtils.isXrefFromDatabase(ref, Checksum.RIGID_MI, Checksum.RIGID) || XrefUtils.isXrefFromDatabase(ref, null, Checksum.IRIGID)){
                 createChecksumFromId(interaction, ref);
             }
             else{
@@ -314,7 +314,7 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
                 createAliasFromAltId(interactor, ref);
             }
             // database is rogid so we have a checksum
-            else if (XrefUtils.isXrefFromDatabase(ref, null, Checksum.ROGID)){
+            else if (XrefUtils.isXrefFromDatabase(ref, Checksum.ROGID_MI, Checksum.ROGID)){
                 createChecksumFromAltId(interactor, ref);
 
             }
@@ -355,7 +355,7 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
                 createChecksumFromAlias(interactor, alias);
             }
             // we have rogid
-            else if (AliasUtils.doesAliasHaveType(alias, null, Checksum.ROGID) ||
+            else if (AliasUtils.doesAliasHaveType(alias, Checksum.ROGID_MI, Checksum.ROGID) ||
                     AliasUtils.doesAliasHaveType(alias, null, Checksum.IROGID)){
                 createChecksumFromAlias(interactor, alias);
             }
