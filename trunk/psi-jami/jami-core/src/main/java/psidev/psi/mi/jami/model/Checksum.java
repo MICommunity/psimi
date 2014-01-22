@@ -20,9 +20,9 @@ public interface Checksum {
     public static String STANDARD_INCHI_KEY = "standard inchi key";
     public static String STANDARD_INCHI_KEY_MI = "MI:1101";
     public static String ROGID = "rogid";
-    public static String ROGID_MI = "MI:xxxx1";
+    public static String ROGID_MI = "MI:1333";
     public static String RIGID = "rigid";
-    public static String RIGID_MI = "MI:xxxx2";
+    public static String RIGID_MI = "MI:1334";
     public static String IRIGID = "irigid";
     public static String IROGID = "irogid";
     public static String INCHI_KEY = "inchi key";
