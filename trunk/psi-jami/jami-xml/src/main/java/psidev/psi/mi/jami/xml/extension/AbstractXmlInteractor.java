@@ -509,8 +509,8 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
                         || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.INCHI_SHORT)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.ROGID)
-                        || AnnotationUtils.doesAnnotationHaveTopic(a, null, Checksum.RIGID)){
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.ROGID_MI, Checksum.ROGID)
+                        || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.RIGID_MI, Checksum.RIGID)){
                     XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXml25Utils.UNSPECIFIED);
                     checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
                     checksums.add(checksum);
