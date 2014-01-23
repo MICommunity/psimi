@@ -105,7 +105,8 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 	public boolean hasNext() {
 		try {
 			if (lineConsummed) {
-				nextLine = mReader.readLine(interactionStreamReader.readLine());
+                String line = interactionStreamReader.readLine();
+				nextLine = line != null ? mReader.readLine(line) : null;
 				if (nextLine == null) {
 					closeStreamReader();
 					interactionStreamReader = null;
