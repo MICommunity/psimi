@@ -456,10 +456,6 @@ public class Xml2Tab {
 //        return processedInteraction;
 //    }
 
-	public EntrySet convert(Collection<BinaryInteraction> interactions) {
-		// TODO impplement that !
-		throw new UnsupportedOperationException();
-	}
 
     public void close(){
         IdentifierGenerator.remove();

@@ -116,8 +116,8 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 			}
 		} catch (Exception e) {
 			closeStreamReader();
-			return false;
-		}
+            throw new RuntimeException("Error while reading the file.", e);
+        }
 
 		return (nextLine != null);
 	}
