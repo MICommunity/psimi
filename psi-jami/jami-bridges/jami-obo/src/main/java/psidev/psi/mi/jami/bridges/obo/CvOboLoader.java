@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import uk.ac.ebi.ols.model.interfaces.Term;
 
 /**
  * Basic implementation of Obo loader
@@ -14,18 +13,13 @@ import uk.ac.ebi.ols.model.interfaces.Term;
  * @since <pre>17/07/13</pre>
  */
 
-public class BasicOboLoader extends AbstractOboLoader<CvTerm> {
-    public BasicOboLoader(CvTerm database) {
+public class CvOboLoader extends AbstractOboLoader<CvTerm> {
+    public CvOboLoader(CvTerm database) {
         super(database);
     }
 
-    public BasicOboLoader(String databaseName) {
+    public CvOboLoader(String databaseName) {
         super(databaseName);
-    }
-
-    @Override
-    protected CvTerm createNewTerm(Term t) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

@@ -14,10 +14,10 @@ import psidev.psi.mi.jami.model.CvTerm;
 public class OboCvTermFetcher extends OboFetcherTemplate<CvTerm> implements CvTermFetcher<CvTerm>{
 
     public OboCvTermFetcher(CvTerm database, String filePath) {
-        super(database, new BasicOboLoader(database), filePath);
+        super(database, new CvOboLoader(database), filePath);
     }
 
     public OboCvTermFetcher(String databaseName, String filePath) {
-        super(databaseName, new BasicOboLoader(databaseName), filePath);
+        super(databaseName, new CvOboLoader(databaseName), filePath);
     }
 }
