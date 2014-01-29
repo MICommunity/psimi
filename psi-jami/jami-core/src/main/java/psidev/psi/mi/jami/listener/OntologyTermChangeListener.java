@@ -39,4 +39,13 @@ public interface OntologyTermChangeListener extends CvTermChangeListener {
      * @param removed
      */
     public void onRemovedChild(OntologyTerm o, OntologyTerm removed);
+
+    /**
+     * Listen to the event where the definition of a cv term has been changed.
+     * If oldDefinition is null, it means that a definition has been added to the cv term.
+     * If the definition of the cv term is null, it means that the definition of the cv term has been removed
+     * @param cv
+     * @param oldDef
+     */
+    public void onDefinitionUpdate(OntologyTerm cv, String oldDef);
 }
