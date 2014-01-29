@@ -55,6 +55,10 @@ public class BasicExperimentEnricher implements ExperimentEnricher{
         }
     }
 
+    public void enrich(Experiment objectToEnrich, Experiment objectSource) throws EnricherException {
+        enrich(objectToEnrich);
+    }
+
     /**
      * Sets the subEnricher for CvTerms. Can be null.
      * @param cvTermEnricher    The CvTerm enricher to be used

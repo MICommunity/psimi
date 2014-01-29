@@ -57,7 +57,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     protected abstract void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException;
 
     @Override
-    protected void enrich(T objectToEnrich, T fetchedObject) throws EnricherException {
+    public void enrich(T objectToEnrich, T fetchedObject) throws EnricherException {
         if (canEnrichInteractor(objectToEnrich, fetchedObject)){
             processMinimalEnrichment(objectToEnrich, fetchedObject);
 

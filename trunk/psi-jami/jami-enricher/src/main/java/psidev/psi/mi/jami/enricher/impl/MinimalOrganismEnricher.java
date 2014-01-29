@@ -86,7 +86,7 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
     }
 
     @Override
-    protected void enrich(Organism organismToEnrich, Organism organismFetched) throws EnricherException {
+    public void enrich(Organism organismToEnrich, Organism organismFetched) throws EnricherException {
 
         processTaxid(organismToEnrich, organismFetched);
 

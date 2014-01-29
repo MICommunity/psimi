@@ -41,9 +41,9 @@ public abstract class AbstractMIEnricher<T extends Object> implements MIEnricher
         }
     }
 
+    public abstract void enrich(T objectToEnrich, T fetchedObject) throws EnricherException ;
+
     protected abstract T fetchEnrichedVersionFrom(T objectToEnrich) throws EnricherException ;
 
     protected abstract void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException ;
-
-    protected abstract void enrich(T objectToEnrich, T fetchedObject) throws EnricherException ;
 }

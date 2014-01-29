@@ -161,7 +161,7 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
     }
 
     @Override
-    protected void enrich(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    public void enrich(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
         processCvTerm(cvTermToEnrich, cvTermFetched);
         if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "CvTerm enriched successfully.");
     }
