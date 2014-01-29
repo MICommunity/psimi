@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.bridges.ols.utils.OlsUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -168,7 +169,7 @@ public class LazyCvTerm extends DefaultCvTerm {
     }
 
     protected void initialiseDefinition(String description) {
-        super.getAnnotations().add(AnnotationUtils.createComment(description));
+        super.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("definition"), description));
     }
 
     protected boolean hasLoadedMetadata() {
