@@ -101,7 +101,7 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
     }
 
     @Override
-    protected CvTerm fetchEnrichedVersionFrom(CvTerm cvTermToEnrich) throws EnricherException {
+    public CvTerm find(CvTerm cvTermToEnrich) throws EnricherException {
         CvTerm cvTermFetched = null;
 
         if(cvTermToEnrich.getMIIdentifier() != null){

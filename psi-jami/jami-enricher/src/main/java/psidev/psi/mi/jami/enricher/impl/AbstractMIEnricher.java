@@ -20,7 +20,7 @@ public abstract class AbstractMIEnricher<T extends Object> implements MIEnricher
             throw new IllegalArgumentException("Cannot enrich a null object.");
 
         // fetch the object
-        T enrichedObject = fetchEnrichedVersionFrom(objectToEnrich);
+        T enrichedObject = find(objectToEnrich);
 
         // if the enriched object is fetched, it exists and enrichment can begin
         if (enrichedObject != null){
@@ -43,7 +43,7 @@ public abstract class AbstractMIEnricher<T extends Object> implements MIEnricher
 
     public abstract void enrich(T objectToEnrich, T fetchedObject) throws EnricherException ;
 
-    protected abstract T fetchEnrichedVersionFrom(T objectToEnrich) throws EnricherException ;
+    public abstract T find(T objectToEnrich) throws EnricherException ;
 
     protected abstract void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException ;
 }

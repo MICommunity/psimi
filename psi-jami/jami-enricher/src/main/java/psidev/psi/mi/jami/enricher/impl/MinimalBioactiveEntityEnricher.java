@@ -78,7 +78,7 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
     }
 
     @Override
-    protected BioactiveEntity fetchEnrichedVersionFrom(BioactiveEntity objectToEnrich) throws EnricherException {
+    public BioactiveEntity find(BioactiveEntity objectToEnrich) throws EnricherException {
         BioactiveEntity fetchedBioactiveEntity = null;
 
         if(objectToEnrich.getChebi() != null){

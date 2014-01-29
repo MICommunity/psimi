@@ -116,7 +116,7 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
     }
 
     @Override
-    protected Protein fetchEnrichedVersionFrom(Protein proteinToEnrich) throws EnricherException {
+    public Protein find(Protein proteinToEnrich) throws EnricherException {
         // If there is no uniprotID - try and remap.
         if(proteinToEnrich.getUniprotkb() == null) {
             if( log.isTraceEnabled() ) log.trace("Remapping protein without uniprotkb");

@@ -132,7 +132,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
     }
 
     @Override
-    protected Publication fetchEnrichedVersionFrom(Publication publicationToEnrich) throws EnricherException {
+    public Publication find(Publication publicationToEnrich) throws EnricherException {
         Publication publicationFetched = null;
 
         if(publicationToEnrich.getPubmedId() != null){

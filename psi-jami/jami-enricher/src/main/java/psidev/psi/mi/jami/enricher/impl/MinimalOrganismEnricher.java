@@ -59,7 +59,7 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
     }
 
     @Override
-    protected Organism fetchEnrichedVersionFrom(Organism objectToEnrich) throws EnricherException {
+    public Organism find(Organism objectToEnrich) throws EnricherException {
         Organism organismFetched = null;
         try {
             organismFetched = getOrganismFetcher().fetchByTaxID(objectToEnrich.getTaxId());

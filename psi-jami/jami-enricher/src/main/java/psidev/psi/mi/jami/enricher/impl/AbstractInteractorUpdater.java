@@ -107,8 +107,8 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected T fetchEnrichedVersionFrom(T objectToEnrich) throws EnricherException {
-        return interactorEnricher.fetchEnrichedVersionFrom(objectToEnrich);
+    public T find(T objectToEnrich) throws EnricherException {
+        return interactorEnricher.find(objectToEnrich);
     }
 
     @Override
