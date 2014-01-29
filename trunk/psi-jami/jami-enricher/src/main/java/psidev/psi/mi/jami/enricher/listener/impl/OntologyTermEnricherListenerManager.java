@@ -64,4 +64,12 @@ public class OntologyTermEnricherListenerManager
             }
         }
     }
+
+    public void onDefinitionUpdate(OntologyTerm cv, String oldDef) {
+        for(CvTermEnricherListener listener : getListenersList()){
+            if (listener instanceof OntologyTermEnricherListener){
+                ((OntologyTermEnricherListener)listener).onDefinitionUpdate(cv, oldDef);
+            }
+        }
+    }
 }
