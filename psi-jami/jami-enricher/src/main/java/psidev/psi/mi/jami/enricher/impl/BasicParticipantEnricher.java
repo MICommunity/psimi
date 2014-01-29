@@ -34,6 +34,10 @@ public class BasicParticipantEnricher<P extends Participant , F extends Feature>
         }
     }
 
+    public void enrich(P objectToEnrich, P objectSource) throws EnricherException {
+        enrich(objectToEnrich);
+    }
+
     public void enrich(P participantToEnrich) throws EnricherException{
 
         if(participantToEnrich == null) throw new IllegalArgumentException("Attempted to enrich a null participant.");

@@ -57,6 +57,10 @@ public class MinimalInteractionEnricher<I extends Interaction, P extends Partici
         }
     }
 
+    public void enrich(I objectToEnrich, I objectSource) throws EnricherException {
+        enrich(objectToEnrich);
+    }
+
     /**
      * The current sub enricher for CvTerms.
      * @param cvTermEnricher The enricher for cvTerms. Can be null.

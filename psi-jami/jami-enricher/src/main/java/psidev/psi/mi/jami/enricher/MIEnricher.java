@@ -27,4 +27,11 @@ public interface MIEnricher<T extends Object> {
      * @throws EnricherException if it cannot enrich the object because cannot connect to a webservice, etc.
      */
     public void enrich(Collection<T> objects) throws EnricherException;
+
+    /**
+     * Enrich an object given a source object
+     * @param objectToEnrich object to enrich
+     * @throws EnricherException if it cannot enrich the object because cannot connect to a webservice, etc.
+     */
+    public void enrich(T objectToEnrich, T objectSource) throws EnricherException;
 }

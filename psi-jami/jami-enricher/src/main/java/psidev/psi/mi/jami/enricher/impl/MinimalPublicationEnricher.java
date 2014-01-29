@@ -156,7 +156,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
     }
 
     @Override
-    protected void enrich(Publication publicationToEnrich, Publication publicationFetched) throws EnricherException {
+    public void enrich(Publication publicationToEnrich, Publication publicationFetched) throws EnricherException {
         processPublication(publicationToEnrich, publicationFetched);
 
         if( getPublicationEnricherListener() != null)

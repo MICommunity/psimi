@@ -61,6 +61,10 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         }
     }
 
+    public void enrich(F objectToEnrich, F objectSource) throws EnricherException {
+        enrich(objectToEnrich);
+    }
+
     public void setFeaturesWithRangesToUpdate(Collection<F> features) {
         log.trace("Setting the features");
         if (features == null){
