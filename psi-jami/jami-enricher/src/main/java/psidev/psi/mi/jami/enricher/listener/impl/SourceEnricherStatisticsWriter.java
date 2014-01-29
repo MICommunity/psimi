@@ -1,8 +1,9 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Source;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,17 +16,17 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class OntologyTermEnricherStatisticsWriter
+public class SourceEnricherStatisticsWriter
         extends CvTermEnricherStatisticsWriter
-        implements OntologyTermEnricherListener {
+        implements SourceEnricherListener {
 
-    private static final String FILE_NAME = "ontology_term";
+    private static final String FILE_NAME = "source";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public OntologyTermEnricherStatisticsWriter() throws IOException {
+    public SourceEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
@@ -34,7 +35,7 @@ public class OntologyTermEnricherStatisticsWriter
      * @param fileName          The seed to base the names of the files on.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public OntologyTermEnricherStatisticsWriter(String fileName) throws IOException {
+    public SourceEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -44,7 +45,7 @@ public class OntologyTermEnricherStatisticsWriter
      * @param failureFileName   The exact name for the file to log failed enrichments in
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public OntologyTermEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public SourceEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -54,34 +55,25 @@ public class OntologyTermEnricherStatisticsWriter
      * @param failureFile       The file to log failed enrichments in.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public OntologyTermEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public SourceEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
     }
 
 
     // ================================================================
 
-    public void onAddedParent(OntologyTerm o, OntologyTerm added) {
-        checkObject(o);
-        incrementAdditionCount();
+
+    public void onUrlUpdate(Source cv, String oldUrl) {
+        checkObject(cv);
+        incrementUpdateCount();
     }
 
-    public void onRemovedParent(OntologyTerm o, OntologyTerm removed) {
-        checkObject(o);
-        incrementRemovedCount();
+    public void onPostalAddressUpdate(Source cv, String oldPostalAddress) {
+        checkObject(cv);
+        incrementUpdateCount();
     }
 
-    public void onAddedChild(OntologyTerm o, OntologyTerm added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedChild(OntologyTerm o, OntologyTerm removed) {
-        checkObject(o);
-        incrementRemovedCount();
-    }
-
-    public void onDefinitionUpdate(OntologyTerm cv, String oldDef) {
+    public void onPublicationUpdate(Source cv, Publication oldPublication) {
         checkObject(cv);
         incrementUpdateCount();
     }

@@ -2,8 +2,10 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
-import psidev.psi.mi.jami.model.OntologyTerm;
+import psidev.psi.mi.jami.listener.impl.OntologyTermChangeLogger;
+import psidev.psi.mi.jami.model.CvTerm;
 
 /**
  * A logging listener. It will display a message when each event is fired.
@@ -11,23 +13,15 @@ import psidev.psi.mi.jami.model.OntologyTerm;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class OntologyTermEnricherLogger extends CvTermEnricherLogger implements OntologyTermEnricherListener {
+public class OntologyTermEnricherLogger extends OntologyTermChangeLogger implements OntologyTermEnricherListener {
 
     private static final Logger log = LoggerFactory.getLogger(OntologyTermEnricherLogger.class.getName());
 
-    public void onAddedParent(OntologyTerm o, OntologyTerm added) {
-        log.info(o.toString()+" has parent added "+added.toString());
+    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
+        log.info(cvTerm.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
 
-    public void onRemovedParent(OntologyTerm o, OntologyTerm removed) {
-        log.info(o.toString()+" has parent removed "+removed.toString());
-    }
-
-    public void onAddedChild(OntologyTerm o, OntologyTerm added) {
-        log.info(o.toString()+" has child added "+added.toString());
-    }
-
-    public void onRemovedChild(OntologyTerm o, OntologyTerm removed) {
-        log.info(o.toString()+" has child removed "+removed.toString());
+    public void onEnrichmentError(CvTerm object, String message, Exception e) {
+        log.error(object.toString()+" enrichment error, message: "+message, e);
     }
 }

@@ -31,4 +31,16 @@ public class MinimalOntologyTermUpdater extends MinimalOntologyTermEnricher{
     protected void processParents(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
         mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getChildren(), cvTermFetched.getChildren(), true, false);
     }
+
+    @Override
+    protected void processDefinition(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) {
+        if ((cvTermFetched.getDefinition() != null && !cvTermFetched.getDefinition().equalsIgnoreCase(cvTermToEnrich.getDefinition())
+                || (cvTermFetched.getDefinition() == null && cvTermFetched.getDefinition() != null))){
+            String oldDef = cvTermToEnrich.getDefinition();
+            cvTermToEnrich.setDefinition(cvTermFetched.getDefinition());
+            if (getOntologyTermEnricherListener() != null){
+                getOntologyTermEnricherListener().onDefinitionUpdate(cvTermToEnrich, oldDef);
+            }
+        }
+    }
 }
