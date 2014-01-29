@@ -47,7 +47,7 @@ public class BasicInteractorEnricher extends AbstractInteractorEnricher<Interact
     }
 
     @Override
-    protected Interactor fetchEnrichedVersionFrom(Interactor objectToEnrich) throws EnricherException {
+    public Interactor find(Interactor objectToEnrich) throws EnricherException {
         return null;
     }
 

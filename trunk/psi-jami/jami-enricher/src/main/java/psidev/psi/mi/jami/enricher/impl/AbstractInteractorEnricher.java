@@ -51,7 +51,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     public abstract void setListener(InteractorEnricherListener<T> listener);
 
     @Override
-    protected abstract T fetchEnrichedVersionFrom(T objectToEnrich) throws EnricherException;
+    public abstract T find(T objectToEnrich) throws EnricherException;
 
     @Override
     protected abstract void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException;

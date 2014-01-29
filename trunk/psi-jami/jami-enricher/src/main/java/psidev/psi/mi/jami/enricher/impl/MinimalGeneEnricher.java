@@ -98,7 +98,7 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
     }
 
     @Override
-    protected Gene fetchEnrichedVersionFrom(Gene geneToEnrich) throws EnricherException {
+    public Gene find(Gene geneToEnrich) throws EnricherException {
         int taxid = -3;
         if(geneToEnrich.getOrganism() != null) {
             taxid = geneToEnrich.getOrganism().getTaxId();
