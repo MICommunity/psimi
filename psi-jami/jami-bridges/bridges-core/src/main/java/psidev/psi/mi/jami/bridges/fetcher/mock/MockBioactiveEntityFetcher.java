@@ -14,17 +14,17 @@ import java.util.Collection;
  * @since 09/08/13
  */
 public class MockBioactiveEntityFetcher
-        extends AbstractMockFetcher<BioactiveEntity>
+        extends AbstractMockFetcher<Collection<BioactiveEntity>>
         implements BioactiveEntityFetcher{
 
-    public BioactiveEntity fetchByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifier(String identifier) throws BridgeFailedException {
         return super.getEntry(identifier);
     }
 
     public Collection<BioactiveEntity> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        Collection<BioactiveEntity> resultsList= new ArrayList<BioactiveEntity>(identifiers.size());
+        Collection<BioactiveEntity> resultsList= new ArrayList<BioactiveEntity>();
         for(String identifier : identifiers){
-            resultsList.add( getEntry(identifier) );
+            resultsList.addAll(getEntry(identifier));
         }
         return resultsList;
     }

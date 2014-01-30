@@ -11,16 +11,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public interface GeneFetcher {
-
-    /**
-     *
-     * @param identifier    The identifier of the gene
-     * @return              The genes matching the search terms.
-     * @throws BridgeFailedException
-     */
-    public Collection<Gene> fetchByIdentifier(String identifier)
-            throws BridgeFailedException;
+public interface GeneFetcher extends InteractorFetcher<Gene>{
 
     /**
      *
@@ -32,15 +23,6 @@ public interface GeneFetcher {
     public Collection<Gene> fetchByIdentifier(String identifier, int taxID)
             throws BridgeFailedException;
 
-
-    /**
-     *
-     * @param identifiers    The identifiers of the gene
-     * @return              The genes matching the search terms.
-     * @throws BridgeFailedException
-     */
-    public Collection<Gene> fetchByIdentifiers(Collection<String> identifiers)
-            throws BridgeFailedException;
 
     /**
      *
