@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Interactor;
 
@@ -12,6 +13,12 @@ import psidev.psi.mi.jami.model.Interactor;
  */
 
 public interface InteractorEnricher<T extends Interactor> extends MIEnricher<T>{
+
+    /**
+     * Returns the current fetcher which is being used to collect information about entities for enrichment.
+     * @return  The current fetcher.
+     */
+    public InteractorFetcher<T> getInteractorFetcher();
 
     /**
      * Sets the listener to use when the bioactiveEntity has been changed

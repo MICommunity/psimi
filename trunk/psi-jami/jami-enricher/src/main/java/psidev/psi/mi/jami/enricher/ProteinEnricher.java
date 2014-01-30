@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
-import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
@@ -16,31 +14,6 @@ import psidev.psi.mi.jami.model.Protein;
  * @since  16/05/13
  */
 public interface ProteinEnricher extends InteractorEnricher<Protein>{
-
-    /**
-     * Sets the protein fetcher to be used for enrichment.
-     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
-     * @param fetcher   The fetcher to be used to gather data for enrichment
-     */
-    public void setProteinFetcher(ProteinFetcher fetcher);
-
-    /**
-     * The fetcher to be used for used to collect data.
-     * @return  The fetcher which is currently being used for fetching.
-     */
-    public ProteinFetcher getProteinFetcher();
-
-    /**
-     * The proteinEnricherListener to be used.
-     * It will be fired at all points where a change is made to the protein
-     * @param listener  The listener to use. Can be null.
-     */
-    public void setProteinEnricherListener(ProteinEnricherListener listener);
-    /**
-     * The listener which is fired when changes are made to the proteinToEnrich.
-     * @return  The current listener. May be null.
-     */
-    public ProteinEnricherListener getProteinEnricherListener();
 
     /**
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.

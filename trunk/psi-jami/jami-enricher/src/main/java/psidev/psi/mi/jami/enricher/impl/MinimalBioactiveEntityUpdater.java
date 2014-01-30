@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
-import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
@@ -24,17 +23,5 @@ public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<Bio
 
     protected MinimalBioactiveEntityUpdater(AbstractInteractorEnricher<BioactiveEntity> interactorEnricher) {
         super(interactorEnricher);
-    }
-
-    public BioactiveEntityFetcher getBioactiveEntityFetcher() {
-        return ((BioactiveEntityEnricher)getInteractorEnricher()).getBioactiveEntityFetcher();
-    }
-
-    public void setBioactiveEntityEnricherListener(BioactiveEntityEnricherListener listener) {
-        ((BioactiveEntityEnricher)getInteractorEnricher()).setBioactiveEntityEnricherListener(listener);
-    }
-
-    public BioactiveEntityEnricherListener getBioactiveEntityEnricherListener() {
-        return ((BioactiveEntityEnricher)getInteractorEnricher()).getBioactiveEntityEnricherListener();
     }
 }

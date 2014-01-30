@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since <pre>01/10/13</pre>
  */
 
-public class BasicInteractorEnricher extends AbstractInteractorEnricher<Interactor>{
+public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Interactor>{
 
     private InteractorEnricherListener listener;
 

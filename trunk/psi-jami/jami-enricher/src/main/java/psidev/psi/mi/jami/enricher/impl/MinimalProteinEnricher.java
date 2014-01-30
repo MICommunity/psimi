@@ -9,8 +9,6 @@ import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -29,8 +27,6 @@ import java.util.Collections;
  */
 public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> implements ProteinEnricher {
 
-    private ProteinFetcher fetcher;
-    private ProteinEnricherListener listener = null;
     private ProteinMapper proteinMapper = null;
     private static final Logger log = LoggerFactory.getLogger(MinimalProteinEnricher.class.getName());
 
@@ -45,41 +41,15 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
         if (fetcher == null){
             throw new IllegalArgumentException("The fetcher is required and cannot be null");
         }
-        this.fetcher = fetcher;
+        super.setFetcher(fetcher);
     }
-
-    /**
-     * Sets the protein fetcher to be used for enrichment.
-     * If the fetcher is null, an illegal state exception will be thrown at the the next enrichment.
-     * @param fetcher   The fetcher to be used to gather data for enrichment
-     */
-    public void setProteinFetcher(ProteinFetcher fetcher) {
-        this.fetcher = fetcher;
-    }
-
 
     /**
      * The fetcher to be used for used to collect data.
      * @return  The fetcher which is currently being used for fetching.
      */
-    public ProteinFetcher getProteinFetcher() {
-        return fetcher;
-    }
-
-    /**
-     * The proteinEnricherListener to be used.
-     * It will be fired at all points where a change is made to the protein
-     * @param listener  The listener to use. Can be null.
-     */
-    public void setProteinEnricherListener(ProteinEnricherListener listener) {
-        this.listener = listener;
-    }
-    /**
-     * The listener which is fired when changes are made to the proteinToEnrich.
-     * @return  The current listener. May be null.
-     */
-    public ProteinEnricherListener getProteinEnricherListener() {
-        return listener;
+    public ProteinFetcher getInteractorFetcher() {
+        return (ProteinFetcher) super.getInteractorFetcher();
     }
 
     /**
@@ -95,24 +65,6 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
      */
     public ProteinMapper getProteinMapper(){
         return proteinMapper;
-    }
-
-    @Override
-    public InteractorEnricherListener<Protein> getListener() {
-        return listener;
-    }
-
-    @Override
-    public void setListener(InteractorEnricherListener<Protein> listener) {
-        if (listener instanceof ProteinEnricherListener){
-            this.listener = (ProteinEnricherListener)listener;
-        }
-        else if (listener == null){
-            this.listener = null;
-        }
-        else{
-            throw new IllegalArgumentException("A ProteinEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
-        }
     }
 
     @Override
@@ -152,8 +104,8 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
             // Many proteins, try and choose
             if(proteinToEnrich.getOrganism() == null
                     || proteinToEnrich.getOrganism().getTaxId() == -3){
-                if(getProteinEnricherListener() != null)
-                    getProteinEnricherListener().onEnrichmentError(proteinToEnrich,  "The protein does not have a valid organism and could match "+proteinsEnriched.size()+" uniprot entries.", new EnricherException("Cannot enrich a demerged protein"));
+                if(getListener() != null)
+                    getListener().onEnrichmentError(proteinToEnrich,  "The protein does not have a valid organism and could match "+proteinsEnriched.size()+" uniprot entries.", new EnricherException("Cannot enrich a demerged protein"));
                 return null;
             }
 
@@ -164,8 +116,8 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
                     if(proteinFetched == null) proteinFetched = protein;
                     else{
                         // Multiple proteins share this organism - impossible to choose
-                        if(getProteinEnricherListener() != null)
-                            getProteinEnricherListener().onEnrichmentError(proteinToEnrich,  "The protein could match "+proteinsEnriched.size()+" uniprot entries and several have the same organism taxid.", new EnricherException("Cannot enrich a demerged protein"));
+                        if(getListener() != null)
+                            getListener().onEnrichmentError(proteinToEnrich,  "The protein could match "+proteinsEnriched.size()+" uniprot entries and several have the same organism taxid.", new EnricherException("Cannot enrich a demerged protein"));
                         return null;
                     }
                 }
@@ -173,8 +125,8 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
             if(proteinFetched == null){
                 // No proteins share this organism - impossible to choose
-                if(getProteinEnricherListener() != null)
-                    getProteinEnricherListener().onEnrichmentError(proteinToEnrich,  "The protein could match "+proteinsEnriched.size()+" uniprot entries and non of them have the same organism taxid.", new EnricherException("Cannot enrich a demerged protein"));
+                if(getListener() != null)
+                    getListener().onEnrichmentError(proteinToEnrich,  "The protein could match "+proteinsEnriched.size()+" uniprot entries and non of them have the same organism taxid.", new EnricherException("Cannot enrich a demerged protein"));
                 return null;
             }
 
@@ -184,8 +136,8 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
     @Override
     protected void onEnrichedVersionNotFound(Protein objectToEnrich) throws EnricherException {
-        if (getProteinEnricherListener() != null){
-            getProteinEnricherListener().onEnrichmentComplete(
+        if (getListener() != null){
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED ,
                     "Could not fetch a protein with the provided identifier/sequence.");
         }
@@ -198,15 +150,15 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
     @Override
     protected void onCompletedEnrichment(Protein objectToEnrich) {
-        if(getProteinEnricherListener() != null)
-            getProteinEnricherListener().onEnrichmentComplete(
+        if(getListener() != null)
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.SUCCESS , "The protein has been successfully enriched.");
     }
 
     @Override
     protected void onInteractorCheckFailure(Protein objectToEnrich, Protein fetchedObject) {
-        if(getProteinEnricherListener() != null)
-            getProteinEnricherListener().onEnrichmentComplete(
+        if(getListener() != null)
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED , "Cannot enrich the protein because the interactor type is not a protein/peptide type and/or there is a conflict with the organism.");
     }
 
@@ -232,12 +184,12 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
     protected void processDeadUniprotIdentity(Protein proteinToEnrich, Xref uniprotIdentity) {
         proteinToEnrich.getIdentifiers().remove(uniprotIdentity);
-        if(getProteinEnricherListener() != null){
-            getProteinEnricherListener().onRemovedIdentifier(proteinToEnrich, uniprotIdentity);
+        if(getListener() != null){
+            getListener().onRemovedIdentifier(proteinToEnrich, uniprotIdentity);
         }
         proteinToEnrich.getXrefs().add(uniprotIdentity);
-        if(getProteinEnricherListener() != null){
-            getProteinEnricherListener().onAddedXref(proteinToEnrich, uniprotIdentity);
+        if(getListener() != null){
+            getListener().onAddedXref(proteinToEnrich, uniprotIdentity);
         }
     }
 
@@ -302,8 +254,8 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
             if (!hasCaution){
                 Annotation annot = AnnotationUtils.createCaution(CAUTION_MESSAGE);
                 proteinToEnrich.getAnnotations().add(annot);
-                if(getProteinEnricherListener() != null){
-                    getProteinEnricherListener().onAddedAnnotation(proteinToEnrich, annot);
+                if(getListener() != null){
+                    getListener().onAddedAnnotation(proteinToEnrich, annot);
                 }
             }
 
@@ -313,12 +265,12 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
     private Collection<Protein> fetchProteins(String uniprotkb) throws EnricherException {
         try {
-            return fetcher.fetchByIdentifier(uniprotkb);
+            return getInteractorFetcher().fetchByIdentifier(uniprotkb);
         } catch (BridgeFailedException e) {
             int index = 0;
             while(index < getRetryCount()){
                 try {
-                    return fetcher.fetchByIdentifier(uniprotkb);
+                    return getInteractorFetcher().fetchByIdentifier(uniprotkb);
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
                 }

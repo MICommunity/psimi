@@ -7,17 +7,16 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.FullBioactiveEntityUpdater;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 
+import java.util.Collections;
+
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,7 +63,7 @@ public class FullBioactiveEntityUpdaterTest {
         int timesToTry = -1;
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
-        fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(persistentBioactiveEntity));
         enricher = new FullBioactiveEntityUpdater(fetcher);
 
         enricher.enrich(persistentBioactiveEntity);
@@ -90,7 +89,7 @@ public class FullBioactiveEntityUpdaterTest {
                 timesToTry < 5);
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
-        fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(persistentBioactiveEntity));
         enricher = new FullBioactiveEntityUpdater(fetcher);
 
         enricher.enrich(persistentBioactiveEntity);
@@ -132,7 +131,7 @@ public class FullBioactiveEntityUpdaterTest {
         persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME , TEST_FULLNAME);
         fetcher.clearEntries();
 
-        enricher.setBioactiveEntityEnricherListener( new BioactiveEntityEnricherListenerManager(
+        enricher.setListener( new BioactiveEntityEnricherListenerManager(
                 new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {

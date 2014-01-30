@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 
 
@@ -14,7 +15,6 @@ import psidev.psi.mi.jami.model.Protein;
  * @since 20/05/13
  */
 public class FullProteinUpdater extends MinimalProteinUpdater{
-
 
     public FullProteinUpdater(ProteinFetcher proteinFetcher) {
         super(proteinFetcher);
@@ -33,8 +33,8 @@ public class FullProteinUpdater extends MinimalProteinUpdater{
              || (fetched.getSequence() == null && proteinToEnrich.getSequence() != null))){
             String oldSeq = proteinToEnrich.getSequence();
             proteinToEnrich.setSequence(fetched.getSequence());
-            if (getProteinEnricherListener() != null){
-                getProteinEnricherListener().onSequenceUpdate(proteinToEnrich, oldSeq);
+            if (getListener() instanceof ProteinEnricherListener){
+                ((ProteinEnricherListener)getListener()).onSequenceUpdate(proteinToEnrich, oldSeq);
             }
         }
     }

@@ -3,13 +3,10 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.GeneEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -25,30 +22,13 @@ import java.util.Collection;
  */
 public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implements GeneEnricher {
 
-    private GeneFetcher fetcher = null;
-    private GeneEnricherListener listener = null;
-
-    private CvTermEnricher cvTermEnricher = null;
-    private OrganismEnricher organismEnricher = null;
     private boolean hasMockOrganismFetcher = false;
 
     public MinimalGeneEnricher(GeneFetcher fetcher) {
         if (fetcher == null){
             throw new IllegalArgumentException("The fetcher is required and cannot be null");
         }
-        this.fetcher = fetcher;
-    }
-
-    public GeneFetcher getGeneFetcher() {
-        return fetcher;
-    }
-
-    public void setGeneEnricherListener(GeneEnricherListener listener) {
-        this.listener = listener;
-    }
-
-    public GeneEnricherListener getGeneEnricherListener() {
-        return listener;
+        super.setFetcher(fetcher);
     }
 
     /**
@@ -56,44 +36,10 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
      * @param organismEnricher  The organism enricher to be used.
      */
     public void setOrganismEnricher(OrganismEnricher organismEnricher) {
-        this.organismEnricher = organismEnricher;
+        super.setOrganismEnricher(organismEnricher);
         // special treatment for Mock organism fetcher
-        if (this.organismEnricher.getOrganismFetcher() instanceof MockOrganismFetcher){
+        if (getOrganismEnricher().getOrganismFetcher() instanceof MockOrganismFetcher){
             hasMockOrganismFetcher = true;
-        }
-    }
-    /**
-     * The Enricher to use on the protein's organism.
-     * @return  The current organism enricher.
-     */
-    public OrganismEnricher getOrganismEnricher(){
-        return organismEnricher;
-    }
-
-
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
-        this.cvTermEnricher = cvTermEnricher;
-    }
-
-    public CvTermEnricher getCvTermEnricher(){
-        return cvTermEnricher;
-    }
-
-    @Override
-    public InteractorEnricherListener<Gene> getListener() {
-        return this.listener;
-    }
-
-    @Override
-    public void setListener(InteractorEnricherListener<Gene> listener) {
-        if (listener instanceof GeneEnricherListener){
-            this.listener = (GeneEnricherListener)listener;
-        }
-        else if (listener == null){
-            this.listener = null;
-        }
-        else{
-            throw new IllegalArgumentException("A GeneEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
         }
     }
 
@@ -131,8 +77,13 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
     }
 
     @Override
+    public GeneFetcher getInteractorFetcher() {
+        return (GeneFetcher)super.getInteractorFetcher();
+    }
+
+    @Override
     protected void onEnrichedVersionNotFound(Gene objectToEnrich) throws EnricherException {
-        getGeneEnricherListener().onEnrichmentComplete(
+        getListener().onEnrichmentComplete(
                 objectToEnrich , EnrichmentStatus.FAILED ,
                 "Could not fetch a gene with the provided identifier.");
     }
@@ -144,15 +95,15 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
 
     @Override
     protected void onCompletedEnrichment(Gene objectToEnrich) {
-        if(getGeneEnricherListener() != null)
-            getGeneEnricherListener().onEnrichmentComplete(
+        if(getListener() != null)
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.SUCCESS , "The gene has been successfully enriched.");
     }
 
     @Override
     protected void onInteractorCheckFailure(Gene objectToEnrich, Gene fetchedObject) {
-        if(getGeneEnricherListener() != null)
-            getGeneEnricherListener().onEnrichmentComplete(
+        if(getListener() != null)
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED , "Cannot enrich the gene because the interactor type is not a gene type or we have a mismatch between the gene taxid to enrich and the fetched gene taxid.");
     }
 
@@ -177,13 +128,13 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
     private Gene fetchGeneByIdentifier(Gene gene, String identifier , int taxid) throws EnricherException {
         Collection<Gene> results;
         try {
-            results = getGeneFetcher().fetchByIdentifier(identifier, taxid);
+            results = getInteractorFetcher().fetchByIdentifier(identifier, taxid);
             if(results.size() == 1){
                 return results.iterator().next();
             }
             else if (!results.isEmpty()){
-                if (getGeneEnricherListener() != null){
-                    getGeneEnricherListener().onEnrichmentError(gene, "The identifier " + identifier + " and taxid " + taxid + " can match " +
+                if (getListener() != null){
+                    getListener().onEnrichmentError(gene, "The identifier " + identifier + " and taxid " + taxid + " can match " +
                     results.size() + " genes and it is not possible to enrich with multiple entries", new EnricherException("Multiple gene entries found for " + identifier + " and taxid " + taxid));
                 }
                 return null;
@@ -195,13 +146,13 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
             int index = 0;
             while(index < getRetryCount()){
                 try {
-                    results = getGeneFetcher().fetchByIdentifier(identifier, taxid);
+                    results = getInteractorFetcher().fetchByIdentifier(identifier, taxid);
                     if(results.size() == 1){
                         return results.iterator().next();
                     }
                     else if (!results.isEmpty()){
-                        if (getGeneEnricherListener() != null){
-                            getGeneEnricherListener().onEnrichmentError(gene, "The identifier " + identifier + " and taxid " + taxid + " can match " +
+                        if (getListener() != null){
+                            getListener().onEnrichmentError(gene, "The identifier " + identifier + " and taxid " + taxid + " can match " +
                                     results.size() + " genes and it is not possible to enrich with multiple entries", new EnricherException("Multiple gene entries found for " + identifier + " and taxid " + taxid));
                         }
                         return null;

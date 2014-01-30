@@ -76,8 +76,8 @@ public class MinimalFeatureEnricherTest {
         participantEnricher = new BasicParticipantEnricher();
         participantEnricher.setFeatureEnricher(featureEnricher);
         participantEnricher.setProteinEnricher(proteinEnricher);
-        proteinEnricher.setProteinEnricherListener((MinimalFeatureEnricher)featureEnricher);
-        assertTrue(proteinEnricher.getProteinEnricherListener() == featureEnricher);
+        proteinEnricher.setListener((MinimalFeatureEnricher)featureEnricher);
+        assertTrue(proteinEnricher.getListener() == featureEnricher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);

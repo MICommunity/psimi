@@ -15,6 +15,8 @@ import psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 
+import java.util.Collections;
+
 import static junit.framework.Assert.*;
 
 /**
@@ -63,7 +65,7 @@ public class MinimalBioactiveEntityUpdaterTest {
         int timesToTry = -1;
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
-        fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(persistentBioactiveEntity));
         enricher = new MinimalBioactiveEntityUpdater(fetcher);
 
         enricher.enrich(persistentBioactiveEntity);
@@ -89,7 +91,7 @@ public class MinimalBioactiveEntityUpdaterTest {
                 timesToTry < 5);
 
         FailingBioactiveEntityFetcher fetcher = new FailingBioactiveEntityFetcher(timesToTry);
-        fetcher.addEntry(CHEBI_ID , persistentBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(persistentBioactiveEntity));
         enricher = new MinimalBioactiveEntityUpdater(fetcher);
 
         enricher.enrich(persistentBioactiveEntity);
@@ -132,7 +134,7 @@ public class MinimalBioactiveEntityUpdaterTest {
         persistentBioactiveEntity = new DefaultBioactiveEntity(TEST_SHORTNAME , TEST_FULLNAME);
         fetcher.clearEntries();
 
-        enricher.setBioactiveEntityEnricherListener( new BioactiveEntityEnricherListenerManager(
+        enricher.setListener( new BioactiveEntityEnricherListenerManager(
                 new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -190,9 +192,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_STRING);
         mockBioactiveEntity.setChebi(CHEBI_ID);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -247,9 +249,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         BioactiveEntity mockBioactiveEntity = new DefaultBioactiveEntity(TEST_STRING);
         mockBioactiveEntity.setChebi(CHEBI_ID);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -306,9 +308,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setFullName(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -365,9 +367,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setFullName(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -424,9 +426,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setFullName(null);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -479,9 +481,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setFullName(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -537,9 +539,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchiKey(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -596,9 +598,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchiKey(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -655,9 +657,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchiKey(null);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -710,9 +712,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchiKey(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -767,9 +769,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchi(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -826,9 +828,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchi(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -885,9 +887,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchi(null);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -940,9 +942,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setStandardInchi(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -998,9 +1000,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setSmile(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -1057,9 +1059,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setSmile(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -1116,9 +1118,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setSmile(null);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {
@@ -1171,9 +1173,9 @@ public class MinimalBioactiveEntityUpdaterTest {
         mockBioactiveEntity.setChebi(CHEBI_ID);
         mockBioactiveEntity.setSmile(TEST_STRING);
 
-        fetcher.addEntry(CHEBI_ID , mockBioactiveEntity);
+        fetcher.addEntry(CHEBI_ID , Collections.singleton(mockBioactiveEntity));
 
-        enricher.setBioactiveEntityEnricherListener(new BioactiveEntityEnricherListenerManager(
+        enricher.setListener(new BioactiveEntityEnricherListenerManager(
                 // new BioactiveEntityEnricherLogger() ,
                 new BioactiveEntityEnricherListener() {
                     public void onEnrichmentComplete(BioactiveEntity object, EnrichmentStatus status, String message) {

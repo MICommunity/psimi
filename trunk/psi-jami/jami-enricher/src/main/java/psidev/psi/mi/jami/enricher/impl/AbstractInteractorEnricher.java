@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractorEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
@@ -21,6 +22,8 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     private CvTermEnricher cvTermEnricher = null;
     private OrganismEnricher organismEnricher = null;
     private int retryCount = 5;
+    private InteractorFetcher<T> fetcher;
+    private InteractorEnricherListener<T> listener = null;
 
     public int getRetryCount() {
         return retryCount;
@@ -46,9 +49,13 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         return cvTermEnricher;
     }
 
-    public abstract InteractorEnricherListener<T> getListener();
+    public InteractorEnricherListener<T> getListener(){
+        return this.listener;
+    }
 
-    public abstract void setListener(InteractorEnricherListener<T> listener);
+    public void setListener(InteractorEnricherListener<T> listener){
+        this.listener = listener;
+    }
 
     @Override
     public abstract T find(T objectToEnrich) throws EnricherException;
@@ -78,6 +85,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         else{
             onInteractorCheckFailure(objectToEnrich, fetchedObject);
         }
+    }
+
+    public InteractorFetcher<T> getInteractorFetcher() {
+        return this.fetcher;
     }
 
     protected abstract boolean isFullEnrichment();
@@ -150,6 +161,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     protected void processXrefs(T bioactiveEntityToEnrich, T fetched) {
         EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), false, true,
                 getListener(), getListener());
+    }
+
+    protected void setFetcher(InteractorFetcher<T> fetcher) {
+        this.fetcher = fetcher;
     }
 
     private void processMinimalEnrichment(T objectToEnrich, T fetchedObject) throws EnricherException {
