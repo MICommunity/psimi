@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
@@ -13,5 +14,9 @@ import psidev.psi.mi.jami.model.Interactor;
 public class FullInteractorUpdater extends AbstractInteractorUpdater<Interactor>{
     public FullInteractorUpdater() {
         super(new FullInteractorEnricher());
+    }
+
+    public FullInteractorUpdater(InteractorFetcher<Interactor> fetcher) {
+        super(new FullInteractorEnricher(fetcher));
     }
 }

@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
+import psidev.psi.mi.jami.model.Interactor;
+
 /**
  * Full interactor enricher
  *
@@ -9,6 +12,14 @@ package psidev.psi.mi.jami.enricher.impl;
  */
 
 public class FullInteractorEnricher extends MinimalInteractorEnricher {
+
+    public FullInteractorEnricher() {
+        super();
+    }
+
+    public FullInteractorEnricher(InteractorFetcher<Interactor> fetcher) {
+        super(fetcher);
+    }
 
     @Override
     protected boolean isFullEnrichment() {
