@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 import psidev.psi.mi.jami.enricher.GeneEnricher;
-import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
 import psidev.psi.mi.jami.model.Gene;
 
 /**
@@ -19,17 +18,5 @@ public class MinimalGeneUpdater extends AbstractInteractorUpdater<Gene> implemen
 
     protected MinimalGeneUpdater(AbstractInteractorEnricher<Gene> interactorEnricher) {
         super(interactorEnricher);
-    }
-
-    public GeneFetcher getGeneFetcher() {
-        return ((GeneEnricher)getInteractorEnricher()).getGeneFetcher();
-    }
-
-    public void setGeneEnricherListener(GeneEnricherListener listener) {
-        ((GeneEnricher)getInteractorEnricher()).setGeneEnricherListener(listener);
-    }
-
-    public GeneEnricherListener getGeneEnricherListener() {
-        return ((GeneEnricher)getInteractorEnricher()).getGeneEnricherListener();
     }
 }

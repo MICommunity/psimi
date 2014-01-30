@@ -35,13 +35,13 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
     @Override
     protected void processDeadUniprotIdentity(Protein proteinToEnrich, Xref uniprotIdentity) {
         proteinToEnrich.getIdentifiers().remove(uniprotIdentity);
-        if(getProteinEnricherListener() != null){
-            getProteinEnricherListener().onRemovedIdentifier(proteinToEnrich, uniprotIdentity);
+        if(getListener() != null){
+            getListener().onRemovedIdentifier(proteinToEnrich, uniprotIdentity);
         }
         Xref removedIdentity = new DefaultXref(uniprotIdentity.getDatabase(), uniprotIdentity.getId(), UNIPROT_REMOVED_QUALIFIER);
         proteinToEnrich.getXrefs().add(removedIdentity);
-        if(getProteinEnricherListener() != null){
-            getProteinEnricherListener().onAddedXref(proteinToEnrich, removedIdentity);
+        if(getListener() != null){
+            getListener().onAddedXref(proteinToEnrich, removedIdentity);
         }
     }
 
@@ -61,8 +61,8 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
             for (Annotation caution : cautions){
                 if (caution.getValue() != null && CAUTION_MESSAGE.equalsIgnoreCase(caution.getValue())){
                     proteinToEnrich.getAnnotations().remove(caution);
-                    if(getProteinEnricherListener() != null){
-                        getProteinEnricherListener().onRemovedAnnotation(proteinToEnrich, caution);
+                    if(getListener() != null){
+                        getListener().onRemovedAnnotation(proteinToEnrich, caution);
                     }
                 }
             }

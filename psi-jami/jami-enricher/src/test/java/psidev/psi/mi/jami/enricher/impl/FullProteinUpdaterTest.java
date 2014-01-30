@@ -90,7 +90,7 @@ public class FullProteinUpdaterTest {
         halfProteinList.add(broken);
         mockProteinFetcher.addEntry("p15941-7", halfProteinList);
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherLogger());
+        proteinEnricher.setListener(new ProteinEnricherLogger());
 
         Protein testProt = new DefaultProtein("p15941-7");
         testProt.setUniprotkb("p15941-7");
@@ -109,7 +109,7 @@ public class FullProteinUpdaterTest {
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT , proteinFetched);
-        proteinEnricher.setProteinFetcher(fetcher);
+        proteinEnricher.setFetcher(fetcher);
         proteinEnricher.enrich(proteinToEnrich);
         fail("Exception should be thrown before this point");
     }
@@ -127,7 +127,7 @@ public class FullProteinUpdaterTest {
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT, proteinFetched);
-        proteinEnricher.setProteinFetcher(fetcher);
+        proteinEnricher.setFetcher(fetcher);
         proteinEnricher.enrich(proteinToEnrich);
 
         assertEquals(TEST_FULLNAME , proteinToEnrich.getFullName() );
@@ -169,7 +169,7 @@ public class FullProteinUpdaterTest {
     public void test_no_fetching_on_protein_with_null_identifier_when_remapper_is_null()
             throws EnricherException {
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherLogger());
+        proteinEnricher.setListener(new ProteinEnricherLogger());
 
         persistentProtein = new DefaultProtein(TEST_OLD_SHORTNAME);
         persistentInt = 0;
@@ -180,7 +180,7 @@ public class FullProteinUpdaterTest {
 
 
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,   //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -245,7 +245,7 @@ public class FullProteinUpdaterTest {
 
 
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -313,7 +313,7 @@ public class FullProteinUpdaterTest {
         assertNull(persistentProtein.getUniprotkb());
         assertNotNull(proteinEnricher.getProteinMapper());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 //  new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -381,7 +381,7 @@ public class FullProteinUpdaterTest {
         assertNotNull(persistentProtein.getUniprotkb());
         assertNotNull(proteinEnricher.getProteinMapper());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -448,7 +448,7 @@ public class FullProteinUpdaterTest {
         assertNull(persistentProtein.getUniprotkb());
         assertNotNull(proteinEnricher.getProteinMapper());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() , //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -526,7 +526,7 @@ public class FullProteinUpdaterTest {
         assertNotNull(persistentProtein.getUniprotkb());
         assertNotNull(proteinEnricher.getProteinMapper());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -603,7 +603,7 @@ public class FullProteinUpdaterTest {
         assertEquals(Gene.GENE_MI,
                 persistentProtein.getInteractorType().getMIIdentifier());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -675,7 +675,7 @@ public class FullProteinUpdaterTest {
         assertEquals(Gene.GENE_MI,
                 persistentProtein.getInteractorType().getMIIdentifier());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -741,7 +741,7 @@ public class FullProteinUpdaterTest {
         persistentProtein.setOrganism(new DefaultOrganism(1010));
 
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -806,7 +806,7 @@ public class FullProteinUpdaterTest {
         assertEquals(Protein.PROTEIN_MI,
                 persistentProtein.getInteractorType().getMIIdentifier());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -875,7 +875,7 @@ public class FullProteinUpdaterTest {
         assertEquals(Protein.UNKNOWN_INTERACTOR,
                 persistentProtein.getInteractorType().getShortName());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -950,7 +950,7 @@ public class FullProteinUpdaterTest {
         assertNotNull(persistentProtein.getShortName());
         assertEquals(TEST_OLD_SHORTNAME , persistentProtein.getShortName());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1019,7 +1019,7 @@ public class FullProteinUpdaterTest {
         assertNotNull(persistentProtein.getShortName());
         assertEquals(TEST_SHORTNAME , persistentProtein.getShortName());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1080,7 +1080,7 @@ public class FullProteinUpdaterTest {
 
         assertNull(persistentProtein.getFullName());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1145,7 +1145,7 @@ public class FullProteinUpdaterTest {
         assertNull( customProtein.getFullName() );
         assertEquals( TEST_OLD_FULLNAME , persistentProtein.getFullName() );
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1205,7 +1205,7 @@ public class FullProteinUpdaterTest {
         assertEquals( TEST_FULLNAME , customProtein.getFullName() );
         assertEquals( TEST_OLD_FULLNAME , persistentProtein.getFullName() );
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1268,7 +1268,7 @@ public class FullProteinUpdaterTest {
 
         assertEquals(customProtein.getFullName() , persistentProtein.getFullName());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1331,7 +1331,7 @@ public class FullProteinUpdaterTest {
         assertEquals(TEST_SEQUENCE , customProtein.getSequence());
         assertNull(persistentProtein.getSequence());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1401,7 +1401,7 @@ public class FullProteinUpdaterTest {
         assertEquals(TEST_OLD_SEQUENCE , customProtein.getSequence());
         assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1463,7 +1463,7 @@ public class FullProteinUpdaterTest {
         assertEquals(TEST_SEQUENCE , customProtein.getSequence());
         assertEquals(TEST_OLD_SEQUENCE , persistentProtein.getSequence());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1529,7 +1529,7 @@ public class FullProteinUpdaterTest {
         assertEquals(TEST_SEQUENCE , customProtein.getSequence());
         assertEquals(TEST_SEQUENCE , persistentProtein.getSequence());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1594,7 +1594,7 @@ public class FullProteinUpdaterTest {
 
         assertEquals(2 , persistentProtein.getIdentifiers().size());    // Has to include the uniprotkb
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1688,7 +1688,7 @@ public class FullProteinUpdaterTest {
 
         assertEquals(1 , persistentProtein.getAliases().size());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {
@@ -1798,7 +1798,7 @@ public class FullProteinUpdaterTest {
 
         assertEquals(1 , persistentProtein.getXrefs().size());
 
-        proteinEnricher.setProteinEnricherListener(new ProteinEnricherListenerManager(
+        proteinEnricher.setListener(new ProteinEnricherListenerManager(
                 // new ProteinEnricherLogger() ,  //Comment this line to silence logging
                 new ProteinEnricherListener() {
                     public void onEnrichmentComplete(Protein protein, EnrichmentStatus status, String message) {

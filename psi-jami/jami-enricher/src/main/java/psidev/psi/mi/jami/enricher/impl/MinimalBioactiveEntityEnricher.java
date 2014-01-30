@@ -4,12 +4,12 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+
+import java.util.Collection;
 
 /**
  * Provides minimum enrichment of the bioactiveEntity.
@@ -20,9 +20,6 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
  */
 public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<BioactiveEntity> implements BioactiveEntityEnricher {
 
-    private BioactiveEntityFetcher fetcher;
-    private BioactiveEntityEnricherListener listener = null;
-
     /**
      * The only constructor, fulfilling the requirement of a bioactiveEntity fetcher.
      * If the bioactiveEntity fetcher is null, an illegal state exception will be thrown at the next enrichment.
@@ -32,49 +29,15 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
         if (fetcher == null){
             throw new IllegalArgumentException("The fetcher is required and cannot be null");
         }
-        this.fetcher = fetcher;
+        super.setFetcher(fetcher);
     }
 
     /**
      * Returns the current fetcher which is being used to collect information about entities for enrichment.
      * @return  The current fetcher.
      */
-    public BioactiveEntityFetcher getBioactiveEntityFetcher() {
-        return fetcher;
-    }
-
-    /**
-     * Sets the listener to use when the bioactiveEntity has been changed
-     * @param listener  The new listener. Can be null.
-     */
-    public void setBioactiveEntityEnricherListener(BioactiveEntityEnricherListener listener) {
-        this.listener = listener;
-    }
-
-    /**
-     * The current listener of changes to the bioactiveEntities.
-     * @return  The current listener. Can be null.
-     */
-    public BioactiveEntityEnricherListener getBioactiveEntityEnricherListener(){
-        return listener;
-    }
-
-    @Override
-    public InteractorEnricherListener<BioactiveEntity> getListener() {
-        return listener;
-    }
-
-    @Override
-    public void setListener(InteractorEnricherListener<BioactiveEntity> listener) {
-        if (listener instanceof BioactiveEntityEnricherListener){
-            this.listener = (BioactiveEntityEnricherListener)listener;
-        }
-        else if (listener == null){
-            this.listener = null;
-        }
-        else{
-            throw new IllegalArgumentException("A BioactiveEntityEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
-        }
+    public BioactiveEntityFetcher getInteractorFetcher() {
+        return (BioactiveEntityFetcher)super.getInteractorFetcher();
     }
 
     @Override
@@ -89,8 +52,8 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
 
     @Override
     protected void onEnrichedVersionNotFound(BioactiveEntity objectToEnrich) throws EnricherException {
-        getBioactiveEntityEnricherListener().onEnrichmentComplete(
-                objectToEnrich , EnrichmentStatus.FAILED ,
+        getListener().onEnrichmentComplete(
+                objectToEnrich, EnrichmentStatus.FAILED,
                 "Could not fetch a bioactive entity with the provided CHEBI identifier.");
     }
 
@@ -101,15 +64,15 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
 
     @Override
     protected void onCompletedEnrichment(BioactiveEntity objectToEnrich) {
-        if(getBioactiveEntityEnricherListener() != null)
-            getBioactiveEntityEnricherListener().onEnrichmentComplete(
+        if(getListener() != null)
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.SUCCESS , "The bioactive entity has been successfully enriched.");
     }
 
     @Override
     protected void onInteractorCheckFailure(BioactiveEntity objectToEnrich, BioactiveEntity fetchedObject) {
-        if(getBioactiveEntityEnricherListener() != null)
-            getBioactiveEntityEnricherListener().onEnrichmentComplete(
+        if(getListener() != null)
+            getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED , "Cannot enrich the bioactive entity because the interactor type is not a bioactive entity type.");
     }
 
@@ -128,12 +91,14 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
 
     private BioactiveEntity fetchEntity(String id) throws EnricherException {
         try {
-            return getBioactiveEntityFetcher().fetchByIdentifier(id);
+            Collection<BioactiveEntity> entities = getInteractorFetcher().fetchByIdentifier(id);
+            return !entities.isEmpty() ? entities.iterator().next() : null;
         } catch (BridgeFailedException e) {
             int index = 1;
             while(index < getRetryCount()){
                 try {
-                    return getBioactiveEntityFetcher().fetchByIdentifier(id);
+                    Collection<BioactiveEntity> entities = getInteractorFetcher().fetchByIdentifier(id);
+                    return !entities.isEmpty() ? entities.iterator().next() : null;
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();
                 }

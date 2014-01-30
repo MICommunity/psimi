@@ -69,7 +69,7 @@ public class ProteinEnricherStatisticsWriterTest {
 
         manager.addListener(logWriter);
         manager.addListener(new ProteinEnricherLogger());
-        proteinEnricher.setProteinEnricherListener(manager);
+        proteinEnricher.setListener(manager);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
