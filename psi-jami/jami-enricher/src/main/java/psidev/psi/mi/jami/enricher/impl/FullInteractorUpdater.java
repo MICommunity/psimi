@@ -11,12 +11,17 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since <pre>30/01/14</pre>
  */
 
-public class FullInteractorUpdater extends AbstractInteractorUpdater<Interactor>{
+public class FullInteractorUpdater<T extends Interactor> extends AbstractInteractorUpdater<T>{
     public FullInteractorUpdater() {
-        super(new FullInteractorEnricher());
+        super(new FullInteractorEnricher<T>());
     }
 
-    public FullInteractorUpdater(InteractorFetcher<Interactor> fetcher) {
-        super(new FullInteractorEnricher(fetcher));
+    public FullInteractorUpdater(InteractorFetcher<T> fetcher) {
+        super(new FullInteractorEnricher<T>(fetcher));
+    }
+
+    @Override
+    protected boolean isFullEnrichment() {
+        return true;
     }
 }
