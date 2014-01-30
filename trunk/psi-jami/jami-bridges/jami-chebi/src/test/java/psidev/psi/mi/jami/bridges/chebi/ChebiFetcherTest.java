@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -27,35 +29,37 @@ public class ChebiFetcherTest {
 
     @Test
     public void test() throws BridgeFailedException {
-        BioactiveEntity fetched = chebiFetcher.fetchByIdentifier("CHEBI:15377");
+        Collection<BioactiveEntity> fetched = chebiFetcher.fetchByIdentifier("CHEBI:15377");
         report(fetched);
     }
 
     @Test
     public void testB() throws BridgeFailedException {
-        BioactiveEntity fetched = chebiFetcher.fetchByIdentifier("CHEBI:53438");
+        Collection<BioactiveEntity> fetched = chebiFetcher.fetchByIdentifier("CHEBI:53438");
         report(fetched);
     }
 
     @Test
     public void testC() throws BridgeFailedException {
-        BioactiveEntity fetched = chebiFetcher.fetchByIdentifier("CHEBI:17627");
+        Collection<BioactiveEntity> fetched = chebiFetcher.fetchByIdentifier("CHEBI:17627");
         report(fetched);
 
     }
 
-    public static void report(BioactiveEntity fetched){
+    public static void report(Collection<BioactiveEntity> fetched){
+        Assert.assertTrue(fetched.size() == 1);
 
-        Assert.assertNotNull(fetched.getShortName());
-        Assert.assertNotNull(fetched.getFullName());
+        BioactiveEntity entity = fetched.iterator().next();
+        Assert.assertNotNull(entity.getShortName());
+        Assert.assertNotNull(entity.getFullName());
 
-        Assert.assertNotNull(fetched.getSmile());
+        Assert.assertNotNull(entity.getSmile());
 
-        Assert.assertNotNull(fetched.getStandardInchi());
-        Assert.assertNotNull(fetched.getStandardInchiKey());
-        Assert.assertNotNull(fetched.getAliases().toString());
+        Assert.assertNotNull(entity.getStandardInchi());
+        Assert.assertNotNull(entity.getStandardInchiKey());
+        Assert.assertNotNull(entity.getAliases().toString());
 
-        Assert.assertTrue(fetched.getAnnotations().isEmpty());
-        Assert.assertFalse(fetched.getIdentifiers().isEmpty());
+        Assert.assertTrue(entity.getAnnotations().isEmpty());
+        Assert.assertFalse(entity.getIdentifiers().isEmpty());
     }
 }

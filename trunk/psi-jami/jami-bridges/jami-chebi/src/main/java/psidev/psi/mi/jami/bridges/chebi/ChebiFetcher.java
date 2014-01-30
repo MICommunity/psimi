@@ -17,9 +17,7 @@ import uk.ac.ebi.chebi.webapps.chebiWS.model.DataItem;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.Entity;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.OntologyDataItem;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Accesses Chebi entries using the WSDL SOAP service.
@@ -48,7 +46,7 @@ public class ChebiFetcher
      * @return              A completed bioactiveEntity for the given identifier. May be null.
      * @throws BridgeFailedException    Thrown if the fetcher encounters a problem.
      */
-    public BioactiveEntity fetchByIdentifier (String identifier) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifier (String identifier) throws BridgeFailedException {
         if(identifier == null) throw new IllegalArgumentException("Can not fetch on null identifier");
 
         BioactiveEntity bioactiveEntity = null;
@@ -60,7 +58,12 @@ public class ChebiFetcher
         } catch ( ChebiWebServiceFault_Exception e ) {
             throw new BridgeFailedException("Cannot fetch the bioactive entity from CHEBI",e);
         }
-        return bioactiveEntity;
+        if (bioactiveEntity != null){
+            return Collections.singleton(bioactiveEntity);
+        }
+        else {
+            return Collections.EMPTY_LIST;
+        }
     }
 
     private BioactiveEntity createNewBioactiveEntity(Entity entity) {

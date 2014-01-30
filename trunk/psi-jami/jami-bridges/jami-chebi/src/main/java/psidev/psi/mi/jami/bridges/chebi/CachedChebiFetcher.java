@@ -29,15 +29,15 @@ public class CachedChebiFetcher extends AbstractCachedFetcher implements Bioacti
         this.chebiFetcher = new ChebiFetcher();
     }
 
-    public BioactiveEntity fetchByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifier(String identifier) throws BridgeFailedException {
         if (identifier != null){
             final String key = "GET_ENTITY_BY_IDENTIFIER_"+identifier;
             Object object = getFromCache(key);
             if (object != null){
-                return (BioactiveEntity)object;
+                return (Collection<BioactiveEntity>)object;
             }
             else{
-                BioactiveEntity entity = chebiFetcher.fetchByIdentifier(identifier);
+                Collection<BioactiveEntity> entity = chebiFetcher.fetchByIdentifier(identifier);
                 storeInCache(key, entity);
                 return entity;
             }
