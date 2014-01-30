@@ -16,7 +16,7 @@ import java.io.IOException;
  * @since 18/07/13
  */
 public class ProteinEnricherStatisticsWriter
-        extends EnricherStatisticsWriter<Protein>
+        extends PolymerEnricherStatisticsWriter<Protein>
         implements ProteinEnricherListener {
 
 
@@ -61,79 +61,4 @@ public class ProteinEnricherStatisticsWriter
 
 
     // ================================================================
-
-    public void onSequenceUpdate(Protein protein, String oldSequence) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
-    public void onShortNameUpdate(Protein protein, String oldShortName) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
-    public void onFullNameUpdate(Protein protein, String oldFullName) {
-        checkObject(protein);
-        incrementUpdateCount();
-    }
-
-    public void onAddedInteractorType(Protein protein) {
-        checkObject(protein);
-        incrementAdditionCount();
-    }
-
-    public void onAddedOrganism(Protein protein) {
-        checkObject(protein);
-        incrementAdditionCount();
-    }
-
-    public void onAddedIdentifier(Protein protein, Xref added) {
-        checkObject(protein);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedIdentifier(Protein protein, Xref removed) {
-        checkObject(protein);
-        incrementRemovedCount();
-    }
-
-    public void onAddedXref(Protein protein, Xref added) {
-        checkObject(protein);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedXref(Protein protein, Xref removed) {
-        checkObject(protein);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAlias(Protein protein, Alias added) {
-        checkObject(protein);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAlias(Protein protein, Alias removed) {
-        checkObject(protein);
-        incrementRemovedCount();
-    }
-
-    public void onAddedChecksum(Protein protein, Checksum added) {
-        checkObject(protein);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedChecksum(Protein protein, Checksum removed) {
-        checkObject(protein);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAnnotation(Protein o, Annotation added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAnnotation(Protein o, Annotation removed) {
-        checkObject(o);
-        incrementRemovedCount();
-    }
 }

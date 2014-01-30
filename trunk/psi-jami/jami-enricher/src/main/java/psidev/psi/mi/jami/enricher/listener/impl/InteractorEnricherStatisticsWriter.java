@@ -14,8 +14,8 @@ import java.io.IOException;
  * @since <pre>01/10/13</pre>
  */
 
-public class InteractorEnricherStatisticsWriter extends EnricherStatisticsWriter<Interactor>
-implements InteractorEnricherListener<Interactor> {
+public class InteractorEnricherStatisticsWriter<T extends Interactor> extends EnricherStatisticsWriter<T>
+implements InteractorEnricherListener<T> {
 
 public static final String FILE_NAME = "interactor";
 
@@ -59,72 +59,72 @@ public InteractorEnricherStatisticsWriter(File successFile, File failureFile) th
 
 // ================================================================
 
-public void onShortNameUpdate(Interactor interactor, String oldShortName) {
+public void onShortNameUpdate(T interactor, String oldShortName) {
         checkObject(interactor);
 incrementUpdateCount();
 }
 
-public void onFullNameUpdate(Interactor interactor, String oldFullName) {
+public void onFullNameUpdate(T interactor, String oldFullName) {
         checkObject(interactor);
 incrementUpdateCount();
 }
 
-public void onAddedOrganism(Interactor interactor) {
+public void onAddedOrganism(T interactor) {
         checkObject(interactor);
 incrementAdditionCount();
 }
 
-public void onAddedInteractorType(Interactor interactor) {
+public void onAddedInteractorType(T interactor) {
         checkObject(interactor);
 incrementAdditionCount();
 }
 
-public void onAddedIdentifier(Interactor interactor, Xref added) {
+public void onAddedIdentifier(T interactor, Xref added) {
         checkObject(interactor);
 incrementAdditionCount();
 }
 
-public void onRemovedIdentifier(Interactor interactor, Xref removed) {
+public void onRemovedIdentifier(T interactor, Xref removed) {
         checkObject(interactor);
 incrementRemovedCount();
 }
 
-public void onAddedXref(Interactor interactor, Xref added) {
+public void onAddedXref(T interactor, Xref added) {
         checkObject(interactor);
 incrementAdditionCount();
 }
 
-public void onRemovedXref(Interactor interactor, Xref removed) {
+public void onRemovedXref(T interactor, Xref removed) {
         checkObject(interactor);
 incrementRemovedCount();
 }
 
-public void onAddedAlias(Interactor interactor, Alias added) {
+public void onAddedAlias(T interactor, Alias added) {
         checkObject(interactor);
 incrementAdditionCount();
 }
 
-public void onRemovedAlias(Interactor interactor, Alias removed) {
+public void onRemovedAlias(T interactor, Alias removed) {
         checkObject(interactor);
 incrementRemovedCount();
 }
 
-public void onAddedChecksum(Interactor interactor, Checksum added) {
+public void onAddedChecksum(T interactor, Checksum added) {
         checkObject(interactor);
 incrementAdditionCount();
 }
 
-public void onRemovedChecksum(Interactor interactor, Checksum removed) {
+public void onRemovedChecksum(T interactor, Checksum removed) {
         checkObject(interactor);
 incrementRemovedCount();
 }
 
-public void onAddedAnnotation(Interactor o, Annotation added) {
+public void onAddedAnnotation(T o, Annotation added) {
         checkObject(o);
 incrementAdditionCount();
 }
 
-public void onRemovedAnnotation(Interactor o, Annotation removed) {
+public void onRemovedAnnotation(T o, Annotation removed) {
         checkObject(o);
 incrementRemovedCount();
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
  * @since 03/09/13
  */
 public class GeneEnricherStatisticsWriter
-        extends EnricherStatisticsWriter<Gene>
+        extends InteractorEnricherStatisticsWriter<Gene>
         implements GeneEnricherListener {
 
 
@@ -54,78 +54,5 @@ public class GeneEnricherStatisticsWriter
      */
     public GeneEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
-    }
-
-
-    // ================================================================
-
-    public void onShortNameUpdate(Gene gene, String oldShortName) {
-        checkObject(gene);
-        incrementUpdateCount();
-    }
-
-    public void onFullNameUpdate(Gene gene, String oldFullName) {
-        checkObject(gene);
-        incrementUpdateCount();
-    }
-
-    public void onAddedOrganism(Gene gene) {
-        checkObject(gene);
-        incrementAdditionCount();
-    }
-
-    public void onAddedInteractorType(Gene gene) {
-        checkObject(gene);
-        incrementAdditionCount();
-    }
-
-    public void onAddedIdentifier(Gene gene, Xref added) {
-        checkObject(gene);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedIdentifier(Gene gene, Xref removed) {
-        checkObject(gene);
-        incrementRemovedCount();
-    }
-
-    public void onAddedXref(Gene gene, Xref added) {
-        checkObject(gene);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedXref(Gene gene, Xref removed) {
-        checkObject(gene);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAlias(Gene gene, Alias added) {
-        checkObject(gene);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAlias(Gene gene, Alias removed) {
-        checkObject(gene);
-        incrementRemovedCount();
-    }
-
-    public void onAddedChecksum(Gene gene, Checksum added) {
-        checkObject(gene);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedChecksum(Gene gene, Checksum removed) {
-        checkObject(gene);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAnnotation(Gene o, Annotation added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAnnotation(Gene o, Annotation removed) {
-        checkObject(o);
-        incrementRemovedCount();
     }
 }
