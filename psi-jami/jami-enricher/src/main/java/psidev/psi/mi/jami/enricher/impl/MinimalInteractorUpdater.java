@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Interactor;
 
@@ -18,4 +19,9 @@ public class MinimalInteractorUpdater extends AbstractInteractorUpdater<Interact
     public MinimalInteractorUpdater() {
         super(new MinimalInteractorEnricher());
     }
+
+    public MinimalInteractorUpdater(InteractorFetcher<Interactor> fetcher) {
+        super(new MinimalInteractorEnricher(fetcher));
+    }
 }
+

@@ -1,9 +1,15 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Xref;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A basic minimal enricher for interactors
@@ -16,6 +22,15 @@ import psidev.psi.mi.jami.model.Interactor;
 public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Interactor>{
 
     private InteractorEnricherListener listener;
+
+    public MinimalInteractorEnricher(){
+        super();
+    }
+
+    public MinimalInteractorEnricher(InteractorFetcher<Interactor> fetcher){
+        super();
+        super.setFetcher(fetcher);
+    }
 
     public void enrich(Interactor objectToEnrich) throws EnricherException {
         if(objectToEnrich == null)
@@ -44,11 +59,6 @@ public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Intera
         else{
             throw new IllegalArgumentException("A InteractorEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
         }
-    }
-
-    @Override
-    public Interactor find(Interactor objectToEnrich) throws EnricherException {
-        return null;
     }
 
     @Override
@@ -84,6 +94,42 @@ public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Intera
     protected void processOrganism(Interactor entityToEnrich, Interactor fetched) throws EnricherException {
         if (getOrganismEnricher() != null && entityToEnrich.getOrganism() != null){
             getOrganismEnricher().enrich(entityToEnrich.getOrganism());
+        }
+    }
+
+    @Override
+    public Interactor find(Interactor objectToEnrich) throws EnricherException {
+        Interactor fetchInteractor = null;
+
+        if (getInteractorFetcher() != null){
+            if(!objectToEnrich.getIdentifiers().isEmpty()){
+                Collection<String> ids = new ArrayList<String>(objectToEnrich.getIdentifiers().size());
+                for (Xref id : objectToEnrich.getIdentifiers()){
+                    ids.add(id.getId());
+                }
+                fetchInteractor = fetchInteractor(ids);
+            }
+        }
+        return fetchInteractor;
+    }
+
+    private Interactor fetchInteractor(Collection<String> ids) throws EnricherException {
+
+        try {
+            Collection<Interactor> entities = getInteractorFetcher().fetchByIdentifiers(ids);
+            return !entities.isEmpty() ? entities.iterator().next() : null;
+        } catch (BridgeFailedException e) {
+            int index = 1;
+            while(index < getRetryCount()){
+                try {
+                    Collection<Interactor> entities = getInteractorFetcher().fetchByIdentifiers(ids);
+                    return !entities.isEmpty() ? entities.iterator().next() : null;
+                } catch (BridgeFailedException ee) {
+                    ee.printStackTrace();
+                }
+                index++;
+            }
+            throw new EnricherException("Re-tried "+ getRetryCount() +" times to fetch the Interactor but cannot connect to the fetcher.", e);
         }
     }
 }

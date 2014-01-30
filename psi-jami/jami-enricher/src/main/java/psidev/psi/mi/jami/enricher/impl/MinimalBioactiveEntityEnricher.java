@@ -104,7 +104,7 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
                 }
                 index++;
             }
-            throw new EnricherException("Re-tried "+ getRetryCount() +" times to fetch the Publication but cannot connect to the fetcher.", e);
+            throw new EnricherException("Re-tried "+ getRetryCount() +" times to fetch the Bioactive entity but cannot connect to the fetcher.", e);
         }
     }
 }
