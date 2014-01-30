@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Collection;
  * @since 09/08/13
  */
 public class FailingBioactiveEntityFetcher
-        extends AbstractFailingFetcher<BioactiveEntity>
+        extends AbstractFailingFetcher<Collection<BioactiveEntity>>
         implements BioactiveEntityFetcher {
 
 
@@ -21,11 +22,15 @@ public class FailingBioactiveEntityFetcher
         super(maxQuery);
     }
 
-    public BioactiveEntity fetchByIdentifier(String identifier) throws BridgeFailedException {
+    public Collection<BioactiveEntity> fetchByIdentifier(String identifier) throws BridgeFailedException {
         return super.getEntry(identifier);
     }
 
     public Collection<BioactiveEntity> fetchByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
-        return super.getEntries(identifiers);
+        Collection<BioactiveEntity> resultsList= new ArrayList<BioactiveEntity>();
+        for(String identifier : identifiers){
+            resultsList.addAll( getEntry(identifier) );
+        }
+        return resultsList;
     }
 }
