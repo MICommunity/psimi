@@ -4,15 +4,15 @@ import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 /**
- * TODO comment this
+ * Manager of interactor listeners
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>01/10/13</pre>
  */
 
-public class InteractorEnricherListenerManager extends EnricherListenerManager<Interactor, InteractorEnricherListener<Interactor>>
-    implements InteractorEnricherListener<Interactor>{
+public class InteractorEnricherListenerManager<T extends Interactor> extends EnricherListenerManager<T, InteractorEnricherListener<T>>
+    implements InteractorEnricherListener<T>{
         /**
          * A constructor to create a listener manager with no listeners.
          */
@@ -22,89 +22,89 @@ public class InteractorEnricherListenerManager extends EnricherListenerManager<I
          * A constructor to initiate a listener manager with as many listeners as required.
          * @param listeners     The listeners to add.
          */
-        public InteractorEnricherListenerManager(InteractorEnricherListener... listeners){
+        public InteractorEnricherListenerManager(InteractorEnricherListener<T>... listeners){
             super(listeners);
         }
 
-    public void onShortNameUpdate(Interactor interactor, String oldShortName) {
+    public void onShortNameUpdate(T interactor, String oldShortName) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onShortNameUpdate(interactor, oldShortName);
         }
     }
 
-    public void onFullNameUpdate(Interactor interactor, String oldFullName) {
+    public void onFullNameUpdate(T interactor, String oldFullName) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onFullNameUpdate(interactor, oldFullName);
         }
     }
 
-    public void onAddedOrganism(Interactor interactor) {
+    public void onAddedOrganism(T interactor) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedOrganism(interactor);
         }
     }
 
-    public void onAddedInteractorType(Interactor interactor) {
+    public void onAddedInteractorType(T interactor) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedInteractorType(interactor);
         }
     }
 
-    public void onAddedIdentifier(Interactor interactor, Xref added) {
+    public void onAddedIdentifier(T interactor, Xref added) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedIdentifier( interactor, added);
         }
     }
 
-    public void onRemovedIdentifier(Interactor interactor, Xref removed) {
+    public void onRemovedIdentifier(T interactor, Xref removed) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onRemovedIdentifier(interactor, removed) ;
         }
     }
 
-    public void onAddedXref(Interactor interactor, Xref added) {
+    public void onAddedXref(T interactor, Xref added) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedXref(interactor, added) ;
         }
     }
 
-    public void onRemovedXref(Interactor interactor, Xref removed) {
+    public void onRemovedXref(T interactor, Xref removed) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onRemovedXref(interactor, removed) ;
         }
     }
 
-    public void onAddedAlias(Interactor interactor, Alias added) {
+    public void onAddedAlias(T interactor, Alias added) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedAlias(interactor, added);
         }
     }
 
-    public void onRemovedAlias(Interactor interactor, Alias removed) {
+    public void onRemovedAlias(T interactor, Alias removed) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onRemovedAlias(interactor, removed);
         }
     }
 
-    public void onAddedChecksum(Interactor interactor, Checksum added) {
+    public void onAddedChecksum(T interactor, Checksum added) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedChecksum(interactor, added);
         }
     }
 
-    public void onRemovedChecksum(Interactor interactor, Checksum removed) {
+    public void onRemovedChecksum(T interactor, Checksum removed) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onRemovedChecksum(interactor, removed);
         }
     }
 
-    public void onAddedAnnotation(Interactor o, Annotation added) {
+    public void onAddedAnnotation(T o, Annotation added) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onAddedAnnotation(o, added);
         }
     }
 
-    public void onRemovedAnnotation(Interactor o, Annotation removed) {
+    public void onRemovedAnnotation(T o, Annotation removed) {
         for(InteractorEnricherListener listener : getListenersList()){
             listener.onRemovedAnnotation(o, removed);
         }

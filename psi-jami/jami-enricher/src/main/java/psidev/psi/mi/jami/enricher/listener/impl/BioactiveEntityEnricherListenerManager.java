@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class BioactiveEntityEnricherListenerManager extends EnricherListenerManager<BioactiveEntity, BioactiveEntityEnricherListener>
+public class BioactiveEntityEnricherListenerManager extends InteractorEnricherListenerManager<BioactiveEntity>
         implements BioactiveEntityEnricherListener{
     /**
      * A constructor to create a listener manager with no listeners.
@@ -29,85 +30,85 @@ public class BioactiveEntityEnricherListenerManager extends EnricherListenerMana
     }
 
     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onShortNameUpdate(interactor, oldShortName);
         }
     }
 
     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onFullNameUpdate(interactor, oldFullName);
         }
     }
 
     public void onAddedOrganism(BioactiveEntity interactor) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedOrganism(interactor);
         }
     }
 
     public void onAddedInteractorType(BioactiveEntity interactor) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedInteractorType(interactor);
         }
     }
 
     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedIdentifier( interactor, added);
         }
     }
 
     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onRemovedIdentifier(interactor, removed) ;
         }
     }
 
     public void onAddedXref(BioactiveEntity interactor, Xref added) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedXref(interactor, added) ;
         }
     }
 
     public void onRemovedXref(BioactiveEntity interactor, Xref removed) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onRemovedXref(interactor, removed) ;
         }
     }
 
     public void onAddedAlias(BioactiveEntity interactor, Alias added) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedAlias(interactor, added);
         }
     }
 
     public void onRemovedAlias(BioactiveEntity interactor, Alias removed) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onRemovedAlias(interactor, removed);
         }
     }
 
     public void onAddedChecksum(BioactiveEntity interactor, Checksum added) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedChecksum(interactor, added);
         }
     }
 
     public void onRemovedChecksum(BioactiveEntity interactor, Checksum removed) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onRemovedChecksum(interactor, removed);
         }
     }
 
     public void onAddedAnnotation(BioactiveEntity o, Annotation added) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onAddedAnnotation(o, added);
         }
     }
 
     public void onRemovedAnnotation(BioactiveEntity o, Annotation removed) {
-        for(BioactiveEntityEnricherListener listener : getListenersList()){
+        for(InteractorEnricherListener<BioactiveEntity> listener : getListenersList()){
             listener.onRemovedAnnotation(o, removed);
         }
     }
