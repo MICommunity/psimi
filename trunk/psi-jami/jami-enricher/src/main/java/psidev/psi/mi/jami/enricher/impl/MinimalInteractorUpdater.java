@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalInteractorUpdater extends AbstractInteractorUpdater<Interactor>{
+public class MinimalInteractorUpdater<T extends Interactor> extends AbstractInteractorUpdater<T>{
 
     private InteractorEnricherListener listener;
 
@@ -20,7 +20,7 @@ public class MinimalInteractorUpdater extends AbstractInteractorUpdater<Interact
         super(new MinimalInteractorEnricher());
     }
 
-    public MinimalInteractorUpdater(InteractorFetcher<Interactor> fetcher) {
+    public MinimalInteractorUpdater(InteractorFetcher<T> fetcher) {
         super(new MinimalInteractorEnricher(fetcher));
     }
 }

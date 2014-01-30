@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -19,50 +18,28 @@ import java.util.Collection;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Interactor>{
-
-    private InteractorEnricherListener listener;
+public class MinimalInteractorEnricher<T extends Interactor> extends AbstractInteractorEnricher<T>{
 
     public MinimalInteractorEnricher(){
         super();
     }
 
-    public MinimalInteractorEnricher(InteractorFetcher<Interactor> fetcher){
+    public MinimalInteractorEnricher(InteractorFetcher<T> fetcher){
         super();
         super.setFetcher(fetcher);
     }
 
-    public void enrich(Interactor objectToEnrich) throws EnricherException {
+    public void enrich(T objectToEnrich) throws EnricherException {
         if(objectToEnrich == null)
             throw new IllegalArgumentException("Cannot enrich a null interactor.");
 
-        // Interactor type
-        processInteractorType(objectToEnrich, null);
+        T objectFetched = find(objectToEnrich);
 
-        // Organism
-        processOrganism(objectToEnrich, null);
+        enrich(objectToEnrich, objectFetched);
     }
 
     @Override
-    public InteractorEnricherListener<Interactor> getListener() {
-        return this.listener;
-    }
-
-    @Override
-    public void setListener(InteractorEnricherListener<Interactor> listener) {
-        if (listener instanceof InteractorEnricherListener){
-            this.listener = (InteractorEnricherListener)listener;
-        }
-        else if (listener == null){
-            this.listener = null;
-        }
-        else{
-            throw new IllegalArgumentException("A InteractorEnricherListener is expected and we tried to set a " + listener.getClass().getCanonicalName() + " instead");
-        }
-    }
-
-    @Override
-    protected void onEnrichedVersionNotFound(Interactor objectToEnrich) throws EnricherException {
+    protected void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException {
         // nothing to do
     }
 
@@ -72,34 +49,20 @@ public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Intera
     }
 
     @Override
-    protected void onCompletedEnrichment(Interactor objectToEnrich) {
+    protected void onCompletedEnrichment(T objectToEnrich) {
         if(getListener() != null)
             getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.SUCCESS , "The interactor has been successfully enriched.");
     }
 
     @Override
-    protected void onInteractorCheckFailure(Interactor objectToEnrich, Interactor fetchedObject) {
-        // do nothing
+    protected void onInteractorCheckFailure(T objectToEnrich, T fetchedObject) {
+        // nothing to do here
     }
 
     @Override
-    protected void processInteractorType(Interactor entityToEnrich, Interactor fetched) throws EnricherException {
-        if (getCvTermEnricher() != null && entityToEnrich.getInteractorType() != null){
-            getCvTermEnricher().enrich(entityToEnrich.getInteractorType());
-        }
-    }
-
-    @Override
-    protected void processOrganism(Interactor entityToEnrich, Interactor fetched) throws EnricherException {
-        if (getOrganismEnricher() != null && entityToEnrich.getOrganism() != null){
-            getOrganismEnricher().enrich(entityToEnrich.getOrganism());
-        }
-    }
-
-    @Override
-    public Interactor find(Interactor objectToEnrich) throws EnricherException {
-        Interactor fetchInteractor = null;
+    public T find(T objectToEnrich) throws EnricherException {
+        T fetchInteractor = null;
 
         if (getInteractorFetcher() != null){
             if(!objectToEnrich.getIdentifiers().isEmpty()){
@@ -113,16 +76,16 @@ public class MinimalInteractorEnricher extends AbstractInteractorEnricher<Intera
         return fetchInteractor;
     }
 
-    private Interactor fetchInteractor(Collection<String> ids) throws EnricherException {
+    private T fetchInteractor(Collection<String> ids) throws EnricherException {
 
         try {
-            Collection<Interactor> entities = getInteractorFetcher().fetchByIdentifiers(ids);
+            Collection<T> entities = getInteractorFetcher().fetchByIdentifiers(ids);
             return !entities.isEmpty() ? entities.iterator().next() : null;
         } catch (BridgeFailedException e) {
             int index = 1;
             while(index < getRetryCount()){
                 try {
-                    Collection<Interactor> entities = getInteractorFetcher().fetchByIdentifiers(ids);
+                    Collection<T> entities = getInteractorFetcher().fetchByIdentifiers(ids);
                     return !entities.isEmpty() ? entities.iterator().next() : null;
                 } catch (BridgeFailedException ee) {
                     ee.printStackTrace();

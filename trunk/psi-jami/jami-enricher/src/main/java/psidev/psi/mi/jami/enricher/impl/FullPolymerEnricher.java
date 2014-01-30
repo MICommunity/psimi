@@ -1,23 +1,23 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
-import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Polymer;
 
 /**
- * Full interactor enricher
+ * Full polymer enricher
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>30/01/14</pre>
  */
 
-public class FullInteractorEnricher<T extends Interactor> extends MinimalInteractorEnricher<T> {
+public class FullPolymerEnricher<T extends Polymer> extends MinimalPolymerEnricher<T> {
 
-    public FullInteractorEnricher() {
+    public FullPolymerEnricher() {
         super();
     }
 
-    public FullInteractorEnricher(InteractorFetcher<T> fetcher) {
+    public FullPolymerEnricher(InteractorFetcher<T> fetcher) {
         super(fetcher);
     }
 

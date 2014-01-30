@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Abstract class for updating interactor
@@ -59,7 +57,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
 
     @Override
     protected void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
-        if (fetched.getInteractorType() != null && !DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
+        if (entityToEnrich.getInteractorType() != fetched.getInteractorType()){
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
                 getListener().onAddedInteractorType(entityToEnrich);
@@ -72,7 +70,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
 
     @Override
     protected void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
-        if (fetched.getOrganism() != null && !OrganismTaxIdComparator.areEquals(entityToEnrich.getOrganism(), fetched.getOrganism())){
+        if (entityToEnrich.getOrganism() != fetched.getOrganism()){
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){
                 getListener().onAddedOrganism(entityToEnrich);
