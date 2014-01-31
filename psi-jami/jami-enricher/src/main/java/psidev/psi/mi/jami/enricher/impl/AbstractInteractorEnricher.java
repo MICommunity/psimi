@@ -101,7 +101,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         return true;
     }
 
-    protected void processOtherProperties(T bioactiveEntityToEnrich, T fetched) {
+    protected void processOtherProperties(T bioactiveEntityToEnrich, T fetched) throws EnricherException {
         // do nothing by default. Only for sequences
     }
 
@@ -129,7 +129,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     }
 
     protected void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
-        if (entityToEnrich.getInteractorType() == null && fetched.getInteractorType() != null){
+        if (fetched != null && entityToEnrich.getInteractorType() == null && fetched.getInteractorType() != null){
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
                 getListener().onAddedInteractorType(entityToEnrich);
@@ -141,7 +141,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     }
 
     protected void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
-        if (entityToEnrich.getOrganism() == null && fetched.getOrganism() != null){
+        if (fetched != null && entityToEnrich.getOrganism() == null && fetched.getOrganism() != null){
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){
                 getListener().onAddedOrganism(entityToEnrich);

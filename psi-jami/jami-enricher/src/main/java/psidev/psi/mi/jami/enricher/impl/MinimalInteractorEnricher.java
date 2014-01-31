@@ -35,8 +35,16 @@ public class MinimalInteractorEnricher<T extends Interactor> extends AbstractInt
 
         T objectFetched = find(objectToEnrich);
 
-        enrich(objectToEnrich, objectFetched);
+        if (objectFetched != null){
+            enrich(objectToEnrich, objectFetched);
+        }
+        else{
+            processInteractorType(objectToEnrich, objectFetched);
+            processOrganism(objectToEnrich, objectFetched);
+        }
     }
+
+
 
     @Override
     protected void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException {
