@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
+import psidev.psi.mi.jami.enricher.PolymerEnricher;
+import psidev.psi.mi.jami.enricher.listener.PolymerEnricherListener;
+import psidev.psi.mi.jami.listener.PolymerChangeListener;
 import psidev.psi.mi.jami.model.Polymer;
 
 /**
@@ -11,7 +14,7 @@ import psidev.psi.mi.jami.model.Polymer;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalPolymerEnricher<T extends Polymer> extends MinimalInteractorEnricher<T>{
+public class MinimalPolymerEnricher<T extends Polymer> extends MinimalInteractorEnricher<T> implements PolymerEnricher<T>{
 
     public MinimalPolymerEnricher(){
         super();
@@ -28,6 +31,9 @@ public class MinimalPolymerEnricher<T extends Polymer> extends MinimalInteractor
         // sequence
         if (polymerToEnrich.getSequence() == null && fetched.getSequence() != null){
             polymerToEnrich.setSequence(fetched.getSequence());
+            if (getListener() instanceof PolymerEnricherListener){
+                ((PolymerChangeListener)getListener()).onSequenceUpdate(polymerToEnrich, null);
+            }
         }
     }
 }
