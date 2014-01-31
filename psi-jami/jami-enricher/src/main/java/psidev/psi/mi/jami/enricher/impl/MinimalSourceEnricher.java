@@ -30,10 +30,10 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
      *                      If null, an illegal state exception will be thrown at the next enrichment.
      */
     public MinimalSourceEnricher(SourceFetcher cvTermFetcher) {
-        this.cvEnricher = new MinimalCvTermEnricher(cvTermFetcher);
+        this.cvEnricher = new MinimalCvTermEnricher<Source>(cvTermFetcher);
     }
 
-    protected MinimalSourceEnricher(CvTermEnricher cvEnricher) {
+    protected MinimalSourceEnricher(CvTermEnricher<Source> cvEnricher) {
         if (cvEnricher == null){
            throw new IllegalArgumentException("The cv term enricher cannot be null in source enricher");
         }

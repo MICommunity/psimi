@@ -16,10 +16,10 @@ import psidev.psi.mi.jami.model.OntologyTerm;
 
 public class MinimalOntologyTermUpdater extends MinimalOntologyTermEnricher{
     public MinimalOntologyTermUpdater(OntologyTermFetcher cvTermFetcher) {
-        super(new MinimalCvTermUpdater(cvTermFetcher));
+        super(new MinimalCvTermUpdater<OntologyTerm>(cvTermFetcher));
     }
 
-    protected MinimalOntologyTermUpdater(CvTermEnricher cvEnricher) {
+    protected MinimalOntologyTermUpdater(CvTermEnricher<OntologyTerm> cvEnricher) {
         super(cvEnricher);
     }
 

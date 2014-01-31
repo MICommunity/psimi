@@ -16,10 +16,10 @@ import psidev.psi.mi.jami.model.Source;
 
 public class MinimalSourceUpdater extends MinimalSourceEnricher{
     public MinimalSourceUpdater(SourceFetcher cvTermFetcher) {
-        super(new MinimalCvTermUpdater(cvTermFetcher));
+        super(new MinimalCvTermUpdater<Source>(cvTermFetcher));
     }
 
-    protected MinimalSourceUpdater(CvTermEnricher cvEnricher) {
+    protected MinimalSourceUpdater(CvTermEnricher<Source> cvEnricher) {
         super(cvEnricher);
     }
 
