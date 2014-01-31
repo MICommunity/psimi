@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.clone;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
+import psidev.psi.mi.jami.model.Source;
 
 /**
  * Utility class for cloning CvTerms
@@ -43,6 +44,13 @@ public class CvTermCloner {
             target.getChildren().clear();
             target.getChildren().addAll(source.getChildren());
             target.setDefinition(source.getDefinition());
+        }
+    }
+
+    public static void copyAndOverrideSourceProperties(Source source, Source target){
+        if (source != null && target != null){
+            copyAndOverrideCvTermProperties(source, target);
+            target.setPublication(source.getPublication());
         }
     }
 }
