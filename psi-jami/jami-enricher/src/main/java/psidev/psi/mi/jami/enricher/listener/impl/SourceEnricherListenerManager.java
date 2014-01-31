@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
@@ -17,7 +16,7 @@ import psidev.psi.mi.jami.model.Source;
  * @since 08/07/13
  */
 public class SourceEnricherListenerManager
-    extends CvTermEnricherListenerManager
+    extends CvTermEnricherListenerManager<Source>
     implements SourceEnricherListener{
 
     /**
@@ -29,7 +28,7 @@ public class SourceEnricherListenerManager
      * A constructor to initiate a listener manager with as many listeners as required.
      * @param listeners     The listeners to add.
      */
-    public SourceEnricherListenerManager(OntologyTermEnricherListener... listeners){
+    public SourceEnricherListenerManager(SourceEnricherListener... listeners){
         super(listeners);
     }
 

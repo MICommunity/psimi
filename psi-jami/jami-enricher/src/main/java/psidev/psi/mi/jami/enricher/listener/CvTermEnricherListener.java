@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.enricher.listener;
 
-import psidev.psi.mi.jami.enricher.listener.EnricherListener;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.listener.CvTermChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 
@@ -13,7 +11,7 @@ import psidev.psi.mi.jami.model.CvTerm;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/06/13
  */
-public interface CvTermEnricherListener
-        extends CvTermChangeListener , EnricherListener<CvTerm>{
+public interface CvTermEnricherListener<C extends CvTerm>
+        extends CvTermChangeListener , EnricherListener<C>{
 
 }

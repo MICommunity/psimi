@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -16,42 +17,42 @@ import psidev.psi.mi.jami.model.CvTerm;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/05/13
  */
-public class FullCvTermUpdater extends FullCvTermEnricher{
+public class FullCvTermUpdater<C extends CvTerm> extends FullCvTermEnricher<C>{
 
-    private MinimalCvTermUpdater minimalCvTermUpdater;
+    private MinimalCvTermUpdater<C> minimalCvTermUpdater;
     /**
      * A constructor matching super.
      * @param cvTermFetcher The fetcher to initiate the enricher with.
      *                      If null, an illegal state exception will be thrown at the next enrichment.
      */
-    public FullCvTermUpdater(CvTermFetcher cvTermFetcher) {
+    public FullCvTermUpdater(CvTermFetcher<C> cvTermFetcher) {
         super(cvTermFetcher);
-        this.minimalCvTermUpdater = new MinimalCvTermUpdater(cvTermFetcher);
+        this.minimalCvTermUpdater = new MinimalCvTermUpdater<C>(cvTermFetcher);
     }
 
     @Override
-    protected void processMinimalUpdates(CvTerm cvTermToEnrich, CvTerm termFetched) {
+    protected void processMinimalUpdates(C cvTermToEnrich, C termFetched) throws EnricherException {
         this.minimalCvTermUpdater.processCvTerm(cvTermToEnrich, termFetched);
     }
 
     @Override
-    protected void processAnnotations(CvTerm cvTermToEnrich, CvTerm termFetched) {
+    protected void processAnnotations(C cvTermToEnrich, C termFetched) {
         mergeAnnotations(cvTermToEnrich, termFetched.getAnnotations(), true);
     }
 
     @Override
-    protected void processSynonyms(CvTerm cvTermToEnrich, CvTerm termFetched) {
+    protected void processSynonyms(C cvTermToEnrich, C termFetched) {
         EnricherUtils.mergeAliases(cvTermToEnrich, cvTermToEnrich.getSynonyms(), termFetched.getSynonyms(), true, getCvTermEnricherListener());
     }
 
     @Override
-    protected void processXrefs(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    protected void processXrefs(C cvTermToEnrich, C cvTermFetched) {
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getXrefs(), cvTermFetched.getXrefs(), true, false,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
     @Override
-    public void setCvTermEnricherListener(CvTermEnricherListener listener) {
+    public void setCvTermEnricherListener(CvTermEnricherListener<C> listener) {
         super.setCvTermEnricherListener(listener);
         this.minimalCvTermUpdater.setCvTermEnricherListener(listener);
     }

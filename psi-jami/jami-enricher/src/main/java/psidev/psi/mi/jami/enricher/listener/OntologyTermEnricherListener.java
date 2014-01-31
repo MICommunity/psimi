@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener;
 
 import psidev.psi.mi.jami.listener.OntologyTermChangeListener;
+import psidev.psi.mi.jami.model.OntologyTerm;
 
 /**
  * An extension of the OntologyTermChangeListener
@@ -11,6 +12,6 @@ import psidev.psi.mi.jami.listener.OntologyTermChangeListener;
  * @since 13/06/13
  */
 public interface OntologyTermEnricherListener
-        extends CvTermEnricherListener, OntologyTermChangeListener{
+        extends CvTermEnricherListener<OntologyTerm>, OntologyTermChangeListener{
 
 }

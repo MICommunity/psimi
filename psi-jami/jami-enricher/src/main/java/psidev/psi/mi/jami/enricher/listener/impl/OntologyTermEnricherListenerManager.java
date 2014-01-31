@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.OntologyTerm;
  * @since 08/07/13
  */
 public class OntologyTermEnricherListenerManager
-    extends CvTermEnricherListenerManager
+    extends CvTermEnricherListenerManager<OntologyTerm>
     implements OntologyTermEnricherListener{
 
     /**

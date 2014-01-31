@@ -13,15 +13,15 @@ import psidev.psi.mi.jami.model.CvTerm;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class CvTermEnricherLogger extends CvTermChangeLogger implements CvTermEnricherListener{
+public class CvTermEnricherLogger<C extends CvTerm> extends CvTermChangeLogger implements CvTermEnricherListener<C>{
 
     private static final Logger log = LoggerFactory.getLogger(CvTermEnricherLogger.class.getName());
 
-    public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
+    public void onEnrichmentComplete(C cvTerm, EnrichmentStatus status, String message) {
         log.info(cvTerm.toString()+" enrichment complete with status ["+status+"], message: "+message);
     }
 
-    public void onEnrichmentError(CvTerm object, String message, Exception e) {
+    public void onEnrichmentError(C object, String message, Exception e) {
         log.error(object.toString()+" enrichment error, message: "+message, e);
     }
 }

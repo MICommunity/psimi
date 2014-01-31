@@ -18,9 +18,9 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class CvTermEnricherStatisticsWriter
-        extends EnricherStatisticsWriter<CvTerm>
-        implements CvTermEnricherListener {
+public class CvTermEnricherStatisticsWriter<C extends CvTerm>
+        extends EnricherStatisticsWriter<C>
+        implements CvTermEnricherListener<C> {
 
     private static final String FILE_NAME = "cv_term";
 

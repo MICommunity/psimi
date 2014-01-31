@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
 
@@ -27,8 +28,8 @@ public class MinimalSourceUpdater extends MinimalSourceEnricher{
         if (cvTermFetched.getPublication() != null && cvTermFetched.getPublication() != cvTermToEnrich.getPublication()){
             Publication oldPub = cvTermToEnrich.getPublication();
             cvTermToEnrich.setPublication(cvTermFetched.getPublication());
-            if (getSourceEnricherListener() != null){
-                getSourceEnricherListener().onPublicationUpdate(cvTermToEnrich, oldPub);
+            if (getCvTermEnricherListener() instanceof SourceEnricherListener){
+                ((SourceEnricherListener)getCvTermEnricherListener()).onPublicationUpdate(cvTermToEnrich, oldPub);
             }
         }
     }

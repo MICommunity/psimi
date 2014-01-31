@@ -17,7 +17,7 @@ import java.io.IOException;
  * @since 18/07/13
  */
 public class SourceEnricherStatisticsWriter
-        extends CvTermEnricherStatisticsWriter
+        extends CvTermEnricherStatisticsWriter<Source>
         implements SourceEnricherListener {
 
     private static final String FILE_NAME = "source";

@@ -16,7 +16,7 @@ import java.io.IOException;
  * @since 18/07/13
  */
 public class OntologyTermEnricherStatisticsWriter
-        extends CvTermEnricherStatisticsWriter
+        extends CvTermEnricherStatisticsWriter<OntologyTerm>
         implements OntologyTermEnricherListener {
 
     private static final String FILE_NAME = "ontology_term";
