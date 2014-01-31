@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 /**
@@ -38,8 +39,8 @@ public class MinimalOntologyTermUpdater extends MinimalOntologyTermEnricher{
                 || (cvTermFetched.getDefinition() == null && cvTermFetched.getDefinition() != null))){
             String oldDef = cvTermToEnrich.getDefinition();
             cvTermToEnrich.setDefinition(cvTermFetched.getDefinition());
-            if (getOntologyTermEnricherListener() != null){
-                getOntologyTermEnricherListener().onDefinitionUpdate(cvTermToEnrich, oldDef);
+            if (getCvTermEnricherListener() instanceof OntologyTermEnricherListener){
+                ((OntologyTermEnricherListener)getCvTermEnricherListener()).onDefinitionUpdate(cvTermToEnrich, oldDef);
             }
         }
     }

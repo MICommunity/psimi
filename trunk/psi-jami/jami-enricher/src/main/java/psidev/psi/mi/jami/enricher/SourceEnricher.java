@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
-import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
 import psidev.psi.mi.jami.model.Source;
 
 /**
@@ -14,26 +12,7 @@ import psidev.psi.mi.jami.model.Source;
  * @since <pre>29/01/14</pre>
  */
 
-public interface SourceEnricher extends MIEnricher<Source>{
-
-    /**
-     * The sourceEnricherListener to be used.
-     * It will be fired at all points where a change is made to the source
-     * @param listener  The listener to use. Can be null.
-     */
-    public void setSourceEnricherListener(SourceEnricherListener listener);
-
-    /**
-     * The current sourceTermEnricherListener.
-     * @return  the current listener. May be null.
-     */
-    public SourceEnricherListener getSourceEnricherListener();
-
-    /**
-     * The fetcher to be used for used to collect data.
-     * @return  The fetcher which is currently being used for fetching.
-     */
-    public SourceFetcher getSourceFetcher();
+public interface SourceEnricher extends CvTermEnricher<Source>{
 
     /**
      * The publication enricher to be used.

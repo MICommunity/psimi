@@ -16,9 +16,9 @@ import psidev.psi.mi.jami.model.Xref;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/07/13
  */
-public class CvTermEnricherListenerManager
-    extends EnricherListenerManager<CvTerm, CvTermEnricherListener>
-    implements CvTermEnricherListener{
+public class CvTermEnricherListenerManager<C extends CvTerm>
+    extends EnricherListenerManager<C, CvTermEnricherListener<C>>
+    implements CvTermEnricherListener<C>{
 
     /**
      * A constructor to create a listener manager with no listeners.
@@ -29,7 +29,7 @@ public class CvTermEnricherListenerManager
      * A constructor to initiate a listener manager with as many listeners as required.
      * @param listeners     The listeners to add.
      */
-    public CvTermEnricherListenerManager(CvTermEnricherListener... listeners){
+    public CvTermEnricherListenerManager(CvTermEnricherListener<C>... listeners){
         super(listeners);
     }
 

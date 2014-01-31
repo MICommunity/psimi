@@ -19,19 +19,19 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/05/13
  */
-public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements CvTermEnricher{
+public class MinimalCvTermEnricher<C extends CvTerm> extends AbstractMIEnricher<C> implements CvTermEnricher<C>{
 
     private int retryCount = 5;
 
-    private CvTermFetcher fetcher = null;
-    private CvTermEnricherListener listener = null;
+    private CvTermFetcher<C> fetcher = null;
+    private CvTermEnricherListener<C> listener = null;
 
     /**
      * A constructor matching super.
      * @param cvTermFetcher The fetcher to initiate the enricher with.
      *                      If null, an illegal state exception will be thrown at the next enrichment.
      */
-    public MinimalCvTermEnricher(CvTermFetcher cvTermFetcher) {
+    public MinimalCvTermEnricher(CvTermFetcher<C> cvTermFetcher) {
         if (cvTermFetcher == null){
             throw new IllegalArgumentException("The fetcher is required and cannot be null");
         }
@@ -42,7 +42,7 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
      * The fetcher to be used for used for fetcher.
      * @return  The fetcher which is being used for fetching.
      */
-    public CvTermFetcher getCvTermFetcher() {
+    public CvTermFetcher<C> getCvTermFetcher() {
         return fetcher;
     }
 
@@ -51,14 +51,14 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
      * It will be fired at all points where a change is made to the cvTerm
      * @param listener  The listener to use. Can be null.
      */
-    public void setCvTermEnricherListener(CvTermEnricherListener listener) {
+    public void setCvTermEnricherListener(CvTermEnricherListener<C> listener) {
         this.listener = listener;
     }
     /**
      * The current CvTermEnricherListener.
      * @return  the current listener. May be null.
      */
-    public CvTermEnricherListener getCvTermEnricherListener() {
+    public CvTermEnricherListener<C> getCvTermEnricherListener() {
         return listener;
     }
 
@@ -74,7 +74,7 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
      * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
      * @param cvTermToEnrich the CvTerm to enrich
      */
-    protected void processCvTerm(CvTerm cvTermToEnrich, CvTerm cvTermFetched){
+    protected void processCvTerm(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
 
         //ShortName not checked - never null
 
@@ -85,12 +85,12 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
         processIdentifiers(cvTermToEnrich, cvTermFetched);
     }
 
-    protected void processIdentifiers(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    protected void processIdentifiers(C cvTermToEnrich, C cvTermFetched) {
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getIdentifiers(), cvTermFetched.getIdentifiers(), false, true,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
-    protected void processFullName(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    protected void processFullName(C cvTermToEnrich, C cvTermFetched) {
         if(cvTermToEnrich.getFullName() == null
                 && cvTermFetched.getFullName() != null){
 
@@ -101,8 +101,8 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
     }
 
     @Override
-    public CvTerm find(CvTerm cvTermToEnrich) throws EnricherException {
-        CvTerm cvTermFetched = null;
+    public C find(C cvTermToEnrich) throws EnricherException {
+        C cvTermFetched = null;
 
         if(cvTermToEnrich.getMIIdentifier() != null){
             cvTermFetched = fetchCvTerm(cvTermToEnrich.getMIIdentifier(), CvTermUtils.getPsimi());
@@ -155,18 +155,18 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(CvTerm cvTermToEnrich) {
+    protected void onEnrichedVersionNotFound(C cvTermToEnrich) {
         if(getCvTermEnricherListener() != null)
             getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The cvTerm does not exist.");
     }
 
     @Override
-    public void enrich(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    public void enrich(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
         processCvTerm(cvTermToEnrich, cvTermFetched);
         if(listener != null) listener.onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "CvTerm enriched successfully.");
     }
 
-    private CvTerm fetchCvTerm(String id, CvTerm db) throws EnricherException {
+    private C fetchCvTerm(String id, CvTerm db) throws EnricherException {
         try {
             return getCvTermFetcher().fetchByIdentifier(id, db);
         } catch (BridgeFailedException e) {
@@ -183,7 +183,7 @@ public class MinimalCvTermEnricher extends AbstractMIEnricher<CvTerm> implements
         }
     }
 
-    private CvTerm fetchCvTerm(String name, String db) throws EnricherException {
+    private C fetchCvTerm(String name, String db) throws EnricherException {
         try {
             return getCvTermFetcher().fetchByName(name, db);
         } catch (BridgeFailedException e) {

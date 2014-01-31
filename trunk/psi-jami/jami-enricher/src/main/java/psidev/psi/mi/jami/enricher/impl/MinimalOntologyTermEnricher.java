@@ -1,12 +1,13 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OntologyTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm> implements OntologyTermEnricher{
 
-    private CvTermEnricher cvEnricher = null;
+    private CvTermEnricher<OntologyTerm> cvEnricher = null;
 
     private Map<OntologyTerm, OntologyTerm> processedTerms;
 
@@ -35,40 +36,16 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
      *                      If null, an illegal state exception will be thrown at the next enrichment.
      */
     public MinimalOntologyTermEnricher(OntologyTermFetcher cvTermFetcher) {
-        this.cvEnricher = new MinimalCvTermEnricher(cvTermFetcher);
+        this.cvEnricher = new MinimalCvTermEnricher<OntologyTerm>(cvTermFetcher);
         this.processedTerms = new IdentityHashMap<OntologyTerm, OntologyTerm>();
     }
 
-    protected MinimalOntologyTermEnricher(CvTermEnricher cvEnricher) {
+    protected MinimalOntologyTermEnricher(CvTermEnricher<OntologyTerm> cvEnricher) {
         if (cvEnricher == null){
            throw new IllegalArgumentException("The cv term enricher cannot be null in ontology term enricher");
         }
         this.cvEnricher = cvEnricher;
         this.processedTerms = new IdentityHashMap<OntologyTerm, OntologyTerm>();
-    }
-
-    /**
-     * The fetcher to be used for used for fetcher.
-     * @return  The fetcher which is being used for fetching.
-     */
-    public OntologyTermFetcher getOntologyTermFetcher() {
-        return (OntologyTermFetcher)this.cvEnricher.getCvTermFetcher();
-    }
-
-    /**
-     * The ontologyTermEnricherListener to be used.
-     * It will be fired at all points where a change is made to the cvTerm
-     * @param listener  The listener to use. Can be null.
-     */
-    public void setOntologyTermEnricherListener(OntologyTermEnricherListener listener) {
-        this.cvEnricher.setCvTermEnricherListener(listener);
-    }
-    /**
-     * The current OntologyTermEnricherListener.
-     * @return  the current listener. May be null.
-     */
-    public OntologyTermEnricherListener getOntologyTermEnricherListener() {
-        return (OntologyTermEnricherListener)this.cvEnricher.getCvTermEnricherListener();
     }
 
     @Override
@@ -95,8 +72,8 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
         if (cvTermToEnrich.getDefinition() == null && cvTermFetched.getDefinition() != null){
             String oldDef = cvTermToEnrich.getDefinition();
             cvTermToEnrich.setDefinition(cvTermFetched.getDefinition());
-            if (getOntologyTermEnricherListener() != null){
-                getOntologyTermEnricherListener().onDefinitionUpdate(cvTermToEnrich, oldDef);
+            if (getCvTermEnricherListener() instanceof OntologyTermEnricherListener){
+                ((OntologyTermEnricherListener)getCvTermEnricherListener()).onDefinitionUpdate(cvTermToEnrich, oldDef);
             }
         }
     }
@@ -111,20 +88,20 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
 
     @Override
     protected void onEnrichedVersionNotFound(OntologyTerm cvTermToEnrich) {
-        if(getOntologyTermEnricherListener() != null)
-            getOntologyTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The ontology term does not exist.");
+        if(getCvTermEnricherListener() != null)
+            getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The ontology term does not exist.");
     }
 
     @Override
     public void enrich(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
         this.cvEnricher.enrich(cvTermToEnrich, cvTermFetched);
         processOntologyTerm(cvTermToEnrich, cvTermFetched);
-        if(getOntologyTermEnricherListener() != null) getOntologyTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "Ontology term enriched successfully.");
+        if(getCvTermEnricherListener() != null) getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "Ontology term enriched successfully.");
     }
 
     @Override
     public OntologyTerm find(OntologyTerm objectToEnrich) throws EnricherException {
-        return (OntologyTerm)((AbstractMIEnricher<CvTerm>)this.cvEnricher).find(objectToEnrich);
+        return ((AbstractMIEnricher<OntologyTerm>)this.cvEnricher).find(objectToEnrich);
     }
 
     /**
@@ -160,12 +137,12 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
             // remove term not in second list
             if (remove && !containsTerm){
                 termIterator.remove();
-                if (getOntologyTermEnricherListener() != null){
+                if (getCvTermEnricherListener() instanceof OntologyTermEnricherListener){
                     if (isParentCollection){
-                        getOntologyTermEnricherListener().onRemovedParent(termToEnrich, term);
+                        ((OntologyTermEnricherListener)getCvTermEnricherListener()).onRemovedParent(termToEnrich, term);
                     }
                     else{
-                        getOntologyTermEnricherListener().onRemovedChild(termToEnrich, term);
+                        ((OntologyTermEnricherListener)getCvTermEnricherListener()).onRemovedChild(termToEnrich, term);
                     }
                 }
             }
@@ -186,15 +163,27 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
             // add missing xref not in second list
             if (!containsTerm){
                 toEnrichTerms.add(term);
-                if (getOntologyTermEnricherListener() != null){
+                if (getCvTermEnricherListener() instanceof OntologyTermEnricherListener){
                     if (isParentCollection){
-                        getOntologyTermEnricherListener().onAddedParent(termToEnrich, term);
+                        ((OntologyTermEnricherListener)getCvTermEnricherListener()).onAddedParent(termToEnrich, term);
                     }
                     else{
-                        getOntologyTermEnricherListener().onAddedChild(termToEnrich, term);
+                        ((OntologyTermEnricherListener)getCvTermEnricherListener()).onAddedChild(termToEnrich, term);
                     }
                 }
             }
         }
+    }
+
+    public CvTermFetcher<OntologyTerm> getCvTermFetcher() {
+        return this.cvEnricher.getCvTermFetcher();
+    }
+
+    public void setCvTermEnricherListener(CvTermEnricherListener<OntologyTerm> listener) {
+        this.cvEnricher.setCvTermEnricherListener(listener);
+    }
+
+    public CvTermEnricherListener<OntologyTerm> getCvTermEnricherListener() {
+        return this.cvEnricher.getCvTermEnricherListener();
     }
 }

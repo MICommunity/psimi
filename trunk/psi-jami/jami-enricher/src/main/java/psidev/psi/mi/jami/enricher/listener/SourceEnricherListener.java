@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener;
 
 import psidev.psi.mi.jami.listener.SourceChangeListener;
+import psidev.psi.mi.jami.model.Source;
 
 /**
  * An extension of the SourceChangeListener
@@ -11,6 +12,6 @@ import psidev.psi.mi.jami.listener.SourceChangeListener;
  * @since 13/06/13
  */
 public interface SourceEnricherListener
-        extends CvTermEnricherListener, SourceChangeListener{
+        extends CvTermEnricherListener<Source>, SourceChangeListener{
 
 }

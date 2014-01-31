@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 
@@ -14,14 +15,14 @@ import psidev.psi.mi.jami.model.CvTerm;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/06/13
  */
-public class MinimalCvTermUpdater extends MinimalCvTermEnricher{
+public class MinimalCvTermUpdater<C extends CvTerm> extends MinimalCvTermEnricher<C>{
 
     /**
      * A constructor matching super.
      * @param cvTermFetcher The fetcher to initiate the enricher with.
      *                      If null, an illegal state exception will be thrown at the next enrichment.
      */
-    public MinimalCvTermUpdater(CvTermFetcher cvTermFetcher) {
+    public MinimalCvTermUpdater(CvTermFetcher<C> cvTermFetcher) {
         super(cvTermFetcher);
     }
 
@@ -30,14 +31,14 @@ public class MinimalCvTermUpdater extends MinimalCvTermEnricher{
      * @param cvTermToEnrich the CvTerm to enrich
      */
     @Override
-    protected void processCvTerm(CvTerm cvTermToEnrich, CvTerm cvTermFetched){
+    protected void processCvTerm(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
         super.processCvTerm(cvTermToEnrich, cvTermFetched);
 
         // == Short Name ====================================================================
         processShortabel(cvTermToEnrich, cvTermFetched);
     }
 
-    protected void processShortabel(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    protected void processShortabel(C cvTermToEnrich, C cvTermFetched) {
         if(cvTermFetched.getShortName() != null
                 && ! cvTermFetched.getShortName().equalsIgnoreCase(cvTermToEnrich.getShortName())){
 
@@ -49,13 +50,13 @@ public class MinimalCvTermUpdater extends MinimalCvTermEnricher{
     }
 
     @Override
-    protected void processIdentifiers(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    protected void processIdentifiers(C cvTermToEnrich, C cvTermFetched) {
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getIdentifiers(), cvTermFetched.getIdentifiers(), true, true,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
     @Override
-    protected void processFullName(CvTerm cvTermToEnrich, CvTerm cvTermFetched) {
+    protected void processFullName(C cvTermToEnrich, C cvTermFetched) {
         // == Full Name ======================================================================
         if((cvTermFetched.getFullName() != null && !cvTermFetched.getFullName().equals(cvTermToEnrich.getFullName()))
              || (cvTermFetched.getFullName() == null

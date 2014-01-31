@@ -1,13 +1,14 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Source;
 
 /**
@@ -20,7 +21,7 @@ import psidev.psi.mi.jami.model.Source;
  */
 public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements SourceEnricher{
 
-    private CvTermEnricher cvEnricher = null;
+    private CvTermEnricher<Source> cvEnricher = null;
     private PublicationEnricher publicationEnricher=null;
 
     /**
@@ -40,30 +41,6 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
     }
 
     /**
-     * The fetcher to be used for used for fetcher.
-     * @return  The fetcher which is being used for fetching.
-     */
-    public SourceFetcher getSourceFetcher() {
-        return (SourceFetcher)this.cvEnricher.getCvTermFetcher();
-    }
-
-    /**
-     * The sourceEnricherListener to be used.
-     * It will be fired at all points where a change is made to the cvTerm
-     * @param listener  The listener to use. Can be null.
-     */
-    public void setSourceEnricherListener(SourceEnricherListener listener) {
-        this.cvEnricher.setCvTermEnricherListener(listener);
-    }
-    /**
-     * The current sourceEnricherListener.
-     * @return  the current listener. May be null.
-     */
-    public SourceEnricherListener getSourceEnricherListener() {
-        return (SourceEnricherListener)this.cvEnricher.getCvTermEnricherListener();
-    }
-
-    /**
      * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
      * @param cvTermToEnrich the CvTerm to enrich
      */
@@ -79,8 +56,8 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
     protected void processPublication(Source cvTermToEnrich, Source cvTermFetched) {
         if (cvTermToEnrich.getPublication() == null && cvTermFetched.getPublication() != null){
              cvTermToEnrich.setPublication(cvTermFetched.getPublication());
-            if (getSourceEnricherListener() != null){
-                getSourceEnricherListener().onPublicationUpdate(cvTermToEnrich, null);
+            if (getCvTermEnricherListener() instanceof SourceEnricherListener){
+                ((SourceEnricherListener)getCvTermEnricherListener()).onPublicationUpdate(cvTermToEnrich, null);
             }
         }
     }
@@ -89,18 +66,18 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
     public void enrich(Source cvTermToEnrich, Source cvTermFetched) throws EnricherException {
         this.cvEnricher.enrich(cvTermToEnrich, cvTermFetched);
         processSource(cvTermToEnrich, cvTermFetched);
-        if(getSourceEnricherListener() != null) getSourceEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "Ontology term enriched successfully.");
+        if(getCvTermEnricherListener() != null) getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.SUCCESS, "Ontology term enriched successfully.");
     }
 
     @Override
     public Source find(Source objectToEnrich) throws EnricherException {
-        return (Source)((AbstractMIEnricher<CvTerm>)this.cvEnricher).find(objectToEnrich);
+        return ((AbstractMIEnricher<Source>)this.cvEnricher).find(objectToEnrich);
     }
 
     @Override
     protected void onEnrichedVersionNotFound(Source objectToEnrich) throws EnricherException {
-        if(getSourceEnricherListener() != null)
-            getSourceEnricherListener().onEnrichmentComplete(objectToEnrich, EnrichmentStatus.FAILED, "The source does not exist.");
+        if(getCvTermEnricherListener() != null)
+            getCvTermEnricherListener().onEnrichmentComplete(objectToEnrich, EnrichmentStatus.FAILED, "The source does not exist.");
     }
 
     public PublicationEnricher getPublicationEnricher() {
@@ -109,5 +86,17 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
 
     public void setPublicationEnricher(PublicationEnricher publicationEnricher) {
         this.publicationEnricher = publicationEnricher;
+    }
+
+    public CvTermFetcher<Source> getCvTermFetcher() {
+        return this.cvEnricher.getCvTermFetcher();
+    }
+
+    public void setCvTermEnricherListener(CvTermEnricherListener<Source> listener) {
+        this.cvEnricher.setCvTermEnricherListener(listener);
+    }
+
+    public CvTermEnricherListener<Source> getCvTermEnricherListener() {
+        return this.cvEnricher.getCvTermEnricherListener();
     }
 }
