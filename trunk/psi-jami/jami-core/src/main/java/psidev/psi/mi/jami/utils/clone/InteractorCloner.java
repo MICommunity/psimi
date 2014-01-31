@@ -39,6 +39,21 @@ public class InteractorCloner {
         }
     }
 
+    public static void copyAndOverrideBasicPolymerProperties(Polymer source, Polymer target){
+        if (source != null && target != null){
+            copyAndOverrideBasicInteractorProperties(source, target);
+            target.setSequence(source.getSequence());
+        }
+    }
+
+    public static void copyAndOverrideBasicInteractorPoolProperties(InteractorPool source, InteractorPool target){
+        if (source != null && target != null){
+            copyAndOverrideBasicInteractorProperties(source, target);
+            target.clear();
+            target.addAll(source);
+        }
+    }
+
     /***
      * This method will copy properties of complex source in complex target and will override all the other properties of Target complex.
      * This method does not copy the
