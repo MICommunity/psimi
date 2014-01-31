@@ -12,6 +12,6 @@ import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
 
 public class FullSourceUpdater extends MinimalSourceUpdater{
     public FullSourceUpdater(SourceFetcher cvTermFetcher) {
-        super(new FullCvTermUpdater(cvTermFetcher));
+        super(new FullCvTermUpdater<psidev.psi.mi.jami.model.Source>(cvTermFetcher));
     }
 }

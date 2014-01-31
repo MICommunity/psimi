@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
+import psidev.psi.mi.jami.model.OntologyTerm;
 
 /**
  * Full ontology term updater
@@ -12,6 +13,6 @@ import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 
 public class FullOntologyTermUpdater extends MinimalOntologyTermUpdater{
     public FullOntologyTermUpdater(OntologyTermFetcher cvTermFetcher) {
-        super(new FullCvTermUpdater(cvTermFetcher));
+        super(new FullCvTermUpdater<OntologyTerm>(cvTermFetcher));
     }
 }
