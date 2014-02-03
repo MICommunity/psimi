@@ -135,6 +135,16 @@ public class FeatureEnricherStatisticsWriter<T extends Feature>
         incrementUpdateCount();
     }
 
+    public void onAddedLinkedFeature(T feature, T added) {
+        checkObject(feature);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedLinkedFeature(T feature, T removed) {
+        checkObject(feature);
+        incrementRemovedCount();
+    }
+
 
     public void onAddedAlias(T o, Alias added) {
         checkObject(o);
