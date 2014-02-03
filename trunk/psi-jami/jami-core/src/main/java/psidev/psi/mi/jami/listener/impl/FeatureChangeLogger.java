@@ -102,6 +102,14 @@ public class FeatureChangeLogger<T extends Feature> implements FeatureChangeList
         featureChangeLogger.log(Level.INFO, "The identifier " + removed.toString() + " has been removed from the feature " + protein.toString());
     }
 
+    public void onAddedLinkedFeature(T protein, T added) {
+        featureChangeLogger.log(Level.INFO, "The feature " + added.toString() + " has been attached to the feature " + protein.toString());
+    }
+
+    public void onRemovedLinkedFeature(T protein, T removed) {
+        featureChangeLogger.log(Level.INFO, "The feature " + removed.toString() + " has been detached from the feature " + protein.toString());
+    }
+
     public void onAddedXref(T protein, Xref added) {
         featureChangeLogger.log(Level.INFO, "The xref " + added.toString() + " has been added to the feature " + protein.toString());
     }
