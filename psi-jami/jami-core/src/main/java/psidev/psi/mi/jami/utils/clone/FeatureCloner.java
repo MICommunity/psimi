@@ -29,6 +29,8 @@ public class FeatureCloner {
             target.setInteractionEffect(source.getInteractionEffect());
 
             // copy collections
+            target.getAliases().clear();
+            target.getAliases().addAll(source.getAliases());
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
@@ -59,6 +61,8 @@ public class FeatureCloner {
             target.setInteractionEffect(source.getInteractionEffect());
 
             // copy collections
+            target.getAliases().clear();
+            target.getAliases().addAll(source.getAliases());
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
@@ -87,6 +91,8 @@ public class FeatureCloner {
             target.setInteractionEffect(source.getInteractionEffect());
 
             // copy collections
+            target.getAliases().clear();
+            target.getAliases().addAll(source.getAliases());
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
