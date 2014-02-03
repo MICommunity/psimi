@@ -30,4 +30,8 @@ public interface FeatureChangeListener<F extends Feature> extends AnnotationsCha
     public void onInteractionDependencyUpdate(F feature , CvTerm oldDependency);
 
     public void onInteractionEffectUpdate(F feature , CvTerm oldEffect);
+
+    public void onAddedLinkedFeature(F feature, F added);
+
+    public void onRemovedLinkedFeature(F feature, F removed);
 }
