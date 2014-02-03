@@ -34,12 +34,20 @@ public class InteractorChangeLogger<T extends Interactor> implements InteractorC
         }
     }
 
-    public void onAddedInteractorType(T protein) {
-        interactorChangeLogger.log(Level.INFO, "The interactor type " + protein.getInteractorType().toString() + " has been added to the interactor " + protein.toString());
+    public void onInteractorTypeUpdate(T protein, CvTerm old) {
+        interactorChangeLogger.log(Level.INFO, "The interactor type" + old.toString() + " has been replaced with " + protein.getInteractorType().toString()+ " in the interactor " + protein.toString());
     }
 
-    public void onAddedOrganism(T protein) {
-        interactorChangeLogger.log(Level.INFO, "The organism " + protein.getOrganism().getTaxId() + " has been added to the interactor " + protein.toString());
+    public void onOrganismUpdate(T protein, Organism old) {
+        if (old == null){
+            interactorChangeLogger.log(Level.INFO, "The organism has been initialised for the interactor " + protein.toString());
+        }
+        else if (protein.getOrganism() == null){
+            interactorChangeLogger.log(Level.INFO, "The organism has been reset for the interactor " + protein.toString());
+        }
+        else {
+            interactorChangeLogger.log(Level.INFO, "The organism " + old.toString() + " has been replaced with " + protein.getOrganism() + " in the interactor " + protein.toString());
+        }
     }
 
     public void onAddedIdentifier(T protein, Xref added) {
