@@ -29,6 +29,11 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
     }
 
     @Override
+    protected void processLinkedFeatures(F featureToEnrich, F objectSource) throws EnricherException {
+        mergeLinkedFeatures(featureToEnrich, featureToEnrich.getLinkedFeatures(), objectSource.getLinkedFeatures(), true);
+    }
+
+    @Override
     protected void processMinimalUpdates(F featureToEnrich) throws EnricherException {
         this.minimalUpdater.processMinimalUpdates(featureToEnrich);
     }

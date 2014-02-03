@@ -1,8 +1,13 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import org.apache.commons.collections.map.IdentityMap;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Feature;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Full enricher for features
@@ -11,8 +16,17 @@ import psidev.psi.mi.jami.model.Feature;
  * @since 13/08/13
  */
 public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnricher<F> {
+    private Map<F, F> processedFeatures;
 
     public FullFeatureEnricher(){
+        this.processedFeatures = new IdentityMap();
+    }
+
+    @Override
+    public void enrich(F objectToEnrich) throws EnricherException {
+        this.processedFeatures.clear();
+        this.processedFeatures.put(objectToEnrich, objectToEnrich);
+        super.enrich(objectToEnrich);
     }
 
     @Override
@@ -28,6 +42,13 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
 
         // process annotations
         processAnnotations(featureToEnrich, objectSource);
+
+        // process linked features
+        processLinkedFeatures(featureToEnrich, objectSource);
+    }
+
+    protected void processLinkedFeatures(F featureToEnrich, F objectSource) throws EnricherException {
+        mergeLinkedFeatures(featureToEnrich, (Collection<F>)featureToEnrich.getLinkedFeatures(), (Collection<F>)objectSource.getLinkedFeatures(), false);
     }
 
     @Override
@@ -83,5 +104,53 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
 
     protected void processAliases(F objectToEnrich, F termFetched) {
         EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), termFetched.getAliases(), false, getFeatureEnricherListener());
+    }
+
+    protected void mergeLinkedFeatures(F objectToEnrich, Collection<F> linkedFeaturesToEnrich, Collection<F> fetchedFeatures, boolean remove) throws EnricherException {
+
+        Iterator<F> featureIterator = linkedFeaturesToEnrich.iterator();
+        while(featureIterator.hasNext()){
+            F feature = featureIterator.next();
+            boolean containsFeature = false;
+            for (F feature2 : fetchedFeatures){
+                if (feature == feature2){
+                    containsFeature = true;
+                    // enrich terms that are here
+                    if (!processedFeatures.containsKey(feature)){
+                        processedFeatures.put(feature, feature);
+                        enrich(feature, feature2);
+                    }
+                    break;
+                }
+            }
+            // remove term not in second list
+            if (remove && !containsFeature){
+                featureIterator.remove();
+                if (getFeatureEnricherListener() != null){
+                    getFeatureEnricherListener().onRemovedLinkedFeature(objectToEnrich, feature);
+                }
+            }
+        }
+
+        // add terms from fetchedTerms that are not in toEnrichTerm
+        featureIterator = fetchedFeatures.iterator();
+        while(featureIterator.hasNext()){
+            F feature = featureIterator.next();
+            boolean containsFeature = false;
+            for (F feature2 : linkedFeaturesToEnrich){
+                // identical terms
+                if (feature == feature2){
+                    containsFeature = true;
+                    break;
+                }
+            }
+            // add missing xref not in second list
+            if (!containsFeature){
+                linkedFeaturesToEnrich.add(feature);
+                if (getFeatureEnricherListener() != null){
+                    getFeatureEnricherListener().onAddedLinkedFeature(objectToEnrich, feature);
+                }
+            }
+        }
     }
 }
