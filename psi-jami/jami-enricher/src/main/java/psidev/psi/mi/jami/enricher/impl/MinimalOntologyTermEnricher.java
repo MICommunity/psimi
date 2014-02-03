@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import org.apache.commons.collections.map.IdentityMap;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
@@ -12,7 +13,6 @@ import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Collection;
-import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
      */
     public MinimalOntologyTermEnricher(OntologyTermFetcher cvTermFetcher) {
         this.cvEnricher = new MinimalCvTermEnricher<OntologyTerm>(cvTermFetcher);
-        this.processedTerms = new IdentityHashMap<OntologyTerm, OntologyTerm>();
+        this.processedTerms = new IdentityMap();
     }
 
     protected MinimalOntologyTermEnricher(CvTermEnricher<OntologyTerm> cvEnricher) {
@@ -45,7 +45,7 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
            throw new IllegalArgumentException("The cv term enricher cannot be null in ontology term enricher");
         }
         this.cvEnricher = cvEnricher;
-        this.processedTerms = new IdentityHashMap<OntologyTerm, OntologyTerm>();
+        this.processedTerms = new IdentityMap();
     }
 
     @Override
