@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Collection;
 
@@ -46,7 +47,7 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
 
     @Override
     protected void processFeatureType(F featureToEnrich, F objectSource) throws EnricherException {
-        if (featureToEnrich.getType() != objectSource.getType()){
+        if (!DefaultCvTermComparator.areEquals(featureToEnrich.getType(), objectSource.getType())){
             CvTerm oldType = featureToEnrich.getType();
             featureToEnrich.setType(objectSource.getType());
             if (getFeatureEnricherListener() != null){

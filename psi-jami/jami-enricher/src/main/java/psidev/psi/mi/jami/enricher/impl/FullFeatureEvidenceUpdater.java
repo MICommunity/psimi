@@ -9,23 +9,18 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class FullFeatureEvidenceUpdater extends MinimalFeatureEvidenceUpdater {
+public class FullFeatureEvidenceUpdater extends FullFeatureUpdater<FeatureEvidence> {
 
-    /**
-     * Processes the specific details of the feature which are not delegated to a subEnricher.
-     * @param featureToEnrich       The feature being enriched.
-     * @throws EnricherException    Thrown if problems are encountered in a fetcher.
-     */
+    private MinimalFeatureEvidenceUpdater minimalEnricher;
+
+    public FullFeatureEvidenceUpdater(){
+        super();
+        this.minimalEnricher = new MinimalFeatureEvidenceUpdater();
+    }
+
     @Override
-    public void enrich(FeatureEvidence featureToEnrich)
-            throws EnricherException {
-        // DETECTION METHODS
-        processDetectionMethods(featureToEnrich);
-        super.enrich(featureToEnrich);
+    protected void processMinimalUpdates(FeatureEvidence objectToEnrich, FeatureEvidence objectSource) throws EnricherException {
+        this.minimalEnricher.processMinimalUpdates(objectToEnrich, objectSource);
     }
 
-    protected void processDetectionMethods(FeatureEvidence featureToEnrich) throws EnricherException {
-        if(getCvTermEnricher() != null)
-            getCvTermEnricher().enrich(featureToEnrich.getDetectionMethods());
-    }
 }

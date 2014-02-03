@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 
 import java.util.Collection;
 
@@ -100,7 +102,7 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
 
     @Override
     protected void processInteractorType(Protein entityToEnrich, Protein fetched) throws EnricherException {
-        if (fetched.getInteractorType() != entityToEnrich.getInteractorType()){
+        if (!DefaultCvTermComparator.areEquals(fetched.getInteractorType(), entityToEnrich.getInteractorType())){
             CvTerm oldType = entityToEnrich.getInteractorType();
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
@@ -114,7 +116,7 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
 
     @Override
     protected void processOrganism(Protein entityToEnrich, Protein fetched) throws EnricherException {
-        if (fetched.getOrganism() != entityToEnrich.getOrganism()){
+        if (!DefaultOrganismComparator.areEquals(fetched.getOrganism(), entityToEnrich.getOrganism())){
             Organism old = entityToEnrich.getOrganism();
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){

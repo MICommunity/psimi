@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Provides maximum updating of the organism.
@@ -42,7 +43,7 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater{
     }
 
     protected void processCellType(Organism entityToEnrich, Organism fetched) throws EnricherException {
-        if (entityToEnrich.getCellType() != fetched.getCellType()){
+        if (!DefaultCvTermComparator.areEquals(entityToEnrich.getCellType(),fetched.getCellType())){
             CvTerm old = entityToEnrich.getCellType();
             entityToEnrich.setCellType(fetched.getCellType());
             if (getOrganismEnricherListener() != null){
@@ -55,7 +56,7 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater{
     }
 
     protected void processTissue(Organism entityToEnrich, Organism fetched) throws EnricherException {
-        if (entityToEnrich.getTissue() != fetched.getTissue()){
+        if (!DefaultCvTermComparator.areEquals(entityToEnrich.getTissue(), fetched.getTissue())){
             CvTerm old = entityToEnrich.getTissue();
             entityToEnrich.setTissue(fetched.getTissue());
             if (getOrganismEnricherListener() != null){
@@ -68,7 +69,7 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater{
     }
 
     protected void processCompartment(Organism entityToEnrich, Organism fetched) throws EnricherException {
-        if (entityToEnrich.getCompartment() != fetched.getCompartment()){
+        if (!DefaultCvTermComparator.areEquals(entityToEnrich.getCompartment(),fetched.getCompartment())){
             CvTerm old = entityToEnrich.getCompartment();
             entityToEnrich.setCompartment(fetched.getCompartment());
             if (getOrganismEnricherListener() != null){
