@@ -93,6 +93,8 @@ public class FeatureCloner {
             // copy collections
             target.getAliases().clear();
             target.getAliases().addAll(source.getAliases());
+            target.getLinkedFeatures().clear();
+            target.getLinkedFeatures().addAll(source.getLinkedFeatures());
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
