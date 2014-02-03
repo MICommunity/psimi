@@ -69,14 +69,14 @@ public void onFullNameUpdate(T interactor, String oldFullName) {
 incrementUpdateCount();
 }
 
-public void onAddedOrganism(T interactor) {
+public void onOrganismUpdate(T interactor, Organism organism) {
         checkObject(interactor);
-incrementAdditionCount();
+incrementUpdateCount();
 }
 
-public void onAddedInteractorType(T interactor) {
+public void onInteractorTypeUpdate(T interactor, CvTerm old) {
         checkObject(interactor);
-incrementAdditionCount();
+incrementUpdateCount();
 }
 
 public void onAddedIdentifier(T interactor, Xref added) {

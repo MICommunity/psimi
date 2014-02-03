@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 
@@ -53,6 +53,24 @@ public class OrganismEnricherListenerManager
     public void onTaxidUpdate(Organism organism, String oldTaxid) {
         for(OrganismEnricherListener listener : getListenersList()){
             listener.onTaxidUpdate(organism, oldTaxid);
+        }
+    }
+
+    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+        for(OrganismEnricherListener listener : getListenersList()){
+            listener.onCellTypeUpdate(organism, oldType);
+        }
+    }
+
+    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+        for(OrganismEnricherListener listener : getListenersList()){
+            listener.onTissueUpdate(organism, oldType);
+        }
+    }
+
+    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+        for(OrganismEnricherListener listener : getListenersList()){
+            listener.onCompartmentUpdate(organism, oldType);
         }
     }
 

@@ -107,7 +107,7 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
         // nothing to do
     }
 
-    protected void processOtherProperties(Organism organismToEnrich, Organism organismFetched) {
+    protected void processOtherProperties(Organism organismToEnrich, Organism organismFetched) throws EnricherException {
         // do nothing
     }
 

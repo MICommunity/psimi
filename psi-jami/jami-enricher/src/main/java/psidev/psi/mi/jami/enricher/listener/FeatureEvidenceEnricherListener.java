@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener;
 
-import psidev.psi.mi.jami.listener.FeatureChangeListener;
-import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.listener.FeatureEvidenceChangeListener;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * An extension of the FeatureChangeListener
@@ -11,6 +11,6 @@ import psidev.psi.mi.jami.model.Feature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
  */
-public interface FeatureEnricherListener<T extends Feature>
-        extends FeatureChangeListener<T>, EnricherListener<T> {
+public interface FeatureEvidenceEnricherListener
+        extends FeatureEnricherListener<FeatureEvidence>, FeatureEvidenceChangeListener {
 }

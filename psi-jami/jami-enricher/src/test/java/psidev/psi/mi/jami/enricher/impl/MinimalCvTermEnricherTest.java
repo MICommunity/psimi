@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
@@ -22,12 +21,10 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AliasUtils;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -164,7 +161,7 @@ public class MinimalCvTermEnricherTest {
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListenerManager(
                 new CvTermEnricherLogger(),
-                new CvTermEnricherListener() {
+                new CvTermEnricherListener<CvTerm>() {
                     public void onEnrichmentComplete(CvTerm object, EnrichmentStatus status, String message) {
                         assertTrue(object == persistentCvTerm);
                         assertEquals(EnrichmentStatus.FAILED , status);
@@ -220,7 +217,7 @@ public class MinimalCvTermEnricherTest {
         reportForEnrichment.clear();
 
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -300,7 +297,7 @@ public class MinimalCvTermEnricherTest {
         persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", other_short_name));
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -381,7 +378,7 @@ public class MinimalCvTermEnricherTest {
         persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", short_name));
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -464,7 +461,7 @@ public class MinimalCvTermEnricherTest {
         persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", other_short_name));
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);

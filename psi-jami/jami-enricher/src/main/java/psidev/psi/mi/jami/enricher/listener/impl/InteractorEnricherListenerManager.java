@@ -38,15 +38,15 @@ public class InteractorEnricherListenerManager<T extends Interactor> extends Enr
         }
     }
 
-    public void onAddedOrganism(T interactor) {
+    public void onOrganismUpdate(T interactor, Organism org) {
         for(InteractorEnricherListener listener : getListenersList()){
-            listener.onAddedOrganism(interactor);
+            listener.onOrganismUpdate(interactor, org);
         }
     }
 
-    public void onAddedInteractorType(T interactor) {
+    public void onInteractorTypeUpdate(T interactor, CvTerm old) {
         for(InteractorEnricherListener listener : getListenersList()){
-            listener.onAddedInteractorType(interactor);
+            listener.onInteractorTypeUpdate(interactor, old);
         }
     }
 

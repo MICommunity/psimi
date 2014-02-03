@@ -21,13 +21,13 @@ public interface FeatureEnricher <F extends Feature> extends MIEnricher<F>{
      * Sets the listener of feature changes. Can be null.
      * @param featureEnricherListener   The listener of feature changes.
      */
-    public void setFeatureEnricherListener(FeatureEnricherListener featureEnricherListener);
+    public void setFeatureEnricherListener(FeatureEnricherListener<F> featureEnricherListener);
     /**
      * Retrieves the listener of feature changes.
      * May be null if changes are not being listened to.
      * @return  The current listener of feature changes.
      */
-    public FeatureEnricherListener getFeatureEnricherListener();
+    public FeatureEnricherListener<F> getFeatureEnricherListener();
 
     /**
      * Sets the subEnricher for CvTerms. Can be null.

@@ -75,6 +75,9 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
                 // Checksums
                 processChecksums(objectToEnrich, fetchedObject);
 
+                // annotations
+                processAnnotations(objectToEnrich, fetchedObject);
+
                 // other properties
                 processOtherProperties(objectToEnrich, fetchedObject);
             }
@@ -85,6 +88,11 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         else{
             onInteractorCheckFailure(objectToEnrich, fetchedObject);
         }
+    }
+
+    protected void processAnnotations(T objectToEnrich, T fetchedObject){
+        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), false,
+                getListener());
     }
 
     public InteractorFetcher<T> getInteractorFetcher() {
@@ -132,7 +140,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         if (fetched != null && entityToEnrich.getInteractorType() == null && fetched.getInteractorType() != null){
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
-                getListener().onAddedInteractorType(entityToEnrich);
+                getListener().onInteractorTypeUpdate(entityToEnrich, null);
             }
         }
         if (cvTermEnricher != null && entityToEnrich.getInteractorType() != null){
@@ -144,7 +152,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         if (fetched != null && entityToEnrich.getOrganism() == null && fetched.getOrganism() != null){
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){
-                getListener().onAddedOrganism(entityToEnrich);
+                getListener().onOrganismUpdate(entityToEnrich, null);
             }
         }
 

@@ -2,7 +2,10 @@ package psidev.psi.mi.jami.enricher.impl;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -15,12 +18,65 @@ import psidev.psi.mi.jami.model.Organism;
  */
 public class FullOrganismUpdater extends MinimalOrganismUpdater{
 
+    private CvTermEnricher<CvTerm> cvEnricher;
+
     public FullOrganismUpdater(OrganismFetcher organismFetcher) {
         super(organismFetcher);
     }
 
+    public CvTermEnricher<CvTerm> getCvEnricher() {
+        return cvEnricher;
+    }
+
+    public void setCvEnricher(CvTermEnricher<CvTerm> cvEnricher) {
+        this.cvEnricher = cvEnricher;
+    }
+
     @Override
-    protected void processOtherProperties(Organism organismToEnrich, Organism organismFetched) {
-        EnricherUtils.mergeAliases(organismToEnrich, organismToEnrich.getAliases(), organismFetched.getAliases(), true, getOrganismEnricherListener());
+    protected void processOtherProperties(Organism organismToEnrich, Organism organismFetched) throws EnricherException {
+        EnricherUtils.mergeAliases(organismToEnrich, organismToEnrich.getAliases(), organismFetched.getAliases(), false, getOrganismEnricherListener());
+
+        processCellType(organismToEnrich, organismFetched);
+        processTissue(organismToEnrich, organismFetched);
+        processCompartment(organismToEnrich, organismFetched);
+    }
+
+    protected void processCellType(Organism entityToEnrich, Organism fetched) throws EnricherException {
+        if (entityToEnrich.getCellType() != fetched.getCellType()){
+            CvTerm old = entityToEnrich.getCellType();
+            entityToEnrich.setCellType(fetched.getCellType());
+            if (getOrganismEnricherListener() != null){
+                getOrganismEnricherListener().onCellTypeUpdate(entityToEnrich, old);
+            }
+        }
+        if (getCvEnricher() != null && entityToEnrich.getCellType() != null){
+            getCvEnricher().enrich(entityToEnrich.getCellType());
+        }
+    }
+
+    protected void processTissue(Organism entityToEnrich, Organism fetched) throws EnricherException {
+        if (entityToEnrich.getTissue() != fetched.getTissue()){
+            CvTerm old = entityToEnrich.getTissue();
+            entityToEnrich.setTissue(fetched.getTissue());
+            if (getOrganismEnricherListener() != null){
+                getOrganismEnricherListener().onTissueUpdate(entityToEnrich, old);
+            }
+        }
+        if (getCvEnricher() != null && entityToEnrich.getTissue() != null){
+            getCvEnricher().enrich(entityToEnrich.getTissue());
+        }
+    }
+
+    protected void processCompartment(Organism entityToEnrich, Organism fetched) throws EnricherException {
+        if (entityToEnrich.getCompartment() != fetched.getCompartment()){
+            CvTerm old = entityToEnrich.getCompartment();
+            entityToEnrich.setCompartment(fetched.getCompartment());
+            if (getOrganismEnricherListener() != null){
+                getOrganismEnricherListener().onCompartmentUpdate(entityToEnrich, old);
+            }
+        }
+        if (getCvEnricher() != null && entityToEnrich.getCompartment() != null){
+            getCvEnricher().enrich(entityToEnrich.getCompartment());
+        }
     }
 }

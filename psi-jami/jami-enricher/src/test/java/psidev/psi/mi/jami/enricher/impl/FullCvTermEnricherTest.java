@@ -160,7 +160,7 @@ public class FullCvTermEnricherTest {
 
         cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListenerManager(
                 new CvTermEnricherLogger(),
-                new CvTermEnricherListener() {
+                new CvTermEnricherListener<CvTerm>() {
                     public void onEnrichmentComplete(CvTerm object, EnrichmentStatus status, String message) {
                         assertTrue(object == persistentCvTerm);
                         assertEquals(EnrichmentStatus.FAILED , status);
@@ -218,7 +218,7 @@ public class FullCvTermEnricherTest {
         reportForEnrichment.clear();
 
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -299,7 +299,7 @@ public class FullCvTermEnricherTest {
         persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", other_short_name));
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -382,7 +382,7 @@ public class FullCvTermEnricherTest {
         persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", short_name));
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -465,7 +465,7 @@ public class FullCvTermEnricherTest {
         persistentCvTerm.getSynonyms().add(AliasUtils.createAlias(
                 "synonym", "MI:1041", other_short_name));
 
-        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener() {
+        cvTermEnricher.setCvTermEnricherListener(new CvTermEnricherListener<CvTerm>() {
             public void onEnrichmentComplete(CvTerm cvTerm, EnrichmentStatus status, String message) {
                 assertTrue(cvTerm == persistentCvTerm);
                 assertEquals(EnrichmentStatus.SUCCESS , status);
