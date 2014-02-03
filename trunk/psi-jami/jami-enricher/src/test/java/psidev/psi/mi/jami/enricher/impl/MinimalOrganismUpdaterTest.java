@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherListenerManager;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -145,7 +146,17 @@ public class MinimalOrganismUpdaterTest {
                         assertNull(oldScientificName);
                         assertEquals(TEST_SCIENTIFICNAME , organism.getScientificName());
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
@@ -186,7 +197,17 @@ public class MinimalOrganismUpdaterTest {
                         assertEquals(TEST_OLD_SCIENTIFICNAME, oldScientificName);
                         assertEquals(TEST_SCIENTIFICNAME , organism.getScientificName());
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
@@ -219,6 +240,17 @@ public class MinimalOrganismUpdaterTest {
 
                     public void onEnrichmentError(Organism object, String message, Exception e) {
                         Assert.fail();
+                    }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
                     }
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail();}
@@ -255,7 +287,17 @@ public class MinimalOrganismUpdaterTest {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){
                         assertTrue(persistentOrganism == organism);
                         assertNull(oldCommonName);
@@ -296,6 +338,17 @@ public class MinimalOrganismUpdaterTest {
                     public void onEnrichmentComplete(Organism organism, EnrichmentStatus status, String message) {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
+                    }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
                     }
 
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){
@@ -339,7 +392,17 @@ public class MinimalOrganismUpdaterTest {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                     public void onEnrichmentError(Organism object, String message, Exception e) {
                         Assert.fail();
                     }

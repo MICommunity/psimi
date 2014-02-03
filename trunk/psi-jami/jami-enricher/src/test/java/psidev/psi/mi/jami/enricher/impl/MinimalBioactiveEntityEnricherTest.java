@@ -146,8 +146,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -205,8 +210,13 @@ public class MinimalBioactiveEntityEnricherTest {
                         assertNull(oldFullName);
                         persistentInt ++;
                     }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -259,8 +269,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -314,8 +329,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -374,8 +394,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {fail("failed");}
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -428,8 +453,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -483,8 +513,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -543,8 +578,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {fail("failed");}
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -597,8 +637,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -652,8 +697,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -713,8 +763,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed");}
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) {fail("failed");}
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -767,8 +822,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }
@@ -822,8 +882,13 @@ public class MinimalBioactiveEntityEnricherTest {
                     public void onStandardInchiUpdate(BioactiveEntity bioactiveEntity, String oldInchi){ fail("failed"); }
                     public void onShortNameUpdate(BioactiveEntity interactor, String oldShortName){ fail("failed"); }
                     public void onFullNameUpdate(BioactiveEntity interactor, String oldFullName) { fail("failed"); }
-                    public void onAddedOrganism(BioactiveEntity interactor){ fail("failed"); }
-                    public void onAddedInteractorType(BioactiveEntity interactor) { fail("failed"); }
+                    public void onOrganismUpdate(BioactiveEntity interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(BioactiveEntity interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(BioactiveEntity interactor, Xref added) { fail("failed"); }
                     public void onRemovedIdentifier(BioactiveEntity interactor, Xref removed) { fail("failed"); }
                     public void onAddedXref(BioactiveEntity interactor, Xref added){ fail("failed"); }

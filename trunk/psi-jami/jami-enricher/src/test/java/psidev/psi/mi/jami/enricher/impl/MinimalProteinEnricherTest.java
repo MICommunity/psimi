@@ -183,8 +183,14 @@ public class MinimalProteinEnricherTest {
             public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
             public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
             public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
-            public void onAddedInteractorType(Protein protein)  {fail();}
-            public void onAddedOrganism(Protein protein)  {fail();}
+
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
             public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
             public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
             public void onAddedXref(Protein protein, Xref added)  {fail();}
@@ -248,8 +254,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
-                    public void onAddedInteractorType(Protein protein)  {fail();}
-                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
                     public void onRemovedIdentifier(Protein protein, Xref removed)  {}
                     public void onAddedXref(Protein protein, Xref added)  {}
@@ -317,8 +328,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
-                    public void onAddedInteractorType(Protein protein)  {fail();}
-                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
                     public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
                     public void onAddedXref(Protein protein, Xref added)  {fail();}
@@ -386,8 +402,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
-                    public void onAddedInteractorType(Protein protein)  {fail();}
-                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
                     public void onRemovedIdentifier(Protein protein, Xref removed)  {}
                     public void onAddedXref(Protein protein, Xref added)  {}
@@ -466,8 +487,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
-                    public void onAddedInteractorType(Protein protein)  {fail();}
-                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
                     public void onRemovedIdentifier(Protein protein, Xref removed)  {fail();}
                     public void onAddedXref(Protein protein, Xref added)  {fail();}
@@ -548,8 +574,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail();}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Protein protein, String oldFullName) {fail();}
-                    public void onAddedInteractorType(Protein protein)  {fail();}
-                    public void onAddedOrganism(Protein protein)  {fail();}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)  {fail();}
                     public void onRemovedIdentifier(Protein protein, Xref removed)  {}
                     public void onAddedXref(Protein protein, Xref added)  {}
@@ -615,8 +646,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -688,8 +724,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -753,8 +794,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -817,8 +863,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -887,11 +938,13 @@ public class MinimalProteinEnricherTest {
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
 
-                    public void onAddedInteractorType(Protein protein)  {
-                        assertTrue(protein == persistentProtein);
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
                     }
 
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        assertTrue(interactor == persistentProtein);
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -960,8 +1013,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1032,8 +1090,13 @@ public class MinimalProteinEnricherTest {
                         assertEquals(TEST_FULLNAME , protein.getFullName());
                     }
 
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1100,8 +1163,13 @@ public class MinimalProteinEnricherTest {
 
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
 
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1174,8 +1242,13 @@ public class MinimalProteinEnricherTest {
 
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1243,8 +1316,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1312,8 +1390,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
 
                     public void onAddedIdentifier(Protein protein, Xref added) {
                         assertTrue(protein == persistentProtein);
@@ -1409,8 +1492,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1505,8 +1593,13 @@ public class MinimalProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail();
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}

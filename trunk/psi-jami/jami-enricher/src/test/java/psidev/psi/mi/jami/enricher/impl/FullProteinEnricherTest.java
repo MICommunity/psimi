@@ -177,8 +177,15 @@ public class FullProteinEnricherTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
+
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
+
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
                     public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
@@ -234,7 +241,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onEnrichmentError(Protein object, String message, Exception e) {
                         //To change body of implemented methods use File | Settings | File Templates.
                     }
@@ -302,7 +315,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)   {fail("failed");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)   {fail("failed");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq)       {fail("failed");}
@@ -370,7 +389,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)   {fail("failed");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)   {fail("failed");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq)       {fail("failed");}
@@ -437,7 +462,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot) {
                         assertTrue(protein == persistentProtein);
                         assertNull(oldUniprot);
@@ -516,7 +547,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot) {
                         assertTrue(protein == persistentProtein);
                         assertNotNull(oldUniprot);
@@ -594,7 +631,13 @@ public class FullProteinEnricherTest {
                         assertTrue(message.toUpperCase().contains("INTERACTOR"));
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -666,7 +709,13 @@ public class FullProteinEnricherTest {
                         assertTrue(message.toUpperCase().contains("INTERACTOR"));
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -731,7 +780,13 @@ public class FullProteinEnricherTest {
                         assertTrue(message.toUpperCase().contains("ORGANISM"));
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -795,7 +850,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -864,7 +925,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -938,7 +1005,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -1004,7 +1077,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -1078,7 +1157,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -1148,7 +1233,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -1224,7 +1315,13 @@ public class FullProteinEnricherTest {
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq) {fail("Should not reach this point");}
@@ -1303,7 +1400,13 @@ public class FullProteinEnricherTest {
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
                     public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
                     public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {
                         assertTrue(protein == persistentProtein);
                         assertNotNull(added);
@@ -1411,7 +1514,13 @@ public class FullProteinEnricherTest {
                         assertNotNull(added.getName());
                         assertEquals( "EN999" , added.getName());
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onRemovedAlias(Protein protein, Alias removed) {fail("Should not reach this point");}
                     public void onAddedChecksum(Protein protein, Checksum added) {fail("Should not reach this point");}
                     public void onRemovedChecksum(Protein protein, Checksum removed) {fail("Should not reach this point");}
@@ -1500,6 +1609,13 @@ public class FullProteinEnricherTest {
                         assertTrue(protein == persistentProtein);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt++;
+                    }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
                     }
                     public void onProteinRemapped(Protein protein, String oldUniprot)  {fail("Should not reach this point");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)  {fail("Should not reach this point");}

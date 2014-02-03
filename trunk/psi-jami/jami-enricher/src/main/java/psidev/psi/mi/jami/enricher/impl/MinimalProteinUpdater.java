@@ -4,13 +4,9 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 import java.util.Collection;
 
@@ -104,10 +100,11 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
 
     @Override
     protected void processInteractorType(Protein entityToEnrich, Protein fetched) throws EnricherException {
-        if (fetched.getInteractorType() != null && !DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
+        if (fetched.getInteractorType() != entityToEnrich.getInteractorType()){
+            CvTerm oldType = entityToEnrich.getInteractorType();
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
-                getListener().onAddedInteractorType(entityToEnrich);
+                getListener().onInteractorTypeUpdate(entityToEnrich, oldType);
             }
         }
         if (getCvTermEnricher() != null){
@@ -117,10 +114,11 @@ public class MinimalProteinUpdater extends MinimalProteinEnricher {
 
     @Override
     protected void processOrganism(Protein entityToEnrich, Protein fetched) throws EnricherException {
-        if (fetched.getOrganism() != null && !OrganismTaxIdComparator.areEquals(entityToEnrich.getOrganism(), fetched.getOrganism())){
+        if (fetched.getOrganism() != entityToEnrich.getOrganism()){
+            Organism old = entityToEnrich.getOrganism();
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){
-                getListener().onAddedOrganism(entityToEnrich);
+                getListener().onOrganismUpdate(entityToEnrich, old);
             }
         }
 
