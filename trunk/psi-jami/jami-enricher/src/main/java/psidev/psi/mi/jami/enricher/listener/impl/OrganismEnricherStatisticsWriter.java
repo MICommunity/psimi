@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 import java.io.File;
@@ -73,6 +73,21 @@ public class OrganismEnricherStatisticsWriter
     }
 
     public void onTaxidUpdate(Organism organism, String oldTaxid) {
+        checkObject(organism);
+        incrementUpdateCount();
+    }
+
+    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+        checkObject(organism);
+        incrementUpdateCount();
+    }
+
+    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+        checkObject(organism);
+        incrementUpdateCount();
+    }
+
+    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
         checkObject(organism);
         incrementUpdateCount();
     }

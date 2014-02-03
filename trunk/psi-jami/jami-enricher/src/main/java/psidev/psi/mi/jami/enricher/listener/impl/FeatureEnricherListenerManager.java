@@ -13,9 +13,9 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
  */
-public class FeatureEnricherListenerManager
-        extends EnricherListenerManager<Feature, FeatureEnricherListener>
-        implements FeatureEnricherListener{
+public class FeatureEnricherListenerManager<T extends Feature>
+        extends EnricherListenerManager<T, FeatureEnricherListener<T>>
+        implements FeatureEnricherListener<T>{
 
     /**
      * A constructor to create a listener manager with no listeners.
@@ -26,89 +26,113 @@ public class FeatureEnricherListenerManager
      * A constructor to initiate a listener manager with as many listeners as required.
      * @param listeners     The listeners to add.
      */
-    public FeatureEnricherListenerManager(FeatureEnricherListener... listeners){
+    public FeatureEnricherListenerManager(FeatureEnricherListener<T>... listeners){
         super(listeners);
     }
 
 
     //============================================================================================
 
-    public void onShortNameUpdate(Feature feature, String oldShortName) {
+    public void onShortNameUpdate(T feature, String oldShortName) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onShortNameUpdate(feature, oldShortName);
         }
     }
 
-    public void onFullNameUpdate(Feature feature, String oldFullName) {
+    public void onFullNameUpdate(T feature, String oldFullName) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onFullNameUpdate(feature, oldFullName);
         }
     }
 
-    public void onInterproUpdate(Feature feature, String oldInterpro) {
+    public void onInterproUpdate(T feature, String oldInterpro) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onInterproUpdate(feature, oldInterpro);
         }
     }
 
-    public void onTypeAdded(Feature feature, CvTerm oldType) {
+    public void onTypeUpdate(T feature, CvTerm oldType) {
         for(FeatureEnricherListener listener : getListenersList()){
-            listener.onTypeAdded(feature, oldType);
+            listener.onTypeUpdate(feature, oldType);
         }
     }
 
 
-    public void onAddedIdentifier(Feature feature, Xref added) {
+    public void onAddedIdentifier(T feature, Xref added) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onAddedIdentifier(feature, added);
         }
     }
 
-    public void onRemovedIdentifier(Feature feature, Xref removed) {
+    public void onRemovedIdentifier(T feature, Xref removed) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onRemovedIdentifier(feature, removed);
         }
     }
 
-    public void onAddedXref(Feature feature, Xref added) {
+    public void onAddedXref(T feature, Xref added) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onAddedXref(feature, added);
         }
     }
 
-    public void onRemovedXref(Feature feature, Xref removed) {
+    public void onRemovedXref(T feature, Xref removed) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener. onRemovedXref(feature, removed);
         }
     }
 
-    public void onAddedAnnotation(Feature feature, Annotation added) {
+    public void onAddedAnnotation(T feature, Annotation added) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onAddedAnnotation(feature, added);
         }
     }
 
-    public void onRemovedAnnotation(Feature feature, Annotation removed) {
+    public void onRemovedAnnotation(T feature, Annotation removed) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onRemovedAnnotation(feature, removed);
         }
     }
 
-    public void onAddedRange(Feature feature, Range added) {
+    public void onAddedRange(T feature, Range added) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener. onAddedRange(feature, added);
         }
     }
 
-    public void onRemovedRange(Feature feature, Range removed) {
+    public void onRemovedRange(T feature, Range removed) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onRemovedRange(feature, removed);
         }
     }
 
-    public void onUpdatedRangePositions(Feature feature, Range range, Position position, Position position2) {
+    public void onUpdatedRangePositions(T feature, Range range, Position position, Position position2) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onUpdatedRangePositions(feature, range, position, position2);
+        }
+    }
+
+    public void onInteractionDependencyUpdate(T feature, CvTerm oldDependency) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onInteractionDependencyUpdate(feature, oldDependency);
+        }
+    }
+
+    public void onInteractionEffectUpdate(T feature, CvTerm oldEffect) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onInteractionEffectUpdate(feature, oldEffect);
+        }
+    }
+
+    public void onAddedAlias(T o, Alias added) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onAddedAlias(o, added);
+        }
+    }
+
+    public void onRemovedAlias(T o, Alias removed) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onRemovedAlias(o, removed);
         }
     }
 }

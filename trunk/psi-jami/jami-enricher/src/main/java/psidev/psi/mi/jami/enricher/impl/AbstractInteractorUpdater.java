@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Organism;
 
 /**
  * Abstract class for updating interactor
@@ -58,9 +60,10 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     @Override
     protected void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
         if (entityToEnrich.getInteractorType() != fetched.getInteractorType()){
+            CvTerm old = entityToEnrich.getInteractorType();
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
-                getListener().onAddedInteractorType(entityToEnrich);
+                getListener().onInteractorTypeUpdate(entityToEnrich, old);
             }
         }
         if (getCvTermEnricher() != null){
@@ -71,9 +74,10 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     @Override
     protected void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
         if (entityToEnrich.getOrganism() != fetched.getOrganism()){
+            Organism old = entityToEnrich.getOrganism();
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){
-                getListener().onAddedOrganism(entityToEnrich);
+                getListener().onOrganismUpdate(entityToEnrich, old);
             }
         }
 
@@ -85,6 +89,12 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     @Override
     protected void processChecksums(T bioactiveEntityToEnrich, T fetched) throws EnricherException {
         EnricherUtils.mergeChecksums(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getChecksums(), fetched.getChecksums(), true,
+                getListener());
+    }
+
+    @Override
+    protected void processAnnotations(T objectToEnrich, T fetchedObject){
+        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), true,
                 getListener());
     }
 

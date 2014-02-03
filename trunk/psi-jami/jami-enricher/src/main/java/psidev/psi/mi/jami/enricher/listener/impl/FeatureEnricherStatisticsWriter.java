@@ -14,9 +14,9 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class FeatureEnricherStatisticsWriter
-        extends EnricherStatisticsWriter<Feature>
-        implements FeatureEnricherListener {
+public class FeatureEnricherStatisticsWriter<T extends Feature>
+        extends EnricherStatisticsWriter<T>
+        implements FeatureEnricherListener<T> {
 
 
     private static final String FILE_NAME = "feature";
@@ -60,70 +60,89 @@ public class FeatureEnricherStatisticsWriter
 
     // ================================================================
 
-    public void onShortNameUpdate(Feature feature, String oldShortName) {
+    public void onShortNameUpdate(T feature, String oldShortName) {
         checkObject(feature);
         incrementUpdateCount();
     }
 
-    public void onFullNameUpdate(Feature feature, String oldFullName) {
+    public void onFullNameUpdate(T feature, String oldFullName) {
         checkObject(feature);
         incrementUpdateCount();
     }
 
-    public void onInterproUpdate(Feature feature, String oldInterpro) {
+    public void onInterproUpdate(T feature, String oldInterpro) {
         checkObject(feature);
         incrementUpdateCount();
     }
 
-    public void onTypeAdded(Feature feature, CvTerm oldType) {
+    public void onTypeUpdate(T feature, CvTerm oldType) {
+        checkObject(feature);
+        incrementUpdateCount();
+    }
+
+    public void onAddedIdentifier(T feature, Xref added) {
         checkObject(feature);
         incrementAdditionCount();
     }
 
-    public void onAddedIdentifier(Feature feature, Xref added) {
-        checkObject(feature);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedIdentifier(Feature feature, Xref removed) {
+    public void onRemovedIdentifier(T feature, Xref removed) {
         checkObject(feature);
         incrementRemovedCount();
     }
 
-    public void onAddedXref(Feature feature, Xref added) {
+    public void onAddedXref(T feature, Xref added) {
         checkObject(feature);
         incrementAdditionCount();
     }
 
-    public void onRemovedXref(Feature feature, Xref removed) {
+    public void onRemovedXref(T feature, Xref removed) {
         checkObject(feature);
         incrementRemovedCount();
     }
 
-    public void onAddedAnnotation(Feature feature, Annotation added) {
+    public void onAddedAnnotation(T feature, Annotation added) {
         checkObject(feature);
         incrementAdditionCount();
     }
 
-    public void onRemovedAnnotation(Feature feature, Annotation removed) {
+    public void onRemovedAnnotation(T feature, Annotation removed) {
         checkObject(feature);
         incrementRemovedCount();
     }
 
-    public void onAddedRange(Feature feature, Range added) {
+    public void onAddedRange(T feature, Range added) {
         checkObject(feature);
         incrementAdditionCount();
     }
 
-    public void onRemovedRange(Feature feature, Range removed) {
+    public void onRemovedRange(T feature, Range removed) {
         checkObject(feature);
         incrementRemovedCount();
     }
 
-    public void onUpdatedRangePositions(Feature feature, Range range, Position position, Position position2) {
+    public void onUpdatedRangePositions(T feature, Range range, Position position, Position position2) {
+        checkObject(feature);
+        incrementUpdateCount();
+    }
+
+    public void onInteractionDependencyUpdate(T feature, CvTerm oldDependency) {
+        checkObject(feature);
+        incrementUpdateCount();
+    }
+
+    public void onInteractionEffectUpdate(T feature, CvTerm oldEffect) {
         checkObject(feature);
         incrementUpdateCount();
     }
 
 
+    public void onAddedAlias(T o, Alias added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAlias(T o, Alias removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
 }

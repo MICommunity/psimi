@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.enricher.util;
 
-import psidev.psi.mi.jami.listener.AliasesChangeListener;
-import psidev.psi.mi.jami.listener.ChecksumsChangeListener;
-import psidev.psi.mi.jami.listener.IdentifiersChangeListener;
-import psidev.psi.mi.jami.listener.XrefsChangeListener;
+import psidev.psi.mi.jami.listener.*;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
+import psidev.psi.mi.jami.utils.comparator.annotation.DefaultAnnotationComparator;
 import psidev.psi.mi.jami.utils.comparator.checksum.DefaultChecksumComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
@@ -207,6 +206,50 @@ public class EnricherUtils {
                 toEnrichChecksums.add(checksum);
                 if (aliasListener != null){
                     aliasListener.onAddedChecksum(termToEnrich, checksum);
+                }
+            }
+        }
+    }
+
+    public static <T extends Object> void mergeAnnotations(T termToEnrich, Collection<Annotation> toEnrichAnnotations, Collection<Annotation> fetchedAnnotations, boolean remove, AnnotationsChangeListener<T> annotationListener){
+        Iterator<Annotation> annotIterator = toEnrichAnnotations.iterator();
+        // remove aliases in toEnrichAliases that are not in fetchedAliases
+        while(annotIterator.hasNext()){
+            Annotation annot = annotIterator.next();
+            boolean containsAnnotation = false;
+            for (Annotation annot2 : fetchedAnnotations){
+                // identical annot
+                if (DefaultAnnotationComparator.areEquals(annot, annot2)){
+                    containsAnnotation = true;
+                    break;
+                }
+            }
+            // remove alias not in second list
+            if (remove && !containsAnnotation){
+                annotIterator.remove();
+                if (annotationListener != null){
+                    annotationListener.onRemovedAnnotation(termToEnrich, annot);
+                }
+            }
+        }
+
+        // add annotations from fetchedAnnotatioms that are not in toEnrichAnnotations
+        annotIterator = fetchedAnnotations.iterator();
+        while(annotIterator.hasNext()){
+            Annotation annot = annotIterator.next();
+            boolean containsChecksum = false;
+            for (Annotation annot2 : toEnrichAnnotations){
+                // identical annot
+                if (DefaultAnnotationComparator.areEquals(annot, annot2)){
+                    containsChecksum = true;
+                    break;
+                }
+            }
+            // add missing xref not in second list
+            if (!containsChecksum){
+                toEnrichAnnotations.add(annot);
+                if (annotationListener != null){
+                    annotationListener.onAddedAnnotation(termToEnrich, annot);
                 }
             }
         }
