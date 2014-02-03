@@ -38,4 +38,13 @@ public class PublicationCloner {
             target.getXrefs().addAll(source.getXrefs());
         }
     }
+
+    public static void copyAndOverridePublicationPropertiesAndExperiments(Publication source, Publication target){
+        copyAndOverridePublicationProperties(source, target);
+        if (source != null && target != null){
+            // copy collections
+            target.getExperiments().clear();
+            target.getExperiments().addAll(source.getExperiments());
+        }
+    }
 }
