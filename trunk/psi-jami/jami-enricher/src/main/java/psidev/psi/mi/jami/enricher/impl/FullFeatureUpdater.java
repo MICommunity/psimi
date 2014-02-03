@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Full updater for features
@@ -34,7 +35,7 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
 
     @Override
     protected void processInteractionDependency(F featureToEnrich, F objectSource) throws EnricherException {
-        if (objectSource.getInteractionDependency() !=  featureToEnrich.getInteractionDependency()){
+        if (!DefaultCvTermComparator.areEquals(objectSource.getInteractionDependency(), featureToEnrich.getInteractionDependency())){
             CvTerm old = featureToEnrich.getInteractionDependency();
             featureToEnrich.setInteractionDependency(objectSource.getInteractionDependency());
             if(getFeatureEnricherListener() != null) {
@@ -46,7 +47,7 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
 
     @Override
     protected void processInteractionEffect(F featureToEnrich, F objectSource) throws EnricherException {
-        if (objectSource.getInteractionEffect() != featureToEnrich.getInteractionEffect()){
+        if (!DefaultCvTermComparator.areEquals(objectSource.getInteractionEffect(), featureToEnrich.getInteractionEffect())){
             CvTerm old = featureToEnrich.getInteractionEffect();
             featureToEnrich.setInteractionEffect(objectSource.getInteractionEffect());
             if(getFeatureEnricherListener() != null) {
