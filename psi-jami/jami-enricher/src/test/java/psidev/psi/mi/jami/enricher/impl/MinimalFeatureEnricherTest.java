@@ -112,7 +112,7 @@ public class MinimalFeatureEnricherTest {
 
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
-                new FeatureEnricherListener() {
+                new FeatureEnricherListener<Feature>() {
                     public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -123,7 +123,7 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+
                     public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
                     public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
                     public void onAddedXref(Feature feature, Xref added) {fail();}
@@ -138,6 +138,24 @@ public class MinimalFeatureEnricherTest {
                     }
                     public void onEnrichmentError(Feature object, String message, Exception e) {
                         Assert.fail();
+                    }
+
+                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                         fail();
+                    }
+                    public void onTypeUpdate(Feature feature, CvTerm oldType) {
+                        fail();
+                    }
+                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
+                        fail();
+                    }
+
+                    public void onAddedAlias(Feature o, Alias added) {
+                        fail();
+                    }
+
+                    public void onRemovedAlias(Feature o, Alias removed) {
+                        fail();
                     }
                 }
         ));
@@ -167,7 +185,7 @@ public class MinimalFeatureEnricherTest {
 
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
-                new FeatureEnricherListener() {
+                new FeatureEnricherListener<Feature>() {
                     public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -178,7 +196,23 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                        fail();
+                    }
+                    public void onTypeUpdate(Feature feature, CvTerm oldType) {
+                        fail();
+                    }
+                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
+                        fail();
+                    }
+
+                    public void onAddedAlias(Feature o, Alias added) {
+                        fail();
+                    }
+
+                    public void onRemovedAlias(Feature o, Alias removed) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
                     public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
                     public void onAddedXref(Feature feature, Xref added) {fail();}
@@ -225,7 +259,7 @@ public class MinimalFeatureEnricherTest {
 
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
-                new FeatureEnricherListener() {
+                new FeatureEnricherListener<Feature>() {
                     public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -240,7 +274,23 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                        fail();
+                    }
+                    public void onTypeUpdate(Feature feature, CvTerm oldType) {
+                        fail();
+                    }
+                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
+                        fail();
+                    }
+
+                    public void onAddedAlias(Feature o, Alias added) {
+                        fail();
+                    }
+
+                    public void onRemovedAlias(Feature o, Alias removed) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
                     public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
                     public void onAddedXref(Feature feature, Xref added) {fail();}
@@ -283,7 +333,7 @@ public class MinimalFeatureEnricherTest {
 
         featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
                 new FeatureEnricherLogger() ,
-                new FeatureEnricherListener() {
+                new FeatureEnricherListener<Feature>() {
                     public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
@@ -297,7 +347,23 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onTypeAdded(Feature feature, CvTerm oldType)  {fail();}
+                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                        fail();
+                    }
+                    public void onTypeUpdate(Feature feature, CvTerm oldType) {
+                        fail();
+                    }
+                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
+                        fail();
+                    }
+
+                    public void onAddedAlias(Feature o, Alias added) {
+                        fail();
+                    }
+
+                    public void onRemovedAlias(Feature o, Alias removed) {
+                        fail();
+                    }
                     public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
                     public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
                     public void onAddedXref(Feature feature, Xref added) {fail();}

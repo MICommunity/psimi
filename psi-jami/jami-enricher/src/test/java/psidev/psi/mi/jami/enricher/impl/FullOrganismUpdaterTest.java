@@ -169,6 +169,19 @@ public class FullOrganismUpdaterTest {
                     }
 
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
+
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
                 }
@@ -208,7 +221,17 @@ public class FullOrganismUpdaterTest {
                         assertEquals(TEST_OLD_SCIENTIFICNAME, oldScientificName);
                         assertEquals(TEST_SCIENTIFICNAME , organism.getScientificName());
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
@@ -241,6 +264,17 @@ public class FullOrganismUpdaterTest {
 
                     public void onEnrichmentError(Organism object, String message, Exception e) {
                         Assert.fail();
+                    }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
                     }
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){fail("Should not reach this point");}
                     public void onScientificNameUpdate(Organism organism, String oldScientificName) {fail();}
@@ -280,7 +314,17 @@ public class FullOrganismUpdaterTest {
                     public void onEnrichmentError(Organism object, String message, Exception e) {
                         Assert.fail();
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                     public void onCommonNameUpdate(Organism organism, String oldCommonName){
                         assertTrue(persistentOrganism == organism);
                         assertNull(oldCommonName);
@@ -332,7 +376,17 @@ public class FullOrganismUpdaterTest {
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                 }
         ));
 
@@ -369,7 +423,17 @@ public class FullOrganismUpdaterTest {
                     public void onTaxidUpdate(Organism organism, String oldTaxid) {fail("Should not reach this point");}
                     public void onAddedAlias(Organism organism, Alias added)  {fail("Should not reach this point");}
                     public void onRemovedAlias(Organism organism, Alias removed)  {fail("Should not reach this point");}
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                 }
         ));
 
@@ -425,7 +489,17 @@ public class FullOrganismUpdaterTest {
                     public void onRemovedAlias(Organism organism, Alias removed) {
                         fail("Should not reach this point");
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                 }
         ));
 
@@ -473,7 +547,17 @@ public class FullOrganismUpdaterTest {
                         assertTrue(persistentOrganism == organism);
                         assertEquals(TEST_OLD_COMMONNAME , removed.getName());
                     }
+                    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
 
+                    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
+
+                    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+                        fail();
+                    }
                 }
         ));
 

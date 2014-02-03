@@ -188,7 +188,13 @@ public class FullProteinUpdaterTest {
                         assertEquals(EnrichmentStatus.FAILED , status);
                         persistentInt++;
                     }
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
 
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onProteinRemapped(Protein protein, String oldUniprot)   {fail("failed");}
                     public void onUniprotKbUpdate(Protein protein, String oldUniprot)   {fail("failed");}
                     public void onRefseqUpdate(Protein protein, String oldRefseq)       {fail("failed");}
@@ -197,8 +203,6 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
                     public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
@@ -262,8 +266,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {}
                     public void onAddedXref(Protein protein, Xref added)                {}
@@ -330,8 +339,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
                     public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
@@ -398,8 +412,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {fail("failed");}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {}
                     public void onAddedXref(Protein protein, Xref added)                {}
@@ -475,8 +494,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {fail("failed");}
                     public void onAddedXref(Protein protein, Xref added)                {fail("failed");}
@@ -555,8 +579,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)   {}
                     public void onShortNameUpdate(Protein protein, String oldShortName) {fail("failed");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("failed");}
-                    public void onAddedInteractorType(Protein protein)                  {fail("failed");}
-                    public void onAddedOrganism(Protein protein)                        {fail("failed");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {}
                     public void onAddedXref(Protein protein, Xref added)                {}
@@ -621,8 +650,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -694,8 +728,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -759,8 +798,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein) {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -823,8 +867,15 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("Should not reach this point");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("Should not reach this point");
+                    }
+
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -893,11 +944,13 @@ public class FullProteinUpdaterTest {
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {}
 
-                    public void onAddedInteractorType(Protein protein)  {
-                        assertTrue(protein == persistentProtein);
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
                     }
 
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        assertTrue(interactor == persistentProtein);
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -971,8 +1024,13 @@ public class FullProteinUpdaterTest {
                         persistentInt++;
                     }
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1035,8 +1093,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1102,8 +1165,13 @@ public class FullProteinUpdaterTest {
                         assertEquals(TEST_FULLNAME , protein.getFullName());
                         persistentInt++;
                     }
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1162,8 +1230,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1226,8 +1299,13 @@ public class FullProteinUpdaterTest {
                         assertEquals( oldFullName , TEST_OLD_FULLNAME );
                         persistentInt++;
                     }
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1285,8 +1363,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1354,8 +1437,13 @@ public class FullProteinUpdaterTest {
 
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1418,8 +1506,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1484,8 +1577,13 @@ public class FullProteinUpdaterTest {
                     }
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1546,8 +1644,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence) {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)  {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1610,8 +1713,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {
                         assertTrue(protein == persistentProtein);
                         assertEquals( "EN999" , added.getId());
@@ -1704,8 +1812,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
                     public void onAddedXref(Protein protein, Xref added) {fail("Should not reach this point");}
@@ -1814,8 +1927,13 @@ public class FullProteinUpdaterTest {
                     public void onSequenceUpdate(Protein protein, String oldSequence)  {fail("Should not reach this point");}
                     public void onShortNameUpdate(Protein protein, String oldShortName)  {fail("Should not reach this point");}
                     public void onFullNameUpdate(Protein protein, String oldFullName)   {fail("Should not reach this point");}
-                    public void onAddedInteractorType(Protein protein)  {fail("Should not reach this point");}
-                    public void onAddedOrganism(Protein protein) {fail("Should not reach this point");}
+                    public void onOrganismUpdate(Protein interactor, Organism oldOrganism) {
+                        fail("failed");
+                    }
+
+                    public void onInteractorTypeUpdate(Protein interactor, CvTerm oldType) {
+                        fail("failed");
+                    }
                     public void onAddedIdentifier(Protein protein, Xref added) {fail("Should not reach this point");}
                     public void onRemovedIdentifier(Protein protein, Xref removed) {fail("Should not reach this point");}
 
