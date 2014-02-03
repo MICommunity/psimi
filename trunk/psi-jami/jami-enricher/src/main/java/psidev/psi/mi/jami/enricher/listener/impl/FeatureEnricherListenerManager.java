@@ -124,6 +124,18 @@ public class FeatureEnricherListenerManager<T extends Feature>
         }
     }
 
+    public void onAddedLinkedFeature(T feature, T added) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onAddedLinkedFeature(feature, added);
+        }
+    }
+
+    public void onRemovedLinkedFeature(T feature, T removed) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            listener.onRemovedLinkedFeature(feature, removed);
+        }
+    }
+
     public void onAddedAlias(T o, Alias added) {
         for(FeatureEnricherListener listener : getListenersList()){
             listener.onAddedAlias(o, added);
