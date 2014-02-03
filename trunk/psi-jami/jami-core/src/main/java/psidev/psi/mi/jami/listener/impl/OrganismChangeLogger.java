@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.listener.impl;
 
 import psidev.psi.mi.jami.listener.OrganismChangeListener;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 import java.util.logging.Level;
@@ -45,6 +46,42 @@ public class OrganismChangeLogger implements OrganismChangeListener {
 
     public void onTaxidUpdate(Organism organism, String oldTaxid) {
         organismChangeListener.log(Level.INFO, "The taxid "+oldTaxid+" has been updated with " + organism.getTaxId() + " in the organism " + organism.toString());
+    }
+
+    public void onCellTypeUpdate(Organism organism, CvTerm oldType) {
+        if (oldType == null){
+            organismChangeListener.log(Level.INFO, "The cell type has been initialised for the organism " + organism.toString());
+        }
+        else if (organism.getCellType() == null){
+            organismChangeListener.log(Level.INFO, "The cell type has been reset for the organism " + organism.toString());
+        }
+        else {
+            organismChangeListener.log(Level.INFO, "The cell type "+oldType.toString()+" has been replaced with " + organism.getCellType().toString() + " in the organism " + organism.toString());
+        }
+    }
+
+    public void onTissueUpdate(Organism organism, CvTerm oldType) {
+        if (oldType == null){
+            organismChangeListener.log(Level.INFO, "The tissue has been initialised for the organism " + organism.toString());
+        }
+        else if (organism.getTissue() == null){
+            organismChangeListener.log(Level.INFO, "The tissue has been reset for the organism " + organism.toString());
+        }
+        else {
+            organismChangeListener.log(Level.INFO, "The tissue "+oldType.toString()+" has been replaced with " + organism.getTissue().toString() + " in the organism " + organism.toString());
+        }
+    }
+
+    public void onCompartmentUpdate(Organism organism, CvTerm oldType) {
+        if (oldType == null){
+            organismChangeListener.log(Level.INFO, "The compartment has been initialised for the organism " + organism.toString());
+        }
+        else if (organism.getCompartment() == null){
+            organismChangeListener.log(Level.INFO, "The compartment has been reset for the organism " + organism.toString());
+        }
+        else {
+            organismChangeListener.log(Level.INFO, "The compartment "+oldType.toString()+" has been replaced with " + organism.getCompartment().toString() + " in the organism " + organism.toString());
+        }
     }
 
     public void onAddedAlias(Organism organism, Alias added) {

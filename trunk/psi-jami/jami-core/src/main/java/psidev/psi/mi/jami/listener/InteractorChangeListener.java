@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.listener;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Organism;
 
 
 /**
@@ -32,12 +34,12 @@ public interface InteractorChangeListener<T extends Interactor>
      * This event happens when a interactor does not have any organisms
      * @param interactor        The interactor which has changed.
      */
-    public void onAddedOrganism(T interactor);
+    public void onOrganismUpdate(T interactor, Organism oldOrganism);
 
     /**
      * Listen to the event where the interactor type has been initialised.
      * This event happens when a interactor does not have any interactor types
      * @param interactor        The interactor which has changed.
      */
-    public void onAddedInteractorType(T interactor);
+    public void onInteractorTypeUpdate(T interactor, CvTerm oldType);
 }

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.listener;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -34,4 +35,25 @@ public interface OrganismChangeListener extends AliasesChangeListener<Organism> 
      * @param oldTaxid
      */
     public void onTaxidUpdate(Organism organism, String oldTaxid);
+
+    /**
+     * Listen to the event where the cell type has been initialised.
+     * This event happens when an organism has a new cell type
+     * @param organism        The organism which has changed.
+     */
+    public void onCellTypeUpdate(Organism organism, CvTerm oldType);
+
+    /**
+     * Listen to the event where the organism tissue has been initialised.
+     * This event happens when a organism has a new tissue
+     * @param organism        The organism which has changed.
+     */
+    public void onTissueUpdate(Organism organism, CvTerm oldType);
+
+    /**
+     * Listen to the event where the organism compartment has been initialised.
+     * This event happens when a organism has a new compartment
+     * @param organism        The organism which has changed.
+     */
+    public void onCompartmentUpdate(Organism organism, CvTerm oldType);
 }
