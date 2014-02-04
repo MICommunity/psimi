@@ -150,6 +150,14 @@ public class MinimalFeatureEnricherTest {
                         fail();
                     }
 
+                    public void onAddedLinkedFeature(Feature feature, Feature added) {
+                        fail();
+                    }
+
+                    public void onRemovedLinkedFeature(Feature feature, Feature removed) {
+                        fail();
+                    }
+
                     public void onAddedAlias(Feature o, Alias added) {
                         fail();
                     }
@@ -205,7 +213,13 @@ public class MinimalFeatureEnricherTest {
                     public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
+                    public void onAddedLinkedFeature(Feature feature, Feature added) {
+                        fail();
+                    }
 
+                    public void onRemovedLinkedFeature(Feature feature, Feature removed) {
+                        fail();
+                    }
                     public void onAddedAlias(Feature o, Alias added) {
                         fail();
                     }
@@ -283,7 +297,13 @@ public class MinimalFeatureEnricherTest {
                     public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
+                    public void onAddedLinkedFeature(Feature feature, Feature added) {
+                        fail();
+                    }
 
+                    public void onRemovedLinkedFeature(Feature feature, Feature removed) {
+                        fail();
+                    }
                     public void onAddedAlias(Feature o, Alias added) {
                         fail();
                     }
@@ -356,7 +376,13 @@ public class MinimalFeatureEnricherTest {
                     public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
+                    public void onAddedLinkedFeature(Feature feature, Feature added) {
+                        fail();
+                    }
 
+                    public void onRemovedLinkedFeature(Feature feature, Feature removed) {
+                        fail();
+                    }
                     public void onAddedAlias(Feature o, Alias added) {
                         fail();
                     }

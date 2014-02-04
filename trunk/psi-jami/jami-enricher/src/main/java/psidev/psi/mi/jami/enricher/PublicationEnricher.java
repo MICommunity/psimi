@@ -20,9 +20,9 @@ public interface PublicationEnricher extends MIEnricher<Publication>{
      */
     public PublicationFetcher getPublicationFetcher();
 
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+    public void setSourceEnricher(SourceEnricher sourceEnricher);
 
-    public CvTermEnricher getCvTermEnricher();
+    public SourceEnricher getSourceEnricher();
 
     /**
      * Sets the listener to report publication changes to.
