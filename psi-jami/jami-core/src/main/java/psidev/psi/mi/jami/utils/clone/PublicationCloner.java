@@ -44,7 +44,7 @@ public class PublicationCloner {
         if (source != null && target != null){
             // copy collections
             target.getExperiments().clear();
-            target.getExperiments().addAll(source.getExperiments());
+            target.addAllExperiments(source.getExperiments());
         }
     }
 }
