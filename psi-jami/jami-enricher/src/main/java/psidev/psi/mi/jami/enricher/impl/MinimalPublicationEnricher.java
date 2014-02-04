@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
+import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
@@ -25,7 +25,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
 
     private PublicationEnricherListener listener = null;
     private PublicationFetcher fetcher = null;
-    private CvTermEnricher cvTermEnricher=null;
+    private SourceEnricher sourceEnricher =null;
 
     /**
      * The only constructor. It requires a publication fetcher.
@@ -48,12 +48,12 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
     }
 
 
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
-        this.cvTermEnricher = cvTermEnricher;
+    public void setSourceEnricher(SourceEnricher cvTermEnricher){
+        this.sourceEnricher = cvTermEnricher;
     }
 
-    public CvTermEnricher getCvTermEnricher(){
-        return cvTermEnricher;
+    public SourceEnricher getSourceEnricher(){
+        return sourceEnricher;
     }
 
     /**
@@ -126,8 +126,8 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
     }
 
     protected void processSource(Publication publicationToEnrich) throws EnricherException {
-        if (this.cvTermEnricher != null && publicationToEnrich.getSource() != null){
-            this.cvTermEnricher.enrich(publicationToEnrich.getSource());
+        if (this.sourceEnricher != null && publicationToEnrich.getSource() != null){
+            this.sourceEnricher.enrich(publicationToEnrich.getSource());
         }
     }
 
