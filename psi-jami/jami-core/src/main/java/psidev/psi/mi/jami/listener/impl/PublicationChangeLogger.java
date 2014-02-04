@@ -79,6 +79,18 @@ public class PublicationChangeLogger implements PublicationChangeListener {
         }
     }
 
+    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
+        if (oldDepth == null){
+            publicationChangeLogger.log(Level.INFO, "The Curation depth has been initialised for the publication " + publication.toString());
+        }
+        else if (publication.getCurationDepth() == null){
+            publicationChangeLogger.log(Level.INFO, "The Curation depth has been reset for the publication " + publication.toString());
+        }
+        else {
+            publicationChangeLogger.log(Level.INFO, "The Curation depth " + oldDepth + " has been updated with " + publication.getCurationDepth() + " in the publication " + publication.toString());
+        }
+    }
+
     public void onPublicationDateUpdated(Publication publication, Date oldDate) {
         if (oldDate == null){
             publicationChangeLogger.log(Level.INFO, "The publication date has been initialised for the publication " + publication.toString());
