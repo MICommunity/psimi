@@ -12,10 +12,7 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherLogger;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CurationDepth;
-import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 
 import java.util.Collections;
@@ -123,8 +120,14 @@ public class MinimalPublicationEnricherTest {
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
                     public void onIdentifierRemoved(Publication publication, Xref removedXref)      {fail("fail");}
-                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)      {fail("fail");}
-                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
+                    public void onImexIdentifierUpdate(Publication publication, Xref addedXref)      {fail("fail");}
+
+                    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
+                        fail();
+                    }
+                    public void onSourceUpdated(Publication publication, Source oldSource) {
+                        fail();
+                    }                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
                     public void onJournalUpdated(Publication publication, String oldJournal)        {fail("fail");}
                     public void onPublicationDateUpdated(Publication publication, Date oldDate)     {fail("fail");}
                     public void onAuthorAdded(Publication publication, String addedAuthor)          {fail("fail");}
@@ -215,8 +218,14 @@ public class MinimalPublicationEnricherTest {
                     public void onDoiUpdate(Publication publication, String oldDoi)  {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)  {fail("fail");}
                     public void onIdentifierRemoved(Publication publication, Xref removedXref)  {fail("fail");}
-                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)  {fail("fail");}
-                    public void onTitleUpdated(Publication publication, String oldTitle)  {fail("fail");}
+                    public void onImexIdentifierUpdate(Publication publication, Xref addedXref)      {fail("fail");}
+
+                    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
+                        fail();
+                    }
+                    public void onSourceUpdated(Publication publication, Source oldSource) {
+                        fail();
+                    }                    public void onTitleUpdated(Publication publication, String oldTitle)  {fail("fail");}
                     public void onJournalUpdated(Publication publication, String oldJournal)  {fail("fail");}
                     public void onPublicationDateUpdated(Publication publication, Date oldDate) {fail("fail");}
                     public void onAuthorAdded(Publication publication, String addedAuthor)  {fail("fail");}
@@ -291,8 +300,14 @@ public class MinimalPublicationEnricherTest {
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
                     public void onIdentifierRemoved(Publication publication, Xref removedXref)      {fail("fail");}
-                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)      {fail("fail");}
-                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
+                    public void onImexIdentifierUpdate(Publication publication, Xref addedXref)      {fail("fail");}
+
+                    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
+                        fail();
+                    }
+                    public void onSourceUpdated(Publication publication, Source oldSource) {
+                        fail();
+                    }                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
                     public void onJournalUpdated(Publication publication, String oldJournal)        {fail("fail");}
                     public void onPublicationDateUpdated(Publication publication, Date oldDate)     {fail("fail");}
                     public void onAuthorAdded(Publication publication, String addedAuthor)          {
@@ -459,8 +474,14 @@ public class MinimalPublicationEnricherTest {
                     public void onDoiUpdate(Publication publication, String oldDoi)                 {fail("fail");}
                     public void onIdentifierAdded(Publication publication, Xref addedXref)          {fail("fail");}
                     public void onIdentifierRemoved(Publication publication, Xref removedXref)      {fail("fail");}
-                    public void onImexIdentifierAdded(Publication publication, Xref addedXref)      {fail("fail");}
-                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
+                    public void onImexIdentifierUpdate(Publication publication, Xref addedXref)      {fail("fail");}
+
+                    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
+                        fail();
+                    }
+                    public void onSourceUpdated(Publication publication, Source oldSource) {
+                        fail();
+                    }                    public void onTitleUpdated(Publication publication, String oldTitle)            {fail("fail");}
                     public void onJournalUpdated(Publication publication, String oldJournal)        {fail("fail");}
                     public void onPublicationDateUpdated(Publication publication, Date oldDate)     {fail("fail");}
                     public void onAuthorAdded(Publication publication, String addedAuthor)          {fail("fail");}

@@ -88,7 +88,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
     protected void processPublication(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException{
 
         // == SOURCE ==========================================================
-        processSource(publicationToEnrich);
+        processSource(publicationToEnrich, fetchedPublication);
 
         // == PUBMED ID and other identifiers ======================================================================
         processIdentifiers(publicationToEnrich, fetchedPublication);
@@ -125,7 +125,13 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
                 getPublicationEnricherListener(), getPublicationEnricherListener());
     }
 
-    protected void processSource(Publication publicationToEnrich) throws EnricherException {
+    protected void processSource(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException {
+        if (fetchedPublication.getSource() != null && publicationToEnrich.getSource() == null){
+            publicationToEnrich.setSource(fetchedPublication.getSource());
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onSourceUpdated(publicationToEnrich, null);
+            }
+        }
         if (this.sourceEnricher != null && publicationToEnrich.getSource() != null){
             this.sourceEnricher.enrich(publicationToEnrich.getSource());
         }

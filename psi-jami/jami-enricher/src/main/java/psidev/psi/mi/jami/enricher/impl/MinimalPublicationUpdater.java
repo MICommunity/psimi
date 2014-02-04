@@ -2,8 +2,10 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Source;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -39,6 +41,20 @@ public class MinimalPublicationUpdater extends MinimalPublicationEnricher {
     protected void processIdentifiers(Publication publicationToEnrich, Publication fetched) {
         EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getIdentifiers(), fetched.getIdentifiers(), true, true,
                 getPublicationEnricherListener(), getPublicationEnricherListener());
+    }
+
+    @Override
+    protected void processSource(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException {
+        if (fetchedPublication.getSource() != publicationToEnrich.getSource()){
+            Source oldSource = publicationToEnrich.getSource();
+            publicationToEnrich.setSource(fetchedPublication.getSource());
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onSourceUpdated(publicationToEnrich, oldSource);
+            }
+        }
+        if (getSourceEnricher() != null && publicationToEnrich.getSource() != null){
+            getSourceEnricher().enrich(publicationToEnrich.getSource());
+        }
     }
 
     @Override

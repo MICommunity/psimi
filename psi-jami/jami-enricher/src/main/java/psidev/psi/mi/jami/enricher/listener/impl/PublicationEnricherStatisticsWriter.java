@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -84,9 +82,9 @@ public class PublicationEnricherStatisticsWriter
         incrementRemovedCount();
     }
 
-    public void onImexIdentifierAdded(Publication publication, Xref addedXref) {
+    public void onImexIdentifierUpdate(Publication publication, Xref addedXref) {
         checkObject(publication);
-        incrementAdditionCount();
+        incrementUpdateCount();
     }
 
     public void onTitleUpdated(Publication publication, String oldTitle) {
@@ -95,6 +93,11 @@ public class PublicationEnricherStatisticsWriter
     }
 
     public void onJournalUpdated(Publication publication, String oldJournal) {
+        checkObject(publication);
+        incrementUpdateCount();
+    }
+
+    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
         checkObject(publication);
         incrementUpdateCount();
     }
@@ -135,6 +138,11 @@ public class PublicationEnricherStatisticsWriter
     }
 
     public void onReleaseDateUpdated(Publication publication, Date oldDate) {
+        checkObject(publication);
+        incrementUpdateCount();
+    }
+
+    public void onSourceUpdated(Publication publication, Source oldSource) {
         checkObject(publication);
         incrementUpdateCount();
     }

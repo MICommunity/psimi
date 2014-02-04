@@ -2,9 +2,7 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.util.Date;
 
@@ -61,9 +59,9 @@ public class PublicationEnricherListenerManager
         }
     }
 
-    public void onImexIdentifierAdded(Publication publication , Xref addedXref) {
+    public void onImexIdentifierUpdate(Publication publication , Xref addedXref) {
         for(PublicationEnricherListener listener : getListenersList()){
-            listener.onImexIdentifierAdded(publication, addedXref);
+            listener.onImexIdentifierUpdate(publication, addedXref);
         }
     }
 
@@ -76,6 +74,12 @@ public class PublicationEnricherListenerManager
     public void onJournalUpdated(Publication publication, String oldJournal) {
         for(PublicationEnricherListener listener : getListenersList()){
             listener.onJournalUpdated(publication, oldJournal);
+        }
+    }
+
+    public void onCurationDepthUpdate(Publication publication, CurationDepth oldDepth) {
+        for(PublicationEnricherListener listener : getListenersList()){
+            listener.onCurationDepthUpdate(publication, oldDepth);
         }
     }
 
@@ -124,6 +128,12 @@ public class PublicationEnricherListenerManager
     public void onReleaseDateUpdated(Publication publication, Date oldDate) {
         for(PublicationEnricherListener listener : getListenersList()){
             listener.onReleaseDateUpdated(publication, oldDate);
+        }
+    }
+
+    public void onSourceUpdated(Publication publication, Source oldSource) {
+        for(PublicationEnricherListener listener : getListenersList()){
+            listener.onSourceUpdated(publication, oldSource);
         }
     }
 }
