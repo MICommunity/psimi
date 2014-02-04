@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -33,6 +34,18 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     @Override
     protected void processMinimalEnrichment(Publication publicationToEnrich, Publication fetched) throws EnricherException {
         this.minimalPublicationUpdater.processPublication(publicationToEnrich, fetched);
+    }
+
+    @Override
+    protected void processXrefs(Publication publicationToEnrich, Publication fetched) {
+        EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getXrefs(), fetched.getXrefs(), true, false,
+                getPublicationEnricherListener(), getPublicationEnricherListener());
+    }
+
+    @Override
+    protected void processAnnotations(Publication publicationToEnrich, Publication fetched) {
+        EnricherUtils.mergeAnnotations(publicationToEnrich, publicationToEnrich.getAnnotations(), fetched.getAnnotations(), true,
+                getPublicationEnricherListener());
     }
 
     @Override

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -40,6 +41,22 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
 
         // == CONTACT e-mail ===========================================================================
         processContactEmail(publicationToEnrich, fetched);
+
+        // == Xrefs ===================================================================
+        processXrefs(publicationToEnrich, fetched);
+
+        // == Annotations ===================================================================
+        processAnnotations(publicationToEnrich, fetched);
+    }
+
+    protected void processXrefs(Publication publicationToEnrich, Publication fetched) {
+        EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getXrefs(), fetched.getXrefs(), false, false,
+                getPublicationEnricherListener(), getPublicationEnricherListener());
+    }
+
+    protected void processAnnotations(Publication publicationToEnrich, Publication fetched) {
+        EnricherUtils.mergeAnnotations(publicationToEnrich, publicationToEnrich.getAnnotations(), fetched.getAnnotations(), false,
+                getPublicationEnricherListener());
     }
 
     protected void processMinimalEnrichment(Publication publicationToEnrich, Publication fetched) throws EnricherException {
