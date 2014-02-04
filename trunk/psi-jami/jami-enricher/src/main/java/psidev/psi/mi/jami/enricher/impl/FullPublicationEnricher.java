@@ -3,9 +3,7 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
@@ -39,14 +37,35 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
         // == JOURNAL ===================================================================
         processJournal(publicationToEnrich, fetched);
 
-        // == CONTACT e-mail ===========================================================================
-        processContactEmail(publicationToEnrich, fetched);
+        // == RELEASE date ===================================================================
+        processReleasedDate(publicationToEnrich, fetched);
+
+        // == CURATION depth ===================================================================
+        processCurationDepth(publicationToEnrich, fetched);
 
         // == Xrefs ===================================================================
         processXrefs(publicationToEnrich, fetched);
 
         // == Annotations ===================================================================
         processAnnotations(publicationToEnrich, fetched);
+    }
+
+    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
+        if (publicationToEnrich.getCurationDepth() == null && fetched.getCurationDepth() != null){
+            publicationToEnrich.setCurationDepth(fetched.getCurationDepth());
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onCurationDepthUpdate(publicationToEnrich, null);
+            }
+        }
+    }
+
+    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) {
+        if (publicationToEnrich.getReleasedDate() == null && fetched.getReleasedDate() != null){
+            publicationToEnrich.setReleasedDate(fetched.getReleasedDate());
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich, null);
+            }
+        }
     }
 
     protected void processXrefs(Publication publicationToEnrich, Publication fetched) {
@@ -61,17 +80,6 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
 
     protected void processMinimalEnrichment(Publication publicationToEnrich, Publication fetched) throws EnricherException {
         super.processPublication(publicationToEnrich, fetched);
-    }
-
-    protected void processContactEmail(Publication publicationToEnrich, Publication fetched) {
-        Annotation contactEmail1 = AnnotationUtils.collectFirstAnnotationWithTopic(fetched.getAnnotations(), Annotation.CONTACT_EMAIL_MI, Annotation.CONTACT_EMAIL);
-        Annotation contactEmail2 = AnnotationUtils.collectFirstAnnotationWithTopic(publicationToEnrich.getAnnotations(), Annotation.CONTACT_EMAIL_MI, Annotation.CONTACT_EMAIL);
-
-        if (contactEmail2 == null && contactEmail1 != null){
-            publicationToEnrich.getAnnotations().add(contactEmail1);
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, contactEmail1);
-        }
     }
 
     protected void processJournal(Publication publicationToEnrich, Publication fetched) {

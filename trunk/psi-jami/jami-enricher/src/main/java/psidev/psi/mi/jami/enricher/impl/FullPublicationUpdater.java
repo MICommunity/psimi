@@ -5,9 +5,10 @@ import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
+
+import java.util.Date;
 
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
@@ -49,17 +50,28 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     }
 
     @Override
-    protected void processContactEmail(Publication publicationToEnrich, Publication fetched) {
-        Annotation contactEmail1 = AnnotationUtils.collectFirstAnnotationWithTopic(fetched.getAnnotations(), Annotation.CONTACT_EMAIL_MI, Annotation.CONTACT_EMAIL);
-        Annotation contactEmail2 = AnnotationUtils.collectFirstAnnotationWithTopic(publicationToEnrich.getAnnotations(), Annotation.CONTACT_EMAIL_MI, Annotation.CONTACT_EMAIL);
+    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
+        if ((publicationToEnrich.getCurationDepth() != null &&
+                publicationToEnrich.getCurationDepth().equals(fetched.getCurationDepth())
+        || (publicationToEnrich.getCurationDepth() == null && fetched.getCurationDepth() != null))){
+            CurationDepth old = publicationToEnrich.getCurationDepth();
+            publicationToEnrich.setCurationDepth(fetched.getCurationDepth());
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onCurationDepthUpdate(publicationToEnrich, old);
+            }
+        }
+    }
 
-        if ((contactEmail1 != null && !contactEmail1.equals(contactEmail2)) || (contactEmail1 == null && contactEmail2 != null)){
-            publicationToEnrich.getAnnotations().remove(contactEmail2);
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onRemovedAnnotation(publicationToEnrich, contactEmail2);
-            publicationToEnrich.getAnnotations().add(contactEmail1);
-            if(getPublicationEnricherListener() != null)
-                getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, contactEmail1);
+    @Override
+    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) {
+        if ((publicationToEnrich.getReleasedDate() != null &&
+                publicationToEnrich.getReleasedDate().equals(fetched.getReleasedDate())
+                || (publicationToEnrich.getReleasedDate() == null && fetched.getReleasedDate() != null))){
+            Date old = publicationToEnrich.getReleasedDate();
+            publicationToEnrich.setReleasedDate(fetched.getReleasedDate());
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich, old);
+            }
         }
     }
 
