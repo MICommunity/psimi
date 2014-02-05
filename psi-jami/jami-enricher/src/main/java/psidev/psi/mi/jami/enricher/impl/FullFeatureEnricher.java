@@ -109,25 +109,22 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
     protected void mergeLinkedFeatures(F objectToEnrich, Collection<F> linkedFeaturesToEnrich, Collection<F> fetchedFeatures, boolean remove) throws EnricherException {
 
         Iterator<F> featureIterator = linkedFeaturesToEnrich.iterator();
-        while(featureIterator.hasNext()){
-            F feature = featureIterator.next();
-            boolean containsFeature = false;
-            for (F feature2 : fetchedFeatures){
-                if (feature == feature2){
-                    containsFeature = true;
-                    // enrich terms that are here
-                    if (!processedFeatures.containsKey(feature)){
-                        processedFeatures.put(feature, feature);
-                        enrich(feature, feature2);
+        if (remove){
+            while(featureIterator.hasNext()){
+                F feature = featureIterator.next();
+                boolean containsFeature = false;
+                for (F feature2 : fetchedFeatures){
+                    if (feature == feature2){
+                        containsFeature = true;
+                        break;
                     }
-                    break;
                 }
-            }
-            // remove term not in second list
-            if (remove && !containsFeature){
-                featureIterator.remove();
-                if (getFeatureEnricherListener() != null){
-                    getFeatureEnricherListener().onRemovedLinkedFeature(objectToEnrich, feature);
+                // remove term not in second list
+                if (!containsFeature){
+                    featureIterator.remove();
+                    if (getFeatureEnricherListener() != null){
+                        getFeatureEnricherListener().onRemovedLinkedFeature(objectToEnrich, feature);
+                    }
                 }
             }
         }
@@ -141,6 +138,11 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
                 // identical terms
                 if (feature == feature2){
                     containsFeature = true;
+                    // enrich terms that are here
+                    if (!processedFeatures.containsKey(feature2)){
+                        processedFeatures.put(feature2, feature2);
+                        enrich(feature2, feature);
+                    }
                     break;
                 }
             }

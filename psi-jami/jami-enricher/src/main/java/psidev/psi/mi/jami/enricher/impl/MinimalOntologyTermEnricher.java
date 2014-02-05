@@ -119,30 +119,27 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
 
         Iterator<OntologyTerm> termIterator = toEnrichTerms.iterator();
         // remove xrefs in toEnrichXrefs that are not in fetchedXrefs
-        while(termIterator.hasNext()){
-            OntologyTerm term = termIterator.next();
-            boolean containsTerm = false;
-            for (OntologyTerm term2 : fetchedTerms){
-                // identical terms
-                if (DefaultCvTermComparator.areEquals(term, term2)){
-                    containsTerm = true;
-                    // enrich terms that are here
-                    if (!this.processedTerms.containsKey(term)){
-                        this.processedTerms.put(term, term);
-                        this.cvEnricher.enrich(term, term2);
+        if (remove){
+            while(termIterator.hasNext()){
+                OntologyTerm term = termIterator.next();
+                boolean containsTerm = false;
+                for (OntologyTerm term2 : fetchedTerms){
+                    // identical terms
+                    if (DefaultCvTermComparator.areEquals(term, term2)){
+                        containsTerm = true;
+                        break;
                     }
-                    break;
                 }
-            }
-            // remove term not in second list
-            if (remove && !containsTerm){
-                termIterator.remove();
-                if (getCvTermEnricherListener() instanceof OntologyTermEnricherListener){
-                    if (isParentCollection){
-                        ((OntologyTermEnricherListener)getCvTermEnricherListener()).onRemovedParent(termToEnrich, term);
-                    }
-                    else{
-                        ((OntologyTermEnricherListener)getCvTermEnricherListener()).onRemovedChild(termToEnrich, term);
+                // remove term not in second list
+                if (!containsTerm){
+                    termIterator.remove();
+                    if (getCvTermEnricherListener() instanceof OntologyTermEnricherListener){
+                        if (isParentCollection){
+                            ((OntologyTermEnricherListener)getCvTermEnricherListener()).onRemovedParent(termToEnrich, term);
+                        }
+                        else{
+                            ((OntologyTermEnricherListener)getCvTermEnricherListener()).onRemovedChild(termToEnrich, term);
+                        }
                     }
                 }
             }
@@ -157,6 +154,11 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
                 // identical terms
                 if (DefaultCvTermComparator.areEquals(term, term2)){
                     containsTerm = true;
+                    // enrich terms that are here
+                    if (!this.processedTerms.containsKey(term2)){
+                        this.processedTerms.put(term2, term2);
+                        this.cvEnricher.enrich(term2, term);
+                    }
                     break;
                 }
             }
