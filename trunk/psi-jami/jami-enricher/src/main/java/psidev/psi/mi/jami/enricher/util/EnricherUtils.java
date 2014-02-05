@@ -44,39 +44,29 @@ public class EnricherUtils {
 
         Iterator<Xref> refIterator = toEnrichXrefs.iterator();
         // remove xrefs in toEnrichXrefs that are not in fetchedXrefs
-        while(refIterator.hasNext()){
-            Xref ref = refIterator.next();
-            boolean containsRef = false;
-            for (Xref ref2 : fetchedXrefs){
-                // when we allow to removexrefs, we compare qualifiers as well
-                if (remove){
+        if (remove){
+            while(refIterator.hasNext()){
+                Xref ref = refIterator.next();
+                boolean containsRef = false;
+                for (Xref ref2 : fetchedXrefs){
                     // identical xrefs
                     if (DefaultXrefComparator.areEquals(ref, ref2)){
                         containsRef = true;
                         break;
                     }
                 }
-                // when we don't allow to remove xrefs, we compare only database+identifier to avoid dupicating xrefs with same db/id but different qualifiers.
-                // it would be too confusing for the suer
-                else{
-                    // identical identifier
-                    if (DefaultExternalIdentifierComparator.areEquals(ref, ref2)){
-                        containsRef = true;
-                        break;
+                // remove xref not in second list
+                if (!containsRef){
+                    refIterator.remove();
+                    if (isIdentifier){
+                        if (identifierListener != null){
+                            identifierListener.onRemovedIdentifier(termToEnrich, ref);
+                        }
                     }
-                }
-            }
-            // remove xref not in second list
-            if (remove && !containsRef){
-                refIterator.remove();
-                if (isIdentifier){
-                    if (identifierListener != null){
-                        identifierListener.onRemovedIdentifier(termToEnrich, ref);
-                    }
-                }
-                else{
-                    if (xrefListener != null){
-                        xrefListener.onRemovedXref(termToEnrich, ref);
+                    else{
+                        if (xrefListener != null){
+                            xrefListener.onRemovedXref(termToEnrich, ref);
+                        }
                     }
                 }
             }
@@ -126,21 +116,23 @@ public class EnricherUtils {
     public static <T extends Object> void mergeAliases(T termToEnrich, Collection<Alias> toEnrichAliases, Collection<Alias> fetchedAliases, boolean remove, AliasesChangeListener<T> aliasListener){
         Iterator<Alias> aliasIterator = toEnrichAliases.iterator();
         // remove aliases in toEnrichAliases that are not in fetchedAliases
-        while(aliasIterator.hasNext()){
-            Alias alias = aliasIterator.next();
-            boolean containsAlias = false;
-            for (Alias alias2 : fetchedAliases){
-                // identical aliases
-                if (DefaultAliasComparator.areEquals(alias, alias2)){
-                    containsAlias = true;
-                    break;
+        if (remove){
+            while(aliasIterator.hasNext()){
+                Alias alias = aliasIterator.next();
+                boolean containsAlias = false;
+                for (Alias alias2 : fetchedAliases){
+                    // identical aliases
+                    if (DefaultAliasComparator.areEquals(alias, alias2)){
+                        containsAlias = true;
+                        break;
+                    }
                 }
-            }
-            // remove alias not in second list
-            if (remove && !containsAlias){
-                aliasIterator.remove();
-                if (aliasListener != null){
-                    aliasListener.onRemovedAlias(termToEnrich, alias);
+                // remove alias not in second list
+                if (!containsAlias){
+                    aliasIterator.remove();
+                    if (aliasListener != null){
+                        aliasListener.onRemovedAlias(termToEnrich, alias);
+                    }
                 }
             }
         }
@@ -170,21 +162,23 @@ public class EnricherUtils {
     public static <T extends Object> void mergeChecksums(T termToEnrich, Collection<Checksum> toEnrichChecksums, Collection<Checksum> fetchedCehcksum, boolean remove, ChecksumsChangeListener<T> aliasListener){
         Iterator<Checksum> checksumIterator = toEnrichChecksums.iterator();
         // remove aliases in toEnrichAliases that are not in fetchedAliases
-        while(checksumIterator.hasNext()){
-            Checksum checksum = checksumIterator.next();
-            boolean containsChecksum = false;
-            for (Checksum checksum2 : fetchedCehcksum){
-                // identical checksum
-                if (DefaultChecksumComparator.areEquals(checksum, checksum2)){
-                    containsChecksum = true;
-                    break;
+        if (remove){
+            while(checksumIterator.hasNext()){
+                Checksum checksum = checksumIterator.next();
+                boolean containsChecksum = false;
+                for (Checksum checksum2 : fetchedCehcksum){
+                    // identical checksum
+                    if (DefaultChecksumComparator.areEquals(checksum, checksum2)){
+                        containsChecksum = true;
+                        break;
+                    }
                 }
-            }
-            // remove alias not in second list
-            if (remove && !containsChecksum){
-                checksumIterator.remove();
-                if (aliasListener != null){
-                    aliasListener.onRemovedChecksum(termToEnrich, checksum);
+                // remove alias not in second list
+                if (!containsChecksum){
+                    checksumIterator.remove();
+                    if (aliasListener != null){
+                        aliasListener.onRemovedChecksum(termToEnrich, checksum);
+                    }
                 }
             }
         }
@@ -214,21 +208,24 @@ public class EnricherUtils {
     public static <T extends Object> void mergeAnnotations(T termToEnrich, Collection<Annotation> toEnrichAnnotations, Collection<Annotation> fetchedAnnotations, boolean remove, AnnotationsChangeListener<T> annotationListener){
         Iterator<Annotation> annotIterator = toEnrichAnnotations.iterator();
         // remove aliases in toEnrichAliases that are not in fetchedAliases
-        while(annotIterator.hasNext()){
-            Annotation annot = annotIterator.next();
-            boolean containsAnnotation = false;
-            for (Annotation annot2 : fetchedAnnotations){
-                // identical annot
-                if (DefaultAnnotationComparator.areEquals(annot, annot2)){
-                    containsAnnotation = true;
-                    break;
+        if (remove){
+            while(annotIterator.hasNext()){
+                Annotation annot = annotIterator.next();
+
+                boolean containsAnnotation = false;
+                for (Annotation annot2 : fetchedAnnotations){
+                    // identical annot
+                    if (DefaultAnnotationComparator.areEquals(annot, annot2)){
+                        containsAnnotation = true;
+                        break;
+                    }
                 }
-            }
-            // remove alias not in second list
-            if (remove && !containsAnnotation){
-                annotIterator.remove();
-                if (annotationListener != null){
-                    annotationListener.onRemovedAnnotation(termToEnrich, annot);
+                // remove alias not in second list
+                if (!containsAnnotation){
+                    annotIterator.remove();
+                    if (annotationListener != null){
+                        annotationListener.onRemovedAnnotation(termToEnrich, annot);
+                    }
                 }
             }
         }
