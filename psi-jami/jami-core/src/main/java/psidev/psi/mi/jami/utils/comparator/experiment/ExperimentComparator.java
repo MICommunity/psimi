@@ -107,6 +107,10 @@ public class ExperimentComparator implements Comparator<Experiment>{
         }
     }
 
+    public Comparator<CvTerm> getCvTermComparator() {
+        return cvTermComparator;
+    }
+
     public Comparator<Publication> getPublicationComparator() {
         return publicationComparator;
     }

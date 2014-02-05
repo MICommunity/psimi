@@ -58,6 +58,11 @@ public class UnambiguousCuratedExperimentComparator extends ExperimentComparator
         return (UnambiguousOrganismComparator) this.organismComparator;
     }
 
+    @Override
+    public UnambiguousCvTermComparator getCvTermComparator() {
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
+    }
+
     /**
      * Use UnambiguousExperimentComparator to know if two experiment are equals.
      * @param experiment1
