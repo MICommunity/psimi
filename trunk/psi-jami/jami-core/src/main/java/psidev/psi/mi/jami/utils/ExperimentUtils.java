@@ -6,6 +6,9 @@ import psidev.psi.mi.jami.model.impl.DefaultNamedExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Factory for experiment
  *
@@ -101,5 +104,39 @@ public class ExperimentUtils {
         experiment.setShortName(name);
 
         return experiment;
+    }
+
+    public static CvTerm extractCommonParticipantDetectionMethodFrom(Experiment exp){
+        CvTerm commonDetectionMethod = null;
+        if (exp != null && !exp.getInteractionEvidences().isEmpty()){
+            Set<CvTerm> detectionMethods = new HashSet<CvTerm>(exp.getInteractionEvidences().size());
+            boolean isFirst = true;
+
+            for (InteractionEvidence interaction : exp.getInteractionEvidences()){
+                for (ParticipantEvidence p : interaction.getParticipants()){
+                    if (isFirst){
+                        detectionMethods.addAll(p.getIdentificationMethods());
+                        isFirst = false;
+                    }
+                    // one of the participants does not have any detection methods so we cannot extract a common method for this experiment
+                    else if (p.getIdentificationMethods().isEmpty() && !detectionMethods.isEmpty()){
+                        detectionMethods.clear();
+                        break;
+                    }
+                    else {
+                        detectionMethods.retainAll(p.getIdentificationMethods());
+                        if (detectionMethods.isEmpty()){
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!detectionMethods.isEmpty()){
+                commonDetectionMethod = detectionMethods.iterator().next();
+            }
+        }
+
+        return commonDetectionMethod;
     }
 }
