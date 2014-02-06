@@ -14,9 +14,9 @@ import java.util.Iterator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MaximalExperimentEnricher extends MinimalExperimentEnricher{
+public class FullExperimentEnricher extends MinimalExperimentEnricher{
 
-    public MaximalExperimentEnricher(){
+    public FullExperimentEnricher(){
         super();
     }
 

@@ -13,9 +13,9 @@ import psidev.psi.mi.jami.model.Publication;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MaximalExperimentUpdater extends MaximalExperimentEnricher{
+public class FullExperimentUpdater extends FullExperimentEnricher {
 
-    public MaximalExperimentUpdater(){
+    public FullExperimentUpdater(){
         super();
     }
 
