@@ -1,8 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
-import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,5 +55,55 @@ public class ExperimentEnricherStatisticsWriter
      */
     public ExperimentEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
+    }
+
+    public void onPublicationUpdate(Experiment experiment, Publication oldPublication) {
+        checkObject(experiment);
+        incrementUpdateCount();
+    }
+
+    public void onInteractionDetectionMethodUpdate(Experiment experiment, CvTerm oldCv) {
+        checkObject(experiment);
+        incrementUpdateCount();
+    }
+
+    public void onAddedVariableParameter(Experiment o, VariableParameter added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedVariableParameter(Experiment o, VariableParameter removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(Experiment o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(Experiment o, Annotation removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedConfidence(Experiment o, Confidence added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedConfidence(Experiment o, Confidence removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedXref(Experiment o, Xref added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedXref(Experiment o, Xref removed) {
+        checkObject(o);
+        incrementRemovedCount();
     }
 }

@@ -13,6 +13,17 @@ import psidev.psi.mi.jami.model.Experiment;
  */
 public interface ExperimentEnricher extends MIEnricher<Experiment>{
     /**
+     * Sets the subEnricher for Organism. Can be null.
+     * @param organismEnricher    The CvTerm enricher to be used
+     */
+    public void setOrganismEnricher(OrganismEnricher organismEnricher);
+
+    /**
+     * Gets the subEnricher for Organisms. Can be null.
+     * @return  The Organism enricher which is being used.
+     */
+    public OrganismEnricher getOrganismEnricher();
+    /**
      * Sets the subEnricher for CvTerms. Can be null.
      * @param cvTermEnricher    The CvTerm enricher to be used
      */
