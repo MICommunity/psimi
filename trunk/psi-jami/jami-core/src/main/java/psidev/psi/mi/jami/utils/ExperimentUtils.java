@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.model.impl.DefaultNamedExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Factory for experiment
@@ -106,36 +106,39 @@ public class ExperimentUtils {
         return experiment;
     }
 
-    public static CvTerm extractCommonParticipantDetectionMethodFrom(Experiment exp){
+    /**
+     * Compare all participant identification methods in all participant evidences from all the interactions evidences.
+     * @param exp
+     * @return the most frequent participant identification method (first one if several have same frequency), null if no participant identification methods
+     */
+    public static CvTerm extractMostCommonParticipantDetectionMethodFrom(Experiment exp){
+        Map<CvTerm,Integer> frequencyMap = new HashMap<CvTerm, Integer>(exp.getInteractionEvidences().size());
+        int max=0;
         CvTerm commonDetectionMethod = null;
         if (exp != null && !exp.getInteractionEvidences().isEmpty()){
-            Set<CvTerm> detectionMethods = new HashSet<CvTerm>(exp.getInteractionEvidences().size());
-            boolean isFirst = true;
-
             for (InteractionEvidence interaction : exp.getInteractionEvidences()){
                 for (ParticipantEvidence p : interaction.getParticipants()){
-                    if (isFirst){
-                        detectionMethods.addAll(p.getIdentificationMethods());
-                        isFirst = false;
-                    }
-                    // one of the participants does not have any detection methods so we cannot extract a common method for this experiment
-                    else if (p.getIdentificationMethods().isEmpty() && !detectionMethods.isEmpty()){
-                        detectionMethods.clear();
-                        break;
-                    }
-                    else {
-                        detectionMethods.retainAll(p.getIdentificationMethods());
-                        if (detectionMethods.isEmpty()){
-                            break;
+                    for (CvTerm identification : p.getIdentificationMethods()){
+                        if (frequencyMap.containsKey(identification)){
+                            int frequency = frequencyMap.get(identification)+1;
+                            frequencyMap.put(identification, frequency);
+
+                            if (max < frequency){
+                               max = frequency;
+                                commonDetectionMethod = identification;
+                            }
+                        }
+                        else{
+                            frequencyMap.put(identification, 1);
+                            max = 1;
+                            commonDetectionMethod = identification;
                         }
                     }
                 }
             }
-
-            if (!detectionMethods.isEmpty()){
-                commonDetectionMethod = detectionMethods.iterator().next();
-            }
         }
+
+        frequencyMap.clear();
 
         return commonDetectionMethod;
     }
