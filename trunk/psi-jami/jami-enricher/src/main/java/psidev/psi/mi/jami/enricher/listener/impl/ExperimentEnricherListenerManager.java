@@ -33,6 +33,12 @@ public class ExperimentEnricherListenerManager
         }
     }
 
+    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+        for (ExperimentEnricherListener listener : getListenersList()){
+            listener.onHostOrganismUpdate(experiment, oldOrganism);
+        }
+    }
+
     public void onAddedVariableParameter(Experiment experiment, VariableParameter added) {
         for (ExperimentEnricherListener listener : getListenersList()){
             listener.onAddedVariableParameter(experiment, added);
