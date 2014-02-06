@@ -32,6 +32,8 @@ public interface Participant<I extends Interaction, F extends Feature> extends E
     public static final String PHOSPHATE_DONOR_ROLE = "phosphate donor";
     public static final String PHOTON_DONOR_ROLE_MI = "MI:1084";
     public static final String PHOTON_DONOR_ROLE = "photon donor";
+    public static final String PREY_MI = "MI:0498";
+    public static final String PREY = "prey";
 
     /**
      * Sets the Interaction and add the new Participant to its list of Participants.
