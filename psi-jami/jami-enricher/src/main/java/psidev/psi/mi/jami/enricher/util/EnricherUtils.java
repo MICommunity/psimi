@@ -1,13 +1,11 @@
 package psidev.psi.mi.jami.enricher.util;
 
 import psidev.psi.mi.jami.listener.*;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.annotation.DefaultAnnotationComparator;
 import psidev.psi.mi.jami.utils.comparator.checksum.DefaultChecksumComparator;
+import psidev.psi.mi.jami.utils.comparator.confidence.DefaultConfidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
@@ -247,6 +245,53 @@ public class EnricherUtils {
                 toEnrichAnnotations.add(annot);
                 if (annotationListener != null){
                     annotationListener.onAddedAnnotation(termToEnrich, annot);
+                }
+            }
+        }
+    }
+
+    public static <T extends Object> void mergeConfidences(T termToEnrich, Collection<Confidence> toEnrichConfidences, Collection<Confidence> fetchedConfidences, boolean remove, ConfidencesChangeListener<T> confListener){
+        Iterator<Confidence> confIterator = toEnrichConfidences.iterator();
+        // remove confidences in toEnrichConfidences that are not in fetchedConfidences
+        if (remove){
+            while(confIterator.hasNext()){
+                Confidence conf = confIterator.next();
+
+                boolean containsConf = false;
+                for (Confidence conf2 : fetchedConfidences){
+                    // identical confidence
+                    if (DefaultConfidenceComparator.areEquals(conf, conf2)){
+                        containsConf = true;
+                        break;
+                    }
+                }
+                // remove confidence not in second list
+                if (!containsConf){
+                    confIterator.remove();
+                    if (confListener != null){
+                        confListener.onRemovedConfidence(termToEnrich, conf);
+                    }
+                }
+            }
+        }
+
+        // add confidences from fetchedConfidences that are not in toEnrichConfidences
+        confIterator = fetchedConfidences.iterator();
+        while(confIterator.hasNext()){
+            Confidence conf = confIterator.next();
+            boolean containsConf = false;
+            for (Confidence conf2 : toEnrichConfidences){
+                // identical confidence
+                if (DefaultConfidenceComparator.areEquals(conf, conf2)){
+                    containsConf = true;
+                    break;
+                }
+            }
+            // add missing confidence not in second list
+            if (!containsConf){
+                toEnrichConfidences.add(conf);
+                if (confListener != null){
+                    confListener.onAddedConfidence(termToEnrich, conf);
                 }
             }
         }

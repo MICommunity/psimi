@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener;
 
-import psidev.psi.mi.jami.enricher.listener.EnricherListener;
+import psidev.psi.mi.jami.listener.ExperimentChangeListener;
 import psidev.psi.mi.jami.model.Experiment;
 
 /**
@@ -12,5 +12,5 @@ import psidev.psi.mi.jami.model.Experiment;
  * @since  31/07/13
  */
 public interface ExperimentEnricherListener
-        extends EnricherListener<Experiment>{
+        extends EnricherListener<Experiment>, ExperimentChangeListener{
 }
