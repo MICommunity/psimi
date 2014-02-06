@@ -42,6 +42,18 @@ public class ExperimentChangeLogger implements ExperimentChangeListener {
         }
     }
 
+    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+        if (oldOrganism == null){
+            experimentChangeLogger.log(Level.INFO, "The host organism has been initialised for the experiment " + experiment.toString());
+        }
+        else if (experiment.getHostOrganism() == null){
+            experimentChangeLogger.log(Level.INFO, "The host organism has been reset for the experiment " + experiment.toString());
+        }
+        else {
+            experimentChangeLogger.log(Level.INFO, "The host organism " + oldOrganism + " has been updated with " + experiment.getHostOrganism() + " in the experiment " + experiment.toString());
+        }
+    }
+
     public void onAddedVariableParameter(Experiment experiment, VariableParameter addedParameter) {
         experimentChangeLogger.log(Level.INFO, "The variable parameter " + addedParameter + " has been added to the experiment " + experiment.toString());
 
