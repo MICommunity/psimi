@@ -67,6 +67,11 @@ public class ExperimentEnricherStatisticsWriter
         incrementUpdateCount();
     }
 
+    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+        checkObject(experiment);
+        incrementUpdateCount();
+    }
+
     public void onAddedVariableParameter(Experiment o, VariableParameter added) {
         checkObject(o);
         incrementAdditionCount();
