@@ -50,7 +50,7 @@ public class ExperimentClonerTest {
         Assert.assertTrue(targetExperiment.getInteractionEvidences().isEmpty());
         Assert.assertTrue(sourceExperiment.getXrefs().iterator().next() == targetExperiment.getXrefs().iterator().next());
         Assert.assertTrue(sourceExperiment.getConfidences().iterator().next() == targetExperiment.getConfidences().iterator().next());
-        Assert.assertFalse(sourceExperiment.getVariableParameters().iterator().next() == targetExperiment.getVariableParameters().iterator().next());
+        Assert.assertTrue(sourceExperiment.getVariableParameters().iterator().next() == targetExperiment.getVariableParameters().iterator().next());
         Assert.assertEquals(sourceExperiment.getVariableParameters().iterator().next(), targetExperiment.getVariableParameters().iterator().next());
     }
 }

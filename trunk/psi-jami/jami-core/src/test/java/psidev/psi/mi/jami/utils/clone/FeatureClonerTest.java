@@ -42,7 +42,7 @@ public class FeatureClonerTest {
         Assert.assertEquals(1, targetFeature.getAnnotations().size());
         Assert.assertEquals(1, targetFeature.getXrefs().size());
         Assert.assertEquals(1, targetFeature.getRanges().size());
-        Assert.assertEquals(0, targetFeature.getLinkedFeatures().size());
+        Assert.assertEquals(1, targetFeature.getLinkedFeatures().size());
         Assert.assertNull(targetFeature.getParticipant());
         Assert.assertTrue(targetFeature.getType() == sourceFeature.getType());
         Assert.assertTrue(targetFeature.getInteractionDependency() == sourceFeature.getInteractionDependency());
