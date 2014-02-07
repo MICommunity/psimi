@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.VariableParameterValueSet;
+import psidev.psi.mi.jami.model.*;
 
 import java.util.Iterator;
 
@@ -55,20 +52,32 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
     }
 
     @Override
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
+        return this.interactionEnricher.getCvTermEnricher();
+    }
+
+    @Override
+    public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getParticipantEnricher() {
+        return this.interactionEnricher.getParticipantEnricher();
+    }
+
+    @Override
+    public InteractionEnricherListener<InteractionEvidence> getInteractionEnricherListener() {
+        return this.interactionEnricher.getInteractionEnricherListener();
+    }
+
+    @Override
     public void setCvTermEnricher(CvTermEnricher cvTermEnricher) {
-        super.setCvTermEnricher(cvTermEnricher);
         this.interactionEnricher.setCvTermEnricher(cvTermEnricher);
     }
 
     @Override
     public void setParticipantEnricher(ParticipantEnricher<ParticipantEvidence, FeatureEvidence> participantEnricher) {
-        super.setParticipantEnricher(participantEnricher);
         this.interactionEnricher.setParticipantEnricher(participantEnricher);
     }
 
     @Override
     public void setInteractionEnricherListener(InteractionEnricherListener listener) {
-        super.setInteractionEnricherListener(listener);
         this.interactionEnricher.setInteractionEnricherListener(listener);
     }
 

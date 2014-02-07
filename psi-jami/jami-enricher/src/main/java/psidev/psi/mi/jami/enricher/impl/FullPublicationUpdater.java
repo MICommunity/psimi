@@ -99,13 +99,31 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
 
     @Override
     public void setSourceEnricher(SourceEnricher cvTermEnricher) {
-        super.setSourceEnricher(cvTermEnricher);
         this.minimalPublicationUpdater.setSourceEnricher(cvTermEnricher);
     }
 
     @Override
     public void setPublicationEnricherListener(PublicationEnricherListener listener) {
-        super.setPublicationEnricherListener(listener);
         this.minimalPublicationUpdater.setPublicationEnricherListener(listener);
+    }
+
+    @Override
+    public PublicationFetcher getPublicationFetcher() {
+        return this.minimalPublicationUpdater.getPublicationFetcher();
+    }
+
+    @Override
+    public SourceEnricher getSourceEnricher() {
+        return this.minimalPublicationUpdater.getSourceEnricher();
+    }
+
+    @Override
+    public PublicationEnricherListener getPublicationEnricherListener() {
+        return this.minimalPublicationUpdater.getPublicationEnricherListener();
+    }
+
+    @Override
+    public Publication find(Publication publicationToEnrich) throws EnricherException {
+        return this.minimalPublicationUpdater.find(publicationToEnrich);
     }
 }
