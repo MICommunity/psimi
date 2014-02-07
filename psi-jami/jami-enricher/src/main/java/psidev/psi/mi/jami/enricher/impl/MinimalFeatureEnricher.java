@@ -78,6 +78,9 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
 
             // other properties
             processOtherProperties(objectToEnrich, objectSource);
+
+            if(getFeatureEnricherListener() != null)
+                getFeatureEnricherListener().onEnrichmentComplete(objectToEnrich, EnrichmentStatus.SUCCESS, "Feature enriched successfully.");
         }
     }
 

@@ -1,11 +1,14 @@
 package psidev.psi.mi.jami.enricher.util;
 
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.listener.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.annotation.DefaultAnnotationComparator;
 import psidev.psi.mi.jami.utils.comparator.checksum.DefaultChecksumComparator;
 import psidev.psi.mi.jami.utils.comparator.confidence.DefaultConfidenceComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
@@ -292,6 +295,105 @@ public class EnricherUtils {
                 toEnrichConfidences.add(conf);
                 if (confListener != null){
                     confListener.onAddedConfidence(termToEnrich, conf);
+                }
+            }
+        }
+    }
+
+    public static <T extends Object> void mergeParameters(T termToEnrich, Collection<Parameter> toEnrichParameters, Collection<Parameter> fetchedParameters, boolean remove, ParametersChangeListener<T> paramListener){
+        Iterator<Parameter> paramIterator = toEnrichParameters.iterator();
+        // remove parameters in toEnrichParameters that are not in fetchedParameters
+        if (remove){
+            while(paramIterator.hasNext()){
+                Parameter param = paramIterator.next();
+
+                boolean containsParam = false;
+                for (Parameter param2 : fetchedParameters){
+                    // identical parameter
+                    if (DefaultParameterComparator.areEquals(param, param2)){
+                        containsParam = true;
+                        break;
+                    }
+                }
+                // remove parameter not in second list
+                if (!containsParam){
+                    paramIterator.remove();
+                    if (paramListener != null){
+                        paramListener.onRemovedParameter(termToEnrich, param);
+                    }
+                }
+            }
+        }
+
+        // add parameters from fetchedParameters that are not in toEnrichParameters
+        paramIterator = fetchedParameters.iterator();
+        while(paramIterator.hasNext()){
+            Parameter param = paramIterator.next();
+            boolean containsParam = false;
+            for (Parameter param2 : toEnrichParameters){
+                // identical parameter
+                if (DefaultParameterComparator.areEquals(param, param2)){
+                    containsParam = true;
+                    break;
+                }
+            }
+            // add missing parameter not in second list
+            if (!containsParam){
+                toEnrichParameters.add(param);
+                if (paramListener != null){
+                    paramListener.onAddedParameter(termToEnrich, param);
+                }
+            }
+        }
+    }
+
+    public static <P extends Participant,F extends Feature> void mergeParticipants(Interaction termToEnrich, Collection<P> toEnrichParticipants, Collection<P> fetchedParticipants, boolean remove, InteractionChangeListener interactionListener,
+                                                                 ParticipantEnricher<P,F> participantEnricher) throws EnricherException {
+        Iterator<P> partIterator = toEnrichParticipants.iterator();
+        // remove participants in toEnrichParticipants that are not in fetchedParticipants
+        if (remove){
+            while(partIterator.hasNext()){
+                P part = partIterator.next();
+
+                boolean containsPart = false;
+                for (P part2 : fetchedParticipants){
+                    // identical participant
+                    if (part == part2){
+                        containsPart = true;
+                        break;
+                    }
+                }
+                // remove participant not in second list
+                if (!containsPart){
+                    partIterator.remove();
+                    part.setInteraction(null);
+                    if (interactionListener != null){
+                        interactionListener.onRemovedParticipant(termToEnrich, part);
+                    }
+                }
+            }
+        }
+
+        // add confidences from fetchedConfidences that are not in toEnrichConfidences
+        partIterator = fetchedParticipants.iterator();
+        while(partIterator.hasNext()){
+            P part = partIterator.next();
+            boolean containsPart = false;
+            for (P part2 : toEnrichParticipants){
+                // identical participants
+                if (part == part2){
+                    containsPart = true;
+                    if (participantEnricher != null){
+                        participantEnricher.enrich(part2, part);
+                    }
+                    break;
+                }
+            }
+            // add missing confidence not in second list
+            if (!containsPart){
+                termToEnrich.addParticipant(part);
+                if (interactionListener != null){
+                    interactionListener.onAddedParticipant(termToEnrich, part);
                 }
             }
         }

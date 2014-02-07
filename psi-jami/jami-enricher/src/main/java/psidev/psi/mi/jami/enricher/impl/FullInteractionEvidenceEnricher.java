@@ -29,8 +29,8 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
     }
 
     @Override
-    protected void processInteraction(InteractionEvidence interactionToEnrich) throws EnricherException {
-        super.processInteraction(interactionToEnrich);
+    protected void processOtherProperties(InteractionEvidence interactionToEnrich) throws EnricherException {
+        super.processOtherProperties(interactionToEnrich);
 
         // PROCESS RIGID
         this.interactionEnricher.processRigid(interactionToEnrich);

@@ -88,6 +88,8 @@ public class MinimalExperimentEnricher implements ExperimentEnricher{
 
             processInteractionDetectionMethod(experimentToEnrich, objectSource);
 
+            processOrganism(experimentToEnrich, objectSource);
+
             processOtherProperties(experimentToEnrich, objectSource);
 
             if( getExperimentEnricherListener() != null )
