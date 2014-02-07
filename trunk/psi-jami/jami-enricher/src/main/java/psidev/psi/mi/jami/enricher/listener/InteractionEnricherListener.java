@@ -4,11 +4,11 @@ import psidev.psi.mi.jami.listener.InteractionChangeListener;
 import psidev.psi.mi.jami.model.Interaction;
 
 /**
- * Created with IntelliJ IDEA.
+ *Listener for interaction enrichment
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public interface InteractionEnricherListener extends InteractionChangeListener, EnricherListener<Interaction> {
+public interface InteractionEnricherListener<I extends Interaction> extends InteractionChangeListener<I>, EnricherListener<I> {
 
 }
