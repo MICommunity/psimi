@@ -38,24 +38,6 @@ public class MinimalInteractionEvidenceUpdater
     }
 
     @Override
-    protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-        EnricherUtils.mergeConfidences(objectToEnrich, objectToEnrich.getConfidences(), objectSource.getConfidences(), true,
-                (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener)getInteractionEnricherListener():null));
-    }
-
-    @Override
-    protected void processParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-
-        EnricherUtils.mergeParameters(objectToEnrich, objectToEnrich.getParameters(), objectSource.getParameters(), true,
-                (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener) getInteractionEnricherListener() : null));
-    }
-
-    @Override
-    protected void processVariableParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-         mergerVariableParameters(objectToEnrich, objectSource, true);
-    }
-
-    @Override
     protected void processCreatedDate(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
         if ((objectSource.getCreatedDate() != null && !objectSource.getCreatedDate().equals(objectToEnrich.getCreatedDate()))
                 || (objectSource.getCreatedDate() == null && objectToEnrich.getCreatedDate() != null)){
@@ -93,7 +75,15 @@ public class MinimalInteractionEvidenceUpdater
 
     @Override
     protected void processOtherProperties(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
-        // do nothing
+        super.processOtherProperties(objectToEnrich, objectSource);
+
+        // set negative
+        if (objectSource.isNegative() != objectToEnrich.isNegative()){
+            objectToEnrich.setNegative(objectSource.isNegative());
+            if (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener){
+                ((InteractionEvidenceEnricherListener)getInteractionEnricherListener()).onNegativePropertyUpdate(objectToEnrich, !objectSource.isNegative());
+            }
+        }
     }
 
     @Override
@@ -123,5 +113,7 @@ public class MinimalInteractionEvidenceUpdater
 
         processInteractionType(objectToEnrich);
     }
+
+
 }
 

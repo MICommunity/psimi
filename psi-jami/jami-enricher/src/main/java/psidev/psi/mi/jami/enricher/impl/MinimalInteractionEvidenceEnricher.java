@@ -4,13 +4,9 @@ import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
-import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.VariableParameterValueSet;
-
-import java.util.Iterator;
 
 /**
  * Minimal enricher for interaction evidence
@@ -62,12 +58,6 @@ public class MinimalInteractionEvidenceEnricher
     protected void processOtherProperties(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException {
         // experiment
         processExperiment(objectToEnrich, objectSource);
-        // confidences
-        processConfidences(objectToEnrich, objectSource);
-        // parameters
-        processParameters(objectToEnrich, objectSource);
-        // variable parameters
-        processVariableParameters(objectToEnrich, objectSource);
     }
 
     protected void processExperiment(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException {
@@ -79,65 +69,6 @@ public class MinimalInteractionEvidenceEnricher
          }
 
         processExperiment(objectToEnrich);
-    }
-
-    protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-        EnricherUtils.mergeConfidences(objectToEnrich, objectToEnrich.getConfidences(), objectSource.getConfidences(), false,
-                (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener)getInteractionEnricherListener():null));
-    }
-
-    protected void processParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-
-        EnricherUtils.mergeParameters(objectToEnrich, objectToEnrich.getParameters(), objectSource.getParameters(), false,
-                (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener)getInteractionEnricherListener():null));
-    }
-
-    protected void processVariableParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-         mergerVariableParameters(objectToEnrich, objectSource, false);
-    }
-
-    protected void mergerVariableParameters(InteractionEvidence interactionToEnrich, InteractionEvidence objectSource, boolean remove){
-        Iterator<VariableParameterValueSet> variableParamIterator = interactionToEnrich.getVariableParameterValues().iterator();
-        if (remove){
-            while(variableParamIterator.hasNext()){
-                VariableParameterValueSet param = variableParamIterator.next();
-
-                boolean containsParam = false;
-                for (VariableParameterValueSet param2 : objectSource.getVariableParameterValues()){
-                    // identical parameter
-                    if (param == param2){
-                        containsParam = true;
-                        break;
-                    }
-                }
-                // remove parameter not in second list
-                if (!containsParam){
-                    variableParamIterator.remove();
-                    if (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener){
-                        ((InteractionEvidenceEnricherListener)getInteractionEnricherListener()).onRemovedVariableParameterValues(interactionToEnrich, param);
-                    }
-                }
-            }
-        }
-
-        variableParamIterator = objectSource.getVariableParameterValues().iterator();
-        while(variableParamIterator.hasNext()){
-            VariableParameterValueSet param = variableParamIterator.next();
-            boolean containsParam = false;
-            for (VariableParameterValueSet param2 : interactionToEnrich.getVariableParameterValues()){
-                // identical param
-                if (param == param2){
-                    containsParam = true;
-                    break;
-                }
-            }
-            if (!containsParam){
-                interactionToEnrich.getVariableParameterValues().add(param);
-                if (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener){
-                    ((InteractionEvidenceEnricherListener)getInteractionEnricherListener()).onAddedVariableParameterValues(interactionToEnrich, param);
-                }
-            }
-        }
     }
 }
 
