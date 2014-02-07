@@ -10,8 +10,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ExperimentEnricherListenerManager;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
@@ -76,6 +75,50 @@ public class BasicExperimentEnricherTest {
                     public void onEnrichmentError(Experiment object, String message, Exception e) {
                         Assert.fail();
                     }
+
+                    public void onPublicationUpdate(Experiment experiment, Publication oldPublication) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionDetectionMethodUpdate(Experiment experiment, CvTerm oldCv) {
+                        Assert.fail();
+                    }
+
+                    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedVariableParameter(Experiment o, VariableParameter added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedVariableParameter(Experiment o, VariableParameter removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Experiment o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Experiment o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedConfidence(Experiment o, Confidence added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedConfidence(Experiment o, Confidence removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Experiment o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Experiment o, Xref removed) {
+                        Assert.fail();
+                    }
                 }
         ));
 
@@ -97,7 +140,49 @@ public class BasicExperimentEnricherTest {
                         assertTrue(experiment == persistentExperiment);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                     }
+                    public void onPublicationUpdate(Experiment experiment, Publication oldPublication) {
+                        Assert.fail();
+                    }
                     public void onEnrichmentError(Experiment object, String message, Exception e) {
+                        Assert.fail();
+                    }
+                    public void onInteractionDetectionMethodUpdate(Experiment experiment, CvTerm oldCv) {
+                        Assert.fail();
+                    }
+
+                    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedVariableParameter(Experiment o, VariableParameter added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedVariableParameter(Experiment o, VariableParameter removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Experiment o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Experiment o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedConfidence(Experiment o, Confidence added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedConfidence(Experiment o, Confidence removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Experiment o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Experiment o, Xref removed) {
                         Assert.fail();
                     }
                 }
@@ -129,6 +214,50 @@ public class BasicExperimentEnricherTest {
                     public void onEnrichmentError(Experiment object, String message, Exception e) {
                         Assert.fail();
                     }
+
+                    public void onPublicationUpdate(Experiment experiment, Publication oldPublication) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionDetectionMethodUpdate(Experiment experiment, CvTerm oldCv) {
+                        Assert.fail();
+                    }
+
+                    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedVariableParameter(Experiment o, VariableParameter added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedVariableParameter(Experiment o, VariableParameter removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Experiment o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Experiment o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedConfidence(Experiment o, Confidence added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedConfidence(Experiment o, Confidence removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Experiment o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Experiment o, Xref removed) {
+                        Assert.fail();
+                    }
                 }
         ));
 
@@ -148,6 +277,50 @@ public class BasicExperimentEnricherTest {
                     }
                     public void onEnrichmentError(Experiment object, String message, Exception e) {
                         Assert.fail();
+                    }
+
+                    public void onPublicationUpdate(Experiment experiment, Publication oldPublication) {
+
+                    }
+
+                    public void onInteractionDetectionMethodUpdate(Experiment experiment, CvTerm oldCv) {
+
+                    }
+
+                    public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism) {
+
+                    }
+
+                    public void onAddedVariableParameter(Experiment o, VariableParameter added) {
+
+                    }
+
+                    public void onRemovedVariableParameter(Experiment o, VariableParameter removed) {
+
+                    }
+
+                    public void onAddedAnnotation(Experiment o, Annotation added) {
+
+                    }
+
+                    public void onRemovedAnnotation(Experiment o, Annotation removed) {
+
+                    }
+
+                    public void onAddedConfidence(Experiment o, Confidence added) {
+
+                    }
+
+                    public void onRemovedConfidence(Experiment o, Confidence removed) {
+
+                    }
+
+                    public void onAddedXref(Experiment o, Xref added) {
+
+                    }
+
+                    public void onRemovedXref(Experiment o, Xref removed) {
+
                     }
                 }
         ));

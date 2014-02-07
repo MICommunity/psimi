@@ -20,16 +20,16 @@ import java.util.Iterator;
 
 public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceEnricher{
 
-    private FullInteractionEnricher interactionEnricher;
+    private FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> interactionEnricher;
 
     public FullInteractionEvidenceEnricher() {
         super();
-        this.interactionEnricher = new FullInteractionEnricher();
+        this.interactionEnricher = new FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>();
     }
 
-    protected FullInteractionEvidenceEnricher(FullInteractionEnricher interactionEnricher) {
+    protected FullInteractionEvidenceEnricher(FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> interactionEnricher) {
         super();
-        this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher();
+        this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>();
     }
 
     @Override
@@ -37,12 +37,15 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
         super.processOtherProperties(interactionToEnrich);
 
         // PROCESS RIGID
-        this.interactionEnricher.processRigid(interactionToEnrich);
+        this.interactionEnricher.processOtherProperties(interactionToEnrich);
 
     }
 
     @Override
     protected void processOtherProperties(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException {
+        super.processOtherProperties(objectToEnrich, objectSource);
+
+        this.interactionEnricher.processOtherProperties(objectToEnrich, objectSource);
         // confidences
         processConfidences(objectToEnrich, objectSource);
         // parameters
