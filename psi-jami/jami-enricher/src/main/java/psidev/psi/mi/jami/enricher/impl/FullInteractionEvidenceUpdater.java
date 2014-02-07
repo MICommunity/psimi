@@ -4,7 +4,9 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * Full updater for interaction evidence
@@ -17,7 +19,7 @@ import psidev.psi.mi.jami.model.InteractionEvidence;
 public class FullInteractionEvidenceUpdater extends FullInteractionEvidenceEnricher{
 
     public FullInteractionEvidenceUpdater() {
-        super(new FullInteractionUpdater());
+        super(new FullInteractionUpdater<InteractionEvidence, ParticipantEvidence, FeatureEvidence>());
     }
 
     @Override

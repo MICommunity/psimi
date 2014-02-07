@@ -1,26 +1,70 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.enricher.ModelledInteractionEnricher;
+import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
+import psidev.psi.mi.jami.model.ModelledFeature;
+import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 
 /**
- * Created with IntelliJ IDEA.
+ * Minimal enricher for modelled interactions
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MinimalModelledInteractionEnricher extends MinimalInteractionEnricher<ModelledInteraction, ModelledParticipant, ModelledFeature> {
+public class MinimalModelledInteractionEnricher<I extends ModelledInteraction> extends MinimalInteractionEnricher<I, ModelledParticipant, ModelledFeature> implements ModelledInteractionEnricher<I> {
 
-    @Override
-    protected void processOtherProperties(ModelledInteraction interactionToEnrich) throws EnricherException {
+    private SourceEnricher sourceEnricher = null;
 
-        // PROCESS SOURCE
+    /**
+     * Strategy for the Interaction enrichment.
+     * This method can be overwritten to change how the interaction is enriched.
+     * @param interactionToEnrich   The interaction to be enriched.
+     */
+    protected void processOtherProperties(I interactionToEnrich) throws EnricherException {
+
+        //PROCESS source
         processSource(interactionToEnrich);
     }
 
-    protected void processSource(ModelledInteraction interactionToEnrich) throws EnricherException {
-        if (interactionToEnrich.getSource() != null && getCvTermEnricher() != null){
-             getCvTermEnricher().enrich(interactionToEnrich.getSource());
+    /**
+     * The sourceEnricher which is currently being used for the enriching or updating of sources.
+     * @return The source enricher. Can be null.
+     */
+    public SourceEnricher getSourceEnricher() {
+        return sourceEnricher;
+    }
+
+    /**
+     * Sets the sourceEnricher to be used.
+     * @param sourceEnricher The source enricher to be used. Can be null.
+     */
+    public void setSourceEnricher(SourceEnricher sourceEnricher) {
+        this.sourceEnricher = sourceEnricher;
+    }
+
+    protected void processSource(I interactionToEnrich) throws EnricherException {
+        if( getSourceEnricher() != null
+                && interactionToEnrich.getSource() != null )
+            getSourceEnricher().enrich(interactionToEnrich.getSource());
+    }
+
+    @Override
+    protected void processOtherProperties(I objectToEnrich, I objectSource) throws EnricherException {
+        // source
+        processSource(objectToEnrich, objectSource);
+    }
+
+    protected void processSource(I objectToEnrich, I objectSource) throws EnricherException {
+        if (objectSource.getSource() != null && objectToEnrich.getSource() == null){
+            objectToEnrich.setSource(objectSource.getSource());
+            if (getInteractionEnricherListener() instanceof ModelledInteractionEnricher){
+                ((ModelledInteractionEnricherListener)getInteractionEnricherListener()).onSourceUpdate(objectToEnrich, null);
+            }
         }
+
+        processSource(objectToEnrich);
     }
 }

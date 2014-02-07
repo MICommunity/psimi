@@ -253,15 +253,15 @@ public class EnricherUtils {
         }
     }
 
-    public static <T extends Object> void mergeConfidences(T termToEnrich, Collection<Confidence> toEnrichConfidences, Collection<Confidence> fetchedConfidences, boolean remove, ConfidencesChangeListener<T> confListener){
-        Iterator<Confidence> confIterator = toEnrichConfidences.iterator();
+    public static <T extends Object, C extends Confidence> void mergeConfidences(T termToEnrich, Collection<C> toEnrichConfidences, Collection<C> fetchedConfidences, boolean remove, ConfidencesChangeListener<T> confListener){
+        Iterator<C> confIterator = toEnrichConfidences.iterator();
         // remove confidences in toEnrichConfidences that are not in fetchedConfidences
         if (remove){
             while(confIterator.hasNext()){
-                Confidence conf = confIterator.next();
+                C conf = confIterator.next();
 
                 boolean containsConf = false;
-                for (Confidence conf2 : fetchedConfidences){
+                for (C conf2 : fetchedConfidences){
                     // identical confidence
                     if (DefaultConfidenceComparator.areEquals(conf, conf2)){
                         containsConf = true;
@@ -281,9 +281,9 @@ public class EnricherUtils {
         // add confidences from fetchedConfidences that are not in toEnrichConfidences
         confIterator = fetchedConfidences.iterator();
         while(confIterator.hasNext()){
-            Confidence conf = confIterator.next();
+            C conf = confIterator.next();
             boolean containsConf = false;
-            for (Confidence conf2 : toEnrichConfidences){
+            for (C conf2 : toEnrichConfidences){
                 // identical confidence
                 if (DefaultConfidenceComparator.areEquals(conf, conf2)){
                     containsConf = true;
@@ -300,15 +300,15 @@ public class EnricherUtils {
         }
     }
 
-    public static <T extends Object> void mergeParameters(T termToEnrich, Collection<Parameter> toEnrichParameters, Collection<Parameter> fetchedParameters, boolean remove, ParametersChangeListener<T> paramListener){
-        Iterator<Parameter> paramIterator = toEnrichParameters.iterator();
+    public static <T extends Object, P extends Parameter> void mergeParameters(T termToEnrich, Collection<P> toEnrichParameters, Collection<P> fetchedParameters, boolean remove, ParametersChangeListener<T> paramListener){
+        Iterator<P> paramIterator = toEnrichParameters.iterator();
         // remove parameters in toEnrichParameters that are not in fetchedParameters
         if (remove){
             while(paramIterator.hasNext()){
-                Parameter param = paramIterator.next();
+                P param = paramIterator.next();
 
                 boolean containsParam = false;
-                for (Parameter param2 : fetchedParameters){
+                for (P param2 : fetchedParameters){
                     // identical parameter
                     if (DefaultParameterComparator.areEquals(param, param2)){
                         containsParam = true;
@@ -328,9 +328,9 @@ public class EnricherUtils {
         // add parameters from fetchedParameters that are not in toEnrichParameters
         paramIterator = fetchedParameters.iterator();
         while(paramIterator.hasNext()){
-            Parameter param = paramIterator.next();
+            P param = paramIterator.next();
             boolean containsParam = false;
-            for (Parameter param2 : toEnrichParameters){
+            for (P param2 : toEnrichParameters){
                 // identical parameter
                 if (DefaultParameterComparator.areEquals(param, param2)){
                     containsParam = true;

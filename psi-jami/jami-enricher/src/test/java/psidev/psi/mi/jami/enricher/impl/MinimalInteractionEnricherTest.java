@@ -6,20 +6,18 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.BasicParticipantEnricher;
-import psidev.psi.mi.jami.enricher.impl.FullInteractionEnricher;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
+import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherLogger;
-import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
-import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteraction;
 import psidev.psi.mi.jami.model.impl.DefaultInteractor;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 
 import java.util.Collections;
+import java.util.Date;
 
 import static junit.framework.Assert.*;
 
@@ -71,6 +69,70 @@ public class MinimalInteractionEnricherTest {
 
                     public void onUpdatedRigid(Interaction interaction, String oldRigid) {
                         Assert.fail();                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onShortNameUpdate(Interaction interaction, String oldName) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedDateUpdate(Interaction interaction, Date oldUpdate) {
+                        Assert.fail();
+                    }
+
+                    public void onCreatedDateUpdate(Interaction interaction, Date oldCreated) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionTypeUpdate(Interaction interaction, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedParticipant(Interaction interaction, Participant addedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedParticipant(Interaction interaction, Participant removedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedChecksum(Object interactor, Checksum added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedChecksum(Object interactor, Checksum removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedIdentifier(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedIdentifier(Object o, Xref removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
+                        Assert.fail();
+                    }
                 }
         ));
         interactionEnricher.enrich(persistentInteraction);
@@ -98,6 +160,70 @@ public class MinimalInteractionEnricherTest {
                     }
 
                     public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onShortNameUpdate(Interaction interaction, String oldName) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedDateUpdate(Interaction interaction, Date oldUpdate) {
+                        Assert.fail();
+                    }
+
+                    public void onCreatedDateUpdate(Interaction interaction, Date oldCreated) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionTypeUpdate(Interaction interaction, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedParticipant(Interaction interaction, Participant addedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedParticipant(Interaction interaction, Participant removedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedChecksum(Object interactor, Checksum added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedChecksum(Object interactor, Checksum removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedIdentifier(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedIdentifier(Object o, Xref removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
                         Assert.fail();
                     }
                 }
@@ -135,6 +261,70 @@ public class MinimalInteractionEnricherTest {
                     public void onUpdatedRigid(Interaction interaction, String oldRigid) {
                         Assert.fail();
                     }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onShortNameUpdate(Interaction interaction, String oldName) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedDateUpdate(Interaction interaction, Date oldUpdate) {
+                        Assert.fail();
+                    }
+
+                    public void onCreatedDateUpdate(Interaction interaction, Date oldCreated) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionTypeUpdate(Interaction interaction, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedParticipant(Interaction interaction, Participant addedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedParticipant(Interaction interaction, Participant removedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedChecksum(Object interactor, Checksum added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedChecksum(Object interactor, Checksum removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedIdentifier(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedIdentifier(Object o, Xref removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
+                        Assert.fail();
+                    }
                 } )
         );
         interactionEnricher.enrich(persistentInteraction);
@@ -165,6 +355,70 @@ public class MinimalInteractionEnricherTest {
                     }
 
                     public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onShortNameUpdate(Interaction interaction, String oldName) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedDateUpdate(Interaction interaction, Date oldUpdate) {
+                        Assert.fail();
+                    }
+
+                    public void onCreatedDateUpdate(Interaction interaction, Date oldCreated) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionTypeUpdate(Interaction interaction, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedParticipant(Interaction interaction, Participant addedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedParticipant(Interaction interaction, Participant removedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedChecksum(Object interactor, Checksum added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedChecksum(Object interactor, Checksum removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedIdentifier(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedIdentifier(Object o, Xref removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
                         Assert.fail();
                     }
                 }
@@ -198,6 +452,70 @@ public class MinimalInteractionEnricherTest {
                     }
 
                     public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onShortNameUpdate(Interaction interaction, String oldName) {
+                        Assert.fail();
+                    }
+
+                    public void onUpdatedDateUpdate(Interaction interaction, Date oldUpdate) {
+                        Assert.fail();
+                    }
+
+                    public void onCreatedDateUpdate(Interaction interaction, Date oldCreated) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractionTypeUpdate(Interaction interaction, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedParticipant(Interaction interaction, Participant addedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedParticipant(Interaction interaction, Participant removedParticipant) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedChecksum(Object interactor, Checksum added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedChecksum(Object interactor, Checksum removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedIdentifier(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedIdentifier(Object o, Xref removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
                         Assert.fail();
                     }
                 }
