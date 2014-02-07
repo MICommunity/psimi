@@ -1,8 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
@@ -114,6 +117,34 @@ public class MinimalInteractionEvidenceUpdater
         processInteractionType(objectToEnrich);
     }
 
+    @Override
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvTermEnricher) {
+        this.delegate.setCvTermEnricher(cvTermEnricher);
+    }
 
+    @Override
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
+        return this.delegate.getCvTermEnricher();
+    }
+
+    @Override
+    public void setParticipantEnricher(ParticipantEnricher<ParticipantEvidence, FeatureEvidence> participantEnricher) {
+        this.delegate.setParticipantEnricher(participantEnricher);
+    }
+
+    @Override
+    public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getParticipantEnricher() {
+        return this.delegate.getParticipantEnricher();
+    }
+
+    @Override
+    public InteractionEnricherListener<InteractionEvidence> getInteractionEnricherListener() {
+        return this.delegate.getInteractionEnricherListener();
+    }
+
+    @Override
+    public void setInteractionEnricherListener(InteractionEnricherListener<InteractionEvidence> listener) {
+        this.delegate.setInteractionEnricherListener(listener);
+    }
 }
 
