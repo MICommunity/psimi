@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
@@ -35,24 +36,24 @@ public interface InteractionEnricher <I extends Interaction ,  P extends Partici
      * The current sub enricher for CvTerms.
      * @param cvTermEnricher The enricher for cvTerms. Can be null.
      */
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvTermEnricher);
 
     /**
      * Sets the sub enricher for CvTerms.
      * @return  The enricher for CvTerms. Can be null.
      */
-    public CvTermEnricher getCvTermEnricher();
+    public CvTermEnricher<CvTerm> getCvTermEnricher();
 
     /**
      * The listener for changes made to interactions.
      * @return  The listener for interaction changes. Can be null.
      */
-    public InteractionEnricherListener getInteractionEnricherListener();
+    public InteractionEnricherListener<I> getInteractionEnricherListener();
 
     /**
      * Sets the listener to be used when interactions are changed.
      * @param listener  The listener for interaction changes. Can be null.
      */
-    public void setInteractionEnricherListener(InteractionEnricherListener listener);
+    public void setInteractionEnricherListener(InteractionEnricherListener<I> listener);
 
 }

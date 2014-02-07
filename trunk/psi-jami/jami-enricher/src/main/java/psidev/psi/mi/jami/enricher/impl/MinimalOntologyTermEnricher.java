@@ -80,10 +80,20 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
 
     protected void processChildren(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
         mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getParents(), cvTermFetched.getParents(), false, true);
+        enrichRelatedTerms(cvTermToEnrich.getChildren());
+    }
+
+    protected void enrichRelatedTerms(Collection<OntologyTerm> cvTermToEnrich) throws EnricherException {
+        if (this.cvEnricher != null){
+            for (OntologyTerm child : cvTermToEnrich){
+                this.cvEnricher.enrich(child);
+            }
+        }
     }
 
     protected void processParents(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
         mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getChildren(), cvTermFetched.getChildren(), false, false);
+        enrichRelatedTerms(cvTermToEnrich.getParents());
     }
 
     @Override

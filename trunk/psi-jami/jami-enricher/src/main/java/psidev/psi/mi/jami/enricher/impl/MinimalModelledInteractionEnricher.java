@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.*;
 public class MinimalModelledInteractionEnricher extends MinimalInteractionEnricher<ModelledInteraction, ModelledParticipant, ModelledFeature> {
 
     @Override
-    protected void processInteraction(ModelledInteraction interactionToEnrich) throws EnricherException {
+    protected void processOtherProperties(ModelledInteraction interactionToEnrich) throws EnricherException {
 
         // PROCESS SOURCE
         processSource(interactionToEnrich);

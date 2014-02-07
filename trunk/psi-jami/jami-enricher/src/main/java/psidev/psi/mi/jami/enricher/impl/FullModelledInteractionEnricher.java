@@ -27,8 +27,8 @@ public class FullModelledInteractionEnricher extends MinimalModelledInteractionE
     }
 
     @Override
-    protected void processInteraction(ModelledInteraction interactionToEnrich) throws EnricherException {
-        super.processInteraction(interactionToEnrich);
+    protected void processOtherProperties(ModelledInteraction interactionToEnrich) throws EnricherException {
+        super.processOtherProperties(interactionToEnrich);
 
         // PROCESS RIGID
         this.interactionEnricher.processRigid(interactionToEnrich);
