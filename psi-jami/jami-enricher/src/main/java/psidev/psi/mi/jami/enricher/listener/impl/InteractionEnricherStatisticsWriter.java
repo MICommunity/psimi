@@ -2,10 +2,11 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
-import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -15,9 +16,9 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class InteractionEnricherStatisticsWriter
-        extends EnricherStatisticsWriter<Interaction>
-        implements InteractionEnricherListener {
+public class InteractionEnricherStatisticsWriter<I extends Interaction>
+        extends EnricherStatisticsWriter<I>
+        implements InteractionEnricherListener<I> {
 
 
     private static final String FILE_NAME = "Interaction";
@@ -58,17 +59,74 @@ public class InteractionEnricherStatisticsWriter
         super(successFile, failureFile);
     }
 
-    public void onUpdatedRigid(Interaction interaction, String oldRigid) {
+    public void onShortNameUpdate(I interaction, String oldName) {
         checkObject(interaction);
-        if (oldRigid != null && interaction.getRigid() != null){
-            incrementUpdateCount();
-        }
-        else if (oldRigid != null){
-            incrementRemovedCount();
-        }
-        else{
-            incrementAdditionCount();
-        }
+        incrementUpdateCount();
+    }
+
+    public void onUpdatedDateUpdate(I interaction, Date oldUpdate) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onCreatedDateUpdate(I interaction, Date oldCreated) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onInteractionTypeUpdate(I interaction, CvTerm oldType) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onAddedParticipant(I interaction, Participant addedParticipant) {
+        checkObject(interaction);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedParticipant(I interaction, Participant removedParticipant) {
+        checkObject(interaction);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(I o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(I o, Annotation removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedChecksum(I interactor, Checksum added) {
+        checkObject(interactor);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedChecksum(I interactor, Checksum removed) {
+        checkObject(interactor);
+        incrementRemovedCount();
+    }
+
+    public void onAddedIdentifier(I o, Xref added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedIdentifier(I o, Xref removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedXref(I o, Xref added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedXref(I o, Xref removed) {
+        checkObject(o);
+        incrementRemovedCount();
     }
 
 
