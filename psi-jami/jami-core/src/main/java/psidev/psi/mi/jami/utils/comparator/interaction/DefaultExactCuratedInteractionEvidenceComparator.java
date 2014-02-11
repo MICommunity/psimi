@@ -141,7 +141,7 @@ public class DefaultExactCuratedInteractionEvidenceComparator {
             ParticipantEvidence f1 = f1Iterator.next();
             ParticipantEvidence f2ToRemove = null;
             for (ParticipantEvidence f2 : f2List){
-                if (DefaultExactParticipantEvidenceComparator.areEquals(f1, f2)){
+                if (DefaultExactParticipantEvidenceComparator.areEquals(f1, f2, false)){
                     f2ToRemove = f2;
                     break;
                 }

@@ -35,7 +35,7 @@ public class DefaultFeatureEvidenceTest {
         ParticipantEvidence p = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         feature.setParticipant(p);
 
-        Assert.assertTrue(DefaultParticipantEvidenceComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant()));
+        Assert.assertTrue(DefaultParticipantEvidenceComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant(), true));
         Assert.assertEquals(0, p.getFeatures().size());
 
         feature.setParticipantAndAddFeature(p);

@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntityPool;
+import psidev.psi.mi.jami.model.ExperimentalEntityPool;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Comparator;
 
 /**
- * Basic EntityPoolComparator.
+ * Basic ExperimentalEntityPoolComparator.
  *
  * It will first compare the collection of Entities using ParticipantComparator
  *
@@ -16,20 +16,20 @@ import java.util.Comparator;
  * @since <pre>04/10/13</pre>
  */
 
-public class EntityPoolComparator implements Comparator<EntityPool> {
+public class ExperimentalEntityPoolComparator implements Comparator<ExperimentalEntityPool> {
 
     protected CollectionComparator<Entity> entityCollectionComparator;
-    protected ParticipantBaseComparator entityBaseComparator;
+    protected ParticipantEvidenceComparator entityBaseComparator;
 
     /**
      * Creates a new InteractorPoolComparator
      * @param interactorComparator : the interactor comparator required to compare interactors
      */
-    public EntityPoolComparator(ParticipantComparator interactorComparator){
+    public ExperimentalEntityPoolComparator(ParticipantComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The participant/entity comparator is required to compare entities. It cannot be null");
         }
-        this.entityBaseComparator = interactorComparator.getParticipantBaseComparator();
+        this.entityBaseComparator = interactorComparator.getExperimentalParticipantComparator();
         this.entityCollectionComparator = new CollectionComparator<Entity>(interactorComparator);
     }
 
@@ -37,7 +37,7 @@ public class EntityPoolComparator implements Comparator<EntityPool> {
         return entityCollectionComparator;
     }
 
-    public ParticipantBaseComparator getEntityComparator(){
+    public ParticipantEvidenceComparator getEntityComparator(){
         return entityBaseComparator;
     }
 
@@ -47,7 +47,7 @@ public class EntityPoolComparator implements Comparator<EntityPool> {
      * @param interactorCandidates2
      * @return
      */
-    public int compare(EntityPool interactorCandidates1, EntityPool interactorCandidates2) {
+    public int compare(ExperimentalEntityPool interactorCandidates1, ExperimentalEntityPool interactorCandidates2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -62,14 +62,12 @@ public class EntityPoolComparator implements Comparator<EntityPool> {
             return BEFORE;
         }
         else {
-            // disable comparison of interactors
-            this.entityBaseComparator.setIgnoreInteractors(true);
+            this.entityBaseComparator.getParticipantBaseComparator().setIgnoreInteractors(true);
             int comp = entityBaseComparator.compare(interactorCandidates1, interactorCandidates2);
             if (comp != 0){
                 return comp;
             }
-            // re-enable comparison of interactors
-            this.entityBaseComparator.setIgnoreInteractors(false);
+            this.entityBaseComparator.getParticipantBaseComparator().setIgnoreInteractors(false);
             // compare collections
             return entityCollectionComparator.compare(interactorCandidates1, interactorCandidates2);
         }
