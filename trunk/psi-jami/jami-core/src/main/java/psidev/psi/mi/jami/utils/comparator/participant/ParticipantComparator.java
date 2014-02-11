@@ -23,6 +23,8 @@ public class ParticipantComparator implements Comparator<Entity> {
     protected ParticipantEvidenceComparator experimentalParticipantComparator;
     protected ModelledParticipantComparator biologicalParticipantComparator;
     protected EntityPoolComparator entitySetComparator;
+    protected ModelledEntityPoolComparator modelledEntitySetComparator;
+    protected ExperimentalEntityPoolComparator experimentalEntitySetComparator;
 
     public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ParticipantEvidenceComparator experimentalParticipantComparator, ModelledParticipantComparator modelledParticipantComparator){
         if (participantBaseComparator == null){
@@ -38,6 +40,8 @@ public class ParticipantComparator implements Comparator<Entity> {
         }
         this.biologicalParticipantComparator = modelledParticipantComparator;
         this.entitySetComparator = new EntityPoolComparator(this);
+        this.modelledEntitySetComparator = new ModelledEntityPoolComparator(this);
+        this.experimentalEntitySetComparator = new ExperimentalEntityPoolComparator(this);
     }
 
     /**
@@ -70,7 +74,35 @@ public class ParticipantComparator implements Comparator<Entity> {
             boolean isEntitySet1 = participant1 instanceof EntityPool;
             boolean isEntitySet2 = participant2 instanceof EntityPool;
             if (isEntitySet1 && isEntitySet2){
-                return entitySetComparator.compare((EntityPool) participant1, (EntityPool) participant2);
+                boolean isBiologicalSet1 = participant1 instanceof ModelledEntityPool;
+                boolean isBiologicalSet2 = participant2 instanceof ModelledEntityPool;
+                if (isBiologicalSet1 && isBiologicalSet2){
+                    return modelledEntitySetComparator.compare((ModelledEntityPool) participant1, (ModelledEntityPool) participant2);
+                }
+                // the first entity set participant is before
+                else if (isBiologicalSet1){
+                    return BEFORE;
+                }
+                else if (isBiologicalSet2){
+                    return AFTER;
+                }
+                else {
+                    boolean isExperimentalSet1 = participant1 instanceof ModelledEntityPool;
+                    boolean isExperimentalSet2 = participant2 instanceof ModelledEntityPool;
+                    if (isExperimentalSet1 && isExperimentalSet2){
+                        return experimentalEntitySetComparator.compare((ExperimentalEntityPool) participant1, (ExperimentalEntityPool) participant2);
+                    }
+                    // the first entity set participant is before
+                    else if (isExperimentalSet1){
+                        return BEFORE;
+                    }
+                    else if (isExperimentalSet2){
+                        return AFTER;
+                    }
+                    else {
+                        return entitySetComparator.compare((EntityPool) participant1, (EntityPool) participant2);
+                    }
+                }
             }
             // the first entity set participant is before
             else if (isEntitySet1){
@@ -84,7 +116,7 @@ public class ParticipantComparator implements Comparator<Entity> {
                 boolean isBiologicalParticipant1 = participant1 instanceof ModelledEntity;
                 boolean isBiologicalParticipant2 = participant2 instanceof ModelledEntity;
                 if (isBiologicalParticipant1 && isBiologicalParticipant2){
-                    return biologicalParticipantComparator.compare((ModelledParticipant) participant1, (ModelledParticipant) participant2);
+                    return biologicalParticipantComparator.compare((ModelledEntity) participant1, (ModelledParticipant) participant2);
                 }
                 // the biological participant is before
                 else if (isBiologicalParticipant1){
@@ -129,5 +161,13 @@ public class ParticipantComparator implements Comparator<Entity> {
 
     public EntityPoolComparator getEntitySetComparator() {
         return entitySetComparator;
+    }
+
+    public ModelledEntityPoolComparator getModelledEntitySetComparator() {
+        return modelledEntitySetComparator;
+    }
+
+    public ExperimentalEntityPoolComparator getExperimentalEntitySetComparator() {
+        return experimentalEntitySetComparator;
     }
 }

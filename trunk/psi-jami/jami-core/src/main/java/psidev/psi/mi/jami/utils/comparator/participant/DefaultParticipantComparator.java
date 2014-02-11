@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntityPool;
-import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 
 /**
  * Generic default participant comparator.
@@ -36,22 +33,44 @@ public class DefaultParticipantComparator {
         }
         else {
             // first check if both participants are from the same interface
-            // both are experimental participants
-            boolean isParticipantSet1 = participant1 instanceof EntityPool;
-            boolean isParticipantSet2 = participant2 instanceof EntityPool;
-            if (isParticipantSet1 && isParticipantSet2){
-                return DefaultEntityPoolComparator.areEquals((EntityPool) participant1, (EntityPool) participant2);
+            // both are entity sets
+            boolean isEntitySet1 = participant1 instanceof EntityPool;
+            boolean isEntitySet2 = participant2 instanceof EntityPool;
+            if (isEntitySet1 && isEntitySet2){
+                boolean isBiologicalSet1 = participant1 instanceof ModelledEntityPool;
+                boolean isBiologicalSet2 = participant2 instanceof ModelledEntityPool;
+                if (isBiologicalSet1 && isBiologicalSet2){
+                    return DefaultModelledEntityPoolComparator.areEquals((ModelledEntityPool) participant1, (ModelledEntityPool) participant2);
+                }
+                // the first entity set participant is before
+                else if (isBiologicalSet1 || isBiologicalSet2){
+                    return false;
+                }
+                else {
+                    boolean isExperimentalSet1 = participant1 instanceof ModelledEntityPool;
+                    boolean isExperimentalSet2 = participant2 instanceof ModelledEntityPool;
+                    if (isExperimentalSet1 && isExperimentalSet2){
+                        return DefaultExperimentalEntityPoolComparator.areEquals((ExperimentalEntityPool) participant1, (ExperimentalEntityPool) participant2);
+                    }
+                    // the first entity set participant is before
+                    else if (isExperimentalSet1 || isExperimentalSet2){
+                        return false;
+                    }
+                    else {
+                        return DefaultEntityPoolComparator.areEquals((EntityPool) participant1, (EntityPool) participant2);
+                    }
+                }
             }
-            // the experimental participant is before
-            else if (isParticipantSet1 || isParticipantSet2){
+            // the first entity set participant is before
+            else if (isEntitySet1 || isEntitySet2){
                 return false;
             }
             else {
                 // both are biological participants
-                boolean isBiologicalParticipant1 = participant1 instanceof ModelledParticipant;
-                boolean isBiologicalParticipant2 = participant2 instanceof ModelledParticipant;
+                boolean isBiologicalParticipant1 = participant1 instanceof ModelledEntity;
+                boolean isBiologicalParticipant2 = participant2 instanceof ModelledEntity;
                 if (isBiologicalParticipant1 && isBiologicalParticipant2){
-                    return DefaultModelledParticipantComparator.areEquals((ModelledParticipant) participant1, (ModelledParticipant) participant2, true);
+                    return DefaultModelledParticipantComparator.areEquals((ModelledEntity) participant1, (ModelledParticipant) participant2, false);
                 }
                 // the biological participant is before
                 else if (isBiologicalParticipant1 || isBiologicalParticipant2){
@@ -59,10 +78,10 @@ public class DefaultParticipantComparator {
                 }
                 else {
                     // both are experimental participants
-                    boolean isExperimentalParticipant1 = participant1 instanceof ParticipantEvidence;
-                    boolean isExperimentalParticipant2 = participant2 instanceof ParticipantEvidence;
+                    boolean isExperimentalParticipant1 = participant1 instanceof ExperimentalEntity;
+                    boolean isExperimentalParticipant2 = participant2 instanceof ExperimentalEntity;
                     if (isExperimentalParticipant1 && isExperimentalParticipant2){
-                        return DefaultParticipantEvidenceComparator.areEquals((ParticipantEvidence) participant1, (ParticipantEvidence) participant2);
+                        return DefaultParticipantEvidenceComparator.areEquals((ParticipantEvidence) participant1, (ParticipantEvidence) participant2, false);
                     }
                     // the experimental participant is before
                     else if (isExperimentalParticipant1 || isExperimentalParticipant2){

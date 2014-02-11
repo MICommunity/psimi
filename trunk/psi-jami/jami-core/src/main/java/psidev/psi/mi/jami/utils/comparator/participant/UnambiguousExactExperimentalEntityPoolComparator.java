@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.EntityPool;
+import psidev.psi.mi.jami.model.ExperimentalEntityPool;
 
 /**
- * Unambiguous exact EntityPoolComparator.
+ * Unambiguous exact ExperimentalEntityPoolComparator.
  * It will first compare the basic entity properties using UnambiguousExactParticipantBaseComparator
  * Then it will compare the collection of Interactors using UnambiguousExactParticipantBaseComparator
  *
@@ -12,14 +12,14 @@ import psidev.psi.mi.jami.model.EntityPool;
  * @since <pre>07/10/13</pre>
  */
 
-public class UnambiguousExactEntityPoolComparator extends EntityPoolComparator {
+public class UnambiguousExactExperimentalEntityPoolComparator extends ExperimentalEntityPoolComparator {
 
-    private static UnambiguousExactEntityPoolComparator unambiguousExactEntityCandidatesComparator;
+    private static UnambiguousExactExperimentalEntityPoolComparator unambiguousExactEntityCandidatesComparator;
 
     /**
      * Creates a new UnambiguousExactEntityPoolComparator. It will use a UnambiguousExactParticipantBaseComparator.
      */
-    public UnambiguousExactEntityPoolComparator() {
+    public UnambiguousExactExperimentalEntityPoolComparator() {
         super(new UnambiguousExactParticipantComparator());
     }
 
@@ -28,13 +28,13 @@ public class UnambiguousExactEntityPoolComparator extends EntityPoolComparator {
      * It will first compare the basic entities properties using UnambiguousExactEntityBaseComparator
      * Then it will compare the collection of entities using UnambiguousExactEntityBaseComparator
      */
-    public int compare(EntityPool candidat1, EntityPool candidat2) {
+    public int compare(ExperimentalEntityPool candidat1, ExperimentalEntityPool candidat2) {
         return super.compare(candidat1, candidat2);
     }
 
     @Override
-    public UnambiguousExactParticipantBaseComparator getEntityComparator() {
-        return (UnambiguousExactParticipantBaseComparator) this.entityBaseComparator;
+    public UnambiguousExactParticipantEvidenceComparator getEntityComparator() {
+        return (UnambiguousExactParticipantEvidenceComparator) this.entityBaseComparator;
     }
 
     /**
@@ -43,9 +43,9 @@ public class UnambiguousExactEntityPoolComparator extends EntityPoolComparator {
      * @param candidat2
      * @return true if the two entityCandidates are equal
      */
-    public static boolean areEquals(EntityPool candidat1, EntityPool candidat2){
+    public static boolean areEquals(ExperimentalEntityPool candidat1, ExperimentalEntityPool candidat2){
         if (unambiguousExactEntityCandidatesComparator == null){
-            unambiguousExactEntityCandidatesComparator = new UnambiguousExactEntityPoolComparator();
+            unambiguousExactEntityCandidatesComparator = new UnambiguousExactExperimentalEntityPoolComparator();
         }
 
         return unambiguousExactEntityCandidatesComparator.compare(candidat1, candidat2) == 0;

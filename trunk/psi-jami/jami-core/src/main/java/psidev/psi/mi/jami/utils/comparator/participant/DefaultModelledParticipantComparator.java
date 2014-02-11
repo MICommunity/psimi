@@ -38,7 +38,7 @@ public class DefaultModelledParticipantComparator {
             if (!checkComplexesAsInteractors){
                 if (checkIfComplexAlreadyProcessed(bioParticipant1, bioParticipant2, processedComplexes)
                         || checkIfComplexAlreadyProcessed(bioParticipant2, bioParticipant1, processedComplexes)){
-                     ignoreInteractors = true;
+                    ignoreInteractors = true;
                 }
             }
 
