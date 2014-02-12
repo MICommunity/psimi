@@ -562,7 +562,7 @@ public class FullOrganismUpdaterTest {
         ));
 
         this.organismEnricher.enrich(persistentOrganism);
-        assertEquals(1 , persistentOrganism.getAliases().size());
+        assertEquals(2 , persistentOrganism.getAliases().size());
 
     }
 }

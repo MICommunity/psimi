@@ -73,9 +73,10 @@ public class MinimalFeatureEnricherTest {
         proteinFetcher = new MockProteinFetcher();
         proteinEnricher = new MinimalProteinEnricher(proteinFetcher);
 
-        participantEnricher = new BasicParticipantEnricher();
+        participantEnricher = new MinimalParticipantEnricher();
         participantEnricher.setFeatureEnricher(featureEnricher);
-        participantEnricher.setProteinEnricher(proteinEnricher);
+        participantEnricher.setInteractorEnricher(new CompositeInteractorEnricher(new MinimalInteractorBaseEnricher<Interactor>(),
+                null, null, proteinEnricher, null, null, null));
         proteinEnricher.setListener((MinimalFeatureEnricher)featureEnricher);
         assertTrue(proteinEnricher.getListener() == featureEnricher);
 

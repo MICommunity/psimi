@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.util;
 
+import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.listener.*;
@@ -394,6 +395,95 @@ public class EnricherUtils {
                 termToEnrich.addParticipant(part);
                 if (interactionListener != null){
                     interactionListener.onAddedParticipant(termToEnrich, part);
+                }
+            }
+        }
+    }
+
+    public static void mergeCausalRelationships(Entity termToEnrich, Collection<CausalRelationship> toEnrichRelationships, Collection<CausalRelationship> fetchedRelationships, boolean remove, EntityChangeListener entityListener) throws EnricherException {
+        Iterator<CausalRelationship> relationshipIterator = toEnrichRelationships.iterator();
+        if (remove){
+            while(relationshipIterator.hasNext()){
+                CausalRelationship relationship = relationshipIterator.next();
+
+                boolean containsRelationship = false;
+                for (CausalRelationship relation2 : fetchedRelationships){
+                    // identical participant
+                    if (relationship == relation2){
+                        containsRelationship = true;
+                        break;
+                    }
+                }
+                if (!containsRelationship){
+                    relationshipIterator.remove();
+                    if (entityListener != null){
+                        entityListener.onRemovedCausalRelationship(termToEnrich, relationship);
+                    }
+                }
+            }
+        }
+
+        relationshipIterator = fetchedRelationships.iterator();
+        while(relationshipIterator.hasNext()){
+            CausalRelationship relation1 = relationshipIterator.next();
+            boolean containsRelationship = false;
+            for (CausalRelationship relation2 : toEnrichRelationships){
+                if (relation1 == relation2){
+                    containsRelationship = true;
+                    break;
+                }
+            }
+            if (!containsRelationship){
+                termToEnrich.getCausalRelationships().add(relation1);
+                if (entityListener != null){
+                    entityListener.onAddedCausalRelationship(termToEnrich, relation1);
+                }
+            }
+        }
+    }
+
+    public static <F extends Feature> void mergeFeatures(Entity termToEnrich, Collection<F> toEnrichFeatures, Collection<F> fetchedFeatures, boolean remove, EntityChangeListener entityListener,
+                                                                                   FeatureEnricher<F> featureEnricher) throws EnricherException {
+        Iterator<F> featureIterator = toEnrichFeatures.iterator();
+        if (remove){
+            while(featureIterator.hasNext()){
+                F feature = featureIterator.next();
+
+                boolean containsFeature = false;
+                for (F feature2 : fetchedFeatures){
+                    // identical participant
+                    if (feature == feature2){
+                        containsFeature = true;
+                        break;
+                    }
+                }
+                if (!containsFeature){
+                    featureIterator.remove();
+                    feature.setParticipant(null);
+                    if (entityListener != null){
+                        entityListener.onRemovedFeature(termToEnrich, feature);
+                    }
+                }
+            }
+        }
+
+        featureIterator = fetchedFeatures.iterator();
+        while(featureIterator.hasNext()){
+            F feature = featureIterator.next();
+            boolean containsFeature = false;
+            for (F feature2 : toEnrichFeatures){
+                if (feature == feature2){
+                    containsFeature = true;
+                    if (featureEnricher != null){
+                        featureEnricher.enrich(feature2, feature);
+                    }
+                    break;
+                }
+            }
+            if (!containsFeature){
+                termToEnrich.addFeature(feature);
+                if (entityListener != null){
+                    entityListener.onAddedFeature(termToEnrich, feature);
                 }
             }
         }

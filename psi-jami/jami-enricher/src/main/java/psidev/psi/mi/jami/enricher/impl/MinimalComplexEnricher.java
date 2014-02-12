@@ -16,11 +16,11 @@ import psidev.psi.mi.jami.model.Complex;
  */
 public class MinimalComplexEnricher extends MinimalModelledInteractionEnricher<Complex> implements ComplexEnricher {
 
-    private MinimalInteractorEnricher<Complex> interactorEnricher = null;
+    private MinimalInteractorBaseEnricher<Complex> interactorEnricher = null;
 
     public MinimalComplexEnricher(){
         super();
-        this.interactorEnricher = new MinimalInteractorEnricher<Complex>();
+        this.interactorEnricher = new MinimalInteractorBaseEnricher<Complex>();
     }
 
     /**

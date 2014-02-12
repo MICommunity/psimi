@@ -167,7 +167,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     }
 
     protected void processXrefs(T bioactiveEntityToEnrich, T fetched) {
-        EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), false, true,
+        EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), false, false,
                 getListener(), getListener());
     }
 

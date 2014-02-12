@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Gene;
 
 /**
@@ -10,5 +11,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @since 03/09/13
  */
 public interface GeneEnricher extends InteractorEnricher<Gene>{
+
+    public Gene find(Gene objectToEnrich) throws EnricherException;
 
 }
