@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
@@ -26,4 +27,6 @@ public interface ProteinEnricher extends PolymerEnricher<Protein>{
      * @return  The current remapper.
      */
     public ProteinMapper getProteinMapper();
+
+    public Protein find(Protein objectToEnrich) throws EnricherException;
 }

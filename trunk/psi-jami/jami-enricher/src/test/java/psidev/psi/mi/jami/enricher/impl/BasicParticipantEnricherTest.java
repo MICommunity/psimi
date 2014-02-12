@@ -10,8 +10,7 @@ import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherLogger;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
@@ -33,7 +32,7 @@ public class BasicParticipantEnricherTest {
 
     @Before
     public void setup(){
-        participantEnricher = new BasicParticipantEnricher();
+        participantEnricher = new MinimalParticipantEnricher();
         Protein protein = new DefaultProtein("ShortName");
         protein.setUniprotkb("P1234");
         persistentParticipant = new DefaultParticipant(protein);
@@ -48,13 +47,70 @@ public class BasicParticipantEnricherTest {
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
                 new ParticipantEnricherListener() {
-                    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
-                        assertTrue(participant == persistentParticipant);
+
+                    public void onEnrichmentError(Participant object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onBiologicalRoleUpdate(Entity participant, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onStoichiometryUpdate(Entity participant, Stoichiometry oldStoichiometry) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedCausalRelationship(Entity participant, CausalRelationship added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedCausalRelationship(Entity participant, CausalRelationship removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedFeature(Entity participant, Feature added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedFeature(Entity participant, Feature removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAlias(Object o, Alias added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAlias(Object o, Alias removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentParticipant);
                         assertEquals(EnrichmentStatus.SUCCESS , status);
                         persistentInt ++ ;
                     }
 
-                    public void onEnrichmentError(Participant object, String message, Exception e) {
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
                         Assert.fail();
                     }
                 }
@@ -79,12 +135,69 @@ public class BasicParticipantEnricherTest {
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
                 new ParticipantEnricherListener() {
-                    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
-                        assertTrue(participant == persistentParticipant);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
-                        persistentInt ++ ;
-                    }
                     public void onEnrichmentError(Participant object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onBiologicalRoleUpdate(Entity participant, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onStoichiometryUpdate(Entity participant, Stoichiometry oldStoichiometry) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedCausalRelationship(Entity participant, CausalRelationship added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedCausalRelationship(Entity participant, CausalRelationship removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedFeature(Entity participant, Feature added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedFeature(Entity participant, Feature removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAlias(Object o, Alias added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAlias(Object o, Alias removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentParticipant);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
                         Assert.fail();
                     }
                 }
@@ -113,13 +226,69 @@ public class BasicParticipantEnricherTest {
         participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
                 new ParticipantEnricherLogger() ,
                 new ParticipantEnricherListener() {
-                    public void onEnrichmentComplete(Participant participant, EnrichmentStatus status, String message) {
-                        assertTrue(participant == persistentParticipant);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
-                        persistentInt ++ ;
-                    }
 
                     public void onEnrichmentError(Participant object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedFeature(Entity participant, Feature added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedFeature(Entity participant, Feature removed) {
+                        Assert.fail();
+                    }
+                    public void onBiologicalRoleUpdate(Entity participant, CvTerm oldType) {
+                        Assert.fail();
+                    }
+
+                    public void onStoichiometryUpdate(Entity participant, Stoichiometry oldStoichiometry) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedCausalRelationship(Entity participant, CausalRelationship added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedCausalRelationship(Entity participant, CausalRelationship removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAlias(Object o, Alias added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAlias(Object o, Alias removed) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedAnnotation(Object o, Annotation added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedAnnotation(Object o, Annotation removed) {
+                        Assert.fail();
+                    }
+
+                    public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
+                        assertTrue(object == persistentParticipant);
+                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        persistentInt ++;
+                    }
+
+                    public void onEnrichmentError(Object object, String message, Exception e) {
+                        Assert.fail();
+                    }
+
+                    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+                        Assert.fail();
+                    }
+
+                    public void onAddedXref(Object o, Xref added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedXref(Object o, Xref removed) {
                         Assert.fail();
                     }
                 }

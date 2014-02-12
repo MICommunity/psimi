@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
@@ -11,4 +12,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since  07/08/13
  */
 public interface BioactiveEntityEnricher extends InteractorEnricher<BioactiveEntity>{
+
+    public BioactiveEntity find(BioactiveEntity objectToEnrich) throws EnricherException;
+
 }

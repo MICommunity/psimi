@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalParticipantEvidenceEnricher extends BasicParticipantEnricher<ParticipantEvidence , FeatureEvidence>{
+public class MinimalParticipantEvidenceEnricher extends MinimalParticipantEnricher<ParticipantEvidence , FeatureEvidence> {
 
     @Override
     protected void processOtherProperties(ParticipantEvidence participantEvidenceToEnrich)

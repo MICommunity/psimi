@@ -10,5 +10,5 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @since 13/08/13
  */
 public class BasicModelledParticipantEnricher
-        extends BasicParticipantEnricher<ModelledParticipant, ModelledFeature> {
+        extends MinimalParticipantEnricher<ModelledParticipant, ModelledFeature> {
 }

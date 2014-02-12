@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.Polymer;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalPolymerUpdater<T extends Polymer> extends MinimalInteractorUpdater<T> implements PolymerEnricher<T>{
+public class MinimalPolymerUpdater<T extends Polymer> extends MinimalInteractorBaseUpdater<T> implements PolymerEnricher<T>{
 
     public MinimalPolymerUpdater(){
         super();

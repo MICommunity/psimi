@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since <pre>30/01/14</pre>
  */
 
-public class FullInteractorEnricher<T extends Interactor> extends MinimalInteractorEnricher<T> {
+public class FullInteractorEnricher<T extends Interactor> extends MinimalInteractorBaseEnricher<T> {
 
     public FullInteractorEnricher() {
         super();

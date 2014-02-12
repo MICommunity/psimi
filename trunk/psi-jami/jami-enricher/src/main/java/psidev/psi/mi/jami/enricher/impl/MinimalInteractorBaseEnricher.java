@@ -18,13 +18,13 @@ import java.util.Collection;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalInteractorEnricher<T extends Interactor> extends AbstractInteractorEnricher<T>{
+public class MinimalInteractorBaseEnricher<T extends Interactor> extends AbstractInteractorEnricher<T>{
 
-    public MinimalInteractorEnricher(){
+    public MinimalInteractorBaseEnricher(){
         super();
     }
 
-    public MinimalInteractorEnricher(InteractorFetcher<T> fetcher){
+    public MinimalInteractorBaseEnricher(InteractorFetcher<T> fetcher){
         super();
         super.setFetcher(fetcher);
     }

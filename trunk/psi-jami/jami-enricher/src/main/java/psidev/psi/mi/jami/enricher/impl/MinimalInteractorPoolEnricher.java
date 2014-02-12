@@ -18,7 +18,7 @@ import java.util.*;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalInteractorPoolEnricher extends MinimalInteractorEnricher<InteractorPool> implements InteractorPoolEnricher{
+public class MinimalInteractorPoolEnricher extends MinimalInteractorBaseEnricher<InteractorPool> implements InteractorPoolEnricher{
 
     private InteractorEnricher<Interactor> interactorEnricher;
     private Comparator<Interactor> interactorComparator;

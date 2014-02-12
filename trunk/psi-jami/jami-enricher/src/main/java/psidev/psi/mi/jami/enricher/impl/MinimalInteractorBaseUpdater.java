@@ -12,16 +12,16 @@ import psidev.psi.mi.jami.model.Interactor;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalInteractorUpdater<T extends Interactor> extends AbstractInteractorUpdater<T>{
+public class MinimalInteractorBaseUpdater<T extends Interactor> extends AbstractInteractorUpdater<T>{
 
     private InteractorEnricherListener listener;
 
-    public MinimalInteractorUpdater() {
-        super(new MinimalInteractorEnricher());
+    public MinimalInteractorBaseUpdater() {
+        super(new MinimalInteractorBaseEnricher());
     }
 
-    public MinimalInteractorUpdater(InteractorFetcher<T> fetcher) {
-        super(new MinimalInteractorEnricher(fetcher));
+    public MinimalInteractorBaseUpdater(InteractorFetcher<T> fetcher) {
+        super(new MinimalInteractorBaseEnricher(fetcher));
     }
 }
 
