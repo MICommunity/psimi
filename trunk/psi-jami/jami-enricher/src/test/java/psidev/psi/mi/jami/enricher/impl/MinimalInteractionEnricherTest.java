@@ -335,11 +335,6 @@ public class MinimalInteractionEnricherTest {
         interactionEnricher.setInteractionEnricherListener(new InteractionEnricherListenerManager(
                 new InteractionEnricherLogger(),
                 new InteractionEnricherListener() {
-                    public void onEnrichmentComplete(Interaction interaction, EnrichmentStatus status, String message) {
-                        assertTrue(interaction == persistentInteraction);
-                        assertEquals(EnrichmentStatus.SUCCESS, status);
-                        persistentInt++;
-                    }
 
                     public void onEnrichmentError(Interaction object, String message, Exception e) {
                         Assert.fail();
@@ -350,7 +345,9 @@ public class MinimalInteractionEnricherTest {
                     }
 
                     public void onEnrichmentComplete(Object object, EnrichmentStatus status, String message) {
-                        Assert.fail();
+                        assertTrue(object == persistentInteraction);
+                        assertEquals(EnrichmentStatus.SUCCESS, status);
+                        persistentInt++;
                     }
 
                     public void onEnrichmentError(Object object, String message, Exception e) {
