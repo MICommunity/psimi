@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
  * The participant enricher is an enricher which can enrich either single participant or a collection.
@@ -20,12 +21,16 @@ public class MinimalParticipantUpdater<P extends Entity , F extends Feature>
 
     @Override
     protected void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
-        if (objectToEnrich.getInteractor() != objectSource.getInteractor()){
+        if (!DefaultExactInteractorComparator.areEquals(objectToEnrich.getInteractor(), objectSource.getInteractor())){
             Interactor old = objectToEnrich.getInteractor();
             objectToEnrich.setInteractor(objectSource.getInteractor());
             if (getParticipantEnricherListener() != null){
                 getParticipantEnricherListener().onInteractorUpdate(objectToEnrich, old);
             }
+        }
+        else if (getInteractorEnricher() != null
+                && objectToEnrich.getInteractor() != objectSource.getInteractor()){
+            getInteractorEnricher().enrich(objectToEnrich.getInteractor(), objectSource.getInteractor());
         }
         // nothing to do here
         processInteractor(objectToEnrich);
