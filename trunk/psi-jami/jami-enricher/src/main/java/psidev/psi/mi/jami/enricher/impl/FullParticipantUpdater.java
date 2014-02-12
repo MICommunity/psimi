@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * The participant enricher is an enricher which can enrich either single participant or a collection.
@@ -55,7 +56,7 @@ public class FullParticipantUpdater<P extends Entity , F extends Feature>
 
     @Override
     protected void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
-        if (objectToEnrich.getBiologicalRole() != objectSource.getBiologicalRole()){
+        if (!DefaultCvTermComparator.areEquals(objectToEnrich.getBiologicalRole(), objectSource.getBiologicalRole())){
             CvTerm old = objectToEnrich.getBiologicalRole();
             objectToEnrich.setBiologicalRole(objectSource.getBiologicalRole());
             if (getParticipantEnricherListener() != null){

@@ -25,4 +25,18 @@ public class MinimalParticipantEvidenceEnricher extends MinimalParticipantEnrich
             }
         }
     }
+
+    @Override
+    protected void processOtherProperties(ParticipantEvidence participantEvidenceToEnrich, ParticipantEvidence objectSource)
+            throws EnricherException {
+
+        if(getCvTermEnricher() != null){
+            if (participantEvidenceToEnrich.getExperimentalRole() != null){
+                getCvTermEnricher().enrich(participantEvidenceToEnrich.getExperimentalRole());
+            }
+            if (!participantEvidenceToEnrich.getIdentificationMethods().isEmpty()){
+                getCvTermEnricher().enrich(participantEvidenceToEnrich.getIdentificationMethods());
+            }
+        }
+    }
 }
