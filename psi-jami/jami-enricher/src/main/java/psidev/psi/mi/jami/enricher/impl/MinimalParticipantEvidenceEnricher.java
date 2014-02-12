@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.enricher.OrganismEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -16,7 +18,18 @@ import java.util.Iterator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalParticipantEvidenceEnricher<P extends ExperimentalEntity, F extends FeatureEvidence> extends MinimalParticipantEnricher<P , F> {
+public class MinimalParticipantEvidenceEnricher<P extends ExperimentalEntity, F extends FeatureEvidence> extends MinimalParticipantEnricher<P , F>
+implements ParticipantEvidenceEnricher<P,F>{
+    private OrganismEnricher organismEnricher;
+
+
+    public OrganismEnricher getOrganismEnricher() {
+        return organismEnricher;
+    }
+
+    public void setOrganismEnricher(OrganismEnricher organismEnricher) {
+        this.organismEnricher = organismEnricher;
+    }
 
     @Override
     protected void processOtherProperties(P participantEvidenceToEnrich)
@@ -25,6 +38,14 @@ public class MinimalParticipantEvidenceEnricher<P extends ExperimentalEntity, F 
         if(getCvTermEnricher() != null){
             processExperimentalRole(participantEvidenceToEnrich);
             processIdentificationMethods(participantEvidenceToEnrich);
+        }
+
+        processExpressedInOrganism(participantEvidenceToEnrich);
+    }
+
+    protected void processExpressedInOrganism(P participantEvidenceToEnrich) throws EnricherException {
+        if (getOrganismEnricher() != null && participantEvidenceToEnrich.getExpressedInOrganism() != null){
+            getOrganismEnricher().enrich(participantEvidenceToEnrich.getExpressedInOrganism());
         }
     }
 
@@ -44,12 +65,23 @@ public class MinimalParticipantEvidenceEnricher<P extends ExperimentalEntity, F 
     protected void processOtherProperties(P participantEvidenceToEnrich, P objectSource)
             throws EnricherException {
 
+        // expressed in
+        processExpressedInOrganism(participantEvidenceToEnrich, objectSource);
         // exp roles
         processExperimentalRole(participantEvidenceToEnrich, objectSource);
         // exp identifications
         processIdentificationMethods(participantEvidenceToEnrich, objectSource);
 
         processOtherProperties(participantEvidenceToEnrich);
+    }
+
+    protected void processExpressedInOrganism(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+        if (participantEvidenceToEnrich.getExpressedInOrganism() == null && objectSource.getExpressedInOrganism() != null){
+            participantEvidenceToEnrich.setExpressedInOrganism(objectSource.getExpressedInOrganism());
+            if (getParticipantEnricherListener() instanceof ParticipantEvidenceEnricherListener){
+                ((ParticipantEvidenceEnricherListener)getParticipantEnricherListener()).onExpressedInUpdate(participantEvidenceToEnrich, null);
+            }
+        }
     }
 
     protected void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
