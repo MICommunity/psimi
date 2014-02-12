@@ -8,7 +8,9 @@ import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,6 +32,21 @@ public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity, F e
         mergeIdentificationMethods(participantEvidenceToEnrich, participantEvidenceToEnrich.getIdentificationMethods(), objectSource.getIdentificationMethods(), true);
 
         processIdentificationMethods(participantEvidenceToEnrich);
+    }
+
+    @Override
+    protected void processExpressedInOrganism(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+        if (!DefaultOrganismComparator.areEquals(participantEvidenceToEnrich.getExpressedInOrganism(), objectSource.getExpressedInOrganism())){
+            Organism old = participantEvidenceToEnrich.getExpressedInOrganism();
+            participantEvidenceToEnrich.setExpressedInOrganism(objectSource.getExpressedInOrganism());
+            if (getParticipantEnricherListener() instanceof ParticipantEvidenceEnricherListener){
+                ((ParticipantEvidenceEnricherListener)getParticipantEnricherListener()).onExpressedInUpdate(participantEvidenceToEnrich, old);
+            }
+        }
+        else if (getOrganismEnricher() != null &&
+                participantEvidenceToEnrich.getExpressedInOrganism() != objectSource.getExpressedInOrganism()){
+            getOrganismEnricher().enrich(participantEvidenceToEnrich.getExpressedInOrganism(), objectSource.getExpressedInOrganism());
+        }
     }
 
     @Override
