@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 
 /**
  * Maximal updater for experiments
@@ -22,7 +24,7 @@ public class FullExperimentUpdater extends FullExperimentEnricher {
     @Override
     protected void processInteractionDetectionMethod(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException {
 
-        if (experimentToEnrich.getInteractionDetectionMethod() != objectSource.getInteractionDetectionMethod()){
+        if (!DefaultCvTermComparator.areEquals(experimentToEnrich.getInteractionDetectionMethod(), objectSource.getInteractionDetectionMethod())){
             CvTerm old = experimentToEnrich.getInteractionDetectionMethod();
             experimentToEnrich.setInteractionDetectionMethod(objectSource.getInteractionDetectionMethod());
             if (getExperimentEnricherListener() != null){
@@ -46,7 +48,7 @@ public class FullExperimentUpdater extends FullExperimentEnricher {
 
     @Override
     protected void processOrganism(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException {
-        if (experimentToEnrich.getHostOrganism() != objectSource.getHostOrganism()){
+        if (!DefaultOrganismComparator.areEquals(experimentToEnrich.getHostOrganism(), objectSource.getHostOrganism())){
             Organism old = experimentToEnrich.getHostOrganism();
             experimentToEnrich.setHostOrganism(objectSource.getHostOrganism());
             if (getExperimentEnricherListener() != null){

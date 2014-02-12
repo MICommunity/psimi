@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Date;
 
@@ -91,7 +92,7 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
     @Override
     protected void processInteractionType(I objectToEnrich, I objectSource) throws EnricherException {
 
-        if (objectToEnrich.getInteractionType() != objectSource.getInteractionType()){
+        if (!DefaultCvTermComparator.areEquals(objectToEnrich.getInteractionType(), objectSource.getInteractionType())){
             CvTerm oldType = objectToEnrich.getInteractionType();
             objectToEnrich.setInteractionType(objectSource.getInteractionType());
             if (getInteractionEnricherListener() != null){
