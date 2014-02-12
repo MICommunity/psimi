@@ -54,6 +54,10 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
                 getFeatureEnricherListener().onTypeUpdate(featureToEnrich, oldType);
             }
         }
+        else if (getCvTermEnricher() != null
+                && featureToEnrich.getType() != objectSource.getType()){
+            getCvTermEnricher().enrich(featureToEnrich.getType(), objectSource.getType());
+        }
         processFeatureType(featureToEnrich);
     }
 

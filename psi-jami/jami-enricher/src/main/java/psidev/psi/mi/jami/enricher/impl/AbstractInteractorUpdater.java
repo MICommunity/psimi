@@ -68,6 +68,11 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
                 getListener().onInteractorTypeUpdate(entityToEnrich, old);
             }
         }
+        else if (getCvTermEnricher() != null
+                && entityToEnrich.getInteractorType() != fetched.getInteractorType()){
+            getCvTermEnricher().enrich(entityToEnrich.getInteractorType(), fetched.getInteractorType());
+        }
+
         if (getCvTermEnricher() != null){
             getCvTermEnricher().enrich(entityToEnrich.getInteractorType());
         }
@@ -81,6 +86,10 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
             if (getListener() != null){
                 getListener().onOrganismUpdate(entityToEnrich, old);
             }
+        }
+        else if (getOrganismEnricher() != null
+                && entityToEnrich.getOrganism() != fetched.getOrganism()){
+            getOrganismEnricher().enrich(entityToEnrich.getOrganism(), fetched.getOrganism());
         }
 
         if (getOrganismEnricher() != null && entityToEnrich.getOrganism() != null){

@@ -47,6 +47,10 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
                 getFeatureEnricherListener().onInteractionDependencyUpdate(featureToEnrich, old);
             }
         }
+        else if (getCvTermEnricher() != null
+                && featureToEnrich.getInteractionDependency() != objectSource.getInteractionDependency()){
+            getCvTermEnricher().enrich(featureToEnrich.getInteractionDependency(), objectSource.getInteractionDependency());
+        }
         processInteractionDependency(featureToEnrich);
     }
 
@@ -58,6 +62,10 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
             if(getFeatureEnricherListener() != null) {
                 getFeatureEnricherListener().onInteractionEffectUpdate(featureToEnrich, old);
             }
+        }
+        else if (getCvTermEnricher() != null
+                && featureToEnrich.getInteractionEffect() != objectSource.getInteractionEffect()){
+            getCvTermEnricher().enrich(featureToEnrich.getInteractionEffect(), objectSource.getInteractionEffect());
         }
         processInteractionEffect(featureToEnrich);
     }

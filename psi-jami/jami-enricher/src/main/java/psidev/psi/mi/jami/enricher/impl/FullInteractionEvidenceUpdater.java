@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.utils.comparator.experiment.DefaultCuratedExperimentComparator;
 
 /**
  * Full updater for interaction evidence
@@ -59,12 +60,16 @@ public class FullInteractionEvidenceUpdater extends FullInteractionEvidenceEnric
 
     @Override
     protected void processExperiment(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException {
-        if (objectSource.getExperiment() != objectToEnrich.getExperiment()){
+        if (!DefaultCuratedExperimentComparator.areEquals(objectSource.getExperiment(), objectToEnrich.getExperiment())){
             Experiment old = objectToEnrich.getExperiment();
             objectToEnrich.setExperiment(objectSource.getExperiment());
             if (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener){
                 ((InteractionEvidenceEnricherListener)getInteractionEnricherListener()).onExperimentUpdate(objectToEnrich, old);
             }
+        }
+        else if (getExperimentEnricher() != null
+                && objectToEnrich.getExperiment() != objectSource.getExperiment()){
+            getExperimentEnricher().enrich(objectToEnrich.getExperiment(), objectSource.getExperiment());
         }
 
         processExperiment(objectToEnrich);

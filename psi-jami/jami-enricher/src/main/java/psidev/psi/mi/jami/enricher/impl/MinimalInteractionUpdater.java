@@ -79,6 +79,10 @@ public class MinimalInteractionUpdater<I extends Interaction, P extends Particip
                 getInteractionEnricherListener().onInteractionTypeUpdate(objectToEnrich, oldType);
             }
         }
+        else if (getCvTermEnricher() != null
+                && objectToEnrich.getInteractionType() != objectSource.getInteractionType()){
+            getCvTermEnricher().enrich(objectToEnrich.getInteractionType(), objectSource.getInteractionType());
+        }
 
         processInteractionType(objectToEnrich);
     }

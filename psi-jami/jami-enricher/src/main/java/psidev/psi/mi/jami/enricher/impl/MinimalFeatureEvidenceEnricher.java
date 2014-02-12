@@ -81,6 +81,9 @@ public class MinimalFeatureEvidenceEnricher extends MinimalFeatureEnricher<Featu
             for (CvTerm term2 : toEnrichTerms){
                 // identical terms
                 if (DefaultCvTermComparator.areEquals(term, term2)){
+                    if (getCvTermEnricher() != null){
+                        getCvTermEnricher().enrich(term2, term);
+                    }
                     containsTerm = true;
                     break;
                 }

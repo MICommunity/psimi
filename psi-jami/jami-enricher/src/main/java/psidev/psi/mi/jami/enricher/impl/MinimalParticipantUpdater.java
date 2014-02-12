@@ -47,6 +47,10 @@ public class MinimalParticipantUpdater<P extends Entity , F extends Feature>
                 getParticipantEnricherListener().onBiologicalRoleUpdate(objectToEnrich, old);
             }
         }
+        else if (getCvTermEnricher() != null
+                && objectToEnrich.getBiologicalRole() != objectSource.getBiologicalRole()){
+            getCvTermEnricher().enrich(objectToEnrich.getBiologicalRole(), objectSource.getBiologicalRole());
+        }
         // nothing to do here
         processBiologicalRole(objectToEnrich);
     }

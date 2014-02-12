@@ -37,7 +37,7 @@ public class FullCvTermUpdater<C extends CvTerm> extends FullCvTermEnricher<C>{
 
     @Override
     protected void processAnnotations(C cvTermToEnrich, C termFetched) {
-        mergeAnnotations(cvTermToEnrich, termFetched.getAnnotations(), true);
+        EnricherUtils.mergeAnnotations(cvTermToEnrich, cvTermToEnrich.getAnnotations(), termFetched.getAnnotations(), true, getCvTermEnricherListener());
     }
 
     @Override
