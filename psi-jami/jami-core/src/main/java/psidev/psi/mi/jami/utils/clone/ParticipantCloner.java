@@ -142,4 +142,20 @@ public class ParticipantCloner {
             }
         }
     }
+
+    public static void copyAndOverrideParticipantPoolProperties(EntityPool source, EntityPool target, boolean newFeatures){
+        if (source != null && target != null){
+            copyAndOverrideBasicParticipantProperties(source, target, newFeatures);
+            target.clear();
+            target.addAll(source);
+        }
+    }
+
+    public static void copyAndOverrideExperimentalEntityPoolProperties(ExperimentalEntityPool source, ExperimentalEntityPool target, boolean newFeatures){
+        if (source != null && target != null){
+            copyAndOverrideParticipantEvidenceProperties(source, target, newFeatures);
+            target.clear();
+            target.addAll(source);
+        }
+    }
 }
