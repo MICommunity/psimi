@@ -3,12 +3,7 @@ package psidev.psi.mi.jami.enricher.impl;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.annotation.DefaultAnnotationComparator;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * Provides maximum enrichment of the CvTerm.
@@ -54,7 +49,7 @@ public class FullCvTermEnricher<C extends CvTerm>
     }
 
     protected void processAnnotations(C cvTermToEnrich, C termFetched) {
-        mergeAnnotations(cvTermToEnrich, termFetched.getAnnotations(), false);
+        EnricherUtils.mergeAnnotations(cvTermToEnrich, cvTermToEnrich.getAnnotations(), termFetched.getAnnotations(), false, getCvTermEnricherListener());
     }
 
     protected void processSynonyms(C cvTermToEnrich, C termFetched) {
@@ -64,50 +59,5 @@ public class FullCvTermEnricher<C extends CvTerm>
     protected void processXrefs(C cvTermToEnrich, C cvTermFetched) {
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getXrefs(), cvTermFetched.getXrefs(), false, false,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
-    }
-
-    protected void mergeAnnotations(C termToEnrich, Collection<Annotation> fetchedAnnotations , boolean remove){
-        Collection<Annotation> toEnrichAnnotations = termToEnrich.getAnnotations();
-        Iterator<Annotation> annotIterator = toEnrichAnnotations.iterator();
-        // remove annotation in toEnrichAnnotations that are not in fetchedAnnotations
-        while(annotIterator.hasNext()){
-            Annotation annotation = annotIterator.next();
-            boolean containsAnnot = false;
-            for (Annotation annotation2 : fetchedAnnotations){
-                // identical annotations
-                if (DefaultAnnotationComparator.areEquals(annotation, annotation2)){
-                    containsAnnot = true;
-                    break;
-                }
-            }
-            // remove annotation not in second list
-            if (remove && !containsAnnot){
-                annotIterator.remove();
-                if (getCvTermEnricherListener() != null){
-                    getCvTermEnricherListener().onRemovedAnnotation(termToEnrich, annotation);
-                }
-            }
-        }
-
-        // add annotations from fetchedAnnotations that are not in toEnrichAnnotations
-        annotIterator = fetchedAnnotations.iterator();
-        while(annotIterator.hasNext()){
-            Annotation annotation = annotIterator.next();
-            boolean containsAnnot = false;
-            for (Annotation annotation2 : toEnrichAnnotations){
-                // identical aliases
-                if (DefaultAnnotationComparator.areEquals(annotation, annotation2)){
-                    containsAnnot = true;
-                    break;
-                }
-            }
-            // add missing annotation not in second list
-            if (!containsAnnot){
-                toEnrichAnnotations.add(annotation);
-                if (getCvTermEnricherListener() != null){
-                    getCvTermEnricherListener().onAddedAnnotation(termToEnrich, annotation);
-                }
-            }
-        }
     }
 }

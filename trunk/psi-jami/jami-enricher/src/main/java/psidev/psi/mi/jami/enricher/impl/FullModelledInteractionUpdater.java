@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Full updater of a modelled interaction
@@ -50,12 +51,16 @@ public class FullModelledInteractionUpdater<I extends ModelledInteraction> exten
 
     @Override
     protected void processSource(I objectToEnrich, I objectSource) throws EnricherException {
-        if (objectSource.getSource() != objectToEnrich.getSource()){
+        if (!DefaultCvTermComparator.areEquals(objectSource.getSource(), objectToEnrich.getSource())){
             Source old = objectToEnrich.getSource();
             objectToEnrich.setSource(objectSource.getSource());
             if (getInteractionEnricherListener() instanceof ModelledInteractionEnricher){
                 ((ModelledInteractionEnricherListener)getInteractionEnricherListener()).onSourceUpdate(objectToEnrich, old);
             }
+        }
+        else if (getSourceEnricher() != null
+                && objectToEnrich.getSource() != objectSource.getSource()){
+            getSourceEnricher().enrich(objectToEnrich.getSource(), objectSource.getSource());
         }
 
         processSource(objectToEnrich);

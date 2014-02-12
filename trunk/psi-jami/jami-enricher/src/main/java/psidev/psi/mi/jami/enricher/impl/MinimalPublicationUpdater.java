@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -45,12 +46,16 @@ public class MinimalPublicationUpdater extends MinimalPublicationEnricher {
 
     @Override
     protected void processSource(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException {
-        if (fetchedPublication.getSource() != publicationToEnrich.getSource()){
+        if (!DefaultCvTermComparator.areEquals(fetchedPublication.getSource(), publicationToEnrich.getSource())){
             Source oldSource = publicationToEnrich.getSource();
             publicationToEnrich.setSource(fetchedPublication.getSource());
             if (getPublicationEnricherListener() != null){
                 getPublicationEnricherListener().onSourceUpdated(publicationToEnrich, oldSource);
             }
+        }
+        else if (getSourceEnricher() != null
+                && publicationToEnrich.getSource() != fetchedPublication.getSource()){
+            getSourceEnricher().enrich(publicationToEnrich.getSource(), fetchedPublication.getSource());
         }
         if (getSourceEnricher() != null && publicationToEnrich.getSource() != null){
             getSourceEnricher().enrich(publicationToEnrich.getSource());

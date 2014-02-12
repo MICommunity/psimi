@@ -29,13 +29,17 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
     }
 
     @Override
-    protected void processSource(I objectToEnrich, I objectSource) {
-         if (objectSource.getSource() != objectToEnrich.getSource()){
+    protected void processSource(I objectToEnrich, I objectSource) throws EnricherException {
+         if (!DefaultCvTermComparator.areEquals(objectSource.getSource(), objectToEnrich.getSource())){
              Source old = objectToEnrich.getSource();
               objectToEnrich.setSource(objectSource.getSource());
              if (getInteractionEnricherListener() instanceof ModelledInteractionEnricherListener){
                  ((ModelledInteractionEnricherListener)getInteractionEnricherListener()).onSourceUpdate(objectToEnrich, old);
              }
+         }
+         else if (getSourceEnricher() != null
+                 && objectToEnrich.getSource() != objectSource.getSource()){
+             getSourceEnricher().enrich(objectToEnrich.getSource(), objectSource.getSource());
          }
     }
 
@@ -98,6 +102,10 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
             if (getInteractionEnricherListener() != null){
                 getInteractionEnricherListener().onInteractionTypeUpdate(objectToEnrich, oldType);
             }
+        }
+        else if (getCvTermEnricher() != null
+                && objectToEnrich.getInteractionType() != objectSource.getInteractionType()){
+            getCvTermEnricher().enrich(objectToEnrich.getInteractionType(), objectSource.getInteractionType());
         }
 
         processInteractionType(objectToEnrich);

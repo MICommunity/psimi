@@ -53,7 +53,7 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
         }
     }
 
-    protected void processPublication(Source cvTermToEnrich, Source cvTermFetched) {
+    protected void processPublication(Source cvTermToEnrich, Source cvTermFetched) throws EnricherException {
         if (cvTermToEnrich.getPublication() == null && cvTermFetched.getPublication() != null){
              cvTermToEnrich.setPublication(cvTermFetched.getPublication());
             if (getCvTermEnricherListener() instanceof SourceEnricherListener){

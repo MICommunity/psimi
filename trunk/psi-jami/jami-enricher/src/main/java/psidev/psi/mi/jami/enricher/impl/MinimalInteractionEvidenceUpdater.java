@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.experiment.DefaultCuratedExperimentComparator;
 
 import java.util.Date;
 
@@ -31,13 +32,17 @@ public class MinimalInteractionEvidenceUpdater
     }
 
     @Override
-    protected void processExperiment(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
-         if (objectSource.getExperiment() != objectToEnrich.getExperiment()){
+    protected void processExperiment(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException {
+         if (!DefaultCuratedExperimentComparator.areEquals(objectSource.getExperiment(), objectToEnrich.getExperiment())){
              Experiment old = objectToEnrich.getExperiment();
               objectToEnrich.setExperiment(objectSource.getExperiment());
              if (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener){
                  ((InteractionEvidenceEnricherListener)getInteractionEnricherListener()).onExperimentUpdate(objectToEnrich, old);
              }
+         }
+         else if (getExperimentEnricher() != null
+                 && objectToEnrich.getExperiment() != objectSource.getExperiment()){
+             getExperimentEnricher().enrich(objectToEnrich.getExperiment(), objectSource.getExperiment());
          }
     }
 
@@ -113,6 +118,10 @@ public class MinimalInteractionEvidenceUpdater
             if (getInteractionEnricherListener() != null){
                 getInteractionEnricherListener().onInteractionTypeUpdate(objectToEnrich, oldType);
             }
+        }
+        else if (getCvTermEnricher() != null
+                && objectToEnrich.getInteractionType() != objectSource.getInteractionType()){
+            getCvTermEnricher().enrich(objectToEnrich.getInteractionType(), objectSource.getInteractionType());
         }
 
         processInteractionType(objectToEnrich);
