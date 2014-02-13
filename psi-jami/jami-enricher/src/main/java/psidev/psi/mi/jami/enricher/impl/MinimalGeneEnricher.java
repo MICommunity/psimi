@@ -25,10 +25,7 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implem
     private boolean hasMockOrganismFetcher = false;
 
     public MinimalGeneEnricher(GeneFetcher fetcher) {
-        if (fetcher == null){
-            throw new IllegalArgumentException("The fetcher is required and cannot be null");
-        }
-        super.setFetcher(fetcher);
+        super(fetcher);
     }
 
     /**

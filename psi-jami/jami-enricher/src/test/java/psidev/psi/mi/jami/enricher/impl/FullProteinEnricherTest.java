@@ -8,10 +8,11 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.full.FullProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.impl.log.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -89,7 +90,7 @@ public class FullProteinEnricherTest {
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT , proteinFetched);
-        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher = new FullProteinEnricher(fetcher);
         proteinEnricher.enrich(proteinToEnrich);
         fail("Exception should be thrown before this point");
     }
@@ -107,7 +108,7 @@ public class FullProteinEnricherTest {
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT, proteinFetched);
-        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher= new FullProteinEnricher(fetcher);
         proteinEnricher.enrich(proteinToEnrich);
 
         assertEquals(TEST_FULLNAME , proteinToEnrich.getFullName() );

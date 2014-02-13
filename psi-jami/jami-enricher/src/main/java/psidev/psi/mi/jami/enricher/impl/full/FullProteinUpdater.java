@@ -1,20 +1,23 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalProteinUpdater;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 
 
 /**
  * Provides maximum updating of the Protein.
- * Will update all aspects covered by the minimum updater as well as updating the xrefs.
- * As an updater, values from the provided protein to enrich may be overwritten.
+ * See description of full update in AbstractInteractorUpdater
+ * If the protein remapper is not null and it cannot find a uniprot identifier, it will remap to uniprot using the proteinMapper.
+ * - enrich sequence of protein. If the sequence of the protein to enrich is null, it will enrich it with the
+ * sequence of the fetched protein
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 20/05/13
  */
-public class FullProteinUpdater extends MinimalProteinUpdater{
+public class FullProteinUpdater extends MinimalProteinUpdater {
 
     public FullProteinUpdater(ProteinFetcher proteinFetcher) {
         super(proteinFetcher);

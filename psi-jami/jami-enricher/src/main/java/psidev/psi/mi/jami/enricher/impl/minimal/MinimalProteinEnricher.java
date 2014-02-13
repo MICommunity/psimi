@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 
 import org.slf4j.Logger;
@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.ProteinMapper;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -20,7 +21,8 @@ import java.util.Collections;
 
 /**
  * Enriches a protein to the minimum level. As an enricher, no data will be overwritten in the protein being enriched.
- * This covers full name, primary AC, checksums, identifiers and aliases.
+ * See description of minimal enrichment in AbstractInteractorEnricher
+ * If the protein remapper is not null and it cannot find a uniprot identifier, it will remap to uniprot using the proteinMapper.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 14/05/13
@@ -30,7 +32,6 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
     private ProteinMapper proteinMapper = null;
     private static final Logger log = LoggerFactory.getLogger(MinimalProteinEnricher.class.getName());
 
-    public static final String UNIPROT_REMOVED_QUALIFIER = "uniprot-removed-ac";
     public static final String CAUTION_MESSAGE = "This sequence has been withdrawn from Uniprot.";
     /**
      * The only constructor, fulfilling the requirement of a protein fetcher.
@@ -38,10 +39,10 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
      * @param fetcher   The fetcher used to collect protein records.
      */
     public MinimalProteinEnricher(ProteinFetcher fetcher){
+        super(fetcher);
         if (fetcher == null){
-            throw new IllegalArgumentException("The fetcher is required and cannot be null");
+            throw new IllegalArgumentException("The protein enricher needs a non null fetcher");
         }
-        super.setFetcher(fetcher);
     }
 
     /**
@@ -135,7 +136,7 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(Protein objectToEnrich) throws EnricherException {
+    protected void onEnrichedVersionNotFound(Protein objectToEnrich) {
         if (getListener() != null){
             getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED ,
@@ -164,6 +165,10 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
 
     @Override
     protected boolean canEnrichInteractor(Protein entityToEnrich, Protein fetchedEntity) {
+        if (fetchedEntity == null){
+            onEnrichedVersionNotFound(entityToEnrich);
+            return false;
+        }
         // if the interactor type is not a valid protein interactor type, we cannot enrich
         if (entityToEnrich.getInteractorType() != null &&
                 !CvTermUtils.isCvTerm(entityToEnrich.getInteractorType(), Protein.PROTEIN_MI, Protein.PROTEIN)
@@ -215,7 +220,19 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
             throw new EnricherException("Impossible to remap the protein to uniprot.", e);
         }
 
-        return proteinToEnrich.getUniprotkb() != null;
+        if (proteinToEnrich.getUniprotkb() != null){
+            Collection<Annotation> cautions = AnnotationUtils.collectAllAnnotationsHavingTopic(proteinToEnrich.getAnnotations(), Annotation.CAUTION_MI, Annotation.CAUTION);
+            for (Annotation caution : cautions){
+                if (caution.getValue() != null && CAUTION_MESSAGE.equalsIgnoreCase(caution.getValue())){
+                    proteinToEnrich.getAnnotations().remove(caution);
+                    if(getListener() != null){
+                        getListener().onRemovedAnnotation(proteinToEnrich, caution);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     private Collection<Protein> processAndRemapDeadProtein(Protein proteinToEnrich) throws EnricherException {

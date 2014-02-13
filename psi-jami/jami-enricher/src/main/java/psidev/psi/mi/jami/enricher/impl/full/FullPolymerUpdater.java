@@ -19,11 +19,11 @@ import psidev.psi.mi.jami.model.Polymer;
 
 public class FullPolymerUpdater<T extends Polymer> extends FullInteractorBaseUpdater<T>{
     public FullPolymerUpdater() {
-        super(new FullPolymerEnricher<T>());
+        super();
     }
 
     public FullPolymerUpdater(InteractorFetcher<T> fetcher) {
-        super(new FullPolymerEnricher<T>(fetcher));
+        super(fetcher);
     }
 
     @Override

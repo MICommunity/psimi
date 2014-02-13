@@ -203,10 +203,6 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
                 getListener(), getListener());
     }
 
-    protected void setFetcher(InteractorFetcher<T> fetcher) {
-        this.fetcher = fetcher;
-    }
-
     private void processMinimalEnrichment(T objectToEnrich, T fetchedObject) throws EnricherException {
         if (fetchedObject != null){
             // SHORT NAME is never null

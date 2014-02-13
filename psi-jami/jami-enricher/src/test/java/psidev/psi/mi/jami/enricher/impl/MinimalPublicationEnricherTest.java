@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingPublicationFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
-import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -29,7 +28,7 @@ import static junit.framework.Assert.*;
  */
 public class MinimalPublicationEnricherTest {
 
-    private PublicationEnricher publicationEnricher;
+    private MinimalPublicationEnricher publicationEnricher;
     private MockPublicationFetcher fetcher;
 
     private Publication persistentPublication = null;

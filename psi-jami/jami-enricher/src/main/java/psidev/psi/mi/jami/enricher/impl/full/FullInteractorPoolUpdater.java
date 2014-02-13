@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.model.InteractorPool;
@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.InteractorPool;
  * @since <pre>30/01/14</pre>
  */
 
-public class FullInteractorPoolUpdater extends MinimalInteractorPoolUpdater {
+public class FullInteractorPoolUpdater extends FullInteractorBaseUpdater<InteractorPool> {
 
     public FullInteractorPoolUpdater() {
         super();

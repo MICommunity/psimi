@@ -6,7 +6,6 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingBioactiveEntityFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockBioactiveEntityFetcher;
-import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -33,7 +32,7 @@ public class MinimalBioactiveEntityUpdaterTest {
     String TEST_STRING = "a string to test";
     String OTHER_TEST_STRING = "a different sting";
 
-    BioactiveEntityEnricher enricher;
+    MinimalBioactiveEntityUpdater enricher;
     MockBioactiveEntityFetcher fetcher;
     BioactiveEntity persistentBioactiveEntity;
     int persistentInt = 0;
