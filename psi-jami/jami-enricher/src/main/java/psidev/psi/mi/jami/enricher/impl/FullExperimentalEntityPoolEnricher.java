@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 
 public class FullExperimentalEntityPoolEnricher extends MinimalExperimentalEntityPoolEnricher{
 
-    protected FullExperimentalEntityPoolEnricher(){
+    public FullExperimentalEntityPoolEnricher(){
         super(new FullParticipantEvidenceEnricher<ExperimentalEntityPool, FeatureEvidence>());
     }
 
