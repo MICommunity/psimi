@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
-import psidev.psi.mi.jami.enricher.InteractorEnricher;
 import psidev.psi.mi.jami.enricher.InteractorPoolEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.InteractorPool;
@@ -20,7 +20,7 @@ import java.util.*;
  */
 
 public class FullInteractorPoolEnricher extends MinimalInteractorBaseEnricher<InteractorPool> implements InteractorPoolEnricher {
-    private InteractorEnricher<Interactor> interactorEnricher;
+    private CompositeInteractorEnricher interactorEnricher;
     private Comparator<Interactor> interactorComparator;
 
     public FullInteractorPoolEnricher() {
@@ -31,11 +31,11 @@ public class FullInteractorPoolEnricher extends MinimalInteractorBaseEnricher<In
         super(fetcher);
     }
 
-    public InteractorEnricher<Interactor> getInteractorEnricher() {
+    public CompositeInteractorEnricher getInteractorEnricher() {
         return interactorEnricher;
     }
 
-    public void setInteractorEnricher(InteractorEnricher<Interactor> interactorEnricher) {
+    public void setInteractorEnricher(CompositeInteractorEnricher interactorEnricher) {
         this.interactorEnricher = interactorEnricher;
     }
 
