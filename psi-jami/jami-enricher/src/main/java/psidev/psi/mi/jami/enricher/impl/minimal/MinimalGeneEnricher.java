@@ -82,7 +82,7 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(Gene objectToEnrich) throws EnricherException {
+    protected void onEnrichedVersionNotFound(Gene objectToEnrich) {
         getListener().onEnrichmentComplete(
                 objectToEnrich , EnrichmentStatus.FAILED ,
                 "Could not fetch a gene with the provided identifier.");
@@ -109,6 +109,10 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
 
     @Override
     protected boolean canEnrichInteractor(Gene entityToEnrich, Gene fetchedEntity) {
+        if (fetchedEntity == null){
+            onEnrichedVersionNotFound(entityToEnrich);
+            return false;
+        }
         // if the interactor type is not a valid bioactive entity interactor type, we cannot enrich
         if (entityToEnrich.getInteractorType() != null &&
                 !CvTermUtils.isCvTerm(entityToEnrich.getInteractorType(), Gene.GENE_MI, Gene.GENE)

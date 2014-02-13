@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 import psidev.psi.mi.jami.enricher.listener.GeneEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.InteractorEnricherListenerManager;
 import psidev.psi.mi.jami.model.Gene;
 
 /**

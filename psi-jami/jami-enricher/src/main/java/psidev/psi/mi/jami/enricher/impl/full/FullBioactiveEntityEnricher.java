@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalBioactiveEntityEnricher;
 
 /**
  * Provides maximum enrichment of the BioactiveEntity.

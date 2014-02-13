@@ -1,7 +1,9 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
 import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
+import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
+import psidev.psi.mi.jami.enricher.impl.AbstractInteractorUpdater;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
