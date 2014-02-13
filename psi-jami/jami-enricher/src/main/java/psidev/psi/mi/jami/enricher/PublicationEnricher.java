@@ -7,7 +7,8 @@ import psidev.psi.mi.jami.model.Publication;
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
  * It must be initiated with a fetcher.
- * Sub enriches: CvTerm.
+ * Sub enrichers:
+ * - Source enricher
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13
@@ -20,16 +21,7 @@ public interface PublicationEnricher extends MIEnricher<Publication>{
      */
     public PublicationFetcher getPublicationFetcher();
 
-    public void setSourceEnricher(SourceEnricher sourceEnricher);
-
     public SourceEnricher getSourceEnricher();
-
-    /**
-     * Sets the listener to report publication changes to.
-     * Can be null.
-     * @param listener the new publication listener
-     */
-    public void setPublicationEnricherListener(PublicationEnricherListener listener);
 
     /**
      * Gets the current publication listener

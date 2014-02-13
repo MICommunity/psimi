@@ -1,6 +1,8 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
+import psidev.psi.mi.jami.enricher.impl.FullCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalSourceEnricher;
 import psidev.psi.mi.jami.model.Source;
 
 /**
@@ -15,7 +17,7 @@ import psidev.psi.mi.jami.model.Source;
  * @since <pre>29/01/14</pre>
  */
 
-public class FullSourceEnricher extends MinimalSourceEnricher{
+public class FullSourceEnricher extends MinimalSourceEnricher {
     public FullSourceEnricher(SourceFetcher cvTermFetcher) {
         super(new FullCvTermEnricher<Source>(cvTermFetcher));
     }
