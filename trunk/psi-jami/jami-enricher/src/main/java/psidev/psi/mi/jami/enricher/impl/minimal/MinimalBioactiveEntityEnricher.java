@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
-import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -19,7 +18,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<BioactiveEntity> implements BioactiveEntityEnricher {
+public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<BioactiveEntity> {
 
     /**
      * The only constructor, fulfilling the requirement of a bioactiveEntity fetcher.
@@ -28,6 +27,9 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
      */
     public MinimalBioactiveEntityEnricher(BioactiveEntityFetcher fetcher){
         super(fetcher);
+        if (fetcher == null){
+            throw new IllegalArgumentException("The bioactive enricher needs a non null fetcher");
+        }
     }
 
     /**
@@ -49,7 +51,7 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(BioactiveEntity objectToEnrich) throws EnricherException {
+    protected void onEnrichedVersionNotFound(BioactiveEntity objectToEnrich) {
         getListener().onEnrichmentComplete(
                 objectToEnrich, EnrichmentStatus.FAILED,
                 "Could not fetch a bioactive entity with the provided CHEBI identifier.");
@@ -76,6 +78,10 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
 
     @Override
     protected boolean canEnrichInteractor(BioactiveEntity entityToEnrich, BioactiveEntity fetchedEntity) {
+        if (fetchedEntity == null){
+            onEnrichedVersionNotFound(entityToEnrich);
+            return false;
+        }
         // if the interactor type is not a valid bioactive entity interactor type, we cannot enrich
         if (entityToEnrich.getInteractorType() != null &&
                 !CvTermUtils.isCvTerm(entityToEnrich.getInteractorType(), BioactiveEntity.POLYSACCHARIDE_MI, BioactiveEntity.POLYSACCHARIDE)

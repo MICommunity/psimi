@@ -19,7 +19,7 @@ public class FullBioactiveEntityUpdater
      * @param fetcher   The fetcher to use to gather bioactive entity records.
      */
     public FullBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
-        super(new FullBioactiveEntityEnricher(fetcher));
+        super(fetcher);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.fetcher.BioactiveEntityFetcher;
-import psidev.psi.mi.jami.enricher.BioactiveEntityEnricher;
 import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
 import psidev.psi.mi.jami.enricher.impl.AbstractInteractorUpdater;
 import psidev.psi.mi.jami.model.BioactiveEntity;
@@ -13,7 +12,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */
-public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<BioactiveEntity> implements BioactiveEntityEnricher{
+public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<BioactiveEntity> {
 
     /**
      * A constructor which initiates with a fetcher.
