@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalGeneEnricher;
 
 /**
  * Created with IntelliJ IDEA.

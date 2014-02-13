@@ -1,11 +1,11 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.GeneEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Gene;
 import psidev.psi.mi.jami.model.Interactor;
@@ -20,12 +20,15 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 04/09/13
  */
-public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> implements GeneEnricher {
+public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
 
     private boolean hasMockOrganismFetcher = false;
 
     public MinimalGeneEnricher(GeneFetcher fetcher) {
         super(fetcher);
+        if (fetcher == null){
+            throw new IllegalArgumentException("The gene enricher needs a non null fetcher");
+        }
     }
 
     /**

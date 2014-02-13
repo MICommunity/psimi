@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalGeneUpdater;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,7 @@ import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 public class FullGeneUpdater extends MinimalGeneUpdater {
 
     public FullGeneUpdater(GeneFetcher fetcher) {
-        super(new FullGeneEnricher(fetcher));
+        super(fetcher);
     }
 
     @Override

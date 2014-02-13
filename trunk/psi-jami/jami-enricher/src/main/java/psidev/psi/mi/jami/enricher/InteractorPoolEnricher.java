@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.InteractorPool;
 
@@ -16,7 +17,7 @@ import java.util.Comparator;
  */
 public interface InteractorPoolEnricher extends InteractorEnricher<InteractorPool>{
 
-    public InteractorEnricher<Interactor> getInteractorEnricher();
+    public CompositeInteractorEnricher getInteractorEnricher();
 
     public Comparator<Interactor> getInteractorComparator();
 }

@@ -165,7 +165,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
 
     @Override
     protected boolean isFullEnrichment() {
-        return interactorEnricher.isFullEnrichment();
+        return false;
     }
 
     @Override

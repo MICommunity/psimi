@@ -21,12 +21,12 @@ public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
     private InteractorPoolEnricher interactorPoolEnricher;
     private ProteinEnricher proteinEnricher;
     private BioactiveEntityEnricher bioactiveEntityEnricher;
-    private GeneEnricher geneEnricher;
+    private InteractorEnricher<Gene> geneEnricher;
     private ComplexEnricher complexEnricher;
 
     public CompositeInteractorEnricher(AbstractInteractorEnricher<Interactor> interactorBaseEnricher, InteractorEnricher<Polymer> polymerBaseEnricher,
                                        InteractorPoolEnricher interactorPoolEnricher, ProteinEnricher proteinEnricher,
-                                       BioactiveEntityEnricher bioactiveEntityEnricher, GeneEnricher geneEnricher,
+                                       BioactiveEntityEnricher bioactiveEntityEnricher, InteractorEnricher<Gene> geneEnricher,
                                        ComplexEnricher complexEnricher){
         super();
         if (interactorBaseEnricher == null){
@@ -73,11 +73,11 @@ public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
         this.bioactiveEntityEnricher = bioactiveEntityEnricher;
     }
 
-    public GeneEnricher getGeneEnricher() {
+    public InteractorEnricher<Gene> getGeneEnricher() {
         return geneEnricher;
     }
 
-    public void setGeneEnricher(GeneEnricher geneEnricher) {
+    public void setGeneEnricher(InteractorEnricher<Gene> geneEnricher) {
         this.geneEnricher = geneEnricher;
     }
 
