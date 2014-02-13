@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.InteractorEnricher;
 import psidev.psi.mi.jami.enricher.InteractorPoolEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.InteractorPool;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.log.PolymerEnricherLogger;
 import psidev.psi.mi.jami.model.Protein;
 
 /**

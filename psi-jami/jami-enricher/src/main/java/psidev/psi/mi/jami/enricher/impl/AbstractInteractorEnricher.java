@@ -7,20 +7,33 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
- * Abstract class for Minimal enricher of interactors
+ * Abstract class for enricher of interactors
  *
- * - enrich source of a publication if the sourceEnricher is not null. If the source is not null in the publication to enrich,
- * it will ignore the source loaded from the fetched publication
- * - enrich identifiers (pubmed, doi, etc.) of a publication. It will use DefaultXrefComparator to compare identifiers and add missing identifiers without
+ * Minimal enrichment:
+ *
+ * - enrich fullname of an interactor. If the fullname is not null in the interactor to enrich,
+ * it will ignore the fullname loaded from the fetched interactor.
+ * - enrich identifiers (uniprot, ensembl, etc.) of an interactor. It will use DefaultXrefComparator to compare identifiers and add missing identifiers without
  * removing any existing identifiers.
- * - enrich authors of a publication. It will add all missing authors but will not remove any existing authors
- * - enrich publication date. It will only enrich the publication date if it is not already set in the publication to enrich. It will not
- * override any existing publication date
+ * - enrich aliases (gene name, etc.) of an interactor. It will use DefaultAliasComparator to compare aliases and add missing aliases without
+ * removing any existing aliases.
+ * - enrich interactor type of an interactor if the cv term enricher is not null. If the interactor type is not null in the interactor to enrich,
+ * it will ignore the interactor type loaded from the fetched interactor.
+ * - enrich organism of an interactor if the organismEnricher is not null. If the organism is not null in the interactor to enrich,
+ * it will ignore the organism loaded from the fetched interactor.
  *
- * It will ignore all other properties of a publication
+ * Full enrichment:
+ *
+ * - enrich xrefs. It will use DefaultXrefComparator to compare xrefs and add missing xrefs without
+ * removing any existing xrefs.
+ * - enrich checksums, It will use DefaultChecksumComparator to compare checksums and add missing xrefs without
+ * removing any existing checksums.
+ * - enrich annotations It will use DefaultAnnotationComparator to compare annotations and add missing xrefs without
+ * removing any existing annotations.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,11 +42,18 @@ import psidev.psi.mi.jami.model.Interactor;
 
 public abstract class AbstractInteractorEnricher<T extends Interactor> extends AbstractMIEnricher<T> implements InteractorEnricher<T>{
 
-    private CvTermEnricher cvTermEnricher = null;
+    private CvTermEnricher<CvTerm> cvTermEnricher = null;
     private OrganismEnricher organismEnricher = null;
     private int retryCount = 5;
     private InteractorFetcher<T> fetcher;
     private InteractorEnricherListener<T> listener = null;
+
+    public AbstractInteractorEnricher() {
+    }
+
+    public AbstractInteractorEnricher(InteractorFetcher<T> fetcher) {
+        this.fetcher = fetcher;
+    }
 
     public int getRetryCount() {
         return retryCount;
@@ -51,11 +71,11 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         this.organismEnricher = organismEnricher;
     }
 
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvTermEnricher){
         this.cvTermEnricher = cvTermEnricher;
     }
 
-    public CvTermEnricher getCvTermEnricher(){
+    public CvTermEnricher<CvTerm> getCvTermEnricher(){
         return cvTermEnricher;
     }
 
@@ -71,7 +91,9 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     public abstract T find(T objectToEnrich) throws EnricherException;
 
     @Override
-    protected abstract void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException;
+    protected void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException{
+        enrich(objectToEnrich, null);
+    }
 
     @Override
     public void enrich(T objectToEnrich, T fetchedObject) throws EnricherException {

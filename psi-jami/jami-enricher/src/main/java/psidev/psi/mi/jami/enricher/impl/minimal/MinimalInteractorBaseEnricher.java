@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
@@ -11,44 +12,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A basic minimal enricher for interactors
+ * A basic minimal enricher for interactors.
+ *
+ * See description of minimal enrichment in AbstractInteractorEnricher
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalInteractorBaseEnricher<T extends Interactor> extends AbstractInteractorEnricher<T>{
+public class MinimalInteractorBaseEnricher<T extends Interactor> extends AbstractInteractorEnricher<T> {
 
     public MinimalInteractorBaseEnricher(){
         super();
     }
 
     public MinimalInteractorBaseEnricher(InteractorFetcher<T> fetcher){
-        super();
-        super.setFetcher(fetcher);
-    }
-
-    public void enrich(T objectToEnrich) throws EnricherException {
-        if(objectToEnrich == null)
-            throw new IllegalArgumentException("Cannot enrich a null interactor.");
-
-        T objectFetched = find(objectToEnrich);
-
-        if (objectFetched != null){
-            enrich(objectToEnrich, objectFetched);
-        }
-        else{
-            processInteractorType(objectToEnrich, objectFetched);
-            processOrganism(objectToEnrich, objectFetched);
-        }
-    }
-
-
-
-    @Override
-    protected void onEnrichedVersionNotFound(T objectToEnrich) throws EnricherException {
-        // nothing to do
+        super(fetcher);
     }
 
     @Override
