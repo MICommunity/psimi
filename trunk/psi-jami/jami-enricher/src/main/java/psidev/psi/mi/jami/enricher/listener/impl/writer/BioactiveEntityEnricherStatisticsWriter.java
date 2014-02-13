@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.listener.impl;
+package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 import psidev.psi.mi.jami.enricher.listener.BioactiveEntityEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.InteractorEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;

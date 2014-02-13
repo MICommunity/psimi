@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.enricher.InteractorPoolEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
+import psidev.psi.mi.jami.listener.InteractorPoolChangeListener;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.InteractorPool;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
@@ -76,6 +77,9 @@ public class FullInteractorPoolEnricher extends MinimalInteractorBaseEnricher<In
                 if (comp < 0){
                     if (removeInteractorsFromPool()){
                         poolToEnrich.remove(i1);
+                        if (getListener() instanceof InteractorPoolChangeListener){
+                            ((InteractorPoolChangeListener)getListener()).onRemovedInteractor(poolToEnrich, i1);
+                        }
                     }
                     else{
                         // we enrich i2
@@ -89,6 +93,9 @@ public class FullInteractorPoolEnricher extends MinimalInteractorBaseEnricher<In
                 // we can add the interactor to the object to enrich
                 else if (comp > 0){
                     interactorsToAdd.add(i2);
+                    if (getListener() instanceof InteractorPoolChangeListener){
+                        ((InteractorPoolChangeListener)getListener()).onAddedInteractor(poolToEnrich, i2);
+                    }
                     // we enrich i2
                     if (getInteractorEnricher() != null){
                         getInteractorEnricher().enrich(i2);
@@ -113,7 +120,11 @@ public class FullInteractorPoolEnricher extends MinimalInteractorBaseEnricher<In
             if (i1 != null && removeInteractorsFromPool()){
                 iterator1.remove();
                 while(iterator1.hasNext()){
-                    poolToEnrich.remove(iterator1.next());
+                    Interactor interactorToRemove = iterator1.next();
+                    poolToEnrich.remove(interactorToRemove);
+                    if (getListener() instanceof InteractorPoolChangeListener){
+                        ((InteractorPoolChangeListener)getListener()).onRemovedInteractor(poolToEnrich, interactorToRemove);
+                    }
                 }
             }
             // It means that i2 is not in i1
@@ -121,7 +132,11 @@ public class FullInteractorPoolEnricher extends MinimalInteractorBaseEnricher<In
             else if (i2 != null){
                 interactorsToAdd.add(i2);
                 while(iterator2.hasNext()){
-                    interactorsToAdd.add(iterator2.next());
+                    Interactor interactorToAdd = iterator2.next();
+                    interactorsToAdd.add(interactorToAdd);
+                    if (getListener() instanceof InteractorPoolChangeListener){
+                        ((InteractorPoolChangeListener)getListener()).onAddedInteractor(poolToEnrich, interactorToAdd);
+                    }
                 }
             }
 

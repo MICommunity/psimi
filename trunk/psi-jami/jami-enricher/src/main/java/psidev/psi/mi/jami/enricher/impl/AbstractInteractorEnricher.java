@@ -137,7 +137,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
 
     protected abstract void onInteractorCheckFailure(T objectToEnrich, T fetchedObject);
 
-    protected boolean canEnrichInteractor(T objectToEnrich, T fetchedObject){
+    protected boolean canEnrichInteractor(T objectToEnrich, T fetchedObject) {
         return true;
     }
 
