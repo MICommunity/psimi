@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.*;
@@ -14,7 +13,8 @@ import psidev.psi.mi.jami.model.*;
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalExperimentalEntityPoolEnricher extends MinimalEntityPoolEnricher<ExperimentalEntityPool,FeatureEvidence>{
+public class MinimalExperimentalEntityPoolEnricher extends MinimalEntityPoolEnricher<ExperimentalEntityPool,FeatureEvidence>
+implements EntityPoolEnricher<ExperimentalEntityPool, FeatureEvidence>, ParticipantEvidenceEnricher<ExperimentalEntityPool, FeatureEvidence>{
 
     private MinimalParticipantEvidenceEnricher<ExperimentalEntityPool,FeatureEvidence> delegate;
 
@@ -85,5 +85,13 @@ public class MinimalExperimentalEntityPoolEnricher extends MinimalEntityPoolEnri
     @Override
     public CompositeInteractorEnricher getInteractorEnricher() {
         return this.delegate.getInteractorEnricher();
+    }
+
+    public void setOrganismEnricher(OrganismEnricher organismEnricher) {
+        this.delegate.setOrganismEnricher(organismEnricher);
+    }
+
+    public OrganismEnricher getOrganismEnricher() {
+        return this.delegate.getOrganismEnricher();
     }
 }
