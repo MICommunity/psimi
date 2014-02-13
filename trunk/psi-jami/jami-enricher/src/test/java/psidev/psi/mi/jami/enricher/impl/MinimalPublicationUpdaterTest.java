@@ -4,7 +4,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
-import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationUpdater;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -19,9 +18,7 @@ import java.util.Date;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +28,7 @@ import static org.junit.Assert.assertNull;
  */
 public class MinimalPublicationUpdaterTest {
 
-    private PublicationEnricher publicationEnricher;
+    private MinimalPublicationUpdater publicationEnricher;
     private MockPublicationFetcher fetcher;
 
     private Publication persistentPublication = null;

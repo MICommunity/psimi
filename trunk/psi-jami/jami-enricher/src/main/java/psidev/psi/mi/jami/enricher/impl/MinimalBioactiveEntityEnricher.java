@@ -26,10 +26,7 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
      * @param fetcher   The fetcher used to collect bioactiveEntity records.
      */
     public MinimalBioactiveEntityEnricher(BioactiveEntityFetcher fetcher){
-        if (fetcher == null){
-            throw new IllegalArgumentException("The fetcher is required and cannot be null");
-        }
-        super.setFetcher(fetcher);
+        super(fetcher);
     }
 
     /**

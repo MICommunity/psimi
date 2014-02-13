@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.impl.AbstractInteractorUpdater;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
@@ -14,11 +15,11 @@ import psidev.psi.mi.jami.model.Interactor;
 
 public class FullInteractorBaseUpdater<T extends Interactor> extends AbstractInteractorUpdater<T> {
     public FullInteractorBaseUpdater() {
-        super(new FullInteractorBaseEnricher<T>());
+        super(new MinimalInteractorBaseEnricher<T>());
     }
 
     public FullInteractorBaseUpdater(InteractorFetcher<T> fetcher) {
-        super(new FullInteractorBaseEnricher<T>(fetcher));
+        super(new MinimalInteractorBaseEnricher<T>(fetcher));
     }
 
     protected FullInteractorBaseUpdater(FullInteractorBaseEnricher<T> enricher) {

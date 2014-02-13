@@ -7,10 +7,11 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.FailingProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.bridges.mapper.mock.MockProteinMapper;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.full.FullProteinUpdater;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.impl.log.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -109,7 +110,7 @@ public class FullProteinUpdaterTest {
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT , proteinFetched);
-        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher = new FullProteinUpdater(fetcher);
         proteinEnricher.enrich(proteinToEnrich);
         fail("Exception should be thrown before this point");
     }
@@ -127,7 +128,7 @@ public class FullProteinUpdaterTest {
         Protein proteinFetched = new DefaultProtein(TEST_SHORTNAME , TEST_FULLNAME);
         proteinFetched.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addEntry(TEST_AC_HALF_PROT, proteinFetched);
-        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher = new FullProteinUpdater(fetcher);
         proteinEnricher.enrich(proteinToEnrich);
 
         assertEquals(TEST_FULLNAME , proteinToEnrich.getFullName() );
@@ -276,7 +277,7 @@ public class FullProteinUpdaterTest {
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {}
                     public void onAddedXref(Protein protein, Xref added)                {}
-                    public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
+                    public void onRemovedXref(Protein protein, Xref removed)            {}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}
@@ -422,7 +423,7 @@ public class FullProteinUpdaterTest {
                     public void onAddedIdentifier(Protein protein, Xref added)          {fail("failed");}
                     public void onRemovedIdentifier(Protein protein, Xref removed)      {}
                     public void onAddedXref(Protein protein, Xref added)                {}
-                    public void onRemovedXref(Protein protein, Xref removed)            {fail("failed");}
+                    public void onRemovedXref(Protein protein, Xref removed)            {}
                     public void onAddedAlias(Protein protein, Alias added)              {fail("failed");}
                     public void onRemovedAlias(Protein protein, Alias removed)          {fail("failed");}
                     public void onAddedChecksum(Protein protein, Checksum added)        {fail("failed");}

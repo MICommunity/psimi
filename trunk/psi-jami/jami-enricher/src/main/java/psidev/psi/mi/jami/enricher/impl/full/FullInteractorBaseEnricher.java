@@ -14,11 +14,11 @@ import psidev.psi.mi.jami.model.Interactor;
 
 public class FullInteractorBaseEnricher<T extends Interactor> extends MinimalInteractorBaseEnricher<T> {
 
-    public FullInteractorEnricher() {
+    public FullInteractorBaseEnricher() {
         super();
     }
 
-    public FullInteractorEnricher(InteractorFetcher<T> fetcher) {
+    public FullInteractorBaseEnricher(InteractorFetcher<T> fetcher) {
         super(fetcher);
     }
 

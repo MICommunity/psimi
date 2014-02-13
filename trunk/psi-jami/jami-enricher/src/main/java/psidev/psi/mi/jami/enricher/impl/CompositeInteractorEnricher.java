@@ -17,14 +17,14 @@ import java.util.Collection;
 public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
 
     private AbstractInteractorEnricher<Interactor> interactorBaseEnricher;
-    private PolymerEnricher<Polymer> polymerBaseEnricher;
+    private InteractorEnricher<Polymer> polymerBaseEnricher;
     private InteractorPoolEnricher interactorPoolEnricher;
     private ProteinEnricher proteinEnricher;
     private BioactiveEntityEnricher bioactiveEntityEnricher;
     private GeneEnricher geneEnricher;
     private ComplexEnricher complexEnricher;
 
-    public CompositeInteractorEnricher(AbstractInteractorEnricher<Interactor> interactorBaseEnricher, PolymerEnricher<Polymer> polymerBaseEnricher,
+    public CompositeInteractorEnricher(AbstractInteractorEnricher<Interactor> interactorBaseEnricher, InteractorEnricher<Polymer> polymerBaseEnricher,
                                        InteractorPoolEnricher interactorPoolEnricher, ProteinEnricher proteinEnricher,
                                        BioactiveEntityEnricher bioactiveEntityEnricher, GeneEnricher geneEnricher,
                                        ComplexEnricher complexEnricher){
@@ -41,11 +41,11 @@ public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
         this.complexEnricher = complexEnricher;
     }
 
-    public PolymerEnricher<Polymer> getPolymerBaseEnricher() {
+    public InteractorEnricher<Polymer> getPolymerBaseEnricher() {
         return polymerBaseEnricher;
     }
 
-    public void setPolymerBaseEnricher(PolymerEnricher<Polymer> polymerBaseEnricher) {
+    public void setPolymerBaseEnricher(InteractorEnricher<Polymer> polymerBaseEnricher) {
         this.polymerBaseEnricher = polymerBaseEnricher;
     }
 

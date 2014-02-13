@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherLogger;
@@ -78,7 +79,7 @@ public class MinimalFeatureEnricherTest {
         participantEnricher.setFeatureEnricher(featureEnricher);
         participantEnricher.setInteractorEnricher(new CompositeInteractorEnricher(new MinimalInteractorBaseEnricher<Interactor>(),
                 null, null, proteinEnricher, null, null, null));
-        proteinEnricher.setListener((MinimalFeatureEnricher)featureEnricher);
+        ((MinimalProteinEnricher)proteinEnricher).setListener((MinimalFeatureEnricher)featureEnricher);
         assertTrue(proteinEnricher.getListener() == featureEnricher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
