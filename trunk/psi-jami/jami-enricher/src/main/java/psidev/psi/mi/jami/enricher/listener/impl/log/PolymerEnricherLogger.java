@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.listener.impl;
+package psidev.psi.mi.jami.enricher.listener.impl.log;
 
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;

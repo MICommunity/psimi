@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.Protein;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  16/05/13
  */
-public interface ProteinEnricher extends PolymerEnricher<Protein>{
+public interface ProteinEnricher extends InteractorEnricher<Protein>{
 
     /**
      * The protein mapper to be used when a protein doesn't have a uniprot id or the uniprotID is dead.

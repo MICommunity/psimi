@@ -1,35 +1,37 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
-import psidev.psi.mi.jami.enricher.PolymerEnricher;
 import psidev.psi.mi.jami.enricher.listener.PolymerEnricherListener;
 import psidev.psi.mi.jami.listener.PolymerChangeListener;
 import psidev.psi.mi.jami.model.Polymer;
 
 /**
- * A basic minimal enricher for interactors
+ * Full polymer enricher.
+ *
+ * - enrich all properties of interactor as described in FullInteractorBaseEnricher
+ * - enrich sequence of polymer. If the sequence of the polymer to enrich is null, it will enrich it with the
+ * sequence of the fetched polymer
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>01/10/13</pre>
+ * @since <pre>30/01/14</pre>
  */
 
-public class MinimalPolymerEnricher<T extends Polymer> extends MinimalInteractorBaseEnricher<T> implements PolymerEnricher<T>{
+public class FullPolymerEnricher<T extends Polymer> extends FullInteractorBaseEnricher<T> {
 
-    public MinimalPolymerEnricher(){
+    public FullPolymerEnricher() {
         super();
     }
 
-    public MinimalPolymerEnricher(InteractorFetcher<T> fetcher){
+    public FullPolymerEnricher(InteractorFetcher<T> fetcher) {
         super(fetcher);
     }
-
 
     @Override
     protected void processOtherProperties(T polymerToEnrich, T fetched) {
 
         // sequence
-        if (polymerToEnrich.getSequence() == null && fetched.getSequence() != null){
+        if (fetched != null && polymerToEnrich.getSequence() == null && fetched.getSequence() != null){
             polymerToEnrich.setSequence(fetched.getSequence());
             if (getListener() instanceof PolymerEnricherListener){
                 ((PolymerChangeListener)getListener()).onSequenceUpdate(polymerToEnrich, null);

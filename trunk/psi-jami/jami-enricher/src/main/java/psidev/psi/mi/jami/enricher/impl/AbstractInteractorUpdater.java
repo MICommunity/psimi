@@ -10,7 +10,35 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 
 /**
- * Abstract class for updating interactor
+ * Abstract class for updater of interactors
+ *
+ * Minimal update:
+ *
+ * - enrich shortname of an interactor. If the shortname in the interactor to enrich id different from
+ * the shortname loaded from the fetched interactor, it will override the shortname of the interactor to enrich with the shortname of the fetched interactor
+ * - enrich fullname of an interactor. If the fullname in the interactor to enrich id different from
+ * the fullName loaded from the fetched interactor, it will override the fullname of the interactor to enrich with the fullname of the fetched interactor
+ * it will ignore the fullname loaded from the fetched interactor.
+ * - enrich identifiers (uniprot, ensembl, etc.) of an interactor. It will use DefaultXrefComparator to compare identifiers and add missing identifiers.
+ * It will remove identifiers that are not in the fectched interactor
+ * - enrich aliases (gene name, etc.) of an interactor. It will use DefaultAliasComparator to compare aliases and add missing aliases without
+ * removing any existing aliases.
+ * - enrich interactor type of an interactor if the cv term enricher is not null.  If the interactor type in the interactor to enrich id different from
+ * the interactor type loaded from the fetched interactor (see DefaultCvTermComparator), it will override the interactor type of the interactor to enrich with the interactor type of the fetched interactor
+ * - enrich organism of an interactor if the organismEnricher is not null.  If the organism in the interactor to enrich id different from
+ * the organism loaded from the fetched interactor (see DefaultOrganismComparator), it will override the organism of the interactor to enrich with the organism of the fetched interactor
+ *
+ * Full update:
+ *
+ * - enrich xrefs. It will use DefaultXrefComparator to compare xrefs and add missing xrefs without
+ * removing any existing xrefs. It will use DefaultXrefComparator to compare identifiers and add missing identifiers.
+ * It will remove xrefs that are not in the fectched interactor
+ * - enrich checksums, It will use DefaultChecksumComparator to compare checksums and add missing xrefs without
+ * removing any existing checksums. It will use DefaultXrefComparator to compare identifiers and add missing identifiers.
+ * It will remove checksum that are not in the fectched interactor
+ * - enrich annotations It will use DefaultAnnotationComparator to compare annotations and add missing xrefs without
+ * removing any existing annotations. It will use DefaultXrefComparator to compare identifiers and add missing identifiers.
+ * It will remove annotations that are not in the fectched interactor
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
