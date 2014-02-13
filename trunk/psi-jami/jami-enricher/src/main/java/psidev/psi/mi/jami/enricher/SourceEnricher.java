@@ -5,20 +5,13 @@ import psidev.psi.mi.jami.model.Source;
 /**
  * The source enricher is an enricher which can enrich either single source or a collection.
  * A source enricher must be initiated with a fetcher.
- * Sub enrichers: none.
- *
+ * Sub- enrichers: publication enricher. Will not enrich the publication if the publication enricher is null
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>29/01/14</pre>
  */
 
 public interface SourceEnricher extends CvTermEnricher<Source>{
-
-    /**
-     * The publication enricher to be used.
-     * @param enricher  The enricher to use. Can be null.
-     */
-    public void setPublicationEnricher(PublicationEnricher enricher);
 
     /**
      * The current publication enricher.

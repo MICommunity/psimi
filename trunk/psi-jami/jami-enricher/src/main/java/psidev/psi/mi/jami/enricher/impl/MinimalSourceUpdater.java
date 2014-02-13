@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
 import psidev.psi.mi.jami.model.Publication;
@@ -9,7 +8,12 @@ import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
 
 /**
- * Minimal updater of a source
+ * Provides minimum update of a Source.
+ *
+ * - update minimal properties of CvTerm (see MinimalCvTermUpdater for more details)
+ * - update publication properties using publication updater. If the publication in the source to enrich is different from the
+ * one from the fetched source (see DefaultPublicationComparator for more details), it will override the publication with the one from the fetched source before enriching it with the publication
+ * enricher,
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -21,7 +25,7 @@ public class MinimalSourceUpdater extends MinimalSourceEnricher{
         super(new MinimalCvTermUpdater<Source>(cvTermFetcher));
     }
 
-    protected MinimalSourceUpdater(CvTermEnricher<Source> cvEnricher) {
+    protected MinimalSourceUpdater(MinimalCvTermEnricher<Source> cvEnricher) {
         super(cvEnricher);
     }
 
