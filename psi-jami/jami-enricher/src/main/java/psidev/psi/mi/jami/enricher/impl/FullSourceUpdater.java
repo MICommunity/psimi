@@ -1,9 +1,15 @@
 package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
+import psidev.psi.mi.jami.model.Source;
 
 /**
- * Full source updater
+ * Provides full update of a Source.
+ *
+ * - update all properties of CvTerm (see FullCvTermUpdater for more details)
+ * - update publication properties using publication updater. If the publication in the source to enrich is different from the
+ * one from the fetched source (see DefaultPublicationComparator for more details), it will override the publication with the one from the fetched source before enriching it with the publication
+ * enricher,
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -12,6 +18,6 @@ import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
 
 public class FullSourceUpdater extends MinimalSourceUpdater{
     public FullSourceUpdater(SourceFetcher cvTermFetcher) {
-        super(new FullCvTermUpdater<psidev.psi.mi.jami.model.Source>(cvTermFetcher));
+        super(new FullCvTermUpdater<Source>(cvTermFetcher));
     }
 }
