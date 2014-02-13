@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.enricher.listener.impl;
+package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.SourceEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
 

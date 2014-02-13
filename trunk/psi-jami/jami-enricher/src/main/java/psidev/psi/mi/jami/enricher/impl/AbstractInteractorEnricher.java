@@ -10,7 +10,17 @@ import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
- * Minimum enricher for interactors
+ * Abstract class for Minimal enricher of interactors
+ *
+ * - enrich source of a publication if the sourceEnricher is not null. If the source is not null in the publication to enrich,
+ * it will ignore the source loaded from the fetched publication
+ * - enrich identifiers (pubmed, doi, etc.) of a publication. It will use DefaultXrefComparator to compare identifiers and add missing identifiers without
+ * removing any existing identifiers.
+ * - enrich authors of a publication. It will add all missing authors but will not remove any existing authors
+ * - enrich publication date. It will only enrich the publication date if it is not already set in the publication to enrich. It will not
+ * override any existing publication date
+ *
+ * It will ignore all other properties of a publication
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -176,22 +186,23 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     }
 
     private void processMinimalEnrichment(T objectToEnrich, T fetchedObject) throws EnricherException {
-        // SHORT NAME is never null
-        processShortLabel(objectToEnrich, fetchedObject);
+        if (fetchedObject != null){
+            // SHORT NAME is never null
+            processShortLabel(objectToEnrich, fetchedObject);
+            // FULL NAME
+            processFullName(objectToEnrich, fetchedObject);
+
+            // IDENTIFIERS
+            processIdentifiers(objectToEnrich, fetchedObject);
+
+            //ALIASES
+            processAliases(objectToEnrich, fetchedObject);
+        }
 
         // Interactor type
         processInteractorType(objectToEnrich, fetchedObject);
 
         // Organism
         processOrganism(objectToEnrich, fetchedObject);
-
-        // FULL NAME
-        processFullName(objectToEnrich, fetchedObject);
-
-        // IDENTIFIERS
-        processIdentifiers(objectToEnrich, fetchedObject);
-
-        //ALIASES
-        processAliases(objectToEnrich, fetchedObject);
     }
 }

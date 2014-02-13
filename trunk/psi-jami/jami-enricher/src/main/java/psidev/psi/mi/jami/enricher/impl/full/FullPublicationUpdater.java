@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationUpdater;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CurationDepth;
@@ -11,14 +12,25 @@ import psidev.psi.mi.jami.model.Publication;
 import java.util.Date;
 
 /**
- * An enricher for publications which can enrich either a single publication or a collection.
- * The publicationEnricher has no subEnrichers. The publicationEnricher must be initiated with a fetcher.
+ * Provides full update of Publication.
  *
- * As an updater, any fields which contradict the fetched entry will be overwritten.
- *
- * At the maximum level, the publication updater overwrites the minimum level fields pubmedId and authors.
- * It also updates the fields for DOI, Title, Journal, Publication Date, Xrefs and release date.
- *
+ * - update minimal properties as described in MinimalPublicationUpdater
+ * - update publication title. If the title of the publication to enrich
+ * is different from the title of the fetched publication, it will override the title
+ * with the title of the fetched publication
+ * - update publication journal. If the journal of the publication to enrich
+ * is different from the journal of the fetched publication, it will override the journal
+ * with the journal of the fetched publication
+ *  - update released date. If the released date of the publication to enrich
+ * is different from the released date of the fetched publication, it will override the released date
+ * with the released date of the fetched publication
+ * - update curation depth. If the curation depth of the publication to enrich
+ * is different from the curation depth of the fetched publication, it will override the curation depth
+ * with the curation depth of the fetched publication
+ * - update xrefs (imex, etc.) of a publication. It will use DefaultXrefComparator to compare xrefs and add missing xrefs.
+ * It will also remove xrefs that are not in the fetched publication
+ * - update annotations of a publication. It will use DefaultAnnotationComparator to compare annotations and add missing annotations.
+ * It will also remove annotations that are not in the fetched publication
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 01/08/13
@@ -33,8 +45,8 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     }
 
     @Override
-    protected void processMinimalEnrichment(Publication publicationToEnrich, Publication fetched) throws EnricherException {
-        this.minimalPublicationUpdater.processPublication(publicationToEnrich, fetched);
+    public void processPublication(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException {
+        this.minimalPublicationUpdater.processPublication(publicationToEnrich, fetchedPublication);
     }
 
     @Override

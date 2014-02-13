@@ -2,10 +2,17 @@ package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
- * Interface for interactor enricher
+ * Interface for interactor enrichers.
+ * It does not require a fetcher in all interactor enrichers, only for some proteins, genes and
+ * bioactive entities enrichers.
+ *
+ * Sub enrichers:
+ * - organism enricher
+ * - cv term enricher
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -21,22 +28,12 @@ public interface InteractorEnricher<T extends Interactor> extends MIEnricher<T>{
     public InteractorFetcher<T> getInteractorFetcher();
 
     /**
-     * Sets the listener to use when the bioactiveEntity has been changed
-     * @param listener  The new listener. Can be null.
-     */
-    public void setListener(InteractorEnricherListener<T> listener);
-
-    /**
      * The current listener of changes to the bioactiveEntities.
      * @return  The current listener. Can be null.
      */
     public InteractorEnricherListener<T> getListener();
 
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
-
-    public CvTermEnricher getCvTermEnricher();
-
-    public void setOrganismEnricher(OrganismEnricher organismEnricher);
+    public CvTermEnricher<CvTerm> getCvTermEnricher();
 
     public OrganismEnricher getOrganismEnricher();
 }

@@ -1,17 +1,28 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
 
 /**
- * An enricher for publications which can enrich either a single publication or a collection.
- * The publicationEnricher has no subEnrichers. The publicationEnricher must be initiated with a fetcher.
+ * Provides full enrichment of Publication.
  *
- * At the maximum level, the publication enricher enriches the minimum level fields pubmedId and authors.
- * It also enriches the fields for DOI, Title, Journal, Publication Date, Xrefs and release date.
- *
+ * - enrich minimal properties as described in MinimalPublicationEnricher
+ * - enrich publication title. It will only enrich the title if it is not already set in the publication to enrich. It will not
+ * override any existing publication title
+ * - enrich publication journal. It will only enrich the journal if it is not already set in the publication to enrich. It will not
+ * override any existing journal
+ *  - enrich released date. It will only enrich the released date if it is not already set in the publication to enrich. It will not
+ * override any existing released date
+ * - enrich curation depth. It will only enrich the curation depth if it is not already set in the publication to enrich. It will not
+ * override any existing curation depth
+ * - enrich xrefs (imex, etc.) of a publication. It will use DefaultXrefComparator to compare identifiers and add missing xrefs without
+ * removing any existing xrefs.
+ * - enrich annotations of a publication. It will use DefaultAnnotationComparator to compare annotations and add missing annotations without
+ * removing any existing annotations.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 31/07/13
@@ -28,8 +39,7 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
      * @param publicationToEnrich   The publication which is being enriched.
      */
     @Override
-    protected void processPublication(Publication publicationToEnrich, Publication fetched) throws EnricherException {
-        processMinimalEnrichment(publicationToEnrich, fetched);
+    protected void processOtherProperties(Publication publicationToEnrich, Publication fetched) throws EnricherException {
 
         // == TITLE ==================================================================
         processPublicationTitle(publicationToEnrich, fetched);
@@ -51,10 +61,11 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
     }
 
     protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
-        if (publicationToEnrich.getCurationDepth() == null && fetched.getCurationDepth() != null){
+        if (publicationToEnrich.getCurationDepth().equals(CurationDepth.undefined)
+                && !fetched.getCurationDepth().equals(CurationDepth.undefined)){
             publicationToEnrich.setCurationDepth(fetched.getCurationDepth());
             if (getPublicationEnricherListener() != null){
-                getPublicationEnricherListener().onCurationDepthUpdate(publicationToEnrich, null);
+                getPublicationEnricherListener().onCurationDepthUpdate(publicationToEnrich, CurationDepth.undefined);
             }
         }
     }
@@ -76,10 +87,6 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
     protected void processAnnotations(Publication publicationToEnrich, Publication fetched) {
         EnricherUtils.mergeAnnotations(publicationToEnrich, publicationToEnrich.getAnnotations(), fetched.getAnnotations(), false,
                 getPublicationEnricherListener());
-    }
-
-    protected void processMinimalEnrichment(Publication publicationToEnrich, Publication fetched) throws EnricherException {
-        super.processPublication(publicationToEnrich, fetched);
     }
 
     protected void processJournal(Publication publicationToEnrich, Publication fetched) {
