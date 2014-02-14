@@ -24,71 +24,113 @@
     </bean>
 
     <!-- enrichers -->
-    <bean id="mitabCvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalCvTermUpdater">
+    <bean id="mitabCvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermUpdater">
         <constructor-arg ref="cvTermFetcher"/>
         <property name="cvTermEnricherListener" ref="cvTermListener"/>
     </bean>
 
-    <bean id="mitabOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalOrganismUpdater">
+    <bean id="sourceCvTermEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalSourceUpdater">
+        <constructor-arg ref="sourceFetcher"/>
+        <property name="cvTermEnricherListener" ref="sourceListener"/>
+    </bean>
+
+    <bean id="mitabOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalOrganismUpdater">
         <constructor-arg ref="organismFetcher"/>
         <property name="organismEnricherListener" ref="organismListener" />
     </bean>
 
-    <bean id="mockOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalOrganismUpdater">
+    <bean id="mockOrganismEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalOrganismUpdater">
         <constructor-arg ref="mockOrganismFetcher"/>
         <property name="organismEnricherListener" ref="organismListener" />
     </bean>
 
-    <bean id="mitabProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalProteinUpdater">
+    <bean id="mitabProteinEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalProteinUpdater">
         <constructor-arg ref="proteinFetcher"/>
         <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="proteinMapper" ref="proteinMapper"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
-        <property name="proteinEnricherListener" ref="mitabProteinListenerManager"/>
+        <property name="listener" ref="mitabProteinListenerManager"/>
     </bean>
 
-    <bean id="mitabBioactiveEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalBioactiveEntityUpdater">
+    <bean id="mitabComplexEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalComplexUpdater">
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="listener" ref="complexListener"/>
+    </bean>
+
+    <bean id="mitabBioactiveEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalBioactiveEntityUpdater">
         <constructor-arg ref="bioactiveEntityFetcher"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
-        <property name="bioactiveEntityEnricherListener" ref="bioactiveEntityListener"/>
+        <property name="listener" ref="bioactiveEntityListener"/>
         <property name="organismEnricher" ref="mitabOrganismEnricher"/>
     </bean>
 
-    <bean id="mitabGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalGeneUpdater">
+    <bean id="mitabGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalGeneUpdater">
         <constructor-arg ref="geneFetcher"/>
         <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
-        <property name="geneEnricherListener" ref="geneListener"/>
+        <property name="listener" ref="geneListener"/>
     </bean>
 
-    <bean id="mitabFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalFeatureEvidenceUpdater">
+    <bean id="mitabBasicInteractorEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseUpdater">
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="listener" ref="interactorListener"/>
+    </bean>
+
+    <bean id="mitabPolymerEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseUpdater">
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="listener" ref="polymerListener"/>
+    </bean>
+
+    <bean id="mitabInteractorEnricher" class="psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher">
+        <constructor-arg ref="mitabBasicInteractorEnricher"/>
+        <property name="proteinEnricher" ref="mitabProteinEnricher"/>
+        <property name="polymerBaseEnricher" ref="mitabPolymerEnricher" />
+        <property name="geneEnricher" ref="mitabGeneEnricher"/>
+        <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityEnricher"/>
+        <property name="complexEnricher" ref="mitabComplexEnricher"/>
+    </bean>
+
+    <bean id="mitabFeatureEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalFeatureEvidenceUpdater">
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="featureEnricherListener" ref="featureListener"/>
     </bean>
 
-    <bean id="mitabParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalParticipantEvidenceEnricher">
+    <bean id="mitabBasicParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantUpdater">
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="featureEnricher" ref="mitabFeatureEnricher"/>
-        <property name="proteinEnricher" ref="mitabProteinEnricher"/>
-        <property name="geneEnricher" ref="mitabGeneEnricher"/>
-        <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityEnricher"/>
+        <property name="interactorEnricher" ref="mitabInteractorEnricher"/>
         <property name="participantListener" ref="participantListener"/>
     </bean>
 
-    <bean id="mitabPublicationEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalPublicationUpdater">
-        <constructor-arg ref="publicationFetcher"/>
+    <bean id="mitabParticipantEvidenceEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEvidenceUpdater">
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
+        <property name="featureEnricher" ref="mitabFeatureEnricher"/>
+        <property name="interactorEnricher" ref="mitabInteractorEnricher"/>
+        <property name="participantListener" ref="participantListener"/>
+    </bean>
+
+    <bean id="mitabParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher">
+        <constructor-arg ref="mitabBasicParticipantEnricher"/>
+        <property name="experimentalEntityEnricher" ref="mitabParticipantEvidenceEnricher"/>
+    </bean>
+
+    <bean id="mitabPublicationEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationEnricher">
+        <constructor-arg ref="publicationFetcher"/>
         <property name="publicationEnricherListener" ref="publicationListener"/>
     </bean>
 
 
-    <bean id="mitabExperimentEnricher" class="psidev.psi.mi.jami.enricher.impl.BasicExperimentEnricher">
+    <bean id="mitabExperimentEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalExperimentUpdater">
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="publicationEnricher" ref="mitabPublicationEnricher"/>
+        <property name="organismEnricher" ref="mitabOrganismEnricher"/>
         <property name="experimentEnricherListener" ref="experimentListener"/>
     </bean>
 
-    <bean id="mitabInteractionEnricher" class="psidev.psi.mi.jami.enricher.impl.MinimalInteractionEvidenceEnricher">
+    <bean id="mitabInteractionEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractionEvidenceUpdater">
         <property name="experimentEnricher" ref="mitabExperimentEnricher"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="participantEnricher" ref="mitabParticipantEnricher"/>

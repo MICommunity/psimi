@@ -34,51 +34,71 @@
     </bean>
 
     <!-- listeners -->
-    <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherStatisticsWriter">
+    <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.CvTermEnricherStatisticsWriter">
         <constructor-arg index="0" value="${cvTerm.logFile}"/>
     </bean>
 
-    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherStatisticsWriter">
+    <bean id="sourceListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.SourceEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${source.logFile}"/>
+    </bean>
+
+    <bean id="organismListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.OrganismEnricherStatisticsWriter">
         <constructor-arg index="0" value="${organism.logFile}"/>
     </bean>
 
-    <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.listener.impl.ProteinEnricherStatisticsWriter">
+    <bean id="proteinListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ProteinEnricherStatisticsWriter">
         <constructor-arg index="0" value="${protein.logFile}"/>
+    </bean>
+
+    <bean id="polymerListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.PolymerEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${polymer.logFile}"/>
+    </bean>
+
+    <bean id="interactorPoolListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractorPoolEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${interactorpool.logFile}"/>
+    </bean>
+
+    <bean id="complexListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ComplexEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${complex.logFile}"/>
     </bean>
 
     <bean id="proteinMapperListener" class="psidev.psi.mi.jami.bridges.mapper.listener.ProteinMappingStatisticsWriter">
         <constructor-arg value="${remap.logFile}"/>
     </bean>
 
-    <bean id="bioactiveEntityListener" class="psidev.psi.mi.jami.enricher.listener.impl.BioactiveEntityEnricherStatisticsWriter">
+    <bean id="bioactiveEntityListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.BioactiveEntityEnricherStatisticsWriter">
         <constructor-arg index="0" value="${bioactiveentity.logFile}"/>
     </bean>
 
-    <bean id="geneListener" class="psidev.psi.mi.jami.enricher.listener.impl.GeneEnricherStatisticsWriter">
+    <bean id="geneListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.GeneEnricherStatisticsWriter">
         <constructor-arg index="0" value="${gene.logFile}"/>
     </bean>
 
-    <bean id="interactorListener" class="psidev.psi.mi.jami.enricher.listener.impl.InteractorEnricherStatisticsWriter">
+    <bean id="interactorListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractorEnricherStatisticsWriter">
         <constructor-arg index="0" value="${interactor.logFile}"/>
     </bean>
 
-    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherStatisticsWriter">
+    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.FeatureEvidenceEnricherStatisticsWriter">
         <constructor-arg index="0" value="${feature.logFile}"/>
     </bean>
 
-    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherStatisticsWriter">
+    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEvidenceEnricherStatisticsWriter">
         <constructor-arg index="0" value="${participant.logFile}"/>
     </bean>
 
-    <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherStatisticsWriter">
+    <bean id="participantPoolListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ExperimentalEntityPoolEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participantpool.logFile}"/>
+    </bean>
+
+    <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractionEnricherStatisticsWriter">
         <constructor-arg index="0" value="${interaction.logFile}"/>
     </bean>
 
-    <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.listener.impl.ExperimentEnricherStatisticsWriter">
+    <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ExperimentEnricherStatisticsWriter">
         <constructor-arg index="0" value="${experiment.logFile}"/>
     </bean>
 
-    <bean id="publicationListener" class="psidev.psi.mi.jami.enricher.listener.impl.PublicationEnricherStatisticsWriter">
+    <bean id="publicationListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.PublicationEnricherStatisticsWriter">
         <constructor-arg index="0" value="${publication.logFile}"/>
     </bean>
 
@@ -92,6 +112,7 @@
 
     <!-- fetchers -->
     <bean id="cvTermFetcher" class="psidev.psi.mi.jami.bridges.ols.CachedOlsCvTermFetcher"/>
+    <bean id="sourceFetcher" class="psidev.psi.mi.jami.bridges.ols.OlsSourceFetcher"/>
     <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotProteinFetcher"/>
     <bean id="bioactiveEntityFetcher" class="psidev.psi.mi.jami.bridges.chebi.CachedChebiFetcher"/>
     <bean id="geneFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotGeneFetcher"/>
