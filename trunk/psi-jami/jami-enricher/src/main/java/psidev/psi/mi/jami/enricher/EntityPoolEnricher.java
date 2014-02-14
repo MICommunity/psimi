@@ -13,7 +13,6 @@ import java.util.Comparator;
  * @since  16/05/13
  */
 public interface EntityPoolEnricher<T extends EntityPool, F extends Feature> extends ParticipantEnricher<T,F>{
-    public void setParticipantEnricher(ParticipantEnricher interactorEnricher);
 
     public ParticipantEnricher getParticipantEnricher();
 
