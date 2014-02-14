@@ -527,4 +527,25 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertNotNull(binary2);
         Assert.assertTrue(parser.hasFinished());
     }
+
+    @Test
+    public void test_parse() throws ParseException, java.text.ParseException {
+        InputStream stream = BinaryEvidenceLineParserTest.class.getResourceAsStream("/samples/10075675.txt");
+        BinaryEvidenceLineParser parser = new BinaryEvidenceLineParser(stream);
+
+        // read first interaction
+        BinaryInteractionEvidence binary = (BinaryInteractionEvidence)parser.MitabLine();
+        Assert.assertNotNull(binary);
+        Assert.assertFalse(parser.hasFinished());
+        Assert.assertEquals(2, binary.getParticipants().size());
+
+        InteractionEvidence binary2 = parser.MitabLine();
+        Assert.assertNotNull(binary2);
+        Assert.assertFalse(parser.hasFinished());
+
+        InteractionEvidence binary4 = parser.MitabLine();
+        Assert.assertNotNull(binary4);
+        Assert.assertTrue(parser.hasFinished())
+;
+    }
 }
