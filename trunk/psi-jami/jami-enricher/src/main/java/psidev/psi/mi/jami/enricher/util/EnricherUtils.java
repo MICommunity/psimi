@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.enricher.util;
 
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
 import psidev.psi.mi.jami.listener.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
@@ -348,8 +348,8 @@ public class EnricherUtils {
         }
     }
 
-    public static <P extends Participant,F extends Feature> void mergeParticipants(Interaction termToEnrich, Collection<P> toEnrichParticipants, Collection<P> fetchedParticipants, boolean remove, InteractionChangeListener interactionListener,
-                                                                 ParticipantEnricher<P,F> participantEnricher) throws EnricherException {
+    public static <P extends Participant> void mergeParticipants(Interaction termToEnrich, Collection<P> toEnrichParticipants, Collection<P> fetchedParticipants, boolean remove, InteractionChangeListener interactionListener,
+                                                                 CompositeEntityEnricher participantEnricher) throws EnricherException {
         Iterator<P> partIterator = toEnrichParticipants.iterator();
         // remove participants in toEnrichParticipants that are not in fetchedParticipants
         if (remove){

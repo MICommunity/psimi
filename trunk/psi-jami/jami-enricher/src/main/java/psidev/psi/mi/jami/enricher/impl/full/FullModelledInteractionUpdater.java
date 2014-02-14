@@ -1,12 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.ModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
@@ -21,7 +19,7 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 public class FullModelledInteractionUpdater<I extends ModelledInteraction> extends FullModelledInteractionEnricher<I>{
 
     public FullModelledInteractionUpdater() {
-        super(new FullInteractionUpdater<I, ModelledParticipant, ModelledFeature>());
+        super(new FullInteractionUpdater<I>());
     }
 
     @Override

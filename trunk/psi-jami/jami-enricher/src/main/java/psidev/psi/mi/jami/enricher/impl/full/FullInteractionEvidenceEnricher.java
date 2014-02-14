@@ -1,12 +1,15 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractionEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.VariableParameterValueSet;
 
 import java.util.Iterator;
 
@@ -18,18 +21,18 @@ import java.util.Iterator;
  * @since <pre>01/10/13</pre>
  */
 
-public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceEnricher{
+public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceEnricher {
 
-    private FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> interactionEnricher;
+    private FullInteractionEnricher<InteractionEvidence> interactionEnricher;
 
     public FullInteractionEvidenceEnricher() {
         super();
-        this.interactionEnricher = new FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>();
+        this.interactionEnricher = new FullInteractionEnricher<InteractionEvidence>();
     }
 
-    protected FullInteractionEvidenceEnricher(FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> interactionEnricher) {
+    protected FullInteractionEvidenceEnricher(FullInteractionEnricher<InteractionEvidence> interactionEnricher) {
         super();
-        this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>();
+        this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher<InteractionEvidence>();
     }
 
     @Override
@@ -60,7 +63,7 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
     }
 
     @Override
-    public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getParticipantEnricher() {
+    public CompositeEntityEnricher getParticipantEnricher() {
         return this.interactionEnricher.getParticipantEnricher();
     }
 
@@ -75,7 +78,7 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
     }
 
     @Override
-    public void setParticipantEnricher(ParticipantEnricher<ParticipantEvidence, FeatureEvidence> participantEnricher) {
+    public void setParticipantEnricher(CompositeEntityEnricher participantEnricher) {
         this.interactionEnricher.setParticipantEnricher(participantEnricher);
     }
 

@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractionEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
@@ -13,8 +14,8 @@ import psidev.psi.mi.jami.utils.checksum.SeguidException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class FullInteractionEnricher<I extends Interaction, P extends Participant, F extends Feature>
-        extends MinimalInteractionEnricher<I , P , F> {
+public class FullInteractionEnricher<I extends Interaction>
+        extends MinimalInteractionEnricher<I> {
 
     private RigidGenerator rigidGenerator;
 
@@ -83,7 +84,7 @@ public class FullInteractionEnricher<I extends Interaction, P extends Participan
 
         // first collect all rogids
         for (Object o : interactionToEnrich.getParticipants()){
-            P participant = (P)o;
+            Participant participant = (Participant)o;
             Interactor interactor = participant.getInteractor();
 
             Checksum rogid = ChecksumUtils.collectFirstChecksumWithMethod(interactor.getChecksums(), Checksum.ROGID_MI, Checksum.ROGID);

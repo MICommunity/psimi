@@ -1,49 +1,24 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.InteractionEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Date;
 
 /**
- * Minimal updater for modelled interaction
+ * The enricher for Interactions which can enrich a single interaction or a collection.
+ * The interaction enricher has subEnrichers for participants and cvTerms.
+ * It has no fetcher.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * @since 13/08/13
+ * @since 28/06/13
  */
-public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
-        extends MinimalModelledInteractionEnricher<I>{
+public class MinimalInteractionUpdater<I extends Interaction>
+        extends MinimalInteractionEnricher<I> {
 
-    private InteractionEnricher<I, ModelledParticipant, ModelledFeature> delegate;
-
-    public MinimalModelledInteractionUpdater(){
-        super();
-        this.delegate = new MinimalInteractionUpdater<I, ModelledParticipant, ModelledFeature>();
-    }
-
-    @Override
-    protected void processSource(I objectToEnrich, I objectSource) throws EnricherException {
-         if (!DefaultCvTermComparator.areEquals(objectSource.getSource(), objectToEnrich.getSource())){
-             Source old = objectToEnrich.getSource();
-              objectToEnrich.setSource(objectSource.getSource());
-             if (getInteractionEnricherListener() instanceof ModelledInteractionEnricherListener){
-                 ((ModelledInteractionEnricherListener)getInteractionEnricherListener()).onSourceUpdate(objectToEnrich, old);
-             }
-         }
-         else if (getSourceEnricher() != null
-                 && objectToEnrich.getSource() != objectSource.getSource()){
-             getSourceEnricher().enrich(objectToEnrich.getSource(), objectSource.getSource());
-         }
-    }
-
-    @Override
     protected void processCreatedDate(I objectToEnrich, I objectSource) {
         if ((objectSource.getCreatedDate() != null && !objectSource.getCreatedDate().equals(objectToEnrich.getCreatedDate()))
                 || (objectSource.getCreatedDate() == null && objectToEnrich.getCreatedDate() != null)){
@@ -55,7 +30,6 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
         }
     }
 
-    @Override
     protected void processUpdateDate(I objectToEnrich, I objectSource) {
         if ((objectSource.getUpdatedDate() != null && !objectSource.getUpdatedDate().equals(objectToEnrich.getUpdatedDate()))
                 || (objectSource.getUpdatedDate() == null && objectToEnrich.getUpdatedDate() != null)){
@@ -67,7 +41,6 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
         }
     }
 
-    @Override
     protected void processShortName(I objectToEnrich, I objectSource) {
         if ((objectSource.getShortName() != null && !objectSource.getShortName().equals(objectToEnrich.getShortName()))
                 || (objectSource.getShortName() == null && objectToEnrich.getShortName() != null)){
@@ -79,13 +52,15 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
         }
     }
 
-    @Override
+    protected void processOtherProperties(I objectToEnrich, I objectSource) throws EnricherException{
+        // do nothing
+    }
+
     protected void processIdentifiers(I objectToEnrich, I objectSource) {
-        EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getIdentifiers(), objectSource.getIdentifiers(), true, true,
+        EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getIdentifiers(), objectSource.getIdentifiers(),true, true,
                 getInteractionEnricherListener(), getInteractionEnricherListener());
     }
 
-    @Override
     protected void processParticipants(I objectToEnrich, I objectSource) throws EnricherException{
         EnricherUtils.mergeParticipants(objectToEnrich, objectToEnrich.getParticipants(), objectSource.getParticipants(),
                 true, getInteractionEnricherListener(), getParticipantEnricher());
@@ -93,7 +68,6 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
         processParticipants(objectToEnrich);
     }
 
-    @Override
     protected void processInteractionType(I objectToEnrich, I objectSource) throws EnricherException {
 
         if (!DefaultCvTermComparator.areEquals(objectToEnrich.getInteractionType(), objectSource.getInteractionType())){
@@ -110,35 +84,4 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
 
         processInteractionType(objectToEnrich);
     }
-
-    @Override
-    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvTermEnricher) {
-        this.delegate.setCvTermEnricher(cvTermEnricher);
-    }
-
-    @Override
-    public CvTermEnricher<CvTerm> getCvTermEnricher() {
-        return this.delegate.getCvTermEnricher();
-    }
-
-    @Override
-    public void setParticipantEnricher(ParticipantEnricher<ModelledParticipant, ModelledFeature> participantEnricher) {
-        this.delegate.setParticipantEnricher(participantEnricher);
-    }
-
-    @Override
-    public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher() {
-        return this.delegate.getParticipantEnricher();
-    }
-
-    @Override
-    public InteractionEnricherListener<I> getInteractionEnricherListener() {
-        return this.delegate.getInteractionEnricherListener();
-    }
-
-    @Override
-    public void setInteractionEnricherListener(InteractionEnricherListener<I> listener) {
-        this.delegate.setInteractionEnricherListener(listener);
-    }
 }
-

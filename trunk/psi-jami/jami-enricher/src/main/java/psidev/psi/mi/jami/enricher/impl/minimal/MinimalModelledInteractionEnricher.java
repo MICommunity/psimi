@@ -1,12 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.ModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
-import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 
 /**
  * Minimal enricher for modelled interactions
@@ -14,7 +12,8 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MinimalModelledInteractionEnricher<I extends ModelledInteraction> extends MinimalInteractionEnricher<I, ModelledParticipant, ModelledFeature> implements ModelledInteractionEnricher<I> {
+public class MinimalModelledInteractionEnricher<I extends ModelledInteraction> extends MinimalInteractionEnricher<I>
+        implements ModelledInteractionEnricher<I> {
 
     private SourceEnricher sourceEnricher = null;
 
