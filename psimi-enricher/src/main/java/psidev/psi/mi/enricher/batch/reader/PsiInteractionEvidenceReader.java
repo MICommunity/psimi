@@ -76,15 +76,6 @@ public class PsiInteractionEvidenceReader implements ItemReader<InteractionEvide
             throw new ItemStreamException("Input resource must be readable: "
                     + resource, e);
         }
-        finally {
-            if (inputStreamToAnalyse != null){
-                try {
-                    inputStreamToAnalyse.close();
-                } catch (IOException e) {
-                    logger.error("Input resource cannot be closed " + resource.getDescription());
-                }
-            }
-        }
 
         if (this.interactionDataSource == null){
             throw new ItemStreamException("The resource " + resource.getDescription() + " is not recognized as a valid MI datasource. We expect MITAB or Psi-XML files.");
