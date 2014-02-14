@@ -11,10 +11,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalFeatureEnricher;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.*;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.FeatureEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.log.FeatureEnricherLogger;
@@ -40,7 +37,7 @@ public class MinimalFeatureEnricherTest {
 
     protected static final Logger log = LoggerFactory.getLogger(MinimalFeatureEnricherTest.class.getName());
 
-    private ParticipantEnricher participantEnricher;
+    private MinimalParticipantEnricher participantEnricher;
     private ProteinEnricher proteinEnricher;
     private MockProteinFetcher proteinFetcher;
     private MinimalFeatureEnricher featureEnricher;
@@ -79,9 +76,9 @@ public class MinimalFeatureEnricherTest {
 
         participantEnricher = new MinimalParticipantEnricher();
         participantEnricher.setFeatureEnricher(featureEnricher);
-        participantEnricher.setInteractorEnricher(new CompositeInteractorEnricher(new MinimalInteractorBaseEnricher<Interactor>(),
-                null, null, proteinEnricher, null, null, null));
-        ((MinimalProteinEnricher)proteinEnricher).setListener((MinimalFeatureEnricher)featureEnricher);
+        participantEnricher.setInteractorEnricher(new CompositeInteractorEnricher(new MinimalInteractorBaseEnricher<Interactor>()));
+        participantEnricher.getInteractorEnricher().setProteinEnricher(this.proteinEnricher);
+        ((MinimalProteinEnricher)proteinEnricher).setListener((MinimalFeatureEnricher) featureEnricher);
         assertTrue(proteinEnricher.getListener() == featureEnricher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
@@ -115,42 +112,82 @@ public class MinimalFeatureEnricherTest {
         assertEquals(1 , persistentFeature.getRanges().size());
         assertEquals(Collections.EMPTY_LIST , persistentFeature.getAnnotations());
 
-        featureEnricher.setFeatureEnricherListener( new FeatureEnricherListenerManager(
-                new FeatureEnricherLogger() ,
+        featureEnricher.setFeatureEnricherListener(new FeatureEnricherListenerManager(
+                new FeatureEnricherLogger(),
                 new FeatureEnricherListener<Feature>() {
                     public void onEnrichmentComplete(Feature feature, EnrichmentStatus status, String message) {
                         assertTrue(feature == persistentFeature);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
+                        assertEquals(EnrichmentStatus.SUCCESS, status);
                     }
 
-                    public void onUpdatedRange(Feature feature, Range updated, String message) {fail();}
-                    public void onInvalidRange(Feature feature, Range invalid, String message)  {fail();}
-                    public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
-                    public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
-                    public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
+                    public void onUpdatedRange(Feature feature, Range updated, String message) {
+                        fail();
+                    }
 
-                    public void onAddedIdentifier(Feature feature, Xref added)  {fail();}
-                    public void onRemovedIdentifier(Feature feature, Xref removed)  {fail();}
-                    public void onAddedXref(Feature feature, Xref added) {fail();}
-                    public void onRemovedXref(Feature feature, Xref removed) {fail();}
-                    public void onAddedAnnotation(Feature feature, Annotation added)  {fail();}
-                    public void onRemovedAnnotation(Feature feature, Annotation removed) {fail();}
-                    public void onAddedRange(Feature feature, Range added)  {fail();}
-                    public void onRemovedRange(Feature feature, Range removed)  {fail();}
+                    public void onInvalidRange(Feature feature, Range invalid, String message) {
+                        fail();
+                    }
+
+                    public void onShortNameUpdate(Feature feature, String oldShortName) {
+                        fail();
+                    }
+
+                    public void onFullNameUpdate(Feature feature, String oldFullName) {
+                        fail();
+                    }
+
+                    public void onInterproUpdate(Feature feature, String oldInterpro) {
+                        fail();
+                    }
+
+                    public void onAddedIdentifier(Feature feature, Xref added) {
+                        fail();
+                    }
+
+                    public void onRemovedIdentifier(Feature feature, Xref removed) {
+                        fail();
+                    }
+
+                    public void onAddedXref(Feature feature, Xref added) {
+                        fail();
+                    }
+
+                    public void onRemovedXref(Feature feature, Xref removed) {
+                        fail();
+                    }
+
+                    public void onAddedAnnotation(Feature feature, Annotation added) {
+                        fail();
+                    }
+
+                    public void onRemovedAnnotation(Feature feature, Annotation removed) {
+                        fail();
+                    }
+
+                    public void onAddedRange(Feature feature, Range added) {
+                        fail();
+                    }
+
+                    public void onRemovedRange(Feature feature, Range removed) {
+                        fail();
+                    }
 
                     public void onUpdatedRangePositions(Feature feature, Range range, Position oldStart, Position oldEnd) {
                         Assert.fail();
                     }
+
                     public void onEnrichmentError(Feature object, String message, Exception e) {
                         Assert.fail();
                     }
 
                     public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
-                         fail();
+                        fail();
                     }
+
                     public void onTypeUpdate(Feature feature, CvTerm oldType) {
                         fail();
                     }
+
                     public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }

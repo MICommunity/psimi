@@ -1,7 +1,6 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.model.ExperimentalEntityPool;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * A basic minimal enricher for experimental entity pools
@@ -14,7 +13,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 public class MinimalExperimentalEntityPoolUpdater extends MinimalExperimentalEntityPoolEnricher{
 
     protected MinimalExperimentalEntityPoolUpdater(){
-        super(new MinimalParticipantEvidenceUpdater<ExperimentalEntityPool, FeatureEvidence>());
+        super(new MinimalParticipantEvidenceUpdater<ExperimentalEntityPool>());
     }
 
     protected boolean removeEntitiesFromPool(){

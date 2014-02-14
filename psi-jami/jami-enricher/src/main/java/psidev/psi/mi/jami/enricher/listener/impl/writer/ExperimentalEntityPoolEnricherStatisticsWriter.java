@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.enricher.listener.impl;
+package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
-import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEnricherStatisticsWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.enricher.listener.ExperimentalEntityPoolEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Entity;
+import psidev.psi.mi.jami.model.ExperimentalEntityPool;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,18 +17,18 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class ParticipantEvidenceEnricherStatisticsWriter<P extends ExperimentalEntity>
-        extends ParticipantEnricherStatisticsWriter<P>
-        implements ParticipantEvidenceEnricherListener<P> {
+public class ExperimentalEntityPoolEnricherStatisticsWriter
+        extends ParticipantEvidenceEnricherStatisticsWriter<ExperimentalEntityPool>
+        implements ExperimentalEntityPoolEnricherListener {
 
 
-    private static final String FILE_NAME = "Participant_evidence";
+    private static final String FILE_NAME = "Participant_evidence_pool";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEvidenceEnricherStatisticsWriter() throws IOException {
+    public ExperimentalEntityPoolEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
@@ -36,7 +37,7 @@ public class ParticipantEvidenceEnricherStatisticsWriter<P extends ExperimentalE
      * @param fileName          The seed to base the names of the files on.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEvidenceEnricherStatisticsWriter(String fileName) throws IOException {
+    public ExperimentalEntityPoolEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -46,7 +47,7 @@ public class ParticipantEvidenceEnricherStatisticsWriter<P extends ExperimentalE
      * @param failureFileName   The exact name for the file to log failed enrichments in
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEvidenceEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public ExperimentalEntityPoolEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -56,56 +57,22 @@ public class ParticipantEvidenceEnricherStatisticsWriter<P extends ExperimentalE
      * @param failureFile       The file to log failed enrichments in.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEvidenceEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public ExperimentalEntityPoolEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
     }
 
-    public void onExperimentalRoleUpdate(P participant, CvTerm oldType) {
+    public void onTypeUpdate(ExperimentalEntityPool participant, CvTerm oldType) {
         checkObject(participant);
         incrementUpdateCount();
     }
 
-    public void onExpressedInUpdate(P participant, Organism oldOrganism) {
-        checkObject(participant);
-        incrementUpdateCount();
-    }
-
-    public void onAddedIdentificationMethod(P participant, CvTerm added) {
+    public void onAddedEntity(ExperimentalEntityPool participant, Entity added) {
         checkObject(participant);
         incrementAdditionCount();
     }
 
-    public void onRemovedIdentificationMethod(P participant, CvTerm removed) {
-
-    }
-
-    public void onAddedExperimentalPreparation(P participant, CvTerm added) {
+    public void onRemovedEntity(ExperimentalEntityPool participant, Entity removed) {
         checkObject(participant);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedExperimentalPreparation(P participant, CvTerm removed) {
-        checkObject(participant);
-        incrementRemovedCount();
-    }
-
-    public void onAddedConfidence(P o, Confidence added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedConfidence(P o, Confidence removed) {
-        checkObject(o);
-        incrementRemovedCount();
-    }
-
-    public void onAddedParameter(P o, Parameter added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedParameter(P o, Parameter removed) {
-        checkObject(o);
         incrementRemovedCount();
     }
 

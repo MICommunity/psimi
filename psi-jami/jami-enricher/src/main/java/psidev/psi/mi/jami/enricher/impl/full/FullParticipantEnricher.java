@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
@@ -13,9 +14,9 @@ import psidev.psi.mi.jami.model.Feature;
  * @since 19/06/13
  */
 public class FullParticipantEnricher<P extends Entity , F extends Feature>
-        extends MinimalParticipantEnricher<P,F>  {
+        extends MinimalParticipantEnricher<P,F> {
 
-    protected void processOtherProperties(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processOtherProperties(P objectToEnrich, P objectSource) throws EnricherException {
         // causal relationships
         processCausalRelationships(objectToEnrich, objectSource);
         // xrefs

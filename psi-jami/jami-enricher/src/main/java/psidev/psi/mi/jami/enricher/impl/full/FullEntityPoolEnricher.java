@@ -1,8 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalEntityPoolEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.EntityPool;
@@ -16,7 +18,7 @@ import psidev.psi.mi.jami.model.Feature;
  * @since <pre>01/10/13</pre>
  */
 
-public class FullEntityPoolEnricher<P extends EntityPool, F extends Feature> extends MinimalEntityPoolEnricher<P,F>{
+public class FullEntityPoolEnricher<P extends EntityPool, F extends Feature> extends MinimalEntityPoolEnricher<P,F> {
 
     private FullParticipantEnricher<P,F> fullEnricher;
 
@@ -30,13 +32,13 @@ public class FullEntityPoolEnricher<P extends EntityPool, F extends Feature> ext
     }
 
     @Override
-    protected void processOtherProperties(P poolToEnrich, P fetched) throws EnricherException {
+    public void processOtherProperties(P poolToEnrich, P fetched) throws EnricherException {
         this.fullEnricher.processOtherProperties(poolToEnrich, fetched);
         super.processOtherProperties(poolToEnrich, fetched);
     }
 
     @Override
-    protected void processOtherProperties(P participantToEnrich) throws EnricherException {
+    public void processOtherProperties(P participantToEnrich) throws EnricherException {
         this.fullEnricher.processOtherProperties(participantToEnrich);
         super.processOtherProperties(participantToEnrich);
     }

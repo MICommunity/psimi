@@ -4,13 +4,13 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.impl.ParticipantEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.impl.log.ParticipantEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
@@ -26,7 +26,7 @@ import static junit.framework.Assert.*;
  */
 public class BasicParticipantEnricherTest {
 
-    private ParticipantEnricher participantEnricher;
+    private MinimalParticipantEnricher participantEnricher;
 
     private Participant persistentParticipant;
     private int persistentInt = 0;

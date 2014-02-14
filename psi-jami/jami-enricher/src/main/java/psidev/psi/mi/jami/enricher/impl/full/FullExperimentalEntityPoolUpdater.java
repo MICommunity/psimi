@@ -1,7 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalExperimentalEntityPoolEnricher;
 import psidev.psi.mi.jami.model.ExperimentalEntityPool;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * A full enricher for experimental entity pools
@@ -11,10 +11,10 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @since <pre>01/10/13</pre>
  */
 
-public class FullExperimentalEntityPoolUpdater extends MinimalExperimentalEntityPoolEnricher{
+public class FullExperimentalEntityPoolUpdater extends MinimalExperimentalEntityPoolEnricher {
 
     public FullExperimentalEntityPoolUpdater(){
-        super(new FullParticipantEvidenceUpdater<ExperimentalEntityPool, FeatureEvidence>());
+        super(new FullParticipantEvidenceUpdater<ExperimentalEntityPool>());
     }
 
     protected boolean removeEntitiesFromPool(){

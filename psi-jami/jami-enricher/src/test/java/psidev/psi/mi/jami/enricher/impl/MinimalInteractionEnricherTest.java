@@ -4,10 +4,11 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
-import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.full.FullInteractionEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractionEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherListenerManager;
@@ -32,7 +33,7 @@ import static junit.framework.Assert.*;
  */
 public class MinimalInteractionEnricherTest {
 
-    private InteractionEnricher interactionEnricher;
+    private MinimalInteractionEnricher interactionEnricher;
     MockCvTermFetcher mockCvTermFetcher;
     private  Interaction persistentInteraction;
     private int persistentInt = 0;
@@ -330,7 +331,7 @@ public class MinimalInteractionEnricherTest {
     @Test
     public void test_enrichment_with_participantEnricher_but_no_participant() throws EnricherException {
 
-        interactionEnricher.setParticipantEnricher(new MinimalParticipantEnricher());
+        interactionEnricher.setParticipantEnricher(new CompositeEntityEnricher(new MinimalParticipantEnricher<Entity, Feature>()));
 
         assertEquals(Collections.EMPTY_LIST, persistentInteraction.getParticipants());
 
@@ -424,7 +425,7 @@ public class MinimalInteractionEnricherTest {
 
         persistentInteraction.addParticipant(new DefaultParticipant(new DefaultInteractor("InteractorName")));
 
-        interactionEnricher.setParticipantEnricher(new MinimalParticipantEnricher());
+        interactionEnricher.setParticipantEnricher(new CompositeEntityEnricher(new MinimalParticipantEnricher()));
 
         //TODO assertEquals(Collections.EMPTY_LIST, persistentInteraction.getParticipants());
 

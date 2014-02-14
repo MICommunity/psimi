@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
@@ -16,27 +16,11 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComp
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13
  */
-public class FullParticipantUpdater<P extends Entity , F extends Feature>
-        extends FullParticipantEnricher<P,F>  {
+public class MinimalParticipantUpdater<P extends Entity , F extends Feature>
+        extends MinimalParticipantEnricher<P,F>  {
 
     @Override
-    protected void processCausalRelationships(P objectToEnrich, P objectSource) throws EnricherException {
-        EnricherUtils.mergeCausalRelationships(objectToEnrich, objectToEnrich.getCausalRelationships(), objectSource.getCausalRelationships(), true, getParticipantEnricherListener());
-    }
-
-    @Override
-    protected void processXrefs(P objectToEnrich, P objectSource) {
-        EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getXrefs(), objectSource.getXrefs(), true, false, getParticipantEnricherListener(),
-                null);
-    }
-
-    @Override
-    protected void processAnnotations(P objectToEnrich, P objectSource) {
-        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), objectSource.getAnnotations(), true, getParticipantEnricherListener());
-    }
-
-    @Override
-    protected void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
         if (!DefaultExactInteractorComparator.areEquals(objectToEnrich.getInteractor(), objectSource.getInteractor())){
             Interactor old = objectToEnrich.getInteractor();
             objectToEnrich.setInteractor(objectSource.getInteractor());
@@ -53,14 +37,14 @@ public class FullParticipantUpdater<P extends Entity , F extends Feature>
     }
 
     @Override
-    protected void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
         EnricherUtils.mergeFeatures(objectToEnrich, objectToEnrich.getFeatures(), objectSource.getFeatures(), true, getParticipantEnricherListener(),
                 getFeatureEnricher());
         processFeatures(objectToEnrich);
     }
 
     @Override
-    protected void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
         if (!DefaultCvTermComparator.areEquals(objectToEnrich.getBiologicalRole(), objectSource.getBiologicalRole())){
             CvTerm old = objectToEnrich.getBiologicalRole();
             objectToEnrich.setBiologicalRole(objectSource.getBiologicalRole());
