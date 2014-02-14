@@ -12,9 +12,11 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import java.util.Collection;
 
 /**
- * Provides minimum enrichment of the bioactiveEntity.
- * As an enricher, no values from the provided bioactiveEntity to enrich will be changed.
+ * A basic minimal enricher for bioactive entities.
  *
+ * See description of minimal enrichment in AbstractInteractorEnricher.
+ *
+ * The bioactive entities fetcher is required for enriching bioactive entities.
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */

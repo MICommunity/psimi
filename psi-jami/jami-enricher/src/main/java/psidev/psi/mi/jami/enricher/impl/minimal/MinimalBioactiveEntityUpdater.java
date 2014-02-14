@@ -6,9 +6,11 @@ import psidev.psi.mi.jami.enricher.impl.AbstractInteractorUpdater;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 
 /**
- * Provides minimum updating of the bioactiveEntity.
- * As an updater, values from the provided bioactiveEntity to enrich may be overwritten.
+ * A basic minimal updater for bioactive entities.
  *
+ * See description of minimal update in AbstractInteractorUpdater.
+ *
+ * The bioactive entities fetcher is required for enriching bioactive entities.
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 07/08/13
  */

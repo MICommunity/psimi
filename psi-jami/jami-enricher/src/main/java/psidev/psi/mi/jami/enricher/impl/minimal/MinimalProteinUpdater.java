@@ -14,9 +14,13 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import java.util.Collection;
 
 /**
- * Updates a protein to the minimum level. As an updater, data may be overwritten.
- * See description of minimal update in AbstractInteractorEnricher
- * If the protein remapper is not null and it cannot find a uniprot identifier, it will remap to uniprot using the proteinMapper.
+ * Updates a protein to the minimum level. As an updater, some data may be overwritten in the protein being enriched.
+ * See description of minimal update in AbstractInteractorUpdater
+ * If the protein remapper is not null and the enricher cannot find a uniprot identifier, it will remap to uniprot using the proteinMapper.
+ * In case of dead uniprot entries, it will move the dead uniprot identifier to the xrefs and add a qualifier 'uniprot-removed-ac' and add a caution in the annotations.
+ * If the remapping is successfull, it will remove any cautions left because of dead entry and set the uniprot identifier of the protein
+ *
+ * The protein fetcher is require to enrich proteins
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
