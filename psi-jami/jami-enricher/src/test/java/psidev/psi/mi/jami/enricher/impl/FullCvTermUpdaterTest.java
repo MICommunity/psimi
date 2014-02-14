@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.enricher.impl.full.FullCvTermUpdater;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.impl.log.CvTermEnricherLogger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;

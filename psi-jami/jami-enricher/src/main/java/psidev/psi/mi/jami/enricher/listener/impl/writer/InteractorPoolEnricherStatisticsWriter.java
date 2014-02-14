@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.InteractorPoolEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.InteractorEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.InteractorPool;
 

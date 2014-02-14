@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;

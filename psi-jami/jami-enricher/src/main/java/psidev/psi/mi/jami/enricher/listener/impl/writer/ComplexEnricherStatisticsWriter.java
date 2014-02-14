@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.ComplexEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.ModelledInteractionEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.CvTerm;
