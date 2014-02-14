@@ -1,10 +1,11 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.PublicationEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.AbstractMIEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
 import psidev.psi.mi.jami.model.Experiment;
@@ -12,12 +13,22 @@ import psidev.psi.mi.jami.model.Experiment;
 import java.util.Collection;
 
 /**
- * Minimal enricher for experiments
+ * Provides minimal enrichment of experiment.
+ *
+ * - enrich publication using Publication enricher if not null. Will not override an existing publication with the
+ * publication loaded with the fetched experiment
+ * - enrich interaction detection method using CvTerm enricher if not null. Will not override an existing interaction detection method with the
+ * interaction detection method loaded with the fetched interaction detection method
+ * - enrich host organism using Organism enricher if not null. Will not override an existing host organism with the
+ * host organism loaded with the fetched experiment
+ *
+ * It will ignore all other properties of a Experiment
+ *
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MinimalExperimentEnricher implements ExperimentEnricher{
+public class MinimalExperimentEnricher extends AbstractMIEnricher<Experiment> implements ExperimentEnricher{
 
     private PublicationEnricher publicationEnricher = null;
     private CvTermEnricher cvTermEnricher = null;
@@ -26,27 +37,6 @@ public class MinimalExperimentEnricher implements ExperimentEnricher{
 
     public MinimalExperimentEnricher(){
 
-    }
-
-    /**
-     * Enrichment of a single experiment.
-     * @param experimentToEnrich    The experiment which is to be enriched.
-     * @throws EnricherException    Thrown if problems are encountered in the fetcher
-     */
-    public void enrich(Experiment experimentToEnrich) throws EnricherException {
-        if( experimentToEnrich == null )
-            throw new IllegalArgumentException("Attempted to enrich null experiment.");
-
-        processPublication(experimentToEnrich);
-
-        processInteractionDetectionMethod(experimentToEnrich);
-
-        processOrganism(experimentToEnrich);
-
-        processOtherProperties(experimentToEnrich);
-
-        if( getExperimentEnricherListener() != null )
-            getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , "The experiment has been successfully enriched.");
     }
 
     protected void processOrganism(Experiment experimentToEnrich) throws EnricherException {
@@ -84,17 +74,44 @@ public class MinimalExperimentEnricher implements ExperimentEnricher{
             enrich(experimentToEnrich);
         }
         else{
-            processPublication(experimentToEnrich, objectSource);
-
-            processInteractionDetectionMethod(experimentToEnrich, objectSource);
-
-            processOrganism(experimentToEnrich, objectSource);
-
-            processOtherProperties(experimentToEnrich, objectSource);
+            processExperiment(experimentToEnrich, objectSource);
 
             if( getExperimentEnricherListener() != null )
                 getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , "The experiment has been successfully enriched.");
         }
+    }
+
+    public void processExperiment(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException {
+        processPublication(experimentToEnrich, objectSource);
+
+        processInteractionDetectionMethod(experimentToEnrich, objectSource);
+
+        processOrganism(experimentToEnrich, objectSource);
+
+        processOtherProperties(experimentToEnrich, objectSource);
+    }
+
+    @Override
+    public Experiment find(Experiment objectToEnrich) throws EnricherException {
+        return null;
+    }
+
+    @Override
+    protected void onEnrichedVersionNotFound(Experiment experimentToEnrich) throws EnricherException {
+        processExperiment(experimentToEnrich);
+
+        if( getExperimentEnricherListener() != null )
+            getExperimentEnricherListener().onEnrichmentComplete(experimentToEnrich , EnrichmentStatus.SUCCESS , "The experiment has been successfully enriched.");
+    }
+
+    public void processExperiment(Experiment experimentToEnrich) throws EnricherException {
+        processPublication(experimentToEnrich);
+
+        processInteractionDetectionMethod(experimentToEnrich);
+
+        processOrganism(experimentToEnrich);
+
+        processOtherProperties(experimentToEnrich);
     }
 
     protected void processOtherProperties(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
