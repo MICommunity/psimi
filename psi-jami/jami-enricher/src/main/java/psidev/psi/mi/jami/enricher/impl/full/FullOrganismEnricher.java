@@ -9,9 +9,13 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Provides maximum enrichment of the organism.
- * Will enrich all aspects covered by the minimum enricher as well as enriching the Aliases.
- * As an enricher, no values from the provided organism to enrich will be changed.
+ * Provides full enrichment of a Organism.
+ *
+ * - enrich minimal properties of organism. See details in MinimalOrganismEnricher
+ * - if cvTermEnricher is not null, will enrich cellType, tissue and compartment but does not override any
+ * celltype, tissue, compartment with the one loaded with the fetched organism
+ *
+ * The organism fetcher is required for enriching organism
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
