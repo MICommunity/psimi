@@ -3,11 +3,13 @@ package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.AbstractMIEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -57,6 +59,10 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
 
     public OrganismEnricherListener getOrganismEnricherListener() {
         return listener;
+    }
+
+    public CvTermEnricher<CvTerm> getCvTermEmricher() {
+        return null;
     }
 
     @Override
