@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 
 /**
  * The enricher for Interactions which can enrich a single interaction or a collection.
@@ -14,9 +12,7 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public interface ModelledInteractionEnricher<I extends ModelledInteraction> extends InteractionEnricher<I, ModelledParticipant, ModelledFeature> {
+public interface ModelledInteractionEnricher<I extends ModelledInteraction> extends InteractionEnricher<I> {
 
     public SourceEnricher getSourceEnricher();
-
-    public void setSourceEnricher(SourceEnricher sourceEnricher);
 }

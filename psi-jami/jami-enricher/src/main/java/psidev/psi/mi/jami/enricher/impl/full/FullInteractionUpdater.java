@@ -1,12 +1,14 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
-import psidev.psi.mi.jami.enricher.InteractionEnricher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractionUpdater;
+import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 
 /**
@@ -17,17 +19,17 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
  * @since <pre>01/10/13</pre>
  */
 
-public class FullInteractionUpdater<I extends Interaction, P extends Participant, F extends Feature>
-        extends FullInteractionEnricher<I , P , F>  {
+public class FullInteractionUpdater<I extends Interaction>
+        extends FullInteractionEnricher<I>  {
 
-    private InteractionEnricher<I,P,F> delegate;
+    private MinimalInteractionUpdater<I> delegate;
 
     public FullInteractionUpdater(){
          super();
-        this.delegate = new FullInteractionEnricher<I, P, F>();
+        this.delegate = new MinimalInteractionUpdater<I>();
     }
 
-    protected FullInteractionUpdater(InteractionEnricher<I,P,F> delegate){
+    protected FullInteractionUpdater(MinimalInteractionUpdater<I> delegate){
         super();
         if (delegate == null){
             throw new IllegalArgumentException("Interaction enricher delegate is required");
@@ -36,8 +38,8 @@ public class FullInteractionUpdater<I extends Interaction, P extends Participant
     }
 
     @Override
-    protected void processMinimalUpdates(I objectToEnrich, I objectSource) throws EnricherException {
-        this.delegate.enrich(objectToEnrich, objectSource);
+    public void processMinimalUpdates(I objectToEnrich, I objectSource) throws EnricherException {
+        this.delegate.processMinimalUpdates(objectToEnrich, objectSource);
     }
 
     @Override
@@ -74,5 +76,35 @@ public class FullInteractionUpdater<I extends Interaction, P extends Participant
     @Override
     protected void processAnnotations(I objectToEnrich, I objectSource) throws EnricherException {
         EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), objectSource.getAnnotations(), true, getInteractionEnricherListener());
+    }
+
+    @Override
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
+        return delegate.getCvTermEnricher();
+    }
+
+    @Override
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvTermEnricher) {
+        delegate.setCvTermEnricher(cvTermEnricher);
+    }
+
+    @Override
+    public void setParticipantEnricher(CompositeEntityEnricher participantEnricher) {
+        delegate.setParticipantEnricher(participantEnricher);
+    }
+
+    @Override
+    public CompositeEntityEnricher getParticipantEnricher() {
+        return delegate.getParticipantEnricher();
+    }
+
+    @Override
+    public InteractionEnricherListener<I> getInteractionEnricherListener() {
+        return delegate.getInteractionEnricherListener();
+    }
+
+    @Override
+    public void setInteractionEnricherListener(InteractionEnricherListener<I> listener) {
+        delegate.setInteractionEnricherListener(listener);
     }
 }

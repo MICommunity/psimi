@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 
-import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * An enricher for interaction evidences.
@@ -14,7 +12,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 24/07/13
  */
 public interface InteractionEvidenceEnricher
-        extends InteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> {
+        extends InteractionEnricher<InteractionEvidence> {
 
     /**
      * The experimentEnricher which is currently being used for the enriching or updating of experiments.
@@ -22,9 +20,4 @@ public interface InteractionEvidenceEnricher
      */
     public ExperimentEnricher getExperimentEnricher();
 
-    /**
-     * Sets the experimentEnricher to be used.
-     * @param experimentEnricher The experiment enricher to be used. Can be null.
-     */
-    public void setExperimentEnricher(ExperimentEnricher experimentEnricher);
 }

@@ -1,13 +1,17 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CooperativeEffect;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 
 import java.util.Iterator;
 
@@ -19,17 +23,17 @@ import java.util.Iterator;
  * @since <pre>01/10/13</pre>
  */
 
-public class FullModelledInteractionEnricher<I extends ModelledInteraction> extends MinimalModelledInteractionEnricher<I>{
+public class FullModelledInteractionEnricher<I extends ModelledInteraction> extends MinimalModelledInteractionEnricher<I> {
 
-    private FullInteractionEnricher<I, ModelledParticipant, ModelledFeature> interactionEnricher;
+    private FullInteractionEnricher<I> interactionEnricher;
     private InteractionEvidenceEnricher evidenceEnricher;
 
     public FullModelledInteractionEnricher() {
         super();
-        this.interactionEnricher = new FullInteractionEnricher<I, ModelledParticipant, ModelledFeature>();
+        this.interactionEnricher = new FullInteractionEnricher<I>();
     }
 
-    protected FullModelledInteractionEnricher(FullInteractionEnricher<I, ModelledParticipant, ModelledFeature> interactionEnricher) {
+    protected FullModelledInteractionEnricher(FullInteractionEnricher<I> interactionEnricher) {
         super();
         this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher();
     }
@@ -68,7 +72,7 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
     }
 
     @Override
-    public ParticipantEnricher<ModelledParticipant, ModelledFeature> getParticipantEnricher() {
+    public CompositeEntityEnricher getParticipantEnricher() {
         return this.interactionEnricher.getParticipantEnricher();
     }
 
@@ -83,7 +87,7 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
     }
 
     @Override
-    public void setParticipantEnricher(ParticipantEnricher<ModelledParticipant, ModelledFeature> participantEnricher) {
+    public void setParticipantEnricher(CompositeEntityEnricher participantEnricher) {
         this.interactionEnricher.setParticipantEnricher(participantEnricher);
     }
 

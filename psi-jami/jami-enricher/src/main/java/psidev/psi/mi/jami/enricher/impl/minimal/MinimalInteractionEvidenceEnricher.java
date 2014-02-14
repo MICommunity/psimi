@@ -1,12 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * Minimal enricher for interaction evidence
@@ -15,7 +13,7 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since 13/08/13
  */
 public class MinimalInteractionEvidenceEnricher
-        extends MinimalInteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence>
+        extends MinimalInteractionEnricher<InteractionEvidence>
         implements InteractionEvidenceEnricher {
 
     private ExperimentEnricher experimentEnricher = null;

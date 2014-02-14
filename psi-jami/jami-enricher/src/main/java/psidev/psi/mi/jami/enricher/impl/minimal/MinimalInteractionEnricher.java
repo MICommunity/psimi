@@ -1,16 +1,14 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.util.Collection;
 
@@ -22,11 +20,11 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalInteractionEnricher<I extends Interaction, P extends Participant, F extends Feature>
-        implements InteractionEnricher<I , P , F> {
+public class MinimalInteractionEnricher<I extends Interaction>
+        implements InteractionEnricher<I> {
 
     private InteractionEnricherListener<I> listener;
-    private ParticipantEnricher<P , F> participantEnricher;
+    private CompositeEntityEnricher participantEnricher;
     private CvTermEnricher<CvTerm> cvTermEnricher;
 
     /**
@@ -74,7 +72,7 @@ public class MinimalInteractionEnricher<I extends Interaction, P extends Partici
         }
     }
 
-    protected void processMinimalUpdates(I objectToEnrich, I objectSource) throws EnricherException {
+    public void processMinimalUpdates(I objectToEnrich, I objectSource) throws EnricherException {
         // check shortname
         processShortName(objectToEnrich, objectSource);
 
@@ -169,14 +167,14 @@ public class MinimalInteractionEnricher<I extends Interaction, P extends Partici
      * Sets the sub enricher for participants.
      * @param participantEnricher   The enricher for participants. Can be null.
      */
-    public void setParticipantEnricher(ParticipantEnricher<P , F> participantEnricher){
+    public void setParticipantEnricher(CompositeEntityEnricher participantEnricher){
         this.participantEnricher = participantEnricher;
     }
     /**
      * The current sub enricher for participants.
      * @return  The enricher for participants. Can be null.
      */
-    public ParticipantEnricher<P , F> getParticipantEnricher(){
+    public CompositeEntityEnricher getParticipantEnricher(){
         return this.participantEnricher;
     }
 

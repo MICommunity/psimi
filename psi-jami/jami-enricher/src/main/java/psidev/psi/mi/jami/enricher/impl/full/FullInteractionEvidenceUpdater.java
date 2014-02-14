@@ -1,12 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.InteractionEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.experiment.DefaultCuratedExperimentComparator;
 
 /**
@@ -20,7 +18,7 @@ import psidev.psi.mi.jami.utils.comparator.experiment.DefaultCuratedExperimentCo
 public class FullInteractionEvidenceUpdater extends FullInteractionEvidenceEnricher{
 
     public FullInteractionEvidenceUpdater() {
-        super(new FullInteractionUpdater<InteractionEvidence, ParticipantEvidence, FeatureEvidence>());
+        super(new FullInteractionUpdater<InteractionEvidence>());
     }
 
     @Override
