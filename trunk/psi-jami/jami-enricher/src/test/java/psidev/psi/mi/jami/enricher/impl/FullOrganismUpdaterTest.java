@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.full.FullOrganismUpdater;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -28,7 +27,7 @@ import static junit.framework.Assert.*;
  */
 public class FullOrganismUpdaterTest {
 
-    private OrganismEnricher organismEnricher;
+    private FullOrganismUpdater organismEnricher;
     private MockOrganismFetcher fetcher;
 
     private Organism mockOrganism;

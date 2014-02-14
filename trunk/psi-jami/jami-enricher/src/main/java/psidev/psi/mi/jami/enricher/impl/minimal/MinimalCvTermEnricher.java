@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.AbstractMIEnricher;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
@@ -12,10 +13,12 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
- * Provides minimum enrichment of the CvTerm.
- * Will enrich the full name if it is null and the identifiers.
- * As an enricher, no values from the provided CvTerm to enrich will be changed.
+ * Provides minimal enrichment of cv term.
  *
+ * - enrich fullname of CvTerm if not set. It will not override any existing fullName with the one loaded from the fetched CvTerm
+ * - enrich identifiers of CvTerm. It will only add missing identifiers and not remove any existing identifiers using DefaultXrefComparator
+ *
+ * It will ignore all other properties of a CvTerm
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/05/13
  */
@@ -74,7 +77,7 @@ public class MinimalCvTermEnricher<C extends CvTerm> extends AbstractMIEnricher<
      * A method that can be overridden to add to or change the behaviour of enrichment without effecting fetching.
      * @param cvTermToEnrich the CvTerm to enrich
      */
-    protected void processCvTerm(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
+    public void processCvTerm(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
 
         //ShortName not checked - never null
 

@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.AbstractMIEnricher;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
@@ -22,7 +21,7 @@ import java.util.Map;
  *
  * - enrich minimal properties of Cv Term. See description in MinimalCvTermEnricher
  * - enrich children of a term. It will use DefaultCvTermComparator to compare children and add missing children without
- * removing any existing children. It will enrich the children of the ontologyTerm but does not go deeper in the hierarchy
+ * removing any existing children. It will enrich the children of the ontologyTerm
  *
  * It will ignore all other properties of an ontologyTerm
  *
@@ -31,7 +30,7 @@ import java.util.Map;
  */
 public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm> implements CvTermEnricher<OntologyTerm>{
 
-    private CvTermEnricher<OntologyTerm> cvEnricher = null;
+    private MinimalCvTermEnricher<OntologyTerm> cvEnricher = null;
 
     private Map<OntologyTerm, OntologyTerm> processedTerms;
 
@@ -45,7 +44,7 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
         this.processedTerms = new IdentityMap();
     }
 
-    protected MinimalOntologyTermEnricher(CvTermEnricher<OntologyTerm> cvEnricher) {
+    protected MinimalOntologyTermEnricher(MinimalCvTermEnricher<OntologyTerm> cvEnricher) {
         if (cvEnricher == null){
            throw new IllegalArgumentException("The cv term enricher cannot be null in ontology term enricher");
         }
@@ -83,13 +82,27 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
     }
 
     protected void processChildren(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
-        mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getParents(), cvTermFetched.getParents(), false);
+        mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getChildren(), cvTermFetched.getChildren(), false);
         enrichRelatedTerms(cvTermToEnrich.getChildren());
     }
 
     protected void enrichRelatedTerms(Collection<OntologyTerm> cvTermToEnrich) throws EnricherException {
         for (OntologyTerm child : cvTermToEnrich){
-            this.cvEnricher.enrich(child);
+            enrichChild(child);
+        }
+    }
+
+    protected void enrichChild(OntologyTerm objectToEnrich) throws EnricherException {
+        // fetch the object
+        OntologyTerm enrichedObject = find(objectToEnrich);
+
+        // if the enriched object is fetched, it exists and enrichment can begin
+        if (enrichedObject != null){
+            this.cvEnricher.enrich(objectToEnrich, enrichedObject);
+            // process definition
+            processDefinition(objectToEnrich, enrichedObject);
+            // process children
+            processChildren(objectToEnrich, enrichedObject);
         }
     }
 

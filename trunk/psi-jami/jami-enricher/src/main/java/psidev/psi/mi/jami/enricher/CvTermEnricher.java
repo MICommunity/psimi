@@ -21,13 +21,6 @@ public interface CvTermEnricher<C extends CvTerm> extends MIEnricher<C>{
     public CvTermFetcher<C> getCvTermFetcher();
 
     /**
-     * The cvTermEnricherListener to be used.
-     * It will be fired at all points where a change is made to the cvTerm
-     * @param listener  The listener to use. Can be null.
-     */
-    public void setCvTermEnricherListener(CvTermEnricherListener<C> listener);
-
-    /**
      * The current CvTermEnricherListener.
      * @return  the current listener. May be null.
      */

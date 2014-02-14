@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.SourceFetcher;
-import psidev.psi.mi.jami.enricher.impl.FullCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalSourceEnricher;
 import psidev.psi.mi.jami.model.Source;
 
