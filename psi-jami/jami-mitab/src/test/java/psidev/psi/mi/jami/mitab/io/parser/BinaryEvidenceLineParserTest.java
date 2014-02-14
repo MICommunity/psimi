@@ -57,7 +57,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(0, A.getInteractor().getXrefs().size());
         Assert.assertEquals(0, A.getAnnotations().size());
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxx4", A.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertEquals(0, A.getFeatures().size());
         Assert.assertNull(A.getStoichiometry());
         Assert.assertEquals(0, A.getIdentificationMethods().size());
@@ -156,7 +156,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(1, A.getAnnotations().size());
         Assert.assertEquals(AnnotationUtils.createAnnotation("caution","test caution"), A.getAnnotations().iterator().next());
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxx4", A.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertEquals(0, A.getFeatures().size());
         Assert.assertNull(A.getStoichiometry());
         Assert.assertEquals(0, A.getIdentificationMethods().size());
@@ -185,7 +185,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
         Assert.assertEquals(0, B.getAnnotations().size());
         Assert.assertEquals(1, B.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxxx2"), B.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxxx2", B.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertTrue(B.getFeatures().isEmpty());
         Assert.assertNull(B.getStoichiometry());
         Assert.assertEquals(0, B.getIdentificationMethods().size());
@@ -224,7 +224,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
         Assert.assertFalse(binary.isNegative());
         Assert.assertEquals(1, binary.getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRigid("xxxx3"), binary.getChecksums().iterator().next());
+        Assert.assertEquals("xxxx3", ((Checksum)binary.getChecksums().iterator().next()).getValue());
 
         InteractionEvidence binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);
@@ -266,7 +266,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(1, A.getAnnotations().size());
         Assert.assertEquals(AnnotationUtils.createAnnotation("caution","test caution"), A.getAnnotations().iterator().next());
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxx4", A.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertEquals(1, A.getFeatures().size());
         MitabFeatureEvidence f = (MitabFeatureEvidence)A.getFeatures().iterator().next();
         Assert.assertEquals(new DefaultCvTerm("binding site"), f.getType());
@@ -307,7 +307,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
         Assert.assertEquals(0, B.getAnnotations().size());
         Assert.assertEquals(1, B.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxxx2"), B.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxxx2", B.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertTrue(B.getFeatures().isEmpty());
         Assert.assertEquals(new DefaultStoichiometry(5), B.getStoichiometry());
         Assert.assertEquals(1, B.getIdentificationMethods().size());
@@ -347,7 +347,7 @@ public class BinaryEvidenceLineParserTest {
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
         Assert.assertFalse(binary.isNegative());
         Assert.assertEquals(1, binary.getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRigid("xxxx3"), binary.getChecksums().iterator().next());
+        Assert.assertEquals("xxxx3", ((Checksum)binary.getChecksums().iterator().next()).getValue());
 
         InteractionEvidence binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);

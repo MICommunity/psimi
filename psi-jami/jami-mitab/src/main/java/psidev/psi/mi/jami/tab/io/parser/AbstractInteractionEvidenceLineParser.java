@@ -243,7 +243,13 @@ public abstract class AbstractInteractionEvidenceLineParser<T extends Interactio
         }
 
         MitabExperiment experiment = new MitabExperiment(publication, detectionMethod);
-        publication.getExperiments().add(experiment);
+        if (publication != null){
+            publication.getExperiments().add(experiment);
+            experiment.setSourceLocator(publication.getSourceLocator());
+        }
+        else if (detMethod != null){
+            experiment.setSourceLocator(detectionMethod.getSourceLocator());
+        }
 
         // then get the host organism
         initialiseHostOrganism(host, experiment);
@@ -251,7 +257,7 @@ public abstract class AbstractInteractionEvidenceLineParser<T extends Interactio
         return experiment;
     }
 
-    protected void initialiseHostOrganism(Collection<MitabOrganism> organisms, Experiment exp){
+    protected void initialiseHostOrganism(Collection<MitabOrganism> organisms, MitabExperiment exp){
 
         if (organisms.size() > 1){
             Iterator<MitabOrganism> organismsIterator = organisms.iterator();
@@ -312,9 +318,15 @@ public abstract class AbstractInteractionEvidenceLineParser<T extends Interactio
             }
 
             exp.setHostOrganism(currentOrganism);
+            if (exp.getSourceLocator() == null){
+                exp.setSourceLocator(currentOrganism.getSourceLocator());
+            }
         }
         else if (!organisms.isEmpty()){
             exp.setHostOrganism(organisms.iterator().next());
+            if (exp.getSourceLocator() == null){
+                exp.setSourceLocator(organisms.iterator().next().getSourceLocator());
+            }
         }
     }
 

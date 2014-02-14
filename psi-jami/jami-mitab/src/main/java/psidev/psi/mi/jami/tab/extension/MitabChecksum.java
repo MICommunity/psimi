@@ -42,6 +42,6 @@ public class MitabChecksum extends DefaultChecksum implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Mitab Checksum: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Checksum: "+sourceLocator != null ? sourceLocator.toString() : super.toString();
     }
 }
