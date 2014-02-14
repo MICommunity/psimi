@@ -13,7 +13,12 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
 import java.util.*;
 
 /**
- * Full interactor pool enricher
+ * A full enricher for interactor pools.
+ *
+ * See description of minimal enrichment in AbstractInteractorEnricher.
+ * - enrich all interactors in existing pool using a composite interactor enricher if it is not null.
+ * It will only add missing interactors in the pool and not remove any interactors that are not in the fetched interactor pool
+ *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

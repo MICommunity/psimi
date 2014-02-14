@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalOrganismUpdater;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
@@ -17,7 +18,7 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  24/05/13
  */
-public class FullOrganismUpdater extends MinimalOrganismUpdater{
+public class FullOrganismUpdater extends MinimalOrganismUpdater {
 
     private CvTermEnricher<CvTerm> cvEnricher;
 

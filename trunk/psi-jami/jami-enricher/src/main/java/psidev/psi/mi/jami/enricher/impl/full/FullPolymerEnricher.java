@@ -9,8 +9,8 @@ import psidev.psi.mi.jami.model.Polymer;
  * Full polymer enricher.
  *
  * - enrich all properties of interactor as described in FullInteractorBaseEnricher
- * - update sequence of protein. If the sequence of the polymer to enrich is different from the one of the fetched polymer, it will enrich it with the
- * sequence of the fetched protein
+ * - enrich sequence of polymer. If the sequence of the polymer to enrich is null, it will enrich it with the
+ * sequence of the fetched polymer
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

@@ -15,7 +15,11 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 import java.util.Collection;
 
 /**
- * Minimal gene enricher
+ * A basic minimal enricher for genes.
+ *
+ * See description of minimal enrichment in AbstractInteractorEnricher.
+ *
+ * The GeneFetcher is required for enriching genes.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 04/09/13

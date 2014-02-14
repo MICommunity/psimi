@@ -4,7 +4,11 @@ import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalGeneEnricher;
 
 /**
- * Created with IntelliJ IDEA.
+ * A full enricher for genes.
+ *
+ * See description of full enrichment in AbstractInteractorEnricher.
+ *
+ * The GeneFetcher is required for enriching genes.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 04/09/13

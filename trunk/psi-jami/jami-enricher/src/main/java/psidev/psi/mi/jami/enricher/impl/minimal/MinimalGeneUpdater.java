@@ -6,7 +6,11 @@ import psidev.psi.mi.jami.enricher.impl.AbstractInteractorUpdater;
 import psidev.psi.mi.jami.model.Gene;
 
 /**
- * Created with IntelliJ IDEA.
+ * A basic minimal updater for genes.
+ *
+ * See description of minimal update in AbstractInteractorUpdater.
+ *
+ * The GeneFetcher is required for enriching genes.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 04/09/13

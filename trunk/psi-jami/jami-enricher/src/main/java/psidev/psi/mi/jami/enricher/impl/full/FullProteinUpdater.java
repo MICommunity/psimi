@@ -8,11 +8,14 @@ import psidev.psi.mi.jami.model.Protein;
 
 
 /**
- * Provides maximum updating of the Protein.
+ * Full updater of proteins. As an updater, some data may be overwritten in the protein being enriched.
  * See description of full update in AbstractInteractorUpdater
- * If the protein remapper is not null and it cannot find a uniprot identifier, it will remap to uniprot using the proteinMapper.
- * - enrich sequence of protein. If the sequence of the protein to enrich is null, it will enrich it with the
- * sequence of the fetched protein
+ * If the protein remapper is not null and the enricher cannot find a uniprot identifier, it will remap to uniprot using the proteinMapper.
+ * In case of dead uniprot entries, it will move the dead uniprot identifier to the xrefs and add a qualifier 'uniprot-removed-ac' and add a caution in the annotations.
+ * If the remapping is successfull, it will remove any cautions left because of dead entry and set the uniprot identifier of the protein
+ *
+ * - update sequence of polymer. If the sequence of the polymer to enrich is different from the one of the fetched polymer, it will enrich it with the
+ * sequence of the fetched polymer
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 20/05/13

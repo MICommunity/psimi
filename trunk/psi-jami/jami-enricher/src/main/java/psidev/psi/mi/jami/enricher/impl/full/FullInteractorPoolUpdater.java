@@ -6,7 +6,12 @@ import psidev.psi.mi.jami.enricher.impl.AbstractInteractorUpdater;
 import psidev.psi.mi.jami.model.InteractorPool;
 
 /**
- * Full interactor pool updater
+ * A full updater for interactor pools.
+ *
+ * See description of full update in AbstractInteractorUpdater.
+ * - update all interactors in existing pool using a composite interactor enricher if it is not null.
+ * It will add missing interactors in the pool and remove any interactors that are not in the fetched interactor pool
+ *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
