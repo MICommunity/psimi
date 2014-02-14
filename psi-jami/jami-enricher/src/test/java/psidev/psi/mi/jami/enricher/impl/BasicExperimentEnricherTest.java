@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockPublicationFetcher;
 import psidev.psi.mi.jami.enricher.ExperimentEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;

@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.enricher.impl.minimal.MinimalOrganismEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.impl.OrganismEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.impl.log.OrganismEnricherLogger;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;

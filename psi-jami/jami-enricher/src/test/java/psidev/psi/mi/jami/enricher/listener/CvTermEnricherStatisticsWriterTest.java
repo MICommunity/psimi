@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherLogger;
 import psidev.psi.mi.jami.enricher.listener.impl.CvTermEnricherStatisticsWriter;

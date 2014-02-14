@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
@@ -8,10 +8,13 @@ import psidev.psi.mi.jami.model.CvTerm;
 
 
 /**
- * Provides minimum updating of the CvTerm.
- * Will update the short name, full name and xrefs of the CvTerm to enrich.
- * As an updater, values from the provided CvTerm to enrich may be overwritten.
+ * Provides minimal update of cv term.
  *
+ * - update shortName of CvTerm if different from the shortname of the fetched CvTerm
+ * - update fullname of CvTerm if different from the fullName of the fetched CvTerm
+ * - update identifiers of CvTerm. It will add missing identifiers and remove any existing identifiers that are not in the fetched CvTerm using DefaultXrefComparator
+ *
+ * It will ignore all other properties of a CvTerm
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/06/13
  */
@@ -31,7 +34,7 @@ public class MinimalCvTermUpdater<C extends CvTerm> extends MinimalCvTermEnriche
      * @param cvTermToEnrich the CvTerm to enrich
      */
     @Override
-    protected void processCvTerm(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
+    public void processCvTerm(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
         super.processCvTerm(cvTermToEnrich, cvTermFetched);
 
         // == Short Name ====================================================================

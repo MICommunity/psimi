@@ -1,20 +1,23 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 
 /**
- * Provides maximum enrichment of the CvTerm.
- * Will enrich all aspects covered by the minimum enricher as well as enriching the Aliases.
- * As an enricher, no values from the provided CvTerm to enrich will be changed.
+ * Provides full enrichment of cv term.
  *
+ * - enrich minimal properties of CvTerm. See MinimalCvTermEnricher for more details
+ * - enrich xrefs of CvTerm. It will only add missing xrefs and not remove any existing xrefs using DefaultXrefComparator
+ * - enrich synonyms of CvTerm. It will only add missing synonyms and not remove any existing synonyms using DefaultAliasComparator
+ * - enrich annotations of CvTerm. It will only add missing annotations and not remove any existing annotations using DefaultAnnotationComparator
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/06/13
  */
 public class FullCvTermEnricher<C extends CvTerm>
-        extends MinimalCvTermEnricher<C>{
+        extends MinimalCvTermEnricher<C> {
 
     /**
      * A constructor matching super.
@@ -31,7 +34,7 @@ public class FullCvTermEnricher<C extends CvTerm>
      * @param cvTermToEnrich   The protein to be enriched.
      */
     @Override
-    protected void processCvTerm(C cvTermToEnrich, C termFetched) throws EnricherException {
+    public void processCvTerm(C cvTermToEnrich, C termFetched) throws EnricherException {
         processMinimalUpdates(cvTermToEnrich, termFetched);
 
         // == Xrefs =======================================================

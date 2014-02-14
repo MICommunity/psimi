@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermUpdater;
 import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -10,10 +11,12 @@ import psidev.psi.mi.jami.model.CvTerm;
 
 
 /**
- * Provides maximum updating of the CvTerm.
- * Will update all aspects covered by the minimum updater as well as updating the Aliases.
- * As an updater, values from the provided CvTerm to enrich may be overwritten.
+ * Provides full update of cv term.
  *
+ * - update minimal properties of CvTerm. See MinimalCvTermUpdater for more details
+ * - update xrefs of CvTerm. It will add missing xrefs and remove all existing xrefs that are not in the fetched CvTerm using DefaultXrefComparator
+ * - update synonyms of CvTerm. It will add missing synonyms and remove all existing synonyms that are not in the fetched CvTerm using DefaultAliasComparator
+ * - update annotations of CvTerm. It will add missing annotations and remove all existing annotations that are not in the fetched CvTerm using DefaultAnnotationComparator
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/05/13
  */
@@ -53,7 +56,31 @@ public class FullCvTermUpdater<C extends CvTerm> extends FullCvTermEnricher<C>{
 
     @Override
     public void setCvTermEnricherListener(CvTermEnricherListener<C> listener) {
-        super.setCvTermEnricherListener(listener);
         this.minimalCvTermUpdater.setCvTermEnricherListener(listener);
+    }
+
+    @Override
+    public CvTermFetcher<C> getCvTermFetcher() {
+        return this.minimalCvTermUpdater.getCvTermFetcher();
+    }
+
+    @Override
+    public CvTermEnricherListener<C> getCvTermEnricherListener() {
+        return this.minimalCvTermUpdater.getCvTermEnricherListener();
+    }
+
+    @Override
+    public int getRetryCount() {
+        return this.minimalCvTermUpdater.getRetryCount();
+    }
+
+    @Override
+    public void setRetryCount(int retryCount) {
+        this.minimalCvTermUpdater.setRetryCount(retryCount);
+    }
+
+    @Override
+    public C find(C cvTermToEnrich) throws EnricherException {
+        return this.minimalCvTermUpdater.find(cvTermToEnrich);
     }
 }

@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.enricher.impl.FullCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalOntologyTermEnricher;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
@@ -10,7 +9,7 @@ import psidev.psi.mi.jami.model.OntologyTerm;
  *
  * - enrich full properties of Cv Term. See description in FullCvTermEnricher
  * - enrich children of a term. It will use DefaultCvTermComparator to compare children and add missing children without
- * removing any existing children. It will enrich the children of the ontologyTerm but does not go deeper in the hierarchy
+ * removing any existing children. It will enrich the children of the ontologyTerm
  *
  * It will ignore all other properties of an ontologyTerm
  *

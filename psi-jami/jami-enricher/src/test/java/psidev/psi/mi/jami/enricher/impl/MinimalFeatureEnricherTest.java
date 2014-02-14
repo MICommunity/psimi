@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.bridges.fetcher.mock.MockCvTermFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockProteinFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalProteinEnricher;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;

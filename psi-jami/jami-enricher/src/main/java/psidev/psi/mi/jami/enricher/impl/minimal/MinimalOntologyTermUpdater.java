@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.MinimalCvTermUpdater;
 import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
@@ -12,7 +10,7 @@ import psidev.psi.mi.jami.model.OntologyTerm;
  *
  * - update minimal properties of Cv Term. See description in MinimalCvTermUpdater
  * - update children of a term. It will use DefaultCvTermComparator to compare children and add missing children and
- * remove children that are not in fetched ontology term. It will enrich the children of the ontologyTerm but does not go deeper in the hierarchy
+ * remove children that are not in fetched ontology term. It will enrich all the children of the ontologyTerm
  *
  * It will ignore all other properties of an ontologyTerm
  *
@@ -26,7 +24,7 @@ public class MinimalOntologyTermUpdater extends MinimalOntologyTermEnricher{
         super(new MinimalCvTermUpdater<OntologyTerm>(cvTermFetcher));
     }
 
-    protected MinimalOntologyTermUpdater(CvTermEnricher<OntologyTerm> cvEnricher) {
+    protected MinimalOntologyTermUpdater(MinimalCvTermEnricher<OntologyTerm> cvEnricher) {
         super(cvEnricher);
     }
 

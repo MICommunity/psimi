@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.fetcher.mock.FailingOrganismFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalOrganismUpdater;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -27,7 +26,7 @@ import static junit.framework.Assert.*;
  */
 public class MinimalOrganismUpdaterTest {
 
-    private OrganismEnricher organismEnricher;
+    private MinimalOrganismUpdater organismEnricher;
     private MockOrganismFetcher fetcher;
 
     private Organism mockOrganism;
