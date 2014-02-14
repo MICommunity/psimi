@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import org.apache.commons.collections.map.IdentityMap;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalFeatureEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Feature;
 
@@ -10,7 +11,16 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Full enricher for features
+ * Provides full enrichment of feature.
+ *
+ * - enrich minimal properties of feature (see MinimalFeatureEnricher)
+ * - enrich interaction dependency
+ * - enrich interaction effect
+ * - enrich xrefs
+ * - enrich aliases
+ * - enrich annotations
+ * - enrich linked features
+ *
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13

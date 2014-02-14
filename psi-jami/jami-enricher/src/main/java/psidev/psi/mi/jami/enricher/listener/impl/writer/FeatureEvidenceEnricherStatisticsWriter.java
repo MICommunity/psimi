@@ -1,5 +1,6 @@
-package psidev.psi.mi.jami.enricher.listener.impl;
+package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
+import psidev.psi.mi.jami.enricher.listener.impl.writer.FeatureEnricherStatisticsWriter;
 import psidev.psi.mi.jami.listener.FeatureEvidenceChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;

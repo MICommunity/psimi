@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +22,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimal enrichment of feature.
+ *
+ * - enrich shortName if not set
+ * - enrich fullName if not set
+ * - enrich feature type with CvTerm enricher if not null. It will not override any existing feature type
+ * - enrich identifiers. Only add missing identifiers (using DefaultXrefComparator)
+ *
+ * - Ignore all other properties of a feature
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
@@ -56,7 +63,7 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
             getFeatureEnricherListener().onEnrichmentComplete(featureToEnrich, EnrichmentStatus.SUCCESS, "Feature enriched successfully.");
     }
 
-    protected void processMinimalUpdates(F featureToEnrich) throws EnricherException {
+    public void processMinimalUpdates(F featureToEnrich) throws EnricherException {
         // == TYPE ==================================================================
         processFeatureType(featureToEnrich);
     }
@@ -84,7 +91,7 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         }
     }
 
-    protected void processMinimalUpdates(F objectToEnrich, F objectSource) throws EnricherException {
+    public void processMinimalUpdates(F objectToEnrich, F objectSource) throws EnricherException {
         // check shortlabel
         processShortLabel(objectToEnrich, objectSource);
         // check fullname
