@@ -13,9 +13,12 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Provides minimum enrichment of the organism.
- * Will enrich the common name, scientific name and identifier if null.
- * As an enricher, no values from the provided CvTerm to enrich will be changed.
+ * Provides minimum enrichment of a Organism.
+ *
+ * - enrich common name if not set. Does not override it with fetched organism common name if already set.
+ * - enrich scientific name if not set. Does not override it with fetched organism scientific name if already set.
+ *
+ * The organism fetcher is required for enriching organism
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 22/05/13
@@ -61,6 +64,9 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
         return listener;
     }
 
+    /*
+     * Cv enricher is not needed here
+      */
     public CvTermEnricher<CvTerm> getCvTermEmricher() {
         return null;
     }

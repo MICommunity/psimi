@@ -11,10 +11,12 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
- * Provides maximum updating of the organism.
- * Will update all aspects covered by the minimum updater as well as updating the Aliases.
- * As an updater, values from the provided CvTerm to enrich may be overwritten.
+ * Provides full update of a Organism.
  *
+ * - update minimal properties of organism. See details in MinimalOrganismUpdater
+ * - if cvTermEnricher is not null, will update cellType, tissue and compartment.
+ * It will override cellType, tissue and compartment with the ones loaded with the fetched organism if
+ * they are different from the ones in the fetched organism. (See DefaultCvTermComparator)
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  24/05/13
  */

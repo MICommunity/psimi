@@ -4,9 +4,13 @@ import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
- * Provides minimum updating of the Organism.
- * Will update the scientific name and the common name. Will also update the taxID if unknown.
- * As an updater, values from the provided organism to enrich may be overwritten.
+ * Provides minimum update of a Organism.
+ *
+ * - update taxid if different from fetched organism taxid.
+ * - update common name if different from fetched organism common name.
+ * - update scientific name if different from fetched organism scientific name.
+ *
+ * The organism fetcher is required for enriching organism
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
