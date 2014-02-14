@@ -149,7 +149,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         // do nothing by default as shortlabel is mandatory and only the updater can override it
     }
 
-    protected void processAliases(T bioactiveEntityToEnrich, T fetched) {
+    public void processAliases(T bioactiveEntityToEnrich, T fetched) {
         EnricherUtils.mergeAliases(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getAliases(), fetched.getAliases(), false,
                 getListener());
     }
@@ -159,7 +159,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
                 getListener(), getListener());
     }
 
-    protected void processFullName(T bioactiveEntityToEnrich, T fetched) {
+    public void processFullName(T bioactiveEntityToEnrich, T fetched) {
         if(bioactiveEntityToEnrich.getFullName() == null
                 && fetched.getFullName() != null){
             bioactiveEntityToEnrich.setFullName(fetched.getFullName());
@@ -168,7 +168,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         }
     }
 
-    protected void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
+    public void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
         if (fetched != null && entityToEnrich.getInteractorType() == null && fetched.getInteractorType() != null){
             entityToEnrich.setInteractorType(fetched.getInteractorType());
             if (getListener() != null){
@@ -180,7 +180,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         }
     }
 
-    protected void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
+    public void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
         if (fetched != null && entityToEnrich.getOrganism() == null && fetched.getOrganism() != null){
             entityToEnrich.setOrganism(fetched.getOrganism());
             if (getListener() != null){

@@ -1,27 +1,35 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.ComplexEnricher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseUpdater;
+import psidev.psi.mi.jami.enricher.impl.MinimalModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Complex;
 
 /**
- * Minimal updater for complexes
+ * Minimal enricher for complexes
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MinimalComplexUpdater extends MinimalModelledInteractionUpdater<Complex> implements ComplexEnricher {
+public class MinimalComplexEnricher extends MinimalModelledInteractionEnricher<Complex> implements ComplexEnricher {
 
-    private MinimalInteractorBaseUpdater<Complex> interactorEnricher = null;
+    private MinimalInteractorBaseEnricher<Complex> interactorEnricher = null;
 
-    public MinimalComplexUpdater(){
+    public MinimalComplexEnricher(){
         super();
-        this.interactorEnricher = new MinimalInteractorBaseUpdater<Complex>();
+        this.interactorEnricher = new MinimalInteractorBaseEnricher<Complex>();
+    }
+
+    protected MinimalComplexEnricher(MinimalInteractorBaseEnricher<Complex> interactorEnricher){
+        super();
+        if (this.interactorEnricher == null){
+             throw new IllegalArgumentException("Interactor enricher cannot be null");
+        }
+        this.interactorEnricher = interactorEnricher;
     }
 
     /**

@@ -1,27 +1,27 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.ComplexEnricher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher;
+import psidev.psi.mi.jami.enricher.impl.FullModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Complex;
 
 /**
- * Minimal enricher for complexes
+ * Full enricher for complexes
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class MinimalComplexEnricher extends MinimalModelledInteractionEnricher<Complex> implements ComplexEnricher {
+public class FullComplexEnricher extends FullModelledInteractionEnricher<Complex> implements ComplexEnricher {
 
-    private MinimalInteractorBaseEnricher<Complex> interactorEnricher = null;
+    private FullInteractorBaseEnricher<Complex> interactorEnricher = null;
 
-    public MinimalComplexEnricher(){
+    public FullComplexEnricher(){
         super();
-        this.interactorEnricher = new MinimalInteractorBaseEnricher<Complex>();
+        this.interactorEnricher = new FullInteractorBaseEnricher<Complex>();
     }
 
     /**
@@ -39,6 +39,7 @@ public class MinimalComplexEnricher extends MinimalModelledInteractionEnricher<C
 
         // Organism
         this.interactorEnricher.processOrganism(interactionToEnrich, null);
+
     }
 
     @Override

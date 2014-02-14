@@ -43,7 +43,7 @@ public class MinimalFeatureEnricherTest {
     private ParticipantEnricher participantEnricher;
     private ProteinEnricher proteinEnricher;
     private MockProteinFetcher proteinFetcher;
-    private FeatureEnricher featureEnricher;
+    private MinimalFeatureEnricher featureEnricher;
     private CvTermEnricher cvTermEnricher;
     private MockCvTermFetcher cvTermFetcher;
 

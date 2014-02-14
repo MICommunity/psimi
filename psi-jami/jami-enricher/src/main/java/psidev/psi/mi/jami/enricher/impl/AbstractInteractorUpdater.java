@@ -66,7 +66,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
         }    }
 
     @Override
-    protected void processAliases(T bioactiveEntityToEnrich, T fetched) {
+    public void processAliases(T bioactiveEntityToEnrich, T fetched) {
         EnricherUtils.mergeAliases(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getAliases(), fetched.getAliases(), true,
                 getListener());
     }
@@ -78,7 +78,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected void processFullName(T bioactiveEntityToEnrich, T fetched) {
+    public void processFullName(T bioactiveEntityToEnrich, T fetched) {
         if((fetched.getFullName() != null && !fetched.getFullName().equalsIgnoreCase(bioactiveEntityToEnrich.getFullName())
                 || (fetched.getFullName() == null && bioactiveEntityToEnrich.getFullName() != null))){
             String oldValue = bioactiveEntityToEnrich.getFullName();
@@ -88,7 +88,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
         }    }
 
     @Override
-    protected void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
+    public void processInteractorType(T entityToEnrich, T fetched) throws EnricherException {
         if (!DefaultCvTermComparator.areEquals(entityToEnrich.getInteractorType(), fetched.getInteractorType())){
             CvTerm old = entityToEnrich.getInteractorType();
             entityToEnrich.setInteractorType(fetched.getInteractorType());
@@ -107,7 +107,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
+    public void processOrganism(T entityToEnrich, T fetched) throws EnricherException {
         if (!DefaultOrganismComparator.areEquals(entityToEnrich.getOrganism(), fetched.getOrganism())){
             Organism old = entityToEnrich.getOrganism();
             entityToEnrich.setOrganism(fetched.getOrganism());

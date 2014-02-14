@@ -1,11 +1,11 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.ComplexEnricher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.full.FullInteractorBaseEnricher;
+import psidev.psi.mi.jami.enricher.impl.FullModelledInteractionUpdater;
 import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.Complex;
 
@@ -15,13 +15,13 @@ import psidev.psi.mi.jami.model.Complex;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class FullComplexEnricher extends FullModelledInteractionEnricher<Complex> implements ComplexEnricher {
+public class FullComplexUpdater extends FullModelledInteractionUpdater<Complex> implements ComplexEnricher {
 
-    private FullInteractorBaseEnricher<Complex> interactorEnricher = null;
+    private FullInteractorBaseUpdater<Complex> interactorEnricher = null;
 
-    public FullComplexEnricher(){
+    public FullComplexUpdater(){
         super();
-        this.interactorEnricher = new FullInteractorBaseEnricher<Complex>();
+        this.interactorEnricher = new FullInteractorBaseUpdater<Complex>();
     }
 
     /**
