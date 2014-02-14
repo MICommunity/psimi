@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCvTermEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.listener.impl.InteractionEnricherLogger;
+import psidev.psi.mi.jami.enricher.listener.impl.log.InteractionEnricherLogger;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteraction;

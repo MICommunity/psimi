@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 import psidev.psi.mi.jami.enricher.listener.OrganismEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;

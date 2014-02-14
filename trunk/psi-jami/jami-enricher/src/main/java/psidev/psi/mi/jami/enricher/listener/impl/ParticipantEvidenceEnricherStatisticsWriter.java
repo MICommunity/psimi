@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;

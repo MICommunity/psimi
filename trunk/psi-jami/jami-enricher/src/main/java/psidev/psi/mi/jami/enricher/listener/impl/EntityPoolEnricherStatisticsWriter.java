@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.listener.impl;
 
 
 import psidev.psi.mi.jami.enricher.listener.EntityPoolEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.EntityPool;

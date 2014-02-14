@@ -1,14 +1,13 @@
-package psidev.psi.mi.jami.enricher.listener.impl;
+package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
-import psidev.psi.mi.jami.enricher.listener.CvTermEnricherListener;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.impl.writer.EnricherStatisticsWriter;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * A statistics logger which records changes made by the enricher.
@@ -18,17 +17,17 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class CvTermEnricherStatisticsWriter<C extends CvTerm>
-        extends EnricherStatisticsWriter<C>
-        implements CvTermEnricherListener<C> {
+public class InteractionEnricherStatisticsWriter<I extends Interaction>
+        extends EnricherStatisticsWriter<I>
+        implements InteractionEnricherListener<I> {
 
-    private static final String FILE_NAME = "cv_term";
 
+    private static final String FILE_NAME = "Interaction";
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public CvTermEnricherStatisticsWriter() throws IOException {
+    public InteractionEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
@@ -37,7 +36,7 @@ public class CvTermEnricherStatisticsWriter<C extends CvTerm>
      * @param fileName          The seed to base the names of the files on.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public CvTermEnricherStatisticsWriter(String fileName) throws IOException {
+    public InteractionEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -47,7 +46,7 @@ public class CvTermEnricherStatisticsWriter<C extends CvTerm>
      * @param failureFileName   The exact name for the file to log failed enrichments in
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public CvTermEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public InteractionEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -57,76 +56,80 @@ public class CvTermEnricherStatisticsWriter<C extends CvTerm>
      * @param failureFile       The file to log failed enrichments in.
      * @throws IOException      Thrown if a problem is encountered with file location.
      */
-    public CvTermEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public InteractionEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
+    }
+
+    public void onShortNameUpdate(I interaction, String oldName) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onUpdatedDateUpdate(I interaction, Date oldUpdate) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onCreatedDateUpdate(I interaction, Date oldCreated) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onInteractionTypeUpdate(I interaction, CvTerm oldType) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onAddedParticipant(I interaction, Participant addedParticipant) {
+        checkObject(interaction);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedParticipant(I interaction, Participant removedParticipant) {
+        checkObject(interaction);
+        incrementRemovedCount();
+    }
+
+    public void onAddedAnnotation(I o, Annotation added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedAnnotation(I o, Annotation removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedChecksum(I interactor, Checksum added) {
+        checkObject(interactor);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedChecksum(I interactor, Checksum removed) {
+        checkObject(interactor);
+        incrementRemovedCount();
+    }
+
+    public void onAddedIdentifier(I o, Xref added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedIdentifier(I o, Xref removed) {
+        checkObject(o);
+        incrementRemovedCount();
+    }
+
+    public void onAddedXref(I o, Xref added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedXref(I o, Xref removed) {
+        checkObject(o);
+        incrementRemovedCount();
     }
 
 
     // ================================================================
-
-
-    public void onShortNameUpdate(CvTerm cv, String oldShortName) {
-        checkObject(cv);
-        incrementUpdateCount();
-    }
-
-    public void onFullNameUpdate(CvTerm cv, String oldFullName) {
-        checkObject(cv);
-        incrementUpdateCount();
-    }
-
-    public void onMIIdentifierUpdate(CvTerm cv, String oldMI) {
-        checkObject(cv);
-        incrementUpdateCount();
-    }
-
-    public void onMODIdentifierUpdate(CvTerm cv, String oldMOD) {
-        checkObject(cv);
-        incrementUpdateCount();
-    }
-
-    public void onPARIdentifierUpdate(CvTerm cv, String oldPAR) {
-        checkObject(cv);
-        incrementUpdateCount();
-    }
-
-    public void onAddedIdentifier(CvTerm cv, Xref added) {
-        checkObject(cv);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedIdentifier(CvTerm cv, Xref removed) {
-        checkObject(cv);
-        incrementRemovedCount();
-    }
-
-    public void onAddedXref(CvTerm cv, Xref added) {
-        checkObject(cv);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedXref(CvTerm cv, Xref removed) {
-        checkObject(cv);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAlias(CvTerm cv, Alias added) {
-        checkObject(cv);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAlias(CvTerm cv, Alias removed) {
-        checkObject(cv);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAnnotation(CvTerm o, Annotation added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAnnotation(CvTerm o, Annotation removed) {
-        checkObject(o);
-        incrementRemovedCount();
-    }
 }
