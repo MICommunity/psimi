@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
@@ -18,8 +18,8 @@ import java.util.Iterator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalParticipantEvidenceEnricher<P extends ExperimentalEntity, F extends FeatureEvidence> extends MinimalParticipantEnricher<P , F>
-implements ParticipantEvidenceEnricher<P,F>{
+public class MinimalParticipantEvidenceEnricher<P extends ExperimentalEntity> extends MinimalParticipantEnricher<P, FeatureEvidence>
+implements ParticipantEvidenceEnricher<P>{
     private OrganismEnricher organismEnricher;
 
 
@@ -32,7 +32,7 @@ implements ParticipantEvidenceEnricher<P,F>{
     }
 
     @Override
-    protected void processOtherProperties(P participantEvidenceToEnrich)
+    public void processOtherProperties(P participantEvidenceToEnrich)
             throws EnricherException {
 
         if(getCvTermEnricher() != null){
@@ -62,7 +62,7 @@ implements ParticipantEvidenceEnricher<P,F>{
     }
 
     @Override
-    protected void processOtherProperties(P participantEvidenceToEnrich, P objectSource)
+    public void processOtherProperties(P participantEvidenceToEnrich, P objectSource)
             throws EnricherException {
 
         // expressed in
@@ -84,13 +84,13 @@ implements ParticipantEvidenceEnricher<P,F>{
         }
     }
 
-    protected void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         mergeIdentificationMethods(participantEvidenceToEnrich, participantEvidenceToEnrich.getIdentificationMethods(), objectSource.getIdentificationMethods(), false);
 
         processIdentificationMethods(participantEvidenceToEnrich);
     }
 
-    protected void processExperimentalRole(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processExperimentalRole(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         // nothing to do
 
         processExperimentalRole(participantEvidenceToEnrich);

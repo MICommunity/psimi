@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.InteractorEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
@@ -14,7 +16,7 @@ import java.util.Collection;
  * @since <pre>11/02/14</pre>
  */
 
-public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
+public class CompositeInteractorEnricher implements InteractorEnricher<Interactor>{
 
     private AbstractInteractorEnricher<Interactor> interactorBaseEnricher;
     private InteractorEnricher<Polymer> polymerBaseEnricher;
@@ -24,21 +26,12 @@ public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
     private InteractorEnricher<Gene> geneEnricher;
     private ComplexEnricher complexEnricher;
 
-    public CompositeInteractorEnricher(AbstractInteractorEnricher<Interactor> interactorBaseEnricher, InteractorEnricher<Polymer> polymerBaseEnricher,
-                                       InteractorPoolEnricher interactorPoolEnricher, ProteinEnricher proteinEnricher,
-                                       InteractorEnricher<BioactiveEntity> bioactiveEntityEnricher, InteractorEnricher<Gene> geneEnricher,
-                                       ComplexEnricher complexEnricher){
+    public CompositeInteractorEnricher(AbstractInteractorEnricher<Interactor> interactorBaseEnricher){
         super();
         if (interactorBaseEnricher == null){
             throw new IllegalArgumentException("At least the interactor base enricher is needed and cannot be null") ;
         }
         this.interactorBaseEnricher = interactorBaseEnricher;
-        this.interactorPoolEnricher = interactorPoolEnricher;
-        this.polymerBaseEnricher = polymerBaseEnricher;
-        this.proteinEnricher = proteinEnricher;
-        this.geneEnricher = geneEnricher;
-        this.bioactiveEntityEnricher = bioactiveEntityEnricher;
-        this.complexEnricher = complexEnricher;
     }
 
     public InteractorEnricher<Polymer> getPolymerBaseEnricher() {
@@ -160,5 +153,21 @@ public class CompositeInteractorEnricher implements MIEnricher<Interactor>{
         else{
             this.interactorBaseEnricher.enrich(object, objectSource);
         }
+    }
+
+    public InteractorFetcher<Interactor> getInteractorFetcher() {
+        return this.interactorBaseEnricher.getInteractorFetcher();
+    }
+
+    public InteractorEnricherListener<Interactor> getListener() {
+        return this.interactorBaseEnricher.getListener();
+    }
+
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
+        return this.interactorBaseEnricher.getCvTermEnricher();
+    }
+
+    public OrganismEnricher getOrganismEnricher() {
+        return this.interactorBaseEnricher.getOrganismEnricher();
     }
 }

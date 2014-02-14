@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
@@ -17,7 +18,7 @@ import java.util.Collection;
  * @since 19/06/13
  */
 public class MinimalParticipantEnricher<P extends Entity , F extends Feature>
-        implements ParticipantEnricher<P , F>  {
+        implements ParticipantEnricher<P,F>  {
 
     private ParticipantEnricherListener<P> listener;
     private CompositeInteractorEnricher interactorEnricher;
@@ -80,23 +81,23 @@ public class MinimalParticipantEnricher<P extends Entity , F extends Feature>
             getParticipantEnricherListener().onEnrichmentComplete(participantToEnrich , EnrichmentStatus.SUCCESS , null);
     }
 
-    protected void processOtherProperties(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processOtherProperties(P objectToEnrich, P objectSource) throws EnricherException {
         // nothing to do here
         processOtherProperties(objectToEnrich);
     }
 
-    protected void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
         // nothing to do here
         processInteractor(objectToEnrich);
     }
 
-    protected void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
         EnricherUtils.mergeFeatures(objectToEnrich, objectToEnrich.getFeatures(), objectSource.getFeatures(), false, getParticipantEnricherListener(),
                 getFeatureEnricher());
         processFeatures(objectToEnrich);
     }
 
-    protected void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
         // nothing to do here
         processBiologicalRole(objectToEnrich);
     }
@@ -105,7 +106,7 @@ public class MinimalParticipantEnricher<P extends Entity , F extends Feature>
         EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), objectSource.getAliases(), false, getParticipantEnricherListener());
     }
 
-    protected void processOtherProperties(P participantToEnrich) throws EnricherException {
+    public void processOtherProperties(P participantToEnrich) throws EnricherException {
         // do nothing
     }
 

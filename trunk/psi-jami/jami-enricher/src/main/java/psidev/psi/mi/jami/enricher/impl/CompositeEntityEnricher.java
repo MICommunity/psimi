@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl;
 
 import psidev.psi.mi.jami.enricher.*;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ import java.util.Collection;
  * @since <pre>11/02/14</pre>
  */
 
-public class CompositeEntityEnricher implements MIEnricher<Entity>{
+public class CompositeEntityEnricher implements ParticipantEnricher<Entity, Feature>{
 
     private ParticipantEnricher<Entity,Feature> entityBaseEnricher;
     private ParticipantEnricher<ModelledEntity,ModelledFeature> modelledEntityEnricher;
@@ -22,20 +23,12 @@ public class CompositeEntityEnricher implements MIEnricher<Entity>{
     private ParticipantEnricher<ModelledEntityPool,ModelledFeature> modelledEntityPoolEnricher;
     private ParticipantEnricher<ExperimentalEntityPool,FeatureEvidence> experimentalEntityPoolEnricher;
 
-    public CompositeEntityEnricher(ParticipantEnricher<Entity,Feature> entityBaseEnricher,
-                                   ParticipantEnricher<ModelledEntity,ModelledFeature> modelledEntityEnricher,
-                                   ParticipantEnricher<ExperimentalEntity,FeatureEvidence> experimentalEntityEnricher,
-                                   ParticipantEnricher<ModelledEntityPool,ModelledFeature> modelledEntityPoolEnricher,
-                                   ParticipantEnricher<ExperimentalEntityPool,FeatureEvidence> experimentalEntityPoolEnricher){
+    public CompositeEntityEnricher(ParticipantEnricher<Entity,Feature> entityBaseEnricher){
         super();
         if (entityBaseEnricher == null){
             throw new IllegalArgumentException("At least the entity base enricher is needed and cannot be null") ;
         }
         this.entityBaseEnricher = entityBaseEnricher;
-        this.modelledEntityEnricher = modelledEntityEnricher;
-        this.modelledEntityPoolEnricher = modelledEntityPoolEnricher;
-        this.experimentalEntityEnricher = experimentalEntityEnricher;
-        this.experimentalEntityPoolEnricher = experimentalEntityPoolEnricher;
     }
 
     public ParticipantEnricher<Entity, Feature> getEntityBaseEnricher() {
@@ -139,5 +132,21 @@ public class CompositeEntityEnricher implements MIEnricher<Entity>{
         else{
             this.entityBaseEnricher.enrich(object);
         }
+    }
+
+    public CompositeInteractorEnricher getInteractorEnricher() {
+        return this.entityBaseEnricher.getInteractorEnricher();
+    }
+
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
+        return this.entityBaseEnricher.getCvTermEnricher();
+    }
+
+    public FeatureEnricher getFeatureEnricher() {
+        return this.entityBaseEnricher.getFeatureEnricher();
+    }
+
+    public ParticipantEnricherListener getParticipantEnricherListener() {
+        return this.entityBaseEnricher.getParticipantEnricherListener();
     }
 }

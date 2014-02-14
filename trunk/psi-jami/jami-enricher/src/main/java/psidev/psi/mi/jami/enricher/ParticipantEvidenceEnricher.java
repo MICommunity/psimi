@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  16/05/13
  */
-public interface ParticipantEvidenceEnricher<T extends ExperimentalEntity, F extends FeatureEvidence> extends ParticipantEnricher<T,F>{
+public interface ParticipantEvidenceEnricher<T extends ExperimentalEntity> extends ParticipantEnricher<T,FeatureEvidence>{
     public void setOrganismEnricher(OrganismEnricher organismEnricher);
 
     public OrganismEnricher getOrganismEnricher();

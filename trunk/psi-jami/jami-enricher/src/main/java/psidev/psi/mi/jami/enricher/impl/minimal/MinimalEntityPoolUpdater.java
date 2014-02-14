@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.EntityPool;
@@ -39,17 +40,17 @@ public class MinimalEntityPoolUpdater<P extends EntityPool, F extends Feature> e
     }
 
     @Override
-    protected void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processInteractor(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processFeatures(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processBiologicalRole(objectToEnrich, objectSource);
     }
 

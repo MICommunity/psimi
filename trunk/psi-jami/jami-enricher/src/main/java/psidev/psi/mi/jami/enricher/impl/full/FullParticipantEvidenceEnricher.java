@@ -1,12 +1,12 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExperimentalEntity;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Collection;
@@ -18,10 +18,10 @@ import java.util.Iterator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class FullParticipantEvidenceEnricher<P extends ExperimentalEntity, F extends FeatureEvidence> extends MinimalParticipantEvidenceEnricher<P,F> {
+public class FullParticipantEvidenceEnricher<P extends ExperimentalEntity> extends MinimalParticipantEvidenceEnricher<P> {
 
     @Override
-    protected void processOtherProperties(P participantEvidenceToEnrich)
+    public void processOtherProperties(P participantEvidenceToEnrich)
             throws EnricherException {
         super.processOtherProperties(participantEvidenceToEnrich);
 
@@ -31,7 +31,7 @@ public class FullParticipantEvidenceEnricher<P extends ExperimentalEntity, F ext
     }
 
     @Override
-    protected void processOtherProperties(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processOtherProperties(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         super.processOtherProperties(participantEvidenceToEnrich, objectSource);
 
         // process xrefs

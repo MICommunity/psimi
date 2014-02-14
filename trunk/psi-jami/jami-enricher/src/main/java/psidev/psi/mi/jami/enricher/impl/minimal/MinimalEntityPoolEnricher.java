@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.EntityPoolEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
@@ -46,7 +46,12 @@ implements EntityPoolEnricher<P,F>{
     }
 
     @Override
-    protected void processOtherProperties(P poolToEnrich, P fetched) throws EnricherException {
+    public void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
+        // nothing to do here
+    }
+
+    @Override
+    public void processOtherProperties(P poolToEnrich, P fetched) throws EnricherException {
 
         TreeSet<Entity> set1 = new TreeSet<Entity>(getParticipantComparator());
         set1.addAll(poolToEnrich);

@@ -1,9 +1,11 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEvidenceUpdater;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
@@ -17,13 +19,13 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class FullParticipantEvidenceUpdater<P extends ExperimentalEntity, F extends FeatureEvidence> extends FullParticipantEvidenceEnricher<P,F> {
+public class FullParticipantEvidenceUpdater<P extends ExperimentalEntity> extends FullParticipantEvidenceEnricher<P> {
 
-    private MinimalParticipantEvidenceUpdater<P,F> minimalUpdater;
+    private MinimalParticipantEvidenceUpdater<P> minimalUpdater;
 
     public FullParticipantEvidenceUpdater(){
         super();
-        this.minimalUpdater = new MinimalParticipantEvidenceUpdater<P, F>();
+        this.minimalUpdater = new MinimalParticipantEvidenceUpdater<P>();
     }
 
     @Override
@@ -51,27 +53,27 @@ public class FullParticipantEvidenceUpdater<P extends ExperimentalEntity, F exte
     }
 
     @Override
-    protected void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processIdentificationMethods(participantEvidenceToEnrich, objectSource);
     }
 
     @Override
-    protected void processExperimentalRole(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processExperimentalRole(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processExperimentalRole(participantEvidenceToEnrich, objectSource);
     }
 
     @Override
-    protected void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processInteractor(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processFeatures(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processBiologicalRole(objectToEnrich, objectSource);
     }
 
@@ -101,12 +103,12 @@ public class FullParticipantEvidenceUpdater<P extends ExperimentalEntity, F exte
     }
 
     @Override
-    public void setFeatureEnricher(FeatureEnricher<F> featureEnricher) {
+    public void setFeatureEnricher(FeatureEnricher<FeatureEvidence> featureEnricher) {
         this.minimalUpdater.setFeatureEnricher(featureEnricher);
     }
 
     @Override
-    public FeatureEnricher<F> getFeatureEnricher() {
+    public FeatureEnricher<FeatureEvidence> getFeatureEnricher() {
         return this.minimalUpdater.getFeatureEnricher();
     }
 

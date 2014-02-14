@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -18,17 +19,17 @@ import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity, F extends FeatureEvidence> extends MinimalParticipantEvidenceEnricher<P , F> {
+public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity> extends MinimalParticipantEvidenceEnricher<P> {
 
-    private MinimalParticipantUpdater<P,F> minimalUpdater;
+    private MinimalParticipantUpdater<P,FeatureEvidence> minimalUpdater;
 
     public MinimalParticipantEvidenceUpdater(){
         super();
-        this.minimalUpdater = new MinimalParticipantUpdater<P, F>();
+        this.minimalUpdater = new MinimalParticipantUpdater<P, FeatureEvidence>();
     }
 
     @Override
-    protected void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         mergeIdentificationMethods(participantEvidenceToEnrich, participantEvidenceToEnrich.getIdentificationMethods(), objectSource.getIdentificationMethods(), true);
 
         processIdentificationMethods(participantEvidenceToEnrich);
@@ -50,7 +51,7 @@ public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity, F e
     }
 
     @Override
-    protected void processExperimentalRole(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
+    public void processExperimentalRole(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         if (!DefaultCvTermComparator.areEquals(participantEvidenceToEnrich.getExperimentalRole(), objectSource.getExperimentalRole())){
             CvTerm old = participantEvidenceToEnrich.getExperimentalRole();
             participantEvidenceToEnrich.setBiologicalRole(objectSource.getExperimentalRole());
@@ -67,22 +68,22 @@ public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity, F e
     }
 
     @Override
-    protected void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processInteractor(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processInteractor(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processFeatures(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processFeatures(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
+    public void processBiologicalRole(P objectToEnrich, P objectSource) throws EnricherException {
         this.minimalUpdater.processBiologicalRole(objectToEnrich, objectSource);
     }
 
     @Override
-    protected void processAliases(P objectToEnrich, P objectSource) {
+    public void processAliases(P objectToEnrich, P objectSource) {
         this.minimalUpdater.processAliases(objectToEnrich, objectSource);
     }
 
@@ -107,12 +108,12 @@ public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity, F e
     }
 
     @Override
-    public void setFeatureEnricher(FeatureEnricher<F> featureEnricher) {
+    public void setFeatureEnricher(FeatureEnricher<FeatureEvidence> featureEnricher) {
         this.minimalUpdater.setFeatureEnricher(featureEnricher);
     }
 
     @Override
-    public FeatureEnricher<F> getFeatureEnricher() {
+    public FeatureEnricher<FeatureEvidence> getFeatureEnricher() {
         return this.minimalUpdater.getFeatureEnricher();
     }
 
