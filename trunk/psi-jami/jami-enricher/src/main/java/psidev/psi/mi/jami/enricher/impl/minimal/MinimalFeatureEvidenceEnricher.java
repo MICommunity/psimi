@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.listener.FeatureEvidenceChangeListener;
@@ -10,7 +10,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Minimal enricher for feature evidence
+ * Provides minimal enrichment of feature evidence.
+ *
+ * - enrich minimal properties of feature. See MinimalFeatureEnricher
+ * - enrich detection methods if cv term enricher is not null
+ * - Ignore all other properties of a feature
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13

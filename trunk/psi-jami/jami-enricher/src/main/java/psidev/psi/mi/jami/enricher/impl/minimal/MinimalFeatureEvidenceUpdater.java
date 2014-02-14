@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
@@ -9,7 +9,11 @@ import psidev.psi.mi.jami.model.*;
 import java.util.Collection;
 
 /**
- * Minimal updater for feature evidence
+ * Provides minimal update of feature evidence.
+ *
+ * - update minimal properties of feature. See MinimalFeatureUpdater
+ * - update detection methods if cv term enricher is not null
+ * - Ignore all other properties of a feature
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
@@ -31,19 +35,9 @@ public class MinimalFeatureEvidenceUpdater extends MinimalFeatureEvidenceEnriche
     }
 
     @Override
-    protected void processMinimalUpdates(FeatureEvidence featureToEnrich) throws EnricherException {
-        this.minimalUpdater.processMinimalUpdates(featureToEnrich);
-    }
-
-    @Override
     protected void processDetectionMethods(FeatureEvidence featureToEnrich, FeatureEvidence source) throws EnricherException {
         mergeDetectionMethods(featureToEnrich, featureToEnrich.getDetectionMethods(), source.getDetectionMethods(), true);
         processDetectionMethods(featureToEnrich);
-    }
-
-    @Override
-    public void setFeaturesWithRangesToUpdate(Collection<FeatureEvidence> features) {
-        this.minimalUpdater.setFeaturesWithRangesToUpdate(features);
     }
 
     @Override
@@ -118,7 +112,7 @@ public class MinimalFeatureEvidenceUpdater extends MinimalFeatureEvidenceEnriche
 
     @Override
     public void onRemovedChecksum(Protein interactor, Checksum removed) {
-        super.onRemovedChecksum(interactor, removed);
+        this.minimalUpdater.onRemovedChecksum(interactor, removed);
     }
 
     @Override

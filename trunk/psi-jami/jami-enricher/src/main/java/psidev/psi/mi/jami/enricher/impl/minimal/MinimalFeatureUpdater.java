@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
@@ -11,7 +11,15 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimal update of feature.
+ *
+ * - update shortName if different
+ * - update fullName if different
+ * - enrich feature type with CvTerm enricher if not null. It will override existing feature type if different using DefaultCvTermComparator
+ * - enrich identifiers. Add missing identifiers (using DefaultXrefComparator) and remove identifiers not in the feature source
+ * - shift ranges if the protein sequence change
+ *
+ * - Ignore all other properties of a feature
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
