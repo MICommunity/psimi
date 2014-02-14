@@ -1,13 +1,20 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.MinimalCvTermUpdater;
 import psidev.psi.mi.jami.enricher.listener.OntologyTermEnricherListener;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
 /**
- * Minimal updater for ontology terms
+ * Provides minimal update of ontologYTerm.
+ *
+ * - update minimal properties of Cv Term. See description in MinimalCvTermUpdater
+ * - update children of a term. It will use DefaultCvTermComparator to compare children and add missing children and
+ * remove children that are not in fetched ontology term. It will enrich the children of the ontologyTerm but does not go deeper in the hierarchy
+ *
+ * It will ignore all other properties of an ontologyTerm
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -25,13 +32,7 @@ public class MinimalOntologyTermUpdater extends MinimalOntologyTermEnricher{
 
     @Override
     protected void processChildren(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
-        mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getParents(), cvTermFetched.getParents(), true, true);
-        enrichRelatedTerms(cvTermToEnrich.getParents());
-    }
-
-    @Override
-    protected void processParents(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException {
-        mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getChildren(), cvTermFetched.getChildren(), true, false);
+        mergeOntologyTerms(cvTermToEnrich, cvTermToEnrich.getParents(), cvTermFetched.getParents(), true);
         enrichRelatedTerms(cvTermToEnrich.getParents());
     }
 
