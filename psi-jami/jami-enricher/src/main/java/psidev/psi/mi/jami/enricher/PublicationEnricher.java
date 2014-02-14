@@ -7,8 +7,6 @@ import psidev.psi.mi.jami.model.Publication;
 /**
  * An enricher for publications which can enrich either a single publication or a collection.
  * It must be initiated with a fetcher.
- * Sub enrichers:
- * - Source enricher
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  31/07/13
@@ -20,8 +18,6 @@ public interface PublicationEnricher extends MIEnricher<Publication>{
      * @return  the current publication fetcher.
      */
     public PublicationFetcher getPublicationFetcher();
-
-    public SourceEnricher getSourceEnricher();
 
     /**
      * Gets the current publication listener

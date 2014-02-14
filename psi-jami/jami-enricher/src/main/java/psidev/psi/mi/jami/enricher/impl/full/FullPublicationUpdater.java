@@ -1,15 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
-import psidev.psi.mi.jami.enricher.SourceEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationUpdater;
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
-
-import java.util.Date;
 
 /**
  * Provides full update of Publication.
@@ -21,12 +17,6 @@ import java.util.Date;
  * - update publication journal. If the journal of the publication to enrich
  * is different from the journal of the fetched publication, it will override the journal
  * with the journal of the fetched publication
- *  - update released date. If the released date of the publication to enrich
- * is different from the released date of the fetched publication, it will override the released date
- * with the released date of the fetched publication
- * - update curation depth. If the curation depth of the publication to enrich
- * is different from the curation depth of the fetched publication, it will override the curation depth
- * with the curation depth of the fetched publication
  * - update xrefs (imex, etc.) of a publication. It will use DefaultXrefComparator to compare xrefs and add missing xrefs.
  * It will also remove xrefs that are not in the fetched publication
  * - update annotations of a publication. It will use DefaultAnnotationComparator to compare annotations and add missing annotations.
@@ -62,32 +52,6 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     }
 
     @Override
-    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
-        if ((publicationToEnrich.getCurationDepth() != null &&
-                publicationToEnrich.getCurationDepth().equals(fetched.getCurationDepth())
-        || (publicationToEnrich.getCurationDepth() == null && fetched.getCurationDepth() != null))){
-            CurationDepth old = publicationToEnrich.getCurationDepth();
-            publicationToEnrich.setCurationDepth(fetched.getCurationDepth());
-            if (getPublicationEnricherListener() != null){
-                getPublicationEnricherListener().onCurationDepthUpdate(publicationToEnrich, old);
-            }
-        }
-    }
-
-    @Override
-    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) {
-        if ((publicationToEnrich.getReleasedDate() != null &&
-                publicationToEnrich.getReleasedDate().equals(fetched.getReleasedDate())
-                || (publicationToEnrich.getReleasedDate() == null && fetched.getReleasedDate() != null))){
-            Date old = publicationToEnrich.getReleasedDate();
-            publicationToEnrich.setReleasedDate(fetched.getReleasedDate());
-            if (getPublicationEnricherListener() != null){
-                getPublicationEnricherListener().onReleaseDateUpdated(publicationToEnrich, old);
-            }
-        }
-    }
-
-    @Override
     protected void processJournal(Publication publicationToEnrich, Publication fetched) {
         if((fetched.getJournal() != null && !fetched.getJournal().equals(publicationToEnrich.getJournal()))
                 || (fetched.getJournal() == null && publicationToEnrich.getJournal() != null)) {
@@ -110,11 +74,6 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     }
 
     @Override
-    public void setSourceEnricher(SourceEnricher cvTermEnricher) {
-        this.minimalPublicationUpdater.setSourceEnricher(cvTermEnricher);
-    }
-
-    @Override
     public void setPublicationEnricherListener(PublicationEnricherListener listener) {
         this.minimalPublicationUpdater.setPublicationEnricherListener(listener);
     }
@@ -122,11 +81,6 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     @Override
     public PublicationFetcher getPublicationFetcher() {
         return this.minimalPublicationUpdater.getPublicationFetcher();
-    }
-
-    @Override
-    public SourceEnricher getSourceEnricher() {
-        return this.minimalPublicationUpdater.getSourceEnricher();
     }
 
     @Override

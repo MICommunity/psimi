@@ -15,10 +15,6 @@ import psidev.psi.mi.jami.model.Publication;
  * override any existing publication title
  * - enrich publication journal. It will only enrich the journal if it is not already set in the publication to enrich. It will not
  * override any existing journal
- *  - enrich released date. It will only enrich the released date if it is not already set in the publication to enrich. It will not
- * override any existing released date
- * - enrich curation depth. It will only enrich the curation depth if it is not already set in the publication to enrich. It will not
- * override any existing curation depth
  * - enrich xrefs (imex, etc.) of a publication. It will use DefaultXrefComparator to compare identifiers and add missing xrefs without
  * removing any existing xrefs.
  * - enrich annotations of a publication. It will use DefaultAnnotationComparator to compare annotations and add missing annotations without
