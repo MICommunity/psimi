@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher;
 
 import psidev.psi.mi.jami.enricher.listener.ExperimentEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 
 /**
@@ -12,34 +13,18 @@ import psidev.psi.mi.jami.model.Experiment;
  * @since  31/07/13
  */
 public interface ExperimentEnricher extends MIEnricher<Experiment>{
-    /**
-     * Sets the subEnricher for Organism. Can be null.
-     * @param organismEnricher    The CvTerm enricher to be used
-     */
-    public void setOrganismEnricher(OrganismEnricher organismEnricher);
 
     /**
      * Gets the subEnricher for Organisms. Can be null.
      * @return  The Organism enricher which is being used.
      */
     public OrganismEnricher getOrganismEnricher();
-    /**
-     * Sets the subEnricher for CvTerms. Can be null.
-     * @param cvTermEnricher    The CvTerm enricher to be used
-     */
-    public void setCvTermEnricher(CvTermEnricher cvTermEnricher);
 
     /**
      * Gets the subEnricher for CvTerms. Can be null.
      * @return  The CvTerm enricher which is being used.
      */
-    public CvTermEnricher getCvTermEnricher();
-
-    /**
-     * Gets the publications for organisms. Can be null.
-     * @param publicationEnricher   The organism enricher is being used.
-     */
-    public void setPublicationEnricher(PublicationEnricher publicationEnricher);
+    public CvTermEnricher<CvTerm> getCvTermEnricher();
 
     /**
      * Sets the subEnricher for publications. Can be null.
@@ -53,10 +38,4 @@ public interface ExperimentEnricher extends MIEnricher<Experiment>{
      * @return      The listener which is currently being used.
      */
     public ExperimentEnricherListener getExperimentEnricherListener();
-
-    /**
-     * Sets the ExperimentEnricherListener. Can be null.
-     * @param listener  The listener to be used.
-     */
-    public void setExperimentEnricherListener(ExperimentEnricherListener listener);
 }

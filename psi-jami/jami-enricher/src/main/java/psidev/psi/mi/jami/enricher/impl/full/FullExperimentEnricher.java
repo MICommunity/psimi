@@ -1,6 +1,7 @@
-package psidev.psi.mi.jami.enricher.impl;
+package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalExperimentEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.VariableParameter;
@@ -9,12 +10,18 @@ import psidev.psi.mi.jami.utils.comparator.experiment.DefaultVariableParameterCo
 import java.util.Iterator;
 
 /**
- * Maximal enricher for experiments
+ * Provides full enrichment of experiment.
+ *
+ * - enrich minimal properties of experiment. See MinimalExperimentEnricher
+ * - enrich xrefs
+ * - enrich annotations
+ * - enrich confidences
+ * - enrich variable parameters
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 13/08/13
  */
-public class FullExperimentEnricher extends MinimalExperimentEnricher{
+public class FullExperimentEnricher extends MinimalExperimentEnricher {
 
     public FullExperimentEnricher(){
         super();
