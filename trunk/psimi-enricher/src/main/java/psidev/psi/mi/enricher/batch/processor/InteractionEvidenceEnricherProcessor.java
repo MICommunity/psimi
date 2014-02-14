@@ -9,9 +9,7 @@ import org.springframework.util.Assert;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,7 +28,7 @@ public class InteractionEvidenceEnricherProcessor implements ItemProcessor<Inter
 
     private Resource errorResource;
     private Writer errorWriter;
-    private InteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> interactionEnricher;
+    private InteractionEnricher<InteractionEvidence> interactionEnricher;
 
     public InteractionEvidence process(InteractionEvidence item) throws Exception {
         if (this.interactionEnricher == null){
@@ -58,7 +56,7 @@ public class InteractionEvidenceEnricherProcessor implements ItemProcessor<Inter
         return item;
     }
 
-    public void setInteractionEnricher(InteractionEnricher<InteractionEvidence, ParticipantEvidence, FeatureEvidence> interactionEnricher) {
+    public void setInteractionEnricher(InteractionEnricher<InteractionEvidence> interactionEnricher) {
         this.interactionEnricher = interactionEnricher;
     }
 
