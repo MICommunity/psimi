@@ -136,7 +136,7 @@ public class BinaryLineParserTest {
         Assert.assertEquals(1, A.getAnnotations().size());
         Assert.assertEquals(AnnotationUtils.createAnnotation("caution", "test caution"), A.getAnnotations().iterator().next());
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxx4", A.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertEquals(0, A.getFeatures().size());
         Assert.assertNull(A.getStoichiometry());
 
@@ -163,7 +163,7 @@ public class BinaryLineParserTest {
         Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
         Assert.assertEquals(0, B.getAnnotations().size());
         Assert.assertEquals(1, B.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxxx2"), B.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxxx2", B.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertTrue(B.getFeatures().isEmpty());
         Assert.assertNull(B.getStoichiometry());
 
@@ -179,7 +179,7 @@ public class BinaryLineParserTest {
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
         Assert.assertEquals(1, binary.getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRigid("xxxx3"), binary.getChecksums().iterator().next());
+        Assert.assertEquals("xxxx3", ((Checksum)binary.getChecksums().iterator().next()).getValue());
 
         Interaction binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);
@@ -220,7 +220,7 @@ public class BinaryLineParserTest {
         Assert.assertEquals(1, A.getAnnotations().size());
         Assert.assertEquals(AnnotationUtils.createAnnotation("caution", "test caution"), A.getAnnotations().iterator().next());
         Assert.assertEquals(1, A.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxx4"), A.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxx4", A.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertEquals(1, A.getFeatures().size());
         DefaultMitabFeature f = (DefaultMitabFeature)A.getFeatures().iterator().next();
         Assert.assertEquals(new DefaultCvTerm("binding site"), f.getType());
@@ -258,7 +258,7 @@ public class BinaryLineParserTest {
         Assert.assertEquals(XrefUtils.createXref("interpro", "interpro:xxx"), B.getInteractor().getXrefs().iterator().next());
         Assert.assertEquals(0, B.getAnnotations().size());
         Assert.assertEquals(1, B.getInteractor().getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRogid("xxxx2"), B.getInteractor().getChecksums().iterator().next());
+        Assert.assertEquals("xxxx2", B.getInteractor().getChecksums().iterator().next().getValue());
         Assert.assertTrue(B.getFeatures().isEmpty());
         Assert.assertEquals(new DefaultStoichiometry(5), B.getStoichiometry());
 
@@ -275,7 +275,6 @@ public class BinaryLineParserTest {
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getCreatedDate());
         Assert.assertEquals(MitabUtils.DATE_FORMAT.parse("2008/03/30"), binary.getUpdatedDate());
         Assert.assertEquals(1, binary.getChecksums().size());
-        Assert.assertEquals(ChecksumUtils.createRigid("xxxx3"), binary.getChecksums().iterator().next());
 
         Interaction binary2 = parser.MitabLine();
         Assert.assertNotNull(binary2);
