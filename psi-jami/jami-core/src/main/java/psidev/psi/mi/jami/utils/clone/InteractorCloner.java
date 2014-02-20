@@ -70,6 +70,7 @@ public class InteractorCloner {
             target.setCreatedDate(source.getCreatedDate());
             target.setUpdatedDate(source.getUpdatedDate());
             target.setInteractionType(source.getInteractionType());
+            target.setEcoCode(source.getEcoCode());
 
             // copy collections
             target.getInteractionEvidences().clear();
