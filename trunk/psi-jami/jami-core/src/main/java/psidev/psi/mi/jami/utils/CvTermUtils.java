@@ -232,6 +232,15 @@ public class CvTermUtils {
         }
     }
 
+    public static CvTerm createECOCvTerm(String name, String ECO){
+        if (ECO != null){
+            return new DefaultCvTerm(name, new DefaultXref(new DefaultCvTerm(Complex.ECO, Complex.ECO_MI), ECO, new DefaultCvTerm(Xref.IDENTITY, Xref.IDENTITY_MI)));
+        }
+        else {
+            return new DefaultCvTerm(name);
+        }
+    }
+
     public static CvTerm createMODCvTerm(String name, String MOD){
         if (MOD != null){
             return new DefaultCvTerm(name, new DefaultXref(new DefaultCvTerm(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI), MOD, CvTermUtils.getIdentity()));
