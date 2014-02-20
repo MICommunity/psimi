@@ -28,6 +28,7 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     private AbstractXmlModelledInteraction modelledInteraction;
     private Organism organism;
     private CvTerm interactorType;
+    private CvTerm ecoCode;
 
     public XmlModelledInteractionComplexWrapper(AbstractXmlModelledInteraction modelled){
         if (modelled == null){
@@ -292,5 +293,15 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     @Override
     public String toString() {
         return this.modelledInteraction.toString();
+    }
+
+    @Override
+    public CvTerm getEcoCode() {
+        return this.ecoCode;
+    }
+
+    @Override
+    public void setEcoCode(CvTerm eco) {
+        this.ecoCode = eco;
     }
 }

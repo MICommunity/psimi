@@ -32,6 +32,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
     private Collection<ModelledParticipant> modelledParticipants;
+    private CvTerm ecoCode;
 
     public XmlInteractionEvidenceComplexWrapper(AbstractXmlInteractionEvidence interaction){
         if (interaction == null){
@@ -396,5 +397,15 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     @Override
     public String toString() {
         return this.interactionEvidence.toString();
+    }
+
+    @Override
+    public CvTerm getEcoCode() {
+        return this.ecoCode;
+    }
+
+    @Override
+    public void setEcoCode(CvTerm eco) {
+        this.ecoCode = eco;
     }
 }
