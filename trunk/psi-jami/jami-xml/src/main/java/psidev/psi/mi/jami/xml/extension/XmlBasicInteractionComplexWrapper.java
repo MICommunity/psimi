@@ -37,6 +37,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     private Source source;
     private Organism organism;
     private CvTerm interactorType;
+    private CvTerm ecoCode;
 
     public XmlBasicInteractionComplexWrapper(AbstractXmlBasicInteraction interaction){
         if (interaction == null){
@@ -309,6 +310,16 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
         if (name != null){
             this.interaction.getAliases().add(new XmlAlias(name, CvTermUtils.createMICvTerm(Alias.COMPLEX_SYSTEMATIC_NAME, Alias.COMPLEX_SYSTEMATIC_NAME_MI)));
         }
+    }
+
+    @Override
+    public CvTerm getEcoCode() {
+        return this.ecoCode;
+    }
+
+    @Override
+    public void setEcoCode(CvTerm eco) {
+        this.ecoCode = eco;
     }
 
     @Override
