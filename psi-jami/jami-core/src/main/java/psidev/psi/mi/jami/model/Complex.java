@@ -12,6 +12,8 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
 
     public static final String COMPLEX="complex";
     public static final String COMPLEX_MI="MI:0314";
+    public static final String ECO="evidence ontology";
+    public static final String ECO_MI="MI:1331";
 
     /**
      * The physical properties for this complex.
