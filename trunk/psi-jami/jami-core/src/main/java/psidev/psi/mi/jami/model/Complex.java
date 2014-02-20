@@ -61,4 +61,17 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * @param name
      */
     public void setSystematicName(String name);
+
+    /**
+     * The ECO (evidence code ontology) code for this complex. It can be null.
+     * Ex: ECO:0000021, physical interaction evidence
+     * @return the ECO code
+     */
+    public CvTerm getEcoCode();
+
+    /**
+     * Sets the ECO code of this complex
+     * @param eco
+     */
+    public void setEcoCode(CvTerm eco);
 }
