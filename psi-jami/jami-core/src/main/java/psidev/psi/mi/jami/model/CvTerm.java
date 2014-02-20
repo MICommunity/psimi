@@ -15,11 +15,11 @@ import java.util.Collection;
 
 public interface CvTerm {
 
-    public static String PSI_MI = "psi-mi";
-    public static String PSI_MI_MI = "MI:0488";
-    public static String PSI_MOD = "psi-mod";
-    public static String PSI_MOD_MI = "MI:0897";
-    public static String PSI_PAR = "psi-par";
+    public static final String PSI_MI = "psi-mi";
+    public static final String PSI_MI_MI = "MI:0488";
+    public static final String PSI_MOD = "psi-mod";
+    public static final String PSI_MOD_MI = "MI:0897";
+    public static final String PSI_PAR = "psi-par";
 
     /**
      * Short label of a controlled vocabulary. It cannot be null or empty.
