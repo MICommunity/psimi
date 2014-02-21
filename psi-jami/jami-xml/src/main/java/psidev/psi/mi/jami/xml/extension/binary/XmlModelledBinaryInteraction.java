@@ -21,6 +21,7 @@ public class XmlModelledBinaryInteraction extends AbstractXmlBinaryInteraction<M
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
+    private CvTerm evidenceType;
 
     public XmlModelledBinaryInteraction() {
     }
@@ -115,5 +116,13 @@ public class XmlModelledBinaryInteraction extends AbstractXmlBinaryInteraction<M
             initialiseCooperativeEffects();
         }
         return this.cooperativeEffects;
+    }
+
+    public CvTerm getEvidenceType() {
+        return evidenceType;
+    }
+
+    public void setEvidenceType(CvTerm evidenceType) {
+        this.evidenceType = evidenceType;
     }
 }

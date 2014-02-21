@@ -37,7 +37,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     private Source source;
     private Organism organism;
     private CvTerm interactorType;
-    private CvTerm ecoCode;
+    private CvTerm evidenceType;
 
     public XmlBasicInteractionComplexWrapper(AbstractXmlBasicInteraction interaction){
         if (interaction == null){
@@ -313,13 +313,13 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     }
 
     @Override
-    public CvTerm getEcoCode() {
-        return this.ecoCode;
+    public CvTerm getEvidenceType() {
+        return this.evidenceType;
     }
 
     @Override
-    public void setEcoCode(CvTerm eco) {
-        this.ecoCode = eco;
+    public void setEvidenceType(CvTerm eco) {
+        this.evidenceType = eco;
     }
 
     @Override

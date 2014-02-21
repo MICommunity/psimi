@@ -32,6 +32,7 @@ public abstract class AbstractXmlModelledInteraction extends AbstractXmlInteract
     private JAXBConfidenceWrapper jaxbConfidenceWrapper;
     private JAXBParameterWrapper jaxbParameterWrapper;
     private JAXBExperimentWrapper jaxbExperimentWrapper;
+    private CvTerm evidenceType;
 
     public AbstractXmlModelledInteraction() {
         super();
@@ -140,6 +141,14 @@ public abstract class AbstractXmlModelledInteraction extends AbstractXmlInteract
 
     public void setJAXBExperimentWrapper(JAXBExperimentWrapper value) {
         this.jaxbExperimentWrapper = value;
+    }
+
+    public CvTerm getEvidenceType() {
+        return this.evidenceType;
+    }
+
+    public void setEvidenceType(CvTerm evidenceType) {
+        this.evidenceType = evidenceType;
     }
 
     @Override
