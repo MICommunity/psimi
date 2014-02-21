@@ -70,7 +70,7 @@ public class InteractorCloner {
             target.setCreatedDate(source.getCreatedDate());
             target.setUpdatedDate(source.getUpdatedDate());
             target.setInteractionType(source.getInteractionType());
-            target.setEcoCode(source.getEcoCode());
+            target.setEvidenceType(source.getEvidenceType());
 
             // copy collections
             target.getInteractionEvidences().clear();
@@ -142,6 +142,7 @@ public class InteractorCloner {
             if (source.getShortName() != null){
                 target.setShortName(source.getShortName());
             }
+            target.setEvidenceType(source.getEvidenceType());
 
             // copy collections
             target.getAnnotations().clear();

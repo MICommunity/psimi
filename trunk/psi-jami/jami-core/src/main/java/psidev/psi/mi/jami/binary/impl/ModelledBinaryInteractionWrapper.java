@@ -37,6 +37,14 @@ public class ModelledBinaryInteractionWrapper extends AbstractBinaryInteractionW
         getWrappedInteraction().setSource(source);
     }
 
+    public CvTerm getEvidenceType() {
+        return getWrappedInteraction().getEvidenceType();
+    }
+
+    public void setEvidenceType(CvTerm eco) {
+        getWrappedInteraction().setEvidenceType(eco);
+    }
+
     public Collection<ModelledConfidence> getModelledConfidences() {
         return getWrappedInteraction().getModelledConfidences();
     }

@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.listener.ModelledInteractionChangeListener;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * This listener will just complex change events
@@ -17,7 +16,6 @@ import java.util.logging.Logger;
 
 public class ComplexChangeLogger extends InteractorChangeLogger<Complex> implements ComplexChangeListener {
 
-    private static final Logger complexChangeLogger = Logger.getLogger("ComplexChangeLogger");
     private ModelledInteractionChangeListener<Complex> delegate;
 
     public ComplexChangeLogger() {
@@ -42,6 +40,10 @@ public class ComplexChangeLogger extends InteractorChangeLogger<Complex> impleme
 
     public void onSourceUpdate(Complex interaction, Source oldSource) {
         this.delegate.onSourceUpdate(interaction, oldSource);
+    }
+
+    public void onEvidenceTypeUpdate(Complex interaction, CvTerm oldType) {
+         this.delegate.onEvidenceTypeUpdate(interaction, oldType);
     }
 
     public void onAddedConfidence(Complex o, Confidence added) {

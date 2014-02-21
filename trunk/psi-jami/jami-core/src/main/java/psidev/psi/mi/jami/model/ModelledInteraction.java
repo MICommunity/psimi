@@ -12,6 +12,9 @@ import java.util.Collection;
 
 public interface ModelledInteraction extends Interaction<ModelledParticipant>{
 
+    public static final String ECO="evidence ontology";
+    public static final String ECO_MI="MI:1331";
+
     /**
      * Interaction evidences supporting this modelled interaction.
      * The collection cannot be null. If the modelled interaction does not have experimental interactions attached to it, the method should return an empty set
@@ -57,4 +60,17 @@ public interface ModelledInteraction extends Interaction<ModelledParticipant>{
      * @return the collection of cooperative effects for this modelled interaction
      */
     public <C extends CooperativeEffect> Collection<C> getCooperativeEffects();
+
+    /**
+     * The evidence type for this modelled interactions. Usually this Cv term is ECO (evidence code ontology) code. It can be null.
+     * Ex: ECO:0000021, physical interaction evidence
+     * @return the evidence type
+     */
+    public CvTerm getEvidenceType();
+
+    /**
+     * Sets the evidence type
+     * @param eco
+     */
+    public void setEvidenceType(CvTerm eco);
 }
