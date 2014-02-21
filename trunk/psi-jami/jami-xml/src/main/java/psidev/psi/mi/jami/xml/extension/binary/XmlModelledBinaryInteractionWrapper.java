@@ -266,6 +266,16 @@ public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryIntera
     }
 
     @Override
+    public CvTerm getEvidenceType() {
+        return this.wrappedInteraction.getEvidenceType();
+    }
+
+    @Override
+    public void setEvidenceType(CvTerm eco) {
+        this.wrappedInteraction.setEvidenceType(eco);
+    }
+
+    @Override
     public Collection<ModelledConfidence> getModelledConfidences() {
         return this.wrappedInteraction.getModelledConfidences();
     }
