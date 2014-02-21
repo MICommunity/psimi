@@ -58,6 +58,7 @@ public class FullComplexEnricher extends FullModelledInteractionEnricher<Complex
 
         //ALIASES
         this.interactorEnricher.processAliases(objectToEnrich, objectSource);
+
     }
 
     public InteractorFetcher<Complex> getInteractorFetcher() {

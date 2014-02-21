@@ -71,6 +71,14 @@ public class ModelledInteractionEnricherListenerManager<I extends ModelledIntera
         }
     }
 
+    public void onEvidenceTypeUpdate(I interaction, CvTerm oldType) {
+        for (InteractionEnricherListener listener : getListenersList()){
+            if (listener instanceof ModelledInteractionEnricherListener){
+                ((ModelledInteractionEnricherListener)listener).onEvidenceTypeUpdate(interaction, oldType);
+            }
+        }
+    }
+
     public void onAddedConfidence(I o, Confidence added) {
         for (InteractionEnricherListener listener : getListenersList()){
             if (listener instanceof ModelledInteractionEnricherListener){
