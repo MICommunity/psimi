@@ -46,7 +46,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     private Alias recommendedName;
     private Alias systematicName;
 
-    private CvTerm ecoCode;
+    private CvTerm evidenceType;
 
     public DefaultComplex(String name, CvTerm interactorType) {
         super(name, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType());
@@ -363,12 +363,12 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         }
     }
 
-    public CvTerm getEcoCode() {
-        return this.ecoCode;
+    public CvTerm getEvidenceType() {
+        return this.evidenceType;
     }
 
-    public void setEcoCode(CvTerm eco) {
-        this.ecoCode = eco;
+    public void setEvidenceType(CvTerm eco) {
+        this.evidenceType = eco;
     }
 
     protected void processAddedAnnotationEvent(Annotation added) {

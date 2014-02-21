@@ -12,8 +12,6 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
 
     public static final String COMPLEX="complex";
     public static final String COMPLEX_MI="MI:0314";
-    public static final String ECO="evidence ontology";
-    public static final String ECO_MI="MI:1331";
 
     /**
      * The physical properties for this complex.
@@ -63,17 +61,4 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * @param name
      */
     public void setSystematicName(String name);
-
-    /**
-     * The ECO (evidence code ontology) code for this complex. It can be null.
-     * Ex: ECO:0000021, physical interaction evidence
-     * @return the ECO code
-     */
-    public CvTerm getEcoCode();
-
-    /**
-     * Sets the ECO code of this complex
-     * @param eco
-     */
-    public void setEcoCode(CvTerm eco);
 }

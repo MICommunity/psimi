@@ -34,6 +34,7 @@ public class DefaultModelledInteraction extends AbstractInteraction<ModelledPart
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
+    private CvTerm evidenceType;
 
     public DefaultModelledInteraction() {
         super();
@@ -143,5 +144,13 @@ public class DefaultModelledInteraction extends AbstractInteraction<ModelledPart
             initialiseCooperativeEffects();
         }
         return this.cooperativeEffects;
+    }
+
+    public CvTerm getEvidenceType() {
+        return this.evidenceType;
+    }
+
+    public void setEvidenceType(CvTerm eco) {
+        this.evidenceType = eco;
     }
 }

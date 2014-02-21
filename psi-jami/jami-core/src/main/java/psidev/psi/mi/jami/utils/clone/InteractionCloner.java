@@ -91,6 +91,7 @@ public class InteractionCloner {
             target.setShortName(source.getShortName());
             target.setInteractionType(source.getInteractionType());
             target.setUpdatedDate(source.getUpdatedDate());
+            target.setEvidenceType(source.getEvidenceType());
 
             // copy collections
             target.getAnnotations().clear();

@@ -22,6 +22,7 @@ public class DefaultModelledBinaryInteraction extends AbstractBinaryInteraction<
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
+    private CvTerm evidenceCode;
 
     public DefaultModelledBinaryInteraction() {
         super();
@@ -132,6 +133,14 @@ public class DefaultModelledBinaryInteraction extends AbstractBinaryInteraction<
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public CvTerm getEvidenceType() {
+        return this.evidenceCode;
+    }
+
+    public void setEvidenceType(CvTerm eco) {
+        this.evidenceCode = eco;
     }
 
     public Collection<ModelledConfidence> getModelledConfidences() {
