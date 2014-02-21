@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.writer.InteractionEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
@@ -79,6 +78,11 @@ public class ModelledInteractionEnricherStatisticsWriter<I extends ModelledInter
     }
 
     public void onSourceUpdate(I interaction, Source oldSource) {
+        checkObject(interaction);
+        incrementUpdateCount();
+    }
+
+    public void onEvidenceTypeUpdate(I interaction, CvTerm oldType) {
         checkObject(interaction);
         incrementUpdateCount();
     }

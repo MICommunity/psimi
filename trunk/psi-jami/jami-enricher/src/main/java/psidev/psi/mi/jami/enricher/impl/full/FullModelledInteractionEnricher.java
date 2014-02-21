@@ -48,6 +48,16 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
         // process interaction evidences
         processInteractionEvidences(interactionToEnrich);
 
+        // process evidence type
+        processEvidenceType(interactionToEnrich);
+
+    }
+
+    protected void processEvidenceType(I interactionToEnrich) throws EnricherException {
+
+        if (interactionToEnrich.getEvidenceType() != null && getCvTermEnricher() != null){
+            getCvTermEnricher().enrich(interactionToEnrich.getEvidenceType());
+        }
     }
 
     @Override
@@ -56,6 +66,8 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
 
         this.interactionEnricher.processOtherProperties(objectToEnrich, objectSource);
 
+        // evidence code
+        processEvidenceType(objectToEnrich, objectSource);
         // confidences
         processConfidences(objectToEnrich, objectSource);
         // parameters
@@ -64,6 +76,17 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
         processCooperativeEffects(objectToEnrich, objectSource);
         // interactionEvidences
         processInteractionEvidences(objectToEnrich, objectSource);
+    }
+
+    protected void processEvidenceType(I objectToEnrich, I objectSource) throws EnricherException {
+
+        if (objectSource.getEvidenceType() != null && objectToEnrich.getEvidenceType() == null){
+            objectSource.setEvidenceType(objectToEnrich.getEvidenceType());
+            if (getInteractionEnricherListener() instanceof ModelledInteractionEnricherListener){
+                ((ModelledInteractionEnricherListener)getInteractionEnricherListener()).onEvidenceTypeUpdate(objectToEnrich, null);
+            }
+        }
+        processEvidenceType(objectToEnrich);
     }
 
     @Override

@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.enricher.ModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
@@ -62,5 +63,22 @@ public class FullModelledInteractionUpdater<I extends ModelledInteraction> exten
         }
 
         processSource(objectToEnrich);
+    }
+
+    @Override
+    protected void processEvidenceType(I objectToEnrich, I objectSource) throws EnricherException {
+        if (!DefaultCvTermComparator.areEquals(objectSource.getEvidenceType(), objectToEnrich.getEvidenceType())){
+            CvTerm old = objectToEnrich.getEvidenceType();
+            objectToEnrich.setEvidenceType(objectSource.getEvidenceType());
+            if (getInteractionEnricherListener() instanceof ModelledInteractionEnricher){
+                ((ModelledInteractionEnricherListener)getInteractionEnricherListener()).onEvidenceTypeUpdate(objectToEnrich, old);
+            }
+        }
+        else if (getCvTermEnricher() != null
+                && objectToEnrich.getEvidenceType() != objectSource.getEvidenceType()){
+            getCvTermEnricher().enrich(objectToEnrich.getEvidenceType(), objectSource.getEvidenceType());
+        }
+
+        processEvidenceType(objectToEnrich);
     }
 }
