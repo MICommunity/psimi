@@ -13,17 +13,11 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface InteractorStream extends MIDataSource {
+public interface InteractorStream<T extends Interactor> extends MIDataSource {
 
     /**
      * The interactors iterator for this datasource.
      * @return iterator of interactors for a given datasource
      */
-    public Iterator<Interactor> getInteractorsIterator() throws MIIOException;
-
-    public Iterator<Protein> getProteinsIterator() throws MIIOException;
-    public Iterator<NucleicAcid> getNucleicAcidsIterator() throws MIIOException;
-    public Iterator<Gene> getGenesIterator() throws MIIOException;
-    public Iterator<BioactiveEntity> getBioactiveEntitiesIterator() throws MIIOException;
-    public Iterator<Complex> getComplexesIterator() throws MIIOException;
+    public Iterator<T> getInteractorsIterator() throws MIIOException;
 }
