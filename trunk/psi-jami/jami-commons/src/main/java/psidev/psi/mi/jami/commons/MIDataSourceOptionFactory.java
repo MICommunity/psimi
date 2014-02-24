@@ -245,7 +245,7 @@ public class MIDataSourceOptionFactory {
     public Map<String, Object> getOptions(MIFileType type, InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
-        options.put(MIFileDataSourceOptions.INPUT_FORMAT_OPTION_KEY, type.toString());
+        options.put(MIFileDataSourceOptions.INPUT_TYPE_OPTION_KEY, type.toString());
         options.put(MIDataSourceOptions.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
         options.put(MIFileDataSourceOptions.STREAMING_OPTION_KEY, streaming);
         if (listener != null){
