@@ -31,4 +31,12 @@ public class MIDataSourceOptions {
      * If this option is not provided, it will be true by default
      */
     public static final String STREAMING_OPTION_KEY = "streaming_key";
+
+    /**
+     * The input type (for instance psi25_xml, mitab).
+     * It must be a String.
+     * This option must always be provided to the MIDataSourceFactory to select the adapted datasource implementation
+     * that can read the datasource.
+     */
+    public static final String INPUT_TYPE_OPTION_KEY = "input_format_key";
 }

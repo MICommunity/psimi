@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import java.util.Map;
 
 /**
- * A molecular interaction  DataSource.
+ * A data Source in JAMI.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

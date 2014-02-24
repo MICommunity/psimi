@@ -25,11 +25,4 @@ public class MIFileDataSourceOptions extends MIDataSourceOptions{
      */
     public static final String PARSER_LISTENER_OPTION_KEY = "parser_listener_key";
 
-    /**
-     * The file format (for instance psi25_xml, mitab).
-     * It must be a String.
-     * This option must always be provided to the MIDataSourceFactory to select the adapted datasource implementation
-     * that can parse the file.
-     */
-    public static final String INPUT_FORMAT_OPTION_KEY = "input_format_key";
 }
