@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.factory;
 
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.MIDataSource;
-import psidev.psi.mi.jami.datasource.MIFileDataSource;
 import psidev.psi.mi.jami.model.Interaction;
 
 import java.util.Map;
@@ -78,7 +77,7 @@ public class MIDataSourceFactory {
      * @param supportedOptions
      * @return
      */
-    public void registerDataSource(Class<? extends MIFileDataSource> dataSourceClass, Map<String,Object> supportedOptions){
+    public void registerDataSource(Class<? extends MIDataSource> dataSourceClass, Map<String,Object> supportedOptions){
         if (dataSourceClass == null){
             throw new IllegalArgumentException("Cannot register a MIDataSource without a dataSourceClass");
         }
@@ -90,7 +89,7 @@ public class MIDataSourceFactory {
      * Remove the dataSource from this factory
      * @param dataSourceClass
      */
-    public void removeDataSource(Class<? extends MIFileDataSource> dataSourceClass){
+    public void removeDataSource(Class<? extends MIDataSource> dataSourceClass){
         registeredDataSources.remove(dataSourceClass);
     }
 
