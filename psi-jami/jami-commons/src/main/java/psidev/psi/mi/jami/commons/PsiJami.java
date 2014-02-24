@@ -362,7 +362,7 @@ public class PsiJami {
 
     private static Map<String, Object> createDataSourceOptions(String inputFormat, boolean streaming, InteractionObjectCategory objectCategory) {
         Map<String, Object> supportedOptions1 = new HashMap<String, Object>(7);
-        supportedOptions1.put(MIFileDataSourceOptions.INPUT_FORMAT_OPTION_KEY, inputFormat);
+        supportedOptions1.put(MIFileDataSourceOptions.INPUT_TYPE_OPTION_KEY, inputFormat);
         supportedOptions1.put(MIFileDataSourceOptions.STREAMING_OPTION_KEY, streaming);
         supportedOptions1.put(MIFileDataSourceOptions.INTERACTION_OBJECT_OPTION_KEY, objectCategory);
         supportedOptions1.put(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY, null);
