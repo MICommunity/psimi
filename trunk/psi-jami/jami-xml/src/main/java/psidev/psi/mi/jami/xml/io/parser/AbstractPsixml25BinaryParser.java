@@ -95,6 +95,7 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
 
     public void setExpansionMethod(ComplexExpansionMethod<T, B> expansionMethod) {
         this.expansionMethod = expansionMethod;
+        this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
     }
 
     public void setCacheOfObjects(PsiXml25IdCache indexOfObjects) {
