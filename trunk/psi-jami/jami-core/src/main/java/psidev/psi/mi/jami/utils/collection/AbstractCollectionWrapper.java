@@ -20,7 +20,9 @@ public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
         if (list == null){
             this.wrappedList = new ArrayList<T>();
         }
-        this.wrappedList = list;
+        else{
+            this.wrappedList = list;
+        }
     }
 
     public int size() {
