@@ -659,7 +659,12 @@
             </xs:element>
             <xs:element name="interactionDependencyType" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>Describes the impact of the feature on the interaction or vice-versa. (Ex: resulting-ptm, prerequisite-ptm,...)</xs:documentation>
+                    <xs:documentation>Describes the impact of the interaction on the feature. (Ex: resulting-ptm, ...)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="interactionEffectType" type="mif:cvType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Describes the impact of the feature on the interaction. (Ex: prerequisite-ptm,...)</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
@@ -1018,6 +1023,17 @@
                     <xs:documentation>The interactor type if the interaction is used as a participant of another interaction.</xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element name="evidenceType" type="mif:cvType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>External controlled vocabulary characterising the evidence type,
+                        for example "physical interaction evidence, inferred from literature".</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="causalRelationshipList" type="mif:causalRelationshipList" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>A list of causal relationships involving participants in this interaction</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="cooperativeEffectList" type="mif:cooperativeEffectList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>A list of cooperative effects this interaction has on subsequent interactions, either through an allosteric or pre-assembly effect.</xs:documentation>
@@ -1086,6 +1102,12 @@
                         for example "physical interaction".</xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element name="evidenceType" type="mif:cvType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>External controlled vocabulary characterising the evidence type,
+                        for example "physical interaction evidence, inferred from literature".</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="intraMolecular" type="xs:boolean" default="false" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>If true, this interaction is an intramolecular interaction, e.g. an autophosphorylation. If missing, this element is assumed to be false.</xs:documentation>
@@ -1103,6 +1125,11 @@
             </xs:element>
             <xs:element name="confidenceList" type="mif:modelledConfidenceList" minOccurs="0"/>
             <xs:element name="parameterList" type="mif:modelledParameterList" minOccurs="0"/>
+            <xs:element name="causalRelationshipList" type="mif:causalRelationshipList" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>A list of causal relationships involving participants in this interaction</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="cooperativeEffectList" type="mif:cooperativeEffectList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>A list of cooperative effects this interaction has on subsequent interactions, either through an allosteric or pre-assembly effect.</xs:documentation>
@@ -1113,6 +1140,140 @@
         <xs:attribute name="id" type="xs:int" use="required">
             <xs:annotation>
                 <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated, though, e.g. in the denormalised representation.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="causalRelationshipList">
+        <xs:annotation>
+            <xs:documentation>A list of causal relationships involving participants in a specific interaction.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="causalRelationship" type="mif:causalRelationship" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>The causal relationship: participant source -> causality statement -> participant target.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="causalRelationship">
+        <xs:annotation>
+            <xs:documentation>The causal relationship: participant source -> causality statement -> participant target..</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="participantSourceRef" type="xs:int" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Refers to the participant that is the source of the causality statement.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="causalityStatement" type="mif:cvType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="participantTargetRef" type="xs:int" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Refers to the participant that is the target of the causality statement.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="causalRelationshipBis">
+        <xs:annotation>
+            <xs:documentation>The causal relationship: participant source -> causality statement -> participant target..</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="participantSourceRef" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Refers to the participant that is the source of the causality statement.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="causalityStatement" use="required">
+            <xs:annotation>
+                <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="causalityStatementAc" use="required">
+            <xs:annotation>
+                <xs:documentation>The causality statement MI identifier. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="participantTargetRef" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Refers to the participant that is the target of the causality statement.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="causalRelationshipList2">
+        <xs:annotation>
+            <xs:documentation>A list of causal relationships involving a specific participant in a specific interaction.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="causalRelationship" type="mif:causalRelationship2" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>The causal relationship: causality statement -> participant target.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="causalRelationship2">
+        <xs:annotation>
+            <xs:documentation>The causal relationship: causality statement -> participant target..</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="causalityStatement" type="mif:cvType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="participantTargetRef" type="xs:int" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Refers to the participant that is the target of the causality statement.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="causalRelationshipBis2">
+        <xs:annotation>
+            <xs:documentation>The causal relationship: causality statement -> participant target..</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="causalityStatement" use="required">
+            <xs:annotation>
+                <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="causalityStatementAc" use="required">
+            <xs:annotation>
+                <xs:documentation>The causality statement MI identifier. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="participantTargetRef" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Refers to the participant that is the target of the causality statement.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -1302,6 +1463,11 @@
                 </xs:annotation>
             </xs:element>
             <xs:element name="featureList" type="mif:modelledFeatureList" minOccurs="0"/>
+            <xs:element name="causalRelationshipList" type="mif:causalRelationshipList2" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>A list of causal relationships involving this participant in this interaction</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
@@ -1351,6 +1517,56 @@
         </xs:annotation>
         <xs:sequence>
             <xs:element name="participant" type="mif:participant" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="participantList2">
+        <xs:annotation>
+            <xs:documentation>A list of molecules participating in this interaction. An interaction has one
+                (intramolecular), two (binary), or more (n-ary, complexes) participants.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="participant" type="mif:participant"/>
+                <xs:element name="participantSet" type="mif:participantSet"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="participantSet">
+        <xs:annotation>
+            <xs:documentation>Describes a set of molecules that can interact and each of them has different participant properties such as features, stoichiometry, etc.. It is not an interaction because the interactors defined in the interactorSet
+                are not interacting with each other.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="participantSetType" type="mif:cvType">
+                <xs:annotation>
+                    <xs:documentation>The type of the interactorSet, e.g. open set. This element is controlled by the PSI-MI controlled vocabulary.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="participantCandidateList" type="mif:participantCandidateList">
+                <xs:annotation>
+                    <xs:documentation>List of participant candidates.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Allows semi-structured additional annotation of the participantSet.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="participantCandidateList">
+        <xs:annotation>
+            <xs:documentation>A set of participants/entities that are not interacting with each other but either of them can interact with another molecule and have their own properties.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="participant" type="mif:participant" maxOccurs="unbounded" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Participant candidate
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 
@@ -1668,6 +1884,11 @@
                 </xs:annotation>
             </xs:element>
             <xs:element name="parameterList" type="mif:parameterList" minOccurs="0"/>
+            <xs:element name="causalRelationshipList" type="mif:causalRelationshipList2" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>A list of causal relationships involving this participant in this interaction</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
