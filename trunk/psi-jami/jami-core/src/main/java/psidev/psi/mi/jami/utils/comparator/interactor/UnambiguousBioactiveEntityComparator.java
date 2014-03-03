@@ -50,7 +50,7 @@ public class UnambiguousBioactiveEntityComparator implements Comparator<Bioactiv
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (bioactiveEntity1 == null && bioactiveEntity2 == null){
+        if (bioactiveEntity1 == bioactiveEntity2){
             return EQUAL;
         }
         else if (bioactiveEntity1 == null){

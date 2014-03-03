@@ -25,7 +25,7 @@ public class DefaultExactInteractorBaseComparator {
      * @return true if the two interactors are equal
      */
     public static boolean areEquals(Interactor interactor1, Interactor interactor2){
-        if (interactor1 == null && interactor2 == null){
+        if (interactor1 == interactor2){
             return true;
         }
         else if (interactor1 == null || interactor2 == null){

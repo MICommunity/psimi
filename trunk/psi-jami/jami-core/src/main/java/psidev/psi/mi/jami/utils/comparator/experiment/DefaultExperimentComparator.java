@@ -32,7 +32,7 @@ public class DefaultExperimentComparator {
      * @return true if the two experiment are equal
      */
     public static boolean areEquals(Experiment experiment1, Experiment experiment2){
-        if (experiment1 == null && experiment2 == null){
+        if (experiment1 == experiment2){
             return true;
         }
         else if (experiment1 == null || experiment2 == null){

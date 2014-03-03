@@ -26,7 +26,7 @@ public class DefaultExactBioactiveEntityComparator {
      * @return true if the two bioactive entities are equal
      */
     public static boolean areEquals(BioactiveEntity bioactiveEntity1, BioactiveEntity bioactiveEntity2){
-        if (bioactiveEntity1 == null && bioactiveEntity2 == null){
+        if (bioactiveEntity1 == bioactiveEntity2){
             return true;
         }
         else if (bioactiveEntity1 == null || bioactiveEntity2 == null){

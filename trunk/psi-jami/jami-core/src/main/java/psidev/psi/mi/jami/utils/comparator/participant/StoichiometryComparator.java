@@ -28,7 +28,7 @@ public class StoichiometryComparator implements Comparator<Stoichiometry> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (stoichiometry1 == null && stoichiometry2 == null){
+        if (stoichiometry1 == stoichiometry2){
             return EQUAL;
         }
         else if (stoichiometry1 == null){

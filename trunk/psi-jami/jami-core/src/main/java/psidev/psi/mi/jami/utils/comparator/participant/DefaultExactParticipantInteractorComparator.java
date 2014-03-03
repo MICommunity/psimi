@@ -24,7 +24,7 @@ public class DefaultExactParticipantInteractorComparator {
      */
     public static boolean areEquals(Entity participant1, Entity participant2){
 
-        if (participant1 == null && participant2 == null){
+        if (participant1 == participant2){
             return true;
         }
         else if (participant1 == null || participant2 == null){

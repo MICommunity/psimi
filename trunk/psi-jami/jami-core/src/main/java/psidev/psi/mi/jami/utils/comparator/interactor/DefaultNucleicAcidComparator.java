@@ -22,7 +22,7 @@ public class DefaultNucleicAcidComparator {
      * @return true if the two nucleic acids are equal
      */
     public static boolean areEquals(NucleicAcid nucleicAcid1, NucleicAcid nucleicAcid2){
-        if (nucleicAcid1 == null && nucleicAcid2 == null){
+        if (nucleicAcid1 == nucleicAcid2){
             return true;
         }
         else if (nucleicAcid1 == null || nucleicAcid2 == null){

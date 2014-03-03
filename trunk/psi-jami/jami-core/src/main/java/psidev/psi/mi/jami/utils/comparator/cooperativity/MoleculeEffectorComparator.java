@@ -43,8 +43,8 @@ public class MoleculeEffectorComparator implements Comparator<MoleculeEffector>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (moleculeEffector1 == null && moleculeEffector2 == null){
-            return EQUAL;
+        if (moleculeEffector1 == moleculeEffector2){
+            return 0;
         }
         else if (moleculeEffector1 == null){
             return AFTER;

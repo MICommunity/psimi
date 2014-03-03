@@ -54,7 +54,7 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (causalRelationship1 == null && causalRelationship2 == null){
+        if (causalRelationship1 == causalRelationship2){
             return EQUAL;
         }
         else if (causalRelationship1 == null){

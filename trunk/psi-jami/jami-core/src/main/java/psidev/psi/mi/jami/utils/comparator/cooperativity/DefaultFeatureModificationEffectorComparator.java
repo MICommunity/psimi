@@ -23,7 +23,7 @@ public class DefaultFeatureModificationEffectorComparator {
      * @return true if the two FeatureModificationEffector are equal
      */
     public static boolean areEquals(FeatureModificationEffector featureModificationEffector1, FeatureModificationEffector featureModificationEffector2){
-        if (featureModificationEffector1 == null && featureModificationEffector2 == null){
+        if (featureModificationEffector1 == featureModificationEffector2){
             return true;
         }
         else if (featureModificationEffector1 == null || featureModificationEffector2 == null){

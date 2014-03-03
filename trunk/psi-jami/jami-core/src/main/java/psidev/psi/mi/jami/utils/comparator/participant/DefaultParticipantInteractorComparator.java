@@ -23,7 +23,7 @@ public class DefaultParticipantInteractorComparator {
      * @return true if the two participants are equal
      */
     public static boolean areEquals(Entity participant1, Entity participant2){
-        if (participant1 == null && participant2 == null){
+        if (participant1 == participant2){
             return true;
         }
         else if (participant1 == null || participant2 == null){

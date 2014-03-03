@@ -51,7 +51,7 @@ public class UnambiguousGeneComparator implements Comparator<Gene> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (gene1 == null && gene2 == null){
+        if (gene1 == gene2){
             return EQUAL;
         }
         else if (gene1 == null){

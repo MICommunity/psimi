@@ -32,7 +32,7 @@ public class DefaultExactComplexComparator {
      * @return true if the two complexes are equal
      */
     public static boolean areEquals(Complex complex1, Complex complex2){
-        if (complex1 == null && complex2 == null){
+        if (complex1 == complex2){
             return true;
         }
         else if (complex1 == null || complex2 == null){

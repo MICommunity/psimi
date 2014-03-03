@@ -63,7 +63,7 @@ public class UnambiguousInteractorBaseComparator implements Comparator<Interacto
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (interactor1 == null && interactor2 == null){
+        if (interactor1 == interactor2){
             return EQUAL;
         }
         else if (interactor1 == null){

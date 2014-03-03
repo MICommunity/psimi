@@ -23,7 +23,7 @@ public class DefaultExactGeneComparator {
      * @return true if the two genes are equal
      */
     public static boolean areEquals(Gene gene1, Gene gene2){
-        if (gene1 == null && gene2 == null){
+        if (gene1 == gene2){
             return true;
         }
         else if (gene1 == null || gene2 == null){

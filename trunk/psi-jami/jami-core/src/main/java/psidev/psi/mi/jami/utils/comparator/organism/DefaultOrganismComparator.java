@@ -27,7 +27,7 @@ public class DefaultOrganismComparator {
      */
     public static boolean areEquals(Organism organism1, Organism organism2){
 
-        if (organism1 == null && organism2 == null){
+        if (organism1 == organism2){
             return true;
         }
         else if (organism1 == null || organism2 == null){

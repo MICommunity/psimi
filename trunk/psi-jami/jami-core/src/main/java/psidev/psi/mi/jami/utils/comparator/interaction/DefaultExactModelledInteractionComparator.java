@@ -31,7 +31,7 @@ public class DefaultExactModelledInteractionComparator {
      * @return true if the two modelled interactions are equal
      */
     public static boolean areEquals(ModelledInteraction interaction1, ModelledInteraction interaction2){
-        if (interaction1 == null && interaction2 == null){
+        if (interaction1 == interaction2){
             return true;
         }
         else if (interaction1 == null || interaction2 == null){

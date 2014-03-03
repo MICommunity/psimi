@@ -23,7 +23,7 @@ public class DefaultExactMoleculeEffectorComparator {
      * @return true if the two moleculeEffectors are equal
      */
     public static boolean areEquals(MoleculeEffector moleculeEffector1, MoleculeEffector moleculeEffector2){
-        if (moleculeEffector1 == null && moleculeEffector2 == null){
+        if (moleculeEffector1 == moleculeEffector2){
             return true;
         }
         else if (moleculeEffector1 == null || moleculeEffector2 == null){

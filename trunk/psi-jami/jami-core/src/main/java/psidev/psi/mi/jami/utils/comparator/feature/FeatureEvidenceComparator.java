@@ -59,8 +59,8 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (experimentalFeature1 == null && experimentalFeature2 == null){
-            return EQUAL;
+        if (experimentalFeature1 == experimentalFeature2){
+            return 0;
         }
         else if (experimentalFeature1 == null){
             return AFTER;

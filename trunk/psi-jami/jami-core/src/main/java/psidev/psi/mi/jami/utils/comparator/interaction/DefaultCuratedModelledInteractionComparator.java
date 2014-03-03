@@ -31,7 +31,7 @@ public class DefaultCuratedModelledInteractionComparator {
      * @return true if the two modelled interactions are equal
      */
     public static boolean areEquals(ModelledInteraction modelledInteraction1, ModelledInteraction modelledInteraction2){
-        if (modelledInteraction1 == null && modelledInteraction2 == null){
+        if (modelledInteraction1 == modelledInteraction2){
             return true;
         }
         else if (modelledInteraction1 == null || modelledInteraction2 == null){

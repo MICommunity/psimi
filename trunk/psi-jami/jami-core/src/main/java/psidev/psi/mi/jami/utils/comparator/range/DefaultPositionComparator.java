@@ -29,7 +29,7 @@ public class DefaultPositionComparator {
      */
     public static boolean areEquals(Position position1, Position position2){
 
-        if (position1 == null && position2 == null){
+        if (position1 == position2){
             return true;
         }
         else if (position1 == null || position2 == null){

@@ -33,7 +33,7 @@ public class DefaultInteractionEvidenceComparator {
      * @return true if the two experimental interactions are equal
      */
     public static boolean areEquals(InteractionEvidence experimentalInteraction1, InteractionEvidence experimentalInteraction2){
-        if (experimentalInteraction1 == null && experimentalInteraction2 == null){
+        if (experimentalInteraction1 == experimentalInteraction2){
             return true;
         }
         else if (experimentalInteraction1 == null || experimentalInteraction2 == null){

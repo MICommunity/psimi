@@ -32,8 +32,7 @@ public class DefaultCvTermComparator {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
-
-        if (cvTerm1 == null && cvTerm2 == null){
+        if (cvTerm1 == cvTerm2){
             return true;
         }
         else if (cvTerm1 == null || cvTerm2 == null){

@@ -26,7 +26,7 @@ public class DefaultCausalRelationshipComparator {
      */
     public static boolean areEquals(CausalRelationship causalRelationship1, CausalRelationship causalRelationship2){
 
-        if (causalRelationship1 == null && causalRelationship2 == null){
+        if (causalRelationship1 == causalRelationship2){
             return true;
         }
         else if (causalRelationship1 == null || causalRelationship2 == null){

@@ -52,8 +52,8 @@ public class AnnotationComparator implements Comparator<Annotation> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (annotation1 == null && annotation2 == null){
-            return EQUAL;
+        if (annotation1 == annotation2){
+            return 0;
         }
         else if (annotation1 == null){
             return AFTER;

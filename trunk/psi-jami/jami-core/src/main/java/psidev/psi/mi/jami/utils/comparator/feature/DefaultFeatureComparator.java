@@ -25,7 +25,7 @@ public class DefaultFeatureComparator {
      * @return true if the two features are equal
      */
     public static boolean areEquals(Feature feature1, Feature feature2){
-        if (feature1 == null && feature2 == null){
+        if (feature1 == feature2){
             return true;
         }
         else if (feature1 == null || feature2 == null){

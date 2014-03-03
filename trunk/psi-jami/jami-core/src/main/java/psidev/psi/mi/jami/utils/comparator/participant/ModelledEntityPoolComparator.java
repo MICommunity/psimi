@@ -52,7 +52,7 @@ public class ModelledEntityPoolComparator implements Comparator<ModelledEntityPo
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (interactorCandidates1 == null && interactorCandidates2 == null){
+        if (interactorCandidates1 == interactorCandidates2){
             return EQUAL;
         }
         else if (interactorCandidates1 == null){

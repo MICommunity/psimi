@@ -88,7 +88,7 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (bioParticipant1 == null && bioParticipant2 == null){
+        if (bioParticipant1 == bioParticipant2){
             return EQUAL;
         }
         else if (bioParticipant1 == null){

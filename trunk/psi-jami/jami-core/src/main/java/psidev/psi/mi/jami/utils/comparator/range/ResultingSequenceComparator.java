@@ -31,7 +31,7 @@ public class ResultingSequenceComparator implements Comparator<ResultingSequence
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (resultingSequence1 == null && resultingSequence2 == null){
+        if (resultingSequence1 == resultingSequence2){
             return EQUAL;
         }
         else if (resultingSequence1 == null){

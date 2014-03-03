@@ -25,7 +25,7 @@ public class DefaultChecksumComparator {
      * @return true if the two checksum are equal
      */
     public static boolean areEquals(Checksum checksum1, Checksum checksum2){
-        if (checksum1 == null && checksum2 == null){
+        if (checksum1 == checksum2){
             return true;
         }
         else if (checksum1 == null || checksum2 == null){

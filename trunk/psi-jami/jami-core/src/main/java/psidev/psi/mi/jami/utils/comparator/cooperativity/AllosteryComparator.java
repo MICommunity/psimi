@@ -76,8 +76,8 @@ public class AllosteryComparator implements Comparator<Allostery>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (allostery1 == null && allostery2 == null){
-            return EQUAL;
+        if (allostery1 == allostery2){
+            return 0;
         }
         else if (allostery1 == null){
             return AFTER;

@@ -38,7 +38,7 @@ public class FeatureModificationEffectorComparator implements Comparator<Feature
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (featureModificationEffector1 == null && featureModificationEffector2 == null){
+        if (featureModificationEffector1 == featureModificationEffector2){
             return EQUAL;
         }
         else if (featureModificationEffector1 == null){

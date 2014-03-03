@@ -59,7 +59,7 @@ public class ParticipantComparator implements Comparator<Entity> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (participant1 == null && participant2 == null){
+        if (participant1 == participant2){
             return EQUAL;
         }
         else if (participant1 == null){

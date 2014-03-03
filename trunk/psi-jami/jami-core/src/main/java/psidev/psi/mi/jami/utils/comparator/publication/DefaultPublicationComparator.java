@@ -30,7 +30,7 @@ public class DefaultPublicationComparator {
      */
     public static boolean areEquals(Publication publication1, Publication publication2){
 
-        if (publication1 == null && publication2 == null){
+        if (publication1 == publication2){
             return true;
         }
         else if (publication1 == null || publication2 == null){

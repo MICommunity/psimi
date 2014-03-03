@@ -31,8 +31,8 @@ public class VariableParameterValueComparator implements Comparator<VariablePara
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (variableParameterValue1 == null && variableParameterValue2 == null){
-            return EQUAL;
+        if (variableParameterValue1 == variableParameterValue2){
+            return 0;
         }
         else if (variableParameterValue1 == null){
             return AFTER;

@@ -71,7 +71,7 @@ public abstract class ParameterComparator implements Comparator<Parameter> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (parameter1 == null && parameter2 == null){
+        if (parameter1 == parameter2){
             return EQUAL;
         }
         else if (parameter1 == null){

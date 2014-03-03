@@ -20,7 +20,7 @@ public class DefaultPolymerComparator {
      * @return true if the two polymers are equal
      */
     public static boolean areEquals(Polymer polymer1, Polymer polymer2){
-        if (polymer1 == null && polymer2 == null){
+        if (polymer1 == polymer2){
             return true;
         }
         else if (polymer1 == null || polymer2 == null){

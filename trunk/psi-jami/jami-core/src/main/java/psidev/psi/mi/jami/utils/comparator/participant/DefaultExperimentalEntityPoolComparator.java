@@ -28,7 +28,7 @@ public class DefaultExperimentalEntityPoolComparator {
      * @return true if the two entitySets are equal
      */
     public static boolean areEquals(ExperimentalEntityPool interactorCandidates1, ExperimentalEntityPool interactorCandidates2){
-        if (interactorCandidates1 == null && interactorCandidates2 == null){
+        if (interactorCandidates1 == interactorCandidates2){
             return true;
         }
         else if (interactorCandidates1 == null || interactorCandidates2 == null){

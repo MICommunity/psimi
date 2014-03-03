@@ -27,7 +27,7 @@ public class DefaultAliasComparator {
      * @return true if the two aliases are equal
      */
     public static boolean areEquals(Alias alias1, Alias alias2){
-        if (alias1 == null && alias2 == null){
+        if (alias1 == alias2){
             return true;
         }
         else if (alias1 == null || alias2 == null){

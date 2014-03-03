@@ -30,7 +30,7 @@ public class DefaultConfidenceComparator {
      * @return true if the two confidences are equal
      */
     public static boolean areEquals(Confidence confidence1, Confidence confidence2){
-        if (confidence1 == null && confidence2 == null){
+        if (confidence1 == confidence2){
             return true;
         }
         else if (confidence1 == null || confidence2 == null){

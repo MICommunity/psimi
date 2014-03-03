@@ -41,7 +41,7 @@ public class UnambiguousNucleicAcidComparator implements Comparator<NucleicAcid>
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (nucleicAcid1 == null && nucleicAcid2 == null){
+        if (nucleicAcid1 == nucleicAcid2){
             return EQUAL;
         }
         else if (nucleicAcid1 == null){

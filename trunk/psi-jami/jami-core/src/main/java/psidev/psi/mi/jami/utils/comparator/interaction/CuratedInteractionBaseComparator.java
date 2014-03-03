@@ -49,8 +49,8 @@ public class CuratedInteractionBaseComparator implements Comparator<Interaction>
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (interaction1 == null && interaction2 == null){
-            return EQUAL;
+        if (interaction1 == interaction2){
+            return 0;
         }
         else if (interaction1 == null){
             return AFTER;

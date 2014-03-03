@@ -30,7 +30,7 @@ public class DefaultAllosteryComparator {
      * @return true if the two Allostery are equal
      */
     public static boolean areEquals(Allostery allostery1, Allostery allostery2){
-        if (allostery1 == null && allostery2 == null){
+        if (allostery1 == allostery2){
             return true;
         }
         else if (allostery1 == null || allostery2 == null){

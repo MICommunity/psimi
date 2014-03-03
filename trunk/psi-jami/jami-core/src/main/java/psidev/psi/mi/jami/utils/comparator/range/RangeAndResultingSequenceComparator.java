@@ -50,7 +50,7 @@ public class RangeAndResultingSequenceComparator extends RangeComparator {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (range1 == null && range2 == null){
+        if (range1 == range2){
             return EQUAL;
         }
         else if (range1 == null){

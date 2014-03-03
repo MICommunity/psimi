@@ -33,7 +33,7 @@ public class DefaultCooperativeEffectBaseComparator {
      * @return true if the two CooperativeEffects are equal
      */
     public static boolean areEquals(CooperativeEffect cooperativeEffect1, CooperativeEffect cooperativeEffect2){
-        if (cooperativeEffect1 == null && cooperativeEffect2 == null){
+        if (cooperativeEffect1 == cooperativeEffect2){
             return true;
         }
         else if (cooperativeEffect1 == null || cooperativeEffect2 == null){

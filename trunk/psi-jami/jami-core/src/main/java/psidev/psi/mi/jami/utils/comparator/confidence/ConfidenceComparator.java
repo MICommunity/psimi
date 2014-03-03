@@ -52,8 +52,8 @@ public class ConfidenceComparator implements Comparator<Confidence>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (confidence1 == null && confidence2 == null){
-            return EQUAL;
+        if (confidence1 == confidence2){
+            return 0;
         }
         else if (confidence1 == null){
             return AFTER;

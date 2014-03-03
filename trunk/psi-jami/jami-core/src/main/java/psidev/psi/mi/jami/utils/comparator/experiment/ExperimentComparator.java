@@ -61,9 +61,8 @@ public class ExperimentComparator implements Comparator<Experiment>{
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
-
-        if (experiment1 == null && experiment2 == null){
-            return EQUAL;
+        if (experiment1 == experiment2){
+            return 0;
         }
         else if (experiment1 == null){
             return AFTER;

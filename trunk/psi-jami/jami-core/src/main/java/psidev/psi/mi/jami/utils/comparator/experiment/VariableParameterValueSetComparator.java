@@ -79,8 +79,8 @@ public class VariableParameterValueSetComparator implements Comparator<VariableP
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (variableParameterValues1 == null && variableParameterValues2 == null){
-            return EQUAL;
+        if (variableParameterValues1 == variableParameterValues2){
+            return 0;
         }
         else if (variableParameterValues1 == null){
             return AFTER;

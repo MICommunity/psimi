@@ -29,7 +29,7 @@ public class DefaultXrefComparator{
      * @return true if the two xrefs are equal
      */
     public static boolean areEquals(Xref xref1, Xref xref2){
-        if (xref1 == null && xref2 == null){
+        if (xref1 == xref2){
             return true;
         }
         else if (xref1 == null || xref2 == null){

@@ -54,7 +54,7 @@ public class PositionComparator implements Comparator<Position>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (position1 == null && position2 == null){
+        if (position1 == position2){
             return EQUAL;
         }
         else if (position1 == null){
