@@ -84,7 +84,7 @@ public class CvTermUtils {
 
     public static CvTerm getPsimi() {
         if (psimi == null){
-            psimi = createPsiMiDatabaseNameOnly();
+            psimi = createPsiMiDatabase();
         }
         return psimi;
     }
@@ -105,7 +105,7 @@ public class CvTermUtils {
 
     public static CvTerm getIdentity() {
         if (identity == null){
-            identity = createIdentityQualifierNameOnly();
+            identity = createIdentityQualifier();
         }
         return identity;
     }
@@ -260,7 +260,10 @@ public class CvTermUtils {
     }
 
     public static CvTerm createPsiMiDatabase(){
-        return createMICvTerm(CvTerm.PSI_MI, CvTerm.PSI_MI_MI);
+        CvTerm psiMi = new DefaultCvTerm(CvTerm.PSI_MI);
+        Xref psiMiXref = new DefaultXref(psiMi, CvTerm.PSI_MI_MI, createIdentityQualifier(psiMi));
+        psiMi.getIdentifiers().add(psiMiXref);
+        return psiMi;
     }
 
     public static CvTerm createPsiModDatabase(){
@@ -272,7 +275,10 @@ public class CvTermUtils {
     }
 
     public static CvTerm createIdentityQualifier(){
-        return createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI);
+        CvTerm identity = new DefaultCvTerm(Xref.IDENTITY);
+        Xref psiMiXref = new DefaultXref(createPsiMiDatabase(identity), Xref.IDENTITY_MI, identity);
+        identity.getIdentifiers().add(psiMiXref);
+        return identity;
     }
 
     public static CvTerm createChebiDatabase(){
@@ -542,5 +548,19 @@ public class CvTermUtils {
         else{
             return XrefUtils.collectFirstIdentifierWithDatabaseAndId(term.getIdentifiers(), null, CvTerm.PSI_PAR, term.getPARIdentifier());
         }
+    }
+
+    public static CvTerm createPsiMiDatabase(CvTerm identity){
+        CvTerm psiMi = new DefaultCvTerm(CvTerm.PSI_MI);
+        Xref psiMiXref = new DefaultXref(psiMi, CvTerm.PSI_MI_MI, identity);
+        psiMi.getIdentifiers().add(psiMiXref);
+        return psiMi;
+    }
+
+    public static CvTerm createIdentityQualifier(CvTerm psiMi){
+        CvTerm identity = new DefaultCvTerm(Xref.IDENTITY);
+        Xref psiMiXref = new DefaultXref(psiMi, Xref.IDENTITY_MI, identity);
+        identity.getIdentifiers().add(psiMiXref);
+        return identity;
     }
 }
