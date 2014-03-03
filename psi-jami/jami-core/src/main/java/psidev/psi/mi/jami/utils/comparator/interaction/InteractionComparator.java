@@ -63,7 +63,7 @@ public class InteractionComparator implements Comparator<Interaction> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (interaction1 == null && interaction2 == null){
+        if (interaction1 == interaction2){
             return EQUAL;
         }
         else if (interaction1 == null){

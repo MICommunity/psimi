@@ -27,7 +27,7 @@ public class DefaultModelledParticipantComparator {
     public static boolean areEquals(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2, boolean checkComplexesAsInteractors){
         Map<Complex, Set<Interactor>> processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
 
-        if (bioParticipant1 == null && bioParticipant2 == null){
+        if (bioParticipant1 == bioParticipant2){
             return true;
         }
         else if (bioParticipant1 == null || bioParticipant2 == null){

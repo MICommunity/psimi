@@ -29,7 +29,7 @@ public class DefaultInteractionInteractorComparator {
      * @return true if the two interactions are equal
      */
     public static boolean areEquals(Interaction interaction1, Interaction interaction2){
-        if (interaction1 == null && interaction2 == null){
+        if (interaction1 == interaction2){
             return true;
         }
         else if (interaction1 == null || interaction2 == null){

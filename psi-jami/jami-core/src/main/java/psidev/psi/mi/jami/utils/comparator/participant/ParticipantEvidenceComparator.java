@@ -96,7 +96,7 @@ public class ParticipantEvidenceComparator implements Comparator<ExperimentalEnt
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (experimentalParticipant1 == null && experimentalParticipant2 == null){
+        if (experimentalParticipant1 == experimentalParticipant2){
             return EQUAL;
         }
         else if (experimentalParticipant1 == null){

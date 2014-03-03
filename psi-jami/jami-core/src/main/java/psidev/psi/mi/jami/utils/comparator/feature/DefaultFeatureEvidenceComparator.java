@@ -27,7 +27,7 @@ public class DefaultFeatureEvidenceComparator {
      * @return true if the two experimental features are equal
      */
     public static boolean areEquals(FeatureEvidence experimentalFeature1, FeatureEvidence experimentalFeature2){
-        if (experimentalFeature1 == null && experimentalFeature2 == null){
+        if (experimentalFeature1 == experimentalFeature2){
             return true;
         }
         else if (experimentalFeature1 == null || experimentalFeature2 == null){

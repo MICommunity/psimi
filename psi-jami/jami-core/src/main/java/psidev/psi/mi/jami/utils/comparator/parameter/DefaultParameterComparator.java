@@ -34,7 +34,7 @@ public class DefaultParameterComparator {
      */
     public static boolean areEquals(Parameter parameter1, Parameter parameter2){
 
-        if (parameter1 == null && parameter2 == null){
+        if (parameter1 == parameter2){
             return true;
         }
         else if (parameter1 == null || parameter2 == null){

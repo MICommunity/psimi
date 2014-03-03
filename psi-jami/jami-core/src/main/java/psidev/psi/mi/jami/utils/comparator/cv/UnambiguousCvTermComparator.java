@@ -1,9 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.cv;
 
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Unambiguous comparator for CvTerms :
@@ -24,6 +29,7 @@ public class UnambiguousCvTermComparator implements Comparator<CvTerm> {
 
     private static UnambiguousCvTermComparator unambiguousCvTermComparator;
     protected UnambiguousExternalIdentifierComparator identifierComparator;
+    protected CollectionComparator<Xref> identifierCollectionComparator;
 
     /**
      * Creates a new CvTermComparator with UnambiguousExternalIdentifierComparator
@@ -31,6 +37,7 @@ public class UnambiguousCvTermComparator implements Comparator<CvTerm> {
      */
     public UnambiguousCvTermComparator() {
         this.identifierComparator = new UnambiguousExternalIdentifierComparator();
+        this.identifierCollectionComparator = new CollectionComparator<Xref>(this.identifierComparator);
     }
 
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
@@ -55,8 +62,8 @@ public class UnambiguousCvTermComparator implements Comparator<CvTerm> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (cvTerm1 == null && cvTerm2 == null){
-            return EQUAL;
+        if (cvTerm1 == cvTerm2){
+            return 0;
         }
         else if (cvTerm1 == null){
             return AFTER;
@@ -98,6 +105,16 @@ public class UnambiguousCvTermComparator implements Comparator<CvTerm> {
                 return BEFORE;
             }
             else if (par2 != null){
+                return AFTER;
+            }
+            else if (!cvTerm1.getIdentifiers().isEmpty() && !cvTerm2.getIdentifiers().isEmpty()){
+                // the identifiers must be the same
+                return this.identifierCollectionComparator.compare(cvTerm1.getIdentifiers(), cvTerm2.getIdentifiers());
+            }
+            else if (!cvTerm1.getIdentifiers().isEmpty()){
+                return BEFORE;
+            }
+            else if (!cvTerm2.getIdentifiers().isEmpty()){
                 return AFTER;
             }
             else {
@@ -148,6 +165,13 @@ public class UnambiguousCvTermComparator implements Comparator<CvTerm> {
         }
         else if (cv1.getPARIdentifier() != null){
             hashcode = 31*hashcode + cv1.getPARIdentifier().hashCode();
+        }
+        else if (!cv1.getIdentifiers().isEmpty()){
+            List<Xref> list1 = new ArrayList<Xref>(cv1.getIdentifiers());
+            Collections.sort(list1, unambiguousCvTermComparator.getIdentifierComparator());
+            for (Xref ref : list1){
+                hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(ref);
+            }
         }
         else {
             hashcode = 31*hashcode + cv1.getShortName().toLowerCase().trim().hashCode();

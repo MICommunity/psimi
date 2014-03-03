@@ -26,7 +26,7 @@ public class DefaultAnnotationComparator {
      * @return true if the two annotations are equal
      */
     public static boolean areEquals(Annotation annotation1, Annotation annotation2){
-        if (annotation1 == null && annotation2 == null){
+        if (annotation1 == annotation2){
             return true;
         }
         else if (annotation1 == null || annotation2 == null){

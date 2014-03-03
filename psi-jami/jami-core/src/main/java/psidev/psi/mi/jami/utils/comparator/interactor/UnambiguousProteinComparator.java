@@ -47,7 +47,7 @@ public class UnambiguousProteinComparator implements Comparator<Protein> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (protein1 == null && protein2 == null){
+        if (protein1 == protein2){
             return EQUAL;
         }
         else if (protein1 == null){

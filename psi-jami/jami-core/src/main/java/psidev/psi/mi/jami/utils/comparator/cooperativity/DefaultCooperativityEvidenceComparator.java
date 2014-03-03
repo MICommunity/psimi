@@ -28,7 +28,7 @@ public class DefaultCooperativityEvidenceComparator {
      * @return true if the two cooperativityEvidences are equal
      */
     public static boolean areEquals(CooperativityEvidence cooperativityEvidence1, CooperativityEvidence cooperativityEvidence2){
-        if (cooperativityEvidence1 == null && cooperativityEvidence2 == null){
+        if (cooperativityEvidence1 == cooperativityEvidence2){
             return true;
         }
         else if (cooperativityEvidence1 == null || cooperativityEvidence2 == null){

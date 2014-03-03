@@ -58,8 +58,8 @@ public class FeatureComparator implements Comparator<Feature> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (feature1 == null && feature2 == null){
-            return EQUAL;
+        if (feature1 == feature2){
+            return 0;
         }
         else if (feature1 == null){
             return AFTER;

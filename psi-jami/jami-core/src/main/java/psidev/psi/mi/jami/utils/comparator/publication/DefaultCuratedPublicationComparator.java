@@ -29,7 +29,7 @@ public class DefaultCuratedPublicationComparator {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (publication1 == null && publication2 == null){
+        if (publication1 == publication2){
             return true;
         }
         else if (publication1 == null || publication2 == null){

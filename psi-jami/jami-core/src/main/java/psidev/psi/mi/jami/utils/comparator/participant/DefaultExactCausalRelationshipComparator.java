@@ -24,7 +24,7 @@ public class DefaultExactCausalRelationshipComparator {
      * @return true if the two causalRelationShip are equal
      */
     public static boolean areEquals(CausalRelationship rel1, CausalRelationship rel2){
-        if (rel1 == null && rel2 == null){
+        if (rel1 == rel2){
             return true;
         }
         else if (rel1 == null || rel2 == null){

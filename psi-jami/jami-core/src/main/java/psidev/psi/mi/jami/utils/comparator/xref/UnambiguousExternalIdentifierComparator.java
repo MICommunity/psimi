@@ -43,7 +43,7 @@ public class UnambiguousExternalIdentifierComparator implements Comparator<Xref>
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (externalIdentifier1 == null && externalIdentifier2 == null){
+        if (externalIdentifier1 == externalIdentifier2){
             return EQUAL;
         }
         else if (externalIdentifier1 == null){

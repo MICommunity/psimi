@@ -64,8 +64,8 @@ public class ComplexComparator implements Comparator<Complex> {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (complex1 == null && complex2 == null){
-            return EQUAL;
+        if (complex1 == complex2){
+            return 0;
         }
         else if (complex1 == null){
             return AFTER;

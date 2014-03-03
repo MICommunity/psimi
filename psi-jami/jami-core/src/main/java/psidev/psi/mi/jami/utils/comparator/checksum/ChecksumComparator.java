@@ -54,8 +54,8 @@ public class ChecksumComparator implements Comparator<Checksum>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (checksum1 == null && checksum2 == null){
-            return EQUAL;
+        if (checksum1 == checksum2){
+            return 0;
         }
         else if (checksum1 == null){
             return AFTER;

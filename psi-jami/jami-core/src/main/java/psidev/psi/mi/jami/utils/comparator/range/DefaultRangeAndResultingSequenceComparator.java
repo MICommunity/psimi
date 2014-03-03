@@ -25,7 +25,7 @@ public class DefaultRangeAndResultingSequenceComparator {
      */
     public static boolean areEquals(Range range1, Range range2){
 
-        if (range1 == null && range2 == null){
+        if (range1 == range2){
             return true;
         }
         else if (range1 == null || range2 == null){

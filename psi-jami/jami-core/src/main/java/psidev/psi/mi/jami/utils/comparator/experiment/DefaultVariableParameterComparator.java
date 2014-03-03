@@ -28,7 +28,7 @@ public class DefaultVariableParameterComparator {
      * @return true if the two variableParameters are equal
      */
     public static boolean areEquals(VariableParameter variableParameter1, VariableParameter variableParameter2){
-        if (variableParameter1 == null && variableParameter2 == null){
+        if (variableParameter1 == variableParameter2){
             return true;
         }
         else if (variableParameter1 == null || variableParameter2 == null){

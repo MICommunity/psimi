@@ -28,7 +28,7 @@ public class DefaultExactModelledEntityPoolComparator {
      * @return true if the two entitySets are equal
      */
     public static boolean areEquals(ModelledEntityPool interactorCandidates1, ModelledEntityPool interactorCandidates2){
-        if (interactorCandidates1 == null && interactorCandidates2 == null){
+        if (interactorCandidates1 == interactorCandidates2){
             return true;
         }
         else if (interactorCandidates1 == null || interactorCandidates2 == null){

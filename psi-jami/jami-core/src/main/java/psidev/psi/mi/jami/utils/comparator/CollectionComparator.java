@@ -45,7 +45,7 @@ public class CollectionComparator<T> implements Comparator<Collection<? extends 
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (ts1 == null && ts2 == null){
+        if (ts1 == ts2){
             return EQUAL;
         }
         else if (ts1 == null){

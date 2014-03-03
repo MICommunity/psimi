@@ -28,7 +28,7 @@ public class DefaultExternalIdentifierComparator {
      */
     public static boolean areEquals(Xref externalIdentifier1, Xref externalIdentifier2){
 
-        if (externalIdentifier1 == null && externalIdentifier2 == null){
+        if (externalIdentifier1 == externalIdentifier2){
             return true;
         }
         else if (externalIdentifier1 == null || externalIdentifier2 == null){

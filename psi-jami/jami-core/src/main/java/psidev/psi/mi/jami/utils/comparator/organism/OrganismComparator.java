@@ -47,7 +47,7 @@ public class OrganismComparator extends OrganismTaxIdComparator {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (organism1 == null && organism2 == null){
+        if (organism1 == organism2){
             return EQUAL;
         }
         else if (organism1 == null){

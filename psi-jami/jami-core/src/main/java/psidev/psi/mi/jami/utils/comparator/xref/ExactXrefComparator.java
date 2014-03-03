@@ -45,7 +45,7 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (xref1 == null && xref2 == null){
+        if (xref1 == xref2){
             return EQUAL;
         }
         else if (xref1 == null){

@@ -22,7 +22,7 @@ public class DefaultProteinComparator {
      * @return true if the two proteins are equal
      */
     public static boolean areEquals(Protein protein1, Protein protein2){
-        if (protein1 == null && protein2 == null){
+        if (protein1 == protein2){
             return true;
         }
         else if (protein1 == null || protein2 == null){

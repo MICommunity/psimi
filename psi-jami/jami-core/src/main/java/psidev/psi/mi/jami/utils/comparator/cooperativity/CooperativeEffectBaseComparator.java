@@ -69,8 +69,8 @@ public class CooperativeEffectBaseComparator implements Comparator<CooperativeEf
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (cooperativeEffect1 == null && cooperativeEffect2 == null){
-            return EQUAL;
+        if (cooperativeEffect1 == cooperativeEffect2){
+            return 0;
         }
         else if (cooperativeEffect1 == null){
             return AFTER;

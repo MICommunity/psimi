@@ -51,8 +51,8 @@ public class CuratedModelledInteractionComparator extends ModelledInteractionCom
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (modelledInteraction1 == null && modelledInteraction2 == null){
-            return EQUAL;
+        if (modelledInteraction1 == modelledInteraction2){
+            return 0;
         }
         else if (modelledInteraction1 == null){
             return AFTER;

@@ -24,7 +24,7 @@ public class DefaultParticipantEvidenceInteractorComparator {
      * @return true if the two experimental participants are equal
      */
     public static boolean areEquals(ExperimentalEntity participant1, ExperimentalEntity participant2){
-        if (participant1 == null && participant2 == null){
+        if (participant1 == participant2){
             return true;
         }
         else if (participant1 == null || participant2 == null){

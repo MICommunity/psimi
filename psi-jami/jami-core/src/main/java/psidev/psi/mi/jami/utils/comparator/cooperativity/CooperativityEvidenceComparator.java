@@ -54,8 +54,8 @@ public class CooperativityEvidenceComparator implements Comparator<Cooperativity
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (cooperativityEvidence1 == null && cooperativityEvidence2 == null){
-            return EQUAL;
+        if (cooperativityEvidence1 == cooperativityEvidence2){
+            return 0;
         }
         else if (cooperativityEvidence1 == null){
             return AFTER;

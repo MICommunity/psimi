@@ -96,8 +96,8 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (experimentalInteraction1 == null && experimentalInteraction2 == null){
-            return EQUAL;
+        if (experimentalInteraction1 == experimentalInteraction2){
+            return 0;
         }
         else if (experimentalInteraction1 == null){
             return AFTER;

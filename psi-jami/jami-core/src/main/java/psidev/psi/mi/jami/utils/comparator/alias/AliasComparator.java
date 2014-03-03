@@ -55,8 +55,8 @@ public class AliasComparator implements Comparator<Alias>{
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (alias1 == null && alias2 == null){
-            return EQUAL;
+        if (alias1 == alias2){
+           return EQUAL;
         }
         else if (alias1 == null){
             return AFTER;
