@@ -60,7 +60,13 @@ public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
     }
 
     public boolean remove(Object o) {
-        return this.wrappedList.remove(o);
+        if (needToPreProcessElementToRemove(o)){
+            processElementToRemove(o);
+            return this.wrappedList.remove(o);
+        }
+        else {
+            return this.wrappedList.remove(o);
+        }
     }
 
     public boolean containsAll(Collection<?> c) {
@@ -78,14 +84,33 @@ public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
     }
 
     public boolean removeAll(Collection<?> c) {
-        return this.wrappedList.removeAll(c);
+        boolean hasRemoved = false;
+        for (Object xref : c){
+            if (remove(xref)){
+                hasRemoved = true;
+            }
+        }
+        return hasRemoved;
     }
 
     public boolean retainAll(Collection<?> c) {
-        return this.wrappedList.retainAll(c);
+        Iterator<T> iterator = this.wrappedList.iterator();
+        boolean hasChanged = false;
+        while (iterator.hasNext()){
+            if (!c.contains(iterator.next())){
+               iterator.remove();
+               hasChanged = true;
+            }
+        }
+        return hasChanged;
     }
 
     public void clear() {
+        for (T ref : this.wrappedList){
+            if (needToPreProcessElementToRemove(ref)){
+                processElementToRemove(ref);
+            }
+        }
         this.wrappedList.clear();
     }
 
@@ -106,4 +131,8 @@ public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
      * @return the processed/wrapped element that will be added
      */
     protected abstract T processOrWrapElementToAdd(T added);
+
+    protected abstract void processElementToRemove(Object o);
+
+    protected abstract boolean needToPreProcessElementToRemove(Object o);
 }
