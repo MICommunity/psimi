@@ -38,6 +38,8 @@ public interface Participant<I extends Interaction, F extends Feature> {
     public static final String PHOTON_DONOR_ROLE = "photon donor";
     public static final String PREY_MI = "MI:0498";
     public static final String PREY = "prey";
+    public static final String NEUTRAL_MI = "MI:0497";
+    public static final String NEUTRAL = "neutral component";
 
     /**
      * Sets the Interaction and add the new Participant to its list of Participants.
