@@ -16,12 +16,39 @@ import java.util.logging.Logger;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractParticipantRef<T extends Feature> extends AbstractXmlIdReference implements ExtendedPsi25Participant<T>{
+public abstract class AbstractParticipantRef<I extends Interaction, T extends Feature> extends AbstractXmlIdReference implements ExtendedPsi25Participant<I,T>{
     private static final Logger logger = Logger.getLogger("AbstractParticipantRef");
-    private ExtendedPsi25Participant<T> delegate;
+    private ExtendedPsi25Participant<I,T> delegate;
 
     public AbstractParticipantRef(int ref) {
         super(ref);
+    }
+
+    @Override
+    public void setInteractionAndAddParticipant(I interaction) {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setInteractionAndAddParticipant(interaction);
+    }
+
+    @Override
+    public I getInteraction() {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        return this.delegate.getInteraction();
+    }
+
+    @Override
+    public void setInteraction(I interaction) {
+        logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
+        if (this.delegate == null){
+            initialiseParticipantDelegate();
+        }
+        this.delegate.setInteraction(interaction);
     }
 
     public Interactor getInteractor() {
@@ -225,11 +252,11 @@ public abstract class AbstractParticipantRef<T extends Feature> extends Abstract
 
     protected abstract void initialiseParticipantDelegate();
 
-    protected ExtendedPsi25Participant<T> getDelegate() {
+    protected ExtendedPsi25Participant<I,T> getDelegate() {
         return delegate;
     }
 
-    protected void setDelegate(ExtendedPsi25Participant<T> delegate) {
+    protected void setDelegate(ExtendedPsi25Participant<I,T> delegate) {
         this.delegate = delegate;
     }
 }

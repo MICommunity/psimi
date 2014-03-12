@@ -58,7 +58,7 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
     /**
      * participant ref for allosteric effector
      */
-    private class MoleculeEffectorRef extends AbstractParticipantRef<ModelledFeature> implements ModelledParticipant{
+    private class MoleculeEffectorRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
         private PsiXmLocator sourceLocator;
 
         public MoleculeEffectorRef(int ref, PsiXmLocator locator) {

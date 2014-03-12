@@ -112,7 +112,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
     /**
      * participant ref for allosteric molecule
      */
-    private class AllostericMoleculeRef extends AbstractParticipantRef<ModelledFeature> implements ModelledParticipant{
+    private class AllostericMoleculeRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
         private PsiXmLocator sourceLocator;
 
         public AllostericMoleculeRef(int ref, PsiXmLocator locator) {

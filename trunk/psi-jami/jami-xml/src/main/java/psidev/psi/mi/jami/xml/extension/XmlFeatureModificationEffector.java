@@ -58,7 +58,7 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
     /**
      * feature ref for allosteric effector
      */
-    private class FeatureEffectorRef extends AbstractFeatureRef<ModelledEntity, ModelledFeature> implements ModelledFeature {
+    private class FeatureEffectorRef extends AbstractFeatureRef<ModelledParticipant, ModelledFeature> implements ModelledFeature {
         private PsiXmLocator sourceLocator;
 
         public FeatureEffectorRef(int ref, PsiXmLocator locator) {

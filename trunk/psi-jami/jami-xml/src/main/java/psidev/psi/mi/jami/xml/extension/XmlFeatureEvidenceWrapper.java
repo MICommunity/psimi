@@ -19,10 +19,10 @@ import java.util.Collection;
 @XmlTransient
 public class XmlFeatureEvidenceWrapper implements ModelledFeature{
     private FeatureEvidence feature;
-    private ModelledEntity parent;
+    private ModelledParticipant parent;
     private Collection<ModelledFeature> linkedFeatures;
 
-    public XmlFeatureEvidenceWrapper(FeatureEvidence part, ModelledEntity wrapper){
+    public XmlFeatureEvidenceWrapper(FeatureEvidence part, ModelledParticipant wrapper){
         if (part == null){
             throw new IllegalArgumentException("A feature evidence wrapper needs a non null feature");
         }
@@ -111,7 +111,7 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature{
     }
 
     @Override
-    public ModelledEntity getParticipant() {
+    public ModelledParticipant getParticipant() {
         if (this.parent == null && this.feature.getParticipant()instanceof ParticipantEvidence){
             this.parent = new XmlParticipantEvidenceWrapper((ParticipantEvidence)this.feature.getParticipant(), null);
         }
@@ -119,12 +119,12 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature{
     }
 
     @Override
-    public void setParticipant(ModelledEntity participant) {
+    public void setParticipant(ModelledParticipant participant) {
         this.parent = participant;
     }
 
     @Override
-    public void setParticipantAndAddFeature(ModelledEntity participant) {
+    public void setParticipantAndAddFeature(ModelledParticipant participant) {
         if (this.parent != null){
             this.parent.removeFeature(this);
         }

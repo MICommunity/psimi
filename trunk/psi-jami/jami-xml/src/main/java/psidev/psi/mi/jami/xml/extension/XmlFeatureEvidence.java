@@ -7,8 +7,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 
@@ -25,7 +25,7 @@ import java.util.List;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements ExtendedPsi25FeatureEvidence{
+public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, FeatureEvidence> implements ExtendedPsi25FeatureEvidence{
 
     private List<CvTerm> featureDetectionMethods;
     private boolean initialisedMethods = false;

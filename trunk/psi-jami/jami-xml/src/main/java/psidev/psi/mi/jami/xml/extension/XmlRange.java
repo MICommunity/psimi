@@ -33,7 +33,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     private Position end;
     private boolean isLink;
     private ResultingSequence resultingSequence;
-    private Entity participant;
+    private Participant participant;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -262,11 +262,11 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
         this.resultingSequence = resultingSequence;
     }
 
-    public Entity getParticipant() {
+    public Participant getParticipant() {
         return this.participant;
     }
 
-    public void setParticipant(Entity participant) {
+    public void setParticipant(Participant participant) {
         this.participant = participant;
     }
 
@@ -342,7 +342,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
 
         public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
-                Entity object = parsedObjects.getParticipant(this.ref);
+                Participant object = parsedObjects.getParticipant(this.ref);
                 // participant
                 if (object != null){
                     participant = object;

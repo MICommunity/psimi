@@ -52,7 +52,7 @@ public interface PsiXml25ObjectCache {
      * @param o
      * @return the id assigned to this object
      */
-    public int extractIdForParticipant(Entity o);
+    public int extractIdForParticipant(Participant o);
 
     /**
      * This method will extract the id for this object if it is already registered,

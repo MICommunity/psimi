@@ -4,8 +4,8 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 
 import javax.xml.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.*;
  * @since <pre>25/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, ModelledFeature> implements ModelledFeature {
+public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, ModelledFeature> implements ModelledFeature {
 
     @XmlLocation
     @XmlTransient

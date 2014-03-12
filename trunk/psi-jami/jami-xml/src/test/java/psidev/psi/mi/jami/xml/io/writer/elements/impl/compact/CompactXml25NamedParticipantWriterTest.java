@@ -5,13 +5,13 @@ import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.NamedEntity;
+import psidev.psi.mi.jami.model.NamedParticipant;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
@@ -280,7 +280,7 @@ public class CompactXml25NamedParticipantWriterTest extends AbstractXml25WriterT
 
     @Test
     public void test_write_participant_shortName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedEntity participant = new DefaultNamedParticipant(InteractorUtils.createUnknownBasicInteractor());
+        NamedParticipant participant = new DefaultNamedParticipant(InteractorUtils.createUnknownBasicInteractor());
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         participant.setShortName("participant test");
@@ -295,7 +295,7 @@ public class CompactXml25NamedParticipantWriterTest extends AbstractXml25WriterT
 
     @Test
     public void test_write_participant_fullName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedEntity participant = new DefaultNamedParticipant(InteractorUtils.createUnknownBasicInteractor());
+        NamedParticipant participant = new DefaultNamedParticipant(InteractorUtils.createUnknownBasicInteractor());
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         participant.setFullName("participant test");

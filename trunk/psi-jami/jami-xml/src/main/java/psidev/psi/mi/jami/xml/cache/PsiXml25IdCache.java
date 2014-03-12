@@ -81,14 +81,14 @@ public interface PsiXml25IdCache {
      * @param id
      * @param object
      */
-    public void registerParticipant(int id, Entity object);
+    public void registerParticipant(int id, Participant object);
 
     /**
      *
      * @param id
      * @return the participant registered with this id, null if it does not exist
      */
-    public Entity getParticipant(int id);
+    public Participant getParticipant(int id);
 
     /**
      * Register a feature with an id

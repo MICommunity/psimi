@@ -746,7 +746,7 @@ public class ExpandedXml25NamedParticipantEvidenceWriterTest extends AbstractXml
 
     @Test
     public void test_write_participant_shortName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedEntity participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
+        NamedParticipant participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         participant.setShortName("participant test");
@@ -761,7 +761,7 @@ public class ExpandedXml25NamedParticipantEvidenceWriterTest extends AbstractXml
 
     @Test
     public void test_write_participant_fullName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedEntity participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
+        NamedParticipant participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         participant.setFullName("participant test");

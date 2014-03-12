@@ -31,7 +31,7 @@ public abstract class AbstractXml25NamedParticipantWriter<P extends Participant,
 
     @Override
     protected void writeNames(P object) throws XMLStreamException {
-        NamedEntity xmlParticipant = (NamedEntity) object;
+        NamedParticipant xmlParticipant = (NamedParticipant) object;
         // write names
         boolean hasShortLabel = xmlParticipant.getShortName() != null;
         boolean hasFullLabel = xmlParticipant.getFullName() != null;

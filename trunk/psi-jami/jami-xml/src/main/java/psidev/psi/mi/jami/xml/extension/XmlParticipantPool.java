@@ -9,37 +9,37 @@ import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * Default XML implementation for Entity set
- * Notes: The equals and hashcode methods have NOT been overridden because the XmlEntityPool object is a complex object.
+ * Default XML implementation for participant set
+ * Notes: The equals and hashcode methods have NOT been overridden because the XmlParticipantPool object is a complex object.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlEntityPool extends AbstractXmlEntityPool<Interaction,Feature,Entity> {
+public class XmlParticipantPool extends AbstractXmlParticipantPool<Interaction,Feature,Participant> {
 
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    public XmlEntityPool() {
+    public XmlParticipantPool() {
         super();
     }
 
-    public XmlEntityPool(String interactorSetName) {
+    public XmlParticipantPool(String interactorSetName) {
         super(new XmlInteractorPool(interactorSetName));
     }
 
-    public XmlEntityPool(String interactorSetName, CvTerm bioRole) {
+    public XmlParticipantPool(String interactorSetName, CvTerm bioRole) {
         super(new XmlInteractorPool(interactorSetName), bioRole);
     }
 
-    public XmlEntityPool(String interactorSetName, Stoichiometry stoichiometry) {
+    public XmlParticipantPool(String interactorSetName, Stoichiometry stoichiometry) {
         super(new XmlInteractorPool(interactorSetName), stoichiometry);
     }
 
-    public XmlEntityPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public XmlParticipantPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(new XmlInteractorPool(interactorSetName), bioRole, stoichiometry);
     }
 
@@ -121,7 +121,7 @@ public class XmlEntityPool extends AbstractXmlEntityPool<Interaction,Feature,Ent
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="entitySetFeatureWrapper")
-    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<Feature> {
+    public static class JAXBFeatureWrapper extends AbstractXmlParticipant.JAXBFeatureWrapper<Feature> {
 
         public JAXBFeatureWrapper(){
             super();
