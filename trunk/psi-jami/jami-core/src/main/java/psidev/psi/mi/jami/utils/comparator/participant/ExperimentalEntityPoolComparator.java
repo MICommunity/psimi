@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.ExperimentalEntityPool;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantEvidencePool;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Comparator;
@@ -16,9 +16,9 @@ import java.util.Comparator;
  * @since <pre>04/10/13</pre>
  */
 
-public class ExperimentalEntityPoolComparator implements Comparator<ExperimentalEntityPool> {
+public class ExperimentalEntityPoolComparator implements Comparator<ParticipantEvidencePool> {
 
-    protected CollectionComparator<Entity> entityCollectionComparator;
+    protected CollectionComparator<Participant> entityCollectionComparator;
     protected ParticipantEvidenceComparator entityBaseComparator;
 
     /**
@@ -30,10 +30,10 @@ public class ExperimentalEntityPoolComparator implements Comparator<Experimental
             throw new IllegalArgumentException("The participant/entity comparator is required to compare entities. It cannot be null");
         }
         this.entityBaseComparator = interactorComparator.getExperimentalParticipantComparator();
-        this.entityCollectionComparator = new CollectionComparator<Entity>(interactorComparator);
+        this.entityCollectionComparator = new CollectionComparator<Participant>(interactorComparator);
     }
 
-    public CollectionComparator<Entity> getEntityCollectionComparator() {
+    public CollectionComparator<Participant> getEntityCollectionComparator() {
         return entityCollectionComparator;
     }
 
@@ -47,7 +47,7 @@ public class ExperimentalEntityPoolComparator implements Comparator<Experimental
      * @param interactorCandidates2
      * @return
      */
-    public int compare(ExperimentalEntityPool interactorCandidates1, ExperimentalEntityPool interactorCandidates2) {
+    public int compare(ParticipantEvidencePool interactorCandidates1, ParticipantEvidencePool interactorCandidates2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

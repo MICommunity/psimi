@@ -19,7 +19,7 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantBaseComparator implements Comparator<Entity> {
+public class ParticipantBaseComparator implements Comparator<Participant> {
 
     protected Comparator<CvTerm> cvTermComparator;
     protected StoichiometryComparator stoichiometryComparator;
@@ -78,7 +78,7 @@ public class ParticipantBaseComparator implements Comparator<Entity> {
      * @param participant2
      * @return
      */
-    public int compare(Entity participant1, Entity participant2) {
+    public int compare(Participant participant1, Participant participant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

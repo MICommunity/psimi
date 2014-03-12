@@ -25,7 +25,7 @@ public class DefaultParticipantBaseComparator {
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Entity participant1, Entity participant2, boolean ignoreInteractors){
+    public static boolean areEquals(Participant participant1, Participant participant2, boolean ignoreInteractors){
 
         if (participant1 == participant2){
             return true;

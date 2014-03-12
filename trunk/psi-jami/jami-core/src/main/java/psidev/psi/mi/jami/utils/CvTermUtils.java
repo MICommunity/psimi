@@ -415,7 +415,7 @@ public class CvTermUtils {
     }
 
     public static CvTerm createMoleculeSetType(){
-        return createMICvTerm(EntityPool.ENTITY_SET, EntityPool.ENTITY_SET_MI);
+        return createMICvTerm(ParticipantPool.ENTITY_SET, ParticipantPool.ENTITY_SET_MI);
     }
 
     public static CvTerm createGeneNameAliasType(){

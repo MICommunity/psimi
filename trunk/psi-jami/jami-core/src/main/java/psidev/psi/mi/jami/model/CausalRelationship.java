@@ -22,5 +22,5 @@ public interface CausalRelationship {
      * It cannot be null.
      * @return the participant target
      */
-    public Entity getTarget();
+    public Participant getTarget();
 }

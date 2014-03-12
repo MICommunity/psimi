@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.listener;
 
-import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Participant;
 
 import java.util.EventListener;
 
@@ -15,5 +15,5 @@ import java.util.EventListener;
 
 public interface ParticipantInteractorChangeListener extends EventListener{
 
-   public void onInteractorUpdate(Entity entity, Interactor oldInteractor);
+   public void onInteractorUpdate(Participant entity, Interactor oldInteractor);
 }

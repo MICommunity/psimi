@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.ModelledFeatureComparator;
 
@@ -76,7 +76,7 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
      * @param bioParticipant2
      * @return
      */
-    public int compare(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2) {
+    public int compare(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2) {
         if (participantBaseComparator == null){
             throw new IllegalStateException("The participant base comparator is required to compare basic participant properties. It cannot be null");
         }
@@ -117,7 +117,7 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
         }
     }
 
-    private void checkIfComplexAlreadyProcessed(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2) {
+    private void checkIfComplexAlreadyProcessed(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2) {
         Complex complex = null;
         if (bioParticipant1.getInteractor() instanceof Complex){
             complex = (Complex) bioParticipant1.getInteractor();

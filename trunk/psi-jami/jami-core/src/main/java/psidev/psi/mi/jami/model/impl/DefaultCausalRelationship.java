@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Entity;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Default implementation for CausalRelationship
@@ -23,9 +23,9 @@ import psidev.psi.mi.jami.model.Entity;
 public class DefaultCausalRelationship implements CausalRelationship {
 
     private CvTerm relationType;
-    private Entity target;
+    private Participant target;
 
-    public DefaultCausalRelationship(CvTerm relationType, Entity target){
+    public DefaultCausalRelationship(CvTerm relationType, Participant target){
         if (relationType == null){
             throw new IllegalArgumentException("The relationType in a CausalRelationship cannot be null");
         }
@@ -41,7 +41,7 @@ public class DefaultCausalRelationship implements CausalRelationship {
         return relationType;
     }
 
-    public Entity getTarget() {
+    public Participant getTarget() {
         return target;
     }
 

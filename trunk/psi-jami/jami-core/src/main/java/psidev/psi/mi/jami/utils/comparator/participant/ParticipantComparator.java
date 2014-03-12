@@ -17,7 +17,7 @@ import java.util.Comparator;
  * @since <pre>04/02/13</pre>
  */
 
-public class ParticipantComparator implements Comparator<Entity> {
+public class ParticipantComparator implements Comparator<Participant> {
 
     protected ParticipantBaseComparator participantBaseComparator;
     protected ParticipantEvidenceComparator experimentalParticipantComparator;
@@ -54,7 +54,7 @@ public class ParticipantComparator implements Comparator<Entity> {
      * @param participant2
      * @return
      */
-    public int compare(Entity participant1, Entity participant2) {
+    public int compare(Participant participant1, Participant participant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -71,13 +71,13 @@ public class ParticipantComparator implements Comparator<Entity> {
         else {
             // first check if both participants are from the same interface
             // both are entity sets
-            boolean isEntitySet1 = participant1 instanceof EntityPool;
-            boolean isEntitySet2 = participant2 instanceof EntityPool;
+            boolean isEntitySet1 = participant1 instanceof ParticipantPool;
+            boolean isEntitySet2 = participant2 instanceof ParticipantPool;
             if (isEntitySet1 && isEntitySet2){
-                boolean isBiologicalSet1 = participant1 instanceof ModelledEntityPool;
-                boolean isBiologicalSet2 = participant2 instanceof ModelledEntityPool;
+                boolean isBiologicalSet1 = participant1 instanceof ModelledParticipantPool;
+                boolean isBiologicalSet2 = participant2 instanceof ModelledParticipantPool;
                 if (isBiologicalSet1 && isBiologicalSet2){
-                    return modelledEntitySetComparator.compare((ModelledEntityPool) participant1, (ModelledEntityPool) participant2);
+                    return modelledEntitySetComparator.compare((ModelledParticipantPool) participant1, (ModelledParticipantPool) participant2);
                 }
                 // the first entity set participant is before
                 else if (isBiologicalSet1){
@@ -87,10 +87,10 @@ public class ParticipantComparator implements Comparator<Entity> {
                     return AFTER;
                 }
                 else {
-                    boolean isExperimentalSet1 = participant1 instanceof ModelledEntityPool;
-                    boolean isExperimentalSet2 = participant2 instanceof ModelledEntityPool;
+                    boolean isExperimentalSet1 = participant1 instanceof ModelledParticipantPool;
+                    boolean isExperimentalSet2 = participant2 instanceof ModelledParticipantPool;
                     if (isExperimentalSet1 && isExperimentalSet2){
-                        return experimentalEntitySetComparator.compare((ExperimentalEntityPool) participant1, (ExperimentalEntityPool) participant2);
+                        return experimentalEntitySetComparator.compare((ParticipantEvidencePool) participant1, (ParticipantEvidencePool) participant2);
                     }
                     // the first entity set participant is before
                     else if (isExperimentalSet1){
@@ -100,7 +100,7 @@ public class ParticipantComparator implements Comparator<Entity> {
                         return AFTER;
                     }
                     else {
-                        return entitySetComparator.compare((EntityPool) participant1, (EntityPool) participant2);
+                        return entitySetComparator.compare((ParticipantPool) participant1, (ParticipantPool) participant2);
                     }
                 }
             }
@@ -113,10 +113,10 @@ public class ParticipantComparator implements Comparator<Entity> {
             }
             else {
                 // both are biological participants
-                boolean isBiologicalParticipant1 = participant1 instanceof ModelledEntity;
-                boolean isBiologicalParticipant2 = participant2 instanceof ModelledEntity;
+                boolean isBiologicalParticipant1 = participant1 instanceof ModelledParticipant;
+                boolean isBiologicalParticipant2 = participant2 instanceof ModelledParticipant;
                 if (isBiologicalParticipant1 && isBiologicalParticipant2){
-                    return biologicalParticipantComparator.compare((ModelledEntity) participant1, (ModelledParticipant) participant2);
+                    return biologicalParticipantComparator.compare((ModelledParticipant) participant1, (ModelledParticipant) participant2);
                 }
                 // the biological participant is before
                 else if (isBiologicalParticipant1){
@@ -127,8 +127,8 @@ public class ParticipantComparator implements Comparator<Entity> {
                 }
                 else {
                     // both are experimental participants
-                    boolean isExperimentalParticipant1 = participant1 instanceof ExperimentalEntity;
-                    boolean isExperimentalParticipant2 = participant2 instanceof ExperimentalEntity;
+                    boolean isExperimentalParticipant1 = participant1 instanceof ParticipantEvidence;
+                    boolean isExperimentalParticipant2 = participant2 instanceof ParticipantEvidence;
                     if (isExperimentalParticipant1 && isExperimentalParticipant2){
                         return experimentalParticipantComparator.compare((ParticipantEvidence) participant1, (ParticipantEvidence) participant2);
                     }
