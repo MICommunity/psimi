@@ -56,7 +56,7 @@ public class InMemoryIdentityObjectCache implements PsiXml25ObjectCache {
     }
 
     @Override
-    public int extractIdForParticipant(Entity o) {
+    public int extractIdForParticipant(Participant o) {
         return extractIdFor(o);
     }
 

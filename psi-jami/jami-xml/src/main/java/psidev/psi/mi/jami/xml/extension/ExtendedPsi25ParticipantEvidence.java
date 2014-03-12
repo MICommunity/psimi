@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.xml.extension;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 
 import java.util.List;
 
@@ -15,7 +12,7 @@ import java.util.List;
  * @since <pre>30/10/13</pre>
  */
 
-public interface ExtendedPsi25ParticipantEvidence extends ExtendedPsi25Participant<FeatureEvidence>,ParticipantEvidence {
+public interface ExtendedPsi25ParticipantEvidence extends ExtendedPsi25Participant<InteractionEvidence, FeatureEvidence>,ParticipantEvidence {
     public List<Organism> getHostOrganisms();
     public List<ExperimentalInteractor> getExperimentalInteractors();
     public List<CvTerm> getExperimentalRoles();

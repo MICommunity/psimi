@@ -119,7 +119,7 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="participantFeatureWrapper")
-    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<Feature> {
+    public static class JAXBFeatureWrapper extends AbstractXmlParticipant.JAXBFeatureWrapper<Feature> {
 
         public JAXBFeatureWrapper(){
             super();

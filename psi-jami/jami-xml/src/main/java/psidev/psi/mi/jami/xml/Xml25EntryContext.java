@@ -107,7 +107,7 @@ public class Xml25EntryContext {
         }
     }
 
-    public void registerParticipant(int id, Entity o){
+    public void registerParticipant(int id, Participant o){
         if (this.elementCache != null){
             this.elementCache.registerParticipant(id, o);
         }

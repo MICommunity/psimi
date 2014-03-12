@@ -370,7 +370,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="participantEvidenceFeatureWrapper")
-    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<FeatureEvidence> {
+    public static class JAXBFeatureWrapper extends AbstractXmlParticipant.JAXBFeatureWrapper<FeatureEvidence> {
 
         public JAXBFeatureWrapper(){
             super();

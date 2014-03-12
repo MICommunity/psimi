@@ -94,15 +94,15 @@ public class InMemoryPsiXml25Cache implements PsiXml25IdCache {
         return null;    }
 
     @Override
-    public void registerParticipant(int id, Entity object) {
+    public void registerParticipant(int id, Participant object) {
         this.mapOfReferencedObjects.put(id, object);
     }
 
     @Override
-    public Entity getParticipant(int id) {
+    public Participant getParticipant(int id) {
         Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Entity){
-            return (Entity)object;
+        if (object instanceof Participant){
+            return (Participant)object;
         }
         return null;
     }

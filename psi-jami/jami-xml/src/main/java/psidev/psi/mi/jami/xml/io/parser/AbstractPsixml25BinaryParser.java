@@ -107,6 +107,7 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
     protected ComplexExpansionMethod<T,B> getExpansionMethod(){
         if (expansionMethod == null){
             this.expansionMethod = initialiseDefaultExpansionMethod();
+            this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
         }
         return this.expansionMethod;
     }

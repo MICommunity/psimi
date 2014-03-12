@@ -194,7 +194,7 @@ public class XmlParticipantEvidenceWrapper implements ModelledParticipant{
         this.parent = interaction;
     }
 
-    public ExperimentalEntity getWrappedParticipant(){
+    public ParticipantEvidence getWrappedParticipant(){
         return this.participant;
     }
 

@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @since <pre>13/11/13</pre>
  */
 
-public interface ExtendedPsi25FeatureEvidence extends ExtendedPsi25Feature<ExperimentalEntity, FeatureEvidence>,FeatureEvidence{
+public interface ExtendedPsi25FeatureEvidence extends ExtendedPsi25Feature<ParticipantEvidence, FeatureEvidence>,FeatureEvidence{
 
     public List<Experiment> getExperiments();
 }

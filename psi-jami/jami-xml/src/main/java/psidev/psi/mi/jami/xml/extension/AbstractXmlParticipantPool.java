@@ -9,39 +9,39 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 
 /**
- * Abstract implementation of Xml entitySet
+ * Abstract implementation of Xml participantPool
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/10/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Feature, C extends Entity> extends AbstractXmlParticipant<I,F> implements EntityPool<I,F,C>, ParticipantInteractorChangeListener {
+public abstract class AbstractXmlParticipantPool<I extends Interaction, F extends Feature, C extends Participant> extends AbstractXmlParticipant<I,F> implements ParticipantPool<I,F,C>, ParticipantInteractorChangeListener {
 
     private Set<C> components;
     private CvTerm type;
 
-    protected AbstractXmlEntityPool() {
+    protected AbstractXmlParticipantPool() {
         super();
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntityPool(InteractorPool interactor) {
+    public AbstractXmlParticipantPool(InteractorPool interactor) {
         super(interactor);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntityPool(InteractorPool interactor, CvTerm bioRole) {
+    public AbstractXmlParticipantPool(InteractorPool interactor, CvTerm bioRole) {
         super(interactor, bioRole);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntityPool(InteractorPool interactor, Stoichiometry stoichiometry) {
+    public AbstractXmlParticipantPool(InteractorPool interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractXmlEntityPool(InteractorPool interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public AbstractXmlParticipantPool(InteractorPool interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
         initialiseComponentCandidatesSet();
     }
@@ -106,6 +106,7 @@ public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Fea
         if (components.add(interactor)){
             interactor.setChangeListener(this);
             getInteractor().add(interactor.getInteractor());
+            interactor.setInteraction(getInteraction());
             return true;
         }
         return false;
@@ -113,9 +114,10 @@ public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Fea
 
     public boolean remove(Object o) {
         if (components.remove(o)){
-            Entity entity = (Entity)o;
+            Participant entity = (Participant)o;
             entity.setChangeListener(null);
             getInteractor().remove(entity.getInteractor());
+            entity.setInteraction(null);
             return true;
         }
         return false;
@@ -131,6 +133,7 @@ public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Fea
             for (C entity : this){
                 entity.setChangeListener(this);
                 getInteractor().add(entity.getInteractor());
+                entity.setInteraction(getInteraction());
             }
         }
         return added;
@@ -141,7 +144,7 @@ public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Fea
         if (retain){
             Collection<Interactor> interactors = new ArrayList<Interactor>(objects.size());
             for (Object o : objects){
-                interactors.add(((Entity)o).getInteractor());
+                interactors.add(((Participant)o).getInteractor());
             }
             getInteractor().retainAll(interactors);
         }
@@ -153,9 +156,10 @@ public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Fea
         if (remove){
             Collection<Interactor> interactors = new ArrayList<Interactor>(objects.size());
             for (Object o : objects){
-                Entity entity = (Entity)o;
+                Participant entity = (Participant)o;
                 entity.setChangeListener(null);
                 interactors.add(entity.getInteractor());
+                entity.setInteraction(null);
             }
             // check if an interactor is not in another entity that is kept.
             // remove any interactors that are kept with other entities
@@ -170,12 +174,13 @@ public abstract class AbstractXmlEntityPool<I extends Interaction, F extends Fea
     public void clear() {
         for (C entity : this){
             entity.setChangeListener(null);
+            entity.setInteraction(null);
         }
         components.clear();
         getInteractor().clear();
     }
 
-    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
         // check that the listener still makes sensr
         if (contains(entity)){
             boolean needsToRemoveOldInteractor = true;

@@ -23,7 +23,7 @@ import java.util.List;
  * @since <pre>25/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> implements
+public abstract class AbstractXmlFeature<P extends Participant, F extends Feature> implements
         Feature<P,F>, FileSourceContext, Locatable, ExtendedPsi25Feature<P,F>{
 
     private P participant;

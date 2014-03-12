@@ -47,7 +47,7 @@ public class ExpandedXml25NamedParticipantEvidenceWriter extends AbstractXml25Pa
 
     @Override
     protected void writeNames(ParticipantEvidence object) throws XMLStreamException {
-        NamedEntity xmlParticipant = (NamedEntity) object;
+        NamedParticipant xmlParticipant = (NamedParticipant) object;
         // write names
         boolean hasShortLabel = xmlParticipant.getShortName() != null;
         boolean hasFullLabel = xmlParticipant.getFullName() != null;

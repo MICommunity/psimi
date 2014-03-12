@@ -15,10 +15,10 @@ import java.util.Collection;
 
 public class XmlFeatureWrapper implements ModelledFeature{
     private Feature<Participant, Feature> feature;
-    private ModelledEntity parent;
+    private ModelledParticipant parent;
     private SynchronizedLinkedFeatureList linkedFeatures;
 
-    public XmlFeatureWrapper(Feature part, ModelledEntity parent){
+    public XmlFeatureWrapper(Feature part, ModelledParticipant parent){
         if (part == null){
             throw new IllegalArgumentException("A feature wrapper needs a non null feature");
         }
@@ -107,7 +107,7 @@ public class XmlFeatureWrapper implements ModelledFeature{
     }
 
     @Override
-    public ModelledEntity getParticipant() {
+    public ModelledParticipant getParticipant() {
         if (parent == null && this.feature.getParticipant() != null){
             this.parent = new XmlParticipantWrapper(this.feature.getParticipant(), null);
         }
@@ -115,12 +115,12 @@ public class XmlFeatureWrapper implements ModelledFeature{
     }
 
     @Override
-    public void setParticipant(ModelledEntity participant) {
+    public void setParticipant(ModelledParticipant participant) {
         this.parent = participant;
     }
 
     @Override
-    public void setParticipantAndAddFeature(ModelledEntity participant) {
+    public void setParticipantAndAddFeature(ModelledParticipant participant) {
         if (this.parent != null){
             this.parent.removeFeature(this);
         }

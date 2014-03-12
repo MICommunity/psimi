@@ -10,35 +10,35 @@ import java.util.List;
 
 /**
  * Xml implementation of a set of ModelledEntity that form a single modelled participant
- * Notes: The equals and hashcode methods have NOT been overridden because the XmlModelledEntityPool object is a complex object.
+ * Notes: The equals and hashcode methods have NOT been overridden because the XmlModelledParticipantPool object is a complex object.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledEntityPool extends AbstractXmlEntityPool<ModelledInteraction, ModelledFeature, ModelledEntity> implements ModelledEntityPool {
+public class XmlModelledParticipantPool extends AbstractXmlParticipantPool<ModelledInteraction, ModelledFeature, ModelledParticipant> implements ModelledParticipantPool {
 
     @XmlLocation
     @XmlTransient
     private Locator locator;
 
-    public XmlModelledEntityPool() {
+    public XmlModelledParticipantPool() {
         super();
     }
 
-    public XmlModelledEntityPool(String interactorSetName) {
+    public XmlModelledParticipantPool(String interactorSetName) {
         super(new XmlInteractorPool(interactorSetName));
     }
 
-    public XmlModelledEntityPool(String interactorSetName, CvTerm bioRole) {
+    public XmlModelledParticipantPool(String interactorSetName, CvTerm bioRole) {
         super(new XmlInteractorPool(interactorSetName), bioRole);
     }
 
-    public XmlModelledEntityPool(String interactorSetName, Stoichiometry stoichiometry) {
+    public XmlModelledParticipantPool(String interactorSetName, Stoichiometry stoichiometry) {
         super(new XmlInteractorPool(interactorSetName), stoichiometry);
     }
 
-    public XmlModelledEntityPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
+    public XmlModelledParticipantPool(String interactorSetName, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(new XmlInteractorPool(interactorSetName), bioRole, stoichiometry);
     }
 
@@ -120,7 +120,7 @@ public class XmlModelledEntityPool extends AbstractXmlEntityPool<ModelledInterac
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="modelledEntityFeatureWrapper")
-    public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<ModelledFeature> {
+    public static class JAXBFeatureWrapper extends AbstractXmlParticipant.JAXBFeatureWrapper<ModelledFeature> {
 
         public JAXBFeatureWrapper(){
             super();

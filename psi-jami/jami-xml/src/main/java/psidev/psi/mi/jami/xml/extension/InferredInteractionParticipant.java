@@ -5,8 +5,8 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.reference.AbstractFeatureRef;
 import psidev.psi.mi.jami.xml.reference.AbstractParticipantRef;
@@ -43,7 +43,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 {
 
     private Feature feature;
-    private Entity participant;
+    private Participant participant;
     private PsiXmLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -56,7 +56,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         return feature;
     }
 
-    public Entity getParticipant() {
+    public Participant getParticipant() {
         return participant;
     }
 
@@ -64,7 +64,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         this.feature = feature;
     }
 
-    public void setParticipant(Entity participant) {
+    public void setParticipant(Participant participant) {
         this.participant = participant;
     }
 
@@ -137,7 +137,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 
         public boolean resolve(PsiXml25IdCache parsedObjects) {
             if (parsedObjects.contains(this.ref)){
-                Entity obj = parsedObjects.getParticipant(this.ref);
+                Participant obj = parsedObjects.getParticipant(this.ref);
                 if (obj != null){
                     participant = obj;
                     return true;

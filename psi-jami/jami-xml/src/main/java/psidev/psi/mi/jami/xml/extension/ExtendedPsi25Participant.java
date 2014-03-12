@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.xml.extension;
 
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.NamedEntity;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.NamedParticipant;
 
 /**
  * Extended participant for PSI-XML 2,5 standards
@@ -11,7 +12,7 @@ import psidev.psi.mi.jami.model.NamedEntity;
  * @since <pre>30/10/13</pre>
  */
 
-public interface ExtendedPsi25Participant<F extends Feature> extends NamedEntity<F> {
+public interface ExtendedPsi25Participant<I extends Interaction, F extends Feature> extends NamedParticipant<I,F> {
 
     public int getId();
     public void setId(int id);

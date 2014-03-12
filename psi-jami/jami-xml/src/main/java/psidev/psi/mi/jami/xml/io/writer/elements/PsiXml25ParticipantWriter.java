@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements;
 
-import psidev.psi.mi.jami.model.Entity;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Interface for PSI-XML 2.5 participant writers.
@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Entity;
  * @since <pre>19/11/13</pre>
  */
 
-public interface PsiXml25ParticipantWriter<T extends Entity> extends PsiXml25ElementWriter<T>{
+public interface PsiXml25ParticipantWriter<T extends Participant> extends PsiXml25ElementWriter<T>{
 
     /**
      *
