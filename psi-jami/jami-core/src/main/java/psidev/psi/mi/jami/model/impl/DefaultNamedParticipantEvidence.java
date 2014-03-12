@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.*;
  * @since <pre>13/11/13</pre>
  */
 
-public class DefaultNamedParticipantEvidence extends DefaultParticipantEvidence implements NamedEntity<FeatureEvidence>{
+public class DefaultNamedParticipantEvidence extends DefaultParticipantEvidence implements NamedParticipant<InteractionEvidence, FeatureEvidence> {
     private String shortName;
     private String fullName;
 

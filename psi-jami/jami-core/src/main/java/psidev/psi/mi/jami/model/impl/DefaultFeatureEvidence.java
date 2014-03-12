@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,25 +21,25 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultFeatureEvidence extends AbstractFeature<ExperimentalEntity, FeatureEvidence> implements FeatureEvidence {
+public class DefaultFeatureEvidence extends AbstractFeature<ParticipantEvidence, FeatureEvidence> implements FeatureEvidence {
     private Collection<CvTerm> detectionMethods;
 
-    public DefaultFeatureEvidence(ExperimentalEntity participant) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant) {
         super();
         setParticipant(participant);
     }
 
-    public DefaultFeatureEvidence(ExperimentalEntity participant, String shortName, String fullName) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName) {
         super(shortName, fullName);
         setParticipant(participant);
     }
 
-    public DefaultFeatureEvidence(ExperimentalEntity participant, CvTerm type) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type) {
         super(type);
         setParticipant(participant);
     }
 
-    public DefaultFeatureEvidence(ExperimentalEntity participant, String shortName, String fullName, CvTerm type) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
         super(shortName, fullName, type);
         setParticipant(participant);
     }

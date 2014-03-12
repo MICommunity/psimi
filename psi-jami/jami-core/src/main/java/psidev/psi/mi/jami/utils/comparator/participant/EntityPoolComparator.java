@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntityPool;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantPool;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Comparator;
@@ -16,9 +16,9 @@ import java.util.Comparator;
  * @since <pre>04/10/13</pre>
  */
 
-public class EntityPoolComparator implements Comparator<EntityPool> {
+public class EntityPoolComparator implements Comparator<ParticipantPool> {
 
-    protected CollectionComparator<Entity> entityCollectionComparator;
+    protected CollectionComparator<Participant> entityCollectionComparator;
     protected ParticipantBaseComparator entityBaseComparator;
 
     /**
@@ -30,10 +30,10 @@ public class EntityPoolComparator implements Comparator<EntityPool> {
             throw new IllegalArgumentException("The participant/entity comparator is required to compare entities. It cannot be null");
         }
         this.entityBaseComparator = interactorComparator.getParticipantBaseComparator();
-        this.entityCollectionComparator = new CollectionComparator<Entity>(interactorComparator);
+        this.entityCollectionComparator = new CollectionComparator<Participant>(interactorComparator);
     }
 
-    public CollectionComparator<Entity> getEntityCollectionComparator() {
+    public CollectionComparator<Participant> getEntityCollectionComparator() {
         return entityCollectionComparator;
     }
 
@@ -47,7 +47,7 @@ public class EntityPoolComparator implements Comparator<EntityPool> {
      * @param interactorCandidates2
      * @return
      */
-    public int compare(EntityPool interactorCandidates1, EntityPool interactorCandidates2) {
+    public int compare(ParticipantPool interactorCandidates1, ParticipantPool interactorCandidates2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

@@ -23,7 +23,7 @@ public class ParticipantCloner {
      * @param createNewFeature If true, this method will clone each feature from source instead of reusing the feature instances from source.
      *                         It will then set the participantEvidence of the cloned features to target
      */
-    public static void copyAndOverrideParticipantEvidenceProperties(ExperimentalEntity source, ExperimentalEntity target, boolean createNewFeature){
+    public static void copyAndOverrideParticipantEvidenceProperties(ParticipantEvidence source, ParticipantEvidence target, boolean createNewFeature){
         if (source != null && target != null){
             target.setExperimentalRole(source.getExperimentalRole());
             target.setExpressedInOrganism(source.getExpressedInOrganism());
@@ -73,7 +73,7 @@ public class ParticipantCloner {
      * @param createNewFeature If true, this method will clone each feature from source instead of reusing the feature instances from source.
      *                         It will then set the modelledParticipant of the cloned features to target
      */
-    public static void copyAndOverrideModelledParticipantProperties(ModelledEntity source, ModelledEntity target, boolean createNewFeature){
+    public static void copyAndOverrideModelledParticipantProperties(ModelledParticipant source, ModelledParticipant target, boolean createNewFeature){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
             target.setInteractor(source.getInteractor());
@@ -111,7 +111,7 @@ public class ParticipantCloner {
      * @param target
      * @param createNewFeature If true, this method will clone each feature from source instead of reusing the feature instances from source.
      */
-    public static void copyAndOverrideBasicParticipantProperties(Entity<Feature> source, Entity<Feature> target, boolean createNewFeature){
+    public static void copyAndOverrideBasicParticipantProperties(Participant source, Participant target, boolean createNewFeature){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
             target.setInteractor(source.getInteractor());
@@ -134,16 +134,16 @@ public class ParticipantCloner {
             }
             else {
                 target.getFeatures().clear();
-                for (Feature f : source.getFeatures()){
+                for (Object f : source.getFeatures()){
                     Feature clone = new DefaultFeature();
-                    FeatureCloner.copyAndOverrideBasicFeaturesProperties(f, clone);
+                    FeatureCloner.copyAndOverrideBasicFeaturesProperties((Feature)f, clone);
                     target.getFeatures().add(clone);
                 }
             }
         }
     }
 
-    public static void copyAndOverrideParticipantPoolProperties(EntityPool source, EntityPool target, boolean newFeatures){
+    public static void copyAndOverrideParticipantPoolProperties(ParticipantPool source, ParticipantPool target, boolean newFeatures){
         if (source != null && target != null){
             copyAndOverrideBasicParticipantProperties(source, target, newFeatures);
             target.clear();
@@ -151,7 +151,7 @@ public class ParticipantCloner {
         }
     }
 
-    public static void copyAndOverrideExperimentalEntityPoolProperties(ExperimentalEntityPool source, ExperimentalEntityPool target, boolean newFeatures){
+    public static void copyAndOverrideExperimentalEntityPoolProperties(ParticipantEvidencePool source, ParticipantEvidencePool target, boolean newFeatures){
         if (source != null && target != null){
             copyAndOverrideParticipantEvidenceProperties(source, target, newFeatures);
             target.clear();

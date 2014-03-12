@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Entity;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Unambiguous generic Participant comparator
@@ -51,7 +51,7 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
      * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
      *
      */
-    public int compare(Entity participant1, Entity participant2) {
+    public int compare(Participant participant1, Participant participant2) {
         return super.compare(participant1, participant2);
     }
 
@@ -61,7 +61,7 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Entity participant1, Entity participant2){
+    public static boolean areEquals(Participant participant1, Participant participant2){
         if (unambiguousParticipantComparator == null){
             unambiguousParticipantComparator = new UnambiguousParticipantComparator();
         }

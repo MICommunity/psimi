@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.*;
  * @since <pre>13/11/13</pre>
  */
 
-public class DefaultNamedParticipant extends DefaultParticipant implements NamedEntity<Feature>{
+public class DefaultNamedParticipant extends DefaultParticipant implements NamedParticipant<Interaction, Feature> {
     private String shortName;
     private String fullName;
 

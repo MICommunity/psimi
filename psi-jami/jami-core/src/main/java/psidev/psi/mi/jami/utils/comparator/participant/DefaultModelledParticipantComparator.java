@@ -24,7 +24,7 @@ public class DefaultModelledParticipantComparator {
      * @param bioParticipant2
      * @return true if the two components are equal
      */
-    public static boolean areEquals(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2, boolean checkComplexesAsInteractors){
+    public static boolean areEquals(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2, boolean checkComplexesAsInteractors){
         Map<Complex, Set<Interactor>> processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
 
         if (bioParticipant1 == bioParticipant2){
@@ -85,7 +85,7 @@ public class DefaultModelledParticipantComparator {
         }
     }
 
-    private static boolean checkIfComplexAlreadyProcessed(ModelledEntity bioParticipant1, ModelledEntity bioParticipant2, Map<Complex, Set<Interactor>> processedComplexes) {
+    private static boolean checkIfComplexAlreadyProcessed(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2, Map<Complex, Set<Interactor>> processedComplexes) {
         Complex complex = null;
         if (bioParticipant1.getInteractor() instanceof Complex){
             complex = (Complex) bioParticipant1.getInteractor();
