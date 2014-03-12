@@ -62,6 +62,24 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
         throw new UnsupportedOperationException("Cannot set the interactor of an ParticipantPool as it is an interactorSet that is related to the interactors in the set of entities");
     }
 
+    @Override
+    public void setInteractionAndAddParticipant(I interaction) {
+        super.setInteractionAndAddParticipant(interaction);
+
+        for (C subEntity : this){
+             subEntity.setInteraction(interaction);
+        }
+    }
+
+    @Override
+    public void setInteraction(I interaction) {
+        super.setInteraction(interaction);
+
+        for (C subEntity : this){
+            subEntity.setInteraction(interaction);
+        }
+    }
+
     public CvTerm getType() {
         return type;
     }
@@ -108,6 +126,7 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
         if (components.add(interactor)){
             interactor.setChangeListener(this);
             getInteractor().add(interactor.getInteractor());
+            interactor.setInteraction(getInteraction());
             return true;
         }
         return false;
@@ -118,6 +137,7 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
             Participant entity = (Participant)o;
             entity.setChangeListener(null);
             getInteractor().remove(entity.getInteractor());
+            entity.setInteraction(null);
             return true;
         }
         return false;
@@ -133,6 +153,7 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
             for (C entity : this){
                 entity.setChangeListener(this);
                 getInteractor().add(entity.getInteractor());
+                entity.setInteraction(getInteraction());
             }
         }
         return added;
@@ -158,6 +179,7 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
                 Participant entity = (Participant)o;
                 entity.setChangeListener(null);
                 interactors.add(entity.getInteractor());
+                entity.setInteraction(null);
             }
             // check if an interactor is not in another entity that is kept.
             // remove any interactors that are kept with other entities
@@ -172,6 +194,7 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
     public void clear() {
         for (C entity : this){
             entity.setChangeListener(null);
+            entity.setInteraction(null);
         }
         components.clear();
         getInteractor().clear();
