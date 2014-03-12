@@ -56,7 +56,7 @@ public class FeatureRangeRule extends AbstractMIRule<Feature> {
         // list of messages to return
         Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        Entity participant = feature.getParticipant();
+        Participant participant = feature.getParticipant();
         Interactor interactor = null;
         String sequence = null;
 
