@@ -53,27 +53,27 @@ public class BasicParticipantEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onBiologicalRoleUpdate(Entity participant, CvTerm oldType) {
+                    public void onBiologicalRoleUpdate(Participant participant, CvTerm oldType) {
                         Assert.fail();
                     }
 
-                    public void onStoichiometryUpdate(Entity participant, Stoichiometry oldStoichiometry) {
+                    public void onStoichiometryUpdate(Participant participant, Stoichiometry oldStoichiometry) {
                         Assert.fail();
                     }
 
-                    public void onAddedCausalRelationship(Entity participant, CausalRelationship added) {
+                    public void onAddedCausalRelationship(Participant participant, CausalRelationship added) {
                         Assert.fail();
                     }
 
-                    public void onRemovedCausalRelationship(Entity participant, CausalRelationship removed) {
+                    public void onRemovedCausalRelationship(Participant participant, CausalRelationship removed) {
                         Assert.fail();
                     }
 
-                    public void onAddedFeature(Entity participant, Feature added) {
+                    public void onAddedFeature(Participant participant, Feature added) {
                         Assert.fail();
                     }
 
-                    public void onRemovedFeature(Entity participant, Feature removed) {
+                    public void onRemovedFeature(Participant participant, Feature removed) {
                         Assert.fail();
                     }
 
@@ -103,7 +103,7 @@ public class BasicParticipantEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+                    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
                         Assert.fail();
                     }
 
@@ -140,27 +140,27 @@ public class BasicParticipantEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onBiologicalRoleUpdate(Entity participant, CvTerm oldType) {
+                    public void onBiologicalRoleUpdate(Participant participant, CvTerm oldType) {
                         Assert.fail();
                     }
 
-                    public void onStoichiometryUpdate(Entity participant, Stoichiometry oldStoichiometry) {
+                    public void onStoichiometryUpdate(Participant participant, Stoichiometry oldStoichiometry) {
                         Assert.fail();
                     }
 
-                    public void onAddedCausalRelationship(Entity participant, CausalRelationship added) {
+                    public void onAddedCausalRelationship(Participant participant, CausalRelationship added) {
                         Assert.fail();
                     }
 
-                    public void onRemovedCausalRelationship(Entity participant, CausalRelationship removed) {
+                    public void onRemovedCausalRelationship(Participant participant, CausalRelationship removed) {
                         Assert.fail();
                     }
 
-                    public void onAddedFeature(Entity participant, Feature added) {
+                    public void onAddedFeature(Participant participant, Feature added) {
                         Assert.fail();
                     }
 
-                    public void onRemovedFeature(Entity participant, Feature removed) {
+                    public void onRemovedFeature(Participant participant, Feature removed) {
                         Assert.fail();
                     }
 
@@ -190,7 +190,7 @@ public class BasicParticipantEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+                    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
                         Assert.fail();
                     }
 
@@ -232,26 +232,26 @@ public class BasicParticipantEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onAddedFeature(Entity participant, Feature added) {
+                    public void onAddedFeature(Participant participant, Feature added) {
                         Assert.fail();
                     }
 
-                    public void onRemovedFeature(Entity participant, Feature removed) {
+                    public void onRemovedFeature(Participant participant, Feature removed) {
                         Assert.fail();
                     }
-                    public void onBiologicalRoleUpdate(Entity participant, CvTerm oldType) {
-                        Assert.fail();
-                    }
-
-                    public void onStoichiometryUpdate(Entity participant, Stoichiometry oldStoichiometry) {
+                    public void onBiologicalRoleUpdate(Participant participant, CvTerm oldType) {
                         Assert.fail();
                     }
 
-                    public void onAddedCausalRelationship(Entity participant, CausalRelationship added) {
+                    public void onStoichiometryUpdate(Participant participant, Stoichiometry oldStoichiometry) {
                         Assert.fail();
                     }
 
-                    public void onRemovedCausalRelationship(Entity participant, CausalRelationship removed) {
+                    public void onAddedCausalRelationship(Participant participant, CausalRelationship added) {
+                        Assert.fail();
+                    }
+
+                    public void onRemovedCausalRelationship(Participant participant, CausalRelationship removed) {
                         Assert.fail();
                     }
 
@@ -281,7 +281,7 @@ public class BasicParticipantEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+                    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
                         Assert.fail();
                     }
 

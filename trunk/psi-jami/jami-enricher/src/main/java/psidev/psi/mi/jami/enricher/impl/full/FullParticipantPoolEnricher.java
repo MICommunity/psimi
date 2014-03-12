@@ -4,25 +4,25 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalEntityPoolEnricher;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantPoolEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.EntityPool;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.ParticipantPool;
 
 /**
- * A basic minimal updater for entity pools
+ * A basic minimal updater for Participant pools
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>01/10/13</pre>
  */
 
-public class FullEntityPoolEnricher<P extends EntityPool, F extends Feature> extends MinimalEntityPoolEnricher<P,F> {
+public class FullParticipantPoolEnricher<P extends ParticipantPool, F extends Feature> extends MinimalParticipantPoolEnricher<P,F> {
 
     private FullParticipantEnricher<P,F> fullEnricher;
 
-    public FullEntityPoolEnricher(){
+    public FullParticipantPoolEnricher(){
         super();
         this.fullEnricher = new FullParticipantEnricher<P, F>();
     }

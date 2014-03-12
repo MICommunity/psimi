@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.enricher.impl.minimal;
 
-import psidev.psi.mi.jami.enricher.EntityPoolEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantPoolEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntityPool;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantPool;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantComparator;
 
 import java.util.*;
@@ -16,13 +16,13 @@ import java.util.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalEntityPoolEnricher<P extends EntityPool, F extends Feature> extends MinimalParticipantEnricher<P , F>
-implements EntityPoolEnricher<P,F>{
+public class MinimalParticipantPoolEnricher<P extends ParticipantPool, F extends Feature> extends MinimalParticipantEnricher<P , F>
+implements ParticipantPoolEnricher<P,F> {
 
     private ParticipantEnricher participantEnricher;
-    private Comparator<Entity> participantComparator;
+    private Comparator<Participant> participantComparator;
 
-    public MinimalEntityPoolEnricher(){
+    public MinimalParticipantPoolEnricher(){
         super();
     }
 
@@ -34,14 +34,14 @@ implements EntityPoolEnricher<P,F>{
         this.participantEnricher = participantEnricher;
     }
 
-    public Comparator<Entity> getParticipantComparator() {
+    public Comparator<Participant> getParticipantComparator() {
         if (participantComparator == null){
             participantComparator = new UnambiguousExactParticipantComparator();
         }
         return participantComparator;
     }
 
-    public void setParticipantComparator(Comparator<Entity> participantComparator) {
+    public void setParticipantComparator(Comparator<Participant> participantComparator) {
         this.participantComparator = participantComparator;
     }
 
@@ -53,17 +53,17 @@ implements EntityPoolEnricher<P,F>{
     @Override
     public void processOtherProperties(P poolToEnrich, P fetched) throws EnricherException {
 
-        TreeSet<Entity> set1 = new TreeSet<Entity>(getParticipantComparator());
+        TreeSet<Participant> set1 = new TreeSet<Participant>(getParticipantComparator());
         set1.addAll(poolToEnrich);
-        TreeSet<Entity> set2 = new TreeSet<Entity>(getParticipantComparator());
+        TreeSet<Participant> set2 = new TreeSet<Participant>(getParticipantComparator());
         set2.addAll(fetched);
 
-        Iterator<Entity> iterator1 = set1.iterator();
-        Iterator<Entity> iterator2 = set2.iterator();
+        Iterator<Participant> iterator1 = set1.iterator();
+        Iterator<Participant> iterator2 = set2.iterator();
 
-        Collection<Entity> entitiesToAdd = new ArrayList<Entity>(fetched.size());
-        Entity i1 = iterator1.hasNext() ? iterator1.next() : null;
-        Entity i2 = iterator2.hasNext() ? iterator2.next() : null;
+        Collection<Participant> entitiesToAdd = new ArrayList<Participant>(fetched.size());
+        Participant i1 = iterator1.hasNext() ? iterator1.next() : null;
+        Participant i2 = iterator2.hasNext() ? iterator2.next() : null;
         while(i1 != null && i2 != null){
 
             int comp = getParticipantComparator().compare(i1, i2);

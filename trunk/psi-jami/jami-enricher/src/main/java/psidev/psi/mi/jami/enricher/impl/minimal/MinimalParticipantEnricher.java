@@ -17,7 +17,7 @@ import java.util.Collection;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13
  */
-public class MinimalParticipantEnricher<P extends Entity , F extends Feature>
+public class MinimalParticipantEnricher<P extends Participant , F extends Feature>
         implements ParticipantEnricher<P,F>  {
 
     private ParticipantEnricherListener<P> listener;

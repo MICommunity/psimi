@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.EntityPoolEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.ParticipantPoolEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntityPool;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantPool;
 
 /**
  * A manager for listeners which holds a list of listeners.
@@ -17,43 +17,43 @@ import psidev.psi.mi.jami.model.EntityPool;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
  */
-public class EntityPoolEnricherListenerManager<P extends EntityPool>
+public class ParticipantPoolEnricherListenerManager<P extends ParticipantPool>
         extends ParticipantEnricherListenerManager<P>
-        implements EntityPoolEnricherListener<P> {
+        implements ParticipantPoolEnricherListener<P> {
 
     /**
      * A constructor to create a listener manager with no listeners.
      */
-    public EntityPoolEnricherListenerManager(){ }
+    public ParticipantPoolEnricherListenerManager(){ }
 
     /**
      * A constructor to initiate a listener manager with as many listeners as required.
      * @param listeners     The listeners to add.
      */
-    public EntityPoolEnricherListenerManager(EntityPoolEnricherListener<P>... listeners){
+    public ParticipantPoolEnricherListenerManager(ParticipantPoolEnricherListener<P>... listeners){
         super(listeners);
     }
 
     public void onTypeUpdate(P participant, CvTerm oldType) {
         for(ParticipantEnricherListener listener : getListenersList()){
-            if (listener instanceof EntityPoolEnricherListener){
-                ((EntityPoolEnricherListener)listener).onTypeUpdate(participant, oldType);
+            if (listener instanceof ParticipantPoolEnricherListener){
+                ((ParticipantPoolEnricherListener)listener).onTypeUpdate(participant, oldType);
             }
         }
     }
 
-    public void onAddedEntity(P participant, Entity added) {
+    public void onAddedEntity(P participant, Participant added) {
         for(ParticipantEnricherListener listener : getListenersList()){
-            if (listener instanceof EntityPoolEnricherListener){
-                ((EntityPoolEnricherListener)listener).onAddedEntity(participant, added);
+            if (listener instanceof ParticipantPoolEnricherListener){
+                ((ParticipantPoolEnricherListener)listener).onAddedEntity(participant, added);
             }
         }
     }
 
-    public void onRemovedEntity(P participant, Entity removed) {
+    public void onRemovedEntity(P participant, Participant removed) {
         for(ParticipantEnricherListener listener : getListenersList()){
-            if (listener instanceof EntityPoolEnricherListener){
-                ((EntityPoolEnricherListener)listener).onRemovedEntity(participant, removed);
+            if (listener instanceof ParticipantPoolEnricherListener){
+                ((ParticipantPoolEnricherListener)listener).onRemovedEntity(participant, removed);
             }
         }
     }

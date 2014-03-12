@@ -1,11 +1,10 @@
 package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
-import psidev.psi.mi.jami.enricher.listener.EntityPoolEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEnricherStatisticsWriter;
+import psidev.psi.mi.jami.enricher.listener.ParticipantPoolEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Entity;
-import psidev.psi.mi.jami.model.EntityPool;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantPool;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +17,9 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class EntityPoolEnricherStatisticsWriter<P extends EntityPool>
+public class ParticipantPoolEnricherStatisticsWriter<P extends ParticipantPool>
         extends ParticipantEnricherStatisticsWriter<P>
-        implements EntityPoolEnricherListener<P> {
+        implements ParticipantPoolEnricherListener<P> {
 
 
     private static final String FILE_NAME = "Participant_pool";
@@ -29,7 +28,7 @@ public class EntityPoolEnricherStatisticsWriter<P extends EntityPool>
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public EntityPoolEnricherStatisticsWriter() throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
@@ -38,7 +37,7 @@ public class EntityPoolEnricherStatisticsWriter<P extends EntityPool>
      * @param fileName          The seed to base the names of the files on.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public EntityPoolEnricherStatisticsWriter(String fileName) throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -48,7 +47,7 @@ public class EntityPoolEnricherStatisticsWriter<P extends EntityPool>
      * @param failureFileName   The exact name for the file to log failed enrichments in
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public EntityPoolEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -58,7 +57,7 @@ public class EntityPoolEnricherStatisticsWriter<P extends EntityPool>
      * @param failureFile       The file to log failed enrichments in.
      * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public EntityPoolEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
     }
 
@@ -67,12 +66,12 @@ public class EntityPoolEnricherStatisticsWriter<P extends EntityPool>
         incrementUpdateCount();
     }
 
-    public void onAddedEntity(P participant, Entity added) {
+    public void onAddedEntity(P participant, Participant added) {
         checkObject(participant);
         incrementAdditionCount();
     }
 
-    public void onRemovedEntity(P participant, Entity removed) {
+    public void onRemovedEntity(P participant, Participant removed) {
         checkObject(participant);
         incrementRemovedCount();
     }

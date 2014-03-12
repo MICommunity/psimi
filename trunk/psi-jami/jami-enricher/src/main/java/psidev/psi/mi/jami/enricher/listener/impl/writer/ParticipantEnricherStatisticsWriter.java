@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.writer.EnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
@@ -16,7 +15,7 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class ParticipantEnricherStatisticsWriter<P extends Entity>
+public class ParticipantEnricherStatisticsWriter<P extends Participant>
         extends EnricherStatisticsWriter<P>
         implements ParticipantEnricherListener<P> {
 
@@ -110,7 +109,7 @@ public class ParticipantEnricherStatisticsWriter<P extends Entity>
         incrementRemovedCount();
     }
 
-    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
         checkObject(entity);
         incrementUpdateCount();
     }

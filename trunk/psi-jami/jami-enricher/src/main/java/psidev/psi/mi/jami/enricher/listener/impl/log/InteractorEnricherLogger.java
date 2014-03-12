@@ -20,10 +20,10 @@ public class InteractorEnricherLogger<T extends Interactor> extends InteractorCh
     private static final Logger log = LoggerFactory.getLogger(InteractorEnricherLogger.class.getName());
 
     public void onEnrichmentComplete(T object, EnrichmentStatus status, String message) {
-        log.info("Bioactive entity "+object.toString()+" has been enriched with status of "+status+", message: "+message);
+        log.info("Bioactive Participant "+object.toString()+" has been enriched with status of "+status+", message: "+message);
     }
 
     public void onEnrichmentError(T object, String message, Exception e) {
-        log.error("Enrichment error for bioactive entity "+object.toString()+", message: "+message, e);
+        log.error("Enrichment error for bioactive Participant "+object.toString()+", message: "+message, e);
     }
 }

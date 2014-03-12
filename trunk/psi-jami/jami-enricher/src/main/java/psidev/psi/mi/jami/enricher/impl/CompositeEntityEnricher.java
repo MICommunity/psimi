@@ -15,78 +15,78 @@ import java.util.Collection;
  * @since <pre>11/02/14</pre>
  */
 
-public class CompositeEntityEnricher implements ParticipantEnricher<Entity, Feature>{
+public class CompositeEntityEnricher implements ParticipantEnricher<Participant, Feature>{
 
-    private ParticipantEnricher<Entity,Feature> entityBaseEnricher;
-    private ParticipantEnricher<ModelledEntity,ModelledFeature> modelledEntityEnricher;
-    private ParticipantEnricher<ExperimentalEntity,FeatureEvidence> experimentalEntityEnricher;
-    private ParticipantEnricher<ModelledEntityPool,ModelledFeature> modelledEntityPoolEnricher;
-    private ParticipantEnricher<ExperimentalEntityPool,FeatureEvidence> experimentalEntityPoolEnricher;
+    private ParticipantEnricher<Participant,Feature> entityBaseEnricher;
+    private ParticipantEnricher<ModelledParticipant,ModelledFeature> modelledEntityEnricher;
+    private ParticipantEnricher<ParticipantEvidence,FeatureEvidence> experimentalEntityEnricher;
+    private ParticipantEnricher<ModelledParticipantPool,ModelledFeature> modelledEntityPoolEnricher;
+    private ParticipantEnricher<ParticipantEvidencePool,FeatureEvidence> experimentalEntityPoolEnricher;
 
-    public CompositeEntityEnricher(ParticipantEnricher<Entity,Feature> entityBaseEnricher){
+    public CompositeEntityEnricher(ParticipantEnricher<Participant,Feature> entityBaseEnricher){
         super();
         if (entityBaseEnricher == null){
-            throw new IllegalArgumentException("At least the entity base enricher is needed and cannot be null") ;
+            throw new IllegalArgumentException("At least the Participant base enricher is needed and cannot be null") ;
         }
         this.entityBaseEnricher = entityBaseEnricher;
     }
 
-    public ParticipantEnricher<Entity, Feature> getEntityBaseEnricher() {
+    public ParticipantEnricher<Participant, Feature> getEntityBaseEnricher() {
         return entityBaseEnricher;
     }
 
-    public ParticipantEnricher<ModelledEntity, ModelledFeature> getModelledEntityEnricher() {
+    public ParticipantEnricher<ModelledParticipant, ModelledFeature> getModelledEntityEnricher() {
         return modelledEntityEnricher;
     }
 
-    public void setModelledEntityEnricher(ParticipantEnricher<ModelledEntity, ModelledFeature> modelledEntityEnricher) {
+    public void setModelledEntityEnricher(ParticipantEnricher<ModelledParticipant, ModelledFeature> modelledEntityEnricher) {
         this.modelledEntityEnricher = modelledEntityEnricher;
     }
 
-    public ParticipantEnricher<ExperimentalEntity, FeatureEvidence> getExperimentalEntityEnricher() {
+    public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getExperimentalEntityEnricher() {
         return experimentalEntityEnricher;
     }
 
-    public void setExperimentalEntityEnricher(ParticipantEnricher<ExperimentalEntity, FeatureEvidence> experimentalEntityEnricher) {
+    public void setExperimentalEntityEnricher(ParticipantEnricher<ParticipantEvidence, FeatureEvidence> experimentalEntityEnricher) {
         this.experimentalEntityEnricher = experimentalEntityEnricher;
     }
 
-    public ParticipantEnricher<ModelledEntityPool, ModelledFeature> getModelledEntityPoolEnricher() {
+    public ParticipantEnricher<ModelledParticipantPool, ModelledFeature> getModelledEntityPoolEnricher() {
         return modelledEntityPoolEnricher;
     }
 
-    public void setModelledEntityPoolEnricher(ParticipantEnricher<ModelledEntityPool, ModelledFeature> modelledEntityPoolEnricher) {
+    public void setModelledEntityPoolEnricher(ParticipantEnricher<ModelledParticipantPool, ModelledFeature> modelledEntityPoolEnricher) {
         this.modelledEntityPoolEnricher = modelledEntityPoolEnricher;
     }
 
-    public ParticipantEnricher<ExperimentalEntityPool, FeatureEvidence> getExperimentalEntityPoolEnricher() {
+    public ParticipantEnricher<ParticipantEvidencePool, FeatureEvidence> getExperimentalEntityPoolEnricher() {
         return experimentalEntityPoolEnricher;
     }
 
-    public void setExperimentalEntityPoolEnricher(ParticipantEnricher<ExperimentalEntityPool, FeatureEvidence> experimentalEntityPoolEnricher) {
+    public void setExperimentalEntityPoolEnricher(ParticipantEnricher<ParticipantEvidencePool, FeatureEvidence> experimentalEntityPoolEnricher) {
         this.experimentalEntityPoolEnricher = experimentalEntityPoolEnricher;
     }
 
-    public void enrich(Entity object) throws EnricherException {
+    public void enrich(Participant object) throws EnricherException {
         if(object == null)
             throw new IllegalArgumentException("Cannot enrich a null entity.");
-        if (object instanceof ExperimentalEntity){
-            if (object instanceof ExperimentalEntityPool && this.experimentalEntityPoolEnricher != null){
-               this.experimentalEntityPoolEnricher.enrich((ExperimentalEntityPool)object);
+        if (object instanceof ParticipantEvidence){
+            if (object instanceof ParticipantEvidencePool && this.experimentalEntityPoolEnricher != null){
+               this.experimentalEntityPoolEnricher.enrich((ParticipantEvidencePool)object);
             }
             else if (this.experimentalEntityEnricher != null){
-               this.experimentalEntityEnricher.enrich((ExperimentalEntity)object);
+               this.experimentalEntityEnricher.enrich((ParticipantEvidence)object);
             }
             else{
                 this.entityBaseEnricher.enrich(object);
             }
         }
-        else if (object instanceof ModelledEntity){
-            if (object instanceof ModelledEntityPool && this.modelledEntityPoolEnricher != null){
-                this.modelledEntityPoolEnricher.enrich((ModelledEntityPool)object);
+        else if (object instanceof ModelledParticipant){
+            if (object instanceof ModelledParticipantPool && this.modelledEntityPoolEnricher != null){
+                this.modelledEntityPoolEnricher.enrich((ModelledParticipantPool)object);
             }
             else if (this.modelledEntityEnricher != null){
-                this.modelledEntityEnricher.enrich((ModelledEntity)object);
+                this.modelledEntityEnricher.enrich((ModelledParticipant)object);
             }
             else{
                 this.entityBaseEnricher.enrich(object);
@@ -97,33 +97,33 @@ public class CompositeEntityEnricher implements ParticipantEnricher<Entity, Feat
         }
     }
 
-    public void enrich(Collection<Entity> objects) throws EnricherException {
+    public void enrich(Collection<Participant> objects) throws EnricherException {
         if(objects == null)
             throw new IllegalArgumentException("Cannot enrich a null collection of interactors.");
 
-        for (Entity object : objects){
+        for (Participant object : objects){
             enrich(object);
         }
     }
 
-    public void enrich(Entity object, Entity objectSource) throws EnricherException {
-        if (object instanceof ExperimentalEntity && objectSource instanceof ExperimentalEntity){
-            if (object instanceof ExperimentalEntityPool && objectSource instanceof  ExperimentalEntity && this.experimentalEntityPoolEnricher != null){
-                this.experimentalEntityPoolEnricher.enrich((ExperimentalEntityPool)object, (ExperimentalEntityPool)objectSource);
+    public void enrich(Participant object, Participant objectSource) throws EnricherException {
+        if (object instanceof ParticipantEvidence && objectSource instanceof ParticipantEvidence){
+            if (object instanceof ParticipantEvidencePool && objectSource instanceof  ParticipantEvidence && this.experimentalEntityPoolEnricher != null){
+                this.experimentalEntityPoolEnricher.enrich((ParticipantEvidencePool)object, (ParticipantEvidencePool)objectSource);
             }
             else if (this.experimentalEntityEnricher != null){
-                this.experimentalEntityEnricher.enrich((ExperimentalEntity)object, (ExperimentalEntity)objectSource);
+                this.experimentalEntityEnricher.enrich((ParticipantEvidence)object, (ParticipantEvidence)objectSource);
             }
             else{
                 this.entityBaseEnricher.enrich(object, objectSource);
             }
         }
-        else if (object instanceof ModelledEntity && objectSource instanceof ModelledEntity){
-            if (object instanceof ModelledEntityPool && objectSource instanceof ModelledEntityPool && this.modelledEntityPoolEnricher != null){
-                this.modelledEntityPoolEnricher.enrich((ModelledEntityPool)object, (ModelledEntityPool)objectSource);
+        else if (object instanceof ModelledParticipant && objectSource instanceof ModelledParticipant){
+            if (object instanceof ModelledParticipantPool && objectSource instanceof ModelledParticipantPool && this.modelledEntityPoolEnricher != null){
+                this.modelledEntityPoolEnricher.enrich((ModelledParticipantPool)object, (ModelledParticipantPool)objectSource);
             }
             else if (this.modelledEntityEnricher != null){
-                this.modelledEntityEnricher.enrich((ModelledEntity)object, (ModelledEntity)objectSource);
+                this.modelledEntityEnricher.enrich((ModelledParticipant)object, (ModelledParticipant)objectSource);
             }
             else{
                 this.entityBaseEnricher.enrich(object, objectSource);

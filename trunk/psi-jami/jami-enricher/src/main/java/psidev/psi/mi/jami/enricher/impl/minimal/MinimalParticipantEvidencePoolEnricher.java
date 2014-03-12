@@ -7,24 +7,24 @@ import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 /**
- * A basic minimal enricher for experimental entity pools
+ * A basic minimal enricher for experimental Participant pools
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalExperimentalEntityPoolEnricher extends MinimalEntityPoolEnricher<ExperimentalEntityPool,FeatureEvidence>
-implements EntityPoolEnricher<ExperimentalEntityPool, FeatureEvidence>, ParticipantEvidenceEnricher<ExperimentalEntityPool>{
+public class MinimalParticipantEvidencePoolEnricher extends MinimalParticipantPoolEnricher<ParticipantEvidencePool,FeatureEvidence>
+implements ParticipantPoolEnricher<ParticipantEvidencePool, FeatureEvidence>, ParticipantEvidenceEnricher<ParticipantEvidencePool>{
 
-    private MinimalParticipantEvidenceEnricher<ExperimentalEntityPool> delegate;
+    private MinimalParticipantEvidenceEnricher<ParticipantEvidencePool> delegate;
 
-    public MinimalExperimentalEntityPoolEnricher(){
+    public MinimalParticipantEvidencePoolEnricher(){
         super();
-        this.delegate = new MinimalParticipantEvidenceEnricher<ExperimentalEntityPool>();
+        this.delegate = new MinimalParticipantEvidenceEnricher<ParticipantEvidencePool>();
     }
 
-    protected MinimalExperimentalEntityPoolEnricher(MinimalParticipantEvidenceEnricher<ExperimentalEntityPool> minimalUpdater){
+    protected MinimalParticipantEvidencePoolEnricher(MinimalParticipantEvidenceEnricher<ParticipantEvidencePool> minimalUpdater){
         super();
         if (minimalUpdater == null){
             throw new IllegalArgumentException("The minimal updater is required and cannot be null.");
@@ -37,13 +37,13 @@ implements EntityPoolEnricher<ExperimentalEntityPool, FeatureEvidence>, Particip
     }
 
     @Override
-    public void processOtherProperties(ExperimentalEntityPool poolToEnrich, ExperimentalEntityPool fetched) throws EnricherException {
+    public void processOtherProperties(ParticipantEvidencePool poolToEnrich, ParticipantEvidencePool fetched) throws EnricherException {
         this.delegate.processOtherProperties(poolToEnrich, fetched);
         super.processOtherProperties(poolToEnrich, fetched);
     }
 
     @Override
-    public void processOtherProperties(ExperimentalEntityPool participantToEnrich) throws EnricherException {
+    public void processOtherProperties(ParticipantEvidencePool participantToEnrich) throws EnricherException {
         this.delegate.processOtherProperties(participantToEnrich);
         super.processOtherProperties(participantToEnrich);
     }

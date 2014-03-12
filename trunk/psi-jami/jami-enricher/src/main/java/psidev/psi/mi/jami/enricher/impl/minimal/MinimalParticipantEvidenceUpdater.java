@@ -7,9 +7,9 @@ import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 
@@ -19,7 +19,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class MinimalParticipantEvidenceUpdater<P extends ExperimentalEntity> extends MinimalParticipantEvidenceEnricher<P> {
+public class MinimalParticipantEvidenceUpdater<P extends ParticipantEvidence> extends MinimalParticipantEvidenceEnricher<P> {
 
     private MinimalParticipantUpdater<P,FeatureEvidence> minimalUpdater;
 

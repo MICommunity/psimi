@@ -18,7 +18,7 @@ public class MinimalBioactiveEntityUpdater extends AbstractInteractorUpdater<Bio
 
     /**
      * A constructor which initiates with a fetcher.
-     * @param fetcher   The fetcher to use to gather bioactive entity records.
+     * @param fetcher   The fetcher to use to gather bioactive Participant records.
      */
     public MinimalBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
         super(new MinimalBioactiveEntityEnricher(fetcher));

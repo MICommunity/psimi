@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.enricher.impl.full;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEnricher;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
-import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Participant;
 
 /**
  * The participant enricher is an enricher which can enrich either single participant or a collection.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.model.Feature;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/06/13
  */
-public class FullParticipantEnricher<P extends Entity , F extends Feature>
+public class FullParticipantEnricher<P extends Participant, F extends Feature>
         extends MinimalParticipantEnricher<P,F> {
 
     public void processOtherProperties(P objectToEnrich, P objectSource) throws EnricherException {

@@ -400,7 +400,7 @@ public class EnricherUtils {
         }
     }
 
-    public static void mergeCausalRelationships(Entity termToEnrich, Collection<CausalRelationship> toEnrichRelationships, Collection<CausalRelationship> fetchedRelationships, boolean remove, EntityChangeListener entityListener) throws EnricherException {
+    public static void mergeCausalRelationships(Participant termToEnrich, Collection<CausalRelationship> toEnrichRelationships, Collection<CausalRelationship> fetchedRelationships, boolean remove, ParticipantChangeListener entityListener) throws EnricherException {
         Iterator<CausalRelationship> relationshipIterator = toEnrichRelationships.iterator();
         if (remove){
             while(relationshipIterator.hasNext()){
@@ -442,7 +442,7 @@ public class EnricherUtils {
         }
     }
 
-    public static <F extends Feature> void mergeFeatures(Entity termToEnrich, Collection<F> toEnrichFeatures, Collection<F> fetchedFeatures, boolean remove, EntityChangeListener entityListener,
+    public static <F extends Feature> void mergeFeatures(Participant termToEnrich, Collection<F> toEnrichFeatures, Collection<F> fetchedFeatures, boolean remove, ParticipantChangeListener entityListener,
                                                                                    FeatureEnricher<F> featureEnricher) throws EnricherException {
         Iterator<F> featureIterator = toEnrichFeatures.iterator();
         if (remove){
