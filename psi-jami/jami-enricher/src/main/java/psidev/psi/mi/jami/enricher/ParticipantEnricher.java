@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since  13/06/13
  */
-public interface ParticipantEnricher <P extends Entity, F extends Feature> extends MIEnricher<P>{
+public interface ParticipantEnricher <P extends Participant, F extends Feature> extends MIEnricher<P>{
 
     /**
      * The current enricher used for general interactors. If null, interactors are not being enriched.

@@ -1,21 +1,21 @@
 package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.minimal.MinimalEntityPoolUpdater;
-import psidev.psi.mi.jami.model.EntityPool;
+import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantPoolUpdater;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.ParticipantPool;
 
 /**
- * A basic minimal updater for entity pools
+ * A basic minimal updater for Participant pools
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>01/10/13</pre>
  */
 
-public class FullEntityPoolUpdater<P extends EntityPool, F extends Feature> extends MinimalEntityPoolUpdater<P,F> {
+public class FullParticipantPoolUpdater<P extends ParticipantPool, F extends Feature> extends MinimalParticipantPoolUpdater<P,F> {
 
-    public FullEntityPoolUpdater(){
+    public FullParticipantPoolUpdater(){
         super(new FullParticipantUpdater<P,F>());
     }
 

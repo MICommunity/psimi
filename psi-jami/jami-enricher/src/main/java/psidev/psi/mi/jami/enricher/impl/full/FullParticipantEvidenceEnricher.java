@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEvidenceEnrich
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalEntity;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.Collection;
@@ -18,7 +18,7 @@ import java.util.Iterator;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class FullParticipantEvidenceEnricher<P extends ExperimentalEntity> extends MinimalParticipantEvidenceEnricher<P> {
+public class FullParticipantEvidenceEnricher<P extends ParticipantEvidence> extends MinimalParticipantEvidenceEnricher<P> {
 
     @Override
     public void processOtherProperties(P participantEvidenceToEnrich)

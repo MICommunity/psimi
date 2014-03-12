@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEnricherStatisticsWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
@@ -16,7 +15,7 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class ParticipantEvidenceEnricherStatisticsWriter<P extends ExperimentalEntity>
+public class ParticipantEvidenceEnricherStatisticsWriter<P extends ParticipantEvidence>
         extends ParticipantEnricherStatisticsWriter<P>
         implements ParticipantEvidenceEnricherListener<P> {
 

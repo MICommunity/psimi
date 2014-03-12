@@ -6,27 +6,27 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.EntityPool;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.ParticipantPool;
 
 /**
- * A basic minimal updater for entity pools
+ * A basic minimal updater for Participant pools
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>01/10/13</pre>
  */
 
-public class MinimalEntityPoolUpdater<P extends EntityPool, F extends Feature> extends MinimalEntityPoolEnricher<P,F>{
+public class MinimalParticipantPoolUpdater<P extends ParticipantPool, F extends Feature> extends MinimalParticipantPoolEnricher<P,F> {
 
     private MinimalParticipantEnricher<P,F> minimalUpdater;
 
-    public MinimalEntityPoolUpdater(){
+    public MinimalParticipantPoolUpdater(){
         super();
         this.minimalUpdater = new MinimalParticipantUpdater<P, F>();
     }
 
-    protected MinimalEntityPoolUpdater(MinimalParticipantEnricher<P,F> minimalUpdater){
+    protected MinimalParticipantPoolUpdater(MinimalParticipantEnricher<P, F> minimalUpdater){
         super();
         if (minimalUpdater == null){
             throw new IllegalArgumentException("The minimal updater is required and cannot be null.");

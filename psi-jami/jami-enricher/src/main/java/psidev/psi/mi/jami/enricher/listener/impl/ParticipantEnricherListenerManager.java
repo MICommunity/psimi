@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
  */
-public class ParticipantEnricherListenerManager<P extends Entity>
+public class ParticipantEnricherListenerManager<P extends Participant>
         extends EnricherListenerManager<P, ParticipantEnricherListener<P>>
         implements ParticipantEnricherListener<P>{
 
@@ -91,7 +91,7 @@ public class ParticipantEnricherListenerManager<P extends Entity>
         }
     }
 
-    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
+    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
         for(ParticipantEnricherListener listener : getListenersList()){
             listener.onInteractorUpdate(entity, oldInteractor);
         }

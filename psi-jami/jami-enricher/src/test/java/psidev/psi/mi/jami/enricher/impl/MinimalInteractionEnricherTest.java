@@ -331,7 +331,7 @@ public class MinimalInteractionEnricherTest {
     @Test
     public void test_enrichment_with_participantEnricher_but_no_participant() throws EnricherException {
 
-        interactionEnricher.setParticipantEnricher(new CompositeEntityEnricher(new MinimalParticipantEnricher<Entity, Feature>()));
+        interactionEnricher.setParticipantEnricher(new CompositeEntityEnricher(new MinimalParticipantEnricher<Participant, Feature>()));
 
         assertEquals(Collections.EMPTY_LIST, persistentInteraction.getParticipants());
 

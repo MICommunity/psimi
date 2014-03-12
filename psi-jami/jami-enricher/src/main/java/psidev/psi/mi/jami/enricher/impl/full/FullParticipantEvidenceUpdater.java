@@ -10,8 +10,8 @@ import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +19,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 28/06/13
  */
-public class FullParticipantEvidenceUpdater<P extends ExperimentalEntity> extends FullParticipantEvidenceEnricher<P> {
+public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> extends FullParticipantEvidenceEnricher<P> {
 
     private MinimalParticipantEvidenceUpdater<P> minimalUpdater;
 

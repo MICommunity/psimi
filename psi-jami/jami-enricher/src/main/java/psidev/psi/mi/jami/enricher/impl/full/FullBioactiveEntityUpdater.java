@@ -18,7 +18,7 @@ public class FullBioactiveEntityUpdater
 
     /**
      * A constructor which initiates with a fetcher.
-     * @param fetcher   The fetcher to use to gather bioactive entity records.
+     * @param fetcher   The fetcher to use to gather bioactive Participant records.
      */
     public FullBioactiveEntityUpdater(BioactiveEntityFetcher fetcher) {
         super(fetcher);

@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 10/07/13
  */
-public class ParticipantEvidenceEnricherListenerManager<P extends ExperimentalEntity>
+public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvidence>
         extends ParticipantEnricherListenerManager<P>
         implements ParticipantEvidenceEnricherListener<P>{
 
