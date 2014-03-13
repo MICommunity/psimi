@@ -147,48 +147,35 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
         return components.containsAll(objects);
     }
 
-    public boolean addAll(Collection<? extends C> interactors) {
-        boolean added = this.components.addAll(interactors);
-        if (added){
-            for (C entity : this){
-                entity.setChangeListener(this);
-                getInteractor().add(entity.getInteractor());
-                entity.setInteraction(getInteraction());
+    public boolean addAll(Collection<? extends C> participants) {
+        boolean added = false;
+        for (C entity : participants){
+            if (add(entity)){
+                added = true;
             }
         }
         return added;
     }
 
     public boolean retainAll(Collection<?> objects) {
-        boolean retain = components.retainAll(objects);
-        if (retain){
-            Collection<Interactor> interactors = new ArrayList<Interactor>(objects.size());
-            for (Object o : objects){
-                interactors.add(((Participant)o).getInteractor());
+        for (C entity : this){
+            if (!objects.contains(entity)){
+                entity.setChangeListener(null);
+                getInteractor().remove(entity.getInteractor());
+                entity.setInteraction(null);
             }
-            getInteractor().retainAll(interactors);
         }
-        return retain;
+        return components.retainAll(objects);
     }
 
     public boolean removeAll(Collection<?> objects) {
-        boolean remove = components.removeAll(objects);
-        if (remove){
-            Collection<Interactor> interactors = new ArrayList<Interactor>(objects.size());
-            for (Object o : objects){
-                Participant entity = (Participant)o;
-                entity.setChangeListener(null);
-                interactors.add(entity.getInteractor());
-                entity.setInteraction(null);
+        boolean removed = false;
+        for (Object entity : objects){
+            if (remove(entity)){
+                removed = true;
             }
-            // check if an interactor is not in another entity that is kept.
-            // remove any interactors that are kept with other entities
-            for (C entity : this){
-                interactors.remove(entity.getInteractor());
-            }
-            getInteractor().removeAll(interactors);
         }
-        return remove;
+        return removed;
     }
 
     public void clear() {
