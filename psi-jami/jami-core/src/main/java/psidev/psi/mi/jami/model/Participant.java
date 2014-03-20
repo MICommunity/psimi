@@ -41,6 +41,9 @@ public interface Participant<I extends Interaction, F extends Feature> {
     public static final String NEUTRAL_MI = "MI:0497";
     public static final String NEUTRAL = "neutral component";
 
+    public static final String PREDETERMINED_MI = "MI:0396";
+    public static final String PREDETERMINED = "predetermined";
+
     /**
      * Sets the Interaction and add the new Participant to its list of Participants.
      * If the give interaction is null, it will remove the Participant from the previous interaction it was attached to
