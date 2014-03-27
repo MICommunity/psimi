@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.model;
 
+import psidev.psi.mi.jami.utils.comparator.parameter.ParameterValueComparator;
+
 import java.math.BigDecimal;
 
 /**
@@ -80,5 +82,23 @@ public class ParameterValue extends Number{
 
     public String toString(){
         return (base != 0 && factor.doubleValue() != 0 ? factor.toString()+(exponent != 0 ? "x"+base+"^("+exponent+")" : "") : "0");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof ParameterValue)){
+            return false;
+        }
+
+        return ParameterValueComparator.areEquals(this, (ParameterValue) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return ParameterValueComparator.hashCode(this);
     }
 }
