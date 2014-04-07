@@ -53,7 +53,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" id=\"MI:0499\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</biologicalRole>";
     private String bioRolePar = "<biologicalRole>\n" +
@@ -61,7 +61,7 @@ public class Xml25BiologicalRoleWriterTest extends AbstractXml25WriterTest{
             "    <shortLabel>unspecified role</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0499\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</biologicalRole>";
     private String bioRoleFirstIdentifier = "<biologicalRole>\n" +

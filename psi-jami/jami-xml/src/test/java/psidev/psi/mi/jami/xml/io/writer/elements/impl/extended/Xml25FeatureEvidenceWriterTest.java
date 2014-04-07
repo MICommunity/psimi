@@ -200,7 +200,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:xxx1\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:xxx1\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
@@ -370,7 +370,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>inferred</shortLabel>\n"+
             "    </names>\n"+
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:0362\" refType=\"identity\"/>\n"+
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    </xref>\n"+
             "  </featureDetectionMethod>\n"+
             "  <featureRangeList>\n" +
