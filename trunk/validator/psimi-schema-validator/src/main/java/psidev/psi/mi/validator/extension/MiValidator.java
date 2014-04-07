@@ -96,7 +96,6 @@ public class MiValidator extends Validator {
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxRule(this.ontologyMngr);
-        this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
 
         // refilter object rules
@@ -109,7 +108,6 @@ public class MiValidator extends Validator {
         super( ontologyManager, cvMapping, objectRules);
         validatorReport = new ValidatorReport();
         this.syntaxRule = new MIFileSyntaxRule(this.ontologyMngr);
-        this.listenerRule = new MIFileListenerRuleWrapper(this.ontologyMngr);
         this.processObjects = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
