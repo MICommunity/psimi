@@ -26,7 +26,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</experimentalPreparation>";
     private String expPrepFullName = "<experimentalPreparation>\n" +
@@ -35,7 +35,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
             "    <fullName>undetermined position</fullName>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</experimentalPreparation>";
     private String expPrepAliases = "<experimentalPreparation>\n" +
@@ -45,7 +45,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
             "    <alias type=\"test\">test name</alias>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mi\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</experimentalPreparation>";
     private String expPrepMod = "<experimentalPreparation>\n" +
@@ -53,7 +53,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</experimentalPreparation>";
     private String expPrepPar = "<experimentalPreparation>\n" +
@@ -61,7 +61,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</experimentalPreparation>";
     private String expPrepFirstIdentifier = "<experimentalPreparation>\n" +
@@ -69,7 +69,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"test\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"test\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    <secondaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+

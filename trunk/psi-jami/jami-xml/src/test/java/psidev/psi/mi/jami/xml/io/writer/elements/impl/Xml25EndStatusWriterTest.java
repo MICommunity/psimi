@@ -53,7 +53,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-mod\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</endStatus>";
     private String endStatusPar = "<endStatus>\n" +
@@ -61,7 +61,7 @@ public class Xml25EndStatusWriterTest extends AbstractXml25WriterTest {
             "    <shortLabel>undetermined</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
-            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\"/>\n"+
+            "    <primaryRef db=\"psi-par\" id=\"MI:0339\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
             "</endStatus>";
     private String endStatusFirstIdentifier = "<endStatus>\n" +

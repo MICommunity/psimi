@@ -324,7 +324,7 @@ public class CompactXml25ParticipantEvidenceWriterTest extends AbstractXml25Writ
             "        <shortLabel>inference</shortLabel>\n" +
             "      </names>\n" +
             "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" id=\"MI:0362\" refType=\"identity\"/>\n" +
+            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "      </xref>\n" +
             "    </participantIdentificationMethod>\n" +
             "  </participantIdentificationMethodList>\n" +
@@ -373,7 +373,7 @@ public class CompactXml25ParticipantEvidenceWriterTest extends AbstractXml25Writ
             "        <shortLabel>sample process</shortLabel>\n" +
             "      </names>\n" +
             "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" id=\"MI:0342\" refType=\"identity\"/>\n" +
+            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0342\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "      </xref>\n" +
             "    </experimentalPreparation>\n" +
             "  </experimentalPreparationList>\n" +

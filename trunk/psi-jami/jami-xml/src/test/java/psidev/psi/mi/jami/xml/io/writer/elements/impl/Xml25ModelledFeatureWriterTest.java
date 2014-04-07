@@ -208,7 +208,7 @@ public class Xml25ModelledFeatureWriterTest extends AbstractXml25WriterTest {
             "      <shortLabel>biological feature</shortLabel>\n" +
             "    </names>\n" +
             "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" id=\"MI:xxx1\" refType=\"identity\"/>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:xxx1\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </featureType>\n" +
             "  <featureRangeList>\n" +
