@@ -33,6 +33,36 @@
         <property name="resource" ref="miFileResource"/>
     </bean>
 
+    <!-- tasklet -->
+    <bean id="closingListenersTasklet" class="psidev.psi.mi.enricher.batch.tasklet.ClosingListenersTasklet">
+        <property name="statisticsWriters">
+            <list>
+                <ref bean="cvTermListener"/>
+                <ref bean="sourceListener"/>
+                <ref bean="organismListener"/>
+                <ref bean="proteinListener"/>
+                <ref bean="polymerListener"/>
+                <ref bean="interactorPoolListener"/>
+                <ref bean="complexListener"/>
+                <ref bean="geneListener"/>
+                <ref bean="bioactiveEntityListener"/>
+                <ref bean="interactorListener"/>
+                <ref bean="featureListener"/>
+                <ref bean="participantListener"/>
+                <ref bean="participantPoolListener"/>
+                <ref bean="interactionListener"/>
+                <ref bean="experimentListener"/>
+                <ref bean="publicationListener"/>
+            </list>
+        </property>
+        <property name="mapperStatisticsWriter" ref="proteinMapperListener"/>
+    </bean>
+
+    <!-- basic step -->
+    <batch:step id="statisticsWriterClosingTasklet" parent="basicBatchStep">
+        <batch:tasklet ref="closingListenersTasklet" transaction-manager="basicBatchTransactionManager"/>
+    </batch:step>
+
     <!-- listeners -->
     <bean id="cvTermListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.CvTermEnricherStatisticsWriter">
         <constructor-arg index="0" value="${cvTerm.logFile}"/>
