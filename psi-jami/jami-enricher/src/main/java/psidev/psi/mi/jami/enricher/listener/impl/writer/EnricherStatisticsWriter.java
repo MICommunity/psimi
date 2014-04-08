@@ -88,11 +88,13 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
         successWriter.write("Updated"); successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
         successWriter.write("Removed"); successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
         successWriter.write("Added");
+        successWriter.write(EnricherUtils.NEW_LINE);
         successWriter.flush();
 
         failureWriter = new BufferedWriter( new FileWriter(failureFile) );
         failureWriter.write("File Source"); failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
         failureWriter.write("Message");
+        failureWriter.write(EnricherUtils.NEW_LINE);
         failureWriter.flush();
     }
 
@@ -157,7 +159,7 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
                     successWriter.write(Integer.toString(removedCount));
                     successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     successWriter.write(Integer.toString(additionCount));
-                    successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
+                    successWriter.write(EnricherUtils.NEW_LINE);
                     successWriter.flush();
                     break;
 
@@ -174,6 +176,7 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
                         failureWriter.write(message);
                     else
                         failureWriter.write(EnricherUtils.BLANK_SPACE);
+                    failureWriter.write(EnricherUtils.NEW_LINE);
                     failureWriter.flush();
                     break;
             }
