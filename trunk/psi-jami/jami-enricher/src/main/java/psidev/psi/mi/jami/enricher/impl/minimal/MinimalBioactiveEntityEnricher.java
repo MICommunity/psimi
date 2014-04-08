@@ -98,7 +98,7 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
     private BioactiveEntity fetchEntity(String id) throws EnricherException {
         try {
             Collection<BioactiveEntity> entities = getInteractorFetcher().fetchByIdentifier(id);
-            return !entities.isEmpty() ? entities.iterator().next() : null;
+            return entities != null && !entities.isEmpty() ? entities.iterator().next() : null;
         } catch (BridgeFailedException e) {
             int index = 1;
             while(index < getRetryCount()){
