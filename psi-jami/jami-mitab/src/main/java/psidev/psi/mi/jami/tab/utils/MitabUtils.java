@@ -193,6 +193,10 @@ public class MitabUtils {
      */
     public static MitabAlias[] findBestShortNameAndFullNameFromAliases(Collection<MitabAlias> aliases){
 
+        if (aliases.isEmpty()){
+            return null;
+        }
+
         MitabAlias shortLabel = null;
         MitabAlias displayShort = null;
         MitabAlias displayLong = null;
