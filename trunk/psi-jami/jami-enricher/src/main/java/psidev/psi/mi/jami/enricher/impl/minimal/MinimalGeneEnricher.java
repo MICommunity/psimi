@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.GeneFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.AbstractInteractorEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
@@ -26,24 +24,10 @@ import java.util.Collection;
  */
 public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
 
-    private boolean hasMockOrganismFetcher = false;
-
     public MinimalGeneEnricher(GeneFetcher fetcher) {
         super(fetcher);
         if (fetcher == null){
             throw new IllegalArgumentException("The gene enricher needs a non null fetcher");
-        }
-    }
-
-    /**
-     * The organism enricher which will be used to collect data about the organisms.
-     * @param organismEnricher  The organism enricher to be used.
-     */
-    public void setOrganismEnricher(OrganismEnricher organismEnricher) {
-        super.setOrganismEnricher(organismEnricher);
-        // special treatment for Mock organism fetcher
-        if (getOrganismEnricher().getOrganismFetcher() instanceof MockOrganismFetcher){
-            hasMockOrganismFetcher = true;
         }
     }
 
@@ -64,18 +48,6 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
 
         if(geneFetched == null && geneToEnrich.getEnsemblGenome() != null)
             geneFetched = fetchGeneByIdentifier(geneToEnrich, geneToEnrich.getEnsemblGenome() , taxid);
-
-        // special treatment for organism enricher based with a Mock fetcher
-        if (hasMockOrganismFetcher && geneFetched != null && geneFetched.getOrganism() != null){
-            MockOrganismFetcher organismFetcher = (MockOrganismFetcher) getOrganismEnricher().getOrganismFetcher();
-            try {
-                if (organismFetcher.fetchByTaxID(geneFetched.getOrganism().getTaxId()) == null){
-                    organismFetcher.addEntry(Integer.toString(geneFetched.getOrganism().getTaxId()), geneFetched.getOrganism());
-                }
-            } catch (BridgeFailedException e) {
-                throw new EnricherException("Cannot add the organism " + geneFetched.getOrganism().getTaxId() +" to the organism mock fetcher", e);
-            }
-        }
 
         return geneFetched;
     }

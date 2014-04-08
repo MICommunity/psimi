@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.InteractorFetcher;
+import psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractorEnricher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
@@ -47,6 +49,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     private int retryCount = 5;
     private InteractorFetcher<T> fetcher;
     private InteractorEnricherListener<T> listener = null;
+    private boolean hasMockOrganismFetcher = false;
 
     public AbstractInteractorEnricher() {
     }
@@ -69,6 +72,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
 
     public void setOrganismEnricher(OrganismEnricher organismEnricher) {
         this.organismEnricher = organismEnricher;
+        // special treatment for Mock organism fetcher
+        if (getOrganismEnricher().getOrganismFetcher() instanceof MockOrganismFetcher){
+            hasMockOrganismFetcher = true;
+        }
     }
 
     public void setCvTermEnricher(CvTermEnricher<CvTerm> cvTermEnricher){
@@ -205,6 +212,18 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
 
     private void processMinimalEnrichment(T objectToEnrich, T fetchedObject) throws EnricherException {
         if (fetchedObject != null){
+            // special treatment for organism enricher based with a Mock fetcher
+            if (hasMockOrganismFetcher && fetchedObject.getOrganism() != null){
+                MockOrganismFetcher organismFetcher = (MockOrganismFetcher) getOrganismEnricher().getOrganismFetcher();
+                try {
+                    if (organismFetcher.fetchByTaxID(fetchedObject.getOrganism().getTaxId()) == null){
+                        organismFetcher.addEntry(Integer.toString(fetchedObject.getOrganism().getTaxId()), fetchedObject.getOrganism());
+                    }
+                } catch (BridgeFailedException e) {
+                    throw new EnricherException("Cannot add the organism " + fetchedObject.getOrganism().getTaxId() +" to the organism mock fetcher", e);
+                }
+            }
+
             // SHORT NAME is never null
             processShortLabel(objectToEnrich, fetchedObject);
             // FULL NAME
