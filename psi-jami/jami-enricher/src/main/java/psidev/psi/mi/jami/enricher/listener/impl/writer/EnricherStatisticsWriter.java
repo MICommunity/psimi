@@ -83,14 +83,15 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
             throw new IllegalArgumentException("Provided a null file to write to.");
 
         successWriter = new BufferedWriter( new FileWriter(successFile) );
-        successWriter.write("File Source"); successWriter.write(EnricherUtils.NEW_EVENT);
-        successWriter.write("Enrichment status"); successWriter.write(EnricherUtils.NEW_EVENT);
-        successWriter.write("Updated"); successWriter.write(EnricherUtils.NEW_EVENT);
-        successWriter.write("Removed"); successWriter.write(EnricherUtils.NEW_EVENT);
+        successWriter.write("File Source"); successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
+        successWriter.write("Enrichment status"); successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
+        successWriter.write("Updated"); successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
+        successWriter.write("Removed"); successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
         successWriter.write("Added");
+        successWriter.flush();
 
         failureWriter = new BufferedWriter( new FileWriter(failureFile) );
-        failureWriter.write("File Source"); failureWriter.write(EnricherUtils.NEW_EVENT);
+        failureWriter.write("File Source"); failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
         failureWriter.write("Message");
         failureWriter.flush();
     }
@@ -148,27 +149,27 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
                             fileSource = context.getSourceLocator().toString();
                     }
                     successWriter.write(fileSource);
-                    successWriter.write(EnricherUtils.NEW_EVENT);
+                    successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     successWriter.write(status.toString());
-                    successWriter.write(EnricherUtils.NEW_EVENT);
+                    successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     successWriter.write(Integer.toString(updateCount));
-                    successWriter.write(EnricherUtils.NEW_EVENT);
+                    successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     successWriter.write(Integer.toString(removedCount));
-                    successWriter.write(EnricherUtils.NEW_EVENT);
+                    successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     successWriter.write(Integer.toString(additionCount));
-                    successWriter.write(EnricherUtils.NEW_EVENT);
+                    successWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     successWriter.flush();
                     break;
 
                 case FAILED:
-                    failureWriter.write(EnricherUtils.NEW_EVENT);
+                    failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     if (obj instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) obj;
                         if (context.getSourceLocator() != null)
                             fileSource = context.getSourceLocator().toString();
                     }
                     failureWriter.write(fileSource);
-                    failureWriter.write(EnricherUtils.NEW_EVENT);
+                    failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
                     if(message != null)
                         failureWriter.write(message);
                     else
@@ -191,14 +192,14 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
 
         try{
             String fileSource = obj.toString();
-            failureWriter.write(EnricherUtils.NEW_EVENT);
+            failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
             if (obj instanceof FileSourceContext){
                 FileSourceContext context = (FileSourceContext) obj;
                 if (context.getSourceLocator() != null)
                     fileSource = context.getSourceLocator().toString();
             }
             failureWriter.write(fileSource);
-            failureWriter.write(EnricherUtils.NEW_EVENT);
+            failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
             if(message != null) {
                 failureWriter.write(message);
                 failureWriter.write(": ");

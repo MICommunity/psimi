@@ -26,7 +26,7 @@ public class EnricherUtils {
 
     /* Characters to be used for new rows, new columns, blank cells */
     public static final String NEW_LINE = "\n";
-    public static final String NEW_EVENT = "\t";
+    public static final String COLUMN_SEPARATOR = "\t";
     public static final String BLANK_SPACE = "-";
 
     /**
