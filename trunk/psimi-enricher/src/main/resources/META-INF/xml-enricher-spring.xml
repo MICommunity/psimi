@@ -187,6 +187,7 @@
             <batch:listener ref="basicJobLoggerListener"/>
         </batch:listeners>
 
-        <batch:step id="enrichStep" parent="interactionEnricherStep"/>
+        <batch:step id="enrichStep" parent="interactionEnricherStep"next="closeWriters"/>
+        <batch:step id="closeWriters" parent="statisticsWriterClosingTasklet"/>
     </batch:job>
 </beans>
