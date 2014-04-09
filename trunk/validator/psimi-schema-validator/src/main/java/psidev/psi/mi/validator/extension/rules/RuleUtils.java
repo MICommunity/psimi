@@ -356,24 +356,24 @@ public final class RuleUtils {
         return ids;
     }
 
-    public static String extractObjectLabelFromXPath(String xpath){
-        if (xpath == null){
+    public static String extractObjectLabelFromObject(Object o){
+        if (o == null) {
             return null;
         }
-        else if (xpath.contains("features/")){
+        else if (o instanceof Interaction){
+            return "interaction";
+        }
+        else if (o instanceof Feature){
             return "feature";
         }
-        else if (xpath.contains("interactor/")){
+        else if (o instanceof Interactor){
             return "interactor";
         }
-        else if (xpath.contains("participants/")){
+        else if (o instanceof Participant){
             return "participant";
         }
-        else if (xpath.contains("experiment/")){
+        else if (o instanceof Experiment){
             return "experiment";
-        }
-        else if (xpath.contains("interactionEvidence/")){
-            return "interaction";
         }
         else{
             return null;
