@@ -22,6 +22,14 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, e);
         }
 
+        void createParseException(int lineNumber, int columnNumber, int mitabColumn, ParseException e, String message) {
+            ParseException e2 = new ParseException(message);
+            e2.currentToken = e.currentToken;
+            e2.expectedTokenSequences = e.expectedTokenSequences;
+            e2.tokenImage = e.tokenImage;
+        processSyntaxError(lineNumber, columnNumber, mitabColumn, e2);
+    }
+
         public abstract MitabParserListener getParserListener();
 
         public abstract void setParserListener(MitabParserListener listener);
@@ -142,8 +150,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                                                                                                                                                        line = token.beginLine; columnA = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-          line = token.beginLine; columnA = token.beginColumn;
-          processSyntaxError(token.beginLine, token.beginColumn, 1, e);
+          line = token.beginLine;
+          columnA = token.beginColumn;
+          createParseException(line, columnA, 1, e, "Invalid syntax in unique identifier A column. Expect database xrefs of type db:id separated by '|'.");
           error_skipToNext(columnSet, true);
         }
         try {
@@ -159,8 +168,9 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                                                                                                                                columnB = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
+            line = token.beginLine;
             columnB = token.beginColumn;
-            processSyntaxError(token.beginLine, token.beginColumn, 2, e);
+            createParseException(line, columnB, 2, e, "Invalid syntax in unique identifier B column. Expect database xrefs of type db:id separated by '|'.");
              error_skipToNext(columnSet, true);
         }
         try {
@@ -175,7 +185,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 3, e);
+                  createParseException(token.beginLine, token.beginColumn, 3, e, "Invalid syntax in alternative identifiers A column. Expect database xrefs of type db:id separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -190,7 +200,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 4, e);
+                  createParseException(token.beginLine, token.beginColumn, 4, e, "Invalid syntax in alternative identifiers B column. Expect database xrefs of type db:id separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -205,7 +215,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 5, e);
+                  createParseException(token.beginLine, token.beginColumn, 5, e, "Invalid syntax in aliases A column. Expected aliases of type db:name(alias type) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -220,7 +230,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 6, e);
+                  createParseException(token.beginLine, token.beginColumn, 6, e, "Invalid syntax in aliases B column. Expected aliases of type db:name(alias type) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -235,7 +245,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 7, e);
+                  createParseException(token.beginLine, token.beginColumn, 7, e, "Invalid syntax in interaction detection method column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -248,7 +258,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             jj_consume_token(COLUMN_SEPARATOR);
           }
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 8, e);
+                  createParseException(token.beginLine, token.beginColumn, 8, e, "Invalid syntax in first author column. Expected authors of type author_name et al.(publication year) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -263,7 +273,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 9, e);
+                  createParseException(token.beginLine, token.beginColumn, 9, e, "Invalid syntax in publication identifiers column. Expected xrefs of type db:id separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -278,7 +288,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 10, e);
+                  createParseException(token.beginLine, token.beginColumn, 10, e, "Invalid syntax in taxid A column. Expected organism of type taxid:id(organism name) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -293,7 +303,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 11, e);
+                  createParseException(token.beginLine, token.beginColumn, 11, e, "Invalid syntax in taxid B column. Expected organism of type taxid:id(organism name) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -308,7 +318,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 12, e);
+                  createParseException(token.beginLine, token.beginColumn, 12, e, "Invalid syntax in interaction type column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -323,7 +333,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 13, e);
+                  createParseException(token.beginLine, token.beginColumn, 13, e, "Invalid syntax in source column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -338,7 +348,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           }
           jj_consume_token(COLUMN_SEPARATOR);
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 14, e);
+                  createParseException(token.beginLine, token.beginColumn, 14, e, "Invalid syntax in interaction identifiers column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         try {
@@ -352,7 +362,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             conf = confidences();
           }
         } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 15, e);
+                  createParseException(token.beginLine, token.beginColumn, 15, e, "Invalid syntax in confidences column. Expected confidences of type confidence_type:value separated by '|'.");
                   error_skipToNext(columnSet, true);
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -370,7 +380,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+                  createParseException(token.beginLine, token.beginColumn, 16, e, "Invalid syntax in complex expansion column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name).");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -385,7 +395,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 17, e);
+                  createParseException(token.beginLine, token.beginColumn, 17, e, "Invalid syntax in biological role A column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -400,7 +410,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 18, e);
+                  createParseException(token.beginLine, token.beginColumn, 18, e, "Invalid syntax in biological role B column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -415,7 +425,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 19, e);
+                  createParseException(token.beginLine, token.beginColumn, 19, e, "Invalid syntax in experimental role A column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -430,7 +440,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 20, e);
+                  createParseException(token.beginLine, token.beginColumn, 20, e, "Invalid syntax in experimental role B column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -445,7 +455,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 21, e);
+                  createParseException(token.beginLine, token.beginColumn, 21, e, "Invalid syntax in interactor type A column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -460,7 +470,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 22, e);
+                  createParseException(token.beginLine, token.beginColumn, 22, e, "Invalid syntax in interactor type B column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -475,7 +485,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 23, e);
+                  createParseException(token.beginLine, token.beginColumn, 23, e, "Invalid syntax in interactor xrefs A column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -490,7 +500,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 24, e);
+                  createParseException(token.beginLine, token.beginColumn, 24, e, "Invalid syntax in interactor xrefs B column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -505,7 +515,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 25, e);
+                  createParseException(token.beginLine, token.beginColumn, 25, e, "Invalid syntax in interaction xrefs column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -520,7 +530,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 26, e);
+                  createParseException(token.beginLine, token.beginColumn, 26, e, "Invalid syntax in interactor annotations A column. Expected annotations of type topic:value or topic separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -535,7 +545,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 27, e);
+                  createParseException(token.beginLine, token.beginColumn, 27, e, "Invalid syntax in interactor annotations B column. Expected annotations of type topic:value or topic separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -550,7 +560,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 28, e);
+                  createParseException(token.beginLine, token.beginColumn, 28, e, "Invalid syntax in interaction annotations column. Expected annotations of type topic:value or topic separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -565,7 +575,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 29, e);
+                  createParseException(token.beginLine, token.beginColumn, 29, e, "Invalid syntax in host organism column. Expected organism of type taxid:id(organism name) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -580,7 +590,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+                  createParseException(token.beginLine, token.beginColumn, 30, e, "Invalid syntax in interaction parameters column. Expected parameter of type parameter_type:value(unit) separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -595,7 +605,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 31, e);
+                  createParseException(token.beginLine, token.beginColumn, 31, e, "Invalid syntax in created date column. Expected dates of type yyyy/MM/dd separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -610,7 +620,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 32, e);
+                  createParseException(token.beginLine, token.beginColumn, 32, e, "Invalid syntax in update date column. Expected dates of type yyyy/MM/dd separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -625,7 +635,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 33, e);
+                  createParseException(token.beginLine, token.beginColumn, 33, e, "Invalid interactor checksum A column. Expected checksums of type checksum_name:value separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -640,7 +650,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 34, e);
+                  createParseException(token.beginLine, token.beginColumn, 34, e, "Invalid interactor checksum B column. Expected checksums of type checksum_name:value separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
           try {
@@ -655,16 +665,21 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
             }
             jj_consume_token(COLUMN_SEPARATOR);
           } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 35, e);
+                  createParseException(token.beginLine, token.beginColumn, 35, e, "Invalid interaction checksum column. Expected checksums of type checksum_name:value separated by '|'.");
                   error_skipToNext(columnSet, true);
           }
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DASH:
-            jj_consume_token(DASH);
-            break;
-          default:
-            jj_la1[35] = jj_gen;
-            isNegative = negative();
+          try {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case DASH:
+              jj_consume_token(DASH);
+              break;
+            default:
+              jj_la1[35] = jj_gen;
+              isNegative = negative();
+            }
+          } catch (ParseException e) {
+             createParseException(token.beginLine, token.beginColumn, 36, e, "Invalid negative column. Expected boolean value 'true' or 'false'.");
+             error_skipToNext(columnSet, true);
           }
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case COLUMN_SEPARATOR:
@@ -681,7 +696,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
               }
               jj_consume_token(COLUMN_SEPARATOR);
             } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 37, e);
+                  createParseException(token.beginLine, token.beginColumn, 37, e, "Invalid features A column. Expected features of type feature_type:range1,range2(text) separated by '|'.");
                   error_skipToNext(columnSet, true);
             }
             try {
@@ -696,7 +711,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
               }
               jj_consume_token(COLUMN_SEPARATOR);
             } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 38, e);
+                  createParseException(token.beginLine, token.beginColumn, 38, e, "Invalid features B column. Expected features of type feature_type:range1,range2(text) separated by '|'.");
                   error_skipToNext(columnSet, true);
             }
             try {
@@ -709,7 +724,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 jj_consume_token(COLUMN_SEPARATOR);
               }
             } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 39, e);
+                  createParseException(token.beginLine, token.beginColumn, 39, e, "Invalid stoichiometry A column. Expected stoichiometry values of type integer.");
                   error_skipToNext(columnSet, true);
             }
             try {
@@ -722,7 +737,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 jj_consume_token(COLUMN_SEPARATOR);
               }
             } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 40, e);
+                  createParseException(token.beginLine, token.beginColumn, 40, e, "Invalid stoichiometry B column. Expected stoichiometry values of type integer.");
                   error_skipToNext(columnSet, true);
             }
             try {
@@ -737,7 +752,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
               }
               jj_consume_token(COLUMN_SEPARATOR);
             } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 41, e);
+                  createParseException(token.beginLine, token.beginColumn, 41, e, "Invalid participant identification methods A column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
             }
             try {
@@ -751,7 +766,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 pmethodB = cvTerms(42);
               }
             } catch (ParseException e) {
-                  processSyntaxError(token.beginLine, token.beginColumn, 42, e);
+                  createParseException(token.beginLine, token.beginColumn, 42, e, "Invalid participant identification methods B column. Expected xrefs of type psi-mi:\u005c"MI id\u005c"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
             }
             break;
@@ -768,23 +783,28 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
                 participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
                 interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
                                          conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LINE_SEPARATOR:
-          jj_consume_token(LINE_SEPARATOR);
-          break;
-        case 0:
-          jj_consume_token(0);
-                                 reachEndOfFile();
-          break;
-        default:
-          jj_la1[42] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
+        try {
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case LINE_SEPARATOR:
+            jj_consume_token(LINE_SEPARATOR);
+            break;
+          case 0:
+            jj_consume_token(0);
+                                     reachEndOfFile();
+            break;
+          default:
+            jj_la1[42] = jj_gen;
+            jj_consume_token(-1);
+            throw new ParseException();
+          }
+        } catch (ParseException e) {
+           createParseException(token.beginLine, token.beginColumn, 0, e, "Invalid number of columns. Expected 15, 36 or 42 tab separated columns.");
+           error_skipToNext(enumSet, true);
         }
       }
        {if (true) return interaction;}
     } catch (ParseException e) {
-        processSyntaxError(token.beginLine, token.beginColumn, 0, e);
+        createParseException(token.beginLine, token.beginColumn, 0, e, "Invalid MITAB line syntax. Expected 15, 36 or 42 tab separated columns per line and all special characters should be escaped by double quote. See MITAB format description");
         error_skipToNext(enumSet, true);
         {if (true) return interaction;}
     }
@@ -1164,7 +1184,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
          stc.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
          {if (true) return stc;}
     } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+       createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid stoichiometry value. Expected integer values.");
         error_skipToNext(enumSet, true);
         {if (true) return null;}
     }
@@ -1215,7 +1235,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
 
         {if (true) return feature;}
     } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+     createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid feature. Expected features of type feature_type:range1,range2(text)");
       error_skipToNext(enumSet, true);
       {if (true) return null;}
     } catch (IllegalArgumentException e) {
@@ -1270,7 +1290,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         }
        {if (true) return range;}
     } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+      createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid range. Expected range values pos1-pos2,  pos1..pos2-pos3..pos4, ?-?, n-n or c-c");
       error_skipToNext(enumSet, true);
       {if (true) return null;}
     }
@@ -1285,7 +1305,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
           value = safeFreeText();
                              {if (true) return Boolean.parseBoolean(value);}
     } catch (ParseException e) {
-    processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+    createParseException(token.beginLine, token.beginColumn, 16, e, "Invalid negative boolean value. Expected 'true' or 'false'");
      error_skipToNext(enumSet, true);
      {if (true) return false;}
     }
@@ -1311,7 +1331,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         if (value == null && getParserListener() != null){getParserListener().onMissingChecksumValue(checksum);}
         {if (true) return checksum;}
     } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+       createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid checksum. Expected checksum_name:value");
        error_skipToNext(enumSet, true);
         {if (true) return null;}
     }
@@ -1331,7 +1351,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         mitabDate.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
         {if (true) return mitabDate;}
     } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+     createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid date. Expected yyyy/MM/dd");
      error_skipToNext(enumSet, true);
       {if (true) return null;}
     } catch (java.text.ParseException e) {
@@ -1371,7 +1391,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
      if (value == null && getParserListener() != null){getParserListener().onMissingParameterValue(param);}
      {if (true) return param;}
     } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+      createParseException(token.beginLine, token.beginColumn, 30, e, "Invalid parameter. Expected parameter_type:value(unit)");
        error_skipToNext(enumSet, true);
        {if (true) return null;}
     } catch (IllegalParameterException e) {
@@ -1406,7 +1426,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       if (topic == null && getParserListener() != null){getParserListener().onAnnotationWithoutTopic(annot);}
       {if (true) return annot;}
     } catch (ParseException e) {
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+         createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid annotation. Expected topic:value or just topic.");
          error_skipToNext(enumSet, true);
          {if (true) return null;}
     }
@@ -1444,7 +1464,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv,  "The expansion method at the column 16 does not have a name.");}
       {if (true) return cv;}
     } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+     createParseException(token.beginLine, token.beginColumn, 16, e, "Invalid complex expansion method. Expected PSI-MI controlled vocabulary xref");
      error_skipToNext(enumSet, true);
      {if (true) return null;}
     }
@@ -1481,7 +1501,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       if (value == null && getParserListener() != null){getParserListener().onMissingConfidenceValue(conf);}
       {if (true) return conf;}
     } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, 15, e);
+     createParseException(token.beginLine, token.beginColumn, 15, e, "Invalid confidence. Expected confidence_type:value");
      error_skipToNext(enumSet, true);
      {if (true) return null;}
     }
@@ -1516,7 +1536,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
          if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(s, s,  "The source at the column 13 does not have a name.");}
          {if (true) return s;}
     } catch (ParseException e) {
-        processSyntaxError(token.beginLine, token.beginColumn, 13, e);
+        createParseException(token.beginLine, token.beginColumn, 13, e, "Invalid source. Expected PSI-MI controlled vocabulary xref");
         error_skipToNext(enumSet, true);
         {if (true) return null;}
     }
@@ -1563,7 +1583,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
              {if (true) return organism;}
        }
     } catch (ParseException e) {
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+           createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid organism. Expected taxid:id(organism name)");
            error_skipToNext(enumSet, true);
            {if (true) return null;}
     }
@@ -1583,7 +1603,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
        auth.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 8));
        {if (true) return auth;}
     } catch (ParseException e) {
-       processSyntaxError(token.beginLine, token.beginColumn, 8, e);
+       createParseException(token.beginLine, token.beginColumn, 8, e, "Invalid first author. Expected author name et al. (publication year)");
        error_skipToNext(enumSet, true);
        {if (true) return null;}
     }
@@ -1617,7 +1637,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       if (name == null && getParserListener() != null){getParserListener().onMissingCvTermName(cv, cv,  "The term at the column " + column + " does not have a name.");}
       {if (true) return cv;}
     } catch (ParseException e) {
-     processSyntaxError(token.beginLine, token.beginColumn, column, e);
+     createParseException(token.beginLine, token.beginColumn, column, e, "Invalid controlled vocabulary term. Expected a xref to PSI-MI ontology");
      error_skipToNext(enumSet, true);
      {if (true) return null;}
     }
@@ -1653,7 +1673,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
         if (name == null && getParserListener() != null){getParserListener().onAliasWithoutName(alias);}
         {if (true) return alias;}
     } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+      createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid alias. Expected db:name(alias type)");
       error_skipToNext(enumSet, true);
       {if (true) return null;}
     }
@@ -1708,7 +1728,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
        if (id == null && getParserListener() != null){getParserListener().onXrefWithoutId(ref);}
        {if (true) return ref;}
     } catch (ParseException e) {
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+      createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid database identifier. Expected db:id");
       error_skipToNext(enumSet, true);
       {if (true) return null;}
     }
@@ -1828,7 +1848,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     finally { jj_save(2, xla); }
   }
 
-  private boolean jj_3_2() {
+  private boolean jj_3_3() {
     if (jj_scan_token(DASH)) return true;
     if (jj_scan_token(COLUMN_SEPARATOR)) return true;
     return false;
@@ -1840,7 +1860,7 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
     return false;
   }
 
-  private boolean jj_3_3() {
+  private boolean jj_3_2() {
     if (jj_scan_token(DASH)) return true;
     if (jj_scan_token(COLUMN_SEPARATOR)) return true;
     return false;
@@ -2030,18 +2050,21 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
       for (int i = 0; i < jj_endpos; i++) {
         jj_expentry[i] = jj_lasttokens[i];
       }
-      jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
+      boolean exists = false;
+      for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
+        exists = true;
         int[] oldentry = (int[])(it.next());
         if (oldentry.length == jj_expentry.length) {
           for (int i = 0; i < jj_expentry.length; i++) {
             if (oldentry[i] != jj_expentry[i]) {
-              continue jj_entries_loop;
+              exists = false;
+              break;
             }
           }
-          jj_expentries.add(jj_expentry);
-          break jj_entries_loop;
+          if (exists) break;
         }
       }
+      if (!exists) jj_expentries.add(jj_expentry);
       if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
     }
   }

@@ -33,6 +33,14 @@ public abstract class MitabLineParser<T extends Interaction, P extends Participa
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, e);
 	}
 
+	void createParseException(int lineNumber, int columnNumber, int mitabColumn, ParseException e, String message) {
+	    ParseException e2 = new ParseException(message);
+	    e2.currentToken = e.currentToken;
+	    e2.expectedTokenSequences = e.expectedTokenSequences;
+	    e2.tokenImage = e.tokenImage;
+    	processSyntaxError(lineNumber, columnNumber, mitabColumn, e2);
+    }
+
 	public abstract MitabParserListener getParserListener();
 
 	public abstract void setParserListener(MitabParserListener listener);
@@ -162,79 +170,81 @@ T MitabLine():
       (
         try{(<DASH> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(identity, false, 1)) {line = token.beginLine; columnA = token.beginColumn;} <COLUMN_SEPARATOR>}
         catch (ParseException e){
-          line = token.beginLine; columnA = token.beginColumn;
-          processSyntaxError(token.beginLine, token.beginColumn, 1, e);
+          line = token.beginLine;
+          columnA = token.beginColumn;
+          createParseException(line, columnA, 1, e, "Invalid syntax in unique identifier A column. Expect database xrefs of type db:id separated by '|'.");
           error_skipToNext(columnSet, true);
          }
         try{(<DASH> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(identity, false, 2)) {columnB = token.beginColumn;} <COLUMN_SEPARATOR>}
         catch (ParseException e){
+            line = token.beginLine;
             columnB = token.beginColumn;
-            processSyntaxError(token.beginLine, token.beginColumn, 2, e);
+            createParseException(line, columnB, 2, e, "Invalid syntax in unique identifier B column. Expect database xrefs of type db:id separated by '|'.");
              error_skipToNext(columnSet, true);
-            }
+        }
         try{(<DASH> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.getSecondary(), false, 3)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 3, e);
+                  createParseException(token.beginLine, token.beginColumn, 3, e, "Invalid syntax in alternative identifiers A column. Expect database xrefs of type db:id separated by '|'.");
                   error_skipToNext(columnSet, true);
-                 }
+        }
         try{(<DASH> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.getSecondary(), false, 4)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 4, e);
+                  createParseException(token.beginLine, token.beginColumn, 4, e, "Invalid syntax in alternative identifiers B column. Expect database xrefs of type db:id separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 5, e);
+                  createParseException(token.beginLine, token.beginColumn, 5, e, "Invalid syntax in aliases A column. Expected aliases of type db:name(alias type) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 6, e);
+                  createParseException(token.beginLine, token.beginColumn, 6, e, "Invalid syntax in aliases B column. Expected aliases of type db:name(alias type) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 7, e);
+                  createParseException(token.beginLine, token.beginColumn, 7, e, "Invalid syntax in interaction detection method column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(LOOKAHEAD(2) <DASH> {firstAuthor = Collections.EMPTY_LIST;} <COLUMN_SEPARATOR> | firstAuthor = firstAuthors() <COLUMN_SEPARATOR>)}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 8, e);
+                  createParseException(token.beginLine, token.beginColumn, 8, e, "Invalid syntax in first author column. Expected authors of type author_name et al.(publication year) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {pubId = Collections.EMPTY_LIST;} | pubId = ids(identity, true, 9)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 9, e);
+                  createParseException(token.beginLine, token.beginColumn, 9, e, "Invalid syntax in publication identifiers column. Expected xrefs of type db:id separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 10, e);
+                  createParseException(token.beginLine, token.beginColumn, 10, e, "Invalid syntax in taxid A column. Expected organism of type taxid:id(organism name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 11, e);
+                  createParseException(token.beginLine, token.beginColumn, 11, e, "Invalid syntax in taxid B column. Expected organism of type taxid:id(organism name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 12, e);
+                  createParseException(token.beginLine, token.beginColumn, 12, e, "Invalid syntax in interaction type column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 13, e);
+                  createParseException(token.beginLine, token.beginColumn, 13, e, "Invalid syntax in source column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {interactionId = Collections.EMPTY_LIST;} | interactionId = ids(identity, true, 14)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 14, e);
+                  createParseException(token.beginLine, token.beginColumn, 14, e, "Invalid syntax in interaction identifiers column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {conf = Collections.EMPTY_LIST;} | conf = confidences())}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 15, e);
+                  createParseException(token.beginLine, token.beginColumn, 15, e, "Invalid syntax in confidences column. Expected confidences of type confidence_type:value separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
 
@@ -243,137 +253,140 @@ T MitabLine():
         <COLUMN_SEPARATOR> //end of confidences delimiter
         try{(<DASH> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+                  createParseException(token.beginLine, token.beginColumn, 16, e, "Invalid syntax in complex expansion column. Expected xrefs of type psi-mi:\"MI id\"(name).");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 17, e);
+                  createParseException(token.beginLine, token.beginColumn, 17, e, "Invalid syntax in biological role A column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {bioRoleB = Collections.EMPTY_LIST;} | bioRoleB = cvTerms(18)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 18, e);
+                  createParseException(token.beginLine, token.beginColumn, 18, e, "Invalid syntax in biological role B column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {expRoleA = Collections.EMPTY_LIST;} | expRoleA = cvTerms(19)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 19, e);
+                  createParseException(token.beginLine, token.beginColumn, 19, e, "Invalid syntax in experimental role A column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {expRoleB = Collections.EMPTY_LIST;} | expRoleB = cvTerms(20)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 20, e);
+                  createParseException(token.beginLine, token.beginColumn, 20, e, "Invalid syntax in experimental role B column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {typeA = Collections.EMPTY_LIST;} | typeA = cvTerms(21)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 21, e);
+                  createParseException(token.beginLine, token.beginColumn, 21, e, "Invalid syntax in interactor type A column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {typeB = Collections.EMPTY_LIST;} | typeB = cvTerms(22)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 22, e);
+                  createParseException(token.beginLine, token.beginColumn, 22, e, "Invalid syntax in interactor type B column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {xrefA = Collections.EMPTY_LIST;} | xrefA = ids(null, false, 23)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 23, e);
+                  createParseException(token.beginLine, token.beginColumn, 23, e, "Invalid syntax in interactor xrefs A column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {xrefB = Collections.EMPTY_LIST;} | xrefB = ids(null, false, 24)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 24, e);
+                  createParseException(token.beginLine, token.beginColumn, 24, e, "Invalid syntax in interactor xrefs B column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {xrefI = Collections.EMPTY_LIST;} | xrefI = ids(null, false, 25)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 25, e);
+                  createParseException(token.beginLine, token.beginColumn, 25, e, "Invalid syntax in interaction xrefs column. Expected xrefs of type db:id(qualifier) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {annotA = Collections.EMPTY_LIST;} | annotA = annotations(26)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 26, e);
+                  createParseException(token.beginLine, token.beginColumn, 26, e, "Invalid syntax in interactor annotations A column. Expected annotations of type topic:value or topic separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {annotB = Collections.EMPTY_LIST;} | annotB = annotations(27)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 27, e);
+                  createParseException(token.beginLine, token.beginColumn, 27, e, "Invalid syntax in interactor annotations B column. Expected annotations of type topic:value or topic separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 28, e);
+                  createParseException(token.beginLine, token.beginColumn, 28, e, "Invalid syntax in interaction annotations column. Expected annotations of type topic:value or topic separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {host = Collections.EMPTY_LIST;} | host = taxId(29)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 29, e);
+                  createParseException(token.beginLine, token.beginColumn, 29, e, "Invalid syntax in host organism column. Expected organism of type taxid:id(organism name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {params = Collections.EMPTY_LIST;} | params = parameters()) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+                  createParseException(token.beginLine, token.beginColumn, 30, e, "Invalid syntax in interaction parameters column. Expected parameter of type parameter_type:value(unit) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {created = Collections.EMPTY_LIST;} | created = dates(31)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 31, e);
+                  createParseException(token.beginLine, token.beginColumn, 31, e, "Invalid syntax in created date column. Expected dates of type yyyy/MM/dd separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {update = Collections.EMPTY_LIST;} | update = dates(32)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 32, e);
+                  createParseException(token.beginLine, token.beginColumn, 32, e, "Invalid syntax in update date column. Expected dates of type yyyy/MM/dd separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 33, e);
+                  createParseException(token.beginLine, token.beginColumn, 33, e, "Invalid interactor checksum A column. Expected checksums of type checksum_name:value separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 34, e);
+                  createParseException(token.beginLine, token.beginColumn, 34, e, "Invalid interactor checksum B column. Expected checksums of type checksum_name:value separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 35, e);
+                  createParseException(token.beginLine, token.beginColumn, 35, e, "Invalid interaction checksum column. Expected checksums of type checksum_name:value separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
-        (<DASH> | isNegative = negative())
-
+        try{(<DASH> | isNegative = negative())}
+        catch (ParseException e){
+             createParseException(token.beginLine, token.beginColumn, 36, e, "Invalid negative column. Expected boolean value 'true' or 'false'.");
+             error_skipToNext(columnSet, true);
+         }
         [ //starting MITAB 2.7
         (
         <COLUMN_SEPARATOR> //end of negative() delimiter
         try{(<DASH> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 37, e);
+                  createParseException(token.beginLine, token.beginColumn, 37, e, "Invalid features A column. Expected features of type feature_type:range1,range2(text) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 38, e);
+                  createParseException(token.beginLine, token.beginColumn, 38, e, "Invalid features B column. Expected features of type feature_type:range1,range2(text) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(LOOKAHEAD(2) <DASH> {stcA = Collections.EMPTY_LIST;} <COLUMN_SEPARATOR> | stcA = stoichiometryList(39) <COLUMN_SEPARATOR>)}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 39, e);
+                  createParseException(token.beginLine, token.beginColumn, 39, e, "Invalid stoichiometry A column. Expected stoichiometry values of type integer.");
                   error_skipToNext(columnSet, true);
                  }
         try{(LOOKAHEAD(2) <DASH> {stcB = Collections.EMPTY_LIST;} <COLUMN_SEPARATOR> | stcB = stoichiometryList(40) <COLUMN_SEPARATOR>)}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 40, e);
+                  createParseException(token.beginLine, token.beginColumn, 40, e, "Invalid stoichiometry B column. Expected stoichiometry values of type integer.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTerms(41)) <COLUMN_SEPARATOR>}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 41, e);
+                  createParseException(token.beginLine, token.beginColumn, 41, e, "Invalid participant identification methods A column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         try{(<DASH> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTerms(42))}
         catch (ParseException e){
-                  processSyntaxError(token.beginLine, token.beginColumn, 42, e);
+                  createParseException(token.beginLine, token.beginColumn, 42, e, "Invalid participant identification methods B column. Expected xrefs of type psi-mi:\"MI id\"(name) separated by '|'.");
                   error_skipToNext(columnSet, true);
                  }
         )
@@ -386,12 +399,16 @@ T MitabLine():
                 interaction = finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
                                          conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
               }
-      (<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}))
+      (try{<LINE_SEPARATOR> | <EOF> {reachEndOfFile();}}
+       catch (ParseException e){
+           createParseException(token.beginLine, token.beginColumn, 0, e, "Invalid number of columns. Expected 15, 36 or 42 tab separated columns.");
+           error_skipToNext(enumSet, true);
+      }))
       )
       {return interaction;}
       }
        catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, 0, e);
+        createParseException(token.beginLine, token.beginColumn, 0, e, "Invalid MITAB line syntax. Expected 15, 36 or 42 tab separated columns per line and all special characters should be escaped by double quote. See MITAB format description");
         error_skipToNext(enumSet, true);
         return interaction;
       }
@@ -631,7 +648,7 @@ MitabStoichiometry stoichiometry(int columnNumber):
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+       createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid stoichiometry value. Expected integer values.");
         error_skipToNext(enumSet, true);
         return null;
    }
@@ -661,7 +678,7 @@ F feature(int columnNumber):
       }
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+     createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid feature. Expected features of type feature_type:range1,range2(text)");
       error_skipToNext(enumSet, true);
       return null;
   }
@@ -722,7 +739,7 @@ MitabRange range(int columnNumber):
        return range;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+      createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid range. Expected range values pos1-pos2,  pos1..pos2-pos3..pos4, ?-?, n-n or c-c");
       error_skipToNext(enumSet, true);
       return null;
     }
@@ -739,7 +756,7 @@ boolean negative():
     value = safeFreeText() { return Boolean.parseBoolean(value);}
   }
   catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+    createParseException(token.beginLine, token.beginColumn, 16, e, "Invalid negative boolean value. Expected 'true' or 'false'");
      error_skipToNext(enumSet, true);
      return false;
   }
@@ -767,7 +784,7 @@ MitabChecksum checksum(int columnNumber):
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+       createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid checksum. Expected checksum_name:value");
        error_skipToNext(enumSet, true);
         return null;
     }
@@ -791,7 +808,7 @@ MitabDate date(int columnNumber):
      }
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+     createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid date. Expected yyyy/MM/dd");
      error_skipToNext(enumSet, true);
       return null;
   }
@@ -823,7 +840,7 @@ MitabParameter parameter() :
      }
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, 30, e);
+      createParseException(token.beginLine, token.beginColumn, 30, e, "Invalid parameter. Expected parameter_type:value(unit)");
        error_skipToNext(enumSet, true);
        return null;
    }
@@ -852,7 +869,7 @@ MitabAnnotation annotation(int columnNumber):
       return annot;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+         createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid annotation. Expected topic:value or just topic.");
          error_skipToNext(enumSet, true);
          return null;
       }
@@ -880,7 +897,7 @@ MitabCvTerm expansion():
       return cv;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 16, e);
+     createParseException(token.beginLine, token.beginColumn, 16, e, "Invalid complex expansion method. Expected PSI-MI controlled vocabulary xref");
      error_skipToNext(enumSet, true);
      return null;
   }
@@ -907,7 +924,7 @@ MitabConfidence confidence():
       return conf;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 15, e);
+     createParseException(token.beginLine, token.beginColumn, 15, e, "Invalid confidence. Expected confidence_type:value");
      error_skipToNext(enumSet, true);
      return null;
   }
@@ -932,7 +949,7 @@ MitabSource source():
          return s;}
   }
   catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, 13, e);
+        createParseException(token.beginLine, token.beginColumn, 13, e, "Invalid source. Expected PSI-MI controlled vocabulary xref");
         error_skipToNext(enumSet, true);
         return null;
   }
@@ -974,7 +991,7 @@ MitabOrganism organism(int columnNumber):
      }
   }
   catch (ParseException e){
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+           createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid organism. Expected taxid:id(organism name)");
            error_skipToNext(enumSet, true);
            return null;
   }
@@ -998,7 +1015,7 @@ MitabAuthor author():
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, 8, e);
+       createParseException(token.beginLine, token.beginColumn, 8, e, "Invalid first author. Expected author name et al. (publication year)");
        error_skipToNext(enumSet, true);
        return null;
   }
@@ -1023,7 +1040,7 @@ MitabCvTerm cvTerm(int column):
       return cv;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, e);
+     createParseException(token.beginLine, token.beginColumn, column, e, "Invalid controlled vocabulary term. Expected a xref to PSI-MI ontology");
      error_skipToNext(enumSet, true);
      return null;
   }
@@ -1050,7 +1067,7 @@ MitabAlias alias(int columnNumber):
         return alias;}
   }
   catch(ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+      createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid alias. Expected db:name(alias type)");
       error_skipToNext(enumSet, true);
       return null;
   }
@@ -1095,7 +1112,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
        return ref;}
    }
    catch(ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e);
+      createParseException(token.beginLine, token.beginColumn, columnNumber, e, "Invalid database identifier. Expected db:id");
       error_skipToNext(enumSet, true);
       return null;
    }
