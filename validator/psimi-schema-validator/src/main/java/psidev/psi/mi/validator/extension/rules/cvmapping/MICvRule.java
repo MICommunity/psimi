@@ -2,6 +2,7 @@ package psidev.psi.mi.validator.extension.rules.cvmapping;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.validator.extension.MiContext;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
@@ -35,13 +36,31 @@ public class MICvRule extends CvRuleImpl{
         MiContext context = new MiContext(xpath);
         context.setContext(xpath);
 
+        if (results != null && !results.isEmpty()){
+            XPathResult res = results.iterator().next();
+
+            Object root = res.getRootNode();
+            if (root instanceof FileSourceContext){
+                FileSourceContext fileSourceContext = (FileSourceContext) root;
+                context.setLocator(fileSourceContext.getSourceLocator());
+            }
+            else if (root != null){
+                context.setContext(root.toString());
+            }
+        }
+
+        MiContext rootContext = new MiContext();
+        rootContext.setObjectLabel(RuleUtils.extractObjectLabelFromObject(o));
+
         if (o instanceof FileSourceContext){
             FileSourceContext fileSourceContext = (FileSourceContext) o;
-            context.setLocator(fileSourceContext.getSourceLocator());
+            rootContext.setLocator(fileSourceContext.getSourceLocator());
         }
         else if (o != null){
-           context.setContext(o.toString());
+            rootContext.setContext(o.toString());
         }
+
+        context.addAssociatedContext(rootContext);
 
         return new ValidatorMessage( message,
                 convertCvMappingLevel( level ),
