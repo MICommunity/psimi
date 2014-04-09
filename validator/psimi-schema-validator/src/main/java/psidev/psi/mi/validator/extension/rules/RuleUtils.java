@@ -290,6 +290,9 @@ public final class RuleUtils {
                         return true;
                     }
                 }
+                if ( miRef.equals( typeId ) ) {
+                    return true;
+                }
             } else {
                 if ( miRef.equals( typeId ) ) {
                     return true;
@@ -317,7 +320,7 @@ public final class RuleUtils {
     }
 
     public static boolean isSmallMolecule( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), BioactiveEntity.SMALL_MOLECULE_MI, true );
+        return isOfType( ontologyManager, interactor.getInteractorType(), BioactiveEntity.BIOACTIVE_ENTITY_MI, true );
     }
 
     public static boolean isNucleicAcid( OntologyManager ontologyManager, Interactor interactor ) {
@@ -357,19 +360,19 @@ public final class RuleUtils {
         if (xpath == null){
             return null;
         }
-        else if (xpath.contains("/features/")){
+        else if (xpath.contains("features/")){
             return "feature";
         }
-        else if (xpath.contains("/interactor/")){
+        else if (xpath.contains("interactor/")){
             return "interactor";
         }
-        else if (xpath.contains("/participants/")){
+        else if (xpath.contains("participants/")){
             return "participant";
         }
-        else if (xpath.contains("/experiment/")){
+        else if (xpath.contains("experiment/")){
             return "experiment";
         }
-        else if (xpath.contains("interaction")){
+        else if (xpath.contains("interactionEvidence/")){
             return "interaction";
         }
         else{

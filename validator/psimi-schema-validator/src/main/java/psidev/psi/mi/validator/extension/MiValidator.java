@@ -4,6 +4,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.commons.*;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.MIFileDataSource;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
@@ -576,7 +577,18 @@ public class MiValidator extends Validator {
             InteractionEvidence interaction = interactionIterator.next();
 
             // check using cv mapping rules
-            messages.addAll(super.checkCvMapping(interaction, "/interactionEvidence/"));
+            Collection<ValidatorMessage> interactionMessages = super.checkCvMapping(interaction, "/interactionEvidence/");
+
+            MiContext miContext = new MiContext();
+            miContext.setObjectLabel("interaction");
+            miContext.setLocator(interaction instanceof FileSourceContext ? ((FileSourceContext)interaction).getSourceLocator() : null);
+            for (ValidatorMessage message : interactionMessages){
+                if (message.getContext() instanceof MiContext){
+                    ((MiContext)message.getContext()).addAssociatedContext(miContext);
+                }
+            }
+
+            messages.addAll(interactionMessages);
 
             // check object rules
             if (validateObjectRule){
