@@ -45,9 +45,9 @@ public class ChecksumComparator implements Comparator<Checksum>{
      * - The annotation which is not null is before null.
      * - use CvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
      * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
-     * @param checksum1
-     * @param checksum2
-     * @return
+     * @param checksum1 : the first checksum
+     * @param checksum2 : the second checksum
+     * @return the comparison value
      */
     public int compare(Checksum checksum1, Checksum checksum2) {
         int EQUAL = 0;

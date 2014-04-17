@@ -21,9 +21,9 @@ public class AnnotationUtils {
 
     /**
      * To know if the annotation does have a specific topic
-     * @param annotation
-     * @param topicId
-     * @param topicName
+     * @param annotation : the annotation
+     * @param topicId : the topic MI identifier
+     * @param topicName  : the topic name
      * @return true if the annotation has the topic with given name/identifier
      */
     public static boolean doesAnnotationHaveTopic(Annotation annotation, String topicId, String topicName){
@@ -48,10 +48,10 @@ public class AnnotationUtils {
 
     /**
      * Collect all annotations having a specific topic
-     * @param annots
-     * @param topicId
-     * @param topicName
-     * @return
+     * @param annots : the annotations
+     * @param topicId :  the topic MI identifier
+     * @param topicName :  the topic name
+     * @return the annotations that have this specific topic
      */
     public static Collection<Annotation> collectAllAnnotationsHavingTopic(Collection<? extends Annotation> annots, String topicId, String topicName){
 
@@ -113,10 +113,10 @@ public class AnnotationUtils {
 
     /**
      * To know if the annotation does have a specific topic
-     * @param annotation
-     * @param topicId
-     * @param topicName
-     * @param value
+     * @param annotation : the annotation
+     * @param topicId :  the topic MI identifier
+     * @param topicName :  the topic name
+     * @param value : the annotation value
      * @return true if the annotation has the topic with given name/identifier
      */
     public static boolean doesAnnotationHaveTopicAndValue(Annotation annotation, String topicId, String topicName, String value){
@@ -166,12 +166,12 @@ public class AnnotationUtils {
     }
 
     /**
-     * Collect all annotations having a specific topic
-     * @param annots
-     * @param topicId
-     * @param topicName
-     * @param value
-     * @return
+     * Collect all annotations having a specific topic and value
+     * @param annots : the annotations
+     * @param topicId :  the topic MI identifier
+     * @param topicName  : the topic name
+     * @param value : the annotation value
+     * @return the annotations having this topic and value
      */
     public static Collection<Annotation> collectAllAnnotationsHavingTopic(Collection<? extends Annotation> annots, String topicId, String topicName, String value){
 

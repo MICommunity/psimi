@@ -17,7 +17,7 @@ public interface Interaction<T extends Participant> {
      * The short name of the interaction.
      * It can be null.
      * Ex: foxc1-flna, ...
-     * @return
+     * @return short name of the interaction
      */
     public String getShortName();
 

@@ -17,18 +17,18 @@ public interface BinaryInteractionFactory {
 
     /**
      * Create a new BinaryInteraction object from an Interaction parent and two participants
-     * @param interaction
-     * @param p1
-     * @param p2
+     * @param interaction : the original interaction
+     * @param p1 : the first participant
+     * @param p2 : the second participant
      * @return the new BinaryInteraction object
      */
     public BinaryInteraction createBasicBinaryInteractionFrom(Interaction interaction, Participant p1, Participant p2, CvTerm expansionMethod);
 
     /**
      * Create a new BinaryInteractionEvidence object from an InteractionEvidence parent and two participants evidences
-     * @param interaction
-     * @param p1
-     * @param p2
+     * @param interaction : the original interaction
+     * @param p1 : the first participant
+     * @param p2 : the second participant
      * @param expansionMethod
      * @return the new BinaryInteractionEvidence object
      */
@@ -36,9 +36,9 @@ public interface BinaryInteractionFactory {
 
     /**
      * Create a new ModelledBinaryInteraction object from a ModelledInteraction parent and two modelled participants
-     * @param interaction
-     * @param p1
-     * @param p2
+     * @param interaction : the original interaction
+     * @param p1 : the first participant
+     * @param p2 : the second participant
      * @param expansionMethod
      * @return the new ModelledBinaryInteraction object
      */
@@ -46,61 +46,61 @@ public interface BinaryInteractionFactory {
 
     /**
      * Create a binary interaction representing a self interaction
-     * @param interaction
-     * @return
+     * @param interaction : the original interaction
+     * @return the resulting self binary interaction
      */
     public BinaryInteraction createSelfBinaryInteractionFrom(Interaction interaction);
 
     /**
      * Creates a BinaryInteractionEvidence representing a self interaction
-     * @param interaction
-     * @return
+     * @param interaction : the original interaction
+     * @return the resulting self binary interaction
      */
     public BinaryInteractionEvidence createSelfBinaryInteractionEvidenceFrom(InteractionEvidence interaction);
 
     /**
      * Creates a ModelledInteraction representing a self interaction
-     * @param interaction
-     * @return
+     * @param interaction : the original interaction
+     * @return the resulting self binary interaction
      */
     public ModelledBinaryInteraction createSelfModelledBinaryInteractionFrom(ModelledInteraction interaction);
 
     /**
      * Creates a BinaryInteraction that wraps the given interaction
-     * @param interaction
-     * @return
+     * @param interaction : the original interaction
+     * @return the resulting binary interaction wrapper
      */
     public BinaryInteraction createBinaryInteractionWrapperFrom(Interaction interaction);
 
     /**
      * Creates a BinaryInteractionEvidence that wraps the given interaction
-     * @param interaction
-     * @return
+     * @param interaction : the original interaction
+     * @return the resulting binary interaction wrapper
      */
     public BinaryInteractionEvidence createBinaryInteractionEvidenceWrapperFrom(InteractionEvidence interaction);
 
     /**
      * Creates a ModelledBinaryInteraction that wraps the given interaction
-     * @param interaction
-     * @return
+     * @param interaction : the original interaction
+     * @return the resulting binary interaction wrapper
      */
     public ModelledBinaryInteraction createModelledBinaryInteractionWrapperFrom(ModelledInteraction interaction);
 
     /**
      * Instantiate a new BinaryInteraction
-     * @return
+     * @return the binary interaction instance
      */
     public BinaryInteraction instantiateNewBinaryInteraction();
 
     /**
      * Instantiate a new BinaryInteraction evidence
-     * @return
+     * @return the binary interaction instance
      */
     public BinaryInteractionEvidence instantiateNewBinaryInteractionEvidence();
 
     /**
      * Instantiate a new modelled binary interaction
-     * @return
+     * @return the binary interaction instance
      */
     public ModelledBinaryInteraction instantiateNewModelledBinaryInteraction();
 }

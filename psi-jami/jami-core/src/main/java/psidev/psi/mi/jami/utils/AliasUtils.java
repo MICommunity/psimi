@@ -21,9 +21,9 @@ public class AliasUtils {
 
     /**
      * To know if an alias have a specific type.
-     * @param alias
-     * @param typeId
-     * @param typeName
+     * @param alias : the alias
+     * @param typeId : alias type MI identifier
+     * @param typeName : alias type name
      * @return true if the alias has the type with given name/identifier
      */
     public static boolean doesAliasHaveType(Alias alias, String typeId, String typeName){
@@ -52,9 +52,9 @@ public class AliasUtils {
 
     /**
      * Extract all the aliases having a specific type.
-     * @param aliases
-     * @param typeId
-     * @param typeName
+     * @param aliases : the aliases to analyse
+     * @param typeId : the alias type MI identifier
+     * @param typeName : the alias type name
      * @return the selection of aliases having the specified type (typeId or typeName if no ids)
      */
     public static Collection<Alias> collectAllAliasesHavingType(Collection<? extends Alias> aliases, String typeId, String typeName){
@@ -117,9 +117,9 @@ public class AliasUtils {
 
     /**
      * To know if an alias have a specific type and  name.
-     * @param alias
-     * @param typeId
-     * @param typeName
+     * @param alias : the alias
+     * @param typeId : the alias type MI identifier
+     * @param typeName : the alias type name
      * @param name: alias name
      * @return true if the alias has the type with given name/identifier
      */
@@ -159,9 +159,9 @@ public class AliasUtils {
 
     /**
      * Extract all the aliases having a specific type.
-     * @param aliases
-     * @param typeId
-     * @param typeName
+     * @param aliases : : the aliases to analyse
+     * @param typeId : : the alias type MI identifier
+     * @param typeName : : the alias type name
      * @param name: alias name
      * @return the selection of aliases having the specified type (typeId or typeName if no ids)
      */

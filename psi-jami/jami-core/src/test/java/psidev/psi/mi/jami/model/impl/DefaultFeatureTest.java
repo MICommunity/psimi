@@ -22,8 +22,7 @@ public class DefaultFeatureTest {
 
         Feature feature = new DefaultFeature();
 
-        Assert.assertNull(feature.getInteractionEffect());
-        Assert.assertNull(feature.getInteractionDependency());
+        Assert.assertNull(feature.getRole());
         Assert.assertNull(feature.getInterpro());
         Assert.assertNull(feature.getFullName());
         Assert.assertNull(feature.getShortName());

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 
 import java.util.Collection;
@@ -36,6 +37,14 @@ public class DefaultFeatureEvidenceComparator {
         else {
             // first compares basic feature properties
             if (!DefaultFeatureBaseComparator.areEquals(experimentalFeature1, experimentalFeature2)){
+                return false;
+            }
+
+            // then compares the parameters
+            Collection<Parameter> param1 = experimentalFeature1.getParameters();
+            Collection<Parameter> param2 = experimentalFeature2.getParameters();
+
+            if (!ComparatorUtils.areParametersEqual(param1, param2)){
                 return false;
             }
 

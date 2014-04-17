@@ -95,7 +95,7 @@ public interface Annotation {
 
     /**
      * Set the value of this annotation.
-     * @param value
+     * @param value : the value
      */
     public void setValue(String value);
 }

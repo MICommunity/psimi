@@ -20,4 +20,11 @@ public interface FeatureEvidence extends Feature<ParticipantEvidence, FeatureEvi
      * @return the collection of detection methods for this feature
      */
     public <C extends CvTerm> Collection<C> getDetectionMethods();
+
+    /**
+     * Numerical parameters associated with this feature.
+     * The Collection cannot be null. If the feature does not have any parameters, the method should return an empty Collection.
+     * @return the parameters
+     */
+    public <P extends Parameter> Collection<P> getParameters();
 }

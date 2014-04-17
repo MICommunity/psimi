@@ -156,7 +156,7 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
     /**
      * The collection of participants for this binary interaction.
      * It cannot be changed.
-     * @return
+     * @return The collection of participants
      */
     public Collection<T> getParticipants() {
         if (getParticipantA() == null && getParticipantB() == null){
@@ -176,8 +176,8 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
     /**
      * Adds a new Participant and set the Interaction of this participant if added.
      * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param part
-     * @return
+     * @param part : participant to add
+     * @return true if the participant has been added, false otherwise
      * @throws IllegalArgumentException if this Binary interaction already contains two participants
      */
     public boolean addParticipant(T part) {
@@ -201,8 +201,8 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
 
     /**
      * Removes the Participant from this binary interaction
-     * @param part
-     * @return
+     * @param part : participant to remove
+     * @return true if the participant has been removed, false otherwise
      */
     public boolean removeParticipant(T part) {
         if (part == null){
@@ -225,8 +225,8 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
     /**
      * Adds the participants and set the Interaction of this participant if added.
      * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param participants
-     * @return
+     * @param participants : participants to add
+     * @return true if at least one participant has been added, false otherwise
      * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
      */
     public boolean addAllParticipants(Collection<? extends T> participants) {

@@ -120,14 +120,14 @@ public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
 
     /**
      * Method to know if an element to add needs some processing or being wrapped
-     * @param added
+     * @param added : element that will be added to the collection
      * @return true if we need to process/ wrap the element that will be added
      */
     protected abstract boolean needToPreProcessElementToAdd(T added);
 
     /**
      * Method to process or wrap an element to be added to the list
-     * @param added
+     * @param added : element that will be added to the collection
      * @return the processed/wrapped element that will be added
      */
     protected abstract T processOrWrapElementToAdd(T added);

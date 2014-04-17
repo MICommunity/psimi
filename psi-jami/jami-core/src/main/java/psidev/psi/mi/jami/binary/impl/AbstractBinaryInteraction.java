@@ -110,7 +110,7 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
     /**
      * The collection of participants for this binary interaction.
      * It cannot be changed.
-     * @return
+     * @return collection of participants for this binary interaction
      */
     @Override
     public Collection<T> getParticipants() {
@@ -131,8 +131,8 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
     /**
      * Adds a new Participant and set the Interaction of this participant if added.
      * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param part
-     * @return
+     * @param part : participant to add
+     * @return true if the participant has been added, false otherwise
      * @throws IllegalArgumentException if this Binary interaction already contains two participants
      */
     @Override
@@ -157,8 +157,8 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
 
     /**
      * Removes the Participant from this binary interaction
-     * @param part
-     * @return
+     * @param part : participant to remove
+     * @return true if the participant has been removed, false otherwise
      */
     @Override
     public boolean removeParticipant(T part) {
@@ -182,8 +182,8 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
     /**
      * Adds the participants and set the Interaction of this participant if added.
      * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
-     * @param participants
-     * @return
+     * @param participants : participants to add
+     * @return true if at least one participant has been added, false otherwise
      * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
      */
     @Override

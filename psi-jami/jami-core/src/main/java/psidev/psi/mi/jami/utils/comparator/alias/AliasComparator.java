@@ -46,9 +46,9 @@ public class AliasComparator implements Comparator<Alias>{
      * - If the alias types are not set, compares the names (case sensitive)
      * - If both alias types are set, use CvTermComparator to compare the alias types. If they are equals, compares the names (case sensitive)
      *
-     * @param alias1
-     * @param alias2
-     * @return
+     * @param alias1 : first alias
+     * @param alias2 : second alias
+     * @return the comparison value
      */
     public int compare(Alias alias1, Alias alias2) {
         int EQUAL = 0;

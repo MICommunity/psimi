@@ -27,7 +27,7 @@ public interface FeatureChangeListener<F extends Feature> extends AnnotationsCha
 
     public void onUpdatedRangePositions(F feature, Range range, Position oldStart, Position oldEnd);
 
-    public void onInteractionDependencyUpdate(F feature , CvTerm oldDependency);
+    public void onRoleUpdate(F feature, CvTerm oldRole);
 
     public void onInteractionEffectUpdate(F feature , CvTerm oldEffect);
 

@@ -43,9 +43,9 @@ public class AnnotationComparator implements Comparator<Annotation> {
      * - The annotation which is not null is before null.
      * - use AbstractCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
      * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
-     * @param annotation1
-     * @param annotation2
-     * @return
+     * @param annotation1 : first annotation
+     * @param annotation2 : second annotation
+     * @return the comparison value
      */
     public int compare(Annotation annotation1, Annotation annotation2) {
         int EQUAL = 0;
