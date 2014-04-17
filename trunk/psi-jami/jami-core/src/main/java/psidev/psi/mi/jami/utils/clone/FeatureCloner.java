@@ -25,8 +25,7 @@ public class FeatureCloner {
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
             target.setType(source.getType());
-            target.setInteractionDependency(source.getInteractionDependency());
-            target.setInteractionEffect(source.getInteractionEffect());
+            target.setRole(source.getRole());
 
             // copy collections
             target.getAliases().clear();
@@ -57,8 +56,7 @@ public class FeatureCloner {
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
             target.setType(source.getType());
-            target.setInteractionDependency(source.getInteractionDependency());
-            target.setInteractionEffect(source.getInteractionEffect());
+            target.setRole(source.getRole());
 
             // copy collections
             target.getAliases().clear();
@@ -87,8 +85,7 @@ public class FeatureCloner {
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
             target.setType(source.getType());
-            target.setInteractionDependency(source.getInteractionDependency());
-            target.setInteractionEffect(source.getInteractionEffect());
+            target.setRole(source.getRole());
 
             // copy collections
             target.getAliases().clear();

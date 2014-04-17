@@ -28,8 +28,7 @@ public abstract class AbstractFeature<P extends Participant, F extends Feature> 
     private Collection<Range> ranges;
     private Collection<Alias> aliases;
 
-    private CvTerm interactionEffect;
-    private CvTerm interactionDependency;
+    private CvTerm role;
 
     private P participant;
     private Collection<F> linkedFeatures;
@@ -223,20 +222,12 @@ public abstract class AbstractFeature<P extends Participant, F extends Feature> 
         return this.ranges;
     }
 
-    public CvTerm getInteractionEffect() {
-        return this.interactionEffect;
+    public CvTerm getRole() {
+        return this.role;
     }
 
-    public void setInteractionEffect(CvTerm effect) {
-        this.interactionEffect = effect;
-    }
-
-    public CvTerm getInteractionDependency() {
-        return this.interactionDependency;
-    }
-
-    public void setInteractionDependency(CvTerm interactionDependency) {
-        this.interactionDependency = interactionDependency;
+    public void setRole(CvTerm effect) {
+        this.role = effect;
     }
 
     public P getParticipant() {

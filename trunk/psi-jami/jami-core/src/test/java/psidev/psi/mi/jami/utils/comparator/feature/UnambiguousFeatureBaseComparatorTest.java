@@ -108,9 +108,9 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_same_type_different_interaction_effects(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("decreasing interaction", "MI:xxx4"));
+        feature2.setRole(CvTermUtils.createMICvTerm("decreasing interaction", "MI:xxx4"));
 
         Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
         Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
@@ -122,9 +122,9 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_identical_interaction_effects(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
 
         Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
         Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
@@ -134,29 +134,11 @@ public class UnambiguousFeatureBaseComparatorTest {
     }
 
     @Test
-    public void test_feature_same_interaction_effect_different_interaction_dependency(){
-        Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
-        Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("test", "MI:xxx6"));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
-        Assert.assertFalse(UnambiguousFeatureBaseComparator.areEquals(feature1, feature2));
-        Assert.assertTrue(UnambiguousFeatureBaseComparator.hashCode(feature1) != UnambiguousFeatureBaseComparator.hashCode(feature2));
-    }
-
-    @Test
     public void test_feature_identical_interaction_dependency(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
 
         Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
         Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
@@ -168,12 +150,10 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_same_interaction_dependency_different_interpro(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature1.setInterpro("INTERPRO-TEST");
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.setInterpro("INTERPRO-TEST2");
 
         Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
@@ -186,12 +166,10 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_identical_interpro(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature1.setInterpro("INTERPRO-TEST");
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.setInterpro("INTERPRO-TEST");
 
         Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
@@ -204,12 +182,10 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_same_interaction_dependency_different_identifiers(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature1.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx2"));
 
         Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
@@ -222,12 +198,10 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_one_identifier_not_equals(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature1.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database2", "xxx2"));
 
@@ -241,11 +215,9 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_with_one_identifier_list_empty(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database2", "xxx2"));
 
@@ -259,13 +231,11 @@ public class UnambiguousFeatureBaseComparatorTest {
     @Test
     public void test_feature_same_identifiers(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature1.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature1.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature1.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         feature1.getIdentifiers().add(XrefUtils.createIdentityXref("test-database2", "xxx2"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-        feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-        feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
+        feature2.setRole(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database2", "xxx2"));
 

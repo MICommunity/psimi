@@ -15,26 +15,26 @@ import psidev.psi.mi.jami.model.Participant;
 public interface BinaryInteraction<T extends Participant> extends Interaction<T> {
 
     /**
-     * The first particiipant of the binary interaction.
-     * @return
+     * The first participant of the binary interaction.
+     * @return first participant of the binary interaction
      */
     public T getParticipantA();
 
     /**
      * The second participant of the binary interaction
-     * @return
+     * @return second participant of the binary interaction
      */
     public T getParticipantB();
 
     /**
      * Sets the first participant of this interaction
-     * @param participantA
+     * @param participantA : the first participant
      */
     public void setParticipantA(T participantA);
 
     /**
      * Sets the second participant of this interaction
-     * @param participantB
+     * @param participantB : the second participant
      */
     public void setParticipantB(T participantB);
 

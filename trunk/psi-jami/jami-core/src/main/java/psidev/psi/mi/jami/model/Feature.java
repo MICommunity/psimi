@@ -130,32 +130,20 @@ public interface Feature<P extends Participant, F extends Feature> {
     public <R extends Range> Collection<R> getRanges();
 
     /**
-     * The effect of this feature on the interaction where the feature has been reported.
+     * The effect of this feature on the interaction where the feature has been reported or
+     * the interaction dependency between the interaction reporting this feature and this feature.
      * It can be null if the feature does not have any effects on the interaction or it is not relevant
      * Ex: increasing interaction, decreasing interaction, disrupting interaction, etc.
+     * Ex: resulting-ptm,prerequisite-ptm ...
      * @return the effect of this feature on the interaction
      */
-    public CvTerm getInteractionEffect();
+    public CvTerm getRole();
 
     /**
      * Sets the interaction effect for this feature.
-     * @param effect : the interaction effect
+     * @param role : the feature role
      */
-    public void setInteractionEffect(CvTerm effect);
-
-    /**
-     * The interaction dependency between the interaction reporting this feature and this feature.
-     * It can be null if it is not relevant/appropriate for this feature.
-     * Ex: resulting-ptm,prerequisite-ptm ...
-     * @return the interaction dependency between the interaction reporting this feature and this feature.
-     */
-    public CvTerm getInteractionDependency();
-
-    /**
-     * Sets the interaction dependency with this feature.
-     * @param interactionDependency
-     */
-    public void setInteractionDependency(CvTerm interactionDependency);
+    public void setRole(CvTerm role);
 
     /**
      * The participant to which the feature is attached.

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Collections;
 
 public class DefaultFeatureEvidence extends AbstractFeature<ParticipantEvidence, FeatureEvidence> implements FeatureEvidence {
     private Collection<CvTerm> detectionMethods;
+    private Collection<Parameter> parameters;
 
     public DefaultFeatureEvidence(ParticipantEvidence participant) {
         super();
@@ -60,6 +62,10 @@ public class DefaultFeatureEvidence extends AbstractFeature<ParticipantEvidence,
         super(shortName, fullName, type);
     }
 
+    protected void initialiseParameters() {
+        this.parameters = new ArrayList<Parameter>();
+    }
+
     protected void initialiseDetectionMethods(){
         this.detectionMethods = new ArrayList<CvTerm>();
     }
@@ -73,10 +79,26 @@ public class DefaultFeatureEvidence extends AbstractFeature<ParticipantEvidence,
         }
     }
 
+    protected void initialiseParametersWith(Collection<Parameter> parameters) {
+        if (parameters == null){
+            this.parameters = Collections.EMPTY_LIST;
+        }
+        else {
+            this.parameters = parameters;
+        }
+    }
+
     public Collection<CvTerm> getDetectionMethods() {
         if (detectionMethods == null){
             initialiseDetectionMethods();
         }
         return this.detectionMethods;
+    }
+
+    public Collection<Parameter> getParameters() {
+        if (parameters == null){
+            initialiseParameters();
+        }
+        return this.parameters;
     }
 }

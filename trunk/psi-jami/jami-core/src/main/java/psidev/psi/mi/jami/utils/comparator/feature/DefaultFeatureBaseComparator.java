@@ -53,19 +53,11 @@ public class DefaultFeatureBaseComparator {
                 return false;
             }
 
-            // then compares feature effect
-            CvTerm interactionEffect1 = feature1.getInteractionEffect();
-            CvTerm interactionEffect2 = feature2.getInteractionEffect();
+            // then compares feature role
+            CvTerm interactionEffect1 = feature1.getRole();
+            CvTerm interactionEffect2 = feature2.getRole();
 
             if (!DefaultCvTermComparator.areEquals(interactionEffect1, interactionEffect2)){
-                return false;
-            }
-
-            // then compares feature dependency with interaction
-            CvTerm interactionDependency1 = feature1.getInteractionDependency();
-            CvTerm interactionDependency2 = feature2.getInteractionDependency();
-
-            if (!DefaultCvTermComparator.areEquals(interactionDependency1, interactionDependency2)){
                 return false;
             }
 

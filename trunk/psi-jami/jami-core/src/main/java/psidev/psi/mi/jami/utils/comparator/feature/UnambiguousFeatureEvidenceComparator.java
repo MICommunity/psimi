@@ -1,7 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
+
+import java.util.Collection;
 
 /**
  * Unambiguous FeatureEvidence comparator.
@@ -19,17 +24,23 @@ public class UnambiguousFeatureEvidenceComparator extends FeatureEvidenceCompara
 
     private static UnambiguousFeatureEvidenceComparator unambiguousExperimentalFeatureComparator;
 
+    protected ParameterCollectionComparator parameterCollectionComparator;
     /**
      * Creates a new UnambiguousFeatureEvidenceComparator. It will use a UnambiguousCvTermComparator to
      * compare feature detection methods and a UnambiguousFeatureBaseComparator to compare basic feature properties
      */
     public UnambiguousFeatureEvidenceComparator() {
         super(new UnambiguousFeatureBaseComparator(), new UnambiguousCvTermComparator());
+        this.parameterCollectionComparator = new ParameterCollectionComparator(new UnambiguousParameterComparator());
     }
 
     @Override
     public UnambiguousFeatureBaseComparator getFeatureComparator() {
         return (UnambiguousFeatureBaseComparator) this.featureComparator;
+    }
+
+    public ParameterCollectionComparator getParameterCollectionComparator() {
+        return parameterCollectionComparator;
     }
 
     @Override
@@ -40,7 +51,15 @@ public class UnambiguousFeatureEvidenceComparator extends FeatureEvidenceCompara
      * This comparator will ignore all the other properties of an experimental feature.
      */
     public int compare(FeatureEvidence experimentalFeature1, FeatureEvidence experimentalFeature2) {
-        return super.compare(experimentalFeature1, experimentalFeature2);
+        int comp = super.compare(experimentalFeature1, experimentalFeature2);
+        if (comp != 0){
+            return comp;
+        }
+        // then compares the parameters
+        Collection<Parameter> param1 = experimentalFeature1.getParameters();
+        Collection<Parameter> param2 = experimentalFeature2.getParameters();
+
+        return parameterCollectionComparator.compare(param1, param2);
     }
 
     /**

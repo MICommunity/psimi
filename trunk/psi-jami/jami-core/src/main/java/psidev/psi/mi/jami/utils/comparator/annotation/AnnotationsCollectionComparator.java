@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.annotation;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.annotation.AnnotationComparator;
 
 /**
  * Comparator for collection of Annotations
@@ -16,7 +15,7 @@ public class AnnotationsCollectionComparator extends CollectionComparator<Annota
     /**
      * Creates a new annotation CollectionComparator. It requires a Comparator for the annotations in the Collection
      *
-     * @param annotationComparator
+     * @param annotationComparator : the annotation comparator
      */
     public AnnotationsCollectionComparator(AnnotationComparator annotationComparator) {
         super(annotationComparator);

@@ -45,9 +45,9 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
     /**
      * It will first compare the relationType using AbstractCvTermComparator. If both relationTypes are identical, it will compare the
      * target using ParticipantBaseComparator
-     * @param causalRelationship1
-     * @param causalRelationship2
-     * @return
+     * @param causalRelationship1 : first causal relationship
+     * @param causalRelationship2 : second causal relationship
+     * @return the comparison value
      */
     public int compare(CausalRelationship causalRelationship1, CausalRelationship causalRelationship2) {
         int EQUAL = 0;

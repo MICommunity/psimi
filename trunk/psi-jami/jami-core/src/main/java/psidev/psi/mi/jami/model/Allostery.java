@@ -66,7 +66,7 @@ public interface Allostery<T extends AllostericEffector> extends CooperativeEffe
 
     /**
      * Sets the effector that elicits an allosteric response.
-     * @param effector
+     * @param effector : the allosteric effector
      * @throws IllegalArgumentException when effector is null
      */
     public void setAllostericEffector(T effector);

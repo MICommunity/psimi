@@ -21,7 +21,7 @@ public interface BioactiveEntity extends Molecule {
      * It is a shortcut which should point to the first chebi identifier in the collection of identifiers.
      * It can be null
      * Ex: CHEBI:4991
-     * @return
+     * @return The CHEBI accession
      */
     public String getChebi();
 
@@ -46,7 +46,7 @@ public interface BioactiveEntity extends Molecule {
      * Sets the smile of this small molecule. It will remove the old smile from the collection of checksums and replace it
      * with the new smile. If the new smile is null, all the existing smiles will be removed from the
      * collection of checksums
-     * @param smile: the smile
+     * @param smile : the smile
      */
     public void setSmile(String smile);
 

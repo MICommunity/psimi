@@ -21,9 +21,9 @@ public class ChecksumUtils {
 
     /**
      * To check if a checksum does have a specific method
-     * @param checksum
-     * @param methodId
-     * @param methodName
+     * @param checksum the checksum
+     * @param methodId the checksum MI identifier
+     * @param methodName the checksum method name
      * @return true if the checksum has the method with given name/identifier
      */
     public static boolean doesChecksumHaveMethod(Checksum checksum, String methodId, String methodName){
@@ -48,10 +48,10 @@ public class ChecksumUtils {
 
     /**
      * Collect all checksum having a specific method
-     * @param checksums
-     * @param methodId
-     * @param methodName
-     * @return
+     * @param checksums the checksums
+     * @param methodId the checksum MI identifier
+     * @param methodName the checksum method name
+     * @return the checksums having the method with given name/identifier
      */
     public static Collection<Checksum> collectAllChecksumsHavingMethod(Collection<? extends Checksum> checksums, String methodId, String methodName){
 
@@ -113,10 +113,10 @@ public class ChecksumUtils {
 
     /**
      * To check if a checksum does have a specific method
-     * @param checksum
-     * @param methodId
-     * @param methodName
-     * @param value
+     * @param checksum the checksum
+     * @param methodId the checksum MI identifier
+     * @param methodName the checksum method name
+     * @param value : the checksum value
      * @return true if the checksum has the method with given name/identifier
      */
     public static boolean doesChecksumHaveMethodAndValue(Checksum checksum, String methodId, String methodName, String value){
@@ -151,10 +151,10 @@ public class ChecksumUtils {
 
     /**
      * Collect all checksum having a specific method
-     * @param checksums
-     * @param methodId
-     * @param methodName
-     * @param value
+     * @param checksums the checksums
+     * @param methodId  the checksum MI identifier
+     * @param methodName  the checksum method name
+     * @param value : the checksum value
      * @return
      */
     public static Collection<Checksum> collectAllChecksumsHavingMethodAndValue(Collection<? extends Checksum> checksums, String methodId, String methodName, String value){
@@ -179,7 +179,7 @@ public class ChecksumUtils {
      * @param checksums : the collection of Checksum
      * @param methodId : the method id to look for
      * @param methodName : the method name to look for
-     * @param value
+     * @param value : the checksum value
      * @return the first checksum having this method name/id, null if no Checksum with this method name/id
      */
     public static Checksum collectFirstChecksumWithMethodAndValue(Collection<? extends Checksum> checksums, String methodId, String methodName, String value){

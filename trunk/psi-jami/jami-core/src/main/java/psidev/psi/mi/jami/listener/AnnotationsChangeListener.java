@@ -15,15 +15,15 @@ public interface AnnotationsChangeListener<T extends Object> extends EventListen
 
     /**
      * Listen to the event where an annotation has been added to the object annotations.
-     * @param o
-     * @param added
+     * @param o : the parent of this annotation
+     * @param added : the added annotation
      */
     public void onAddedAnnotation(T o, Annotation added);
 
     /**
      * Listen to the event where an annotation has been removed from the object annotations.
-     * @param o
-     * @param removed
+     * @param o : the parent of this annotation
+     * @param removed : the removed annotation
      */
     public void onRemovedAnnotation(T o, Annotation removed);
 }

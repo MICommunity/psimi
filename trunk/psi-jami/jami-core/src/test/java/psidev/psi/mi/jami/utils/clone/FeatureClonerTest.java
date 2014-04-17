@@ -22,8 +22,7 @@ public class FeatureClonerTest {
 
         ModelledFeature sourceFeature = new DefaultModelledFeature("source feature", "test full name");
         sourceFeature.setParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
-        sourceFeature.setInteractionEffect(new DefaultCvTerm("test effect"));
-        sourceFeature.setInteractionDependency(new DefaultCvTerm("test dependency"));
+        sourceFeature.setRole(new DefaultCvTerm("test effect"));
         sourceFeature.setInterpro("INTERPRO-xxx");
         sourceFeature.setType(new DefaultCvTerm("binding site"));
         sourceFeature.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -45,8 +44,7 @@ public class FeatureClonerTest {
         Assert.assertEquals(1, targetFeature.getLinkedFeatures().size());
         Assert.assertNull(targetFeature.getParticipant());
         Assert.assertTrue(targetFeature.getType() == sourceFeature.getType());
-        Assert.assertTrue(targetFeature.getInteractionDependency() == sourceFeature.getInteractionDependency());
-        Assert.assertTrue(targetFeature.getInteractionEffect() == sourceFeature.getInteractionEffect());
+        Assert.assertTrue(targetFeature.getRole() == sourceFeature.getRole());
         Assert.assertTrue(targetFeature.getXrefs().iterator().next() == sourceFeature.getXrefs().iterator().next());
         Assert.assertTrue(targetFeature.getAnnotations().iterator().next() == sourceFeature.getAnnotations().iterator().next());
         Assert.assertTrue(targetFeature.getRanges().iterator().next() == sourceFeature.getRanges().iterator().next());
@@ -57,8 +55,7 @@ public class FeatureClonerTest {
 
         ModelledFeature sourceFeature = new DefaultModelledFeature("source feature", "test full name");
         sourceFeature.setParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
-        sourceFeature.setInteractionEffect(new DefaultCvTerm("test effect"));
-        sourceFeature.setInteractionDependency(new DefaultCvTerm("test dependency"));
+        sourceFeature.setRole(new DefaultCvTerm("test effect"));
         sourceFeature.setInterpro("INTERPRO-xxx");
         sourceFeature.setType(new DefaultCvTerm("binding site"));
         sourceFeature.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
@@ -80,8 +77,7 @@ public class FeatureClonerTest {
         Assert.assertEquals(1, targetFeature.getLinkedFeatures().size());
         Assert.assertNull(targetFeature.getParticipant());
         Assert.assertTrue(targetFeature.getType() == sourceFeature.getType());
-        Assert.assertTrue(targetFeature.getInteractionDependency() == sourceFeature.getInteractionDependency());
-        Assert.assertTrue(targetFeature.getInteractionEffect() == sourceFeature.getInteractionEffect());
+        Assert.assertTrue(targetFeature.getRole() == sourceFeature.getRole());
         Assert.assertTrue(targetFeature.getXrefs().iterator().next() == sourceFeature.getXrefs().iterator().next());
         Assert.assertTrue(targetFeature.getAnnotations().iterator().next() == sourceFeature.getAnnotations().iterator().next());
         Assert.assertTrue(targetFeature.getRanges().iterator().next() == sourceFeature.getRanges().iterator().next());
@@ -93,8 +89,7 @@ public class FeatureClonerTest {
 
         FeatureEvidence sourceFeature = new DefaultFeatureEvidence("source feature", "test full name");
         sourceFeature.setParticipant(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()));
-        sourceFeature.setInteractionEffect(new DefaultCvTerm("test effect"));
-        sourceFeature.setInteractionDependency(new DefaultCvTerm("test dependency"));
+        sourceFeature.setRole(new DefaultCvTerm("test effect"));
         sourceFeature.setInterpro("INTERPRO-xxx");
         sourceFeature.setType(new DefaultCvTerm("binding site"));
         sourceFeature.getDetectionMethods().add(new DefaultCvTerm("test method"));
@@ -118,8 +113,7 @@ public class FeatureClonerTest {
         Assert.assertEquals(1, targetFeature.getLinkedFeatures().size());
         Assert.assertNull(targetFeature.getParticipant());
         Assert.assertTrue(targetFeature.getType() == sourceFeature.getType());
-        Assert.assertTrue(targetFeature.getInteractionDependency() == sourceFeature.getInteractionDependency());
-        Assert.assertTrue(targetFeature.getInteractionEffect() == sourceFeature.getInteractionEffect());
+        Assert.assertTrue(targetFeature.getRole() == sourceFeature.getRole());
         Assert.assertTrue(targetFeature.getXrefs().iterator().next() == sourceFeature.getXrefs().iterator().next());
         Assert.assertTrue(targetFeature.getAnnotations().iterator().next() == sourceFeature.getAnnotations().iterator().next());
         Assert.assertTrue(targetFeature.getRanges().iterator().next() == sourceFeature.getRanges().iterator().next());

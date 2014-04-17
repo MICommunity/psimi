@@ -67,9 +67,9 @@ public class AllosteryComparator implements Comparator<Allostery>{
      * Then, it will compare the allosteric mechanisms using AbstractCvTermComparator
      * Then, it will compare the allostery type using AbstractCvTermComparator
      * Finally, it will compare the allosteric molecule using ModelledParticipantComparator
-     * @param allostery1
-     * @param allostery2
-     * @return
+     * @param allostery1 : first allostery
+     * @param allostery2 : second allostery
+     * @return the comparison value
      */
     public int compare(Allostery allostery1, Allostery allostery2) {
         int EQUAL = 0;

@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.alias;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.alias.AliasComparator;
 
 /**
  * Comparator for collection of aliases
@@ -16,7 +15,7 @@ public class AliasesCollectionComparator extends CollectionComparator<Alias> {
     /**
      * Creates a new alias CollectionComparator. It requires a Comparator for the aliases in the Collection
      *
-     * @param aliasComparator
+     * @param aliasComparator : the alias comparator
      */
     public AliasesCollectionComparator(AliasComparator aliasComparator) {
         super(aliasComparator);
