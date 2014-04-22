@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25InteractionDetectionMethodWriter
+ * Unit tester for XmlInteractionDetectionMethodWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -87,7 +87,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm method = new DefaultCvTerm("inferred", "MI:0362");
 
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -99,7 +99,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
         CvTerm method = new DefaultCvTerm("inferred", "MI:0362");
         method.setFullName("inference");
 
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -112,7 +112,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
         method.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         method.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -125,7 +125,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
         method.setMODIdentifier(method.getMIIdentifier());
         method.setMIIdentifier(null);
 
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -137,7 +137,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
         CvTerm method = new DefaultCvTerm("inferred", "MI:0362");
         method.setPARIdentifier(method.getMIIdentifier());
         method.setMIIdentifier(null);
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -152,7 +152,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -165,7 +165,7 @@ public class Xml25InteractionDetectionMethodWriterTest extends AbstractXml25Writ
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25InteractionDetectionMethodWriter writer = new Xml25InteractionDetectionMethodWriter(createStreamWriter());
+        XmlInteractionDetectionMethodWriter writer = new XmlInteractionDetectionMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 

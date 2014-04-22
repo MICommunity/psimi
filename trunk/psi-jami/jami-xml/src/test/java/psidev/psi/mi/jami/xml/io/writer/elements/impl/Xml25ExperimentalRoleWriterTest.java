@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25ExperimentalRoleWriter
+ * Unit tester for XmlExperimentalRoleWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -88,7 +88,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm expRole = CvTermUtils.createUnspecifiedRole();
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 
@@ -100,7 +100,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         CvTerm expRole = CvTermUtils.createUnspecifiedRole();
         expRole.setFullName("unspecified role");
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 
@@ -113,7 +113,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 
@@ -126,7 +126,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.setMODIdentifier(expRole.getMIIdentifier());
         expRole.setMIIdentifier(null);
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 
@@ -138,7 +138,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         CvTerm expRole = CvTermUtils.createUnspecifiedRole();
         expRole.setPARIdentifier(expRole.getMIIdentifier());
         expRole.setMIIdentifier(null);
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 
@@ -153,7 +153,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 
@@ -166,7 +166,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter());
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
         writer.write(expRole);
         streamWriter.flush();
 

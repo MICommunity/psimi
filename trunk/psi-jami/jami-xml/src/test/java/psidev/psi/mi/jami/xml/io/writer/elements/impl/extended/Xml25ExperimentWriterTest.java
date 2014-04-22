@@ -4,10 +4,10 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Experiment;
-import psidev.psi.mi.jami.xml.extension.XmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Unit tester for Xml25ExperimentWriter
+ * Unit tester for XmlExperimentWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -286,7 +286,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
             "  </featureDetectionMethod>\n"+
             "</experimentDescription>";
 
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_experiment() throws XMLStreamException, IOException {

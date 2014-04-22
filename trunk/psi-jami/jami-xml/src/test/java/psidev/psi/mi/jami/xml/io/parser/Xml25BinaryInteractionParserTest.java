@@ -8,8 +8,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Interaction;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Participant;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Participant;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;

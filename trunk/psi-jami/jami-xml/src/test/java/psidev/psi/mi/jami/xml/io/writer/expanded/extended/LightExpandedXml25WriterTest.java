@@ -5,7 +5,6 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.extension.*;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.StringWriter;

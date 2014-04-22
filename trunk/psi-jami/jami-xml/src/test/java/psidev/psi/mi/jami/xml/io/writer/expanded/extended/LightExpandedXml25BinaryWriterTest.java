@@ -5,11 +5,11 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.extension.XmlComplex;
-import psidev.psi.mi.jami.xml.extension.XmlModelledParticipant;
-import psidev.psi.mi.jami.xml.extension.XmlParticipant;
-import psidev.psi.mi.jami.xml.extension.XmlProtein;
-import psidev.psi.mi.jami.xml.extension.binary.XmlBinaryInteraction;
+import psidev.psi.mi.jami.xml.model.extension.XmlComplex;
+import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
+import psidev.psi.mi.jami.xml.model.extension.XmlParticipant;
+import psidev.psi.mi.jami.xml.model.extension.XmlProtein;
+import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteraction;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.StringWriter;

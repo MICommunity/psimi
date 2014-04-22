@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unti tester for Xml25ExperimentalPreparationWriter
+ * Unti tester for XmlExperimentalPreparationWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -88,7 +88,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm expPrep = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -100,7 +100,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         CvTerm expPrep = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
         expPrep.setFullName("undetermined position");
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -113,7 +113,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         expPrep.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -126,7 +126,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.setMODIdentifier(expPrep.getMIIdentifier());
         expPrep.setMIIdentifier(null);
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -138,7 +138,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         CvTerm expPrep = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
         expPrep.setPARIdentifier(expPrep.getMIIdentifier());
         expPrep.setMIIdentifier(null);
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -153,7 +153,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expPrep.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -166,7 +166,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expPrep.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter());
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter());
         writer.write(expPrep);
         streamWriter.flush();
 

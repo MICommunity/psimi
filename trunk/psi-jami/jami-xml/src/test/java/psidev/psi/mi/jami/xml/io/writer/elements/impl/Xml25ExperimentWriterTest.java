@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Unit tester for Xml25ExperimentWriter
+ * Unit tester for XmlExperimentWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -213,7 +213,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_experiment() throws XMLStreamException, IOException {
@@ -221,7 +221,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -234,7 +234,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -249,7 +249,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -265,7 +265,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -278,7 +278,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.setHostOrganism(new DefaultOrganism(9606, "human"));
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -291,7 +291,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getConfidences().add(new DefaultConfidence(new DefaultCvTerm("intact-miscore"),"0.8"));
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -313,7 +313,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -335,7 +335,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -349,7 +349,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("P1234")));
         this.elementCache.extractIdForExperiment(exp);
 
-        Xml25ExperimentWriter writer = new Xml25ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 

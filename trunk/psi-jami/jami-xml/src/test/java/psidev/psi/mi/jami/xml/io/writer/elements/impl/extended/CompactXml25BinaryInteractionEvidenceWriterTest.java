@@ -10,19 +10,19 @@ import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.binary.XmlBinaryInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25NamedBinaryInteractionEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlNamedBinaryInteractionEvidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for CompactXml25BinaryInteractionEvidenceWriter
+ * Unit tester for CompactXmlBinaryInteractionEvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -755,7 +755,7 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
             "  <modelled>true</modelled>\n" +
             "</interaction>";
 
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
@@ -796,7 +796,7 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXml25NamedBinaryInteractionEvidenceWriter writer = new CompactXml25NamedBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        CompactXmlNamedBinaryInteractionEvidenceWriter writer = new CompactXmlNamedBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();

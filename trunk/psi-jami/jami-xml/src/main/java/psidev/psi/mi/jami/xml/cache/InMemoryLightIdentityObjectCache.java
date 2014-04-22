@@ -16,7 +16,7 @@ import java.util.*;
  * @since <pre>19/11/13</pre>
  */
 
-public class InMemoryLightIdentityObjectCache implements PsiXml25ObjectCache {
+public class InMemoryLightIdentityObjectCache implements PsiXmlObjectCache {
     private int current;
     private Map<Object, Integer> identityMap;
     private Set<ModelledInteraction> complexes;

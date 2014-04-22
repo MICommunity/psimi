@@ -12,10 +12,10 @@ import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlSourceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
@@ -38,10 +38,10 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     private XMLStreamWriter streamWriter;
     private boolean isInitialised = false;
-    private PsiXml25InteractionWriter<T> interactionWriter;
-    private PsiXml25InteractionWriter<ModelledInteraction> complexWriter;
-    private PsiXml25SourceWriter sourceWriter;
-    private PsiXml25ObjectCache elementCache;
+    private PsiXmlInteractionWriter<T> interactionWriter;
+    private PsiXmlInteractionWriter<ModelledInteraction> complexWriter;
+    private PsiXmlSourceWriter sourceWriter;
+    private PsiXmlObjectCache elementCache;
     private List<T> interactionsToWrite;
     private Iterator<? extends T> interactionsIterator;
     private boolean started = false;
@@ -54,7 +54,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
     private XMLGregorianCalendar defaultReleaseDate;
 
     private Collection<Annotation> entryAnnotations=null;
-    private PsiXml25ElementWriter<Annotation> annotationsWriter=null;
+    private PsiXmlElementWriter<Annotation> annotationsWriter=null;
 
     private PsiXmlVersion version = PsiXmlVersion.v2_5_4;
 
@@ -83,7 +83,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.interactionsToWrite = new ArrayList<T>();
     }
 
-    protected AbstractXml25Writer(XMLStreamWriter streamWriter, PsiXml25ObjectCache elementCache) {
+    protected AbstractXml25Writer(XMLStreamWriter streamWriter, PsiXmlObjectCache elementCache) {
         if (streamWriter == null){
             throw new IllegalArgumentException("The stream writer cannot be null.");
         }
@@ -96,7 +96,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     public void initialiseContext(Map<String, Object> options) {
         if (options != null && options.containsKey(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25ObjectCache)options.get(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION);
+            this.elementCache = (PsiXmlObjectCache)options.get(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION);
         }
         // use the default cache option
         else{
@@ -341,21 +341,21 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.processedInteractions = processedInteractions;
     }
 
-    public void setSourceWriter(PsiXml25SourceWriter sourceWriter) {
+    public void setSourceWriter(PsiXmlSourceWriter sourceWriter) {
         if (sourceWriter == null){
             throw new IllegalArgumentException("The source writer cannot be null");
         }
         this.sourceWriter = sourceWriter;
         this.sourceWriter.setDefaultReleaseDate(this.defaultReleaseDate);
     }
-    public void setComplexWriter(PsiXml25InteractionWriter<ModelledInteraction> complexWriter) {
+    public void setComplexWriter(PsiXmlInteractionWriter<ModelledInteraction> complexWriter) {
         if (complexWriter == null){
             throw new IllegalArgumentException("The Complex writer cannot be null");
         }
         this.complexWriter = complexWriter;
     }
 
-    public void setElementCache(PsiXml25ObjectCache elementCache) {
+    public void setElementCache(PsiXmlObjectCache elementCache) {
         if (elementCache == null){
             initialiseDefaultElementCache();
         }
@@ -385,7 +385,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.entryAnnotations = entryAnnotations;
     }
 
-    public void setAnnotationsWriter(PsiXml25ElementWriter<Annotation> annotationsWriter) {
+    public void setAnnotationsWriter(PsiXmlElementWriter<Annotation> annotationsWriter) {
         if (annotationsWriter == null){
             throw new IllegalArgumentException("The annotations writer cannot be null");
         }
@@ -524,15 +524,15 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
 
     protected abstract void initialiseDefaultElementCache();
 
-    protected PsiXml25InteractionWriter<T> getInteractionWriter() {
+    protected PsiXmlInteractionWriter<T> getInteractionWriter() {
         return interactionWriter;
     }
 
-    protected PsiXml25InteractionWriter<ModelledInteraction> getComplexWriter() {
+    protected PsiXmlInteractionWriter<ModelledInteraction> getComplexWriter() {
         return complexWriter;
     }
 
-    protected PsiXml25ObjectCache getElementCache() {
+    protected PsiXmlObjectCache getElementCache() {
         if (elementCache == null){
            initialiseDefaultElementCache();
         }
@@ -555,7 +555,7 @@ public abstract class AbstractXml25Writer<T extends Interaction> implements Inte
         this.interactionsIterator = interactionsIterator;
     }
 
-    protected void setInteractionWriter(PsiXml25InteractionWriter<T> interactionWriter) {
+    protected void setInteractionWriter(PsiXmlInteractionWriter<T> interactionWriter) {
         if (interactionWriter == null){
             throw new IllegalArgumentException("The interaction writer cannot be null");
         }

@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -19,7 +19,7 @@ public class Xml25PrimaryXrefWriter extends AbstractXml25XrefWriter {
         super(writer);
     }
 
-    public Xml25PrimaryXrefWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Annotation> annotationWriter) {
+    public Xml25PrimaryXrefWriter(XMLStreamWriter writer, PsiXmlElementWriter<Annotation> annotationWriter) {
         super(writer, annotationWriter);
     }
 

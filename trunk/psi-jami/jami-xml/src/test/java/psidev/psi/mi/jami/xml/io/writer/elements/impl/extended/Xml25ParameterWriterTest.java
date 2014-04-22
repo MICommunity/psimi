@@ -7,9 +7,9 @@ import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.extension.XmlParameter;
+import psidev.psi.mi.jami.xml.model.extension.XmlParameter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for Xml25ParameterWriter
+ * Unit tester for XmlParameterWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -54,7 +54,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
             "exponent=\"0\" factor=\"5\">\n" +
             "  <experimentRef>2</experimentRef>\n" +
             "</parameter>";
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_parameter_null() throws XMLStreamException, IOException {

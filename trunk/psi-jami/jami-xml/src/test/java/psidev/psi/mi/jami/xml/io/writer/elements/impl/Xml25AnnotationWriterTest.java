@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25AnnotationWriter
+ * Unit tester for XmlAnnotationWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -25,7 +25,7 @@ public class Xml25AnnotationWriterTest extends AbstractXml25WriterTest{
     @Test
     public void test_write_alias_null() throws XMLStreamException, IOException {
 
-        Xml25AnnotationWriter writer = new Xml25AnnotationWriter(createStreamWriter());
+        XmlAnnotationWriter writer = new XmlAnnotationWriter(createStreamWriter());
         writer.write(null);
         streamWriter.flush();
 
@@ -36,7 +36,7 @@ public class Xml25AnnotationWriterTest extends AbstractXml25WriterTest{
     public void test_write_attribute_no_value() throws XMLStreamException, IOException {
         Annotation annot = new DefaultAnnotation(new DefaultCvTerm(Annotation.IMEX_CURATION, Annotation.IMEX_CURATION_MI));
 
-        Xml25AnnotationWriter writer = new Xml25AnnotationWriter(createStreamWriter());
+        XmlAnnotationWriter writer = new XmlAnnotationWriter(createStreamWriter());
         writer.write(annot);
         streamWriter.flush();
 
@@ -47,7 +47,7 @@ public class Xml25AnnotationWriterTest extends AbstractXml25WriterTest{
     public void test_write_annotation_no_topic_ac() throws XMLStreamException, IOException {
         Annotation annot = new DefaultAnnotation(new DefaultCvTerm(Annotation.IMEX_CURATION), "test attribute");
 
-        Xml25AnnotationWriter writer = new Xml25AnnotationWriter(createStreamWriter());
+        XmlAnnotationWriter writer = new XmlAnnotationWriter(createStreamWriter());
         writer.write(annot);
         streamWriter.flush();
 
@@ -58,7 +58,7 @@ public class Xml25AnnotationWriterTest extends AbstractXml25WriterTest{
     public void test_write_annotation() throws XMLStreamException, IOException {
         Annotation annot = new DefaultAnnotation(new DefaultCvTerm(Annotation.IMEX_CURATION, Annotation.IMEX_CURATION_MI), "test attribute");
 
-        Xml25AnnotationWriter writer = new Xml25AnnotationWriter(createStreamWriter());
+        XmlAnnotationWriter writer = new XmlAnnotationWriter(createStreamWriter());
         writer.write(annot);
         streamWriter.flush();
 

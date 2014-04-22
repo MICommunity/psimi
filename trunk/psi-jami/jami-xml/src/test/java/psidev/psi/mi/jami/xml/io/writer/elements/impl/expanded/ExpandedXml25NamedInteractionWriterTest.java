@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -16,7 +16,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for CompactXml25NamedInteractionWriter
+ * Unit tester for CompactXmlNamedInteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -772,7 +772,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
             "  </participantList>\n" +
             "</interaction>";
 
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
@@ -781,7 +781,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -798,7 +798,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -815,7 +815,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
@@ -832,7 +832,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -847,7 +847,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -863,7 +863,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -880,7 +880,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -897,7 +897,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -914,7 +914,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -957,7 +957,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.addParticipant(participant4);
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -973,7 +973,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -990,7 +990,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
@@ -1007,7 +1007,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
-        ExpandedXml25NamedInteractionWriter writer = new ExpandedXml25NamedInteractionWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();

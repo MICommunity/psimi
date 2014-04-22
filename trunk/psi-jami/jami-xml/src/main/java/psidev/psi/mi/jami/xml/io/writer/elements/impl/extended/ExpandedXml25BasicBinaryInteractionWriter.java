@@ -2,10 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXml25ParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -19,20 +19,20 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>15/11/13</pre>
  */
 
-public class ExpandedXml25BasicBinaryInteractionWriter extends AbstractXml25InteractionWriter<BinaryInteraction,Participant> implements CompactPsiXml25ElementWriter<BinaryInteraction> {
+public class ExpandedXml25BasicBinaryInteractionWriter extends AbstractXml25InteractionWriter<BinaryInteraction,Participant> implements CompactPsiXmlElementWriter<BinaryInteraction> {
 
-    public ExpandedXml25BasicBinaryInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
-        super(writer, objectIndex, new ExpandedXml25ParticipantWriter(writer, objectIndex));
+    public ExpandedXml25BasicBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+        super(writer, objectIndex, new ExpandedXmlParticipantWriter(writer, objectIndex));
     }
 
-    public ExpandedXml25BasicBinaryInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                                     PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                                     PsiXml25XrefWriter secondaryRefWriter, PsiXml25ExperimentWriter experimentWriter,
-                                                     PsiXml25ParticipantWriter<Participant> participantWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1,
-                                                     PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                                     PsiXml25ElementWriter<Checksum> checksumWriter) {
+    public ExpandedXml25BasicBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                                     PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
+                                                     PsiXmlXrefWriter secondaryRefWriter, PsiXmlExperimentWriter experimentWriter,
+                                                     PsiXmlParticipantWriter<Participant> participantWriter, PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter1,
+                                                     PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Annotation> attributeWriter,
+                                                     PsiXmlElementWriter<Checksum> checksumWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new ExpandedXml25ParticipantWriter(writer, objectIndex),
+                participantWriter != null ? participantWriter : new ExpandedXmlParticipantWriter(writer, objectIndex),
                 inferredInteractionWriter1, interactionTypeWriter, attributeWriter, checksumWriter);
     }
 

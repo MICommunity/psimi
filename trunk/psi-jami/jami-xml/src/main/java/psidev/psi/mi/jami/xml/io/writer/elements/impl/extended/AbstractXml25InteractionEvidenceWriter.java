@@ -1,15 +1,15 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.BibRef;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.extension.XmlExperiment;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.BibRef;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AvailabilityWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ConfidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAvailabilityWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -27,29 +27,29 @@ import java.util.List;
  */
 
 public abstract class AbstractXml25InteractionEvidenceWriter<I extends InteractionEvidence, P extends ParticipantEvidence> extends AbstractXml25InteractionWriter<I,P> {
-    private PsiXml25ElementWriter<String> availabilityWriter;
-    private PsiXml25ElementWriter<Confidence> confidenceWriter;
-    private PsiXml25ParameterWriter parameterWriter;
+    private PsiXmlElementWriter<String> availabilityWriter;
+    private PsiXmlElementWriter<Confidence> confidenceWriter;
+    private PsiXmlParameterWriter parameterWriter;
 
-    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex, PsiXml25ParticipantWriter<P> participantWriter) {
+    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex, PsiXmlParticipantWriter<P> participantWriter) {
         super(writer, objectIndex, participantWriter);
-        this.availabilityWriter = new Xml25AvailabilityWriter(writer, objectIndex);
-        this.confidenceWriter = new Xml25ConfidenceWriter(writer);
-        this.parameterWriter = new Xml25ParameterWriter(writer, objectIndex);
+        this.availabilityWriter = new XmlAvailabilityWriter(writer, objectIndex);
+        this.confidenceWriter = new XmlConfidenceWriter(writer);
+        this.parameterWriter = new XmlParameterWriter(writer, objectIndex);
     }
 
-    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                                  PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<String> availabilityWriter,
-                                                  PsiXml25ExperimentWriter experimentWriter, PsiXml25ParticipantWriter<P> participantWriter,
-                                                  PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter1, PsiXml25ElementWriter<CvTerm> interactionTypeWriter,
-                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,
-                                                  PsiXml25ElementWriter<Annotation> attributeWriter, PsiXml25ElementWriter<Checksum> checksumWriter) {
+    public AbstractXml25InteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                                  PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
+                                                  PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<String> availabilityWriter,
+                                                  PsiXmlExperimentWriter experimentWriter, PsiXmlParticipantWriter<P> participantWriter,
+                                                  PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter1, PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                  PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlParameterWriter parameterWriter,
+                                                  PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlElementWriter<Checksum> checksumWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter, participantWriter,
                 inferredInteractionWriter1, interactionTypeWriter, attributeWriter, checksumWriter);
-        this.availabilityWriter = availabilityWriter != null ? availabilityWriter : new Xml25AvailabilityWriter(writer, objectIndex);
-        this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new Xml25ConfidenceWriter(writer);
-        this.parameterWriter = parameterWriter != null ? parameterWriter : new Xml25ParameterWriter(writer, objectIndex);
+        this.availabilityWriter = availabilityWriter != null ? availabilityWriter : new XmlAvailabilityWriter(writer, objectIndex);
+        this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new XmlConfidenceWriter(writer);
+        this.parameterWriter = parameterWriter != null ? parameterWriter : new XmlParameterWriter(writer, objectIndex);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.xml.Xml253ModelledEntrySet;
-import psidev.psi.mi.jami.xml.Xml254ModelledEntrySet;
+import psidev.psi.mi.jami.xml.model.Xml253ModelledEntrySet;
+import psidev.psi.mi.jami.xml.model.Xml254ModelledEntrySet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

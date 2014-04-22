@@ -4,10 +4,12 @@ import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.*;
-import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
-import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.AbstractEntry;
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.JAXBException;
@@ -39,7 +41,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     private PsiXmlParserListener listener;
     private AbstractEntrySet<AbstractEntry<T>> entrySet;
 
-    private PsiXml25IdCache indexOfObjects=null;
+    private PsiXmlIdCache indexOfObjects=null;
     private boolean useDefaultCache = true;
 
     private PsiXmlVersion version;
@@ -81,9 +83,9 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         // did not parse the entry set yet
         if (this.entrySet == null){
             try {
-                initialiseEntryContext(Xml25EntryContext.getInstance());
-                Xml25EntryContext.getInstance().initialiseInferredInteractionList();
-                Xml25EntryContext.getInstance().initialiseReferencesList();
+                initialiseEntryContext(XmlEntryContext.getInstance());
+                XmlEntryContext.getInstance().initialiseInferredInteractionList();
+                XmlEntryContext.getInstance().initialiseReferencesList();
             } catch (JAXBException e) {
                 createPsiXmlExceptionFrom("Impossible to read the input source", e);
             }
@@ -161,8 +163,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.version = null;
 
         // release the thread local
-        Xml25EntryContext.getInstance().clear();
-        Xml25EntryContext.remove();
+        XmlEntryContext.getInstance().clear();
+        XmlEntryContext.remove();
     }
 
     @Override
@@ -185,8 +187,8 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
             this.indexOfObjects.clear();
         }
         // release the thread local
-        Xml25EntryContext.getInstance().clear();
-        Xml25EntryContext.remove();
+        XmlEntryContext.getInstance().clear();
+        XmlEntryContext.remove();
         if (this.originalReader != null){
             // reinit line parser if reader can be reset
             if (this.originalReader.markSupported()){
@@ -243,7 +245,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         this.listener = listener;
     }
 
-    public void setCacheOfObjects(PsiXml25IdCache indexOfObjects) {
+    public void setCacheOfObjects(PsiXmlIdCache indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
         this.useDefaultCache = false;
     }
@@ -262,7 +264,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
     protected AbstractEntrySet<AbstractEntry<T>> parseEntrySet() throws PsiXmlParserException {
         if (this.reader != null){
             try {
-                initialiseEntryContext(Xml25EntryContext.getInstance());
+                initialiseEntryContext(XmlEntryContext.getInstance());
 
                 return (AbstractEntrySet<AbstractEntry<T>>) this.unmarshaller.unmarshal(this.reader);
             } catch (JAXBException e) {
@@ -282,7 +284,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
         return version;
     }
 
-    private void initialiseEntryContext(Xml25EntryContext entryContext) throws PsiXmlParserException, JAXBException {
+    private void initialiseEntryContext(XmlEntryContext entryContext) throws PsiXmlParserException, JAXBException {
         initialiseVersion(this.reader);
         // create unmarshaller knowing the version
         switch (this.version){
@@ -307,7 +309,7 @@ public abstract class AbstractFullPsiXml25Parser<T extends Interaction> implemen
 
     private void initialiseDefaultCache() {
         if (this.indexOfObjects == null){
-            this.indexOfObjects = new InMemoryPsiXml25Cache();
+            this.indexOfObjects = new InMemoryPsiXmlCache();
         }
     }
 

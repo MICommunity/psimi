@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<entrySet minorVersion="4" version="5" level="2" xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF254.xsd" xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<entrySet minorVersion="3" version="5" level="2" xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/molecular_interactions/rel25/src/MIF253.xsd" xmlns="net:sf:psidev:mi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <entry>
         <source releaseDate="2013-09-02+01:00">
             <names>
@@ -15,6 +15,9 @@
                 <attribute name="url">http://mint.bio.uniroma2.it/mint</attribute>
             </attributeList>
         </source>
+        <availabilityList>
+            <availability id="100000000">copyright</availability>
+        </availabilityList>
         <experimentList>
             <experimentDescription id="4120">
                 <names>
@@ -238,7 +241,7 @@
                     <primaryRef refTypeAc="MI:0356" refType="identity" id="MINT-18818" dbAc="MI:0471" db="mint"/>
                     <secondaryRef refTypeAc="MI:0356" refType="identity" id="EBI-6948673" dbAc="MI:0469" db="intact"/>
                 </xref>
-                <availability id="100000000">copyright</availability>
+                <availabilityRef>100000000</availabilityRef>
                 <experimentList>
                     <experimentRef>4120</experimentRef>
                 </experimentList>

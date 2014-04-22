@@ -7,9 +7,9 @@ import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25InteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25SourceWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlSourceWriter;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLStreamException;
@@ -222,7 +222,7 @@ public abstract class AbstractExpandedXml25MixWriter<I extends Interaction, M ex
     }
 
     @Override
-    public void setSourceWriter(PsiXml25SourceWriter sourceWriter) {
+    public void setSourceWriter(PsiXmlSourceWriter sourceWriter) {
         super.setSourceWriter(sourceWriter);
         if (this.modelledWriter != null){
             this.modelledWriter.setSourceWriter(sourceWriter);
@@ -236,7 +236,7 @@ public abstract class AbstractExpandedXml25MixWriter<I extends Interaction, M ex
     }
 
     @Override
-    public void setComplexWriter(PsiXml25InteractionWriter<ModelledInteraction> complexWriter) {
+    public void setComplexWriter(PsiXmlInteractionWriter<ModelledInteraction> complexWriter) {
         super.setComplexWriter(complexWriter);
         if (this.modelledWriter != null){
             this.modelledWriter.setComplexWriter(complexWriter);
@@ -251,7 +251,7 @@ public abstract class AbstractExpandedXml25MixWriter<I extends Interaction, M ex
     }
 
     @Override
-    public void setElementCache(PsiXml25ObjectCache elementCache) {
+    public void setElementCache(PsiXmlObjectCache elementCache) {
         super.setElementCache(elementCache);
         if (this.modelledWriter != null){
             this.modelledWriter.setElementCache(elementCache);

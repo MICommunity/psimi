@@ -3,10 +3,11 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Source;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25PublicationWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Source;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlSourceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -19,14 +20,14 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25SourceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25SourceWriter {
+public class Xml25SourceWriter extends XmlSourceWriter {
     public Xml25SourceWriter(XMLStreamWriter writer) {
         super(writer);
     }
 
-    public Xml25SourceWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Alias> aliasWriter,
-                             PsiXml25PublicationWriter publicationWriter, PsiXml25XrefWriter primaryRefWriter,
-                             PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+    public Xml25SourceWriter(XMLStreamWriter writer, PsiXmlElementWriter<Alias> aliasWriter,
+                             PsiXmlPublicationWriter publicationWriter, PsiXmlXrefWriter primaryRefWriter,
+                             PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
         super(writer, aliasWriter, publicationWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
     }
 

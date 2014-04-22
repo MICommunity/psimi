@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25ParticipantIdentificationMethodWriter
+ * Unit tester for XmlParticipantIdentificationMethodWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -87,7 +87,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm method = new DefaultCvTerm("inferred", "MI:0362");
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -99,7 +99,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         CvTerm method = new DefaultCvTerm("inferred", "MI:0362");
         method.setFullName("inference");
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -112,7 +112,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         method.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -125,7 +125,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.setMODIdentifier(method.getMIIdentifier());
         method.setMIIdentifier(null);
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -137,7 +137,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         CvTerm method = new DefaultCvTerm("inferred", "MI:0362");
         method.setPARIdentifier(method.getMIIdentifier());
         method.setMIIdentifier(null);
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -152,7 +152,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 
@@ -165,7 +165,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter());
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter());
         writer.write(method);
         streamWriter.flush();
 

@@ -5,9 +5,9 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
@@ -44,7 +44,7 @@ public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXml25W
             "    <experimentRef>2</experimentRef>\n" +
             "  </experimentRefList>\n" +
             "</experimentalInteractor>";
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_experimental_interactor() throws XMLStreamException, IOException {

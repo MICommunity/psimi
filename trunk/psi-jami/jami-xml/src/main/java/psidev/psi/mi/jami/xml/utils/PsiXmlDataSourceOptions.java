@@ -14,9 +14,9 @@ import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
 public class PsiXmlDataSourceOptions extends MIFileDataSourceOptions{
 
     /**
-     * The object instance implementing the PsiXml25IdCache interface.
+     * The object instance implementing the PsiXmlIdCache interface.
      * This object will be used to index XML elements having ids and to resolve references to this objects.
-     * If this option is not provided, it will use a InMemoryPsiXml25Cache by default (will cache the objects in memory and
+     * If this option is not provided, it will use a InMemoryPsiXmlCache by default (will cache the objects in memory and
      * so cannot be efficient with very large files).
      */
     public static final String ELEMENT_WITH_ID_CACHE_OPTION = "element_id_cache_key";

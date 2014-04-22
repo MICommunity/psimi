@@ -5,7 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 
 import javax.xml.stream.XMLStreamException;
@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Unit tester for Xml25InferredInteractionWriter
+ * Unit tester for XmlInferredInteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -50,7 +50,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
             "  </participant>\n" +
             "</inferredInteraction>";
 
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_inferred() throws XMLStreamException, IOException {
@@ -59,7 +59,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.add(new DefaultFeature());
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -74,7 +74,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.add(new DefaultFeature());
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -94,7 +94,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         elementCache.extractIdForFeature(f1);
         elementCache.extractIdForFeature(f2);
 
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 

@@ -6,10 +6,10 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Experiment;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25InteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25ParticipantEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25ParticipantEvidence;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.JAXBException;

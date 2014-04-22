@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25HostOrganismWriter
+ * Unit tester for XmlHostOrganismWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -74,7 +74,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
     public void test_write_organism_no_name() throws XMLStreamException, IOException {
         Organism organism = new DefaultOrganism(9606);
 
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 
@@ -85,7 +85,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
     public void test_write_organism_shortName() throws XMLStreamException, IOException {
         Organism organism = new DefaultOrganism(9606, "human");
 
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 
@@ -96,7 +96,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
     public void test_write_organism_fullName() throws XMLStreamException, IOException {
         Organism organism = new DefaultOrganism(9606, "human", "Homo Sapiens");
 
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 
@@ -109,7 +109,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
         organism.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "homo sapiens"));
         organism.getAliases().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 
@@ -121,7 +121,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
         Organism organism = new DefaultOrganism(9606, "human");
         organism.setCellType(new DefaultCvTerm("293t"));
 
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 
@@ -132,7 +132,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
     public void test_write_organism_tissue() throws XMLStreamException, IOException {
         Organism organism = new DefaultOrganism(9606, "human");
         organism.setTissue(new DefaultCvTerm("embryo"));
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 
@@ -144,7 +144,7 @@ public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
         Organism organism = new DefaultOrganism(9606, "human");
         organism.setCompartment(new DefaultCvTerm("cytosol"));
 
-        Xml25HostOrganismWriter writer = new Xml25HostOrganismWriter(createStreamWriter());
+        XmlHostOrganismWriter writer = new XmlHostOrganismWriter(createStreamWriter());
         writer.write(organism);
         streamWriter.flush();
 

@@ -7,17 +7,17 @@ import psidev.psi.mi.jami.model.impl.DefaultFeature;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.utils.InteractorUtils;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25InferredInteractionWriter
+ * Unit tester for XmlInferredInteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -102,7 +102,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
             "  </experimentRefList>\n" +
             "</inferredInteraction>";
 
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_inferred() throws XMLStreamException, IOException {

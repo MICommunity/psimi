@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25CelltypeWriter
+ * Unit tester for XmlCelltypeWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -76,7 +76,7 @@ public class Xml25CelltypeWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm cellType = new DefaultCvTerm("293t");
 
-        Xml25CelltypeWriter writer = new Xml25CelltypeWriter(createStreamWriter());
+        XmlCelltypeWriter writer = new XmlCelltypeWriter(createStreamWriter());
         writer.write(cellType);
         streamWriter.flush();
 
@@ -88,7 +88,7 @@ public class Xml25CelltypeWriterTest extends AbstractXml25WriterTest {
         CvTerm cellType = new DefaultCvTerm("293t");
         cellType.setFullName("Human 293t");
 
-        Xml25CelltypeWriter writer = new Xml25CelltypeWriter(createStreamWriter());
+        XmlCelltypeWriter writer = new XmlCelltypeWriter(createStreamWriter());
         writer.write(cellType);
         streamWriter.flush();
 
@@ -101,7 +101,7 @@ public class Xml25CelltypeWriterTest extends AbstractXml25WriterTest {
         cellType.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         cellType.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25CelltypeWriter writer = new Xml25CelltypeWriter(createStreamWriter());
+        XmlCelltypeWriter writer = new XmlCelltypeWriter(createStreamWriter());
         writer.write(cellType);
         streamWriter.flush();
 
@@ -115,7 +115,7 @@ public class Xml25CelltypeWriterTest extends AbstractXml25WriterTest {
         cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25CelltypeWriter writer = new Xml25CelltypeWriter(createStreamWriter());
+        XmlCelltypeWriter writer = new XmlCelltypeWriter(createStreamWriter());
         writer.write(cellType);
         streamWriter.flush();
 
@@ -128,7 +128,7 @@ public class Xml25CelltypeWriterTest extends AbstractXml25WriterTest {
         cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25CelltypeWriter writer = new Xml25CelltypeWriter(createStreamWriter());
+        XmlCelltypeWriter writer = new XmlCelltypeWriter(createStreamWriter());
         writer.write(cellType);
         streamWriter.flush();
 
@@ -142,7 +142,7 @@ public class Xml25CelltypeWriterTest extends AbstractXml25WriterTest {
         cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
         cellType.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         cellType.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
-        Xml25CelltypeWriter writer = new Xml25CelltypeWriter(createStreamWriter());
+        XmlCelltypeWriter writer = new XmlCelltypeWriter(createStreamWriter());
         writer.write(cellType);
         streamWriter.flush();
 

@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester of Xml25StartStatusWriter
+ * Unit tester of XmlStartStatusWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -88,7 +88,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm startStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
 
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 
@@ -100,7 +100,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
         CvTerm startStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
         startStatus.setFullName("undetermined position");
 
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 
@@ -113,7 +113,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
         startStatus.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         startStatus.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 
@@ -126,7 +126,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
         startStatus.setMODIdentifier(startStatus.getMIIdentifier());
         startStatus.setMIIdentifier(null);
 
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 
@@ -138,7 +138,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
         CvTerm startStatus = new DefaultCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
         startStatus.setPARIdentifier(startStatus.getMIIdentifier());
         startStatus.setMIIdentifier(null);
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 
@@ -153,7 +153,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
         startStatus.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         startStatus.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 
@@ -166,7 +166,7 @@ public class Xml25StartStatusWriterTest extends AbstractXml25WriterTest {
         startStatus.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         startStatus.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25StartStatusWriter writer = new Xml25StartStatusWriter(createStreamWriter());
+        XmlStartStatusWriter writer = new XmlStartStatusWriter(createStreamWriter());
         writer.write(startStatus);
         streamWriter.flush();
 

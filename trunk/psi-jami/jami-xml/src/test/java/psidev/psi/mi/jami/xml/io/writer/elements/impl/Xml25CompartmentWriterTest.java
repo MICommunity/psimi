@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester of Xml25CompartmentWriter
+ * Unit tester of XmlCompartmentWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -76,7 +76,7 @@ public class Xml25CompartmentWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm compartment = new DefaultCvTerm("293t");
 
-        Xml25CompartmentWriter writer = new Xml25CompartmentWriter(createStreamWriter());
+        XmlCompartmentWriter writer = new XmlCompartmentWriter(createStreamWriter());
         writer.write(compartment);
         streamWriter.flush();
 
@@ -88,7 +88,7 @@ public class Xml25CompartmentWriterTest extends AbstractXml25WriterTest {
         CvTerm compartment = new DefaultCvTerm("293t");
         compartment.setFullName("Human 293t");
 
-        Xml25CompartmentWriter writer = new Xml25CompartmentWriter(createStreamWriter());
+        XmlCompartmentWriter writer = new XmlCompartmentWriter(createStreamWriter());
         writer.write(compartment);
         streamWriter.flush();
 
@@ -101,7 +101,7 @@ public class Xml25CompartmentWriterTest extends AbstractXml25WriterTest {
         compartment.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         compartment.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25CompartmentWriter writer = new Xml25CompartmentWriter(createStreamWriter());
+        XmlCompartmentWriter writer = new XmlCompartmentWriter(createStreamWriter());
         writer.write(compartment);
         streamWriter.flush();
 
@@ -115,7 +115,7 @@ public class Xml25CompartmentWriterTest extends AbstractXml25WriterTest {
         compartment.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         compartment.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25CompartmentWriter writer = new Xml25CompartmentWriter(createStreamWriter());
+        XmlCompartmentWriter writer = new XmlCompartmentWriter(createStreamWriter());
         writer.write(compartment);
         streamWriter.flush();
 
@@ -128,7 +128,7 @@ public class Xml25CompartmentWriterTest extends AbstractXml25WriterTest {
         compartment.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         compartment.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25CompartmentWriter writer = new Xml25CompartmentWriter(createStreamWriter());
+        XmlCompartmentWriter writer = new XmlCompartmentWriter(createStreamWriter());
         writer.write(compartment);
         streamWriter.flush();
 
@@ -142,7 +142,7 @@ public class Xml25CompartmentWriterTest extends AbstractXml25WriterTest {
         compartment.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
         compartment.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         compartment.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
-        Xml25CompartmentWriter writer = new Xml25CompartmentWriter(createStreamWriter());
+        XmlCompartmentWriter writer = new XmlCompartmentWriter(createStreamWriter());
         writer.write(compartment);
         streamWriter.flush();
 

@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Source;
-import psidev.psi.mi.jami.xml.extension.XmlSource;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Source;
+import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Unit tester for Xml25SourceWriter
+ * Unit tester for XmlSourceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
