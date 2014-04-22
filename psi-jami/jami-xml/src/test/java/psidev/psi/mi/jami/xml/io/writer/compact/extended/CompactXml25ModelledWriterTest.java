@@ -6,6 +6,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.model.extension.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

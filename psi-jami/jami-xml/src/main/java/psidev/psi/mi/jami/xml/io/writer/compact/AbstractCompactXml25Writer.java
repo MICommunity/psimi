@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
+import psidev.psi.mi.jami.xml.io.writer.AbstractXmlWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -26,7 +26,7 @@ import java.util.*;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractCompactXml25Writer<T extends Interaction> extends AbstractXml25Writer<T> {
+public abstract class AbstractCompactXml25Writer<T extends Interaction> extends AbstractXmlWriter<T> {
 
     private PsiXmlElementWriter<String> availabilityWriter;
     private PsiXmlExperimentWriter experimentWriter;

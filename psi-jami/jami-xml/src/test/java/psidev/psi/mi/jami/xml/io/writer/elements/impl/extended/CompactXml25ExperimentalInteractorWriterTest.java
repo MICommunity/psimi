@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for CompactXml25ExperimentalInteractorWriter
+ * Unit tester for CompactXmlExperimentalInteractorWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -52,7 +52,7 @@ public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXml25W
         interactor.setInteractor(new DefaultProtein("p12345"));
         elementCache.clear();
 
-        CompactXml25ExperimentalInteractorWriter writer = new CompactXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        CompactXmlExperimentalInteractorWriter writer = new CompactXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -67,7 +67,7 @@ public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXml25W
         elementCache.extractIdForInteractor(new DefaultProtein("p12346"));
         elementCache.extractIdForInteractor(interactor.getInteractor());
 
-        CompactXml25ExperimentalInteractorWriter writer = new CompactXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        CompactXmlExperimentalInteractorWriter writer = new CompactXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -81,7 +81,7 @@ public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXml25W
         interactor.getExperiments().add(new DefaultExperiment(new DefaultPublication()));
         elementCache.clear();
 
-        CompactXml25ExperimentalInteractorWriter writer = new CompactXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        CompactXmlExperimentalInteractorWriter writer = new CompactXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -97,7 +97,7 @@ public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXml25W
         elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("12345")));
         elementCache.extractIdForExperiment(interactor.getExperiments().iterator().next());
 
-        CompactXml25ExperimentalInteractorWriter writer = new CompactXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        CompactXmlExperimentalInteractorWriter writer = new CompactXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 

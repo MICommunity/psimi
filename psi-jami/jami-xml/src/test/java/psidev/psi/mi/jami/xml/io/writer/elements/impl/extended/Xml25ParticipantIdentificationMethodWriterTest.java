@@ -115,7 +115,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm method = new ExperimentalCvTerm("inferred", "MI:0362");
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -127,7 +127,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         CvTerm method = new ExperimentalCvTerm("inferred", "MI:0362");
         method.setFullName("inference");
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -140,7 +140,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         method.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -153,7 +153,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.setMODIdentifier(method.getMIIdentifier());
         method.setMIIdentifier(null);
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -165,7 +165,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         CvTerm method = new ExperimentalCvTerm("inferred", "MI:0362");
         method.setPARIdentifier(method.getMIIdentifier());
         method.setMIIdentifier(null);
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -180,7 +180,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -193,7 +193,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         method.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -207,7 +207,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         method.getExperiments().add(new DefaultExperiment(new DefaultPublication("P123456")));
         this.elementCache.clear();
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 
@@ -226,7 +226,7 @@ public class Xml25ParticipantIdentificationMethodWriterTest extends AbstractXml2
         this.elementCache.extractIdForExperiment(exp1);
         this.elementCache.extractIdForExperiment(exp2);
 
-        Xml25ParticipantIdentificationMethodWriter writer = new Xml25ParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantIdentificationMethodWriter writer = new XmlParticipantIdentificationMethodWriter(createStreamWriter(), this.elementCache);
         writer.write(method);
         streamWriter.flush();
 

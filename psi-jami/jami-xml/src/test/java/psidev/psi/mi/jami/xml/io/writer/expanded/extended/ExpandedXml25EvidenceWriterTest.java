@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.xml.model.extension.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

@@ -6,6 +6,9 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
+import psidev.psi.mi.jami.xml.model.extension.AbstractXmlBasicInteraction;
+import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.AbstractXmlModelledInteraction;
 import psidev.psi.mi.jami.xml.model.extension.binary.*;
 
 /**

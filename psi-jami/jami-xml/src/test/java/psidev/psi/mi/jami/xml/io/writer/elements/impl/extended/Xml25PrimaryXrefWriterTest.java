@@ -32,7 +32,7 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_xref_null() throws XMLStreamException, IOException {
 
-        Xml25PrimaryXrefWriter writer = new Xml25PrimaryXrefWriter(createStreamWriter());
+        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
         writer.write(null);
         streamWriter.flush();
 
@@ -43,7 +43,7 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref() throws XMLStreamException, IOException {
         XmlXref ref = new XmlXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
 
-        Xml25PrimaryXrefWriter writer = new Xml25PrimaryXrefWriter(createStreamWriter());
+        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -54,7 +54,7 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_secondary() throws XMLStreamException, IOException {
         XmlXref ref = new XmlXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
         ref.setSecondary("P12346");
-        Xml25PrimaryXrefWriter writer = new Xml25PrimaryXrefWriter(createStreamWriter());
+        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -66,7 +66,7 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
         XmlXref ref = new XmlXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
         ref.setSecondary("P12346");
         ref.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("caution"), "test caution"));
-        Xml25PrimaryXrefWriter writer = new Xml25PrimaryXrefWriter(createStreamWriter());
+        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 

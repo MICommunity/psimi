@@ -115,7 +115,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.getParticipants().add(p2);
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -136,7 +136,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.getParticipants().add(p3);
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -157,7 +157,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         elementCache.extractIdForFeature(p1.getFeature());
         elementCache.extractIdForFeature(p2.getFeature());
 
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -175,7 +175,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.getParticipants().add(p2);
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -196,7 +196,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.getParticipants().add(p3);
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -217,7 +217,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         elementCache.extractIdForParticipant(p1.getParticipant());
         elementCache.extractIdForParticipant(p2.getParticipant());
 
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -236,7 +236,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         inferred.getExperiments().add(new DefaultExperiment(new DefaultPublication()));
 
         elementCache.clear();
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 
@@ -258,7 +258,7 @@ public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest 
         elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("12345")));
         elementCache.extractIdForExperiment(inferred.getExperiments().iterator().next());
 
-        Xml25InferredInteractionWriter writer = new Xml25InferredInteractionWriter(createStreamWriter(), elementCache);
+        XmlInferredInteractionWriter writer = new XmlInferredInteractionWriter(createStreamWriter(), elementCache);
         writer.write(inferred);
         streamWriter.flush();
 

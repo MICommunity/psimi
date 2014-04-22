@@ -2,6 +2,15 @@ package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlHostOrganismWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlParticipantIdentificationMethodWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlPrimaryXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSecondaryXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
@@ -9,9 +18,6 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlNamedModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlNamedParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25PrimaryXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SecondaryXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25SourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25Writer;
 
 import javax.xml.stream.XMLStreamException;
@@ -56,8 +62,8 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
         // basic sub writers
         PsiXmlElementWriter<Alias> aliasWriter = new XmlAliasWriter(getStreamWriter());
         PsiXmlElementWriter<Annotation> attributeWriter = new XmlAnnotationWriter(getStreamWriter());
-        PsiXmlXrefWriter primaryRefWriter = new Xml25PrimaryXrefWriter(getStreamWriter());
-        PsiXmlXrefWriter secondaryRefWriter = new Xml25SecondaryXrefWriter(getStreamWriter());
+        PsiXmlXrefWriter primaryRefWriter = new XmlPrimaryXrefWriter(getStreamWriter());
+        PsiXmlXrefWriter secondaryRefWriter = new XmlSecondaryXrefWriter(getStreamWriter());
         PsiXmlPublicationWriter publicationWriter = new XmlPublicationWriter(getStreamWriter(), primaryRefWriter, secondaryRefWriter, attributeWriter);
         PsiXmlElementWriter<CvTerm> cellTypeWriter = new XmlCelltypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter,
                 attributeWriter);
@@ -69,7 +75,7 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
                 compartmentWriter, tissueWriter);
         PsiXmlElementWriter<CvTerm> detectionMethodWriter = new XmlInteractionDetectionMethodWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXmlElementWriter<CvTerm> confidenceTypeWriter = new XmlConfidenceTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
-        PsiXmlElementWriter<Confidence> confidenceWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ConfidenceWriter(getStreamWriter(), getElementCache(), confidenceTypeWriter);
+        PsiXmlElementWriter<Confidence> confidenceWriter = new XmlConfidenceWriter(getStreamWriter(), getElementCache(), confidenceTypeWriter);
         PsiXmlElementWriter<CvTerm> interactorTypeWriter = new XmlInteractorTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXmlElementWriter<Organism> organismWriter = new XmlOrganismWriter(getStreamWriter(), aliasWriter, cellTypeWriter,
                 compartmentWriter, tissueWriter);
@@ -90,16 +96,16 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
                 aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter,
                 bioRoleWriter, featureWriter, attributeWriter);
         PsiXmlElementWriter<CvTerm> interactionTypeWriter = new XmlInteractionTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25InferredInteractionWriter(getStreamWriter(), getElementCache());
+        PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter = new XmlInferredInteractionWriter(getStreamWriter(), getElementCache());
 
-        PsiXmlElementWriter<CvTerm> identificationMethodWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ParticipantIdentificationMethodWriter(getStreamWriter(), getElementCache(), aliasWriter, primaryRefWriter, secondaryRefWriter);
+        PsiXmlElementWriter<CvTerm> identificationMethodWriter = new XmlParticipantIdentificationMethodWriter(getStreamWriter(), getElementCache(), aliasWriter, primaryRefWriter, secondaryRefWriter);
         PsiXmlElementWriter<CvTerm> featureDetectionWriter = new XmlFeatureDetectionMethodWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlExperimentWriter experimentWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ExperimentWriter(getStreamWriter(), getElementCache(), aliasWriter,
+        PsiXmlExperimentWriter experimentWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache(), aliasWriter,
                 publicationWriter, primaryRefWriter, secondaryRefWriter,
                 nonExperimentalHostOrganismWriter, detectionMethodWriter,
                 identificationMethodWriter, featureDetectionWriter, confidenceWriter,
                 attributeWriter);
-        PsiXmlParameterWriter parameterWriter = new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ParameterWriter(getStreamWriter(), getElementCache());
+        PsiXmlParameterWriter parameterWriter = new XmlParameterWriter(getStreamWriter(), getElementCache());
         PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter = new XmlModelledFeatureWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
         PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter = new ExpandedXmlNamedModelledParticipantWriter(getStreamWriter(), getElementCache(),
@@ -107,15 +113,15 @@ public class LightExpandedXml25Writer extends AbstractExpandedXml25Writer<Intera
                 bioRoleWriter, modelledFeatureWriter, attributeWriter);
 
         // initialise source
-        setSourceWriter(new Xml25SourceWriter(getStreamWriter(), aliasWriter, publicationWriter,
+        setSourceWriter(new XmlSourceWriter(getStreamWriter(), aliasWriter, publicationWriter,
                 primaryRefWriter, secondaryRefWriter, attributeWriter));
         // initialise interaction
-        setInteractionWriter(new ExpandedXml25BasicInteractionWriter(getStreamWriter(), getElementCache(),
+        setInteractionWriter(new ExpandedXmlBasicInteractionWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
                 participantWriter, inferredInteractionWriter, interactionTypeWriter,
                 attributeWriter, checksumWriter));
         // initialise complex
-        setComplexWriter(new ExpandedXml25ModelledInteractionWriter(getStreamWriter(), getElementCache(),
+        setComplexWriter(new ExpandedXmlModelledInteractionWriter(getStreamWriter(), getElementCache(),
                 aliasWriter, primaryRefWriter, secondaryRefWriter,
                 experimentWriter, modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
                 confidenceWriter, parameterWriter, attributeWriter,

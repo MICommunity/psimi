@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for ExpandedXml25ExperimentalInteractorWriter
+ * Unit tester for ExpandedXmlExperimentalInteractorWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -100,7 +100,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
         interactor.setInteractor(new DefaultProtein("protein test"));
         elementCache.clear();
 
-        ExpandedXml25ExperimentalInteractorWriter writer = new ExpandedXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlExperimentalInteractorWriter writer = new ExpandedXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -115,7 +115,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
         elementCache.extractIdForInteractor(new DefaultProtein("p12346"));
         elementCache.extractIdForInteractor(interactor.getInteractor());
 
-        ExpandedXml25ExperimentalInteractorWriter writer = new ExpandedXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlExperimentalInteractorWriter writer = new ExpandedXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -129,7 +129,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
         interactor.getExperiments().add(new DefaultExperiment(new DefaultPublication()));
         elementCache.clear();
 
-        ExpandedXml25ExperimentalInteractorWriter writer = new ExpandedXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlExperimentalInteractorWriter writer = new ExpandedXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -145,7 +145,7 @@ public class ExpandedXml25ExperimentalInteractorWriterTest extends AbstractXml25
         elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("12345")));
         elementCache.extractIdForExperiment(interactor.getExperiments().iterator().next());
 
-        ExpandedXml25ExperimentalInteractorWriter writer = new ExpandedXml25ExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
+        ExpandedXmlExperimentalInteractorWriter writer = new ExpandedXmlExperimentalInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 

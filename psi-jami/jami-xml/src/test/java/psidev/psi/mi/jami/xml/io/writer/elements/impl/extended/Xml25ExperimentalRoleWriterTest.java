@@ -116,7 +116,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -128,7 +128,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.setFullName("unspecified role");
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -141,7 +141,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -154,7 +154,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.setMODIdentifier(expRole.getMIIdentifier());
         expRole.setMIIdentifier(null);
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -166,7 +166,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.setPARIdentifier(expRole.getMIIdentifier());
         expRole.setMIIdentifier(null);
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -181,7 +181,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -194,7 +194,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -208,7 +208,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         expRole.getExperiments().add(new DefaultExperiment(new DefaultPublication("P123456")));
         this.elementCache.clear();
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
@@ -227,7 +227,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(exp1);
         this.elementCache.extractIdForExperiment(exp2);
 
-        Xml25ExperimentalRoleWriter writer = new Xml25ExperimentalRoleWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter(), this.elementCache);
         writer.write(expRole);
         streamWriter.flush();
 
