@@ -220,10 +220,6 @@ public abstract class AbstractXml25ModelledInteractionWriter<I extends ModelledI
                 writeCooperativeEffectAttribute(CooperativeEffect.AFFECTED_INTERACTION, CooperativeEffect.AFFECTED_INTERACTION_ID, Integer.toString(getObjectIndex().extractIdForInteraction(affected)));
             }
         }
-        // write cooperative value
-        if (effect.getCooperativeEffectValue() != null){
-            writeCooperativeEffectAttribute(CooperativeEffect.COOPERATIVE_EFFECT_VALUE, CooperativeEffect.COOPERATIVE_EFFECT_VALUE_ID, effect.getCooperativeEffectValue().toString());
-        }
     }
 
     @Override

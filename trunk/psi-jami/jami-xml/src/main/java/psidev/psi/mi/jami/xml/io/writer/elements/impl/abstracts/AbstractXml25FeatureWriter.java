@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
@@ -110,13 +111,12 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
                 this.attributeWriter.write((Annotation)ann);
             }
             // write interaction dependency
-            if (object.getInteractionDependency() != null){
-                writeAttribute(object.getInteractionDependency().getShortName(), object.getInteractionDependency().getMIIdentifier(), null);
+            if (object.getRole() != null && AnnotationUtils.collectFirstAnnotationWithTopic(object.getAnnotations(),
+                    object.getRole().getMIIdentifier(),
+                    object.getRole().getShortName()) == null){
+                writeAttribute(object.getRole().getShortName(), object.getRole().getMIIdentifier(), null);
             }
-            // write interaction effect
-            if (object.getInteractionEffect() != null){
-                writeAttribute(object.getInteractionEffect().getShortName(), object.getInteractionEffect().getMIIdentifier(), null);
-            }
+
             // write participant ref
             if (!object.getRanges().isEmpty()){
                 Set<Integer> participantSet = new HashSet<Integer>();
@@ -135,36 +135,10 @@ public abstract class AbstractXml25FeatureWriter<F extends Feature> implements P
             getStreamWriter().writeEndElement();
         }
         // write interaction dependency
-        else if (object.getInteractionDependency() != null){
+        else if (object.getRole() != null){
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
-            writeAttribute(object.getInteractionDependency().getShortName(), object.getInteractionDependency().getMIIdentifier(), null);
-            // write interaction effect
-            if (object.getInteractionEffect() != null){
-                writeAttribute(object.getInteractionEffect().getShortName(), object.getInteractionEffect().getMIIdentifier(), null);
-            }
-            // write participant ref
-            if (!object.getRanges().isEmpty()){
-                Set<Integer> participantSet = new HashSet<Integer>();
-                for (Object obj : object.getRanges()){
-                    Range range = (Range)obj;
-                    if (range.getParticipant() != null){
-                        Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
-                        if (!participantSet.contains(id)){
-                            participantSet.add(id);
-                            writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
-                        }
-                    }
-                }
-            }
-            // write end attributeList
-            getStreamWriter().writeEndElement();
-        }
-        // write interaction effect
-        else if (object.getInteractionEffect() != null){
-            // write start attribute list
-            getStreamWriter().writeStartElement("attributeList");
-            writeAttribute(object.getInteractionEffect().getShortName(), object.getInteractionEffect().getMIIdentifier(), null);
+            writeAttribute(object.getRole().getShortName(), object.getRole().getMIIdentifier(), null);
             // write participant ref
             if (!object.getRanges().isEmpty()){
                 Set<Integer> participantSet = new HashSet<Integer>();

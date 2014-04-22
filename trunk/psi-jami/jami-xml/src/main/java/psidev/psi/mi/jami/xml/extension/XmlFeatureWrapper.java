@@ -87,23 +87,13 @@ public class XmlFeatureWrapper implements ModelledFeature{
     }
 
     @Override
-    public CvTerm getInteractionEffect() {
-        return this.feature.getInteractionEffect();
+    public CvTerm getRole() {
+        return this.feature.getRole();
     }
 
     @Override
-    public void setInteractionEffect(CvTerm effect) {
-        this.feature.setInteractionEffect(effect);
-    }
-
-    @Override
-    public CvTerm getInteractionDependency() {
-        return this.feature.getInteractionDependency();
-    }
-
-    @Override
-    public void setInteractionDependency(CvTerm interactionDependency) {
-        this.feature.setInteractionDependency(interactionDependency);
+    public void setRole(CvTerm effect) {
+        this.feature.setRole(effect);
     }
 
     @Override
