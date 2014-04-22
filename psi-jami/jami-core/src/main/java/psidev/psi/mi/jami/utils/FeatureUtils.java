@@ -118,4 +118,21 @@ public class FeatureUtils {
         }
         return feature;
     }
+
+    /**
+     *
+     * @param annotation
+     * @return true if the annotation is used to describe the role of a feature in an interaction
+     */
+    public static boolean isFeatureRole(Annotation annotation) {
+
+        // we have an intercation dependency
+        return (AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.PREREQUISITE_PTM_MI, Feature.PREREQUISITE_PTM)
+                || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_PTM_MI, Feature.RESULTING_PTM)
+                || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_CLEAVAGE_MI, Feature.RESULTING_CLEAVAGE)
+                || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DECREASING_PTM_MI, Feature.DECREASING_PTM)
+                || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.INCREASING_PTM_MI, Feature.INCREASING_PTM)
+                || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DISRUPTING_PTM_MI, Feature.DISRUPTING_PTM)
+                || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.OBSERVED_PTM, Feature.OBSERVED_PTM_MI));
+    }
 }

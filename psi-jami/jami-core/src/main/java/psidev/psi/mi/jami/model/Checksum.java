@@ -11,24 +11,24 @@ package psidev.psi.mi.jami.model;
 
 public interface Checksum {
 
-    public static String SMILE = "smiles string";
-    public static String SMILE_SHORT = "smile";
-    public static String SMILE_MI = "MI:2039";
-    public static String INCHI = "stamdard inchi";
-    public static String INCHI_SHORT = "inchi id";
-    public static String INCHI_MI = "MI:2010";
-    public static String STANDARD_INCHI_KEY = "standard inchi key";
-    public static String STANDARD_INCHI_KEY_MI = "MI:1101";
-    public static String ROGID = "rogid";
-    public static String ROGID_MI = "MI:1333";
-    public static String RIGID = "rigid";
-    public static String RIGID_MI = "MI:1334";
-    public static String IRIGID = "irigid";
-    public static String IROGID = "irogid";
-    public static String INCHI_KEY = "inchi key";
-    public static String INCHI_KEY_MI = "MI:0970";
-    public static String CHECKUM = "checksum";
-    public static String CHECKSUM_MI = "MI:1212";
+    public static final String SMILE = "smiles string";
+    public static final String SMILE_SHORT = "smile";
+    public static final String SMILE_MI = "MI:2039";
+    public static final String INCHI = "stamdard inchi";
+    public static final String INCHI_SHORT = "inchi id";
+    public static final String INCHI_MI = "MI:2010";
+    public static final String STANDARD_INCHI_KEY = "standard inchi key";
+    public static final String STANDARD_INCHI_KEY_MI = "MI:1101";
+    public static final String ROGID = "rogid";
+    public static final String ROGID_MI = "MI:1333";
+    public static final String RIGID = "rigid";
+    public static final String RIGID_MI = "MI:1334";
+    public static final String IRIGID = "irigid";
+    public static final String IROGID = "irogid";
+    public static final String INCHI_KEY = "inchi key";
+    public static final String INCHI_KEY_MI = "MI:0970";
+    public static final String CHECKUM = "checksum";
+    public static final String CHECKSUM_MI = "MI:1212";
 
     /**
      * The method is a controlled vocabulary term and cannot be null

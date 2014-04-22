@@ -23,7 +23,6 @@ public class CooperativeEffectCloner {
         if (source != null && target != null){
             target.setOutCome(source.getOutCome());
             target.setResponse(source.getResponse());
-            target.setCooperativeEffectValue(source.getCooperativeEffectValue());
 
             // copy collections
             target.getAnnotations().clear();

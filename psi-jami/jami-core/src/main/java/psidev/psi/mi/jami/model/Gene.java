@@ -10,8 +10,8 @@ package psidev.psi.mi.jami.model;
 
 public interface Gene extends Molecule{
 
-    public static String GENE = "gene";
-    public static String GENE_MI = "MI:0250";
+    public static final String GENE = "gene";
+    public static final String GENE_MI = "MI:0250";
 
     /**
      * The unique Ensembl accession which identifies the gene.
