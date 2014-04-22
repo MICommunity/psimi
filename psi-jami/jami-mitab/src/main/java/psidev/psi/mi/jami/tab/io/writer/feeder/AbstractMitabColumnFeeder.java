@@ -2,7 +2,9 @@ package psidev.psi.mi.jami.tab.io.writer.feeder;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.ParameterUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
@@ -392,6 +394,22 @@ public abstract class AbstractMitabColumnFeeder<T extends BinaryInteraction, P e
                         }
                     }
                 }
+
+                // if interactor set, write preferred identifier of each interactor in interactor set
+                if (participant.getInteractor() instanceof InteractorPool){
+                    InteractorPool interactorPool = (InteractorPool)participant.getInteractor();
+                    Iterator<Interactor> interactorIterator = interactorPool.iterator();
+                    while (interactorIterator.hasNext()){
+                        Interactor subInteractor = interactorIterator.next();
+                        Xref preferredId = subInteractor.getPreferredIdentifier();
+                        if (preferredId != null){
+                            getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                            writeXref(new DefaultXref(preferredId.getDatabase(), preferredId.getId(),
+                                    preferredId.getVersion(),
+                                    CvTermUtils.createMICvTerm(Xref.INTERACTOR_SET_QUALIFIER, Xref.INTERACTOR_SET_QUALIFIER_MI)));
+                        }
+                    }
+                }
             }
             // write participant ref only
             else if (!participant.getXrefs().isEmpty()){
@@ -404,7 +422,42 @@ public abstract class AbstractMitabColumnFeeder<T extends BinaryInteraction, P e
                         getWriter().write(MitabUtils.FIELD_SEPARATOR);
                     }
                 }
+
+                // if interactor set, write preferred identifier of each interactor in interactor set
+                if (participant.getInteractor() instanceof InteractorPool){
+                    InteractorPool interactorPool = (InteractorPool)participant.getInteractor();
+                    Iterator<Interactor> interactorIterator = interactorPool.iterator();
+                    while (interactorIterator.hasNext()){
+                        Interactor subInteractor = interactorIterator.next();
+                        Xref preferredId = subInteractor.getPreferredIdentifier();
+                        if (preferredId != null){
+                            getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                            writeXref(new DefaultXref(preferredId.getDatabase(), preferredId.getId(),
+                                    preferredId.getVersion(),
+                                    CvTermUtils.createMICvTerm(Xref.INTERACTOR_SET_QUALIFIER, Xref.INTERACTOR_SET_QUALIFIER_MI)));
+                        }
+                    }
+                }
             }
+            // if interactor set, write preferred identifier of each interactor in interactor set
+            else if (participant.getInteractor() instanceof InteractorPool){
+                    InteractorPool interactorPool = (InteractorPool)participant.getInteractor();
+                    Iterator<Interactor> interactorIterator = interactorPool.iterator();
+                boolean first = true;
+                    while (interactorIterator.hasNext()){
+                        Interactor subInteractor = interactorIterator.next();
+                        Xref preferredId = subInteractor.getPreferredIdentifier();
+                        if (preferredId != null){
+                            if (!first){
+                                getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                            }
+                            writeXref(new DefaultXref(preferredId.getDatabase(), preferredId.getId(),
+                                    preferredId.getVersion(),
+                                    CvTermUtils.createMICvTerm(Xref.INTERACTOR_SET_QUALIFIER, Xref.INTERACTOR_SET_QUALIFIER_MI)));
+                            first = false;
+                        }
+                    }
+                }
             else{
                 getWriter().write(MitabUtils.EMPTY_COLUMN);
             }
