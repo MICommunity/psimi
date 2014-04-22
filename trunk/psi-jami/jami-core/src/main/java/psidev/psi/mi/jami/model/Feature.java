@@ -12,34 +12,36 @@ import java.util.Collection;
 
 public interface Feature<P extends Participant, F extends Feature> {
 
-    public static String BIOLOGICAL_FEATURE = "biological feature";
-    public static String BIOLOGICAL_FEATURE_MI ="MI:0252";
-    public static String EXPERIMENTAL_FEATURE = "experimental feature";
-    public static String EXPERIMENTAL_FEATURE_MI ="MI:0505";
-    public static String MUTATION = "mutation";
-    public static String MUTATION_MI ="MI:0118";
-    public static String ALLOSTERIC_PTM = "allosteric post-translational modification";
-    public static String ALLOSTERIC_PTM_MI ="MI:1175";
-    public static String VARIANT = "variant";
-    public static String VARIANT_MI ="MI:1241";
-    public static String SUFFICIENT_BINDING = "sufficient binding region";
-    public static String SUFFICIENT_BINDING_MI ="MI:0442";
-    public static String DIRECT_BINDING = "direct binding region";
-    public static String DIRECT_BINDING_MI ="MI:1125";
-    public static String PREREQUISITE_PTM = "prerequisite-ptm";
-    public static String PREREQUISITE_PTM_MI ="MI:0638";
-    public static String DECREASING_PTM = "decreasing-ptm";
-    public static String DECREASING_PTM_MI ="MI:1223";
-    public static String DISRUPTING_PTM = "disrupting-ptm";
-    public static String DISRUPTING_PTM_MI ="MI:1225";
-    public static String INCREASING_PTM = "increasing-ptm";
-    public static String INCREASING_PTM_MI ="MI:1224";
-    public static String RESULTING_PTM = "resulting-ptm";
-    public static String RESULTING_PTM_MI ="MI:0639";
-    public static String RESULTING_CLEAVAGE = "resulting-cleavage";
-    public static String RESULTING_CLEAVAGE_MI ="MI:1233";
-    public static String BINDING_SITE = "binding-associated region";
-    public static String BINDING_SITE_MI ="MI:0117";
+    public static final String BIOLOGICAL_FEATURE = "biological feature";
+    public static final String BIOLOGICAL_FEATURE_MI ="MI:0252";
+    public static final String EXPERIMENTAL_FEATURE = "experimental feature";
+    public static final String EXPERIMENTAL_FEATURE_MI ="MI:0505";
+    public static final String MUTATION = "mutation";
+    public static final String MUTATION_MI ="MI:0118";
+    public static final String ALLOSTERIC_PTM = "allosteric post-translational modification";
+    public static final String ALLOSTERIC_PTM_MI ="MI:1175";
+    public static final String VARIANT = "variant";
+    public static final String VARIANT_MI ="MI:1241";
+    public static final String SUFFICIENT_BINDING = "sufficient binding region";
+    public static final String SUFFICIENT_BINDING_MI ="MI:0442";
+    public static final String DIRECT_BINDING = "direct binding region";
+    public static final String DIRECT_BINDING_MI ="MI:1125";
+    public static final String PREREQUISITE_PTM = "prerequisite-ptm";
+    public static final String PREREQUISITE_PTM_MI ="MI:0638";
+    public static final String DECREASING_PTM = "decreasing-ptm";
+    public static final String DECREASING_PTM_MI ="MI:1223";
+    public static final String DISRUPTING_PTM = "disrupting-ptm";
+    public static final String DISRUPTING_PTM_MI ="MI:1225";
+    public static final String INCREASING_PTM = "increasing-ptm";
+    public static final String INCREASING_PTM_MI ="MI:1224";
+    public static final String RESULTING_PTM = "resulting-ptm";
+    public static final String RESULTING_PTM_MI ="MI:0639";
+    public static final String RESULTING_CLEAVAGE = "resulting-cleavage";
+    public static final String RESULTING_CLEAVAGE_MI ="MI:1233";
+    public static final String BINDING_SITE = "binding-associated region";
+    public static final String BINDING_SITE_MI ="MI:0117";
+    public static final String OBSERVED_PTM = "observed ptm";
+    public static final String OBSERVED_PTM_MI ="MI:0925";
 
     /**
      * The short name of a feature.
