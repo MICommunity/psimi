@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.utils.AliasUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.InputStream;
@@ -220,8 +221,15 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
 
         // add checksum
         interactor.getChecksums().addAll(checksum);
-        // add xref
-        interactor.getXrefs().addAll(xref);
+
+        // if we have an interactor set, we can retrieve the components from the xrefs
+        if (interactor instanceof InteractorPool){
+            processInteractorPool(xref, (InteractorPool) interactor);
+        }
+        // add all xrefs
+        else{
+            interactor.getXrefs().addAll(xref);
+        }
         // set organism
         initialiseOrganism(taxid, interactor);
         // if several types fire event
@@ -237,6 +245,33 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         }
 
         return interactor;
+    }
+
+    protected void processInteractorPool(Collection<MitabXref> xref, InteractorPool interactor) {
+        InteractorPool pool = (InteractorPool)interactor;
+        for (Xref ref : xref){
+            // we have a component of the interactor pool
+            if (XrefUtils.doesXrefHaveQualifier(ref, Xref.INTERACTOR_SET_QUALIFIER_MI, Xref.INTERACTOR_SET_QUALIFIER)){
+                Interactor subInteractor = interactorFactory.createInteractorFromDatabase(ref.getDatabase(), ref.getId().toLowerCase());
+                if (subInteractor != null){
+                    subInteractor.getIdentifiers().add(new MitabXref(ref.getDatabase(), ref.getId(), ref.getVersion(), CvTermUtils.createIdentityQualifier()));
+                    ((MitabInteractor)subInteractor).setSourceLocator(((MitabXref)ref).getSourceLocator());
+                }
+                // create a default interactor
+                else{
+                    subInteractor = interactorFactory.createInteractor(ref.getId().toLowerCase(), CvTermUtils.createUnknownInteractorType());
+                    subInteractor.getIdentifiers().add(new MitabXref(ref.getDatabase(), ref.getId(), ref.getVersion(), CvTermUtils.createIdentityQualifier()));
+                    ((MitabInteractor)subInteractor).setSourceLocator(((MitabXref)ref).getSourceLocator());
+                }
+
+                // add the component to the interactor pool
+                pool.add(subInteractor);
+            }
+            // we have a simple xref
+            else{
+                pool.getXrefs().add(ref);
+            }
+        }
     }
 
     protected String[] findInteractorShortNameAndFullNameFrom(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, int line, int column, int mitabColumn){
