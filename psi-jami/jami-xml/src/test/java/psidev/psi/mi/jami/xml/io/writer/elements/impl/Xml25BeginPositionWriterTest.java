@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25BeginPositionWriter
+ * Unit tester for XmlBeginPositionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -48,7 +48,7 @@ public class Xml25BeginPositionWriterTest extends AbstractXml25WriterTest{
     public void test_write_begin_position() throws XMLStreamException, IOException {
         Position pos = PositionUtils.createCertainPosition(1);
 
-        Xml25BeginPositionWriter writer = new Xml25BeginPositionWriter(createStreamWriter());
+        XmlBeginPositionWriter writer = new XmlBeginPositionWriter(createStreamWriter());
         writer.write(pos);
         streamWriter.flush();
 
@@ -59,7 +59,7 @@ public class Xml25BeginPositionWriterTest extends AbstractXml25WriterTest{
     public void test_write_begin_interval() throws XMLStreamException, IOException {
         Position pos = PositionUtils.createFuzzyPosition(1, 4);
 
-        Xml25BeginPositionWriter writer = new Xml25BeginPositionWriter(createStreamWriter());
+        XmlBeginPositionWriter writer = new XmlBeginPositionWriter(createStreamWriter());
         writer.write(pos);
         streamWriter.flush();
 
@@ -70,7 +70,7 @@ public class Xml25BeginPositionWriterTest extends AbstractXml25WriterTest{
     public void test_write_begin_undetermined() throws XMLStreamException, IOException {
         Position pos = PositionUtils.createUndeterminedPosition();
 
-        Xml25BeginPositionWriter writer = new Xml25BeginPositionWriter(createStreamWriter());
+        XmlBeginPositionWriter writer = new XmlBeginPositionWriter(createStreamWriter());
         writer.write(pos);
         streamWriter.flush();
 

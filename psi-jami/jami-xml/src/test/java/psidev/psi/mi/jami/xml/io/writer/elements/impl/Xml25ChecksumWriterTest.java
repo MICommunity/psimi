@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25ChecksumWriter
+ * Unit tester for XmlChecksumWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,7 +24,7 @@ public class Xml25ChecksumWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_checksum_null() throws XMLStreamException, IOException {
 
-        Xml25ChecksumWriter writer = new Xml25ChecksumWriter(createStreamWriter());
+        XmlChecksumWriter writer = new XmlChecksumWriter(createStreamWriter());
         writer.write(null);
         streamWriter.flush();
 
@@ -35,7 +35,7 @@ public class Xml25ChecksumWriterTest extends AbstractXml25WriterTest {
     public void test_write_checksum_no_topic_ac() throws XMLStreamException, IOException {
         Checksum annot = new DefaultChecksum(new DefaultCvTerm("rogid"), "xxxxxxxxx1");
 
-        Xml25ChecksumWriter writer = new Xml25ChecksumWriter(createStreamWriter());
+        XmlChecksumWriter writer = new XmlChecksumWriter(createStreamWriter());
         writer.write(annot);
         streamWriter.flush();
 
@@ -46,7 +46,7 @@ public class Xml25ChecksumWriterTest extends AbstractXml25WriterTest {
     public void test_write_checksum() throws XMLStreamException, IOException {
         Checksum annot = new DefaultChecksum(new DefaultCvTerm("rogid", "MI:xxxx"), "xxxxxxxxx1");
 
-        Xml25ChecksumWriter writer = new Xml25ChecksumWriter(createStreamWriter());
+        XmlChecksumWriter writer = new XmlChecksumWriter(createStreamWriter());
         writer.write(annot);
         streamWriter.flush();
 

@@ -1,15 +1,15 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25ParticipantEvidence;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantEvidenceWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25ParticipantEvidence;
+import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlParticipantEvidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -22,24 +22,24 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public class ExpandedXml25ParticipantEvidenceWriter extends AbstractXml25ParticipantEvidenceWriter implements ExpandedPsiXml25ElementWriter<ParticipantEvidence> {
-    private ExpandedPsiXml25ElementWriter<ExperimentalInteractor> experimentalInteractorWriter;
+public class ExpandedXml25ParticipantEvidenceWriter extends AbstractXmlParticipantEvidenceWriter implements ExpandedPsiXmlElementWriter<ParticipantEvidence> {
+    private ExpandedPsiXmlElementWriter<ExperimentalInteractor> experimentalInteractorWriter;
 
-    public ExpandedXml25ParticipantEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
-        super(writer, objectIndex, new Xml25FeatureEvidenceWriter(writer, objectIndex));
+    public ExpandedXml25ParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+        super(writer, objectIndex, new XmlFeatureEvidenceWriter(writer, objectIndex));
         this.experimentalInteractorWriter = new ExpandedXml25ExperimentalInteractorWriter(writer, objectIndex);
     }
 
-    public ExpandedXml25ParticipantEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                                  PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                                  PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<Interactor> interactorWriter,
-                                                  PsiXml25ElementWriter identificationMethodWriter, PsiXml25ElementWriter<CvTerm> biologicalRoleWriter,
-                                                  PsiXml25ElementWriter experimentalRoleWriter, PsiXml25ElementWriter experimentalPreparationWriter,
-                                                  ExpandedPsiXml25ElementWriter<ExperimentalInteractor> experimentalInteractorWriter, PsiXml25ElementWriter<FeatureEvidence> featureWriter,
-                                                  PsiXml25ElementWriter<Organism> hostOrganismWriter,
-                                                  PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ParameterWriter parameterWriter,PsiXml25ElementWriter<Annotation> attributeWriter) {
+    public ExpandedXml25ParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                                  PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
+                                                  PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Interactor> interactorWriter,
+                                                  PsiXmlElementWriter identificationMethodWriter, PsiXmlElementWriter<CvTerm> biologicalRoleWriter,
+                                                  PsiXmlElementWriter experimentalRoleWriter, PsiXmlElementWriter experimentalPreparationWriter,
+                                                  ExpandedPsiXmlElementWriter<ExperimentalInteractor> experimentalInteractorWriter, PsiXmlElementWriter<FeatureEvidence> featureWriter,
+                                                  PsiXmlElementWriter<Organism> hostOrganismWriter,
+                                                  PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlParameterWriter parameterWriter,PsiXmlElementWriter<Annotation> attributeWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, identificationMethodWriter, biologicalRoleWriter, experimentalRoleWriter, experimentalPreparationWriter,
-                featureWriter != null ? featureWriter : new Xml25FeatureEvidenceWriter(writer, objectIndex),
+                featureWriter != null ? featureWriter : new XmlFeatureEvidenceWriter(writer, objectIndex),
                 hostOrganismWriter, parameterWriter, confidenceWriter, attributeWriter);
         this.experimentalInteractorWriter = experimentalInteractorWriter != null ? experimentalInteractorWriter : new ExpandedXml25ExperimentalInteractorWriter(writer, objectIndex);
 

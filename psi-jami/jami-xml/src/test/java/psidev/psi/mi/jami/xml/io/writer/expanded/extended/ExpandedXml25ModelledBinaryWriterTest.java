@@ -9,11 +9,11 @@ import psidev.psi.mi.jami.model.Preassembly;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.DefaultPreassemby;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.extension.XmlComplex;
-import psidev.psi.mi.jami.xml.extension.XmlModelledParticipant;
-import psidev.psi.mi.jami.xml.extension.XmlProtein;
-import psidev.psi.mi.jami.xml.extension.XmlSource;
-import psidev.psi.mi.jami.xml.extension.binary.XmlModelledBinaryInteraction;
+import psidev.psi.mi.jami.xml.model.extension.XmlComplex;
+import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
+import psidev.psi.mi.jami.xml.model.extension.XmlProtein;
+import psidev.psi.mi.jami.xml.model.extension.XmlSource;
+import psidev.psi.mi.jami.xml.model.extension.binary.XmlModelledBinaryInteraction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25AliasWriter
+ * Unit tester for XmlAliasWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -26,7 +26,7 @@ public class Xml25AliasWriterTest extends AbstractXml25WriterTest{
     @Test
     public void test_write_alias_null() throws XMLStreamException, IOException {
 
-        Xml25AliasWriter writer = new Xml25AliasWriter(createStreamWriter());
+        XmlAliasWriter writer = new XmlAliasWriter(createStreamWriter());
         writer.write(null);
         streamWriter.flush();
 
@@ -37,7 +37,7 @@ public class Xml25AliasWriterTest extends AbstractXml25WriterTest{
     public void test_write_alias_no_type() throws XMLStreamException, IOException {
         Alias alias = new DefaultAlias("BRCA2");
 
-        Xml25AliasWriter writer = new Xml25AliasWriter(createStreamWriter());
+        XmlAliasWriter writer = new XmlAliasWriter(createStreamWriter());
         writer.write(alias);
         streamWriter.flush();
 
@@ -48,7 +48,7 @@ public class Xml25AliasWriterTest extends AbstractXml25WriterTest{
     public void test_write_alias_no_type_id() throws XMLStreamException, IOException {
         Alias alias = new DefaultAlias(new DefaultCvTerm("gene name"), "BRCA2");
 
-        Xml25AliasWriter writer = new Xml25AliasWriter(createStreamWriter());
+        XmlAliasWriter writer = new XmlAliasWriter(createStreamWriter());
         writer.write(alias);
         streamWriter.flush();
 
@@ -59,7 +59,7 @@ public class Xml25AliasWriterTest extends AbstractXml25WriterTest{
     public void test_write_alias_with_type() throws XMLStreamException, IOException {
         Alias alias = new DefaultAlias(CvTermUtils.createGeneNameAliasType(), "BRCA2");
 
-        Xml25AliasWriter writer = new Xml25AliasWriter(createStreamWriter());
+        XmlAliasWriter writer = new XmlAliasWriter(createStreamWriter());
         writer.write(alias);
         streamWriter.flush();
 

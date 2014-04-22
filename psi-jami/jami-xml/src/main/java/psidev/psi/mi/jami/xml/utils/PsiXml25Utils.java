@@ -3,10 +3,10 @@ package psidev.psi.mi.jami.xml.utils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.xml.extension.PsiXmLocator;
-import psidev.psi.mi.jami.xml.extension.XmlAllostery;
-import psidev.psi.mi.jami.xml.extension.XmlCooperativityEvidence;
-import psidev.psi.mi.jami.xml.extension.XmlPreAssembly;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.XmlAllostery;
+import psidev.psi.mi.jami.xml.model.extension.XmlCooperativityEvidence;
+import psidev.psi.mi.jami.xml.model.extension.XmlPreAssembly;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import java.text.DateFormat;

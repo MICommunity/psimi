@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25ConfidenceWriter
+ * Unit tester for XmlConfidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -35,7 +35,7 @@ public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_confidence_null() throws XMLStreamException, IOException {
 
-        Xml25ConfidenceWriter writer = new Xml25ConfidenceWriter(createStreamWriter());
+        XmlConfidenceWriter writer = new XmlConfidenceWriter(createStreamWriter());
         writer.write(null);
         streamWriter.flush();
 
@@ -48,7 +48,7 @@ public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
         conf.getType().getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         conf.getType().getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
 
-        Xml25ConfidenceWriter writer = new Xml25ConfidenceWriter(createStreamWriter());
+        XmlConfidenceWriter writer = new XmlConfidenceWriter(createStreamWriter());
         writer.write(conf);
         streamWriter.flush();
 

@@ -8,9 +8,8 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.extension.*;
-import psidev.psi.mi.jami.xml.extension.binary.XmlBinaryInteractionEvidence;
-import psidev.psi.mi.jami.xml.extension.binary.XmlModelledBinaryInteraction;
+import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.binary.XmlModelledBinaryInteraction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

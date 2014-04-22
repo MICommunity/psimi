@@ -10,11 +10,11 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
-import psidev.psi.mi.jami.xml.Xml25EntryContext;
-import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.reference.XmlIdReference;
+import psidev.psi.mi.jami.xml.model.reference.XmlIdReference;
 import psidev.psi.mi.jami.xml.utils.PsiXmlDataSourceOptions;
 
 import java.io.*;
@@ -50,7 +50,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
     private Reader originalReader;
 
     private Boolean isValid = null;
-    private PsiXml25IdCache elementCache;
+    private PsiXmlIdCache elementCache;
 
     public static final String VALIDATION_FEATURE = "http://xml.org/sax/features/validation";
     public static final String SCHEMA_FEATURE = "http://apache.org/xml/features/validation/schema";
@@ -252,7 +252,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         }
 
         if (options.containsKey(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION)){
-            this.elementCache = (PsiXml25IdCache)options.get(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION);
+            this.elementCache = (PsiXmlIdCache)options.get(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION);
         }
 
         // initialise parser after reading all options
@@ -539,8 +539,8 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
             this.elementCache.clear();
         }
         // release the thread local
-        Xml25EntryContext.getInstance().clear();
-        Xml25EntryContext.remove();
+        XmlEntryContext.getInstance().clear();
+        XmlEntryContext.remove();
         // release the thread local
         if (this.originalFile != null){
             // close the previous reader
@@ -626,7 +626,7 @@ public abstract class AbstractPsiXml25Stream<T extends Interaction> implements M
         return isInitialised;
     }
 
-    protected PsiXml25IdCache getElementCache() {
+    protected PsiXmlIdCache getElementCache() {
         return elementCache;
     }
 

@@ -2,10 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.extension.InferredInteractionParticipant;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteractionParticipant;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -18,17 +18,17 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25InferredInteractionWriter implements PsiXml25ElementWriter<InferredInteraction> {
+public class Xml25InferredInteractionWriter implements PsiXmlElementWriter<InferredInteraction> {
     private XMLStreamWriter streamWriter;
-    private PsiXml25ObjectCache objectIndex;
+    private PsiXmlObjectCache objectIndex;
 
-    public Xml25InferredInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
+    public Xml25InferredInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25InferredInteractionWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlInferredInteractionWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25InferredInteractionWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlInferredInteractionWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.listener.impl.MIFileParserLogger;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.xml.reference.XmlIdReference;
+import psidev.psi.mi.jami.xml.model.reference.XmlIdReference;
 
 import java.util.Collection;
 import java.util.logging.Level;

@@ -4,10 +4,10 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.XmlConfidence;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ConfidenceTypeWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.XmlConfidence;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceTypeWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -22,34 +22,34 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>12/11/13</pre>
  */
 
-public class Xml25ConfidenceWriter implements PsiXml25ElementWriter<Confidence> {
+public class Xml25ConfidenceWriter implements PsiXmlElementWriter<Confidence> {
     private XMLStreamWriter streamWriter;
-    private PsiXml25ElementWriter<CvTerm> typeWriter;
-    private PsiXml25ObjectCache objectIndex;
+    private PsiXmlElementWriter<CvTerm> typeWriter;
+    private PsiXmlObjectCache objectIndex;
 
-    public Xml25ConfidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
+    public Xml25ConfidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ConfidenceWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlConfidenceWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ConfidenceWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlConfidenceWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        this.typeWriter = new Xml25ConfidenceTypeWriter(writer);
+        this.typeWriter = new XmlConfidenceTypeWriter(writer);
     }
 
-    public Xml25ConfidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                 PsiXml25ElementWriter<CvTerm> typeWriter){
+    public Xml25ConfidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                 PsiXmlElementWriter<CvTerm> typeWriter){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ConfidenceWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlConfidenceWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ConfidenceWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlConfidenceWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        this.typeWriter = typeWriter != null ? typeWriter : new Xml25ConfidenceTypeWriter(writer);
+        this.typeWriter = typeWriter != null ? typeWriter : new XmlConfidenceTypeWriter(writer);
     }
 
     @Override

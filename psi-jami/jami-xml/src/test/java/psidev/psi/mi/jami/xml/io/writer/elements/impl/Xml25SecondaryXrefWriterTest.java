@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25SecondaryXrefWriter
+ * Unit tester for XmlSecondaryXrefWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -28,7 +28,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_xref_null() throws XMLStreamException, IOException {
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.write(null);
         streamWriter.flush();
 
@@ -39,7 +39,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_do_database_ac() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB), "P12345", CvTermUtils.createIdentityQualifier());
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -50,7 +50,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_no_reftype() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345");
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -61,7 +61,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_no_reftype_ac() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", new DefaultCvTerm(Xref.IDENTITY));
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -72,7 +72,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -83,7 +83,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_version() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", "2.4", CvTermUtils.createIdentityQualifier());
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.write(ref);
         streamWriter.flush();
 
@@ -94,7 +94,7 @@ public class Xml25SecondaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_default_qualifier() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345");
 
-        Xml25SecondaryXrefWriter writer = new Xml25SecondaryXrefWriter(createStreamWriter());
+        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(createStreamWriter());
         writer.setDefaultRefType("identity");
         writer.setDefaultRefTypeAc("MI:0356");
         writer.write(ref);

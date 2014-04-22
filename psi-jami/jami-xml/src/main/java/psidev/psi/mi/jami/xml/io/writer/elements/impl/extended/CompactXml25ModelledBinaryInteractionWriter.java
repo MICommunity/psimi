@@ -2,10 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXml25ModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlModelledParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -20,21 +20,21 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>15/11/13</pre>
  */
 
-public class CompactXml25ModelledBinaryInteractionWriter extends AbstractXml25ModelledInteractionWriter<ModelledBinaryInteraction, ModelledParticipant> implements CompactPsiXml25ElementWriter<ModelledBinaryInteraction> {
+public class CompactXml25ModelledBinaryInteractionWriter extends AbstractXml25ModelledInteractionWriter<ModelledBinaryInteraction, ModelledParticipant> implements CompactPsiXmlElementWriter<ModelledBinaryInteraction> {
 
-    public CompactXml25ModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
-        super(writer, objectIndex, new CompactXml25ModelledParticipantWriter(writer, objectIndex));
+    public CompactXml25ModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+        super(writer, objectIndex, new CompactXmlModelledParticipantWriter(writer, objectIndex));
     }
 
-    public CompactXml25ModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                                       PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                                       PsiXml25XrefWriter secondaryRefWriter, PsiXml25ExperimentWriter experimentWriter,
-                                                       PsiXml25ParticipantWriter<ModelledParticipant> participantWriter, PsiXml25ElementWriter<InferredInteraction> inferredInteractionWriter,
-                                                       PsiXml25ElementWriter<CvTerm> interactionTypeWriter, PsiXml25ElementWriter<Confidence> confidenceWriter,
-                                                       PsiXml25ParameterWriter parameterWriter, PsiXml25ElementWriter<Annotation> attributeWriter,
-                                                       PsiXml25ElementWriter<Checksum> checksumWriter) {
+    public CompactXml25ModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                                       PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
+                                                       PsiXmlXrefWriter secondaryRefWriter, PsiXmlExperimentWriter experimentWriter,
+                                                       PsiXmlParticipantWriter<ModelledParticipant> participantWriter, PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter,
+                                                       PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                       PsiXmlParameterWriter parameterWriter, PsiXmlElementWriter<Annotation> attributeWriter,
+                                                       PsiXmlElementWriter<Checksum> checksumWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new CompactXml25ModelledParticipantWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
+                participantWriter != null ? participantWriter : new CompactXmlModelledParticipantWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
     }
 
     @Override

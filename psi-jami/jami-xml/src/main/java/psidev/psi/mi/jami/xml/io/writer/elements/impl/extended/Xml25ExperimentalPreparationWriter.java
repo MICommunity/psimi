@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ExperimentalCvTermWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlExperimentalCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -17,14 +17,14 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25ExperimentalPreparationWriter extends AbstractXml25ExperimentalCvTermWriter {
-    public Xml25ExperimentalPreparationWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
+public class Xml25ExperimentalPreparationWriter extends AbstractXmlExperimentalCvTermWriter {
+    public Xml25ExperimentalPreparationWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
-    public Xml25ExperimentalPreparationWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                              PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                              PsiXml25XrefWriter secondaryRefWriter) {
+    public Xml25ExperimentalPreparationWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                              PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
+                                              PsiXmlXrefWriter secondaryRefWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 

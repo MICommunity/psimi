@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25ConfidenceTypeWriter
+ * Unit tester for XmlConfidenceTypeWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -76,7 +76,7 @@ public class Xml25ConfidenceTypeWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm type = new DefaultCvTerm("molar");
 
-        Xml25ConfidenceTypeWriter writer = new Xml25ConfidenceTypeWriter(createStreamWriter());
+        XmlConfidenceTypeWriter writer = new XmlConfidenceTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -88,7 +88,7 @@ public class Xml25ConfidenceTypeWriterTest extends AbstractXml25WriterTest {
         CvTerm type = new DefaultCvTerm("molar");
         type.setFullName("molar");
 
-        Xml25ConfidenceTypeWriter writer = new Xml25ConfidenceTypeWriter(createStreamWriter());
+        XmlConfidenceTypeWriter writer = new XmlConfidenceTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -101,7 +101,7 @@ public class Xml25ConfidenceTypeWriterTest extends AbstractXml25WriterTest {
         type.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         type.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25ConfidenceTypeWriter writer = new Xml25ConfidenceTypeWriter(createStreamWriter());
+        XmlConfidenceTypeWriter writer = new XmlConfidenceTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -115,7 +115,7 @@ public class Xml25ConfidenceTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ConfidenceTypeWriter writer = new Xml25ConfidenceTypeWriter(createStreamWriter());
+        XmlConfidenceTypeWriter writer = new XmlConfidenceTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -128,7 +128,7 @@ public class Xml25ConfidenceTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25ConfidenceTypeWriter writer = new Xml25ConfidenceTypeWriter(createStreamWriter());
+        XmlConfidenceTypeWriter writer = new XmlConfidenceTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -142,7 +142,7 @@ public class Xml25ConfidenceTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
         type.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         type.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
-        Xml25ConfidenceTypeWriter writer = new Xml25ConfidenceTypeWriter(createStreamWriter());
+        XmlConfidenceTypeWriter writer = new XmlConfidenceTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 

@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25InteractorWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ExperimentalInteractorWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
+import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlInteractorWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlExperimentalInteractorWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -19,18 +19,18 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public class ExpandedXml25ExperimentalInteractorWriter extends AbstractXml25ExperimentalInteractorWriter implements ExpandedPsiXml25ElementWriter<ExperimentalInteractor> {
-    private PsiXml25ElementWriter<Interactor> interactorWriter;
+public class ExpandedXml25ExperimentalInteractorWriter extends AbstractXmlExperimentalInteractorWriter implements ExpandedPsiXmlElementWriter<ExperimentalInteractor> {
+    private PsiXmlElementWriter<Interactor> interactorWriter;
 
-    public ExpandedXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
+    public ExpandedXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-        this.interactorWriter = new Xml25InteractorWriter(writer, objectIndex);
+        this.interactorWriter = new XmlInteractorWriter(writer, objectIndex);
     }
 
-    public ExpandedXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                                     PsiXml25ElementWriter<Interactor> interactorWriter) {
+    public ExpandedXml25ExperimentalInteractorWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                                     PsiXmlElementWriter<Interactor> interactorWriter) {
         super(writer, objectIndex);
-        this.interactorWriter = interactorWriter != null ? interactorWriter : new Xml25InteractorWriter(writer, objectIndex);
+        this.interactorWriter = interactorWriter != null ? interactorWriter : new XmlInteractorWriter(writer, objectIndex);
     }
 
     @Override

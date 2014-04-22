@@ -2,14 +2,14 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25AvailabilityWriter
+ * Unit tester for XmlAvailabilityWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,14 +19,14 @@ import java.io.IOException;
 public class Xml25AvailabilityWriterTest extends AbstractXml25WriterTest{
     private String availability ="<availability id=\"1\">copyright</availability>";
     private String availability2 ="<availability id=\"2\">copyright</availability>";
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_availability_not_in_cache() throws XMLStreamException, IOException {
         String availability = "copyright";
         this.elementCache.clear();
 
-        Xml25AvailabilityWriter writer = new Xml25AvailabilityWriter(createStreamWriter(), this.elementCache);
+        XmlAvailabilityWriter writer = new XmlAvailabilityWriter(createStreamWriter(), this.elementCache);
         writer.write(availability);
         streamWriter.flush();
 
@@ -41,7 +41,7 @@ public class Xml25AvailabilityWriterTest extends AbstractXml25WriterTest{
         Assert.assertEquals(1, this.elementCache.extractIdForAvailability("first copyright"));
         Assert.assertEquals(2, this.elementCache.extractIdForAvailability(availability));
 
-        Xml25AvailabilityWriter writer = new Xml25AvailabilityWriter(createStreamWriter(), this.elementCache);
+        XmlAvailabilityWriter writer = new XmlAvailabilityWriter(createStreamWriter(), this.elementCache);
         writer.write(availability);
         streamWriter.flush();
 

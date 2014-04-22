@@ -1,14 +1,14 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Experiment;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25PublicationWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureDetectionMethodWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25NamedExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParticipantIdentificationMethodWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureDetectionMethodWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlNamedExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlParticipantIdentificationMethodWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -23,26 +23,26 @@ import java.util.List;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25ExperimentWriter extends Xml25NamedExperimentWriter {
-    private PsiXml25ElementWriter<CvTerm> participantIdentificationMethodWriter;
-    private PsiXml25ElementWriter<CvTerm> featureDetectionMethodWriter;
+public class Xml25ExperimentWriter extends XmlNamedExperimentWriter {
+    private PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter;
+    private PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter;
 
-    public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
+    public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-        this.participantIdentificationMethodWriter = new Xml25ParticipantIdentificationMethodWriter(writer);
-        this.featureDetectionMethodWriter = new Xml25FeatureDetectionMethodWriter(writer);
+        this.participantIdentificationMethodWriter = new XmlParticipantIdentificationMethodWriter(writer);
+        this.featureDetectionMethodWriter = new XmlFeatureDetectionMethodWriter(writer);
     }
 
-    public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                 PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25PublicationWriter publicationWriter,
-                                 PsiXml25XrefWriter primaryRefWriter, PsiXml25XrefWriter secondaryRefWriter,
-                                 PsiXml25ElementWriter<Organism> hostOrganismWriter, PsiXml25ElementWriter<CvTerm> detectionMethodWriter,
-                                 PsiXml25ElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXml25ElementWriter<CvTerm> featureDetectionMethodWriter,
-                                 PsiXml25ElementWriter<Confidence> confidenceWriter, PsiXml25ElementWriter<Annotation> attributeWriter) {
+    public Xml25ExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                 PsiXmlElementWriter<Alias> aliasWriter, PsiXmlPublicationWriter publicationWriter,
+                                 PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                 PsiXmlElementWriter<Organism> hostOrganismWriter, PsiXmlElementWriter<CvTerm> detectionMethodWriter,
+                                 PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter,
+                                 PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
         super(writer, objectIndex, aliasWriter, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter,
                 detectionMethodWriter, confidenceWriter, attributeWriter);
-        this.participantIdentificationMethodWriter = participantIdentificationMethodWriter != null ? participantIdentificationMethodWriter : new Xml25ParticipantIdentificationMethodWriter(writer);
-        this.featureDetectionMethodWriter = featureDetectionMethodWriter != null ? featureDetectionMethodWriter : new Xml25FeatureDetectionMethodWriter(writer);
+        this.participantIdentificationMethodWriter = participantIdentificationMethodWriter != null ? participantIdentificationMethodWriter : new XmlParticipantIdentificationMethodWriter(writer);
+        this.featureDetectionMethodWriter = featureDetectionMethodWriter != null ? featureDetectionMethodWriter : new XmlFeatureDetectionMethodWriter(writer);
     }
 
     @Override

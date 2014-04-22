@@ -5,9 +5,9 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.extension.factory.XmlBinaryInteractionFactory;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlBinaryInteractionFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public abstract class AbstractPsixml25BinaryParser<T extends Interaction<? exten
         }
     }
 
-    public void setCacheOfObjects(PsiXml25IdCache indexOfObjects) {
+    public void setCacheOfObjects(PsiXmlIdCache indexOfObjects) {
         this.delegateParser.setCacheOfObjects(indexOfObjects);
     }
 

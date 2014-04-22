@@ -84,7 +84,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
     public void test_write_range() throws XMLStreamException, IOException, IllegalRangeException {
         Range range = RangeUtils.createRangeFromString("1-4");
 
-        Xml25RangeWriter writer = new Xml25RangeWriter(createStreamWriter());
+        XmlRangeWriter writer = new XmlRangeWriter(createStreamWriter());
         writer.write(range);
         streamWriter.flush();
 
@@ -95,7 +95,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
     public void test_write_range_interval() throws XMLStreamException, IOException, IllegalRangeException {
         Range range = RangeUtils.createRangeFromString("1..2-4..5");
 
-        Xml25RangeWriter writer = new Xml25RangeWriter(createStreamWriter());
+        XmlRangeWriter writer = new XmlRangeWriter(createStreamWriter());
         writer.write(range);
         streamWriter.flush();
 
@@ -106,7 +106,7 @@ public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
     public void test_write_range_mix() throws XMLStreamException, IOException, IllegalRangeException {
         Range range = RangeUtils.createRangeFromString("1..2-4", true);
 
-        Xml25RangeWriter writer = new Xml25RangeWriter(createStreamWriter());
+        XmlRangeWriter writer = new XmlRangeWriter(createStreamWriter());
         writer.write(range);
         streamWriter.flush();
 

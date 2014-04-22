@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Unit tester for Xml25SourceWriter
+ * Unit tester for XmlSourceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -86,7 +86,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
     public void test_write_source() throws XMLStreamException, IOException {
         Source source = new DefaultSource("intact");
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -106,7 +106,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         Source source = new DefaultSource("intact");
         source.setFullName("IntAct");
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -127,7 +127,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"),"intact synonym"));
         source.getSynonyms().add(new DefaultAlias("test alias"));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -147,7 +147,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         Source source = new DefaultSource("intact");
         source.setPublication(new DefaultPublication("xxxxxx"));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -168,7 +168,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"xxxxxx"));
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -189,7 +189,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"),"xxxxxx"));
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -211,7 +211,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.setPostalAddress("test address");
         source.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -230,7 +230,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
     public void test_write_source_no_release() throws XMLStreamException, IOException {
         Source source = new DefaultSource("intact");
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 

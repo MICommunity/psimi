@@ -6,16 +6,16 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExperimentalCvTerm;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25ExperimentalRoleWriter
+ * Unit tester for XmlExperimentalRoleWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -110,7 +110,7 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
             "    <experimentRef>3</experimentRef>\n"+
             "  </experimentRefList>\n"+
             "</experimentalRole>";
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {

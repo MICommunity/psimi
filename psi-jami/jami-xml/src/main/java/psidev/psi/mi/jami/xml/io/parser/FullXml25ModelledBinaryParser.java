@@ -4,8 +4,8 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.ModelledInteractionSpokeExpansion;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.xml.AbstractEntry;
-import psidev.psi.mi.jami.xml.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.model.AbstractEntry;
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 
 import javax.xml.bind.JAXBException;

@@ -6,14 +6,14 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25InteractorWriter
+ * Unit tester for XmlInteractorWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -164,14 +164,14 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
-    private PsiXml25ObjectCache elementCache = new InMemoryIdentityObjectCache();
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_interactor() throws XMLStreamException, IOException {
         Interactor interactor = new DefaultProtein("protein test");
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -184,7 +184,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         interactor.setFullName("protein full name");
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -199,7 +199,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -213,7 +213,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         interactor.getIdentifiers().add(new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P22216", new DefaultCvTerm(Xref.IDENTITY, Xref.IDENTITY_MI)));
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -227,7 +227,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         interactor.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "P22216"));
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -240,7 +240,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         interactor.setOrganism(new DefaultOrganism(9606, "human"));
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -253,7 +253,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         interactor.setSequence("AAGGLLA");
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -267,7 +267,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         interactor.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 
@@ -281,7 +281,7 @@ public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
         elementCache.extractIdForInteractor(new DefaultInteractor("test interactor"));
         elementCache.extractIdForInteractor(interactor);
 
-        Xml25InteractorWriter writer = new Xml25InteractorWriter(createStreamWriter(), this.elementCache);
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
         writer.write(interactor);
         streamWriter.flush();
 

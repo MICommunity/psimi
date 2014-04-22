@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25FeatureEvidence;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25XrefWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25FeatureEvidence;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -17,16 +18,16 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25FeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter {
-    public Xml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex) {
+public class Xml25FeatureEvidenceWriter extends XmlFeatureEvidenceWriter {
+    public Xml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
-    public Xml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex,
-                                      PsiXml25ElementWriter<Alias> aliasWriter, PsiXml25XrefWriter primaryRefWriter,
-                                      PsiXml25XrefWriter secondaryRefWriter, PsiXml25ElementWriter<CvTerm> featureTypeWriter,
-                                      PsiXml25ElementWriter<CvTerm> detectionMethodWriter, PsiXml25ElementWriter<Range> rangeWriter,
-                                      PsiXml25ElementWriter<Annotation> attributeWriter) {
+    public Xml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
+                                      PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
+                                      PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<CvTerm> featureTypeWriter,
+                                      PsiXmlElementWriter<CvTerm> detectionMethodWriter, PsiXmlElementWriter<Range> rangeWriter,
+                                      PsiXmlElementWriter<Annotation> attributeWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, detectionMethodWriter, rangeWriter, attributeWriter);
     }
 

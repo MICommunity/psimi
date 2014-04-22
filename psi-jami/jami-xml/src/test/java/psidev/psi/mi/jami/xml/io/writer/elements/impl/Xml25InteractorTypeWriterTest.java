@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25InteractorTypeWriter
+ * Unit tester for XmlInteractorTypeWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -87,7 +87,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm type = new DefaultCvTerm("inferred", "MI:0362");
 
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -99,7 +99,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
         CvTerm type = new DefaultCvTerm("inferred", "MI:0362");
         type.setFullName("inference");
 
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -112,7 +112,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
         type.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         type.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -125,7 +125,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
         type.setMODIdentifier(type.getMIIdentifier());
         type.setMIIdentifier(null);
 
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -137,7 +137,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
         CvTerm type = new DefaultCvTerm("inferred", "MI:0362");
         type.setPARIdentifier(type.getMIIdentifier());
         type.setMIIdentifier(null);
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -152,7 +152,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 
@@ -165,7 +165,7 @@ public class Xml25InteractorTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        Xml25InteractorTypeWriter writer = new Xml25InteractorTypeWriter(createStreamWriter());
+        XmlInteractorTypeWriter writer = new XmlInteractorTypeWriter(createStreamWriter());
         writer.write(type);
         streamWriter.flush();
 

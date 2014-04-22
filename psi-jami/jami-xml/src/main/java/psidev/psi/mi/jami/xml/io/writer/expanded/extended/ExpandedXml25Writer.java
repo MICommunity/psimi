@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.xml.extension.XmlSource;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExtendedInteractionWriter;
+import psidev.psi.mi.jami.xml.model.extension.XmlSource;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXml25MixWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -56,7 +56,7 @@ public class ExpandedXml25Writer extends AbstractExpandedXml25MixWriter<Interact
         // write interaction
         super.writeInteraction();
         // remove experiments
-        for (Object exp : ((PsiXml25ExtendedInteractionWriter)getInteractionWriter()).extractDefaultExperimentsFrom(getCurrentInteraction())){
+        for (Object exp : ((PsiXmlExtendedInteractionWriter)getInteractionWriter()).extractDefaultExperimentsFrom(getCurrentInteraction())){
             getElementCache().removeObject(exp);
         }
     }
@@ -65,7 +65,7 @@ public class ExpandedXml25Writer extends AbstractExpandedXml25MixWriter<Interact
     protected void writeComplex(ModelledInteraction modelled) {
         super.writeComplex(modelled);
         // remove experiments
-        for (Object exp : ((PsiXml25ExtendedInteractionWriter)getComplexWriter()).extractDefaultExperimentsFrom(modelled)){
+        for (Object exp : ((PsiXmlExtendedInteractionWriter)getComplexWriter()).extractDefaultExperimentsFrom(modelled)){
             getElementCache().removeObject(exp);
         }
     }

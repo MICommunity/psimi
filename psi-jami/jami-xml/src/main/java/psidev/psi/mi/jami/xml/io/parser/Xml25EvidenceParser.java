@@ -39,23 +39,23 @@ public class Xml25EvidenceParser extends AbstractPsiXml25Parser<InteractionEvide
     @Override
     protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
         JAXBContext ctx = JAXBContext.newInstance(
-                psidev.psi.mi.jami.xml.extension.xml254.XmlInteractionEvidence.class,
-                psidev.psi.mi.jami.xml.extension.xml254.Availability.class,
-                psidev.psi.mi.jami.xml.extension.xml254.XmlExperiment.class,
-                psidev.psi.mi.jami.xml.extension.xml254.XmlInteractor.class,
-                psidev.psi.mi.jami.xml.extension.xml254.XmlSource.class,
-                psidev.psi.mi.jami.xml.extension.xml254.XmlAnnotation.class);
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlInteractionEvidence.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.Availability.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlSource.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlAnnotation.class);
         return ctx.createUnmarshaller();
     }
     @Override
     protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
         JAXBContext ctx = JAXBContext.newInstance(
-                psidev.psi.mi.jami.xml.extension.xml253.XmlInteractionEvidence.class,
-                psidev.psi.mi.jami.xml.extension.xml253.Availability.class,
-                psidev.psi.mi.jami.xml.extension.xml253.XmlExperiment.class,
-                psidev.psi.mi.jami.xml.extension.xml253.XmlInteractor.class,
-                psidev.psi.mi.jami.xml.extension.xml253.XmlSource.class,
-                psidev.psi.mi.jami.xml.extension.xml253.XmlAnnotation.class);
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlInteractionEvidence.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.Availability.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlSource.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlAnnotation.class);
         return ctx.createUnmarshaller();
     }
 }

@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 
 public class PsiXmlWriterOptions extends InteractionWriterOptions{
     /**
-     * The object instance implementing the PsiXml25ObjectCache interface.
+     * The object instance implementing the PsiXmlObjectCache interface.
      * This object will be used to index MI objects which will be referenced in several places and to assign unique ids.
      * If this option is not provided, it will use a InMemoryIdentityObjectCache by default for compact Xml writers and it
      * will use a InMemoryLightIdentityObjectCache by default for expanded XML writers.

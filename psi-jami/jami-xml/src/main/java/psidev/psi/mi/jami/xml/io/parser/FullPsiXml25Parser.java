@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.xml.AbstractEntry;
-import psidev.psi.mi.jami.xml.AbstractEntrySet;
-import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.model.AbstractEntry;
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
@@ -29,5 +29,5 @@ public interface FullPsiXml25Parser<T extends Interaction> {
 
     public void setListener(PsiXmlParserListener listener);
 
-    public void setCacheOfObjects(PsiXml25IdCache indexOfObjects);
+    public void setCacheOfObjects(PsiXmlIdCache indexOfObjects);
 }

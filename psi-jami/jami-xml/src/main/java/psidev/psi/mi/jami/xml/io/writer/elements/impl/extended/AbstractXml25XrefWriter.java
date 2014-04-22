@@ -2,9 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.xml.extension.ExtendedPsi25Xref;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25AnnotationWriter;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Xref;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlXrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -17,17 +18,17 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public abstract class AbstractXml25XrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25XrefWriter {
-    private PsiXml25ElementWriter<Annotation> annotationWriter;
+public abstract class AbstractXml25XrefWriter extends AbstractXmlXrefWriter {
+    private PsiXmlElementWriter<Annotation> annotationWriter;
 
     protected AbstractXml25XrefWriter(XMLStreamWriter writer) {
         super(writer);
-        this.annotationWriter = new Xml25AnnotationWriter(writer);
+        this.annotationWriter = new XmlAnnotationWriter(writer);
     }
 
-    protected AbstractXml25XrefWriter(XMLStreamWriter writer, PsiXml25ElementWriter<Annotation> annotationWriter) {
+    protected AbstractXml25XrefWriter(XMLStreamWriter writer, PsiXmlElementWriter<Annotation> annotationWriter) {
         super(writer);
-        this.annotationWriter = annotationWriter != null ? annotationWriter : new Xml25AnnotationWriter(writer);
+        this.annotationWriter = annotationWriter != null ? annotationWriter : new XmlAnnotationWriter(writer);
     }
 
     @Override

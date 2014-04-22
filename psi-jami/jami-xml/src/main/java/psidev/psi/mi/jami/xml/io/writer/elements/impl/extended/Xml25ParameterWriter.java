@@ -6,10 +6,10 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
-import psidev.psi.mi.jami.xml.extension.XmlExperiment;
-import psidev.psi.mi.jami.xml.extension.XmlParameter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ParameterWriter;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.XmlParameter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -23,18 +23,18 @@ import java.util.Date;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25ParameterWriter implements PsiXml25ParameterWriter{
+public class Xml25ParameterWriter implements PsiXmlParameterWriter {
     private XMLStreamWriter streamWriter;
-    private PsiXml25ObjectCache objectIndex;
+    private PsiXmlObjectCache objectIndex;
     private Experiment defaultExperiment;
 
-    public Xml25ParameterWriter(XMLStreamWriter writer, PsiXml25ObjectCache objectIndex){
+    public Xml25ParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ParameterWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlParameterWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ParameterWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlParameterWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }

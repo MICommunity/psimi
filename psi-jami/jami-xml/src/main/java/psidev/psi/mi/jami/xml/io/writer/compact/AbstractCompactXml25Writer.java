@@ -2,11 +2,11 @@ package psidev.psi.mi.jami.xml.io.writer.compact;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXml25ExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
@@ -28,9 +28,9 @@ import java.util.*;
 
 public abstract class AbstractCompactXml25Writer<T extends Interaction> extends AbstractXml25Writer<T> {
 
-    private PsiXml25ElementWriter<String> availabilityWriter;
-    private PsiXml25ExperimentWriter experimentWriter;
-    private PsiXml25ElementWriter<Interactor> interactorWriter;
+    private PsiXmlElementWriter<String> availabilityWriter;
+    private PsiXmlExperimentWriter experimentWriter;
+    private PsiXmlElementWriter<Interactor> interactorWriter;
     private List<T> subInteractionsToWrite;
 
     private Class<T> type;
@@ -63,7 +63,7 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         this.subInteractionsToWrite = new ArrayList<T>();
     }
 
-    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter streamWriter, PsiXml25ObjectCache elementCache) {
+    protected AbstractCompactXml25Writer(Class<T> type, XMLStreamWriter streamWriter, PsiXmlObjectCache elementCache) {
         super(streamWriter, elementCache);
         this.type = type;
         this.subInteractionsToWrite = new ArrayList<T>();
@@ -263,27 +263,27 @@ public abstract class AbstractCompactXml25Writer<T extends Interaction> extends 
         writeStartInteractionList();
     }
 
-    protected PsiXml25ElementWriter<String> getAvailabilityWriter() {
+    protected PsiXmlElementWriter<String> getAvailabilityWriter() {
         return availabilityWriter;
     }
 
-    protected void setAvailabilityWriter(PsiXml25ElementWriter<String> availabilityWriter) {
+    protected void setAvailabilityWriter(PsiXmlElementWriter<String> availabilityWriter) {
         this.availabilityWriter = availabilityWriter;
     }
 
-    protected PsiXml25ExperimentWriter getExperimentWriter() {
+    protected PsiXmlExperimentWriter getExperimentWriter() {
         return experimentWriter;
     }
 
-    protected void setExperimentWriter(PsiXml25ExperimentWriter experimentWriter) {
+    protected void setExperimentWriter(PsiXmlExperimentWriter experimentWriter) {
         this.experimentWriter = experimentWriter;
     }
 
-    protected PsiXml25ElementWriter<Interactor> getInteractorWriter() {
+    protected PsiXmlElementWriter<Interactor> getInteractorWriter() {
         return interactorWriter;
     }
 
-    protected void setInteractorWriter(PsiXml25ElementWriter<Interactor> interactorWriter) {
+    protected void setInteractorWriter(PsiXmlElementWriter<Interactor> interactorWriter) {
         this.interactorWriter = interactorWriter;
     }
 
