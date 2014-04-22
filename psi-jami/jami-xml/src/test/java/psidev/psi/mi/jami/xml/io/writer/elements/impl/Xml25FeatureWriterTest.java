@@ -443,7 +443,7 @@ public class Xml25FeatureWriterTest extends AbstractXml25WriterTest {
     public void test_write_feature_interaction_effect() throws XMLStreamException, IOException, IllegalRangeException {
         Feature feature = new DefaultFeature();
         feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
-        feature.setInteractionDependency(CvTermUtils.createMICvTerm("decreasing-ptm","MI:1223"));
+        feature.setRole(CvTermUtils.createMICvTerm("decreasing-ptm","MI:1223"));
         elementCache.clear();
 
         Xml25FeatureWriter writer = new Xml25FeatureWriter(createStreamWriter(), this.elementCache);
@@ -457,7 +457,7 @@ public class Xml25FeatureWriterTest extends AbstractXml25WriterTest {
     public void test_write_feature_interaction_dependency() throws XMLStreamException, IOException, IllegalRangeException {
         Feature feature = new DefaultFeature();
         feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
-        feature.setInteractionEffect(CvTermUtils.createMICvTerm("resulting-ptm", "MI:0639"));
+        feature.setRole(CvTermUtils.createMICvTerm("resulting-ptm", "MI:0639"));
 
         elementCache.clear();
 

@@ -5,10 +5,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
 import psidev.psi.mi.jami.xml.reference.AbstractExperimentRef;
 
@@ -34,6 +31,8 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlTransient
     private Locator locator;
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
+
+    private Collection<Parameter> parameters;
 
     public XmlFeatureEvidence() {
     }
@@ -153,6 +152,14 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
+    }
+
+    @Override
+    public Collection<Parameter> getParameters() {
+        if (this.parameters == null){
+           this.parameters = new ArrayList<Parameter>();
+        }
+        return this.parameters;
     }
 
     protected void initialiseDetectionMethods(){

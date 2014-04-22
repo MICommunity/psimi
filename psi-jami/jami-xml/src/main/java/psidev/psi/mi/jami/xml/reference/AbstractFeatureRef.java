@@ -119,36 +119,20 @@ public abstract class AbstractFeatureRef<E extends Participant, F extends Featur
         return this.delegate.getRanges();
     }
 
-    public CvTerm getInteractionEffect() {
+    public CvTerm getRole() {
         logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
         if (this.delegate == null){
             initialiseFeatureDelegate();
         }
-        return this.delegate.getInteractionEffect();
+        return this.delegate.getRole();
     }
 
-    public void setInteractionEffect(CvTerm effect) {
+    public void setRole(CvTerm effect) {
         logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
         if (this.delegate == null){
             initialiseFeatureDelegate();
         }
-        this.delegate.setInteractionEffect(effect);
-    }
-
-    public CvTerm getInteractionDependency() {
-        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
-        if (this.delegate == null){
-            initialiseFeatureDelegate();
-        }
-        return this.delegate.getInteractionDependency();
-    }
-
-    public void setInteractionDependency(CvTerm interactionDependency) {
-        logger.log(Level.WARNING, "The feature reference "+ref+" is not resolved. Some default properties will be initialised by default");
-        if (this.delegate == null){
-            initialiseFeatureDelegate();
-        }
-        this.delegate.setInteractionDependency(interactionDependency);
+        this.delegate.setRole(effect);
     }
 
     public E getParticipant() {

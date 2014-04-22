@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.extension.XmlCooperativityEvidence;
 import psidev.psi.mi.jami.xml.extension.XmlPreAssembly;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +68,6 @@ public class PsiXml25Utils {
             Annotation allostericEffector = null;
             Annotation allosteryType = null;
             Annotation allosteryMechanism = null;
-            Annotation cooperativeValue = null;
             boolean isValidCooperativeEffect = true;
             List<Annotation> affectedInteractions = new ArrayList<Annotation>(annots.size());
             for (Annotation a : annots){
@@ -168,16 +166,6 @@ public class PsiXml25Utils {
                         break;
                     }
                     allosteryMechanism = a;
-                }
-                else if (AnnotationUtils.doesAnnotationHaveTopic(a, CooperativeEffect.COOPERATIVE_EFFECT_VALUE_ID, CooperativeEffect.COOPERATIVE_EFFECT_VALUE)
-                        && a.getValue() != null){
-                    if (cooperativeValue != null && listener != null){
-                        listener.onSyntaxWarning((FileSourceContext)a, "We found several cooperative effect values attributes where only one is expected. " +
-                                "It will not load the cooperative effect attributes and keep them as simple attributes");
-                        isValidCooperativeEffect = false;
-                        break;
-                    }
-                    cooperativeValue = a;
                 }
             }
 
@@ -296,12 +284,6 @@ public class PsiXml25Utils {
                             CooperativityEvidence evidence = new XmlCooperativityEvidence(exp);
                             effect.getCooperativityEvidences().add(evidence);
                         }
-                    }
-
-                    // add cooperative value
-                    if (cooperativeValue != null){
-                        effect.setCooperativeEffectValue(new BigDecimal(cooperativeValue.getValue()));
-                        annots.remove(cooperativeValue);
                     }
                 }
                 return effect;

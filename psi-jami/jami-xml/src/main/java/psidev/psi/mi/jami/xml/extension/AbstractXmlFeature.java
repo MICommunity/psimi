@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.FeatureUtils;
 import psidev.psi.mi.jami.xml.Xml25EntryContext;
 
 import javax.xml.bind.annotation.*;
@@ -199,31 +200,17 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         return this.jaxbRangeWrapper.ranges;
     }
 
-    public CvTerm getInteractionEffect() {
-        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.interactionEffect : null;
+    public CvTerm getRole() {
+        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.role : null;
     }
 
-    public void setInteractionEffect(CvTerm effect) {
+    public void setRole(CvTerm effect) {
         if (this.jaxbAttributeWrapper == null && effect != null){
             initialiseAnnotationWrapper();
-            this.jaxbAttributeWrapper.interactionEffect = effect;
+            this.jaxbAttributeWrapper.role = effect;
         }
         else if (this.jaxbAttributeWrapper != null){
-            this.jaxbAttributeWrapper.interactionEffect = effect;
-        }
-    }
-
-    public CvTerm getInteractionDependency() {
-        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.interactionDependency : null;
-    }
-
-    public void setInteractionDependency(CvTerm interactionDependency) {
-        if (this.jaxbAttributeWrapper == null && interactionDependency != null){
-            initialiseAnnotationWrapper();
-            this.jaxbAttributeWrapper.interactionDependency = interactionDependency;
-        }
-        else if (this.jaxbAttributeWrapper != null){
-            this.jaxbAttributeWrapper.interactionDependency = interactionDependency;
+            this.jaxbAttributeWrapper.role = effect;
         }
     }
 
@@ -330,8 +317,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         private List<Annotation> annotations;
         private JAXBAttributeList jaxbAttributeList;
         private Integer participantId;
-        private CvTerm interactionEffect;
-        private CvTerm interactionDependency;
+        private CvTerm role;
 
         public JAXBAttributeWrapper(){
             initialiseAnnotations();
@@ -434,26 +420,15 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
                         return false;
                     }
                     catch (NumberFormatException e){
-                        annotations.add(annotation);
+                        addAnnotation(index, annotation);
                         return true;
                     }
                 }
-                // we have an intercation dependency
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.PREREQUISITE_PTM_MI, Feature.PREREQUISITE_PTM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_PTM_MI, Feature.RESULTING_PTM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.RESULTING_CLEAVAGE_MI, Feature.RESULTING_CLEAVAGE)){
-                    interactionDependency = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
-                    ((XmlCvTerm)interactionDependency).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                    annotations.add(annotation);
-                    return true;
-                }
-                // we have an interaction effect
-                else if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DECREASING_PTM_MI, Feature.DECREASING_PTM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.INCREASING_PTM_MI, Feature.INCREASING_PTM)
-                        || AnnotationUtils.doesAnnotationHaveTopic(annotation, Feature.DISRUPTING_PTM_MI, Feature.DISRUPTING_PTM)){
-                    interactionEffect = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
-                    ((XmlCvTerm)interactionEffect).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                    annotations.add(annotation);
+                // we have a feature role
+                else if (FeatureUtils.isFeatureRole(annotation)){
+                    role = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
+                    ((XmlCvTerm)role).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
+                    addAnnotation(index, annotation);
                     return true;
                 }
                 else {
