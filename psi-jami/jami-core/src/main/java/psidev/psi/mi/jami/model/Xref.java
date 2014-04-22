@@ -63,6 +63,9 @@ public interface Xref {
     public static final String ISOFORM_PARENT_MI = "MI:0243";
     public static final String ISOFORM_PARENT = "isoform-parent";
 
+    public static final String INTERACTOR_SET_QUALIFIER="interactor set component";
+    public static final String INTERACTOR_SET_QUALIFIER_MI="MI:xxxx";
+
     /**
      * The database is a controlled vocabulary term. It cannot be null.
      * @return the database
