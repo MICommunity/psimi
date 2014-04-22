@@ -101,7 +101,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
             System.out.println(e);
         }
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 
@@ -121,7 +121,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
             System.out.println(e);
         }
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 
@@ -134,7 +134,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"),"intact synonym"));
         source.getSynonyms().add(new DefaultAlias("test alias"));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -162,7 +162,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
             System.out.println(e);
         }
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 
@@ -175,7 +175,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"xxxxxx"));
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -204,7 +204,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
             System.out.println(e);
         }
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 
@@ -218,7 +218,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
         source.setPostalAddress("test address");
         source.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -237,7 +237,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
     public void test_write_source_no_release() throws XMLStreamException, IOException {
         ExtendedPsi25Source source = new XmlSource("intact");
 
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 
@@ -248,7 +248,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
     public void test_write_source_release() throws XMLStreamException, IOException {
         ExtendedPsi25Source source = new XmlSource("intact");
         source.setRelease("release_test");
-        Xml25SourceWriter writer = new Xml25SourceWriter(createStreamWriter());
+        XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
         streamWriter.flush();
 

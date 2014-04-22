@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
+import psidev.psi.mi.jami.xml.model.extension.*;
 
 import java.util.Collection;
 

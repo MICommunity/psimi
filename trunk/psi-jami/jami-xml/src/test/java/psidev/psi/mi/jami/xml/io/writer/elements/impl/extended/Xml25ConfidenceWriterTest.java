@@ -74,7 +74,7 @@ public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_confidence_null() throws XMLStreamException, IOException {
 
-        Xml25ConfidenceWriter writer = new Xml25ConfidenceWriter(createStreamWriter(), this.elementCache);
+        XmlConfidenceWriter writer = new XmlConfidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(null);
         streamWriter.flush();
 
@@ -87,7 +87,7 @@ public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
         conf.getType().getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         conf.getType().getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
 
-        Xml25ConfidenceWriter writer = new Xml25ConfidenceWriter(createStreamWriter(), this.elementCache);
+        XmlConfidenceWriter writer = new XmlConfidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(conf);
         streamWriter.flush();
 
@@ -103,7 +103,7 @@ public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
         conf.getExperiments().add(new DefaultExperiment(new DefaultPublication("P123456")));
         this.elementCache.clear();
 
-        Xml25ConfidenceWriter writer = new Xml25ConfidenceWriter(createStreamWriter(), this.elementCache);
+        XmlConfidenceWriter writer = new XmlConfidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(conf);
         streamWriter.flush();
 
@@ -124,7 +124,7 @@ public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(exp1);
         this.elementCache.extractIdForExperiment(exp2);
 
-        Xml25ConfidenceWriter writer = new Xml25ConfidenceWriter(createStreamWriter(), this.elementCache);
+        XmlConfidenceWriter writer = new XmlConfidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(conf);
         streamWriter.flush();
 

@@ -35,7 +35,7 @@ public class CompactXmlNamedParticipantEvidenceWriter extends AbstractXmlPartici
                                                     PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlParameterWriter parameterWriter,
                                                     PsiXmlElementWriter<Annotation> attributeWriter) {
         super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, identificationMethodWriter, biologicalRoleWriter, experimentalRoleWriter, experimentalPreparationWriter,
-                featureWriter != null ? featureWriter : new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25FeatureEvidenceWriter(writer, objectIndex), hostOrganismWriter, parameterWriter, confidenceWriter, attributeWriter);
+                featureWriter != null ? featureWriter : new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlFeatureEvidenceWriter(writer, objectIndex), hostOrganismWriter, parameterWriter, confidenceWriter, attributeWriter);
     }
 
     @Override

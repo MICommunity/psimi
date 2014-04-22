@@ -6,6 +6,10 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.Entry;
+import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
+import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;

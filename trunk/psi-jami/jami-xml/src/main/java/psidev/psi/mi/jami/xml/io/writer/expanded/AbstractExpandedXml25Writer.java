@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.cache.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.AbstractXml25Writer;
+import psidev.psi.mi.jami.xml.io.writer.AbstractXmlWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -21,7 +21,7 @@ import java.io.Writer;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends AbstractXml25Writer<T> {
+public abstract class AbstractExpandedXml25Writer<T extends Interaction> extends AbstractXmlWriter<T> {
 
     private Class<T> type;
 

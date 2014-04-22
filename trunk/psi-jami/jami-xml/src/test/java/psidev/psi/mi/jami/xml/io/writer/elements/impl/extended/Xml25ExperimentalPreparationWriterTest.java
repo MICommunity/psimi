@@ -117,7 +117,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         CvTerm expPrep = new ExperimentalCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -130,7 +130,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.setFullName("undetermined position");
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -144,7 +144,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -158,7 +158,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.setMIIdentifier(null);
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -171,7 +171,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.setPARIdentifier(expPrep.getMIIdentifier());
         expPrep.setMIIdentifier(null);
         this.elementCache.clear();
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(),this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(),this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -187,7 +187,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(),this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(),this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -201,7 +201,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(),this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(),this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -215,7 +215,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         expPrep.getExperiments().add(new DefaultExperiment(new DefaultPublication("P123456")));
         this.elementCache.clear();
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
@@ -234,7 +234,7 @@ public class Xml25ExperimentalPreparationWriterTest extends AbstractXml25WriterT
         this.elementCache.extractIdForExperiment(exp1);
         this.elementCache.extractIdForExperiment(exp2);
 
-        Xml25ExperimentalPreparationWriter writer = new Xml25ExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
+        XmlExperimentalPreparationWriter writer = new XmlExperimentalPreparationWriter(createStreamWriter(), this.elementCache);
         writer.write(expPrep);
         streamWriter.flush();
 
