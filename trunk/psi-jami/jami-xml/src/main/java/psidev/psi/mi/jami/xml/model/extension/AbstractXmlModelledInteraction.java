@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -139,7 +139,7 @@ public abstract class AbstractXmlModelledInteraction extends AbstractXmlInteract
         // build the modelled cooperative effects from annotations
         // if possible
         Collection<Annotation> annotations = getAnnotations();
-        CooperativeEffect effect = PsiXml25Utils.extractCooperativeEffectFrom(annotations, this.jaxbExperimentWrapper != null ? this.jaxbExperimentWrapper.experiments : null, XmlEntryContext.getInstance().getListener());
+        CooperativeEffect effect = PsiXmlUtils.extractCooperativeEffectFrom(annotations, this.jaxbExperimentWrapper != null ? this.jaxbExperimentWrapper.experiments : null, XmlEntryContext.getInstance().getListener());
         if (effect != null){
             getCooperativeEffects().add(effect);
         }

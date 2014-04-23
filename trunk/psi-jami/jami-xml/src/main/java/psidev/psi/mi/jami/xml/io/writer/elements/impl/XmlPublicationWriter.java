@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -188,7 +188,7 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
             writeAnnotation(Annotation.PUBLICATION_JOURNAL, Annotation.PUBLICATION_JOURNAL_MI, object.getJournal());
         }
         if (hasPublicationDate){
-            writeAnnotation(Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI, PsiXml25Utils.YEAR_FORMAT.format(object.getPublicationDate()));
+            writeAnnotation(Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI, PsiXmlUtils.YEAR_FORMAT.format(object.getPublicationDate()));
         }
         if (hasCurationDepth){
             switch (object.getCurationDepth()){

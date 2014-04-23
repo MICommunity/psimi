@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.text.ParseException;
@@ -509,7 +509,7 @@ public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSour
                 else if (this.jaxbAttributeWrapper.publicationDate != null){
                     this.jaxbAttributeWrapper.annotations.add(new XmlAnnotation(CvTermUtils.createMICvTerm(
                             Annotation.PUBLICATION_YEAR, Annotation.PUBLICATION_YEAR_MI),
-                            PsiXml25Utils.YEAR_FORMAT.format(this.jaxbAttributeWrapper.publicationDate)));
+                            PsiXmlUtils.YEAR_FORMAT.format(this.jaxbAttributeWrapper.publicationDate)));
                     this.jaxbAttributeWrapper.publicationDate = null;
                 }
             }
@@ -771,7 +771,7 @@ public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSour
                     }
                     else {
                         try {
-                            publicationDate = PsiXml25Utils.YEAR_FORMAT.parse(annot.getValue().trim());
+                            publicationDate = PsiXmlUtils.YEAR_FORMAT.parse(annot.getValue().trim());
                             return false;
                         } catch (ParseException e) {
                             e.printStackTrace();

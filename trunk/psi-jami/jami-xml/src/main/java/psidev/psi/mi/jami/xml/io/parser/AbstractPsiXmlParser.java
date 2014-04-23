@@ -19,7 +19,7 @@ import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -133,7 +133,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
         // get next event from PSI-MI 2.5 schema without parsing it
         if (currentElement == null){
-            currentElement = getNextPsiXml25StartElement();
+            currentElement = getNextPsiXmlStartElement();
         }
 
         // the eventreader does not have any new events
@@ -147,21 +147,21 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         // get xml entry context
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
         // the next tag is an interaction, we parse the interaction.
-        if (PsiXml25Utils.INTERACTION_TAG.equals(currentElement) && hasReadEntry){
+        if (PsiXmlUtils.INTERACTION_TAG.equals(currentElement) && hasReadEntry){
             T interaction = parseInteractionTag(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
             return interaction;
         }
         // we start a new entry
-        else if (PsiXml25Utils.ENTRY_TAG.equals(currentElement) && hasReadEntrySet) {
+        else if (PsiXmlUtils.ENTRY_TAG.equals(currentElement) && hasReadEntrySet) {
             T interaction = processEntry(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
             return interaction;
         }
         // entry set
-        else if (PsiXml25Utils.ENTRYSET_TAG.equals(currentElement)){
+        else if (PsiXmlUtils.ENTRYSET_TAG.equals(currentElement)){
 
             // read the entrySet
             try {
@@ -176,8 +176,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 throw createPsiXmlExceptionFrom("Impossible to create JAXB unmarshaller.", e);
             }
             // get next elements
-            this.currentElement = getNextPsiXml25StartElement();
-            if (this.currentElement != null && PsiXml25Utils.ENTRY_TAG.equals(currentElement)){
+            this.currentElement = getNextPsiXmlStartElement();
+            if (this.currentElement != null && PsiXmlUtils.ENTRY_TAG.equals(currentElement)){
                 hasReadEntry = true;
                 // parse first interaction
                 T interaction = processEntry(entryContext);
@@ -319,7 +319,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         this.useDefaultCache = false;
     }
 
-    protected String getNextPsiXml25StartElement() throws PsiXmlParserException{
+    protected String getNextPsiXmlStartElement() throws PsiXmlParserException{
         // Parse into typed objects
         try{
             // the eventreader does not have any new events
@@ -347,15 +347,19 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                     }
                 }
                 while(namespaceURI == null
-                                || (!PsiXml25Utils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())
-                        && !PsiXml25Utils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())));
+                                || (!PsiXmlUtils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())
+                        && !PsiXmlUtils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())));
 
-                if (namespaceURI != null && PsiXml25Utils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())){
+                if (namespaceURI != null && PsiXmlUtils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())){
                     this.version = PsiXmlVersion.v2_5_4;
                     return start;
                 }
-                else if (namespaceURI != null && PsiXml25Utils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())){
+                else if (namespaceURI != null && PsiXmlUtils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())){
                     this.version = PsiXmlVersion.v2_5_3;
+                    return start;
+                }
+                else if (namespaceURI != null && PsiXmlUtils.Xml300_NAMESPACE_URI.equals(namespaceURI.trim())){
+                    this.version = PsiXmlVersion.v3_0_0;
                     return start;
                 }
                 else{
@@ -363,13 +367,16 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 }
             }
             else if (PsiXmlVersion.v2_5_4.equals(this.version)){
-                currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+                currentNamespace = PsiXmlUtils.Xml254_NAMESPACE_URI;
             }
             else if (PsiXmlVersion.v2_5_3.equals(this.version)){
-                currentNamespace = PsiXml25Utils.Xml253_NAMESPACE_URI;
+                currentNamespace = PsiXmlUtils.Xml253_NAMESPACE_URI;
+            }
+            else if (PsiXmlVersion.v3_0_0.equals(this.version)){
+                currentNamespace = PsiXmlUtils.Xml300_NAMESPACE_URI;
             }
             else{
-                currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+                currentNamespace = PsiXmlUtils.Xml254_NAMESPACE_URI;
             }
 
             do {
@@ -409,9 +416,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
      *
      * @return the unmarshaller with the class context
      */
-    protected abstract Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException;
-
-    protected abstract Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException;
+    protected abstract Unmarshaller createJAXBUnmarshaller() throws JAXBException;
 
     /**
      * Process an entry that is opened (source, experimentList, etc) and read the first interaction
@@ -423,7 +428,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     protected T processEntryAndLoadNextInteraction(XmlEntryContext entryContext, Location startEntry) throws PsiXmlParserException {
         T loadedInteraction = null;
 
-        this.currentElement = getNextPsiXml25StartElement();
+        this.currentElement = getNextPsiXmlStartElement();
 
         // process syntax error
         if (this.currentElement == null){
@@ -439,30 +444,30 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             // get next event without parsing it until we could read an interaction and solve all its references
             while(loadedInteraction == null && this.currentElement != null){
                 // process source of entry
-                if (PsiXml25Utils.SOURCE_TAG.equals(this.currentElement)){
+                if (PsiXmlUtils.SOURCE_TAG.equals(this.currentElement)){
                     parseSource(entryContext);
                 }
                 // process availability
-                else if (PsiXml25Utils.AVAILABILITYLIST_TAG.equals(this.currentElement)){
+                else if (PsiXmlUtils.AVAILABILITYLIST_TAG.equals(this.currentElement)){
                     parseAvailabilityList(entryContext);
                 }
                 // process experiments
-                else if (PsiXml25Utils.EXPERIMENTLIST_TAG.equals(this.currentElement)){
+                else if (PsiXmlUtils.EXPERIMENTLIST_TAG.equals(this.currentElement)){
                     parseExperimentList();
 
                 }
                 // process interactors. All interactors will be stored in entryContext so no need to do something else
-                else if (PsiXml25Utils.INTERACTORLIST_TAG.equals(this.currentElement)){
+                else if (PsiXmlUtils.INTERACTORLIST_TAG.equals(this.currentElement)){
                     parseInteractorList();
 
                 }
                 // process interaction
-                else if (PsiXml25Utils.INTERACTIONLIST_TAG.equals(this.currentElement)){
+                else if (PsiXmlUtils.INTERACTIONLIST_TAG.equals(this.currentElement)){
                     loadedInteraction = parseInteractionList(entryContext, loadedInteraction);
 
                 }
                 // read attributeList
-                else if (PsiXml25Utils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
+                else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
                     parseAttributeList(entryContext);
 
                 }
@@ -490,15 +495,15 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 streamReader.next();
             }
 
-            this.currentElement = getNextPsiXml25StartElement();
+            this.currentElement = getNextPsiXmlStartElement();
             // read attributes
             if (this.currentElement != null){
                 Entry currentEntry = entryContext.getCurrentEntry();
                 // load attribute
-                while (this.currentElement != null && PsiXml25Utils.ATTRIBUTE_TAG.equals(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.ATTRIBUTE_TAG.equals(this.currentElement)) {
                     Annotation attribute = (Annotation)this.unmarshaller.unmarshal(streamReader);
                     currentEntry.getAnnotations().add(attribute);
-                    this.currentElement = getNextPsiXml25StartElement();
+                    this.currentElement = getNextPsiXmlStartElement();
                 }                    }
             else{
                 if (listener != null){
@@ -525,7 +530,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 streamReader.next();
             }
 
-            this.currentElement = getNextPsiXml25StartElement();
+            this.currentElement = getNextPsiXmlStartElement();
             // read interactions
             if (this.currentElement != null){
                 loadedInteraction = parseInteractionTag(entryContext);
@@ -554,15 +559,15 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 streamReader.next();
             }
 
-            this.currentElement = getNextPsiXml25StartElement();
+            this.currentElement = getNextPsiXmlStartElement();
             // process interactors
             if (this.currentElement != null){
                 // load experimentDescription
-                while (this.currentElement != null && PsiXml25Utils.INTERACTOR_TAG.equals(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.INTERACTOR_TAG.equals(this.currentElement)) {
                     AbstractXmlInteractor interactorElement = (AbstractXmlInteractor)unmarshaller.unmarshal(this.streamReader);
                     this.interactorFactory.
                             createInteractorFromXmlInteractorInstance(interactorElement);
-                    this.currentElement = getNextPsiXml25StartElement();
+                    this.currentElement = getNextPsiXmlStartElement();
                 }
             }
             else{
@@ -590,13 +595,13 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 streamReader.next();
             }
 
-            this.currentElement = getNextPsiXml25StartElement();
+            this.currentElement = getNextPsiXmlStartElement();
             // process experiments. Each experiment will be loaded in entryContext so no needs to do something else
             if (this.currentElement != null){
                 // load experimentDescription
-                while (this.currentElement != null && PsiXml25Utils.EXPERIMENT_TAG.equals(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.EXPERIMENT_TAG.equals(this.currentElement)) {
                     unmarshaller.unmarshal(this.streamReader);
-                    this.currentElement = getNextPsiXml25StartElement();
+                    this.currentElement = getNextPsiXmlStartElement();
                 }
             }
             else{
@@ -618,7 +623,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
     protected void parseAvailabilityList(XmlEntryContext entryContext) throws PsiXmlParserException {
         processAvailabilityList(entryContext);
-        this.currentElement = getNextPsiXml25StartElement();
+        this.currentElement = getNextPsiXmlStartElement();
     }
 
     protected void parseSource(XmlEntryContext entryContext) throws PsiXmlParserException {
@@ -627,7 +632,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         try {
             sourceElement = (ExtendedPsiXmlSource)this.unmarshaller.unmarshal(this.streamReader);
             entryContext.getCurrentEntry().setSource(sourceElement);
-            this.currentElement = getNextPsiXml25StartElement();
+            this.currentElement = getNextPsiXmlStartElement();
         } catch (JAXBException e) {
             throw createPsiXmlExceptionFrom("Cannot parse the source of the entry.",e);
         }
@@ -668,13 +673,13 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         // load the all entry
         // we already are parsing interactions
         try{
-            this.currentElement = getNextPsiXml25StartElement();
-            boolean isReadingInteraction = this.currentElement != null && PsiXml25Utils.INTERACTION_TAG.equals(this.currentElement);
+            this.currentElement = getNextPsiXmlStartElement();
+            boolean isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement);
             while(isReadingInteraction && this.currentElement != null){
                 this.loadedInteractions.add(unmarshallInteraction());
 
-                this.currentElement = getNextPsiXml25StartElement();
-                isReadingInteraction = this.currentElement != null && PsiXml25Utils.INTERACTION_TAG.equals(this.currentElement);
+                this.currentElement = getNextPsiXmlStartElement();
+                isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement);
             }
 
             // get the current entry. It must exists
@@ -690,7 +695,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             }
             else{
                 // check entry attributes
-                if (this.currentElement != null && PsiXml25Utils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
+                if (this.currentElement != null && PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
                     parseAttributeList(entryContext);
                 }
 
@@ -751,16 +756,16 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 streamReader.next();
             }
 
-            this.currentElement = getNextPsiXml25StartElement();
+            this.currentElement = getNextPsiXmlStartElement();
             // load availability
             if (this.currentElement != null){
                 Entry entry = entryContext.getCurrentEntry();
 
                 // load availability
-                while (this.currentElement != null && PsiXml25Utils.AVAILABILITY_TAG.equals(this.currentElement)) {
+                while (this.currentElement != null && PsiXmlUtils.AVAILABILITY_TAG.equals(this.currentElement)) {
                     AbstractAvailability availabilityElement = (AbstractAvailability) unmarshaller.unmarshal(this.streamReader);
                     entry.getAvailabilities().add(availabilityElement);
-                    this.currentElement = getNextPsiXml25StartElement();
+                    this.currentElement = getNextPsiXmlStartElement();
                 }
             }
             else{
@@ -797,13 +802,16 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             String currentNamespace = null;
             switch (this.version){
                 case v2_5_4:
-                    currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+                    currentNamespace = PsiXmlUtils.Xml254_NAMESPACE_URI;
                     break;
                 case v2_5_3:
-                    currentNamespace = PsiXml25Utils.Xml253_NAMESPACE_URI;
+                    currentNamespace = PsiXmlUtils.Xml253_NAMESPACE_URI;
+                    break;
+                case v3_0_0:
+                    currentNamespace = PsiXmlUtils.Xml300_NAMESPACE_URI;
                     break;
                 default:
-                    currentNamespace = PsiXml25Utils.Xml254_NAMESPACE_URI;
+                    currentNamespace = PsiXmlUtils.Xml254_NAMESPACE_URI;
                     break;
             }
 
@@ -868,18 +876,18 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     }
 
     private void flushEntryIfNecessary(XmlEntryContext entryContext) throws PsiXmlParserException {
-        this.currentElement = getNextPsiXml25StartElement();
+        this.currentElement = getNextPsiXmlStartElement();
         // end of file, flush last entry
         if (this.currentElement == null){
             flushEntry(entryContext);
         }
         // end of entry, parse attributes and flush the entry
-        else if (PsiXml25Utils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
+        else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
             parseAttributeList(entryContext);
             flushEntry(entryContext);
         }
         // if this interaction is not followed by another interaction, we need to flush the entry
-        else if (!PsiXml25Utils.INTERACTION_TAG.equals(this.currentElement)){
+        else if (!PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)){
             flushEntry(entryContext);
         }
     }
@@ -948,17 +956,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
     private void initialiseEntryContext(XmlEntryContext entryContext) throws JAXBException {
         // create unmarshaller knowing the version
-        switch (this.version){
-            case v2_5_4:
-                this.unmarshaller = createXml254JAXBUnmarshaller();
-                break;
-            case v2_5_3:
-                this.unmarshaller = createXml253JAXBUnmarshaller();
-                break;
-            default:
-                this.unmarshaller = createXml254JAXBUnmarshaller();
-                break;
-        }
+        this.unmarshaller = createJAXBUnmarshaller();
 
         entryContext.clear();
         this.hasReadEntrySet = true;

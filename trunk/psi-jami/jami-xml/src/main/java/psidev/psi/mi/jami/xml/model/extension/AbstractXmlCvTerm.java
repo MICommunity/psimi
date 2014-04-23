@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -189,7 +189,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     protected NamesContainer getNamesContainer() {
         if (namesContainer == null){
             namesContainer = new NamesContainer();
-            namesContainer.setShortLabel(PsiXml25Utils.UNSPECIFIED);
+            namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
         }
         return namesContainer;
     }
@@ -198,7 +198,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
         this.namesContainer = value;
         if (this.namesContainer != null){
             if (this.namesContainer.isEmpty()){
-                this.namesContainer.setShortLabel(PsiXml25Utils.UNSPECIFIED);
+                this.namesContainer.setShortLabel(PsiXmlUtils.UNSPECIFIED);
                 PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
                 if (listener != null){
                     listener.onMissingCvTermName(this, this , "At least the shortLabel of a Cv Term is required. By default will load the Cv Term with 'unknown' shortName");

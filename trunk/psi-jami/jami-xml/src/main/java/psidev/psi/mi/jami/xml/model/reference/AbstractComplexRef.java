@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlComplex;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import java.util.Collection;
 import java.util.Date;
@@ -356,7 +356,7 @@ public abstract class AbstractComplexRef extends AbstractInteractorRef implement
 
     @Override
     protected void initialiseInteractorDelegate() {
-        XmlComplex complex = new XmlComplex(PsiXml25Utils.UNSPECIFIED);
+        XmlComplex complex = new XmlComplex(PsiXmlUtils.UNSPECIFIED);
         complex.setId(this.ref);
         setDelegate(complex);
     }

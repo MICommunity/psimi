@@ -9,5 +9,5 @@ package psidev.psi.mi.jami.xml;
  */
 
 public enum PsiXmlVersion {
-    v2_5_4, v2_5_3
+    v2_5_4, v2_5_3, v3_0_0
 }

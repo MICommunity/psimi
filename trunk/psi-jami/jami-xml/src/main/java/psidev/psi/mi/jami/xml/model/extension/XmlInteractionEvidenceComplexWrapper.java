@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -184,7 +184,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
             this.cooperativeEffects = new ArrayList<CooperativeEffect>();
             // collect cooperative effects from interaction evidence annotations
             Collection<Annotation> annotations = new ArrayList<Annotation>(this.interactionEvidence.getAnnotations());
-            CooperativeEffect effect = PsiXml25Utils.extractCooperativeEffectFrom(annotations, this.interactionEvidence.getExperiments(), XmlEntryContext.getInstance().getListener());
+            CooperativeEffect effect = PsiXmlUtils.extractCooperativeEffectFrom(annotations, this.interactionEvidence.getExperiments(), XmlEntryContext.getInstance().getListener());
             if (effect != null){
                 getCooperativeEffects().add(effect);
             }
@@ -214,7 +214,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
 
     @Override
     public String getShortName() {
-        return this.interactionEvidence.getShortName() != null ? this.interactionEvidence.getShortName() : PsiXml25Utils.UNSPECIFIED;
+        return this.interactionEvidence.getShortName() != null ? this.interactionEvidence.getShortName() : PsiXmlUtils.UNSPECIFIED;
     }
 
     @Override

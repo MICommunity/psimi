@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlSourceWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -223,32 +223,32 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         }
         // write start of entrySet
         try {
-            this.streamWriter.writeStartElement(PsiXml25Utils.ENTRYSET_TAG);
+            this.streamWriter.writeStartElement(PsiXmlUtils.ENTRYSET_TAG);
 
             switch (this.version){
                 case v2_5_4:
-                    this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml254_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_254_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
-                    this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
-                    this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
+                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml254_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_254_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"4");
                     break;
                 case v2_5_3:
-                    this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml253_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_253_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
-                    this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
-                    this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"3");
+                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml253_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_253_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"3");
                     break;
                 default:
-                    this.streamWriter.writeDefaultNamespace(PsiXml25Utils.Xml254_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXml25Utils.XML_SCHEMA_PREFIX,PsiXml25Utils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXml25Utils.XML_SCHEMA, PsiXml25Utils.SCHEMA_LOCATION_ATTRIBUTE, PsiXml25Utils.PSI_SCHEMA_254_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXml25Utils.LEVEL_ATTRIBUTE,"2");
-                    this.streamWriter.writeAttribute(PsiXml25Utils.VERSION_ATTRIBUTE,"5");
-                    this.streamWriter.writeAttribute(PsiXml25Utils.MINOR_VERSION_ATTRIBUTE,"4");
+                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml254_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_254_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"4");
                     break;
             }
         } catch (XMLStreamException e) {
@@ -416,7 +416,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
 
     protected void writeEntryAttributes() throws XMLStreamException {
         if (this.entryAnnotations != null && !this.entryAnnotations.isEmpty()){
-            this.streamWriter.writeStartElement(PsiXml25Utils.ATTRIBUTELIST_TAG);
+            this.streamWriter.writeStartElement(PsiXmlUtils.ATTRIBUTELIST_TAG);
             for (Annotation annotation : this.entryAnnotations){
                 this.annotationsWriter.write(annotation);
             }
@@ -467,7 +467,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
 
     protected void writeStartInteractionList() throws XMLStreamException {
         // write start interaction list
-        this.streamWriter.writeStartElement(PsiXml25Utils.INTERACTIONLIST_TAG);
+        this.streamWriter.writeStartElement(PsiXmlUtils.INTERACTIONLIST_TAG);
     }
 
     protected void writeEndInteractionList() throws XMLStreamException {
@@ -512,7 +512,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
 
     protected void writeStartEntry() throws XMLStreamException {
         this.elementCache.clear();
-        this.streamWriter.writeStartElement(PsiXml25Utils.ENTRY_TAG);
+        this.streamWriter.writeStartElement(PsiXmlUtils.ENTRY_TAG);
     }
 
     protected void writeEndEntry() throws XMLStreamException {
